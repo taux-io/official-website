@@ -18,7 +18,7 @@ html {
     scroll-behavior: smooth;
 }
 
-.window {
+.main-container {
     background: transparent;
     border: none;
     border-radius: 0;
@@ -29,7 +29,7 @@ html {
     overflow: visible;
 }
 
-.nav {
+.main-navigation {
     display: flex;
     flex-wrap: wrap;
     gap: 0;
@@ -41,7 +41,7 @@ html {
     margin-bottom: 2rem;
 }
 
-.nav a {
+.nav-link {
     padding: 1rem 2rem;
     color: #6b7280;
     text-decoration: none;
@@ -49,16 +49,20 @@ html {
     transition: color 0.2s ease;
 }
 
-.nav a:hover {
+.nav-link:hover {
     color: #1f2937;
 }
 
-.section {
+.hero-section,
+.services-section,
+.faq-section,
+.contact-section {
     text-align: center;
     padding: 4rem 2rem;
 }
 
-.pixel-text {
+.hero-title,
+.section-title {
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     font-size: 2.5rem;
     font-weight: 700;
@@ -67,11 +71,11 @@ html {
     letter-spacing: -0.025em;
 }
 
-h2.pixel-text {
+.section-subtitle {
     font-size: 2rem;
 }
 
-.buttons {
+.contact-actions {
     margin-top: 2rem;
     display: flex;
     justify-content: center;
@@ -89,24 +93,35 @@ h2.pixel-text {
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    will-change: transform; /* 硬體加速 */
+    will-change: transform;
 }
 
 .btn:hover {
     background: #f9fafb;
     border-color: #9ca3af;
-    transform: translateY(-1px); /* 微妙的懸停效果 */
+    transform: translateY(-1px);
 }
 
-.btn.gray {
+.btn--primary {
     background: #1f2937;
     color: #ffffff;
     border-color: #1f2937;
 }
 
-.btn.gray:hover {
+.btn--primary:hover {
     background: #374151;
     border-color: #374151;
+}
+
+.btn--secondary {
+    background: #ffffff;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.btn--secondary:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
 }
 
 img {
@@ -114,18 +129,20 @@ img {
     height: auto;
 }
 
-.logo-img {
+.company-logo {
     width: 200px;
     margin-bottom: 2rem;
 }
 
-.rocket-img {
+.contact-icon {
     width: 150px;
     margin: 2rem 0;
 }
 
-.description-box,
-.description-box-blue {
+.hero-description,
+.services-content,
+.faq-content,
+.contact-content {
     background: transparent;
     padding: 2rem;
     margin: 2rem auto;
@@ -134,11 +151,25 @@ img {
     font-size: 1.1rem;
     color: #6b7280;
     line-height: 1.6;
-    text-align: justify; /* 分散對齊 */
-    text-justify: inter-ideograph; /* 中文分散對齊優化 */
+    text-align: justify;
+    text-justify: inter-ideograph;
 }
 
-.description-box h3 {
+.section-header .section-subtitle {
+    background: transparent;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    border-radius: 0;
+    font-size: 1.1rem;
+    color: #6b7280;
+    line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+.service-title,
+.faq-question {
     color: #1f2937;
     font-size: 1.2rem;
     font-weight: 600;
@@ -146,75 +177,83 @@ img {
     text-align: left;
 }
 
-.description-box h3:first-child {
+.service-title:first-child,
+.faq-question:first-child {
     margin-top: 0;
 }
 
-.description-box p {
-    text-align: justify; /* 分散對齊 */
-    text-justify: inter-ideograph; /* 中文分散對齊優化 */
+.service-description,
+.faq-answer {
+    text-align: justify;
+    text-justify: inter-ideograph;
     margin: 0 0 1rem 0;
     line-height: 1.7;
 }
 
-.description-box a {
+.contact-email {
     color: #1f2937;
     text-decoration: underline;
 }
 
-.description-box a:hover {
+.contact-email:hover {
     color: #374151;
 }
 
-/* 地址區塊的特殊樣式 */
-address {
+.contact-info {
     text-align: justify;
     text-justify: inter-ideograph;
     font-style: normal;
     line-height: 1.8;
 }
 
-/* FAQ 區塊特殊處理 */
-#faq .description-box {
+/* 特殊樣式區塊 */
+.hero-section .hero-description {
     text-align: justify;
     text-justify: inter-ideograph;
 }
 
-#faq .description-box h3 {
-    text-align: left; /* 標題保持左對齊 */
-}
-
-/* 服務項目區塊 */
-#services .description-box {
+.services-section .services-content {
     text-align: justify;
     text-justify: inter-ideograph;
 }
 
-#services .description-box h3 {
-    text-align: left; /* 標題保持左對齊 */
+.services-section .service-title {
+    text-align: left;
 }
 
-/* 關於我們區塊 */
-#about .description-box {
+.faq-section .faq-content {
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+.faq-section .faq-question {
+    text-align: left;
+}
+
+.contact-section .contact-content {
     text-align: justify;
     text-justify: inter-ideograph;
 }
 
 @media (max-width: 768px) {
-    .window {
+    .main-container {
         margin: 0;
         border-radius: 0;
     }
     
-    .section {
+    .hero-section,
+    .services-section,
+    .faq-section,
+    .contact-section {
         padding: 2rem 1rem;
     }
     
-    .pixel-text {
+    .hero-title,
+    .section-title {
         font-size: 1.8rem;
     }
     
-    h2.pixel-text {
+    .section-subtitle {
         font-size: 1.5rem;
     }
     
@@ -223,21 +262,23 @@ address {
         margin: 0.5rem 0;
     }
     
-    .nav a {
+    .nav-link {
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
     }
     
-    .description-box,
-    .description-box-blue {
+    .hero-description,
+    .services-content,
+    .faq-content,
+    .contact-content,
+    .section-header .section-subtitle {
         margin: 1rem;
         padding: 1.5rem;
-        text-align: justify; /* 手機版也保持分散對齊 */
+        text-align: justify;
         text-justify: inter-ideograph;
     }
     
-    /* 手機版地址區塊 */
-    address {
+    .contact-info {
         text-align: justify;
         text-justify: inter-ideograph;
     }
