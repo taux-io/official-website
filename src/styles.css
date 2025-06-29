@@ -1,20 +1,20 @@
 /* CSS 變數定義 - 支援深色/一般模式 */
 :root {
     /* 一般模式顏色 */
-    --bg-primary: #ffffff;
+    --bg-primary: #fff;
     --bg-secondary: rgba(255, 255, 255, 0.95);
     --text-primary: #1f2937;
     --text-secondary: #4b5563;
     --text-muted: #6b7280;
     --border-color: #d1d5db;
     --border-light: rgba(209, 213, 219, 0.3);
-    --btn-bg: #ffffff;
+    --btn-bg: #fff;
     --btn-hover-bg: #f9fafb;
     --btn-border: #d1d5db;
     --btn-border-hover: #9ca3af;
     --btn-primary-bg: #1f2937;
     --btn-primary-hover: #374151;
-    --btn-primary-text: #ffffff;
+    --btn-primary-text: #fff;
     --nav-shadow: rgba(0, 0, 0, 0.1);
 }
 
@@ -34,7 +34,7 @@
         --btn-border-hover: #4b5563;
         --btn-primary-bg: #3b82f6;
         --btn-primary-hover: #2563eb;
-        --btn-primary-text: #ffffff;
+        --btn-primary-text: #fff;
         --nav-shadow: rgba(0, 0, 0, 0.3);
     }
 }
