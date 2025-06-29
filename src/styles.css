@@ -267,6 +267,15 @@ img {
     color: var(--text-secondary);
 }
 
+.contact-phone {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+.contact-phone:hover {
+    color: var(--text-secondary);
+}
+
 .contact-info {
     text-align: justify;
     text-justify: inter-ideograph;
