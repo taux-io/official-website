@@ -82,10 +82,8 @@ section[id],
 .faq-section,
 .contact-section {
     text-align: center;
-    padding: 3rem 2rem; /* 減少垂直間距 */
+    padding: 3rem 2rem;
 }
-
-
 
 .hero-title,
 .section-title {
@@ -142,17 +140,6 @@ section[id],
 .btn--primary:hover {
     background: #374151;
     border-color: #374151;
-}
-
-.btn--secondary {
-    background: #ffffff;
-    color: #374151;
-    border-color: #d1d5db;
-}
-
-.btn--secondary:hover {
-    background: #f9fafb;
-    border-color: #9ca3af;
 }
 
 img {
@@ -236,35 +223,6 @@ img {
     text-justify: inter-ideograph;
     font-style: normal;
     line-height: 1.8;
-}
-
-/* 特殊樣式區塊 */
-.hero-section .hero-description {
-    text-align: justify;
-    text-justify: inter-ideograph;
-}
-
-.services-section .services-content {
-    text-align: justify;
-    text-justify: inter-ideograph;
-}
-
-.services-section .service-title {
-    text-align: left;
-}
-
-.faq-section .faq-content {
-    text-align: justify;
-    text-justify: inter-ideograph;
-}
-
-.faq-section .faq-question {
-    text-align: left;
-}
-
-.contact-section .contact-content {
-    text-align: justify;
-    text-justify: inter-ideograph;
 }
 
 @media (max-width: 768px) {
