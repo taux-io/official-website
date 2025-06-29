@@ -437,5 +437,46 @@
             </footer>
         </section>
     </div>
+
+    <!-- 深色模式自動切換 JavaScript -->
+    <script>
+        (function() {
+            'use strict';
+            
+            // 偵測系統主題偏好並初始化
+            function initializeTheme() {
+                // 檢查系統是否支援深色模式偵測
+                if (!window.matchMedia) {
+                    return;
+                }
+                
+                const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                
+                // 監聽系統主題變更
+                function handleThemeChange(e) {
+                    // CSS 會自動根據 @media (prefers-color-scheme: dark) 切換
+                    // 這裡可以添加額外的主題切換邏輯，如儲存使用者偏好
+                    console.log('主題已切換至:', e.matches ? '深色模式' : '一般模式');
+                }
+                
+                // 為支援舊版瀏覽器，使用 addListener 作為備案
+                if (darkModeQuery.addEventListener) {
+                    darkModeQuery.addEventListener('change', handleThemeChange);
+                } else if (darkModeQuery.addListener) {
+                    darkModeQuery.addListener(handleThemeChange);
+                }
+                
+                // 初始化時輸出當前主題
+                console.log('目前主題:', darkModeQuery.matches ? '深色模式' : '一般模式');
+            }
+            
+            // 確保 DOM 載入完成後執行
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeTheme);
+            } else {
+                initializeTheme();
+            }
+        })();
+    </script>
 </body>
 </html>

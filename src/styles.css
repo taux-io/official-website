@@ -1,12 +1,60 @@
+/* CSS 變數定義 - 支援深色/一般模式 */
+:root {
+    /* 一般模式顏色 */
+    --bg-primary: #ffffff;
+    --bg-secondary: rgba(255, 255, 255, 0.95);
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
+    --border-color: #d1d5db;
+    --border-light: rgba(209, 213, 219, 0.3);
+    --btn-bg: #ffffff;
+    --btn-hover-bg: #f9fafb;
+    --btn-border: #d1d5db;
+    --btn-border-hover: #9ca3af;
+    --btn-primary-bg: #1f2937;
+    --btn-primary-hover: #374151;
+    --btn-primary-text: #ffffff;
+    --nav-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* 深色模式顏色 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #111827;
+        --bg-secondary: rgba(17, 24, 39, 0.95);
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-muted: #9ca3af;
+        --border-color: #374151;
+        --border-light: rgba(55, 65, 81, 0.3);
+        --btn-bg: #1f2937;
+        --btn-hover-bg: #374151;
+        --btn-border: #374151;
+        --btn-border-hover: #4b5563;
+        --btn-primary-bg: #3b82f6;
+        --btn-primary-hover: #2563eb;
+        --btn-primary-text: #ffffff;
+        --nav-shadow: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* 為所有可能變更顏色的元素添加過渡動畫 */
+*,
+*::before,
+*::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 /* 效能優化 - 減少重繪 */
 * {
     box-sizing: border-box;
 }
 
 body {
-    color: #1f2937;
+    color: var(--text-primary);
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
-    background: #ffffff;
+    background: var(--bg-primary);
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -16,6 +64,7 @@ body {
     text-rendering: optimizeLegibility; /* 優化文字渲染 */
     -webkit-font-smoothing: antialiased; /* macOS/iOS 字體平滑 */
     -moz-osx-font-smoothing: grayscale; /* Firefox 字體平滑 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 平順的主題切換 */
 }
 
 html {
@@ -57,16 +106,16 @@ section[id],
     font-size: 1rem; /* 增加導航字體大小 */
     font-weight: 500;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-secondary);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(209, 213, 219, 0.3);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px var(--nav-shadow);
     transition: all 0.3s ease;
 }
 
 .nav-link {
     padding: 1rem 2rem;
-    color: #6b7280;
+    color: var(--text-muted);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
@@ -74,7 +123,7 @@ section[id],
 }
 
 .nav-link:hover {
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .hero-section,
@@ -90,7 +139,7 @@ section[id],
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
     font-size: 2.5rem; /* 微調桌面版標題大小 */
     font-weight: 700;
-    color: #1f2937;
+    color: var(--text-primary);
     margin: 0.75rem 0 0.5rem; /* 優化標題間距 */
     letter-spacing: -0.025em;
     line-height: 1.25; /* 緊湊的標題行距 */
@@ -98,7 +147,7 @@ section[id],
 
 .section-subtitle {
     font-size: 1.15rem; /* 調整副標題大小 */
-    color: #4b5563;
+    color: var(--text-secondary);
     font-weight: 400;
     line-height: 1.5;
     margin: 0.5rem 0 1.25rem; /* 緊湊的副標題間距 */
@@ -114,10 +163,10 @@ section[id],
 
 .btn {
     padding: 0.75rem 1.5rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--btn-border);
     border-radius: 8px;
-    background: #ffffff;
-    color: #374151;
+    background: var(--btn-bg);
+    color: var(--text-secondary);
     font-weight: 500;
     font-size: 0.95rem;
     cursor: pointer;
@@ -126,20 +175,20 @@ section[id],
 }
 
 .btn:hover {
-    background: #f9fafb;
-    border-color: #9ca3af;
+    background: var(--btn-hover-bg);
+    border-color: var(--btn-border-hover);
     transform: translateY(-1px);
 }
 
 .btn--primary {
-    background: #1f2937;
-    color: #ffffff;
-    border-color: #1f2937;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-bg);
 }
 
 .btn--primary:hover {
-    background: #374151;
-    border-color: #374151;
+    background: var(--btn-primary-hover);
+    border-color: var(--btn-primary-hover);
 }
 
 img {
@@ -167,7 +216,7 @@ img {
     max-width: 500px;
     border-radius: 0;
     font-size: 1.05rem; /* 16.8px - 舒適的閱讀字體 */
-    color: #4b5563; /* 更柔和的文字顏色 */
+    color: var(--text-secondary); /* 更柔和的文字顏色 */
     line-height: 1.65; /* 適中的行距 */
     text-align: justify;
     text-justify: inter-ideograph;
@@ -181,7 +230,7 @@ img {
     max-width: 500px;
     border-radius: 0;
     font-size: 1.1rem; /* 調整字體大小 */
-    color: #4b5563;
+    color: var(--text-secondary);
     line-height: 1.6; /* 優化行距 */
     text-align: justify;
     text-justify: inter-ideograph;
@@ -189,7 +238,7 @@ img {
 
 .service-title,
 .faq-question {
-    color: #1f2937;
+    color: var(--text-primary);
     font-size: 1.2rem;
     font-weight: 600;
     margin: 1.5rem 0 0.5rem 0;
@@ -210,12 +259,12 @@ img {
 }
 
 .contact-email {
-    color: #1f2937;
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
 .contact-email:hover {
-    color: #374151;
+    color: var(--text-secondary);
 }
 
 .contact-info {
