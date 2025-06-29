@@ -24,7 +24,6 @@
         "slogan": "Code the Future",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+886-7-XXXX-XXXX",
             "contactType": "customer service",
             "email": "hello@taux.io",
             "availableLanguage": ["zh-TW", "en"]
@@ -223,25 +222,27 @@
 </head>
 <body>
     <div class="window">
-        <div class="nav">
+        <nav class="nav">
             <a href="/">首頁</a>
             <a href="#about">關於我們</a>
             <a href="#services">服務項目</a>
             <a href="#faq">常見問題</a>
             <a href="#contact">聯絡我們</a>
-        </div>
+        </nav>
 
-        <div class="section" id="about">
+        <section class="section" id="about">
             <img src="logo.png" alt="TauX Logo" class="logo-img" />
             <h1 class="pixel-text">Code the Future</h1>
             <div class="description-box">專注於軟體平台開發與短影片行銷整合，運用 AI 技術為企業打造全方位數位轉型解決方案</div>
-        </div>
+        </section>
 
-        <div class="section" id="services">
-            <h1 class="pixel-text">Services</h1>
-            <div class="description-box-blue">結合軟體開發專業與創意行銷策略，為您的品牌創造數位時代的競爭優勢</div>
+        <section class="section" id="services">
+            <header>
+                <h1 class="pixel-text">Services</h1>
+                <div class="description-box-blue">結合軟體開發專業與創意行銷策略，為您的品牌創造數位時代的競爭優勢</div>
+            </header>
 
-            <div class="description-box">
+            <article class="description-box">
                 <h3>💻 軟體平台開發</h3>
                 <p>專業開發企業級軟體平台，從需求分析到系統部署一站式服務。包含 Web 應用程式、移動端 APP、雲端 SaaS 平台，以及客製化管理系統。運用現代化技術架構，確保系統穩定性、擴展性與安全性。</p>
                 
@@ -256,12 +257,14 @@
                 
                 <h3>⚙️ 系統整合與自動化</h3>
                 <p>協助企業整合既有系統與新開發平台，建立無縫的數位工作流程。從 CRM、ERP 系統串接到行銷自動化工具導入，讓科技為您的團隊賦能，專注於核心業務發展。</p>
-            </div>
-        </div>
+            </article>
+        </section>
 
-        <div class="section" id="faq">
-            <h1 class="pixel-text">常見問題 FAQ</h1>
-            <div class="description-box">
+        <section class="section" id="faq">
+            <header>
+                <h1 class="pixel-text">常見問題 FAQ</h1>
+            </header>
+            <article class="description-box">
                 <h3>🤔 TauX 主要提供哪些服務？</h3>
                 <p>我們專精於三大核心領域：<strong>軟體平台開發</strong>（包含 Web 應用、APP、SaaS 平台）、<strong>短影片製作與策略</strong>（TikTok、Instagram Reels、YouTube Shorts）、以及<strong>數位行銷整合</strong>（社群經營、SEO、廣告投放）。我們也提供 AI 智能解決方案和系統整合服務。</p>
                 
@@ -300,28 +303,32 @@
                 • <strong>一站式服務</strong>：從技術開發到行銷推廣全方位支援<br>
                 • <strong>客製化解決方案</strong>：根據您的需求量身打造<br>
                 • <strong>AI 整合</strong>：運用最新 AI 技術提升效率與競爭力</p>
-            </div>
-        </div>
+            </article>
+        </section>
 
-        <div class="section" id="contact">
-            <img src="rocket.png" alt="Rocket" class="rocket-img" />
-            <h1 class="pixel-text">Contact US</h1>
-            <h2 class="pixel-text">讓我們一起啟動您的數位轉型之旅</h2>
+        <section class="section" id="contact">
+            <header>
+                <img src="rocket.png" alt="Rocket" class="rocket-img" />
+                <h1 class="pixel-text">Contact US</h1>
+                <h2 class="pixel-text">讓我們一起啟動您的數位轉型之旅</h2>
+            </header>
             
-            <div class="description-box">
+            <article class="description-box">
                 <strong>準備好提升您的數位競爭力了嗎？</strong><br><br>
                 無論您需要開發軟體平台、製作吸睛短影片，還是建立完整的數位行銷策略，我們都能為您提供專業的解決方案。<br><br>
                 
-                📧 聯絡信箱：<a href="mailto:hello@taux.io">hello@taux.io</a><br>
-                📍 營運據點：高雄市岡山區文賢路 57 號 2 樓<br>
-                🤝 歡迎預約免費諮詢，討論您的專案需求
-            </div>
+                <address>
+                    📧 聯絡信箱：<a href="mailto:hello@taux.io">hello@taux.io</a><br>
+                    📍 營運據點：高雄市岡山區文賢路 57 號 2 樓<br>
+                    🤝 歡迎預約免費諮詢，討論您的專案需求
+                </address>
+            </article>
             
-            <div class="buttons">
+            <footer class="buttons">
                 <button class="btn gray">立即諮詢</button>
                 <button class="btn">開始合作</button>
-            </div>
-        </div>
+            </footer>
+        </section>
     </div>
 </body>
 </html>
