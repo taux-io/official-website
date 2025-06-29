@@ -1,3 +1,8 @@
+/* 效能優化 - 減少重繪 */
+* {
+    box-sizing: border-box;
+}
+
 body {
     color: #1f2937;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
@@ -6,6 +11,7 @@ body {
     padding: 0;
     min-height: 100vh;
     line-height: 1.6;
+    font-display: swap; /* 字體載入優化 */
 }
 
 html {
@@ -83,11 +89,13 @@ h2.pixel-text {
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    will-change: transform; /* 硬體加速 */
 }
 
 .btn:hover {
     background: #f9fafb;
     border-color: #9ca3af;
+    transform: translateY(-1px); /* 微妙的懸停效果 */
 }
 
 .btn.gray {
