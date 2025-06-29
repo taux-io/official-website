@@ -1,0 +1,111 @@
+body {
+    color: #000;
+    font-family: 'Press Start 2P', 'Courier New', monospace, cursive;
+    background-color: #f4f1e9;
+    margin: 0;
+    padding: 0;
+}
+
+.window {
+    border: 2px solid #999;
+    margin: 2rem auto;
+    padding: 1rem;
+    max-width: 600px;
+    background-color: #fffbe6;
+    box-shadow: 5px 5px 0 #999;
+}
+
+.titlebar {
+    background-color: #003399;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    justify-content: center;
+}
+
+.section {
+    text-align: center;
+    padding: 1rem;
+}
+
+.pixel-text {
+    /* Use pixel font for retro style sections */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2rem;
+}
+
+.buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    background-color: #cceede;
+    box-shadow: 2px 2px 0 #999;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn.gray {
+    background-color: #d0d0d0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.logo-img {
+    width: 150px;
+    margin-bottom: 1rem;
+}
+
+.rocket-img {
+    width: 120px;
+    margin: 1rem 0;
+}
+
+.description-box {
+    border: 2px solid #000;
+    background-color: #cceede;
+    padding: 0.5rem;
+    margin: 1rem auto;
+    max-width: 400px;
+}
+
+.description-box-blue {
+    border: 2px solid #000;
+    background-color: #d5e8f4;
+    padding: 0.5rem;
+    margin: 1rem auto;
+    max-width: 400px;
+}
+
+@media (max-width: 640px) {
+    .window {
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .pixel-text {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
