@@ -201,6 +201,13 @@ img {
     margin-bottom: 2rem;
 }
 
+/* 深色模式下自動切換 logo */
+@media (prefers-color-scheme: dark) {
+    .company-logo {
+        content: url('taux-logo-dark.png');
+    }
+}
+
 .contact-icon {
     width: 150px;
     margin: 2rem 0;
