@@ -134,6 +134,8 @@ img {
     font-size: 1.1rem;
     color: #6b7280;
     line-height: 1.6;
+    text-align: justify; /* 分散對齊 */
+    text-justify: inter-ideograph; /* 中文分散對齊優化 */
 }
 
 .description-box h3 {
@@ -149,7 +151,8 @@ img {
 }
 
 .description-box p {
-    text-align: left;
+    text-align: justify; /* 分散對齊 */
+    text-justify: inter-ideograph; /* 中文分散對齊優化 */
     margin: 0 0 1rem 0;
     line-height: 1.7;
 }
@@ -161,6 +164,40 @@ img {
 
 .description-box a:hover {
     color: #374151;
+}
+
+/* 地址區塊的特殊樣式 */
+address {
+    text-align: justify;
+    text-justify: inter-ideograph;
+    font-style: normal;
+    line-height: 1.8;
+}
+
+/* FAQ 區塊特殊處理 */
+#faq .description-box {
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+#faq .description-box h3 {
+    text-align: left; /* 標題保持左對齊 */
+}
+
+/* 服務項目區塊 */
+#services .description-box {
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+#services .description-box h3 {
+    text-align: left; /* 標題保持左對齊 */
+}
+
+/* 關於我們區塊 */
+#about .description-box {
+    text-align: justify;
+    text-justify: inter-ideograph;
 }
 
 @media (max-width: 768px) {
@@ -195,5 +232,13 @@ img {
     .description-box-blue {
         margin: 1rem;
         padding: 1.5rem;
+        text-align: justify; /* 手機版也保持分散對齊 */
+        text-justify: inter-ideograph;
+    }
+    
+    /* 手機版地址區塊 */
+    address {
+        text-align: justify;
+        text-justify: inter-ideograph;
     }
 }
