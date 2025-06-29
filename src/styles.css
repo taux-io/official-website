@@ -5,17 +5,31 @@
 
 body {
     color: #1f2937;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
     background: #ffffff;
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    line-height: 1.6;
+    line-height: 1.65; /* 優化基礎行距 */
+    font-size: 16px; /* 設定基礎字體大小 */
     font-display: swap; /* 字體載入優化 */
+    text-rendering: optimizeLegibility; /* 優化文字渲染 */
+    -webkit-font-smoothing: antialiased; /* macOS/iOS 字體平滑 */
+    -moz-osx-font-smoothing: grayscale; /* Firefox 字體平滑 */
 }
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 60px; /* 調整滾動偏移為適當高度 */
+}
+
+/* 錨點目標元素的滾動偏移 */
+section[id],
+.hero-section,
+.services-section,
+.faq-section,
+.contact-section {
+    scroll-margin-top: 60px; /* 調整錨點偏移距離 */
 }
 
 .main-container {
@@ -24,21 +38,30 @@ html {
     border-radius: 0;
     margin: 0 auto;
     padding: 0;
+    padding-top: 65px; /* 調整上方間距 */
     max-width: 800px;
     box-shadow: none;
     overflow: visible;
 }
 
 .main-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
     flex-wrap: wrap;
     gap: 0;
-    padding: 0;
-    font-size: 0.95rem;
+    padding: 1rem 0;
+    font-size: 1rem; /* 增加導航字體大小 */
+    font-weight: 500;
     justify-content: center;
-    background: transparent;
-    border-bottom: none;
-    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(209, 213, 219, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .nav-link {
@@ -47,6 +70,7 @@ html {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
+    letter-spacing: 0.025em; /* 增加字母間距提升可讀性 */
 }
 
 .nav-link:hover {
@@ -58,21 +82,28 @@ html {
 .faq-section,
 .contact-section {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem; /* 減少垂直間距 */
 }
+
+
 
 .hero-title,
 .section-title {
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-    font-size: 2.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
+    font-size: 2.5rem; /* 微調桌面版標題大小 */
     font-weight: 700;
     color: #1f2937;
-    margin: 1rem 0;
+    margin: 0.75rem 0 0.5rem; /* 優化標題間距 */
     letter-spacing: -0.025em;
+    line-height: 1.25; /* 緊湊的標題行距 */
 }
 
 .section-subtitle {
-    font-size: 2rem;
+    font-size: 1.15rem; /* 調整副標題大小 */
+    color: #4b5563;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0.5rem 0 1.25rem; /* 緊湊的副標題間距 */
 }
 
 .contact-actions {
@@ -144,26 +175,27 @@ img {
 .faq-content,
 .contact-content {
     background: transparent;
-    padding: 2rem;
-    margin: 2rem auto;
+    padding: 1.5rem; /* 減少內距 */
+    margin: 0.5rem auto 1.5rem; /* 緊湊的外距 */
     max-width: 500px;
     border-radius: 0;
-    font-size: 1.1rem;
-    color: #6b7280;
-    line-height: 1.6;
+    font-size: 1.05rem; /* 16.8px - 舒適的閱讀字體 */
+    color: #4b5563; /* 更柔和的文字顏色 */
+    line-height: 1.65; /* 適中的行距 */
     text-align: justify;
     text-justify: inter-ideograph;
+    font-weight: 400;
 }
 
 .section-header .section-subtitle {
     background: transparent;
-    padding: 2rem;
-    margin: 2rem auto;
+    padding: 1.5rem; /* 減少內距 */
+    margin: 0.75rem auto 1.5rem; /* 優化間距 */
     max-width: 500px;
     border-radius: 0;
-    font-size: 1.1rem;
-    color: #6b7280;
-    line-height: 1.6;
+    font-size: 1.1rem; /* 調整字體大小 */
+    color: #4b5563;
+    line-height: 1.6; /* 優化行距 */
     text-align: justify;
     text-justify: inter-ideograph;
 }
@@ -236,34 +268,59 @@ img {
 }
 
 @media (max-width: 768px) {
+    /* 手機版本的滾動偏移調整 */
+    html {
+        scroll-padding-top: 55px; /* 手機版滾動偏移 */
+    }
+    
+    section[id],
+    .hero-section,
+    .services-section,
+    .faq-section,
+    .contact-section {
+        scroll-margin-top: 55px; /* 手機版錨點偏移距離 */
+    }
+    
+    body {
+        font-size: 15px; /* 手機版略小的基礎字體 */
+        line-height: 1.6; /* 手機版適中的行距 */
+    }
+    
     .main-container {
         margin: 0;
         border-radius: 0;
+        padding-top: 60px; /* 手機版頂部間距調整 */
     }
     
     .hero-section,
     .services-section,
     .faq-section,
     .contact-section {
-        padding: 2rem 1rem;
+        padding: 2rem 1rem; /* 手機版適中的內距 */
     }
     
     .hero-title,
     .section-title {
-        font-size: 1.8rem;
+        font-size: 1.75rem; /* 手機版標題大小 */
+        margin: 0.5rem 0 0.25rem; /* 手機版緊湊間距 */
+        line-height: 1.2; /* 手機版緊湊行距 */
     }
     
     .section-subtitle {
-        font-size: 1.5rem;
+        font-size: 1.05rem; /* 手機版副標題大小 */
+        margin: 0.25rem 0 1rem; /* 手機版緊湊間距 */
+        line-height: 1.4;
     }
     
     .btn {
         width: 100%;
         margin: 0.5rem 0;
+        font-size: 0.95rem;
+        padding: 0.8rem 1.2rem;
     }
     
     .nav-link {
-        padding: 0.8rem 1rem;
+        padding: 0.7rem 0.9rem; /* 手機版更緊湊的導航 */
         font-size: 0.9rem;
     }
     
@@ -272,14 +329,29 @@ img {
     .faq-content,
     .contact-content,
     .section-header .section-subtitle {
-        margin: 1rem;
-        padding: 1.5rem;
+        margin: 0.5rem; /* 手機版緊湊外距 */
+        padding: 1.25rem; /* 手機版適中內距 */
+        font-size: 1rem; /* 手機版字體大小 */
+        line-height: 1.6; /* 手機版行距 */
         text-align: justify;
         text-justify: inter-ideograph;
+    }
+    
+    .service-title,
+    .faq-question {
+        font-size: 1.1rem; /* 手機版小標題 */
+        margin: 1.25rem 0 0.5rem 0; /* 調整間距 */
+    }
+    
+    .service-description,
+    .faq-answer {
+        line-height: 1.6; /* 手機版內容行距 */
+        margin: 0 0 1rem 0;
     }
     
     .contact-info {
         text-align: justify;
         text-justify: inter-ideograph;
+        line-height: 1.7; /* 聯絡資訊稍大行距 */
     }
 }
