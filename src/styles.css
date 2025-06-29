@@ -23,26 +23,6 @@ html {
     overflow: visible;
 }
 
-.titlebar {
-    background: transparent;
-    color: #1f2937;
-    padding: 2rem;
-    font-weight: 600;
-    text-align: center;
-    font-size: 1.5rem;
-    border-bottom: none;
-}
-
-.titlebar a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-}
-
-.titlebar a:hover {
-    opacity: 0.8;
-}
-
 .nav {
     display: flex;
     flex-wrap: wrap;
@@ -70,10 +50,6 @@ html {
 .section {
     text-align: center;
     padding: 4rem 2rem;
-}
-
-.section:not(:last-child) {
-    border-bottom: none;
 }
 
 .pixel-text {
@@ -140,17 +116,7 @@ img {
     margin: 2rem 0;
 }
 
-.description-box {
-    background: transparent;
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 500px;
-    border-radius: 0;
-    font-size: 1.1rem;
-    color: #6b7280;
-    line-height: 1.6;
-}
-
+.description-box,
 .description-box-blue {
     background: transparent;
     padding: 2rem;
@@ -193,11 +159,6 @@ img {
     .window {
         margin: 0;
         border-radius: 0;
-    }
-    
-    .titlebar {
-        padding: 1.5rem 1rem;
-        font-size: 1.2rem;
     }
     
     .section {
