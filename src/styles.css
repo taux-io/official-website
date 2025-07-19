@@ -283,11 +283,108 @@ img {
     color: var(--text-secondary);
 }
 
-.contact-info {
+    .contact-info {
     text-align: justify;
     text-justify: inter-ideograph;
     font-style: normal;
     line-height: 1.8;
+}
+
+/* 引用樣式 */
+.hero-quote {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--btn-primary-bg);
+    padding: 1.5rem;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--nav-shadow);
+    max-width: 500px;
+    position: relative;
+}
+
+.hero-quote p {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+    font-style: italic;
+}
+
+.hero-quote cite {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: normal;
+    font-weight: 500;
+}
+
+.service-quote {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--btn-primary-bg);
+    padding: 1.5rem;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--nav-shadow);
+    max-width: 600px;
+    position: relative;
+}
+
+.service-quote p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.philosophy-intro {
+    margin: 2rem 0;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.philosophy-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.philosophy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.philosophy-list li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.philosophy-list li::before {
+    content: "•";
+    color: var(--btn-primary-bg);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+}
+
+.service-conclusion {
+    margin: 3rem 0 1rem;
+    text-align: center;
+}
+
+.conclusion-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    line-height: 1.6;
 }
 
 @media (max-width: 768px) {
@@ -376,5 +473,39 @@ img {
         text-align: justify;
         text-justify: inter-ideograph;
         line-height: 1.7; /* 聯絡資訊稍大行距 */
+    }
+    
+    /* 手機版引用樣式調整 */
+    .hero-quote {
+        padding: 1rem;
+        margin: 1.5rem auto;
+        max-width: 100%;
+    }
+    
+    .hero-quote p {
+        font-size: 1.1rem;
+    }
+    
+    .service-quote {
+        padding: 1rem;
+        margin: 1.5rem auto;
+        max-width: 100%;
+    }
+    
+    .service-quote p {
+        font-size: 1rem;
+    }
+    
+    .philosophy-intro {
+        margin: 1.5rem 0;
+        max-width: 100%;
+    }
+    
+    .philosophy-text {
+        font-size: 1rem;
+    }
+    
+    .conclusion-text {
+        font-size: 1rem;
     }
 }
