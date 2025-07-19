@@ -1,15 +1,14 @@
-FROM node:20-alpine
+FROM node:20-alpine3.19
 
 WORKDIR /app
 COPY . .
 
-RUN npm install -g live-server
+RUN npm install -g live-server \
+    && apk update && apk upgrade --no-cache
 
-# Create a non-root user for security
+# 建立非 root 使用者
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
-
-# Change ownership of the app directory
 RUN chown -R nextjs:nodejs /app
 USER nextjs
 
