@@ -1,15 +1,13 @@
-FROM node:20-alpine3.19
+FROM nginx:alpine
 
-WORKDIR /app
-COPY . .
+# 清空預設內容
+RUN rm -rf /usr/share/nginx/html/*
 
-RUN npm install -g live-server \
-    && apk update && apk upgrade --no-cache
+# 複製你的靜態網站內容（假設 build 後在 src/）
+COPY src/ /usr/share/nginx/html/
 
-# 建立非 root 使用者
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+# 複製自訂 Nginx 設定
+COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["live-server", "src", "--port=8080", "--host=0.0.0.0"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
