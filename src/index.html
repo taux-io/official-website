@@ -336,7 +336,7 @@
         </nav>
 
         <section class="hero-section" id="about">
-            <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo - 軟體開發公司標誌" class="company-logo" loading="lazy" />
+            <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo" class="company-logo" loading="lazy" />
             <h1 class="hero-title">不是在寫軟體，我們在重構「解決問題」的方式</h1>
             <div class="hero-description" itemscope itemtype="https://schema.org/Organization">
                 <blockquote class="hero-quote">
@@ -348,12 +348,10 @@
         </section>
 
         <section class="services-section" id="services" itemscope itemtype="https://schema.org/Service">
-            <header class="section-header">
-                <h1 class="section-title">這正是 TauX 正在做的事</h1>
-                <div class="section-subtitle">我們不是一家「只是幫你寫程式」的團隊。我們關心的是思維的轉變</div>
-            </header>
+            <h1 class="section-title">這正是 TauX 正在做的事</h1>
+            <div class="section-subtitle">我們不是一家「只是幫你寫程式」的團隊。我們關心的是思維的轉變</div>
 
-            <article class="services-content">
+            <div class="services-content">
                 <div class="philosophy-intro">
                     <p class="philosophy-text">我們關心的是——</p>
                     <ul class="philosophy-list">
@@ -390,14 +388,12 @@
                     <p class="conclusion-text">這是一場關於解決問題的革命。TauX，不只寫程式，我們在打破舊框架，建立新的工作節奏與思考習慣。</p>
                     <p class="conclusion-text"><strong>這不只是 coding，這是 re-coding how we think。</strong></p>
                 </div>
-            </article>
+            </div>
         </section>
 
         <section class="faq-section" id="faq">
-            <header class="section-header">
-                <h1 class="section-title">常見問題 FAQ</h1>
-            </header>
-            <article class="faq-content">
+            <h1 class="section-title">常見問題 FAQ</h1>
+            <div class="faq-content">
                 <h3 class="faq-question">🤔 TauX 主要提供哪些服務？</h3>
                 <p class="faq-answer">我們專精於三大核心領域：<strong>軟體平台開發</strong>（包含 Web 應用、APP、SaaS 平台）、<strong>短影片製作與策略</strong>（TikTok、Instagram Reels、YouTube Shorts）、以及<strong>數位行銷整合</strong>（社群經營、SEO、廣告投放）。我們也提供 AI 智能解決方案和系統整合服務。</p>
                 
@@ -436,19 +432,17 @@
                 • <strong>整合服務</strong>：從技術開發到行銷推廣全方位支援<br>
                 • <strong>客製方案</strong>：根據您的需求量身打造<br>
                 • <strong>AI 整合</strong>：運用最新 AI 技術提升效率與競爭力</p>
-            </article>
+            </div>
         </section>
 
         <section class="contact-section" id="contact" itemscope itemtype="https://schema.org/ContactPage">
-            <header class="section-header">
-                <img src="rocket.png" alt="火箭圖示 - 開始數位轉型之旅" class="contact-icon" loading="lazy" />
-                <h1 class="section-title">Contact US - 聯絡我們</h1>
-                <h2 class="section-subtitle">讓我們一起啟動您的數位轉型之旅</h2>
-            </header>
+            <img src="rocket.png" alt="火箭圖示" class="contact-icon" loading="lazy" />
+            <h1 class="section-title">Contact US - 聯絡我們</h1>
+            <div class="section-subtitle">讓我們一起啟動您的數位轉型之旅</div>
             
-            <article class="contact-content">
-                <strong>準備好提升您的數位競爭力了嗎？</strong><br><br>
-                無論您需要開發軟體平台、製作吸睛短影片，還是建立完整的數位行銷策略，我們都能為您提供專業的解決方案。立即聯絡我們，開始您的數位轉型之旅。<br><br>
+            <div class="contact-content">
+                <p><strong>準備好提升您的數位競爭力了嗎？</strong></p>
+                <p>無論您需要開發軟體平台、製作吸睛短影片，還是建立完整的數位行銷策略，我們都能為您提供專業的解決方案。立即聯絡我們，開始您的數位轉型之旅。</p>
                 
                 <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" class="contact-info">
                     📧 聯絡信箱：<a href="mailto:hello@taux.io" itemprop="email" class="contact-email">hello@taux.io</a><br>
@@ -457,11 +451,11 @@
                     🤝 歡迎預約免費諮詢，討論您的專案需求<br>
                     💬 提供線上諮詢服務，快速回應您的需求
                 </address>
-            </article>
+            </div>
             
-            <footer class="contact-actions">
-                <button class="btn btn--primary" onclick="window.location.href='mailto:hello@taux.io'">開始合作</button>
-            </footer>
+            <div class="contact-actions">
+                <a href="mailto:hello@taux.io" class="btn btn--primary">開始合作</a>
+            </div>
         </section>
     </div>
 
@@ -470,34 +464,24 @@
         (function() {
             'use strict';
             
-            // 偵測系統主題偏好並初始化
             function initializeTheme() {
-                // 檢查系統是否支援深色模式偵測
-                if (!window.matchMedia) {
-                    return;
-                }
+                if (!window.matchMedia) return;
                 
                 const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
                 
-                // 監聽系統主題變更
                 function handleThemeChange(e) {
-                    // CSS 會自動根據 @media (prefers-color-scheme: dark) 切換
-                    // 這裡可以添加額外的主題切換邏輯，如儲存使用者偏好
                     console.log('主題已切換至:', e.matches ? '深色模式' : '一般模式');
                 }
                 
-                // 為支援舊版瀏覽器，使用 addListener 作為備案
                 if (darkModeQuery.addEventListener) {
                     darkModeQuery.addEventListener('change', handleThemeChange);
                 } else if (darkModeQuery.addListener) {
                     darkModeQuery.addListener(handleThemeChange);
                 }
                 
-                // 初始化時輸出當前主題
                 console.log('目前主題:', darkModeQuery.matches ? '深色模式' : '一般模式');
             }
             
-            // 確保 DOM 載入完成後執行
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initializeTheme);
             } else {

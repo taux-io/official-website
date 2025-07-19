@@ -1,54 +1,54 @@
 /* CSS 變數定義 - 支援深色/一般模式 */
 :root {
-    /* 一般模式顏色 */
-    --bg-primary: #fff;
-    --bg-secondary: rgba(255, 255, 255, 0.95);
-    --text-primary: #1f2937;
-    --text-secondary: #4b5563;
+    /* 一般模式顏色 - 簡化色彩系統 */
+    --bg-primary: #ffffff;
+    --bg-secondary: rgba(255, 255, 255, 0.98);
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
     --text-muted: #6b7280;
-    --border-color: #d1d5db;
-    --border-light: rgba(209, 213, 219, 0.3);
-    --btn-bg: #fff;
+    --border-color: #e5e7eb;
+    --border-light: rgba(229, 231, 235, 0.5);
+    --btn-bg: #ffffff;
     --btn-hover-bg: #f9fafb;
-    --btn-border: #d1d5db;
-    --btn-border-hover: #9ca3af;
-    --btn-primary-bg: #1f2937;
+    --btn-border: #e5e7eb;
+    --btn-border-hover: #d1d5db;
+    --btn-primary-bg: #1a1a1a;
     --btn-primary-hover: #374151;
-    --btn-primary-text: #fff;
-    --nav-shadow: rgba(0, 0, 0, 0.1);
+    --btn-primary-text: #ffffff;
+    --nav-shadow: rgba(0, 0, 0, 0.05);
+    --quote-border: #1a1a1a;
+    --accent-color: #3b82f6;
 }
 
-/* 深色模式顏色 */
+/* 深色模式顏色 - 保持一致性 */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-primary: #111827;
-        --bg-secondary: rgba(17, 24, 39, 0.95);
-        --text-primary: #f9fafb;
+        --bg-primary: #0a0a0a;
+        --bg-secondary: rgba(10, 10, 10, 0.98);
+        --text-primary: #fafafa;
         --text-secondary: #d1d5db;
         --text-muted: #9ca3af;
-        --border-color: #374151;
-        --border-light: rgba(55, 65, 81, 0.3);
-        --btn-bg: #1f2937;
-        --btn-hover-bg: #374151;
-        --btn-border: #374151;
-        --btn-border-hover: #4b5563;
+        --border-color: #2d2d2d;
+        --border-light: rgba(45, 45, 45, 0.5);
+        --btn-bg: #1a1a1a;
+        --btn-hover-bg: #2d2d2d;
+        --btn-border: #2d2d2d;
+        --btn-border-hover: #404040;
         --btn-primary-bg: #3b82f6;
         --btn-primary-hover: #2563eb;
-        --btn-primary-text: #fff;
-        --nav-shadow: rgba(0, 0, 0, 0.3);
+        --btn-primary-text: #ffffff;
+        --nav-shadow: rgba(0, 0, 0, 0.2);
+        --quote-border: #3b82f6;
+        --accent-color: #60a5fa;
     }
 }
 
-/* 為所有可能變更顏色的元素添加過渡動畫 */
+/* 基礎重置和效能優化 */
 *,
 *::before,
 *::after {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* 效能優化 - 減少重繪 */
-* {
     box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 body {
@@ -58,41 +58,34 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    line-height: 1.65; /* 優化基礎行距 */
-    font-size: 16px; /* 設定基礎字體大小 */
-    font-display: swap; /* 字體載入優化 */
-    text-rendering: optimizeLegibility; /* 優化文字渲染 */
-    -webkit-font-smoothing: antialiased; /* macOS/iOS 字體平滑 */
-    -moz-osx-font-smoothing: grayscale; /* Firefox 字體平滑 */
-    transition: background-color 0.3s ease, color 0.3s ease; /* 平順的主題切換 */
+    line-height: 1.6;
+    font-size: 16px;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 60px; /* 調整滾動偏移為適當高度 */
+    scroll-padding-top: 80px;
 }
 
 /* 錨點目標元素的滾動偏移 */
-section[id],
-.hero-section,
-.services-section,
-.faq-section,
-.contact-section {
-    scroll-margin-top: 60px; /* 調整錨點偏移距離 */
+section[id] {
+    scroll-margin-top: 80px;
 }
 
+/* 主容器 - 簡化佈局 */
 .main-container {
-    background: transparent;
-    border: none;
-    border-radius: 0;
     margin: 0 auto;
     padding: 0;
-    padding-top: 65px; /* 調整上方間距 */
-    max-width: 800px;
-    box-shadow: none;
+    padding-top: 80px;
+    max-width: 720px;
     overflow: visible;
 }
 
+/* 導航欄 - 簡化設計 */
 .main-navigation {
     position: fixed;
     top: 0;
@@ -100,69 +93,70 @@ section[id],
     right: 0;
     z-index: 1000;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    padding: 1rem 0;
-    font-size: 1rem; /* 增加導航字體大小 */
-    font-weight: 500;
     justify-content: center;
+    padding: 1.5rem 0;
     background: var(--bg-secondary);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-light);
-    box-shadow: 0 1px 3px var(--nav-shadow);
-    transition: all 0.3s ease;
+    box-shadow: 0 1px 0 var(--nav-shadow);
 }
 
 .nav-link {
-    padding: 1rem 2rem;
-    color: var(--text-muted);
+    padding: 0.75rem 1.5rem;
+    color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: color 0.2s ease;
-    letter-spacing: 0.025em; /* 增加字母間距提升可讀性 */
+    border-radius: 6px;
+    margin: 0 0.25rem;
 }
 
 .nav-link:hover {
     color: var(--text-primary);
+    background: var(--btn-hover-bg);
 }
 
+/* 區段基礎樣式 - 統一間距 */
 .hero-section,
 .services-section,
 .faq-section,
 .contact-section {
+    padding: 4rem 2rem;
     text-align: center;
-    padding: 3rem 2rem;
 }
 
+/* 標題系統 - 簡化層次 */
 .hero-title,
 .section-title {
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
-    font-size: 2.5rem; /* 微調桌面版標題大小 */
+    font-size: 2.25rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0.75rem 0 0.5rem; /* 優化標題間距 */
-    letter-spacing: -0.025em;
-    line-height: 1.25; /* 緊湊的標題行距 */
+    margin: 0 0 1.5rem 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .section-subtitle {
-    font-size: 1.15rem; /* 調整副標題大小 */
+    font-size: 1.125rem;
     color: var(--text-secondary);
     font-weight: 400;
     line-height: 1.5;
-    margin: 0.5rem 0 1.25rem; /* 緊湊的副標題間距 */
+    margin: 0 0 3rem 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* 按鈕系統 - 簡化設計 */
 .contact-actions {
-    margin-top: 2rem;
+    margin-top: 3rem;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
 }
 
 .btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.875rem 2rem;
     border: 1px solid var(--btn-border);
     border-radius: 8px;
     background: var(--btn-bg);
@@ -171,7 +165,8 @@ section[id],
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    will-change: transform;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn:hover {
@@ -191,122 +186,63 @@ section[id],
     border-color: var(--btn-primary-hover);
 }
 
+/* 圖片優化 */
 img {
     max-width: 100%;
     height: auto;
 }
 
 .company-logo {
-    width: 200px;
+    width: 180px;
     margin-bottom: 2rem;
+    opacity: 0.9;
 }
 
-/* 深色模式下自動切換 logo */
+.contact-icon {
+    width: 120px;
+    margin: 2rem 0;
+    opacity: 0.8;
+}
+
+/* 深色模式 logo 切換 */
 @media (prefers-color-scheme: dark) {
     .company-logo {
         content: url('taux-logo-dark.png');
     }
 }
 
-.contact-icon {
-    width: 150px;
-    margin: 2rem 0;
-}
-
+/* 內容區域 - 改善可讀性 */
 .hero-description,
 .services-content,
 .faq-content,
 .contact-content {
     background: transparent;
-    padding: 1.5rem; /* 減少內距 */
-    margin: 0.5rem auto 1.5rem; /* 緊湊的外距 */
-    max-width: 500px;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
     border-radius: 0;
-    font-size: 1.05rem; /* 16.8px - 舒適的閱讀字體 */
-    color: var(--text-secondary); /* 更柔和的文字顏色 */
-    line-height: 1.65; /* 適中的行距 */
-    text-align: justify;
-    text-justify: inter-ideograph;
-    font-weight: 400;
-}
-
-.section-header .section-subtitle {
-    background: transparent;
-    padding: 1.5rem; /* 減少內距 */
-    margin: 0.75rem auto 1.5rem; /* 優化間距 */
-    max-width: 500px;
-    border-radius: 0;
-    font-size: 1.1rem; /* 調整字體大小 */
+    font-size: 1.05rem;
     color: var(--text-secondary);
-    line-height: 1.6; /* 優化行距 */
-    text-align: justify;
-    text-justify: inter-ideograph;
-}
-
-.service-title,
-.faq-question {
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 1.5rem 0 0.5rem 0;
+    line-height: 1.7;
     text-align: left;
 }
 
-.service-title:first-child,
-.faq-question:first-child {
-    margin-top: 0;
-}
-
-.service-description,
-.faq-answer {
-    text-align: justify;
-    text-justify: inter-ideograph;
-    margin: 0 0 1rem 0;
-    line-height: 1.7;
-}
-
-.contact-email {
-    color: var(--text-primary);
-    text-decoration: underline;
-}
-
-.contact-email:hover {
-    color: var(--text-secondary);
-}
-
-.contact-phone {
-    color: var(--text-primary);
-    text-decoration: underline;
-}
-
-.contact-phone:hover {
-    color: var(--text-secondary);
-}
-
-    .contact-info {
-    text-align: justify;
-    text-justify: inter-ideograph;
-    font-style: normal;
-    line-height: 1.8;
-}
-
-/* 引用樣式 */
+/* 引用樣式 - 簡化設計 */
 .hero-quote {
     background: var(--bg-secondary);
-    border-left: 4px solid var(--btn-primary-bg);
-    padding: 1.5rem;
-    margin: 2rem auto;
-    border-radius: 8px;
+    border-left: 3px solid var(--quote-border);
+    padding: 2rem;
+    margin: 3rem auto;
+    border-radius: 0 8px 8px 0;
     box-shadow: 0 2px 8px var(--nav-shadow);
     max-width: 500px;
-    position: relative;
 }
 
 .hero-quote p {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
     line-height: 1.4;
     font-style: italic;
 }
@@ -320,13 +256,12 @@ img {
 
 .service-quote {
     background: var(--bg-secondary);
-    border-left: 4px solid var(--btn-primary-bg);
+    border-left: 3px solid var(--quote-border);
     padding: 1.5rem;
-    margin: 2rem auto;
-    border-radius: 8px;
+    margin: 2.5rem auto;
+    border-radius: 0 8px 8px 0;
     box-shadow: 0 2px 8px var(--nav-shadow);
-    max-width: 600px;
-    position: relative;
+    max-width: 550px;
 }
 
 .service-quote p {
@@ -338,8 +273,9 @@ img {
     font-style: italic;
 }
 
+/* 哲學介紹 - 改善視覺層次 */
 .philosophy-intro {
-    margin: 2rem 0;
+    margin: 3rem 0;
     text-align: left;
     max-width: 600px;
     margin-left: auto;
@@ -350,7 +286,7 @@ img {
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .philosophy-list {
@@ -360,135 +296,176 @@ img {
 }
 
 .philosophy-list li {
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
     color: var(--text-secondary);
     position: relative;
-    padding-left: 1.5rem;
+    padding-left: 2rem;
+    line-height: 1.6;
 }
 
 .philosophy-list li::before {
     content: "•";
-    color: var(--btn-primary-bg);
+    color: var(--accent-color);
     font-weight: bold;
+    font-size: 1.2rem;
     position: absolute;
     left: 0;
-    top: 0.5rem;
+    top: 0.75rem;
 }
 
+/* 服務標題 - 簡化設計 */
+.service-title,
+.faq-question {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 3rem 0 1rem 0;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.service-title:first-child,
+.faq-question:first-child {
+    margin-top: 0;
+}
+
+/* 服務描述 - 改善可讀性 */
+.service-description,
+.faq-answer {
+    text-align: left;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+/* 服務結論 - 簡化設計 */
 .service-conclusion {
-    margin: 3rem 0 1rem;
+    margin: 4rem 0 2rem;
     text-align: center;
 }
 
 .conclusion-text {
     font-size: 1.1rem;
     color: var(--text-secondary);
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     line-height: 1.6;
 }
 
+/* 聯絡資訊 - 改善排版 */
+.contact-email,
+.contact-phone {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--border-color);
+    text-underline-offset: 2px;
+}
+
+.contact-email:hover,
+.contact-phone:hover {
+    color: var(--accent-color);
+    text-decoration-color: var(--accent-color);
+}
+
+.contact-info {
+    text-align: left;
+    font-style: normal;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+/* 手機版響應式設計 */
 @media (max-width: 768px) {
-    /* 手機版本的滾動偏移調整 */
     html {
-        scroll-padding-top: 55px; /* 手機版滾動偏移 */
+        scroll-padding-top: 70px;
     }
     
-    section[id],
-    .hero-section,
-    .services-section,
-    .faq-section,
-    .contact-section {
-        scroll-margin-top: 55px; /* 手機版錨點偏移距離 */
+    section[id] {
+        scroll-margin-top: 70px;
     }
     
     body {
-        font-size: 15px; /* 手機版略小的基礎字體 */
-        line-height: 1.6; /* 手機版適中的行距 */
+        font-size: 15px;
+        line-height: 1.6;
     }
     
     .main-container {
         margin: 0;
-        border-radius: 0;
-        padding-top: 60px; /* 手機版頂部間距調整 */
+        padding-top: 70px;
     }
     
     .hero-section,
     .services-section,
     .faq-section,
     .contact-section {
-        padding: 2rem 1rem; /* 手機版適中的內距 */
+        padding: 3rem 1.5rem;
     }
     
     .hero-title,
     .section-title {
-        font-size: 1.75rem; /* 手機版標題大小 */
-        margin: 0.5rem 0 0.25rem; /* 手機版緊湊間距 */
-        line-height: 1.2; /* 手機版緊湊行距 */
+        font-size: 1.875rem;
+        margin: 0 0 1.25rem 0;
+        line-height: 1.2;
     }
     
     .section-subtitle {
-        font-size: 1.05rem; /* 手機版副標題大小 */
-        margin: 0.25rem 0 1rem; /* 手機版緊湊間距 */
-        line-height: 1.4;
+        font-size: 1rem;
+        margin: 0 0 2.5rem 0;
+        line-height: 1.5;
     }
     
     .btn {
         width: 100%;
         margin: 0.5rem 0;
         font-size: 0.95rem;
-        padding: 0.8rem 1.2rem;
+        padding: 1rem 1.5rem;
     }
     
     .nav-link {
-        padding: 0.7rem 0.9rem; /* 手機版更緊湊的導航 */
+        padding: 0.5rem 1rem;
         font-size: 0.9rem;
+        margin: 0 0.125rem;
     }
     
     .hero-description,
     .services-content,
     .faq-content,
-    .contact-content,
-    .section-header .section-subtitle {
-        margin: 0.5rem; /* 手機版緊湊外距 */
-        padding: 1.25rem; /* 手機版適中內距 */
-        font-size: 1rem; /* 手機版字體大小 */
-        line-height: 1.6; /* 手機版行距 */
-        text-align: justify;
-        text-justify: inter-ideograph;
+    .contact-content {
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 1.6;
     }
     
     .service-title,
     .faq-question {
-        font-size: 1.1rem; /* 手機版小標題 */
-        margin: 1.25rem 0 0.5rem 0; /* 調整間距 */
+        font-size: 1.125rem;
+        margin: 2.5rem 0 1rem 0;
     }
     
     .service-description,
     .faq-answer {
-        line-height: 1.6; /* 手機版內容行距 */
-        margin: 0 0 1rem 0;
+        line-height: 1.6;
+        margin: 0 0 1.25rem 0;
     }
     
     .contact-info {
-        text-align: justify;
-        text-justify: inter-ideograph;
-        line-height: 1.7; /* 聯絡資訊稍大行距 */
+        line-height: 1.7;
     }
     
     /* 手機版引用樣式調整 */
     .hero-quote {
-        padding: 1rem;
-        margin: 1.5rem auto;
+        padding: 1.5rem;
+        margin: 2.5rem auto;
         max-width: 100%;
     }
     
     .hero-quote p {
-        font-size: 1.1rem;
+        font-size: 1.125rem;
     }
     
     .service-quote {
-        padding: 1rem;
-        margin: 1.5rem auto;
+        padding: 1.25rem;
+        margin: 2rem auto;
         max-width: 100%;
     }
     
@@ -497,7 +474,7 @@ img {
     }
     
     .philosophy-intro {
-        margin: 1.5rem 0;
+        margin: 2.5rem 0;
         max-width: 100%;
     }
     
