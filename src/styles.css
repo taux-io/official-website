@@ -1,21 +1,21 @@
 /* CSS 變數定義 - 支援深色/一般模式 */
 :root {
     /* 一般模式顏色 - 簡化色彩系統 */
-    --bg-primary: #ffffff;
-    --bg-secondary: rgba(255, 255, 255, 0.98);
+    --bg-primary: #fff;
+    --bg-secondary: rgba(255, 255, 255, .98);
     --text-primary: #1a1a1a;
     --text-secondary: #4a4a4a;
     --text-muted: #6b7280;
     --border-color: #e5e7eb;
-    --border-light: rgba(229, 231, 235, 0.5);
-    --btn-bg: #ffffff;
+    --border-light: rgba(229, 231, 235, .5);
+    --btn-bg: #fff;
     --btn-hover-bg: #f9fafb;
     --btn-border: #e5e7eb;
     --btn-border-hover: #d1d5db;
     --btn-primary-bg: #1a1a1a;
     --btn-primary-hover: #374151;
-    --btn-primary-text: #ffffff;
-    --nav-shadow: rgba(0, 0, 0, 0.05);
+    --btn-primary-text: #fff;
+    --nav-shadow: rgba(0, 0, 0, .05);
     --quote-border: #1a1a1a;
     --accent-color: #3b82f6;
 }
@@ -24,20 +24,20 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-primary: #0a0a0a;
-        --bg-secondary: rgba(10, 10, 10, 0.98);
+        --bg-secondary: rgba(10, 10, 10, .98);
         --text-primary: #fafafa;
         --text-secondary: #d1d5db;
         --text-muted: #9ca3af;
         --border-color: #2d2d2d;
-        --border-light: rgba(45, 45, 45, 0.5);
+        --border-light: rgba(45, 45, 45, .5);
         --btn-bg: #1a1a1a;
         --btn-hover-bg: #2d2d2d;
         --btn-border: #2d2d2d;
         --btn-border-hover: #404040;
         --btn-primary-bg: #3b82f6;
         --btn-primary-hover: #2563eb;
-        --btn-primary-text: #ffffff;
-        --nav-shadow: rgba(0, 0, 0, 0.2);
+        --btn-primary-text: #fff;
+        --nav-shadow: rgba(0, 0, 0, .2);
         --quote-border: #3b82f6;
         --accent-color: #60a5fa;
     }
@@ -48,7 +48,7 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
 }
 
 body {
@@ -107,7 +107,7 @@ section[id] {
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
-    transition: color 0.2s ease;
+    transition: color .2s ease;
     border-radius: 6px;
     margin: 0 0.25rem;
 }
@@ -134,7 +134,7 @@ section[id] {
     color: var(--text-primary);
     margin: 0 0 1.5rem 0;
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -.02em;
 }
 
 .section-subtitle {
@@ -164,7 +164,7 @@ section[id] {
     font-weight: 500;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all .2s ease;
     text-decoration: none;
     display: inline-block;
 }
@@ -195,13 +195,13 @@ img {
 .company-logo {
     width: 180px;
     margin-bottom: 2rem;
-    opacity: 0.9;
+    opacity: .9;
 }
 
 .contact-icon {
     width: 120px;
     margin: 2rem 0;
-    opacity: 0.8;
+    opacity: .8;
 }
 
 /* 深色模式 logo 切換 */
