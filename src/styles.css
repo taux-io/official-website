@@ -557,7 +557,7 @@ img {
 
 .guide-section {
     margin-bottom: 4rem;
-    padding: 2rem 0;
+    padding: 2.5rem 0;
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -566,73 +566,114 @@ img {
 }
 
 .guide-section h2 {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 2.25rem;
+    font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
     display: inline-block;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .guide-section h3 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 2rem 0 1rem;
+    margin: 2.5rem 0 1.5rem;
+    padding-left: 1rem;
+    border-left: 4px solid var(--accent-color);
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 8px;
 }
 
 .guide-section p {
     color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
 }
 
 .guide-section ul,
 .guide-section ol {
     color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
     padding-left: 2rem;
 }
 
 .guide-section li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.guide-section strong {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .content-block {
     background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 12px;
+    padding: 2.5rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin: 2rem 0;
 }
 
 .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
     margin-top: 2rem;
 }
 
 .benefit-item {
     background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 12px;
+    padding: 2.5rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .benefit-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+    border-color: var(--accent-color);
+}
+
+.benefit-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
 }
 
 .core-component {
     background: var(--bg-secondary);
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.core-component:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.core-component h3 {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    background: none;
+    border: none;
 }
 
 .value-grid {
@@ -738,56 +779,75 @@ img {
     font-weight: 500;
 }
 
-/* 目錄樣式 */
+/* 目錄樣式 - 確保優先級 */
 .table-of-contents {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0 4rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+    padding: 2.5rem !important;
+    margin: 3rem 0 4rem !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border-left: 4px solid var(--accent-color) !important;
 }
 
 .table-of-contents h3 {
-    color: var(--accent-color);
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 0.5rem;
+    color: var(--accent-color) !important;
+    margin: 0 0 2rem 0 !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--accent-color) !important;
+    padding-bottom: 0.75rem !important;
+    display: block !important;
+    width: 100% !important;
 }
 
 .table-of-contents ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
 }
 
 .table-of-contents li {
-    margin-bottom: 0.75rem;
-    padding-left: 1rem;
-    position: relative;
+    margin: 0 0 1rem 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    background: var(--bg-primary) !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border-light) !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+}
+
+.table-of-contents li:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
+    border-color: var(--accent-color) !important;
 }
 
 .table-of-contents li::before {
-    content: "📋";
-    position: absolute;
-    left: 0;
-    top: 0;
+    content: "📋" !important;
+    position: absolute !important;
+    left: 1rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 1.1rem !important;
 }
 
 .table-of-contents a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    display: block;
-    padding: 0.5rem 0;
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    padding: 1rem 1rem 1rem 3rem !important;
+    border-radius: 8px !important;
 }
 
 .table-of-contents a:hover {
-    color: var(--accent-color);
-    transform: translateX(5px);
+    color: var(--accent-color) !important;
+    background: rgba(59, 130, 246, 0.05) !important;
 }
 
 /* 閱讀進度條樣式 */
@@ -906,6 +966,13 @@ img {
     color: var(--accent-color);
 }
 
+/* 桌面版隱藏漢堡菜單 */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
 /* 指南連結樣式 */
 .service-link {
     margin-top: 1rem;
@@ -950,12 +1017,57 @@ img {
     }
     
     .nav-menu {
-        display: none;
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--bg-secondary);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        z-index: 999;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-menu li {
+        margin: 0;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-link {
+        padding: 1.5rem;
+        display: block;
+        width: 100%;
     }
     
     .hamburger {
         display: block;
         cursor: pointer;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 25px;
+        height: 25px;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
     }
     
     .hamburger .bar {
@@ -963,7 +1075,8 @@ img {
         width: 25px;
         height: 3px;
         background: var(--text-primary);
-        margin: 5px 0;
+        margin: 3px 0;
         transition: 0.3s;
+        border-radius: 3px;
     }
 }

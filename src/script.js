@@ -209,44 +209,58 @@ function initLazyLoading() {
 // AEO 指南頁面專用功能
 if (window.location.pathname.includes('aeo-guide.html')) {
     document.addEventListener('DOMContentLoaded', function() {
-        // 添加目錄導航
-        generateTableOfContents();
-        
-        // 添加閱讀進度指示器
-        initReadingProgress();
+        // 延遲執行確保樣式載入完成
+        setTimeout(() => {
+            generateTableOfContents();
+            initReadingProgress();
+        }, 100);
     });
 }
 
 // 生成目錄
 function generateTableOfContents() {
-    const headings = document.querySelectorAll('.guide-section h2');
-    if (headings.length === 0) return;
-    
-    const tocContainer = document.createElement('div');
-    tocContainer.className = 'table-of-contents';
-    tocContainer.innerHTML = '<h3>目錄</h3>';
-    
-    const tocList = document.createElement('ul');
-    
-    headings.forEach((heading, index) => {
-        const id = `section-${index + 1}`;
-        heading.id = id;
+    // 等待一下確保頁面完全載入
+    setTimeout(() => {
+        const headings = document.querySelectorAll('.guide-section h2');
+        console.log('找到標題數量:', headings.length); // 調試用
         
-        const tocItem = document.createElement('li');
-        const tocLink = document.createElement('a');
-        tocLink.href = `#${id}`;
-        tocLink.textContent = heading.textContent;
-        tocItem.appendChild(tocLink);
-        tocList.appendChild(tocItem);
-    });
-    
-    tocContainer.appendChild(tocList);
-    
-    // 插入到第一個 section 之前
-    const firstSection = document.querySelector('.guide-section');
-    if (firstSection) {
-        firstSection.parentNode.insertBefore(tocContainer, firstSection);
-    }
+        if (headings.length === 0) return;
+        
+        // 檢查是否已經有目錄存在
+        const existingToc = document.querySelector('.table-of-contents');
+        if (existingToc) {
+            existingToc.remove();
+        }
+        
+        const tocContainer = document.createElement('div');
+        tocContainer.className = 'table-of-contents';
+        tocContainer.innerHTML = '<h3>目錄</h3>';
+        
+        const tocList = document.createElement('ul');
+        
+        headings.forEach((heading, index) => {
+            const id = `section-${index + 1}`;
+            heading.id = id;
+            
+            const tocItem = document.createElement('li');
+            const tocLink = document.createElement('a');
+            tocLink.href = `#${id}`;
+            tocLink.textContent = heading.textContent;
+            tocItem.appendChild(tocLink);
+            tocList.appendChild(tocItem);
+        });
+        
+        tocContainer.appendChild(tocList);
+        
+        // 插入到第一個 section 之前
+        const firstSection = document.querySelector('.guide-section');
+        if (firstSection) {
+            firstSection.parentNode.insertBefore(tocContainer, firstSection);
+            console.log('目錄已插入'); // 調試用
+        } else {
+            console.log('找不到 .guide-section'); // 調試用
+        }
+    }, 200);
 }
 
 // 閱讀進度指示器
