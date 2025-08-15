@@ -1,0 +1,23 @@
+{
+  "name": "taux-official-website",
+  "version": "1.0.0",
+  "description": "TauX 拓思科技官方網站",
+  "scripts": {
+    "build-css": "sass src/styles.scss src/styles.css --style=compressed --source-map",
+    "watch-css": "sass src/styles.scss src/styles.css --watch --style=expanded --source-map",
+    "dev": "concurrently \"npm run watch-css\" \"docker compose up\"",
+    "build": "npm run build-css && docker compose build"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5",
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "website",
+    "sass",
+    "scss",
+    "frontend"
+  ],
+  "author": "TauX 拓思科技",
+  "license": "ISC"
+}

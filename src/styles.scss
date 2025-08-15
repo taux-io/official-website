@@ -1,0 +1,888 @@
+// =============================================================================
+// SASS Variables & Configuration
+// =============================================================================
+
+@use "sass:map";
+
+// 色彩系統變數
+$colors: (
+  // 一般模式顏色
+  light: (
+    bg-primary: #fff,
+    bg-secondary: rgba(255, 255, 255, .98),
+    text-primary: #1a1a1a,
+    text-secondary: #4a4a4a,
+    text-muted: #6b7280,
+    border-color: #e5e7eb,
+    border-light: rgba(229, 231, 235, .5),
+    btn-bg: #fff,
+    btn-hover-bg: #f9fafb,
+    btn-border: #e5e7eb,
+    btn-border-hover: #d1d5db,
+    btn-primary-bg: #1a1a1a,
+    btn-primary-hover: #374151,
+    btn-primary-text: #fff,
+    nav-shadow: rgba(0, 0, 0, .05),
+    quote-border: #1a1a1a,
+    accent-color: #3b82f6
+  ),
+  // 深色模式顏色
+  dark: (
+    bg-primary: #0a0a0a,
+    bg-secondary: rgba(10, 10, 10, .98),
+    text-primary: #fafafa,
+    text-secondary: #d1d5db,
+    text-muted: #9ca3af,
+    border-color: #2d2d2d,
+    border-light: rgba(45, 45, 45, .5),
+    btn-bg: #1a1a1a,
+    btn-hover-bg: #2d2d2d,
+    btn-border: #2d2d2d,
+    btn-border-hover: #404040,
+    btn-primary-bg: #3b82f6,
+    btn-primary-hover: #2563eb,
+    btn-primary-text: #fff,
+    nav-shadow: rgba(0, 0, 0, .2),
+    quote-border: #3b82f6,
+    accent-color: #60a5fa
+  )
+);
+
+// 間距系統
+$spacing: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  md: 0.75rem,
+  lg: 1rem,
+  xl: 1.5rem,
+  2xl: 2rem,
+  3xl: 2.5rem,
+  4xl: 3rem,
+  5xl: 4rem,
+  6xl: 5rem
+);
+
+// 字體系統
+$font-sizes: (
+  xs: 0.75rem,
+  sm: 0.875rem,
+  base: 1rem,
+  lg: 1.125rem,
+  xl: 1.25rem,
+  2xl: 1.5rem,
+  3xl: 1.875rem,
+  4xl: 2.25rem,
+  5xl: 3rem
+);
+
+$font-weights: (
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700
+);
+
+// 邊框圓角
+$border-radius: (
+  none: 0,
+  sm: 0.125rem,
+  md: 0.375rem,
+  lg: 0.5rem,
+  xl: 0.75rem,
+  2xl: 1rem,
+  full: 9999px
+);
+
+// 陰影
+$shadows: (
+  sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05),
+  md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1)
+);
+
+// 斷點
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  2xl: 1536px
+);
+
+// =============================================================================
+// SASS Functions & Mixins
+// =============================================================================
+
+// 獲取顏色函數
+@function color($theme, $color) {
+  @return map.get(map.get($colors, $theme), $color);
+}
+
+// 獲取間距函數
+@function spacing($size) {
+  @return map.get($spacing, $size);
+}
+
+// 獲取字體大小函數
+@function font-size($size) {
+  @return map.get($font-sizes, $size);
+}
+
+// 獲取字體粗細函數
+@function font-weight($weight) {
+  @return map.get($font-weights, $weight);
+}
+
+// 獲取邊框圓角函數
+@function border-radius($size) {
+  @return map.get($border-radius, $size);
+}
+
+// 獲取陰影函數
+@function shadow($size) {
+  @return map.get($shadows, $size);
+}
+
+// 響應式 mixin
+@mixin responsive($breakpoint) {
+  @media (min-width: map.get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+// 深色模式 mixin
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// 按鈕基礎樣式 mixin
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing(md) spacing(xl);
+  font-size: font-size(base);
+  font-weight: font-weight(medium);
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: border-radius(lg);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:focus {
+    outline: 2px solid color(light, accent-color);
+    outline-offset: 2px;
+  }
+}
+
+// Flexbox 中心對齊 mixin
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 文字截斷 mixin
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// =============================================================================
+// CSS Variables for Dynamic Theming
+// =============================================================================
+
+:root {
+  // 設置 CSS 變數以供動態主題使用
+  @each $color-name, $color-value in map.get($colors, light) {
+    --#{$color-name}: #{$color-value};
+  }
+}
+
+@include dark-mode {
+  :root {
+    @each $color-name, $color-value in map.get($colors, dark) {
+      --#{$color-name}: #{$color-value};
+    }
+  }
+}
+
+// =============================================================================
+// Base Styles
+// =============================================================================
+
+// 基礎重置和效能優化
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
+  background: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  font-size: font-size(base);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+// =============================================================================
+// Typography
+// =============================================================================
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: font-weight(bold);
+  line-height: 1.2;
+  margin-bottom: spacing(lg);
+}
+
+h1 {
+  font-size: font-size(5xl);
+  
+  @include responsive(md) {
+    font-size: font-size(4xl);
+  }
+}
+
+h2 {
+  font-size: font-size(4xl);
+  
+  @include responsive(md) {
+    font-size: font-size(3xl);
+  }
+}
+
+h3 {
+  font-size: font-size(2xl);
+}
+
+p {
+  margin-bottom: spacing(lg);
+  color: var(--text-secondary);
+}
+
+// =============================================================================
+// Layout Components
+// =============================================================================
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 spacing(lg);
+  
+  @include responsive(lg) {
+    padding: 0 spacing(2xl);
+  }
+}
+
+// =============================================================================
+// Navigation
+// =============================================================================
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-light);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  
+  .nav-container {
+    @extend .container;
+    @include flex-center;
+    justify-content: space-between;
+    padding-top: spacing(lg);
+    padding-bottom: spacing(lg);
+  }
+  
+  .nav-logo {
+    a {
+      font-size: font-size(xl);
+      font-weight: font-weight(bold);
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+  }
+  
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: spacing(2xl);
+    
+    @include responsive(md) {
+      display: none;
+      
+      &.active {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--bg-secondary);
+        padding: spacing(lg);
+        border-bottom: 1px solid var(--border-light);
+      }
+    }
+  }
+  
+  .nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: font-weight(medium);
+    transition: color 0.2s ease;
+    
+    &:hover,
+    &.active {
+      color: var(--text-primary);
+    }
+  }
+  
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    
+    @include responsive(md) {
+      display: flex;
+    }
+    
+    .bar {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--text-primary);
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: border-radius(sm);
+    }
+    
+    &.active {
+      .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      
+      .bar:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Buttons
+// =============================================================================
+
+.btn {
+  @include button-base;
+  
+  &--primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-bg);
+    
+    &:hover {
+      background: var(--btn-primary-hover);
+      border-color: var(--btn-primary-hover);
+    }
+  }
+  
+  &--secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    
+    &:hover {
+      background: var(--btn-hover-bg);
+      border-color: var(--btn-border-hover);
+    }
+  }
+  
+  &--outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-light);
+    
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+  }
+}
+
+// 為了向後兼容，保留舊的按鈕類名
+.btn-primary { @extend .btn--primary; }
+.btn-secondary { @extend .btn--secondary; }
+.btn-outline { @extend .btn--outline; }
+
+// =============================================================================
+// 圖片優化
+// =============================================================================
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.company-logo {
+  width: 180px;
+  margin-bottom: spacing(2xl);
+  
+  @include dark-mode {
+    content: url('taux-logo-dark.png');
+  }
+}
+
+// =============================================================================
+// AEO Guide Specific Styles
+// =============================================================================
+
+.aeo-guide-content {
+  margin-top: 80px;
+  padding: spacing(5xl) 0;
+}
+
+.aeo-hero {
+  text-align: center;
+  padding: spacing(6xl) 0;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  
+  .hero-content {
+    @extend .container;
+  }
+  
+  .quote-section {
+    margin-bottom: spacing(4xl);
+    
+    .hero-quote {
+      font-size: font-size(xl);
+      font-weight: font-weight(semibold);
+      color: var(--accent-color);
+      font-style: italic;
+      border-left: 4px solid var(--accent-color);
+      padding-left: spacing(lg);
+      margin: 0;
+    }
+  }
+  
+  .hero-title {
+    font-size: font-size(5xl);
+    font-weight: font-weight(bold);
+    color: var(--text-primary);
+    margin-bottom: spacing(lg);
+    
+    @include responsive(md) {
+      font-size: font-size(4xl);
+    }
+  }
+  
+  .hero-subtitle {
+    font-size: font-size(xl);
+    color: var(--text-secondary);
+    margin-bottom: spacing(4xl);
+  }
+}
+
+.guide-section {
+  margin-bottom: spacing(3xl);
+  padding: spacing(xl) 0;
+  border-bottom: 1px solid var(--border-light);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  h2 {
+    font-size: font-size(4xl);
+    font-weight: font-weight(bold);
+    color: var(--text-primary);
+    margin-bottom: spacing(2xl);
+    padding-bottom: spacing(md);
+    position: relative;
+  }
+  
+  h3 {
+    font-size: font-size(xl);
+    font-weight: font-weight(semibold);
+    color: var(--text-primary);
+    margin: spacing(3xl) 0 spacing(xl);
+    padding-left: spacing(lg);
+    border-left: 4px solid var(--accent-color);
+    border-bottom: none;
+  }
+  
+  p {
+    font-size: font-size(base);
+    line-height: 1.7;
+    margin-bottom: spacing(lg);
+    color: var(--text-secondary);
+  }
+  
+  ul, ol {
+    margin-bottom: spacing(lg);
+    padding-left: spacing(xl);
+    color: var(--text-secondary);
+  }
+  
+  li {
+    margin-bottom: spacing(sm);
+  }
+  
+  strong {
+    color: var(--text-primary);
+    font-weight: font-weight(semibold);
+  }
+}
+
+// =============================================================================
+// Table of Contents
+// =============================================================================
+
+.table-of-contents {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: border-radius(2xl) !important;
+  padding: spacing(3xl) !important;
+  margin: spacing(4xl) 0 !important;
+  box-shadow: shadow(lg) !important;
+  border-left: 4px solid var(--accent-color) !important;
+  
+  h3 {
+    color: var(--text-primary) !important;
+    margin: 0 0 spacing(2xl) 0 !important;
+    font-size: font-size(xl) !important;
+    font-weight: font-weight(bold) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding-bottom: spacing(md) !important;
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  
+  li {
+    margin: 0 0 spacing(lg) 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    background: var(--bg-primary) !important;
+    border-radius: border-radius(lg) !important;
+    border: 1px solid var(--border-light) !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+    
+    &:hover {
+      transform: none !important;
+      box-shadow: shadow(sm) !important;
+      border-color: var(--border-color) !important;
+    }
+    
+    &::before {
+      content: "📋" !important;
+      position: absolute !important;
+      left: spacing(lg) !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      font-size: font-size(lg) !important;
+    }
+  }
+  
+  a {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    font-weight: font-weight(medium) !important;
+    font-size: font-size(base) !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    padding: spacing(lg) spacing(lg) spacing(lg) spacing(4xl) !important;
+    border-radius: border-radius(lg) !important;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-secondary) !important;
+      transform: none !important;
+    }
+  }
+}
+
+// 深色模式特定樣式
+@include dark-mode {
+  .table-of-contents {
+    h3 {
+      color: #ffffff !important;
+      border-bottom: 2px solid #4a5568 !important;
+    }
+  }
+}
+
+// =============================================================================
+// AEO Guide Content Blocks
+// =============================================================================
+
+.content-block {
+  margin-bottom: spacing(3xl);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: spacing(2xl);
+  margin-bottom: spacing(3xl);
+}
+
+.benefit-item {
+  padding: spacing(2xl);
+  background: var(--bg-secondary);
+  border-radius: border-radius(lg);
+  border: 1px solid var(--border-light);
+  
+  h3 {
+    font-size: font-size(lg);
+    margin-bottom: spacing(lg);
+    color: var(--text-primary);
+  }
+}
+
+.core-component {
+  margin-bottom: spacing(3xl);
+  padding: spacing(2xl);
+  background: var(--bg-secondary);
+  border-radius: border-radius(lg);
+  border-left: 4px solid var(--accent-color);
+}
+
+.value-grid {
+  @extend .benefits-grid;
+}
+
+.value-item {
+  @extend .benefit-item;
+}
+
+.service-package {
+  background: var(--bg-secondary);
+  padding: spacing(3xl);
+  border-radius: border-radius(lg);
+  border: 1px solid var(--border-light);
+  
+  .service-list {
+    margin-top: spacing(lg);
+    
+    li {
+      padding: spacing(sm) 0;
+      border-bottom: 1px solid var(--border-light);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Final CTA Section
+// =============================================================================
+
+.final-cta {
+  text-align: center;
+  padding: spacing(5xl) 0;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  
+  .cta-content {
+    @extend .container;
+    
+    h2 {
+      margin-bottom: spacing(lg);
+    }
+    
+    p {
+      font-size: font-size(lg);
+      margin-bottom: spacing(3xl);
+    }
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: spacing(lg);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+// =============================================================================
+// Reading Progress Bar
+// =============================================================================
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color) 0%, #2563eb 100%);
+  z-index: 10001;
+  transition: width 0.1s ease;
+}
+
+// =============================================================================
+// Section-specific styles (from original CSS)
+// =============================================================================
+
+// 首頁特定樣式
+.section-title {
+  font-size: font-size(4xl);
+  font-weight: font-weight(bold);
+  color: var(--text-primary);
+  margin: 0 0 spacing(xl) 0;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  
+  @include responsive(md) {
+    font-size: font-size(3xl);
+  }
+}
+
+.hero-quote,
+.service-quote {
+  p {
+    font-size: font-size(lg);
+    font-weight: font-weight(semibold);
+    color: var(--text-primary);
+    margin: 0 0 spacing(lg) 0;
+    line-height: 1.4;
+    font-style: italic;
+  }
+}
+
+.philosophy-text {
+  font-size: font-size(lg);
+  font-weight: font-weight(semibold);
+  color: var(--text-primary);
+  margin-bottom: spacing(xl);
+}
+
+.service-title,
+.faq-question {
+  color: var(--text-primary);
+  font-size: font-size(xl);
+  font-weight: font-weight(semibold);
+  margin: spacing(4xl) 0 spacing(lg) 0;
+}
+
+.faq-answer {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: spacing(lg);
+}
+
+.contact-email,
+.contact-phone {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--border-color);
+  text-underline-offset: 2px;
+  
+  &:hover {
+    text-decoration-color: var(--accent-color);
+  }
+}
+
+// Footer 樣式
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  padding: spacing(5xl) 0 spacing(2xl);
+  
+  .footer-content {
+    @extend .container;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: spacing(3xl);
+  }
+  
+  .footer-section {
+    h4 {
+      color: var(--text-primary);
+      font-weight: font-weight(semibold);
+      margin-bottom: spacing(lg);
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        margin-bottom: spacing(sm);
+        
+        a {
+          color: var(--text-secondary);
+          text-decoration: none;
+          
+          &:hover {
+            color: var(--accent-color);
+          }
+        }
+      }
+    }
+    
+    p {
+      color: var(--text-secondary);
+      margin-bottom: spacing(sm);
+    }
+  }
+  
+  .social-links {
+    display: flex;
+    gap: spacing(lg);
+    margin-top: spacing(lg);
+    
+    a {
+      color: var(--text-secondary);
+      font-size: font-size(lg);
+      
+      &:hover {
+        color: var(--accent-color);
+      }
+    }
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: spacing(3xl);
+    padding-top: spacing(2xl);
+    border-top: 1px solid var(--border-light);
+    
+    p {
+      color: var(--text-muted);
+      font-size: font-size(sm);
+    }
+  }
+}
