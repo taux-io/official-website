@@ -199,6 +199,18 @@ section[id] {
     border-color: var(--btn-border-hover);
 }
 
+.btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-light);
+}
+
+.btn-outline:hover {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
 /* 圖片優化 */
 img {
     max-width: 100%;
@@ -571,12 +583,7 @@ img {
     color: var(--text-primary);
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
-    border-bottom: 3px solid var(--accent-color);
-    display: inline-block;
-    background: linear-gradient(135deg, var(--accent-color) 0%, #2563eb 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    position: relative;
 }
 
 .guide-section h3 {
