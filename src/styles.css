@@ -175,15 +175,28 @@ section[id] {
     transform: translateY(-1px);
 }
 
-.btn--primary {
+.btn--primary,
+.btn-primary {
     background: var(--btn-primary-bg);
     color: var(--btn-primary-text);
     border-color: var(--btn-primary-bg);
 }
 
-.btn--primary:hover {
+.btn--primary:hover,
+.btn-primary:hover {
     background: var(--btn-primary-hover);
     border-color: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-hover-bg);
+    border-color: var(--btn-border-hover);
 }
 
 /* 圖片優化 */
@@ -488,6 +501,12 @@ img {
 }
 
 /* AEO 指南頁面專用樣式 */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
 .aeo-hero {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     padding: 6rem 0 4rem;
@@ -533,6 +552,7 @@ img {
 
 .aeo-guide-content {
     padding: 4rem 0;
+    background: var(--bg-primary);
 }
 
 .guide-section {
@@ -552,6 +572,7 @@ img {
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--accent-color);
+    display: inline-block;
 }
 
 .guide-section h3 {
@@ -559,6 +580,24 @@ img {
     font-weight: 600;
     color: var(--text-primary);
     margin: 2rem 0 1rem;
+}
+
+.guide-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.guide-section ul,
+.guide-section ol {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.guide-section li {
+    margin-bottom: 0.5rem;
 }
 
 .content-block {
@@ -699,24 +738,117 @@ img {
     font-weight: 500;
 }
 
+/* 目錄樣式 */
+.table-of-contents {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0 4rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.table-of-contents h3 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.table-of-contents ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.table-of-contents li {
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.table-of-contents li::before {
+    content: "📋";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.table-of-contents a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.table-of-contents a:hover {
+    color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+/* 閱讀進度條樣式 */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color) 0%, #2563eb 100%);
+    z-index: 10001;
+    transition: width 0.1s ease;
+}
+
 .final-cta {
     background: linear-gradient(135deg, var(--accent-color) 0%, #2563eb 100%);
     color: white;
     padding: 4rem 0;
     text-align: center;
     margin-top: 4rem;
+    border-radius: 16px;
 }
 
 .final-cta h2 {
-    color: white;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important;
     margin-bottom: 1.5rem;
+    display: inline-block;
 }
 
 .cta-content p {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     opacity: 0.9;
+    color: white;
+}
+
+.final-cta .btn {
+    margin: 0.5rem;
+}
+
+.final-cta .btn-primary {
+    background: white;
+    color: var(--accent-color);
+    border-color: white;
+}
+
+.final-cta .btn-primary:hover {
+    background: #f8fafc;
+    border-color: #f8fafc;
+}
+
+.final-cta .btn-secondary {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.final-cta .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
 }
 
 .cta-buttons {
