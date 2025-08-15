@@ -568,8 +568,8 @@ img {
 }
 
 .guide-section {
-    margin-bottom: 4rem;
-    padding: 2.5rem 0;
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 0;
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -797,15 +797,44 @@ img {
     border-left: 4px solid var(--accent-color) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+    .aeo-guide-content .table-of-contents h3 {
+        color: #ffffff !important;
+        border-bottom: 2px solid #4a5568 !important;
+    }
+}
+
+/* 確保在所有深色主題下都生效 */
+@media (prefers-color-scheme: dark) {
+    .table-of-contents h3 {
+        color: #ffffff !important;
+        border-bottom: 2px solid #4a5568 !important;
+    }
+}
+
+/* 針對手動切換到深色模式的情況 */
+[data-theme="dark"] .table-of-contents h3 {
+    color: #ffffff !important;
+    border-bottom: 2px solid #4a5568 !important;
+}
+
 .table-of-contents h3 {
-    color: var(--accent-color) !important;
+    color: #1a1a1a !important;
     margin: 0 0 2rem 0 !important;
     font-size: 1.5rem !important;
     font-weight: 700 !important;
-    border-bottom: 2px solid var(--accent-color) !important;
+    border-bottom: 2px solid #e5e7eb !important;
     padding-bottom: 0.75rem !important;
     display: block !important;
     width: 100% !important;
+}
+
+/* 深色模式下的目錄標題 */
+@media (prefers-color-scheme: dark) {
+    .table-of-contents h3 {
+        color: #ffffff !important;
+        border-bottom: 2px solid #4a5568 !important;
+    }
 }
 
 .table-of-contents ul {
@@ -827,9 +856,9 @@ img {
 }
 
 .table-of-contents li:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
-    border-color: var(--accent-color) !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    border-color: var(--border-color) !important;
 }
 
 .table-of-contents li::before {
@@ -853,8 +882,9 @@ img {
 }
 
 .table-of-contents a:hover {
-    color: var(--accent-color) !important;
-    background: rgba(59, 130, 246, 0.05) !important;
+    color: var(--text-primary) !important;
+    background: var(--background-secondary) !important;
+    transform: none !important;
 }
 
 /* 閱讀進度條樣式 */

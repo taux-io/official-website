@@ -234,7 +234,30 @@ function generateTableOfContents() {
         
         const tocContainer = document.createElement('div');
         tocContainer.className = 'table-of-contents';
-        tocContainer.innerHTML = '<h3>目錄</h3>';
+        
+        const tocTitle = document.createElement('h3');
+        tocTitle.textContent = '目錄';
+        
+        // 設定目錄標題顏色的函數
+        function setTocTitleColor() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                tocTitle.style.color = '#ffffff';
+                tocTitle.style.borderBottom = '2px solid #4a5568';
+            } else {
+                tocTitle.style.color = '#1a1a1a';
+                tocTitle.style.borderBottom = '2px solid #e5e7eb';
+            }
+        }
+        
+        // 初始設定
+        setTocTitleColor();
+        
+        // 監聽深色模式切換
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(setTocTitleColor);
+        }
+        
+        tocContainer.appendChild(tocTitle);
         
         const tocList = document.createElement('ul');
         
