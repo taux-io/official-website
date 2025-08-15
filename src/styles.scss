@@ -392,6 +392,155 @@ p {
   }
 }
 
+// 主要內容區域 - 確保不被導航覆蓋
+.main-content {
+  margin-top: 80px; // 導航高度的間距
+}
+
+// 修正 hero-section 樣式
+.hero-section {
+  padding: spacing(6xl) 0;
+  text-align: center;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  
+  .company-logo {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: spacing(3xl);
+  }
+  
+  .hero-title {
+    font-size: font-size(5xl);
+    font-weight: font-weight(bold);
+    color: var(--text-primary);
+    margin-bottom: spacing(lg);
+    line-height: 1.2;
+    
+    @include responsive(md) {
+      font-size: font-size(4xl);
+    }
+  }
+  
+  .hero-description {
+    max-width: 800px;
+    margin: 0 auto;
+    
+    .hero-quote {
+      font-size: font-size(xl);
+      font-weight: font-weight(semibold);
+      color: var(--accent-color);
+      font-style: italic;
+      border-left: 4px solid var(--accent-color);
+      padding-left: spacing(lg);
+      margin: 0 0 spacing(2xl) 0;
+      text-align: left;
+      
+      p {
+        margin: 0;
+      }
+      
+      cite {
+        display: block;
+        margin-top: spacing(sm);
+        font-size: font-size(md);
+        color: var(--text-secondary);
+      }
+    }
+    
+    span {
+      font-size: font-size(lg);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+  }
+}
+
+// 服務區域樣式
+.services-section {
+  padding: spacing(6xl) 0;
+  
+  .section-title {
+    font-size: font-size(4xl);
+    font-weight: font-weight(bold);
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: spacing(lg);
+  }
+  
+  .section-subtitle {
+    font-size: font-size(xl);
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: spacing(4xl);
+  }
+  
+  .services-content {
+    @extend .container;
+    max-width: 800px;
+    
+    .philosophy-intro {
+      margin-bottom: spacing(4xl);
+      
+      .philosophy-text {
+        font-size: font-size(xl);
+        font-weight: font-weight(semibold);
+        color: var(--text-primary);
+        margin-bottom: spacing(lg);
+      }
+      
+      .philosophy-list {
+        list-style: none;
+        padding: 0;
+        
+        li {
+          font-size: font-size(lg);
+          color: var(--text-secondary);
+          margin-bottom: spacing(sm);
+          padding-left: spacing(lg);
+          position: relative;
+          
+          &:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    
+    .service-quote {
+      background: var(--bg-secondary);
+      border-left: 4px solid var(--accent-color);
+      padding: spacing(xl);
+      margin: spacing(3xl) 0;
+      font-size: font-size(xl);
+      font-style: italic;
+      color: var(--text-primary);
+      text-align: center;
+      
+      p {
+        margin: 0;
+      }
+    }
+    
+    .service-title {
+      font-size: font-size(2xl);
+      font-weight: font-weight(bold);
+      color: var(--text-primary);
+      margin: spacing(3xl) 0 spacing(lg) 0;
+    }
+    
+    .service-description {
+      font-size: font-size(lg);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: spacing(2xl);
+    }
+  }
+}
+
 // =============================================================================
 // Buttons
 // =============================================================================

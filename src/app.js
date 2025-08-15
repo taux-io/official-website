@@ -76,40 +76,6 @@ tauxApp.controller('MainController', ['$scope', '$location', function($scope, $l
 
 // 首頁控制器
 tauxApp.controller('HomeController', ['$scope', function($scope) {
-    // 服務項目資料
-    $scope.services = {
-        list: [
-            {
-                icon: 'fas fa-code',
-                title: '軟體開發',
-                description: '專業的網站與手機應用程式開發服務',
-                features: ['網站建置', '手機 App', '系統整合', '資料庫設計'],
-                price: '客製報價'
-            },
-            {
-                icon: 'fas fa-video',
-                title: '短影片製作',
-                description: '創意短影片內容製作與後製服務',
-                features: ['腳本撰寫', '拍攝製作', '後製剪輯', '平台優化'],
-                price: '專案報價'
-            },
-            {
-                icon: 'fas fa-chart-line',
-                title: '數位行銷',
-                description: '全方位數位行銷策略規劃與執行',
-                features: ['社群媒體', 'SEO 優化', '廣告投放', '數據分析'],
-                price: '月費制'
-            },
-            {
-                icon: 'fas fa-search',
-                title: 'AEO 優化',
-                description: '答案引擎優化，讓 AI 主動推薦您的內容',
-                features: ['內容結構化', 'Schema 標記', 'AI 優化', '效果追蹤'],
-                price: '專業諮詢'
-            }
-        ]
-    };
-    
     // FAQ 資料
     $scope.faqs = {
         list: [
@@ -119,18 +85,18 @@ tauxApp.controller('HomeController', ['$scope', function($scope) {
                 isOpen: false
             },
             {
-                question: '軟體開發需要多長時間？',
-                answer: '開發時間依專案複雜度而定，一般網站需要 2-8 週，手機 App 需要 3-12 週。我們會在需求確認後提供詳細的時程規劃。',
+                question: '軟體開發專案需要多長時間？',
+                answer: '開發時間依專案複雜度而定：簡單官網 2-4 週、功能性網站 4-8 週、手機 App 6-12 週、複雜系統 3-6 個月。我們會在需求確認後提供詳細的時程規劃。',
                 isOpen: false
             },
             {
                 question: '你們提供哪些數位行銷服務？',
-                answer: '我們提供完整的數位行銷服務，包括社群媒體經營、SEO 優化、Google 廣告投放、內容行銷、數據分析等。',
+                answer: '我們提供完整的數位行銷解決方案：社群媒體經營、SEO 優化、廣告投放、內容行銷、數據分析與品牌形象設計。',
                 isOpen: false
             },
             {
-                question: '短影片製作的流程是什麼？',
-                answer: '流程包括：需求討論 → 腳本撰寫 → 拍攝規劃 → 實際拍攝 → 後製剪輯 → 成品交付。整個過程約需 1-3 週時間。',
+                question: '短影片製作的完整流程是什麼？',
+                answer: '流程包括：需求討論 → 創意發想與腳本撰寫 → 拍攝計畫安排 → 專業拍攝執行 → 後製剪輯特效 → 多平台格式輸出 → 成品交付與修改。整個過程通常需要 1-3 週。',
                 isOpen: false
             }
         ]

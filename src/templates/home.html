@@ -1,181 +1,47 @@
 <!-- 主視覺區域 -->
-<section class="hero" id="home">
-    <div class="hero-content">
-        <h1 class="hero-title">
-            <span class="accent">TauX</span> 拓思科技
-            <br>用科技創造未來
-        </h1>
-        <p class="hero-subtitle">
-            專業軟體開發 × 短影片製作 × 數位行銷整合 × AEO 優化
-            <br>為企業提供全方位數位轉型解決方案
-        </p>
-        <div class="hero-cta">
-            <a href="#contact" class="btn btn-primary" ng-click="scrollToSection('contact')">
-                立即諮詢
-            </a>
-            <a href="#!/aeo-guide" class="btn btn-secondary">
-                了解 AEO
-            </a>
-        </div>
-    </div>
-    <div class="hero-visual">
-        <div class="floating-cards">
-            <div class="card">💻 軟體開發</div>
-            <div class="card">🎬 短影片製作</div>
-            <div class="card">📈 數位行銷</div>
-            <div class="card">🔍 AEO 優化</div>
-        </div>
+<section class="hero-section" id="about">
+    <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo" class="company-logo" loading="lazy" />
+    <h1 class="hero-title">不是在寫軟體，我們在重構「解決問題」的方式</h1>
+    <div class="hero-description" itemscope itemtype="https://schema.org/Organization">
+        <blockquote class="hero-quote">
+            <p>"程式碼從來不是目的，它只是達成目的的工具。"</p>
+            <cite>— DHH（David Heinemeier Hansson）</cite>
+        </blockquote>
+        <span itemprop="description">這句話點醒了我們——開發軟體，不該只是寫程式、堆功能、追技術潮流。真正重要的是：我們怎麼理解問題，怎麼決定該解什麼問題，以及怎麼用最有意識的方式去解它。</span>
     </div>
 </section>
 
 <!-- 服務項目 -->
-<section class="services" id="services">
-    <div class="container">
-        <div class="section-header">
-            <h2>我們的服務</h2>
-            <p>從概念到執行，提供完整的數位解決方案</p>
+<section class="services-section" id="services" itemscope itemtype="https://schema.org/Service">
+    <h1 class="section-title">這正是 TauX 正在做的事</h1>
+    <div class="section-subtitle">我們不是一家「只是幫你寫程式」的團隊。我們關心的是思維的轉變</div>
+    
+    <div class="services-content">
+        <div class="philosophy-intro">
+            <p class="philosophy-text">我們關心的是——</p>
+            <ul class="philosophy-list">
+                <li>你真正要解決的，是什麼痛點？</li>
+                <li>現在這個痛點，是技術問題，還是決策問題？</li>
+                <li>在這個時間點，解這個問題，是最佳選擇嗎？</li>
+                <li>有沒有一種更輕盈、靈活、更貼近人性的方式，去解它？</li>
+            </ul>
         </div>
-        
-        <div class="services-grid">
-            <div class="service-card" 
-                 ng-repeat="service in services.list">
-                <div class="service-icon">
-                    <i class="{{service.icon}}"></i>
-                </div>
-                <h3>{{service.title}}</h3>
-                <p>{{service.description}}</p>
-                <ul class="service-features">
-                    <li ng-repeat="feature in service.features">{{feature}}</li>
-                </ul>
-                <div class="service-price">{{service.price}}</div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- AEO 答案引擎優化容器服務 -->
-<section class="aeo-service" id="aeo-service">
-    <div class="container">
-        <div class="section-header">
-            <h2>AEO 答案引擎優化容器服務</h2>
-            <p>運用先進的答案引擎優化技術，讓您的內容在 AI 搜尋時代脫穎而出</p>
-        </div>
-        
-        <div class="aeo-content">
-            <div class="aeo-intro">
-                <h3>什麼是 AEO？</h3>
-                <p>Answer Engine Optimization (AEO) 答案引擎優化是針對 AI 搜尋引擎和語音助手優化內容的策略，讓您的網站能夠被 ChatGPT、Claude、Gemini 等 AI 工具直接引用並推薦。</p>
-            </div>
-            
-            <div class="aeo-benefits">
-                <h3>AEO 容器服務優勢</h3>
-                <div class="benefits-grid">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">🎯</div>
-                        <h4>精準答案定位</h4>
-                        <p>將內容結構化為 AI 容易理解的格式，提高被引用機率</p>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">🚀</div>
-                        <h4>提升品牌曝光</h4>
-                        <p>在 AI 對話中直接展示您的專業知識和服務</p>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">💡</div>
-                        <h4>智能內容優化</h4>
-                        <p>運用自然語言處理技術優化問答結構</p>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">📊</div>
-                        <h4>數據驅動改進</h4>
-                        <p>持續監測 AEO 效果並優化內容策略</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="aeo-process">
-                <h3>AEO 容器實施流程</h3>
-                <div class="process-steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>內容分析與架構設計</h4>
-                            <p>深度分析您的業務內容，設計最適合的 AEO 容器結構</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>問答對優化</h4>
-                            <p>將關鍵資訊轉換為自然的問答格式，符合 AI 理解邏輯</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>結構化資料建置</h4>
-                            <p>實作 Schema.org 標記和 JSON-LD 結構化資料</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>效果監測與優化</h4>
-                            <p>持續追蹤 AEO 表現並進行內容調整</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="aeo-cta">
-                <div class="cta-content">
-                    <h3>準備讓您的內容在 AI 時代脫穎而出？</h3>
-                    <p>立即聯繫我們，了解如何透過 AEO 容器服務提升您的數位影響力</p>
-                    <a href="#!/aeo-guide" class="btn btn-primary">深入了解 AEO</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        <blockquote class="service-quote">
+            <p>"軟體只是載體。思維，才是改變的核心。"</p>
+        </blockquote>
 
-<!-- 關於我們 -->
-<section class="about" id="about">
-    <div class="container">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>關於 TauX</h2>
-                <p>
-                    TauX 拓思科技成立於 2024 年，我們是一支專精於軟體開發、短影片製作與數位行銷的專業團隊。
-                    我們相信科技的力量能夠為企業帶來革命性的改變，因此致力於為客戶提供最具創新性的數位解決方案。
-                </p>
-                <p>
-                    在 AI 技術快速發展的時代，我們特別關注 Answer Engine Optimization (AEO) 答案引擎優化，
-                    幫助企業的內容能夠被新一代的 AI 搜尋工具有效識別和推薦。
-                </p>
-                <div class="about-stats">
-                    <div class="stat">
-                        <h3>50+</h3>
-                        <p>成功專案</p>
-                    </div>
-                    <div class="stat">
-                        <h3>98%</h3>
-                        <p>客戶滿意度</p>
-                    </div>
-                    <div class="stat">
-                        <h3>24/7</h3>
-                        <p>技術支援</p>
-                    </div>
-                </div>
-            </div>
-            <div class="about-visual">
-                <div class="team-image">
-                    <div class="placeholder-image">
-                        <i class="fas fa-users"></i>
-                        <p>專業團隊</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h3 itemprop="name" class="service-title">💻 軟體平台開發</h3>
+        <p itemprop="description" class="service-description">我們相信，好的技術不是讓人更依賴技術，而是讓人回到初心，用更簡單的方式創造價值。專業開發企業級軟體平台，從需求分析到系統部署一站式服務。包含 Web 應用程式、移動端 APP、雲端 SaaS 平台，以及客製化管理系統。</p>
+        
+        <h3 class="service-title">🎬 短影片製作與策略</h3>
+        <p class="service-description">專業短影片內容製作團隊，從腳本企劃、拍攝製作到後期剪輯一條龍服務。針對 TikTok、Instagram Reels、YouTube Shorts 等平台特性，量身打造吸睛內容，提升品牌曝光度與用戶互動率。</p>
+        
+        <h3 class="service-title">📈 數位行銷整合</h3>
+        <p class="service-description">整合多元數位行銷管道，包含社群媒體經營、搜尋引擎優化（SEO）、廣告投放策略與數據分析。結合短影片內容行銷，打造品牌一致性體驗，有效提升轉換率與客戶忠誠度。</p>
+        
+        <h3 class="service-title">🤖 AI 智能解決方案</h3>
+        <p class="service-description">運用人工智慧技術優化業務流程，包含智能客服系統、數據分析預測、內容推薦引擎與自動化行銷工具。讓 AI 成為您的數位助手，提升營運效率並創造更大商業價值。</p>
     </div>
 </section>
 
@@ -204,120 +70,25 @@
 </section>
 
 <!-- 聯絡我們 -->
-<section class="contact" id="contact">
-    <div class="container">
-        <div class="section-header">
-            <h2>聯絡我們</h2>
-            <p>準備開始您的數位轉型之旅？</p>
-        </div>
+<section class="contact-section" id="contact" itemscope itemtype="https://schema.org/ContactPage">
+    <img src="rocket.png" alt="火箭圖示" class="contact-icon" loading="lazy" />
+    <h1 class="section-title">Contact US - 聯絡我們</h1>
+    <div class="section-subtitle">讓我們一起啟動您的數位轉型之旅</div>
+    
+    <div class="contact-content">
+        <p><strong>準備好提升您的數位競爭力了嗎？</strong></p>
+        <p>無論您需要開發軟體平台、製作吸睛短影片，還是建立完整的數位行銷策略，我們都能為您提供專業的解決方案。立即聯絡我們，開始您的數位轉型之旅。</p>
         
-        <div class="contact-content">
-            <div class="contact-info">
-                <h3>取得聯繫</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h4>Email</h4>
-                        <p>hello@taux.io</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h4>電話</h4>
-                        <p>+886-7-1234-5678</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h4>地址</h4>
-                        <p>高雄市前鎮區</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <h4>服務時間</h4>
-                        <p>週一至週五 9:00-18:00</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contact-form">
-                <h3>發送訊息</h3>
-                <form ng-submit="submitContactForm()" name="contactForm">
-                    <div class="form-group">
-                        <label for="name">姓名 *</label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            name="name"
-                            ng-model="contact.form.name" 
-                            required
-                            ng-class="{'error': contactForm.name.$invalid && contactForm.name.$touched}">
-                        <div class="error-message" ng-show="contactForm.name.$invalid && contactForm.name.$touched">
-                            請輸入您的姓名
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email"
-                            ng-model="contact.form.email" 
-                            required
-                            ng-class="{'error': contactForm.email.$invalid && contactForm.email.$touched}">
-                        <div class="error-message" ng-show="contactForm.email.$invalid && contactForm.email.$touched">
-                            請輸入有效的 Email 地址
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">電話</label>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            name="phone"
-                            ng-model="contact.form.phone">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="service">感興趣的服務</label>
-                        <select id="service" name="service" ng-model="contact.form.service">
-                            <option value="">請選擇服務項目</option>
-                            <option value="software">軟體開發</option>
-                            <option value="video">短影片製作</option>
-                            <option value="marketing">數位行銷</option>
-                            <option value="aeo">AEO 優化</option>
-                            <option value="integration">整合服務</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">訊息 *</label>
-                        <textarea 
-                            id="message" 
-                            name="message"
-                            ng-model="contact.form.message" 
-                            rows="5" 
-                            required
-                            ng-class="{'error': contactForm.message.$invalid && contactForm.message.$touched}"></textarea>
-                        <div class="error-message" ng-show="contactForm.message.$invalid && contactForm.message.$touched">
-                            請輸入您的訊息
-                        </div>
-                    </div>
-                    
-                    <button type="submit" 
-                            class="btn btn-primary" 
-                            ng-disabled="contactForm.$invalid || contact.isSubmitting">
-                        <span ng-show="!contact.isSubmitting">發送訊息</span>
-                        <span ng-show="contact.isSubmitting">發送中...</span>
-                    </button>
-                </form>
-            </div>
-        </div>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" class="contact-info">
+            📧 聯絡信箱：<a href="mailto:hello@taux.io" itemprop="email" class="contact-email">hello@taux.io</a><br>
+            📞 聯絡電話：<a href="tel:+886-7-6211033" class="contact-phone">07-6211033</a><br>
+            📍 營運據點：<span itemprop="addressRegion">高雄市</span><span itemprop="addressLocality">岡山區</span><span itemprop="streetAddress">文賢路 57 號 2 樓</span><br>
+            🤝 歡迎預約免費諮詢，討論您的專案需求<br>
+            💬 提供線上諮詢服務，快速回應您的需求
+        </address>
+    </div>
+    
+    <div class="contact-actions">
+        <a href="mailto:hello@taux.io" class="btn btn--primary">開始合作</a>
     </div>
 </section>
