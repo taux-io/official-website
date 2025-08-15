@@ -6,16 +6,20 @@
     "build-css": "sass src/styles.scss src/styles.css --style=compressed --source-map",
     "watch-css": "sass src/styles.scss src/styles.css --watch --style=expanded --source-map",
     "dev": "concurrently \"npm run watch-css\" \"docker compose up\"",
-    "build": "npm run build-css && docker compose build"
+    "build": "npm run build-css && docker compose build",
+    "serve": "http-server src -p 3001 -c-1"
   },
+  "dependencies": {},
   "devDependencies": {
     "sass": "^1.69.5",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1"
   },
   "keywords": [
     "website",
     "sass",
     "scss",
+    "angularjs",
     "frontend"
   ],
   "author": "TauX 拓思科技",

@@ -1,0 +1,323 @@
+<!-- 主視覺區域 -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="accent">TauX</span> 拓思科技
+            <br>用科技創造未來
+        </h1>
+        <p class="hero-subtitle">
+            專業軟體開發 × 短影片製作 × 數位行銷整合 × AEO 優化
+            <br>為企業提供全方位數位轉型解決方案
+        </p>
+        <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary" ng-click="scrollToSection('contact')">
+                立即諮詢
+            </a>
+            <a href="#!/aeo-guide" class="btn btn-secondary">
+                了解 AEO
+            </a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="floating-cards">
+            <div class="card">💻 軟體開發</div>
+            <div class="card">🎬 短影片製作</div>
+            <div class="card">📈 數位行銷</div>
+            <div class="card">🔍 AEO 優化</div>
+        </div>
+    </div>
+</section>
+
+<!-- 服務項目 -->
+<section class="services" id="services">
+    <div class="container">
+        <div class="section-header">
+            <h2>我們的服務</h2>
+            <p>從概念到執行，提供完整的數位解決方案</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card" 
+                 ng-repeat="service in services.list">
+                <div class="service-icon">
+                    <i class="{{service.icon}}"></i>
+                </div>
+                <h3>{{service.title}}</h3>
+                <p>{{service.description}}</p>
+                <ul class="service-features">
+                    <li ng-repeat="feature in service.features">{{feature}}</li>
+                </ul>
+                <div class="service-price">{{service.price}}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AEO 答案引擎優化容器服務 -->
+<section class="aeo-service" id="aeo-service">
+    <div class="container">
+        <div class="section-header">
+            <h2>AEO 答案引擎優化容器服務</h2>
+            <p>運用先進的答案引擎優化技術，讓您的內容在 AI 搜尋時代脫穎而出</p>
+        </div>
+        
+        <div class="aeo-content">
+            <div class="aeo-intro">
+                <h3>什麼是 AEO？</h3>
+                <p>Answer Engine Optimization (AEO) 答案引擎優化是針對 AI 搜尋引擎和語音助手優化內容的策略，讓您的網站能夠被 ChatGPT、Claude、Gemini 等 AI 工具直接引用並推薦。</p>
+            </div>
+            
+            <div class="aeo-benefits">
+                <h3>AEO 容器服務優勢</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <h4>精準答案定位</h4>
+                        <p>將內容結構化為 AI 容易理解的格式，提高被引用機率</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚀</div>
+                        <h4>提升品牌曝光</h4>
+                        <p>在 AI 對話中直接展示您的專業知識和服務</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💡</div>
+                        <h4>智能內容優化</h4>
+                        <p>運用自然語言處理技術優化問答結構</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📊</div>
+                        <h4>數據驅動改進</h4>
+                        <p>持續監測 AEO 效果並優化內容策略</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="aeo-process">
+                <h3>AEO 容器實施流程</h3>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>內容分析與架構設計</h4>
+                            <p>深度分析您的業務內容，設計最適合的 AEO 容器結構</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>問答對優化</h4>
+                            <p>將關鍵資訊轉換為自然的問答格式，符合 AI 理解邏輯</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>結構化資料建置</h4>
+                            <p>實作 Schema.org 標記和 JSON-LD 結構化資料</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>效果監測與優化</h4>
+                            <p>持續追蹤 AEO 表現並進行內容調整</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="aeo-cta">
+                <div class="cta-content">
+                    <h3>準備讓您的內容在 AI 時代脫穎而出？</h3>
+                    <p>立即聯繫我們，了解如何透過 AEO 容器服務提升您的數位影響力</p>
+                    <a href="#!/aeo-guide" class="btn btn-primary">深入了解 AEO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 關於我們 -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>關於 TauX</h2>
+                <p>
+                    TauX 拓思科技成立於 2024 年，我們是一支專精於軟體開發、短影片製作與數位行銷的專業團隊。
+                    我們相信科技的力量能夠為企業帶來革命性的改變，因此致力於為客戶提供最具創新性的數位解決方案。
+                </p>
+                <p>
+                    在 AI 技術快速發展的時代，我們特別關注 Answer Engine Optimization (AEO) 答案引擎優化，
+                    幫助企業的內容能夠被新一代的 AI 搜尋工具有效識別和推薦。
+                </p>
+                <div class="about-stats">
+                    <div class="stat">
+                        <h3>50+</h3>
+                        <p>成功專案</p>
+                    </div>
+                    <div class="stat">
+                        <h3>98%</h3>
+                        <p>客戶滿意度</p>
+                    </div>
+                    <div class="stat">
+                        <h3>24/7</h3>
+                        <p>技術支援</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="team-image">
+                    <div class="placeholder-image">
+                        <i class="fas fa-users"></i>
+                        <p>專業團隊</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ 區域 -->
+<section class="faq" id="faq">
+    <div class="container">
+        <div class="section-header">
+            <h2>常見問題</h2>
+            <p>關於我們服務的常見問題解答</p>
+        </div>
+        
+        <div class="faq-list">
+            <div class="faq-item" 
+                 ng-repeat="faq in faqs.list" 
+                 ng-class="{'active': faq.isOpen}">
+                <div class="faq-question" ng-click="toggleFAQ($index)">
+                    <h3>{{faq.question}}</h3>
+                    <span class="faq-toggle">{{faq.isOpen ? '-' : '+'}}</span>
+                </div>
+                <div class="faq-answer" ng-show="faq.isOpen">
+                    <p>{{faq.answer}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 聯絡我們 -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2>聯絡我們</h2>
+            <p>準備開始您的數位轉型之旅？</p>
+        </div>
+        
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3>取得聯繫</h3>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>hello@taux.io</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>電話</h4>
+                        <p>+886-7-1234-5678</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>地址</h4>
+                        <p>高雄市前鎮區</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>服務時間</h4>
+                        <p>週一至週五 9:00-18:00</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3>發送訊息</h3>
+                <form ng-submit="submitContactForm()" name="contactForm">
+                    <div class="form-group">
+                        <label for="name">姓名 *</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name"
+                            ng-model="contact.form.name" 
+                            required
+                            ng-class="{'error': contactForm.name.$invalid && contactForm.name.$touched}">
+                        <div class="error-message" ng-show="contactForm.name.$invalid && contactForm.name.$touched">
+                            請輸入您的姓名
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            ng-model="contact.form.email" 
+                            required
+                            ng-class="{'error': contactForm.email.$invalid && contactForm.email.$touched}">
+                        <div class="error-message" ng-show="contactForm.email.$invalid && contactForm.email.$touched">
+                            請輸入有效的 Email 地址
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">電話</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone"
+                            ng-model="contact.form.phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service">感興趣的服務</label>
+                        <select id="service" name="service" ng-model="contact.form.service">
+                            <option value="">請選擇服務項目</option>
+                            <option value="software">軟體開發</option>
+                            <option value="video">短影片製作</option>
+                            <option value="marketing">數位行銷</option>
+                            <option value="aeo">AEO 優化</option>
+                            <option value="integration">整合服務</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">訊息 *</label>
+                        <textarea 
+                            id="message" 
+                            name="message"
+                            ng-model="contact.form.message" 
+                            rows="5" 
+                            required
+                            ng-class="{'error': contactForm.message.$invalid && contactForm.message.$touched}"></textarea>
+                        <div class="error-message" ng-show="contactForm.message.$invalid && contactForm.message.$touched">
+                            請輸入您的訊息
+                        </div>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="btn btn-primary" 
+                            ng-disabled="contactForm.$invalid || contact.isSubmitting">
+                        <span ng-show="!contact.isSubmitting">發送訊息</span>
+                        <span ng-show="contact.isSubmitting">發送中...</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

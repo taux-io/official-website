@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" ng-app="tauxApp">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TauX 拓思科技 | 軟體開發公司 | 短影片製作 | 數位行銷整合 | AI 解決方案 | AEO 優化</title>
-    <meta name="description" content="TauX 拓思科技有限公司，專業軟體開發公司，專注於企業級軟體平台開發、短影片製作策略、數位行銷整合與 AI 智能解決方案。提供 AEO 答案引擎優化容器服務、Web 應用程式、APP 開發、系統整合等一站式數位轉型服務。">
-    <meta name="keywords" content="拓思科技,TauX,AEO,答案引擎優化,容器服務,高雄軟體開發,軟體開發公司,APP開發,短影片製作,數位行銷,AI解決方案,系統整合,Web應用程式,SaaS平台,高雄數位行銷,TikTok行銷,Instagram行銷">
+    <title>TauX 拓思科技 | 軟體開發 × 短影片製作 × 數位行銷整合</title>
+    <meta name="description" content="TauX 拓思科技專精軟體平台開發、短影片製作與數位行銷整合。運用 AI 技術為企業打造全方位數位轉型解決方案，從概念到執行的完整服務。">
+    <meta name="keywords" content="軟體開發,短影片製作,數位行銷,AI技術,企業數位轉型,網站建置,手機App,AEO優化,TauX">
     <meta name="author" content="TauX">
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="1 days">
@@ -13,493 +13,181 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://taux.io/">
-    <meta property="og:title" content="TauX 拓思科技 | 軟體開發公司 | 短影片製作 | 數位行銷整合 | AEO 優化">
-    <meta property="og:description" content="TauX 拓思科技有限公司，專業軟體開發公司，專注於企業級軟體平台開發、短影片製作策略、數位行銷整合與 AI 智能解決方案。提供 AEO 答案引擎優化容器服務等一站式數位轉型服務。">
+    <meta property="og:title" content="TauX 拓思科技 | 軟體開發 × 短影片製作 × 數位行銷整合">
+    <meta property="og:description" content="運用 AI 技術為企業打造全方位數位轉型解決方案，從概念到執行的完整服務。">
     <meta property="og:image" content="https://taux.io/og-image.jpg">
     <meta property="og:locale" content="zh_TW">
     <meta property="og:site_name" content="TauX">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://taux.io/">
-    <meta property="twitter:title" content="TauX 拓思科技 | 軟體開發公司 | 短影片製作 | 數位行銷整合 | AEO 優化">
-    <meta property="twitter:description" content="TauX 拓思科技有限公司，專業軟體開發公司，專注於企業級軟體平台開發、短影片製作策略、數位行銷整合與 AI 智能解決方案。提供 AEO 答案引擎優化容器服務等一站式數位轉型服務。">
+    <meta property="twitter:title" content="TauX 拓思科技 | 軟體開發 × 短影片製作 × 數位行銷整合">
+    <meta property="twitter:description" content="運用 AI 技術為企業打造全方位數位轉型解決方案，從概念到執行的完整服務。">
     <meta property="twitter:image" content="https://taux.io/og-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://taux.io/">
     
-    <!-- Favicons -->
-    <link rel="icon" href="favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
     
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Schema.org 結構化數據 -->
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+</head>
+
+<body ng-controller="MainController">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#/">
+                    <strong>TauX</strong> 拓思科技
+                </a>
+            </div>
+            <ul class="nav-menu" ng-class="{'active': nav.isMenuOpen}">
+                <li class="nav-item">
+                    <a href="#/" class="nav-link" ng-class="{'active': nav.currentPath === '/'}">首頁</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/" class="nav-link" ng-click="scrollToSection('services')">服務項目</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/" class="nav-link" ng-click="scrollToSection('about')">關於我們</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#!/aeo-guide" class="nav-link" ng-class="{'active': nav.currentPath === '/aeo-guide'}">AEO 指南</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/" class="nav-link" ng-click="scrollToSection('contact')">聯絡我們</a>
+                </li>
+            </ul>
+            <div class="hamburger" ng-class="{'active': nav.isMenuOpen}" ng-click="toggleMobileMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 訊息系統 -->
+    <div class="message-container">
+        <div ng-repeat="message in messages" 
+             class="message message-{{message.type}}" 
+             ng-class="{'show': message.show}">
+            {{message.text}}
+        </div>
+    </div>
+
+    <!-- 閱讀進度條 (僅在 AEO 指南頁面顯示) -->
+    <div class="reading-progress" 
+         ng-if="nav.currentPath === '/aeo-guide'"
+         ng-style="{'width': guide.readingProgress + '%'}"></div>
+
+    <!-- 主要內容區域 -->
+    <main ng-view class="main-content"></main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><strong>TauX</strong> 拓思科技</h4>
+                    <p>Code the Future - 用科技創造未來</p>
+                    <p>專業軟體開發 × 短影片製作 × 數位行銷整合 × AEO 優化</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>快速連結</h4>
+                    <ul>
+                        <li><a href="#/">首頁</a></li>
+                        <li><a href="#/" ng-click="scrollToSection('services')">服務項目</a></li>
+                        <li><a href="#!/aeo-guide">AEO 指南</a></li>
+                        <li><a href="#/" ng-click="scrollToSection('contact')">聯絡我們</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>專業服務</h4>
+                    <ul>
+                        <li><a href="#/" ng-click="scrollToSection('services')">軟體開發</a></li>
+                        <li><a href="#/" ng-click="scrollToSection('services')">短影片製作</a></li>
+                        <li><a href="#/" ng-click="scrollToSection('services')">數位行銷</a></li>
+                        <li><a href="#!/aeo-guide">AEO 容器服務</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>聯絡資訊</h4>
+                    <p>📧 hello@taux.io</p>
+                    <p>📞 +886-7-1234-5678</p>
+                    <p>📍 高雄市前鎮區</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 TauX 拓思科技有限公司. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JSON-LD 結構化資料 -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "TauX",
-        "alternateName": "拓思科技有限公司",
+        "name": "TauX 拓思科技有限公司",
+        "alternateName": "TauX",
         "url": "https://taux.io",
-        "logo": "https://taux.io/logo.png",
-        "description": "專注於軟體平台開發與短影片行銷整合，運用 AI 技術為企業打造全方位數位轉型解決方案",
-        "foundingDate": "2025-06-28",
-        "slogan": "Code the Future",
+        "logo": "https://taux.io/taux-logo-light.png",
+        "description": "專精軟體平台開發、短影片製作與數位行銷整合的科技公司",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "文賢路 57 號 2 樓",
+            "addressLocality": "岡山區",
+            "addressRegion": "高雄市",
+            "addressCountry": "TW"
+        },
         "contactPoint": {
             "@type": "ContactPoint",
+            "telephone": "+886-7-6211033",
             "contactType": "customer service",
             "email": "hello@taux.io",
-            "telephone": "+886-7-6211033",
-            "availableLanguage": ["zh-TW", "en"],
-            "areaServed": "TW"
+            "availableLanguage": ["zh-TW", "en"]
         },
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "文賢路 57 號 2 樓",
-            "addressLocality": "岡山區",
-            "addressRegion": "高雄市",
-            "postalCode": "820",
-            "addressCountry": "TW"
+        "sameAs": [
+            "https://www.facebook.com/taux.io",
+            "https://www.linkedin.com/company/taux-io"
+        ],
+        "founder": {
+            "@type": "Person",
+            "name": "TauX 創辦團隊"
         },
-        "areaServed": {
-            "@type": "Country",
-            "name": "Taiwan"
-        },
+        "foundingDate": "2024",
+        "knowsAbout": ["軟體開發", "短影片製作", "數位行銷", "AEO優化", "AI技術"],
         "serviceType": [
             "軟體平台開發",
-            "短影片製作",
+            "短影片製作服務", 
             "數位行銷整合",
-            "AI 智能解決方案",
-            "系統整合與自動化",
-            "AEO 答案引擎優化"
-        ],
-        "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "TauX 服務項目",
-            "itemListElement": [
-                {
-                    "@type": "Service",
-                    "name": "軟體平台開發",
-                    "description": "專業開發企業級軟體平台，從需求分析到系統部署一站式服務。包含 Web 應用程式、移動端 APP、雲端 SaaS 平台，以及客製化管理系統。",
-                    "serviceType": "Software Development",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                },
-                {
-                    "@type": "Service",
-                    "name": "短影片製作與策略",
-                    "description": "專業短影片內容製作團隊，從腳本企劃、拍攝製作到後期剪輯一條龍服務。針對 TikTok、Instagram Reels、YouTube Shorts 等平台特性，量身打造吸睛內容。",
-                    "serviceType": "Video Production",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                },
-                {
-                    "@type": "Service",
-                    "name": "數位行銷整合",
-                    "description": "整合多元數位行銷管道，包含社群媒體經營、搜尋引擎優化、廣告投放策略與數據分析。",
-                    "serviceType": "Digital Marketing",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                },
-                {
-                    "@type": "Service",
-                    "name": "AI 智能解決方案",
-                    "description": "運用人工智慧技術優化業務流程，包含智能客服系統、數據分析預測、內容推薦引擎與自動化行銷工具。",
-                    "serviceType": "AI Solutions",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                },
-                {
-                    "@type": "Service",
-                    "name": "系統整合與自動化",
-                    "description": "協助企業整合既有系統與新開發平台，建立無縫的數位工作流程。從 CRM、ERP 系統串接到行銷自動化工具導入。",
-                    "serviceType": "System Integration",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                },
-                {
-                    "@type": "Service",
-                    "name": "AEO 答案引擎優化容器服務",
-                    "description": "專業 AEO (Answer Engine Optimization) 容器化解決方案，針對 AI 搜尋引擎與答案引擎優化內容結構。提供容器化部署、語義標記優化、結構化數據建置，確保企業內容在 AI 驅動的搜尋結果中獲得最佳曝光。",
-                    "serviceType": "AEO Optimization",
-                    "provider": {
-                        "@type": "Organization",
-                        "name": "TauX"
-                    }
-                }
-            ]
-        },
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://taux.io"
-        }
-    }
-    </script>
-    
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "TauX 主要提供哪些服務？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "我們專精於多個核心領域：軟體平台開發（包含 Web 應用、APP、SaaS 平台）、短影片製作與策略（TikTok、Instagram Reels、YouTube Shorts）、數位行銷整合（社群經營、SEO、廣告投放）、AI 智能解決方案、系統整合服務，以及專業的 AEO (Answer Engine Optimization) 答案引擎優化容器服務，協助企業在 AI 搜尋時代提升數位曝光度。"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "軟體開發專案的費用如何計算？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "專案費用依據需求複雜度、功能範圍、開發時程而定。一般企業網站約 15-50 萬元，客製化管理系統約 30-150 萬元，大型 SaaS 平台則需詳細評估。我們提供免費需求諮詢，為您規劃最適合的解決方案與預算。"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "短影片製作包含哪些服務內容？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "我們提供完整短影片製作服務：前期腳本企劃與故事板設計、專業拍攝設備與團隊、後期剪輯與特效製作、平台優化與發布策略。針對不同社群平台特性（TikTok、IG Reels、YouTube Shorts）客製化內容格式。"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "一般專案的開發時程需要多久？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "開發時程因專案規模而異：企業形象網站 2-4 週、電商平台 6-12 週、客製化管理系統 8-16 週、短影片製作每支 1-2 週。我們會在需求確認後提供詳細的專案時程規劃。"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "你們提供後續維護與技術支援嗎？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "是的！我們提供完整的後續服務：包含系統維護、功能更新、技術支援、效能優化等。軟體專案提供 1 年技術支援服務，後續可簽訂年度維護合約。短影片專案則提供內容策略諮詢與成效分析報告。"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "如何開始合作？需要準備什麼資料？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "合作流程很簡單：1. 聯絡我們進行免費需求諮詢 2. 提供您的需求說明、參考案例、預算範圍 3. 我們提供專案規劃與報價 4. 簽約後開始執行專案。歡迎透過 hello@taux.io 與我們聯繫！"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "為什麼選擇 TauX 而不是其他廠商？",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "我們的優勢在於：技術專業（豐富的軟體開發與系統整合經驗）、創意行銷（專業短影片製作與數位行銷策略）、一站式服務（從技術開發到行銷推廣全方位支援）、客製化解決方案（根據您的需求量身打造）、AI 整合（運用最新 AI 技術提升效率與競爭力）。"
-                }
-            }
+            "AEO 答案引擎優化容器服務",
+            "企業數位轉型諮詢"
         ]
     }
     </script>
-    
-    <!-- Local Business Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "TauX",
-        "image": "https://taux.io/logo.png",
-        "description": "專注於軟體平台開發與短影片行銷整合的數位科技公司",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "文賢路 57 號 2 樓",
-            "addressLocality": "岡山區",
-            "addressRegion": "高雄市",
-            "postalCode": "820",
-            "addressCountry": "TW"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 22.7977,
-            "longitude": 120.2951
-        },
-        "url": "https://taux.io",
-        "telephone": "+886-7-6211033",
-        "email": "hello@taux.io",
-        "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-                "Monday",
-                "Tuesday", 
-                "Wednesday",
-                "Thursday",
-                "Friday"
-            ],
-            "opens": "09:00",
-            "closes": "18:00"
-        },
-        "priceRange": "$$",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "25"
-        }
-    }
-    </script>
-    
-    <!-- BreadcrumbList Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "首頁",
-                "item": "https://taux.io/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "關於我們",
-                "item": "https://taux.io/#about"
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "服務項目",
-                "item": "https://taux.io/#services"
-            },
-            {
-                "@type": "ListItem",
-                "position": 4,
-                "name": "常見問題",
-                "item": "https://taux.io/#faq"
-            },
-            {
-                "@type": "ListItem",
-                "position": 5,
-                "name": "聯絡我們",
-                "item": "https://taux.io/#contact"
-            }
-        ]
-    }
-    </script>
-    
-    <!-- Website Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "TauX",
-        "url": "https://taux.io",
-        "description": "TauX 拓思科技有限公司，專業軟體開發公司，專注於企業級軟體平台開發、短影片製作策略、數位行銷整合與 AI 智能解決方案",
-        "inLanguage": "zh-TW",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://taux.io/?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "TauX",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://taux.io/logo.png"
-            }
-        }
-    }
-    </script>
-</head>
-<body>
-    <div class="main-container">
-        <nav class="main-navigation">
-            <a href="/" class="nav-link">首頁</a>
-            <a href="#about" class="nav-link">關於我們</a>
-            <a href="#services" class="nav-link">服務項目</a>
-            <a href="aeo-guide.html" class="nav-link">AEO 指南</a>
-            <a href="#faq" class="nav-link">常見問題</a>
-            <a href="#contact" class="nav-link">聯絡我們</a>
-        </nav>
 
-        <section class="hero-section" id="about">
-            <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo" class="company-logo" loading="lazy" />
-            <h1 class="hero-title">不是在寫軟體，我們在重構「解決問題」的方式</h1>
-            <div class="hero-description" itemscope itemtype="https://schema.org/Organization">
-                <blockquote class="hero-quote">
-                    <p>"程式碼從來不是目的，它只是達成目的的工具。"</p>
-                    <cite>— DHH（David Heinemeier Hansson）</cite>
-                </blockquote>
-                <span itemprop="description">這句話點醒了我們——開發軟體，不該只是寫程式、堆功能、追技術潮流。真正重要的是：我們怎麼理解問題，怎麼決定該解什麼問題，以及怎麼用最有意識的方式去解它。</span>
-            </div>
-        </section>
-
-        <section class="services-section" id="services" itemscope itemtype="https://schema.org/Service">
-            <h1 class="section-title">這正是 TauX 正在做的事</h1>
-            <div class="section-subtitle">我們不是一家「只是幫你寫程式」的團隊。我們關心的是思維的轉變</div>
-
-            <div class="services-content">
-                <div class="philosophy-intro">
-                    <p class="philosophy-text">我們關心的是——</p>
-                    <ul class="philosophy-list">
-                        <li>你真正要解決的，是什麼痛點？</li>
-                        <li>現在這個痛點，是技術問題，還是決策問題？</li>
-                        <li>在這個時間點，解這個問題，是最佳選擇嗎？</li>
-                        <li>有沒有一種更輕盈、靈活、更貼近人性的方式，去解它？</li>
-                    </ul>
-                </div>
-
-                <blockquote class="service-quote">
-                    <p>"軟體只是載體。思維，才是改變的核心。"</p>
-                </blockquote>
-
-                <h3 itemprop="name" class="service-title">💻 軟體平台開發</h3>
-                <p itemprop="description" class="service-description">我們相信，好的技術不是讓人更依賴技術，而是讓人回到初心，用更簡單的方式創造價值。專業開發企業級軟體平台，從需求分析到系統部署一站式服務。包含 Web 應用程式、移動端 APP、雲端 SaaS 平台，以及客製化管理系統。</p>
-                
-                <h3 class="service-title">🎬 短影片製作與策略</h3>
-                <p class="service-description">專業短影片內容製作團隊，從腳本企劃、拍攝製作到後期剪輯一條龍服務。針對 TikTok、Instagram Reels、YouTube Shorts 等平台特性，量身打造吸睛內容，提升品牌曝光度與用戶互動率。</p>
-                
-                <h3 class="service-title">📈 數位行銷整合</h3>
-                <p class="service-description">整合多元數位行銷管道，包含社群媒體經營、搜尋引擎優化（SEO）、廣告投放策略與數據分析。結合短影片內容行銷，打造品牌一致性體驗，有效提升轉換率與客戶忠誠度。</p>
-                
-                <h3 class="service-title">🤖 AI 智能解決方案</h3>
-                <p class="service-description">運用人工智慧技術優化業務流程，包含智能客服系統、數據分析預測、內容推薦引擎與自動化行銷工具。讓 AI 成為您的數位助手，提升營運效率並創造更大商業價值。</p>
-                
-                <h3 class="service-title">⚙️ 系統整合與自動化</h3>
-                <p class="service-description">協助企業整合既有系統與新開發平台，建立無縫的數位工作流程。從 CRM、ERP 系統串接到行銷自動化工具導入，讓科技為您的團隊賦能，專注於核心業務發展。</p>
-                
-                <h3 class="service-title">🔍 AEO 答案引擎優化容器服務</h3>
-                <p class="service-description">專業 AEO (Answer Engine Optimization) 容器化解決方案，針對 ChatGPT、Claude、Gemini 等 AI 搜尋引擎優化企業內容。透過先進的語義標記、結構化數據建置與容器化部署技術，確保您的品牌資訊在 AI 驅動的答案引擎中獲得精確曝光，提升數位能見度與客戶觸及率。</p>
-                <p class="service-link"><a href="aeo-guide.html" class="guide-link">📖 查看完整 AEO 流量容器專業指南 →</a></p>
-
-                <div class="service-conclusion">
-                    <blockquote class="service-quote">
-                        <p>"我們的工作，不是賣技術，而是幫助團隊用對的思維，看清問題、做出選擇、執行到位。"</p>
-                    </blockquote>
-                    <p class="conclusion-text">這是一場關於解決問題的革命。TauX，不只寫程式，我們在打破舊框架，建立新的工作節奏與思考習慣。</p>
-                    <p class="conclusion-text"><strong>這不只是 coding，這是 re-coding how we think。</strong></p>
-                </div>
-            </div>
-        </section>
-
-        <section class="faq-section" id="faq">
-            <h1 class="section-title">常見問題 FAQ</h1>
-            <div class="faq-content">
-                <h3 class="faq-question">🤔 TauX 主要提供哪些服務？</h3>
-                <p class="faq-answer">我們專精於多個核心領域：<strong>軟體平台開發</strong>（包含 Web 應用、APP、SaaS 平台）、<strong>短影片製作與策略</strong>（TikTok、Instagram Reels、YouTube Shorts）、<strong>數位行銷整合</strong>（社群經營、SEO、廣告投放）、<strong>AI 智能解決方案</strong>、<strong>系統整合服務</strong>，以及專業的 <strong>AEO (Answer Engine Optimization) 答案引擎優化容器服務</strong>，協助企業在 AI 搜尋時代提升數位曝光度。</p>
-                
-                <h3 class="faq-question">💰 軟體開發專案的費用如何計算？</h3>
-                <p class="faq-answer">專案費用依據需求複雜度、功能範圍、開發時程而定。一般企業網站約 15-50 萬元，客製化管理系統約 30-150 萬元，大型 SaaS 平台則需詳細評估。我們提供免費需求諮詢，為您規劃最適合的解決方案與預算。</p>
-                
-                <h3 class="faq-question">🎬 短影片製作包含哪些服務內容？</h3>
-                <p class="faq-answer">我們提供完整短影片製作服務：前期腳本企劃與故事板設計、專業拍攝設備與團隊、後期剪輯與特效製作、平台優化與發布策略。針對不同社群平台特性（TikTok、IG Reels、YouTube Shorts）客製化內容格式。</p>
-                
-                <h3 class="faq-question">⏱️ 一般專案的開發時程需要多久？</h3>
-                <p class="faq-answer">開發時程因專案規模而異：<br>
-                • 企業形象網站：2-4 週<br>
-                • 電商平台：6-12 週<br>
-                • 客製化管理系統：8-16 週<br>
-                • 短影片製作：每支 1-2 週<br>
-                我們會在需求確認後提供詳細的專案時程規劃。</p>
-                
-                <h3 class="faq-question">🔧 你們提供後續維護與技術支援嗎？</h3>
-                <p class="faq-answer">是的！我們提供完整的後續服務：包含系統維護、功能更新、技術支援、效能優化等。軟體專案提供 1 年技術支援服務，後續可簽訂年度維護合約。短影片專案則提供內容策略諮詢與成效分析報告。</p>
-                
-                <h3 class="faq-question">🚀 如何開始合作？需要準備什麼資料？</h3>
-                <p class="faq-answer">合作流程很簡單：<br>
-                1. 聯絡我們進行免費需求諮詢<br>
-                2. 提供您的需求說明、參考案例、預算範圍<br>
-                3. 我們提供專案規劃與報價<br>
-                4. 簽約後開始執行專案<br>
-                歡迎透過 hello@taux.io 與我們聯繫！</p>
-                
-                <h3 class="faq-question">🏢 TauX 有哪些成功案例可以參考？</h3>
-                <p class="faq-answer">我們已成功協助多家企業進行數位轉型：包含製造業的 ERP 系統整合、零售業的電商平台開發、餐飲業的點餐系統、以及多個品牌的短影片行銷專案。具體案例可於諮詢時提供詳細介紹。</p>
-                
-                <h3 class="faq-question">🌟 為什麼選擇 TauX？</h3>
-                <p class="faq-answer">我們的優勢在於：<br>
-                • <strong>技術專業</strong>：豐富的軟體開發與系統整合經驗<br>
-                • <strong>創意行銷</strong>：專業短影片製作與數位行銷策略<br>
-                • <strong>整合服務</strong>：從技術開發到行銷推廣全方位支援<br>
-                • <strong>客製方案</strong>：根據您的需求量身打造<br>
-                • <strong>AI 整合</strong>：運用最新 AI 技術提升效率與競爭力</p>
-            </div>
-        </section>
-
-        <section class="contact-section" id="contact" itemscope itemtype="https://schema.org/ContactPage">
-            <img src="rocket.png" alt="火箭圖示" class="contact-icon" loading="lazy" />
-            <h1 class="section-title">Contact US - 聯絡我們</h1>
-            <div class="section-subtitle">讓我們一起啟動您的數位轉型之旅</div>
-            
-            <div class="contact-content">
-                <p><strong>準備好提升您的數位競爭力了嗎？</strong></p>
-                <p>無論您需要開發軟體平台、製作吸睛短影片，還是建立完整的數位行銷策略，我們都能為您提供專業的解決方案。立即聯絡我們，開始您的數位轉型之旅。</p>
-                
-                <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" class="contact-info">
-                    📧 聯絡信箱：<a href="mailto:hello@taux.io" itemprop="email" class="contact-email">hello@taux.io</a><br>
-                    📞 聯絡電話：<a href="tel:+886-7-6211033" class="contact-phone">07-6211033</a><br>
-                    📍 營運據點：<span itemprop="addressRegion">高雄市</span><span itemprop="addressLocality">岡山區</span><span itemprop="streetAddress">文賢路 57 號 2 樓</span><br>
-                    🤝 歡迎預約免費諮詢，討論您的專案需求<br>
-                    💬 提供線上諮詢服務，快速回應您的需求
-                </address>
-            </div>
-        </section>
-    </div>
-
-    <!-- 深色模式自動切換 JavaScript -->
-    <script>
-        (function() {
-            'use strict';
-            
-            function initializeTheme() {
-                if (!window.matchMedia) return;
-                
-                const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                
-                function handleThemeChange(e) {
-                    console.log('主題已切換至:', e.matches ? '深色模式' : '一般模式');
-                }
-                
-                if (darkModeQuery.addEventListener) {
-                    darkModeQuery.addEventListener('change', handleThemeChange);
-                } else if (darkModeQuery.addListener) {
-                    darkModeQuery.addListener(handleThemeChange);
-                }
-                
-                console.log('目前主題:', darkModeQuery.matches ? '深色模式' : '一般模式');
-            }
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initializeTheme);
-            } else {
-                initializeTheme();
-            }
-        })();
-    </script>
+    <!-- Scripts -->
+    <script src="app.js"></script>
 </body>
 </html>

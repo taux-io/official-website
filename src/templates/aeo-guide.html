@@ -1,0 +1,321 @@
+<!-- AEO 指南頁面 -->
+<div class="aeo-guide-page">
+    <!-- 頁面標題區域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>AEO 答案引擎優化完整指南</h1>
+            <p class="page-subtitle">掌握 AI 時代的內容優化策略，讓您的品牌在答案引擎中脫穎而出</p>
+            <div class="breadcrumb">
+                <a href="#/">首頁</a> <span>&gt;</span> <span>AEO 指南</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 目錄 -->
+    <section class="table-of-contents" id="table-of-contents">
+        <div class="container">
+            <h2>目錄</h2>
+            <ul class="toc-list">
+                <li ng-repeat="item in guide.tocItems">
+                    <a href="#{{item.id}}" 
+                       ng-click="scrollToSection(item.id)"
+                       class="toc-link">
+                        {{item.title}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 內容區域 -->
+    <div class="guide-content">
+        <div class="container">
+            <div class="content-wrapper">
+                <!-- 什麼是 AEO -->
+                <section class="guide-section" id="what-is-aeo">
+                    <h2>什麼是 AEO 答案引擎優化</h2>
+                    <p>Answer Engine Optimization (AEO) 答案引擎優化是一種針對 AI 驅動的搜尋引擎和語音助手優化內容的策略。隨著 ChatGPT、Claude、Gemini 等 AI 工具的普及，傳統的 SEO 策略已不足以應對新的搜尋行為模式。</p>
+                    
+                    <p>AEO 的核心目標是讓您的內容能夠被 AI 工具直接引用、摘要和推薦，從而在用戶詢問相關問題時，您的品牌和資訊能夠成為 AI 提供的答案來源。</p>
+                    
+                    <div class="highlight-box">
+                        <h3>💡 關鍵概念</h3>
+                        <p>AEO 不是取代 SEO，而是在 AI 時代的延伸。它專注於創建結構化、易於理解的內容，讓 AI 能夠準確識別並引用您的專業知識。</p>
+                    </div>
+                </section>
+
+                <!-- AEO 與 SEO 的差異 -->
+                <section class="guide-section" id="aeo-vs-seo">
+                    <h2>AEO 與 SEO 的關鍵差異</h2>
+                    
+                    <div class="comparison-table">
+                        <div class="comparison-row">
+                            <div class="comparison-header">
+                                <div class="comparison-cell">特徵</div>
+                                <div class="comparison-cell">SEO</div>
+                                <div class="comparison-cell">AEO</div>
+                            </div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell"><strong>目標受眾</strong></div>
+                            <div class="comparison-cell">搜尋引擎爬蟲</div>
+                            <div class="comparison-cell">AI 語言模型</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell"><strong>內容焦點</strong></div>
+                            <div class="comparison-cell">關鍵字密度</div>
+                            <div class="comparison-cell">自然語言問答</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell"><strong>結構化程度</strong></div>
+                            <div class="comparison-cell">標題和元標籤</div>
+                            <div class="comparison-cell">深度結構化資料</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell"><strong>互動方式</strong></div>
+                            <div class="comparison-cell">點擊瀏覽</div>
+                            <div class="comparison-cell">直接答案引用</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AEO 的核心原則 -->
+                <section class="guide-section" id="aeo-principles">
+                    <h2>AEO 優化的核心原則</h2>
+                    
+                    <div class="principles-grid">
+                        <div class="principle-card">
+                            <div class="principle-icon">🎯</div>
+                            <h3>清晰簡潔的答案</h3>
+                            <p>提供直接、明確的答案，避免冗長的描述。AI 喜歡能夠快速理解和摘要的內容。</p>
+                        </div>
+                        
+                        <div class="principle-card">
+                            <div class="principle-icon">🔗</div>
+                            <h3>結構化資料標記</h3>
+                            <p>使用 Schema.org 和 JSON-LD 格式，讓 AI 能夠準確理解內容的語義和關聯性。</p>
+                        </div>
+                        
+                        <div class="principle-card">
+                            <div class="principle-icon">❓</div>
+                            <h3>問答導向內容</h3>
+                            <p>將內容組織成自然的問答格式，模擬用戶可能向 AI 提出的實際問題。</p>
+                        </div>
+                        
+                        <div class="principle-card">
+                            <div class="principle-icon">🎯</div>
+                            <h3>語境相關性</h3>
+                            <p>確保內容在特定語境下具有相關性，幫助 AI 在適當時機推薦您的資訊。</p>
+                        </div>
+                        
+                        <div class="principle-card">
+                            <div class="principle-icon">✅</div>
+                            <h3>權威性和可信度</h3>
+                            <p>建立專業權威性，包含具體數據、案例研究和專家見解。</p>
+                        </div>
+                        
+                        <div class="principle-card">
+                            <div class="principle-icon">🔄</div>
+                            <h3>持續更新維護</h3>
+                            <p>定期更新內容以保持時效性，AI 傾向於引用最新和最準確的資訊。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 實施步驟 -->
+                <section class="guide-section" id="implementation-steps">
+                    <h2>AEO 優化實施步驟</h2>
+                    
+                    <div class="implementation-steps">
+                        <div class="step-item">
+                            <div class="step-number">01</div>
+                            <div class="step-content">
+                                <h3>內容審計與分析</h3>
+                                <p>評估現有內容的 AEO 潛力，識別可以轉換為問答格式的關鍵資訊。分析目標受眾可能向 AI 提出的問題類型。</p>
+                                <ul>
+                                    <li>分析現有內容結構</li>
+                                    <li>識別核心專業知識點</li>
+                                    <li>研究用戶問題模式</li>
+                                    <li>評估競爭對手 AEO 策略</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div class="step-number">02</div>
+                            <div class="step-content">
+                                <h3>問答內容創建</h3>
+                                <p>將專業知識轉換為自然的問答格式，確保答案簡潔明確且具有actionable的價值。</p>
+                                <ul>
+                                    <li>創建FAQ結構</li>
+                                    <li>撰寫直接回答</li>
+                                    <li>添加相關案例</li>
+                                    <li>整合專業術語解釋</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div class="step-number">03</div>
+                            <div class="step-content">
+                                <h3>結構化資料實施</h3>
+                                <p>實作 Schema.org 標記和 JSON-LD 結構化資料，讓 AI 能夠準確解析內容語義。</p>
+                                <ul>
+                                    <li>實作 FAQPage schema</li>
+                                    <li>添加 Organization 資料</li>
+                                    <li>設置 Service 結構標記</li>
+                                    <li>建立知識圖譜連結</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div class="step-number">04</div>
+                            <div class="step-content">
+                                <h3>技術優化配置</h3>
+                                <p>確保網站技術架構支援 AEO，包括載入速度、行動裝置相容性和結構化資料驗證。</p>
+                                <ul>
+                                    <li>優化網站載入速度</li>
+                                    <li>確保行動裝置友善</li>
+                                    <li>驗證結構化資料</li>
+                                    <li>設置內容更新機制</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div class="step-number">05</div>
+                            <div class="step-content">
+                                <h3>效果監測與優化</h3>
+                                <p>建立監測機制追蹤 AEO 表現，持續優化內容策略以提升 AI 引用率。</p>
+                                <ul>
+                                    <li>設置分析追蹤</li>
+                                    <li>監測引用情況</li>
+                                    <li>分析用戶反馈</li>
+                                    <li>持續內容優化</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 最佳實踐案例 -->
+                <section class="guide-section" id="best-practices">
+                    <h2>AEO 優化最佳實踐</h2>
+                    
+                    <div class="best-practices">
+                        <div class="practice-category">
+                            <h3>內容結構最佳化</h3>
+                            <div class="practice-list">
+                                <div class="practice-item">
+                                    <h4>使用明確的問題標題</h4>
+                                    <p>將 H2 標題格式化為自然問題，例如「如何提升網站的 AEO 效果？」而非「AEO 效果提升方法」。</p>
+                                </div>
+                                <div class="practice-item">
+                                    <h4>提供段落化答案</h4>
+                                    <p>將複雜答案分解為易消化的段落，每個段落聚焦一個核心概念。</p>
+                                </div>
+                                <div class="practice-item">
+                                    <h4>整合相關資源連結</h4>
+                                    <p>在答案中包含相關的內部連結和權威外部資源，增強內容的可信度。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-category">
+                            <h3>技術實作要點</h3>
+                            <div class="practice-list">
+                                <div class="practice-item">
+                                    <h4>JSON-LD 結構化資料</h4>
+                                    <p>使用 FAQPage、HowTo、Article 等適當的 Schema.org 類型標記內容。</p>
+                                </div>
+                                <div class="practice-item">
+                                    <h4>語義化 HTML 標記</h4>
+                                    <p>正確使用 HTML5 語義標籤，如 &lt;article&gt;、&lt;section&gt;、&lt;aside&gt; 等。</p>
+                                </div>
+                                <div class="practice-item">
+                                    <h4>行動裝置優先設計</h4>
+                                    <p>確保內容在各種裝置上都能清晰呈現，特別是行動裝置的語音搜尋體驗。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 工具與資源 -->
+                <section class="guide-section" id="tools-resources">
+                    <h2>AEO 優化工具與資源</h2>
+                    
+                    <div class="tools-grid">
+                        <div class="tool-category">
+                            <h3>🔧 技術工具</h3>
+                            <ul>
+                                <li><strong>Google Rich Results Test</strong> - 驗證結構化資料</li>
+                                <li><strong>Schema.org Validator</strong> - 檢查 Schema 標記</li>
+                                <li><strong>JSON-LD Playground</strong> - 測試和調試 JSON-LD</li>
+                                <li><strong>PageSpeed Insights</strong> - 檢測網站效能</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tool-category">
+                            <h3>📊 分析工具</h3>
+                            <ul>
+                                <li><strong>Google Analytics 4</strong> - 追蹤用戶行為</li>
+                                <li><strong>Google Search Console</strong> - 監測搜尋表現</li>
+                                <li><strong>SEMrush</strong> - 競爭對手分析</li>
+                                <li><strong>Answer The Public</strong> - 問題研究工具</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tool-category">
+                            <h3>✍️ 內容創作</h3>
+                            <ul>
+                                <li><strong>ChatGPT</strong> - AI 輔助內容創作</li>
+                                <li><strong>Claude</strong> - 內容結構優化</li>
+                                <li><strong>Grammarly</strong> - 語法和可讀性檢查</li>
+                                <li><strong>Hemingway Editor</strong> - 內容簡化工具</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 未來趨勢 -->
+                <section class="guide-section" id="future-trends">
+                    <h2>AEO 的未來發展趨勢</h2>
+                    
+                    <div class="trends-content">
+                        <p>隨著 AI 技術的快速發展，AEO 領域也在不斷演進。以下是我們預測的未來趨勢：</p>
+                        
+                        <div class="trend-items">
+                            <div class="trend-item">
+                                <h3>🤖 AI 模型整合深化</h3>
+                                <p>未來的 AEO 將更緊密地與各種 AI 模型整合，包括語音助手、聊天機器人和專業 AI 工具。</p>
+                            </div>
+                            
+                            <div class="trend-item">
+                                <h3>🎯 個人化答案引擎</h3>
+                                <p>AI 將根據用戶的歷史行為、偏好和語境提供更個人化的答案，AEO 策略需要考慮這種個人化需求。</p>
+                            </div>
+                            
+                            <div class="trend-item">
+                                <h3>🌐 多模態內容優化</h3>
+                                <p>AEO 將擴展到文字以外的內容形式，包括圖像、音頻和視頻的語義理解和優化。</p>
+                            </div>
+                            
+                            <div class="trend-item">
+                                <h3>⚡ 即時內容更新</h3>
+                                <p>AI 對內容時效性的要求將更高，需要建立即時內容更新和驗證機制。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="future-cta">
+                            <h3>準備迎接 AEO 的未來？</h3>
+                            <p>立即聯繫 TauX 拓思科技，讓我們協助您建立面向未來的 AEO 策略。</p>
+                            <a href="#/" ng-click="scrollToSection('contact')" class="btn btn-primary">開始諮詢</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
