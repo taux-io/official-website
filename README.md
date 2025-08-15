@@ -10,7 +10,7 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 - **HTML5** - 語義化網頁結構
 - **Sass/SCSS** - 模組化 CSS 預處理器
-- **Vanilla JavaScript** - 純 JavaScript 互動功能  
+- **AngularJS 1.8.3** - MVC 框架與 SPA 路由  
 - **Docker** - 容器化部署
 - **Nginx** - 高效能網頁伺服器
 
@@ -31,6 +31,8 @@ npm run build-css
 
 # 啟動開發環境
 docker compose up -d
+
+# 網站將在 http://localhost:8080 運行
 ```
 
 ### 開發指令
@@ -90,12 +92,39 @@ taux-dev/
 ├── README.md                    # 專案說明文件
 ├── Dockerfile                   # Docker 容器配置
 ├── docker-compose.yml           # Docker Compose 配置
+├── package.json                # NPM 依賴配置
+├── nginx.conf                  # Nginx 伺服器配置
 └── src/                        # 網站原始碼
-    ├── index.html              # 主頁面
-    ├── styles.css              # 樣式表
+    ├── index.html              # 主頁面 (AngularJS SPA)
+    ├── app.js                  # AngularJS 應用程式
+    ├── styles.scss             # Sass 樣式原始檔
+    ├── styles.css              # 編譯後的 CSS
+    ├── templates/              # AngularJS 模板
+    │   ├── home.html           # 首頁模板
+    │   └── aeo-guide.html      # AEO 指南模板
     ├── robots.txt              # 搜尋引擎爬蟲規則
     ├── sitemap.xml             # 網站地圖
     ├── site.webmanifest        # PWA 配置
+    └── *.png                   # 圖示與圖片資源
+```
+
+## 🎯 AngularJS 應用架構
+
+### 路由配置
+- `/` - 首頁 (HomeController)
+- `/aeo-guide` - AEO 指南頁面 (AeoGuideController)
+
+### 控制器說明
+- **MainController** - 主控制器，處理導航、訊息系統
+- **HomeController** - 首頁控制器，管理服務、FAQ、聯絡表單
+- **AeoGuideController** - AEO 指南控制器，處理目錄與閱讀進度
+
+### 主要功能
+- SPA 單頁應用路由
+- 響應式導航選單
+- 動態表單驗證
+- FAQ 手風琴效果
+- 閱讀進度追蹤
     ├── taux-logo-light.png     # 淺色主題 Logo
     ├── taux-logo-dark.png      # 深色主題 Logo
     ├── rocket.png              # 火箭圖示
