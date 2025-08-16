@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 導航菜單功能
     initMobileNavigation();
     
+    // 滾動時自動隱藏導航
+    initScrollNavigation();
+    
     // 表單處理
     initContactForm();
     
@@ -46,6 +49,13 @@ function initMobileNavigation() {
         hamburger.addEventListener('click', function() {
             this.classList.toggle('active');
             navMenu.classList.toggle('active');
+            
+            // 防止背景滾動
+            if (navMenu.classList.contains('active')) {
+                document.body.classList.add('nav-open');
+            } else {
+                document.body.classList.remove('nav-open');
+            }
         });
         
         // 點擊菜單項目後關閉菜單
@@ -54,9 +64,63 @@ function initMobileNavigation() {
             link.addEventListener('click', function() {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
+                document.body.classList.remove('nav-open');
             });
         });
     }
+}
+
+// 滾動時自動隱藏導航
+function initScrollNavigation() {
+    const navigation = document.querySelector('.main-navigation');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (!navigation) return;
+    
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    function updateNavigation() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 100) { // 滾動超過 100px 後才開始隱藏
+            if (currentScrollY > lastScrollY && !navMenu.classList.contains('active')) {
+                // 向下滾動且菜單未開啟時隱藏
+                navigation.classList.add('hidden');
+            } else {
+                // 向上滾動時顯示
+                navigation.classList.remove('hidden');
+            }
+        } else {
+            // 在頂部時總是顯示
+            navigation.classList.remove('hidden');
+        }
+        
+        lastScrollY = currentScrollY;
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateNavigation);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick);
+
+    // 處理觸摸設備的滾動
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+    });
+
+    window.addEventListener('touchend', (e) => {
+        touchEndY = e.changedTouches[0].screenY;
+        requestTick();
+    });
 }
 
 // 聯絡表單處理

@@ -85,20 +85,48 @@ section[id] {
     overflow: visible;
 }
 
-/* 導航欄 - 簡化設計 */
+/* 導航欄 - 支援漢堡菜單和自動隱藏 */
 .main-navigation {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    display: flex;
-    justify-content: center;
-    padding: 1.5rem 0;
     background: var(--bg-secondary);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-light);
     box-shadow: 0 1px 0 var(--nav-shadow);
+    transition: transform 0.3s ease;
+}
+
+.main-navigation.hidden {
+    transform: translateY(-100%);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-logo {
+    flex: 0 0 auto;
+}
+
+.nav-logo .logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
 }
 
 .nav-link {
@@ -109,12 +137,112 @@ section[id] {
     font-size: 0.95rem;
     transition: color .2s ease;
     border-radius: 6px;
-    margin: 0 0.25rem;
 }
 
 .nav-link:hover {
     color: var(--text-primary);
     background: var(--btn-hover-bg);
+}
+
+/* 漢堡菜單 */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+    flex: 0 0 auto;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* 手機版樣式 */
+@media (max-width: 768px) {
+    .nav-container {
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+    }
+    
+    .nav-logo {
+        flex: 0 0 auto;
+        z-index: 1001;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #ffffff !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1002; /* 高於導航欄的 1000 */
+        /* 確保完全覆蓋 */
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    .nav-menu.active {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        background: #ffffff !important;
+    }
+    
+    /* 深色模式 */
+    @media (prefers-color-scheme: dark) {
+        .nav-menu {
+            background: #0a0a0a !important;
+        }
+        
+        .nav-menu.active {
+            background: #0a0a0a !important;
+        }
+    }
+    
+    .nav-link {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+        color: var(--text-primary);
+    }
+    
+    .hamburger {
+        display: flex;
+        flex: 0 0 auto;
+        z-index: 1003; /* 高於菜單，確保始終可見 */
+    }
+    
+    /* 當菜單開啟時防止背景滾動 */
+    body.nav-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
 }
 
 /* 區段基礎樣式 - 統一間距 */
@@ -568,8 +696,8 @@ img {
 }
 
 .guide-section {
-    margin-bottom: 2.5rem;
-    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -581,8 +709,8 @@ img {
     font-size: 2.25rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 2rem;
-    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
     position: relative;
 }
 
@@ -590,7 +718,7 @@ img {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 2.5rem 0 1.5rem;
+    margin: 1.5rem 0 1rem;
     padding-left: 1rem;
     border-left: 4px solid var(--accent-color);
     background: var(--bg-secondary);

@@ -339,12 +339,24 @@
 <body>
     <div class="main-container">
         <nav class="main-navigation">
-            <a href="/" class="nav-link">首頁</a>
-            <a href="#about" class="nav-link">關於我們</a>
-            <a href="#services" class="nav-link">服務項目</a>
-            <a href="aeo-guide.html" class="nav-link">AEO 指南</a>
-            <a href="#faq" class="nav-link">常見問題</a>
-            <a href="#contact" class="nav-link">聯絡我們</a>
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="/" class="logo-text">TauX</a>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="/" class="nav-link">首頁</a>
+                    <a href="#about" class="nav-link">關於我們</a>
+                    <a href="#services" class="nav-link">服務項目</a>
+                    <a href="aeo-guide.html" class="nav-link">AEO 指南</a>
+                    <a href="#faq" class="nav-link">常見問題</a>
+                    <a href="#contact" class="nav-link">聯絡我們</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
         </nav>
 
         <section class="hero-section" id="about">
@@ -500,6 +512,80 @@
                 initializeTheme();
             }
         })();
+    </script>
+
+    <script>
+        // 漢堡菜單功能
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navigation = document.querySelector('.main-navigation');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // 防止背景滾動
+            if (navMenu.classList.contains('active')) {
+                document.body.classList.add('nav-open');
+            } else {
+                document.body.classList.remove('nav-open');
+            }
+        });
+
+        // 點擊菜單項目後關閉菜單
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('nav-open');
+            });
+        });
+
+        // 滾動時自動隱藏導航
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        function updateNavigation() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100) { // 滾動超過 100px 後才開始隱藏
+                if (currentScrollY > lastScrollY && !navMenu.classList.contains('active')) {
+                    // 向下滾動且菜單未開啟時隱藏
+                    navigation.classList.add('hidden');
+                } else {
+                    // 向上滾動時顯示
+                    navigation.classList.remove('hidden');
+                }
+            } else {
+                // 在頂部時總是顯示
+                navigation.classList.remove('hidden');
+            }
+            
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateNavigation);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick);
+
+        // 處理觸摸設備的滾動
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        window.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            requestTick();
+        });
     </script>
 </body>
 </html>
