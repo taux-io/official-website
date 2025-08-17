@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 載入動畫
     initAnimations();
+    
+    // 閱讀進度條（所有頁面）
+    initReadingProgress();
 });
 
 // 平滑滾動到錨點
@@ -276,7 +279,6 @@ if (window.location.pathname.includes('aeo-guide.html')) {
         // 延遲執行確保樣式載入完成
         setTimeout(() => {
             generateTableOfContents();
-            initReadingProgress();
         }, 100);
     });
 }

@@ -399,50 +399,74 @@ img {
     text-align: left;
 }
 
-/* 引用樣式 - 簡化設計 */
-.hero-quote {
-    background: var(--bg-secondary);
-    border-left: 3px solid var(--quote-border);
-    padding: 2rem;
-    margin: 3rem auto;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 8px var(--nav-shadow);
-    max-width: 500px;
-}
-
-.hero-quote p {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0 0 1rem 0;
-    line-height: 1.4;
+/* 引用樣式 - 使用 EB Garamond 字體 */
+blockquote {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
     font-style: italic;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    border-left: 4px solid #007acc;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-.hero-quote cite {
-    font-size: 0.9rem;
-    color: var(--text-muted);
+blockquote::before {
+    content: "\201C";
+    font-size: 3rem;
+    color: #007acc;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-family: 'EB Garamond', serif;
+}
+
+blockquote cite,
+blockquote footer {
     font-style: normal;
-    font-weight: 500;
+    font-weight: bold;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    display: block;
 }
 
-.service-quote {
-    background: var(--bg-secondary);
-    border-left: 3px solid var(--quote-border);
-    padding: 1.5rem;
-    margin: 2.5rem auto;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 8px var(--nav-shadow);
-    max-width: 550px;
+blockquote cite::before,
+blockquote footer::before {
+    content: "— ";
 }
 
-.service-quote p {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.5;
-    font-style: italic;
+/* 響應式設計 */
+@media (max-width: 1600px) {
+    blockquote {
+        font-size: 1.1rem;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 1200px) {
+    blockquote {
+        font-size: 1rem;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    blockquote {
+        font-size: 0.95rem;
+        padding: 12px;
+        margin: 15px 0;
+    }
+    
+    blockquote::before {
+        font-size: 2.5rem;
+        top: -8px;
+        left: 8px;
+    }
 }
 
 /* 哲學介紹 - 改善視覺層次 */
@@ -579,6 +603,11 @@ img {
         line-height: 1.2;
     }
     
+    .hero-title::before {
+        font-size: 2.25rem;
+        line-height: 0.7;
+    }
+    
     .section-subtitle {
         font-size: 1rem;
         margin: 0 0 2.5rem 0;
@@ -694,6 +723,20 @@ img {
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.hero-title::before {
+    content: '[';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--accent-color);
+    line-height: 0.8;
+    font-family: 'Inter', sans-serif;
 }
 
 .hero-subtitle {
@@ -1041,9 +1084,16 @@ img {
     left: 0;
     width: 0%;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-color) 0%, #2563eb 100%);
+    background: #000;
     z-index: 10001;
     transition: width 0.1s ease;
+}
+
+/* 深色模式下的進度條 */
+@media (prefers-color-scheme: dark) {
+    .reading-progress {
+        background: #fff;
+    }
 }
 
 .final-cta {
@@ -1185,6 +1235,11 @@ img {
     
     .hero-title {
         font-size: 2rem;
+    }
+    
+    .hero-title::before {
+        font-size: 2.5rem;
+        line-height: 0.75;
     }
     
     .hero-cta {
@@ -1340,7 +1395,44 @@ img {
     padding-top: 2rem;
     border-top: 1px solid var(--border-light);
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+}
+
+/* Footer 中的聯絡資訊樣式 */
+.footer .contact-info {
+    font-style: normal;
+    text-align: center;
+}
+
+.footer .contact-info p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.footer .contact-email,
+.footer .contact-phone {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer .contact-email:hover,
+.footer .contact-phone:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+/* Footer 響應式樣式 */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .footer {
+        padding: 2rem 0 1rem;
+    }
 }
 
 /* Footer 手機版調整 */
