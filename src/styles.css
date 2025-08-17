@@ -53,7 +53,7 @@
 
 body {
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
     background: var(--bg-primary);
     margin: 0;
     padding: 0;
@@ -123,10 +123,35 @@ section[id] {
 }
 
 .nav-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff !important;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     gap: 0.5rem;
-    flex: 1;
+    padding-top: 15vh;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* 預設不可互動，避免遮擋按鈕 */
+    transition: all 0.3s ease;
+    z-index: 1002;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* 抽屜顯示狀態（全尺寸通用） */
+.nav-menu.active {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .nav-link {
@@ -146,11 +171,13 @@ section[id] {
 
 /* 漢堡菜單 */
 .hamburger {
-    display: none;
+    display: flex;
     flex-direction: column;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1101; /* 高於抽屜選單 */
     flex: 0 0 auto;
+    width: 32px;
+    height: 24px;
 }
 
 .hamburger .bar {
@@ -174,8 +201,8 @@ section[id] {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
-/* 手機版樣式 */
-@media (max-width: 768px) {
+/* 手機與平板樣式（含 iPad） */
+@media (max-width: 1024px) {
     .nav-container {
         justify-content: space-between;
         padding: 1rem 1.5rem;
@@ -186,45 +213,13 @@ section[id] {
         z-index: 1001;
     }
     
-    .nav-menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: #fff !important;
-        flex-direction: column;
-        justify-content: flex-start; /* 改為從頂部開始 */
-        align-items: center;
-        gap: 0.5rem; /* 進一步減少間距到 8px */
-        padding-top: 15vh; /* 減少頂部留白到 15% */
-        transform: translateX(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 1002;
-        width: 100vw;
-        height: 100vh;
-        overflow-y: auto; /* 允許滾動，防止內容超出 */
-    }
-    
     .nav-menu.active {
         transform: translateX(0);
         opacity: 1;
         visibility: visible;
-        background: #fff !important;
     }
     
-    /* 深色模式 */
-    @media (prefers-color-scheme: dark) {
-        .nav-menu {
-            background: #0a0a0a !important;
-        }
-        
-        .nav-menu.active {
-            background: #0a0a0a !important;
-        }
-    }
+    /* 深色模式（移至根層級合併條件）見下方 */
     
     .nav-link {
         font-size: 1.1rem; /* 修正字體大小 */
@@ -232,11 +227,7 @@ section[id] {
         color: var(--text-primary);
     }
     
-    .hamburger {
-        display: flex;
-        flex: 0 0 auto;
-        z-index: 1003; /* 高於菜單，確保始終可見 */
-    }
+    .hamburger { z-index: 1003; }
     
     /* 當菜單開啟時防止背景滾動 */
     body.nav-open {
@@ -245,22 +236,32 @@ section[id] {
         width: 100%;
     }
     
-    /* 針對超小螢幕（iPhone SE 等）的特殊調整 */
-    @media (max-width: 375px) and (max-height: 667px) {
-        .nav-menu {
-            gap: 0.25rem; /* 更小的間距 4px */
-            padding-top: 10vh; /* 更小的頂部留白 */
-        }
-        
-        .nav-link {
-            font-size: 1rem; /* 更小的字體 */
-            padding: 0.25rem 1rem; /* 更小的 padding：4px 16px */
-        }
-    }
+    /* 超小螢幕特殊調整（移至根層級）見下方 */
     
     /* AEO 指南內容區域手機版調整 */
     .aeo-guide-content {
         padding: 2rem 0;
+    }
+}
+
+/* 深色模式：調整全屏菜單背景（所有尺寸） */
+@media (prefers-color-scheme: dark) {
+    .nav-menu,
+    .nav-menu.active {
+        background: #0a0a0a !important;
+    }
+}
+
+/* 針對超小螢幕（iPhone SE 等）的特殊調整 */
+@media (max-width: 375px) and (max-height: 667px) {
+    .nav-menu {
+        gap: 0.25rem; /* 更小的間距 4px */
+        padding-top: 10vh; /* 更小的頂部留白 */
+    }
+    
+    .nav-link {
+        font-size: 1rem; /* 更小的字體 */
+        padding: 0.25rem 1rem; /* 更小的 padding：4px 16px */
     }
 }
 
@@ -401,28 +402,28 @@ img {
 
 /* 引用樣式 - 使用 EB Garamond 字體 */
 blockquote {
-    font-family: 'EB Garamond', serif;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
     font-size: 1.2rem;
     font-style: italic;
     line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
-    border-left: 4px solid #007acc;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent-color);
     margin: 20px 0;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     position: relative;
 }
 
 blockquote::before {
     content: "\201C";
     font-size: 3rem;
-    color: #007acc;
+    color: var(--accent-color);
     position: absolute;
     top: -10px;
     left: 10px;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 blockquote cite,
@@ -1084,12 +1085,12 @@ blockquote footer::before {
     left: 0;
     width: 0%;
     height: 3px;
-    background: #000;
+    background: #000; /* light mode: black */
     z-index: 10001;
     transition: width 0.1s ease;
 }
 
-/* 深色模式下的進度條 */
+/* 深色模式：進度條顏色為白色 */
 @media (prefers-color-scheme: dark) {
     .reading-progress {
         background: #fff;
@@ -1180,13 +1181,7 @@ blockquote footer::before {
     text-decoration: none;
 }
 
-.nav-menu {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 2rem;
-}
+/* 移除桌面水平導覽樣式，統一使用抽屜式 */
 
 .nav-link {
     color: var(--text-secondary);
@@ -1200,12 +1195,7 @@ blockquote footer::before {
     color: var(--accent-color);
 }
 
-/* 桌面版隱藏漢堡菜單 */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-}
+/* 桌面版隱藏漢堡菜單（已在檔案上方定義，避免覆寫手機規則） */
 
 /* 指南連結樣式 */
 .service-link {
@@ -1253,70 +1243,6 @@ blockquote footer::before {
     .tech-comparison,
     .difference-highlight {
         grid-template-columns: 1fr;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: var(--bg-secondary);
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-        z-index: 999;
-        border-top: 1px solid var(--border-color);
-    }
-
-    .nav-menu.active {
-        left: 0;
-    }
-
-    .nav-menu li {
-        margin: 0;
-        border-bottom: 1px solid var(--border-light);
-    }
-
-    .nav-menu li:last-child {
-        border-bottom: none;
-    }
-
-    .nav-link {
-        padding: 1.5rem;
-        display: block;
-        width: 100%;
-    }
-    
-    .hamburger {
-        display: block;
-        cursor: pointer;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 25px;
-        height: 25px;
-    }
-
-    .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-    
-    .hamburger .bar {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background: var(--text-primary);
-        margin: 3px 0;
-        transition: 0.3s;
-        border-radius: 3px;
     }
 }
 

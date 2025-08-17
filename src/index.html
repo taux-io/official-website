@@ -41,9 +41,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="preload" href="styles.min.css" as="style">
+    <link rel="stylesheet" href="styles.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Schema.org 結構化數據 -->
     <script type="application/ld+json">
@@ -352,7 +352,7 @@
                     <a href="#frequently-asked-questions" class="nav-link">常見問題</a>
                     <a href="#contact-us" class="nav-link">聯絡我們</a>
                 </div>
-                <div class="hamburger" id="hamburger">
+                <div class="hamburger" id="hamburger" role="button" aria-label="主選單" aria-expanded="false">
                     <span class="bar"></span>
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -361,7 +361,7 @@
         </nav>
 
         <section class="hero-section" id="about-us">
-            <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo" class="company-logo" loading="lazy" />
+            <img src="taux-logo-light.png" alt="TauX 拓思科技有限公司 Logo" class="company-logo" loading="lazy" decoding="async" fetchpriority="high" />
             <h1 class="hero-title">不是在寫軟體，我們在重構「解決問題」的方式</h1>
             <div class="hero-description" itemscope itemtype="https://schema.org/Organization">
                 <blockquote class="hero-quote">
@@ -527,37 +527,6 @@
         </div>
     </footer>
 
-    <!-- 深色模式自動切換 JavaScript -->
-    <script>
-        (function() {
-            'use strict';
-            
-            function initializeTheme() {
-                if (!window.matchMedia) return;
-                
-                const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                
-                function handleThemeChange(e) {
-                    console.log('主題已切換至:', e.matches ? '深色模式' : '一般模式');
-                }
-                
-                if (darkModeQuery.addEventListener) {
-                    darkModeQuery.addEventListener('change', handleThemeChange);
-                } else if (darkModeQuery.addListener) {
-                    darkModeQuery.addListener(handleThemeChange);
-                }
-                
-                console.log('目前主題:', darkModeQuery.matches ? '深色模式' : '一般模式');
-            }
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initializeTheme);
-            } else {
-                initializeTheme();
-            }
-        })();
-    </script>
-
-    <script src="script.js"></script>
+    <script src="script.min.js" defer></script>
 </body>
 </html>

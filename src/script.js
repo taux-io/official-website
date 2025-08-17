@@ -1,9 +1,6 @@
 // TauX 網站基本 JavaScript 功能
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 平滑滾動功能
-    initSmoothScrolling();
-    
     // 導航菜單功能
     initMobileNavigation();
     
@@ -20,29 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initReadingProgress();
 });
 
-// 平滑滾動到錨點
-function initSmoothScrolling() {
-    const links = document.querySelectorAll('a[href^="#"]');
-    
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                const offsetTop = targetElement.offsetTop - 80; // 考慮固定導航欄高度
-                
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
 // 行動裝置導航功能
 function initMobileNavigation() {
     const hamburger = document.querySelector('.hamburger');
@@ -52,6 +26,8 @@ function initMobileNavigation() {
         hamburger.addEventListener('click', function() {
             this.classList.toggle('active');
             navMenu.classList.toggle('active');
+            const expanded = this.classList.contains('active');
+            this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             
             // 防止背景滾動
             if (navMenu.classList.contains('active')) {
@@ -87,7 +63,8 @@ function initScrollNavigation() {
         const currentScrollY = window.scrollY;
         
         if (currentScrollY > 100) { // 滾動超過 100px 後才開始隱藏
-            if (currentScrollY > lastScrollY && !navMenu.classList.contains('active')) {
+            const menuActive = navMenu ? navMenu.classList.contains('active') : false;
+            if (currentScrollY > lastScrollY && !menuActive) {
                 // 向下滾動且菜單未開啟時隱藏
                 navigation.classList.add('hidden');
             } else {
@@ -110,7 +87,7 @@ function initScrollNavigation() {
         }
     }
 
-    window.addEventListener('scroll', requestTick);
+    window.addEventListener('scroll', requestTick, { passive: true });
 
     // 處理觸摸設備的滾動
     let touchStartY = 0;
@@ -118,12 +95,12 @@ function initScrollNavigation() {
 
     window.addEventListener('touchstart', (e) => {
         touchStartY = e.changedTouches[0].screenY;
-    });
+    }, { passive: true });
 
     window.addEventListener('touchend', (e) => {
         touchEndY = e.changedTouches[0].screenY;
         requestTick();
-    });
+    }, { passive: true });
 }
 
 // 聯絡表單處理
@@ -288,8 +265,6 @@ function generateTableOfContents() {
     // 等待一下確保頁面完全載入
     setTimeout(() => {
         const headings = document.querySelectorAll('.guide-section h2');
-        console.log('找到標題數量:', headings.length); // 調試用
-        
         if (headings.length === 0) return;
         
         // 檢查是否已經有目錄存在
@@ -320,7 +295,12 @@ function generateTableOfContents() {
         
         // 監聽深色模式切換
         if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addListener(setTocTitleColor);
+            const mq = window.matchMedia('(prefers-color-scheme: dark)');
+            if (mq.addEventListener) {
+                mq.addEventListener('change', setTocTitleColor);
+            } else if (mq.addListener) {
+                mq.addListener(setTocTitleColor);
+            }
         }
         
         tocContainer.appendChild(tocTitle);
@@ -345,9 +325,6 @@ function generateTableOfContents() {
         const firstSection = document.querySelector('.guide-section');
         if (firstSection) {
             firstSection.parentNode.insertBefore(tocContainer, firstSection);
-            console.log('目錄已插入'); // 調試用
-        } else {
-            console.log('找不到 .guide-section'); // 調試用
         }
     }, 200);
 }
@@ -375,5 +352,5 @@ function initReadingProgress() {
         const scrollPercent = (scrollTop / docHeight) * 100;
         
         progressBar.style.width = scrollPercent + '%';
-    });
+    }, { passive: true });
 }
