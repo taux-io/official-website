@@ -1,102 +1,96 @@
-/* CSS 變數定義 - 支援深色/一般模式 */
+/* Jules-Inspired Style Refresh */
+
+/* 1. Color Palette & Typography */
 :root {
-    /* 一般模式顏色 - 簡化色彩系統 */
-    --bg-primary: #fff;
-    --bg-secondary: rgba(255, 255, 255, .98);
-    --text-primary: #1a1a1a;
-    --text-secondary: #4a4a4a;
-    --text-muted: #6b7280;
-    --border-color: #e5e7eb;
-    --border-light: rgba(229, 231, 235, .5);
-    --btn-bg: #fff;
-    --btn-hover-bg: #f9fafb;
-    --btn-border: #e5e7eb;
-    --btn-border-hover: #d1d5db;
-    --btn-primary-bg: #1a1a1a;
-    --btn-primary-hover: #374151;
-    --btn-primary-text: #fff;
-    --nav-shadow: rgba(0, 0, 0, .05);
-    --quote-border: #1a1a1a;
-    --accent-color: #3b82f6;
+    /* Light Mode */
+    --bg-primary: #F8F9FA;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #202124;
+    --text-secondary: #5F6368;
+    --text-muted: #9AA0A6;
+    --border-color: #DADCE0;
+    --border-light: rgba(0, 0, 0, 0.08);
+
+    /* Google-esque Accent Colors */
+    --color-blue: #4285F4;
+    --color-red: #EA4335;
+    --color-yellow: #FBBC04;
+    --color-green: #34A853;
+    --accent-color: var(--color-blue);
+
+    /* UI Elements */
+    --btn-primary-bg: var(--color-blue);
+    --btn-primary-hover: #1967D2;
+    --btn-primary-text: #FFFFFF;
+    --nav-shadow: rgba(0, 0, 0, 0.05);
+    --card-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
 }
 
-/* 深色模式顏色 - 保持一致性 */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-primary: #0a0a0a;
-        --bg-secondary: rgba(10, 10, 10, .98);
-        --text-primary: #fafafa;
-        --text-secondary: #d1d5db;
-        --text-muted: #9ca3af;
-        --border-color: #2d2d2d;
-        --border-light: rgba(45, 45, 45, .5);
-        --btn-bg: #1a1a1a;
-        --btn-hover-bg: #2d2d2d;
-        --btn-border: #2d2d2d;
-        --btn-border-hover: #404040;
-        --btn-primary-bg: #3b82f6;
-        --btn-primary-hover: #2563eb;
-        --btn-primary-text: #fff;
-        --nav-shadow: rgba(0, 0, 0, .2);
-        --quote-border: #3b82f6;
-        --accent-color: #60a5fa;
+        --bg-primary: #171717;
+        --bg-secondary: #202124;
+        --text-primary: #E8EAED;
+        --text-secondary: #BDC1C6;
+        --text-muted: #9AA0A6;
+        --border-color: #5F6368;
+        --border-light: rgba(255, 255, 255, 0.1);
+
+        --btn-primary-bg: var(--color-blue);
+        --btn-primary-hover: #8AB4F8;
+        --btn-primary-text: #202124;
+
+        --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
     }
 }
 
-/* 基礎重置和效能優化 */
-*,
-*::before,
-*::after {
+/* 2. Base Styles */
+*, *::before, *::after {
     box-sizing: border-box;
-    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
-}
-
-body {
-    color: var(--text-primary);
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Microsoft YaHei', '微軟正黑體', sans-serif;
-    background: var(--bg-primary);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    line-height: 1.6;
-    font-size: 16px;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
+    scroll-padding-top: 90px;
 }
 
-/* 錨點目標元素的滾動偏移 */
-section[id] {
-    scroll-margin-top: 80px;
-}
-
-/* 主容器 - 簡化佈局 */
-.main-container {
-    margin: 0 auto;
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    margin: 0;
     padding: 0;
-    padding-top: 80px;
-    max-width: 720px;
-    overflow: visible;
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* 導航欄 - 支援漢堡菜單和自動隱藏 */
+/* 3. Layout & Navigation */
+.main-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 90px 20px 0;
+}
+
 .main-navigation {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--bg-secondary);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-light);
-    box-shadow: 0 1px 0 var(--nav-shadow);
-    transition: transform 0.3s ease;
+    background: rgba(248, 249, 250, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .main-navigation {
+        background: rgba(23, 23, 23, 0.8);
+    }
 }
 
 .main-navigation.hidden {
@@ -112,1310 +106,219 @@ section[id] {
     margin: 0 auto;
 }
 
-.nav-logo {
-    flex: 0 0 auto;
-}
-
 .nav-logo .logo-text {
-    font-size: 1.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-primary);
-    display: inline-block;
+    text-decoration: none;
     transition: transform .6s ease;
 }
 
-/* Logo 旋轉 1 τ（1 turn） */
-.spin-1turn { transform: rotate(1turn); }
-
-.nav-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #fff !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly; /* 垂直均分間距 */
-    align-items: center;
-    gap: 0;
-    padding: max(env(safe-area-inset-top), 1rem) 1rem max(env(safe-area-inset-bottom), 1rem);
-    transform: translateX(-100%);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none; /* 預設不可互動，避免遮擋按鈕 */
-    transition: all 0.3s ease;
-    z-index: 1002;
-    width: 100vw;
-    height: 100dvh; /* 動態視窗高度，避免行動瀏覽器工具列影響 */
-    min-height: 100vh;
-    overflow: hidden;
+.logo-text:hover {
+    transform: rotate(5deg) scale(1.05);
 }
 
-/* 抽屜顯示狀態（全尺寸通用） */
-.nav-menu.active {
-    transform: translateX(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.nav-link {
-    padding: 0.75rem 1.5rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: color .2s ease;
-    border-radius: 6px;
-}
-
-/* 抽屜內的選單：滿版居中並增加可點擊區域 */
-.nav-menu .nav-link {
-    display: block;
-    width: 100%;
-    max-width: 560px;
-    text-align: center;
-    padding: 1rem 2rem;
-    margin: 0 auto;
-}
-
-.nav-link:hover {
-    color: var(--text-primary);
-    background: var(--btn-hover-bg);
-}
-
-/* 漢堡菜單 */
-.hamburger {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    z-index: 1101; /* 高於抽屜選單 */
-    flex: 0 0 auto;
-    width: 32px;
-    height: 24px;
-}
-
-.hamburger .bar {
-    width: 25px;
-    height: 3px;
-    background: var(--text-primary);
-    margin: 3px 0;
-    transition: 0.3s;
-    border-radius: 2px;
-}
-
-.hamburger.active .bar:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active .bar:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-
-/* 手機與平板樣式（含 iPad） */
-@media (max-width: 1024px) {
-    .nav-container {
-        justify-content: space-between;
-        padding: 1rem 1.5rem;
-    }
-    
-    .nav-logo {
-        flex: 0 0 auto;
-        z-index: 1001;
-    }
-    
-    .nav-menu.active {
-        transform: translateX(0);
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    /* 深色模式（移至根層級合併條件）見下方 */
-    
-    .nav-link {
-        font-size: 1.1rem; /* 修正字體大小 */
-        padding: 0.3rem 1rem; /* 4.8px 16px - 進一步減少垂直 padding */
-        color: var(--text-primary);
-    }
-    
-    .hamburger { z-index: 1003; }
-    
-    /* 當菜單開啟時防止背景滾動 */
-    body.nav-open {
-        overflow: hidden;
-        position: fixed;
-        width: 100%;
-    }
-    
-    /* 超小螢幕特殊調整（移至根層級）見下方 */
-    
-    /* AEO 指南內容區域手機版調整 */
-    .aeo-guide-content {
-        padding: 2rem 0;
-    }
-}
-
-/* 深色模式：調整全屏菜單背景（所有尺寸） */
-@media (prefers-color-scheme: dark) {
-    .nav-menu,
-    .nav-menu.active {
-        background: #0a0a0a !important;
-    }
-}
-
-/* X Grid Overlay */
-.x-grid {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    display: none;
-    background-image:
-      linear-gradient(to right, rgba(0,0,0,.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,.08) 1px, transparent 1px);
-    background-size: 32px 32px, 32px 32px;
-}
-@media (prefers-color-scheme: dark) {
-    .x-grid { background-image:
-      linear-gradient(to right, rgba(255,255,255,.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,.08) 1px, transparent 1px); }
-}
-.x-grid.active { display: block; }
-
-/* Tau Mode（可擴充的風格開關） */
-.tau-mode :root {}
-
-/* 針對超小螢幕（iPhone SE 等）的特殊調整 */
-@media (max-width: 375px) and (max-height: 667px) {
-    .nav-menu {
-        gap: 0.25rem; /* 更小的間距 4px */
-        padding-top: 10vh; /* 更小的頂部留白 */
-    }
-    
-    .nav-link {
-        font-size: 1rem; /* 更小的字體 */
-        padding: 0.25rem 1rem; /* 更小的 padding：4px 16px */
-    }
-}
-
-/* 區段基礎樣式 - 統一間距 */
-.hero-section,
-.services-section,
-.faq-section,
-.contact-section {
-    padding: 4rem 2rem;
-    text-align: center;
-}
-
-/* 標題系統 - 簡化層次 */
-.hero-title,
-.section-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 1.5rem 0;
-    line-height: 1.2;
-    letter-spacing: -.02em;
-}
-
-.section-subtitle {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    font-weight: 400;
-    line-height: 1.5;
-    margin: 0 0 3rem 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* 按鈕系統 - 簡化設計 */
-.contact-actions {
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-}
-
-.btn {
-    padding: 0.875rem 2rem;
-    border: 1px solid var(--btn-border);
-    border-radius: 8px;
-    background: var(--btn-bg);
-    color: var(--text-secondary);
-    font-weight: 500;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all .2s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn:hover {
-    background: var(--btn-hover-bg);
-    border-color: var(--btn-border-hover);
-    transform: translateY(-1px);
-}
-
-.btn--primary,
-.btn-primary {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-    border-color: var(--btn-primary-bg);
-}
-
-.btn--primary:hover,
-.btn-primary:hover {
-    background: var(--btn-primary-hover);
-    border-color: var(--btn-primary-hover);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--text-primary);
-    border-color: var(--border-color);
-}
-
-.btn-secondary:hover {
-    background: var(--btn-hover-bg);
-    border-color: var(--btn-border-hover);
-}
-
-.btn-outline {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 2px solid var(--border-light);
-}
-
-.btn-outline:hover {
-    background: var(--background-secondary);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-}
-
-/* 圖片優化 */
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.company-logo {
-    width: 180px;
-    margin-bottom: 2rem;
-    opacity: .9;
-}
-
-.contact-icon {
-    width: 120px;
-    margin: 2rem 0;
-    opacity: .8;
-}
-
-/* 深色模式 logo 切換 */
-@media (prefers-color-scheme: dark) {
-    .company-logo {
-        content: url('taux-logo-dark.png');
-    }
-}
-
-/* 內容區域 - 改善可讀性 */
-.hero-description,
-.services-content,
-.faq-content,
-.contact-content {
-    background: transparent;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 600px;
-    border-radius: 0;
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    text-align: left;
-}
-
-/* 引用樣式 - 使用 EB Garamond 字體 */
-blockquote {
-    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    font-size: 1.2rem;
-    font-style: italic;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    background: var(--bg-secondary);
-    border-left: 4px solid var(--accent-color);
-    margin: 20px 0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    position: relative;
-}
-
-blockquote::before {
-    content: "\201C";
-    font-size: 3rem;
-    color: var(--accent-color);
-    position: absolute;
-    top: -10px;
-    left: 10px;
+/* 4. Headings & Typography */
+h1, h2, h3, .section-title, .hero-title {
     font-family: 'Space Grotesk', sans-serif;
-}
-
-blockquote cite,
-blockquote footer {
-    font-style: normal;
-    font-weight: bold;
-    color: #666;
-    font-size: 0.9rem;
-    margin-top: 10px;
-    display: block;
-}
-
-blockquote cite::before,
-blockquote footer::before {
-    content: "— ";
-}
-
-/* 響應式設計 */
-@media (max-width: 1600px) {
-    blockquote {
-        font-size: 1.1rem;
-        padding: 18px;
-    }
-}
-
-@media (max-width: 1200px) {
-    blockquote {
-        font-size: 1rem;
-        padding: 15px;
-    }
-}
-
-@media (max-width: 600px) {
-    blockquote {
-        font-size: 0.95rem;
-        padding: 12px;
-        margin: 15px 0;
-    }
-    
-    blockquote::before {
-        font-size: 2.5rem;
-        top: -8px;
-        left: 8px;
-    }
-}
-
-/* 哲學介紹 - 改善視覺層次 */
-.philosophy-intro {
-    margin: 3rem 0;
-    text-align: left;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.philosophy-text {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
+    line-height: 1.3;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-}
-
-.philosophy-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.philosophy-list li {
-    padding: 0.75rem 0;
-    color: var(--text-secondary);
-    position: relative;
-    padding-left: 2rem;
-    line-height: 1.6;
-}
-
-.philosophy-list li::before {
-    content: "•";
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 1.2rem;
-    position: absolute;
-    left: 0;
-    top: 0.75rem;
-}
-
-/* 服務標題 - 簡化設計 */
-.service-title,
-.faq-question {
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 3rem 0 1rem 0;
-    text-align: left;
-    line-height: 1.4;
-}
-
-.service-title:first-child,
-.faq-question:first-child {
-    margin-top: 0;
-}
-
-/* 服務描述 - 改善可讀性 */
-.service-description,
-.faq-answer {
-    text-align: left;
-    margin: 0 0 1.5rem 0;
-    line-height: 1.7;
-    color: var(--text-secondary);
-}
-
-/* 服務結論 - 簡化設計 */
-.service-conclusion {
-    margin: 4rem 0 2rem;
-    text-align: center;
-}
-
-.conclusion-text {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    margin: 1.5rem 0;
-    line-height: 1.6;
-}
-
-/* 聯絡資訊 - 改善排版 */
-.contact-email,
-.contact-phone {
-    color: var(--text-primary);
-    text-decoration: underline;
-    text-decoration-color: var(--border-color);
-    text-underline-offset: 2px;
-}
-
-.contact-email:hover,
-.contact-phone:hover {
-    color: var(--accent-color);
-    text-decoration-color: var(--accent-color);
-}
-
-.contact-info {
-    text-align: left;
-    font-style: normal;
-    line-height: 1.8;
-    color: var(--text-secondary);
-}
-
-/* 手機版響應式設計 */
-@media (max-width: 768px) {
-    html {
-        scroll-padding-top: 70px;
-    }
-    
-    section[id] {
-        scroll-margin-top: 70px;
-    }
-    
-    body {
-        font-size: 15px;
-        line-height: 1.6;
-    }
-    
-    .main-container {
-        margin: 0;
-        padding-top: 50px; /* 減少從 70px 到 50px */
-    }
-    
-    .hero-section,
-    .services-section,
-    .faq-section,
-    .contact-section {
-        padding: 3rem 1.5rem;
-    }
-    
-    .hero-title,
-    .section-title {
-        font-size: 1.875rem;
-        margin: 0 0 1.25rem 0;
-        line-height: 1.2;
-    }
-    
-    .hero-title::before {
-        font-size: 2.25rem;
-        line-height: 0.7;
-    }
-    
-    .section-subtitle {
-        font-size: 1rem;
-        margin: 0 0 2.5rem 0;
-        line-height: 1.5;
-    }
-    
-    .btn {
-        width: 100%;
-        margin: 0.5rem 0;
-        font-size: 0.95rem;
-        padding: 1rem 1.5rem;
-    }
-    
-    .nav-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-        margin: 0 0.125rem;
-    }
-    
-    .hero-description,
-    .services-content,
-    .faq-content,
-    .contact-content {
-        margin: 0;
-        padding: 0;
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-    
-    .service-title,
-    .faq-question {
-        font-size: 1.125rem;
-        margin: 2.5rem 0 1rem 0;
-    }
-    
-    .service-description,
-    .faq-answer {
-        line-height: 1.6;
-        margin: 0 0 1.25rem 0;
-    }
-    
-    .contact-info {
-        line-height: 1.7;
-    }
-    
-    /* 手機版引用樣式調整 */
-    .hero-quote {
-        padding: 1.5rem;
-        margin: 2.5rem auto;
-        max-width: 100%;
-    }
-    
-    .hero-quote p {
-        font-size: 1.125rem;
-    }
-    
-    .service-quote {
-        padding: 1.25rem;
-        margin: 2rem auto;
-        max-width: 100%;
-    }
-    
-    .service-quote p {
-        font-size: 1rem;
-    }
-    
-    .philosophy-intro {
-        margin: 2.5rem 0;
-        max-width: 100%;
-    }
-    
-    .philosophy-text {
-        font-size: 1rem;
-    }
-    
-    .conclusion-text {
-        font-size: 1rem;
-    }
-}
-
-/* AEO 指南頁面專用樣式 */
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.aeo-hero {
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    padding: 6rem 0 4rem;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.aeo-hero .hero-content {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.hero-quote {
-    font-size: 1.5rem;
-    font-style: italic;
-    color: var(--accent-color);
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border-left: 4px solid var(--accent-color);
-    background: rgba(59, 130, 246, 0.05);
-    border-radius: 8px;
+    letter-spacing: -0.02em;
 }
 
 .hero-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.hero-title::before {
-    content: '[';
-    position: absolute;
-    left: 0;
-    top: 0;
     font-size: 3rem;
-    font-weight: 300;
-    color: var(--accent-color);
-    line-height: 0.8;
-    font-family: 'Inter', sans-serif;
+    margin: 1.5rem 0;
 }
 
-.hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-}
-
-.hero-cta {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.aeo-guide-content {
-    padding: 4rem 0;
-    background: var(--bg-primary);
-}
-
-.guide-section {
-    margin-bottom: 1.5rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.guide-section:last-child {
-    border-bottom: none;
-}
-
-.guide-section h2 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    position: relative;
-}
-
-.guide-section h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 1.5rem 0 1rem;
-    padding-left: 1rem;
-    border-left: 4px solid var(--accent-color);
-    background: var(--bg-secondary);
-    padding: 1rem;
-    border-radius: 8px;
-}
-
-.guide-section p {
-    color: var(--text-secondary);
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-}
-
-.guide-section ul,
-.guide-section ol {
-    color: var(--text-secondary);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-    padding-left: 2rem;
-}
-
-.guide-section li {
-    margin-bottom: 0.75rem;
-}
-
-.guide-section strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.content-block {
-    background: var(--bg-secondary);
-    padding: 2.5rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin: 2rem 0;
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.benefit-item {
-    background: var(--bg-secondary);
-    padding: 2.5rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.benefit-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
-    border-color: var(--accent-color);
-}
-
-.benefit-item h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-}
-
-.core-component {
-    background: var(--bg-secondary);
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
-
-.core-component:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.core-component h3 {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0;
-    background: none;
-    border: none;
-}
-
-.value-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.value-item {
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+.section-title {
+    font-size: 2.5rem;
+    margin: 4rem 0 1rem;
     text-align: center;
 }
 
-.service-package {
-    background: var(--bg-secondary);
-    padding: 3rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-}
-
-.service-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0;
-}
-
-.service-list li {
-    padding: 0.5rem 0;
+.section-subtitle {
+    font-size: 1.2rem;
     color: var(--text-secondary);
-}
-
-.process-list {
-    margin: 1rem 0;
-    color: var(--text-secondary);
-}
-
-.cta-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
     text-align: center;
+    margin: 0 auto 3rem;
+    max-width: 600px;
 }
 
-.comparison-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 1.5rem;
-}
-
-.comparison-item {
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
-.comparison-item.seo {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.1) 100%);
-    border-color: rgba(239, 68, 68, 0.2);
-}
-
-.comparison-item.aeo {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.1) 100%);
-    border-color: rgba(59, 130, 246, 0.2);
-}
-
-.tech-comparison {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 1.5rem;
-}
-
-.tech-column {
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
-.key-difference {
-    margin-top: 2rem;
-}
-
-.difference-highlight {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.diff-item {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-/* 目錄樣式 - 確保優先級 */
-.table-of-contents {
-    background: var(--bg-secondary) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 16px !important;
-    padding: 2.5rem !important;
-    margin: 3rem 0 4rem !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-    border-left: 4px solid var(--accent-color) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    .aeo-guide-content .table-of-contents h3 {
-        color: #ffffff !important;
-        border-bottom: 2px solid #4a5568 !important;
-    }
-}
-
-/* 確保在所有深色主題下都生效 */
-@media (prefers-color-scheme: dark) {
-    .table-of-contents h3 {
-        color: #ffffff !important;
-        border-bottom: 2px solid #4a5568 !important;
-    }
-}
-
-/* 針對手動切換到深色模式的情況 */
-[data-theme="dark"] .table-of-contents h3 {
-    color: #ffffff !important;
-    border-bottom: 2px solid #4a5568 !important;
-}
-
-.table-of-contents h3 {
-    color: #1a1a1a !important;
-    margin: 0 0 2rem 0 !important;
-    font-size: 1.5rem !important;
-    font-weight: 700 !important;
-    border-bottom: 2px solid #e5e7eb !important;
-    padding-bottom: 0.75rem !important;
-    display: block !important;
-    width: 100% !important;
-}
-
-/* 深色模式下的目錄標題 */
-@media (prefers-color-scheme: dark) {
-    .table-of-contents h3 {
-        color: #ffffff !important;
-        border-bottom: 2px solid #4a5568 !important;
-    }
-}
-
-.table-of-contents ul {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: block !important;
-}
-
-.table-of-contents li {
-    margin: 0 0 1rem 0 !important;
-    padding: 0 !important;
-    position: relative !important;
-    background: var(--bg-primary) !important;
-    border-radius: 8px !important;
-    border: 1px solid var(--border-light) !important;
-    transition: all 0.3s ease !important;
-    display: block !important;
-}
-
-.table-of-contents li:hover {
-    transform: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-    border-color: var(--border-color) !important;
-}
-
-.table-of-contents li::before {
-    content: "📋" !important;
-    position: absolute !important;
-    left: 1rem !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    font-size: 1.1rem !important;
-}
-
-.table-of-contents a {
-    color: var(--text-primary) !important;
-    text-decoration: none !important;
-    font-weight: 500 !important;
-    font-size: 1rem !important;
-    transition: all 0.2s ease !important;
-    display: block !important;
-    padding: 1rem 1rem 1rem 3rem !important;
-    border-radius: 8px !important;
-}
-
-.table-of-contents a:hover {
-    color: var(--text-primary) !important;
-    background: var(--background-secondary) !important;
-    transform: none !important;
-}
-
-/* 閱讀進度條樣式 */
-.reading-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background: #000; /* light mode: black */
-    z-index: 10001;
-    transition: width 0.1s ease;
-}
-
-/* 深色模式：進度條顏色為白色 */
-@media (prefers-color-scheme: dark) {
-    .reading-progress {
-        background: #fff;
-    }
-}
-
-.final-cta {
-    background: linear-gradient(135deg, var(--accent-color) 0%, #2563eb 100%);
-    color: white;
-    padding: 4rem 0;
-    text-align: center;
-    margin-top: 4rem;
-    border-radius: 16px;
-}
-
-.final-cta h2 {
-    color: white !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important;
-    margin-bottom: 1.5rem;
+/* 5. Buttons & Links */
+.btn, .btn-primary {
     display: inline-block;
-}
-
-.cta-content p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    color: white;
-}
-
-.final-cta .btn {
-    margin: 0.5rem;
-}
-
-.final-cta .btn-primary {
-    background: white;
-    color: var(--accent-color);
-    border-color: white;
-}
-
-.final-cta .btn-primary:hover {
-    background: #f8fafc;
-    border-color: #f8fafc;
-}
-
-.final-cta .btn-secondary {
-    background: transparent;
-    color: white;
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.final-cta .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: white;
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-/* 導航樣式增強 */
-.navbar {
-    background: var(--bg-secondary);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-light);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 1rem 0;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo a {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 28px; /* Rounded pill shape */
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
     text-decoration: none;
+    transition: all .2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* 移除桌面水平導覽樣式，統一使用抽屜式 */
-
-.nav-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent-color);
-}
-
-/* 桌面版隱藏漢堡菜單（已在檔案上方定義，避免覆寫手機規則） */
-
-/* 指南連結樣式 */
-.service-link {
-    margin-top: 1rem;
+.btn:hover, .btn-primary:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .guide-link {
     color: var(--accent-color);
     text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.guide-link:hover {
-    color: #2563eb;
-    transform: translateX(4px);
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-    .aeo-hero {
-        padding: 4rem 0 2rem;
-    }
-    
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-title::before {
-        font-size: 2.5rem;
-        line-height: 0.75;
-    }
-    
-    .hero-cta {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .benefits-grid,
-    .value-grid,
-    .comparison-grid,
-    .tech-comparison,
-    .difference-highlight {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Footer 樣式 */
-.footer {
-    background: var(--bg-secondary);
-    padding: 3rem 0 1rem;
-    border-top: 1px solid var(--border-light);
-    margin-top: 4rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-.footer-section h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.footer-section h4 {
-    font-size: 1rem;
     font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
 }
-
-.footer-section p {
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-}
-
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-section ul li {
-    margin-bottom: 0.5rem;
-}
-
-.footer-section ul li a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.footer-section ul li a:hover {
-    color: var(--text-primary);
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.social-links a {
-    color: var(--text-secondary);
-    font-size: 1.25rem;
-    transition: color 0.2s ease;
-}
-
-.social-links a:hover {
-    color: var(--text-primary);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-light);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-/* Footer 中的聯絡資訊樣式 */
-.footer .contact-info {
-    font-style: normal;
-    text-align: center;
-}
-
-.footer .contact-info p {
-    margin-bottom: 0.5rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-
-.footer .contact-email,
-.footer .contact-phone {
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.footer .contact-email:hover,
-.footer .contact-phone:hover {
-    color: var(--text-primary);
+.guide-link:hover {
     text-decoration: underline;
 }
 
-/* Footer 響應式樣式 */
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .footer {
-        padding: 2rem 0 1rem;
-    }
+/* 6. Content Sections */
+.hero-section, .services-section, .faq-section, .contact-section {
+    padding: 4rem 0;
+    text-align: center;
 }
 
-/* Footer 手機版調整 */
-@media (max-width: 768px) {
-    .footer {
-        padding: 2rem 0 1rem;
-        margin-top: 2rem;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .footer-section {
-        text-align: center;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
+.hero-description, .services-content, .faq-content, .contact-content {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    text-align: left;
 }
+
+/* 7. Blockquotes */
+blockquote {
+    border: none;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-primary);
+}
+
+blockquote::before {
+    content: '“';
+    font-family: 'Space Grotesk', sans-serif;
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-size: 4rem;
+    color: var(--accent-color);
+    opacity: 0.3;
+}
+
+/* 8. Cards & Interactive Elements */
+.content-block, .benefit-item, .core-component, .comparison-item, .tech-column {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1), 0 2px 6px 2px rgba(60, 64, 67, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.benefit-item:hover, .core-component:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow);
+}
+
+/* Philosophy List (Checkmarks) */
+.philosophy-list { list-style: none; padding-left: 0; }
+.philosophy-list li {
+    padding-left: 2rem;
+    position: relative;
+}
+.philosophy-list li::before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+    font-weight: bold;
+}
+
+/* FAQ Section */
+.faq-question {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+}
+.faq-answer {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+/* 9. AEO Guide Specifics */
+.aeo-hero {
+    padding: 4rem 0;
+    text-align: center;
+}
+.benefits-grid, .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.comparison-item.seo { border-top: 4px solid var(--color-red); }
+.comparison-item.aeo { border-top: 4px solid var(--color-blue); }
+
+/* Final CTA */
+.final-cta {
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    box-shadow: var(--card-shadow);
+}
+
+/* 10. Footer */
+.footer {
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+    text-align: center;
+}
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.footer-section h4 { font-weight: 600; }
+.footer ul { list-style: none; padding: 0; }
+.footer ul a { color: var(--text-secondary); text-decoration: none; }
+.footer ul a:hover { color: var(--accent-color); text-decoration: underline; }
+.footer-bottom { color: var(--text-muted); font-size: 0.9rem; }
+
+/* 11. Mobile & Responsive */
+@media (max-width: 768px) {
+    body { font-size: 15px; }
+    .main-container { padding-top: 80px; }
+    .hero-title { font-size: 2.2rem; }
+    .section-title { font-size: 1.8rem; }
+    .btn { width: 100%; }
+}
+
+/* Hamburger Menu (copied from original, no major style changes needed) */
+.hamburger { display: flex; flex-direction: column; cursor: pointer; z-index: 1101; width: 32px; height: 24px; }
+.hamburger .bar { width: 25px; height: 3px; background: var(--text-primary); margin: 3px 0; transition: 0.3s; border-radius: 2px; }
+.hamburger.active .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+.hamburger.active .bar:nth-child(2) { opacity: 0; }
+.hamburger.active .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+
+.nav-menu { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: var(--bg-secondary); display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1002; }
+.nav-menu.active { transform: translateX(0); }
+.nav-menu .nav-link { display: block; padding: 1rem 2rem; font-size: 1.5rem; color: var(--text-primary); text-decoration: none; }
+body.nav-open { overflow: hidden; }
+
+/* Reading Progress Bar */
+.reading-progress { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: var(--accent-color); z-index: 10001; transition: width 0.1s ease; }
