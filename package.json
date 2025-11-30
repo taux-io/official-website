@@ -1,5 +1,29 @@
 {
   "devDependencies": {
-    "playwright": "^1.57.0"
-  }
+    "@tailwindcss/postcss": "^4.1.17",
+    "autoprefixer": "^10.4.22",
+    "playwright": "^1.57.0",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.1.17"
+  },
+  "name": "app",
+  "version": "1.0.0",
+  "description": "![TauX Logo](src/taux-logo-light.png)",
+  "main": "verify.js",
+  "scripts": {
+    "build:css": "postcss --verbose static/css/full.css -o static/css/output.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taux-io/official-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/taux-io/official-website/issues"
+  },
+  "homepage": "https://github.com/taux-io/official-website#readme"
 }
