@@ -20,5 +20,10 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
+	// Route for the AEO guide page
+	r.GET("/aeo-guide.html", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "aeo-guide.html", nil)
+	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

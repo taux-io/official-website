@@ -12,7 +12,7 @@
   "description": "![TauX Logo](src/taux-logo-light.png)",
   "main": "verify.js",
   "scripts": {
-    "build:css": "postcss --verbose static/css/full.css -o static/css/output.css"
+    "build:css": "postcss static/css/input.css -o static/css/output.css"
   },
   "repository": {
     "type": "git",
