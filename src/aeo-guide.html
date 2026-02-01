@@ -136,11 +136,17 @@
 </head>
 
 <body
-    class="bg-taux-bg-light text-gray-900 font-sans antialiased selection:bg-google-blue/30 dark:bg-taux-bg-dark dark:text-gray-100">
+    class="bg-taux-bg-light text-gray-900 font-sans antialiased selection:bg-tech-blue/30 dark:bg-taux-bg-dark dark:text-gray-100 bg-grid-pattern min-h-screen relative overflow-x-hidden">
+    <!-- Ambient Glow Blobs -->
+    <div
+        class="fixed top-0 left-1/4 w-96 h-96 bg-tech-blue/20 rounded-full blur-[128px] -z-10 pointer-events-none mix-blend-screen">
+    </div>
+    <div
+        class="fixed bottom-0 right-1/4 w-96 h-96 bg-tech-purple/20 rounded-full blur-[128px] -z-10 pointer-events-none mix-blend-screen">
+    </div>
     <div class="max-w-[760px] mx-auto px-5 pt-[90px]">
         <!-- Navigation (Same as index.html) -->
-        <nav class="fixed top-0 left-0 right-0 z-50 bg-taux-bg-light/80 backdrop-blur-md border-b border-gray-200 transition-all dark:bg-taux-bg-dark/80 dark:border-gray-700"
-            aria-label="Main Navigation">
+        <nav class="fixed top-0 left-0 right-0 z-50 glass-panel transition-all" aria-label="Main Navigation">
             <div class="flex justify-between items-center py-4 px-6 max-w-7xl mx-auto">
                 <div class="z-[1002]">
                     <a href="index.html"
@@ -197,7 +203,9 @@
         <header class="py-20 text-center">
             <div class="container mx-auto">
                 <div class="max-w-3xl mx-auto">
-                    <h1 class="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">AEO 入門指南
+                    <h1
+                        class="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white text-glow">
+                        AEO 入門指南
                     </h1>
                     <p class="text-xl text-gray-500 dark:text-gray-400 mb-10">讓 AI 成為你的免費流量入口</p>
                     <blockquote
@@ -216,7 +224,7 @@
                     <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-6">什麼是 GEO (Generative
                         Engine Optimization)？</h2>
                     <div
-                        class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                        class="glass-panel p-8 rounded-2xl shadow-sm hover:border-tech-blue/30 transition-all duration-300">
                         <p class="mb-6 text-lg text-gray-700 dark:text-gray-300">
                             <strong>GEO (Generative Engine Optimization)</strong> 是一種優化網站內容的技術，旨在提高內容在生成式 AI (如 ChatGPT,
                             Perplexity, Gemini) 輸出結果中的可見度與引用率。
@@ -258,25 +266,25 @@
                     <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8">為什麼 AEO 現在這麼重要？</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg hover:border-tech-blue/50 transition-all duration-300">
                             <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
                                     class="mr-2">🤖</span> AI 正在改變搜尋習慣</h3>
                             <p class="text-gray-600 dark:text-gray-400">越來越多人直接問 AI 問題，而不是輸入關鍵字。</p>
                         </div>
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg hover:border-tech-blue/50 transition-all duration-300">
                             <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
                                     class="mr-2">📈</span> 更精準的流量</h3>
                             <p class="text-gray-600 dark:text-gray-400">會問問題的用戶，通常離「購買」或「決策」更近。</p>
                         </div>
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg hover:border-tech-blue/50 transition-all duration-300">
                             <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
                                     class="mr-2">🛡️</span> 建立品牌權威</h3>
                             <p class="text-gray-600 dark:text-gray-400">當 AI 都在引用你的觀點，你就是這個領域的專家。</p>
                         </div>
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-lg hover:border-tech-blue/50 transition-all duration-300">
                             <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
                                     class="mr-2">🌐</span> 內容的再利用</h3>
                             <p class="text-gray-600 dark:text-gray-400">好的 AEO 內容，同時也是絕佳的社群貼文、廣告素材。</p>
@@ -288,8 +296,9 @@
                     <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8">AEO 和 SEO 的差別，一張圖看懂
                     </h2>
 
-                    <div class="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-                        <table class="w-full text-left bg-white dark:bg-taux-card-dark border-collapse">
+                    <div
+                        class="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm glass-panel">
+                        <table class="w-full text-left bg-transparent border-collapse">
                             <caption class="sr-only">SEO 與 AEO 的核心差異比較表</caption>
                             <thead>
                                 <tr
@@ -351,7 +360,7 @@
 
                     <div class="space-y-6">
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            class="glass-panel p-8 rounded-2xl shadow-sm hover:border-tech-purple/40 transition-all duration-300">
                             <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第一步：建立一個 AI 友善的網站 (容器)
                             </h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-4">這不是一個普通的網站。它的每個細節都為了讓 AI 容易讀懂而設計。</p>
@@ -363,7 +372,7 @@
                         </div>
 
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            class="glass-panel p-8 rounded-2xl shadow-sm hover:border-tech-purple/40 transition-all duration-300">
                             <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第二步：填入高品質的「答案」(內容)</h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-4">我們會教你如何產出 AI 喜歡的內容。</p>
                             <ul class="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-400">
@@ -374,7 +383,7 @@
                         </div>
 
                         <div
-                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            class="glass-panel p-8 rounded-2xl shadow-sm hover:border-tech-purple/40 transition-all duration-300">
                             <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第三步：建立權威性 (外鏈)</h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-4">讓其他值得信賴的網站，為你的答案背書。</p>
                             <ul class="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-400">
@@ -387,17 +396,23 @@
 
                 <section class="mt-20">
                     <div
-                        class="bg-gradient-to-br from-white to-gray-50 dark:from-taux-card-dark dark:to-gray-900 rounded-3xl p-10 md:p-16 shadow-lg border border-gray-100 dark:border-gray-800 text-center">
-                        <h2 class="font-display text-3xl font-bold mb-4 text-gray-900 dark:text-white">準備好讓 AI 為你工作了嗎？
-                        </h2>
-                        <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">AEO 是一項長期投資，但回報是建立一個可持續的、高品質的流量來源。</p>
-                        <div class="flex flex-col sm:flex-row justify-center gap-4">
-                            <a class="px-8 py-4 bg-google-blue text-white rounded-full text-lg font-bold hover:bg-blue-600 hover:shadow-lg transition-all"
-                                href="index.html#contact-us">預約一次免費諮詢</a>
-                            <a class="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-full text-lg font-bold hover:bg-gray-50 hover:border-gray-300 transition-all dark:bg-transparent dark:text-white dark:border-gray-700 dark:hover:bg-gray-800"
-                                href="index.html#our-services">看看我們的其他服務</a>
+                        class="glass-panel rounded-3xl p-10 md:p-16 shadow-2xl border border-gray-100 dark:border-gray-800 text-center relative overflow-hidden group">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-tech-blue/10 to-tech-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         </div>
-                    </div>
+                        <div class="relative z-10">
+                            <h2 class="font-display text-3xl font-bold mb-4 text-gray-900 dark:text-white">準備好讓 AI
+                                為你工作了嗎？
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">AEO 是一項長期投資，但回報是建立一個可持續的、高品質的流量來源。
+                            </p>
+                            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                                <a class="px-8 py-4 bg-gradient-to-r from-tech-blue to-tech-purple text-white rounded-full text-lg font-bold hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:-translate-y-1 transition-all"
+                                    href="index.html#contact-us">預約一次免費諮詢</a>
+                                <a class="px-8 py-4 bg-transparent text-gray-700 border border-gray-200 rounded-full text-lg font-bold hover:bg-white/10 hover:border-white/30 transition-all dark:text-white dark:border-gray-700"
+                                    href="index.html#our-services">看看我們的其他服務</a>
+                            </div>
+                        </div>
                 </section>
 
             </div>
