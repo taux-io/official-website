@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +9,7 @@
     <meta name="keywords" content="AEO,答案引擎優化,AI搜尋,SEO,內容行銷,結構化數據,TauX">
     <meta name="author" content="TauX">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://taux.io/aeo-guide.html">
@@ -17,42 +18,83 @@
     <meta property="og:image" content="https://taux.io/aeo-guide-og.jpg">
     <meta property="og:locale" content="zh_TW">
     <meta property="og:site_name" content="TauX">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://taux.io/aeo-guide.html">
     <meta property="twitter:title" content="AEO 入門：AI 時代，如何讓 AI 幫你帶流量？ | TauX 拓思科技">
     <meta property="twitter:description" content="一篇看懂 AEO 是什麼、為什麼它比 SEO 更重要，以及如何讓你的品牌成為 AI 的首選答案。">
     <meta property="twitter:image" content="https://taux.io/aeo-guide-og.jpg">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://taux.io/aeo-guide.html">
-    
+
     <!-- Favicons -->
     <link rel="icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
-    
+
     <!-- CSS -->
     <link rel="preload" href="styles.min.css" as="style">
     <link rel="stylesheet" href="styles.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Schema.org 結構化數據 -->
     <!-- Schema.org 結構化數據 -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "AEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？",
-        "description": "本指南將解釋 AEO（答案引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 AEO 在 AI 搜尋中獲得優勢。",
-        "author": { "@type": "Organization", "name": "TauX 拓思科技有限公司", "url": "https://taux.io" },
-        "publisher": { "@type": "Organization", "name": "TauX", "logo": { "@type": "ImageObject", "url": "https://taux.io/logo.png" }},
-        "datePublished": "2025-08-15",
-        "dateModified": "2025-08-15",
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/aeo-guide.html" },
-        "image": "https://taux.io/aeo-guide-og.jpg"
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "https://taux.io/#website",
+                "url": "https://taux.io",
+                "name": "TauX"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://taux.io/aeo-guide.html#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首頁",
+                        "item": "https://taux.io"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "AEO 指南",
+                        "item": "https://taux.io/aeo-guide.html"
+                    }
+                ]
+            },
+            {
+                "@type": "Article",
+                "@id": "https://taux.io/aeo-guide.html#article",
+                "headline": "AEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？",
+                "description": "本指南將解釋 AEO（答案引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 AEO 在 AI 搜尋中獲得優勢。",
+                "author": { "@type": "Organization", "name": "TauX", "url": "https://taux.io" },
+                "publisher": { "@type": "Organization", "name": "TauX", "logo": { "@type": "ImageObject", "url": "https://taux.io/logo.png" }},
+                "datePublished": "2025-08-15",
+                "dateModified": "2025-08-15",
+                "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/aeo-guide.html" },
+                "image": "https://taux.io/aeo-guide-og.jpg",
+                "isPartOf": { "@id": "https://taux.io/#website" },
+                "mentions": [
+                    { "@type": "Thing", "name": "Generative Artificial Intelligence", "sameAs": "https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
+                    { "@type": "Thing", "name": "Search Engine Optimization", "sameAs": "https://en.wikipedia.org/wiki/Search_engine_optimization" }
+                ],
+                "speakable": {
+                    "@type": "SpeakableSpecification",
+                    "cssSelector": ["#what-is-aeo p", "#what-is-aeo dd"]
+                }
+            }
+        ]
     }
     </script>
 
@@ -91,156 +133,286 @@
     </script>
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="main-navigation">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html" class="logo-text" title="回到首頁">TauX</a>
+</head>
+
+<body
+    class="bg-taux-bg-light text-gray-900 font-sans antialiased selection:bg-google-blue/30 dark:bg-taux-bg-dark dark:text-gray-100">
+    <div class="max-w-[760px] mx-auto px-5 pt-[90px]">
+        <!-- Navigation (Same as index.html) -->
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-taux-bg-light/80 backdrop-blur-md border-b border-gray-200 transition-all dark:bg-taux-bg-dark/80 dark:border-gray-700"
+            aria-label="Main Navigation">
+            <div class="flex justify-between items-center py-4 px-6 max-w-7xl mx-auto">
+                <div class="z-[1002]">
+                    <a href="index.html"
+                        class="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-google-blue to-google-green hover:scale-105 transition-transform duration-300 block"
+                        title="回到首頁">TauX</a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div id="navMenu" class="hidden md:flex items-center gap-8">
+                    <a href="index.html#about-us"
+                        class="px-4 py-2 text-gray-600 hover:text-google-blue font-medium transition-colors dark:text-gray-300">我們是誰</a>
+                    <a href="index.html#our-services"
+                        class="px-4 py-2 text-gray-600 hover:text-google-blue font-medium transition-colors dark:text-gray-300">我們做什麼</a>
+                    <a href="aeo-guide.html"
+                        class="px-4 py-2 text-google-blue font-medium transition-colors dark:text-google-blue">AEO
+                        指南</a>
+                    <a href="index.html#frequently-asked-questions"
+                        class="px-4 py-2 text-gray-600 hover:text-google-blue font-medium transition-colors dark:text-gray-300">常見問題</a>
+                    <a href="index.html#contact-us"
+                        class="ml-4 px-6 py-2.5 bg-google-blue text-white rounded-full hover:bg-blue-600 active:transform active:scale-95 transition-all font-semibold shadow-md hover:shadow-lg">聊一聊</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[1002] focus:outline-none"
+                    id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-transform duration-300 origin-center bar-1"></span>
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-opacity duration-300 bar-2"></span>
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-transform duration-300 origin-center bar-3"></span>
+                </button>
             </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="index.html#about-us" class="nav-link">我們是誰</a>
-                <a href="index.html#our-services" class="nav-link">我們做什麼</a>
-                <a href="aeo-guide.html" class="nav-link">AEO 指南</a>
-                <a href="index.html#frequently-asked-questions" class="nav-link">常見問題</a>
-                <a href="index.html#contact-us" class="nav-link">聊一聊</a>
-            </div>
-            <div class="hamburger" id="hamburger" role="button" aria-label="主選單" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+
+        </nav>
+
+        <!-- Mobile Menu Overlay (Moved outside nav to ensure full viewport height) -->
+        <div id="mobileMenuOverlay"
+            class="fixed inset-0 bg-white dark:bg-taux-bg-dark backdrop-blur-xl z-[1001] translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 md:hidden">
+            <a href="index.html#about-us"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-google-blue transition-colors mobile-link">我們是誰</a>
+            <a href="index.html#our-services"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-google-blue transition-colors mobile-link">我們做什麼</a>
+            <a href="aeo-guide.html" class="text-2xl font-bold text-google-blue transition-colors mobile-link">AEO
+                指南</a>
+            <a href="index.html#frequently-asked-questions"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-google-blue transition-colors mobile-link">常見問題</a>
+            <a href="index.html#contact-us"
+                class="text-2xl font-bold text-google-blue hover:text-blue-600 transition-colors mobile-link">聊一聊</a>
         </div>
-    </nav>
 
-    <!-- Header -->
-    <header class="aeo-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">AEO 入門指南</h1>
-                <p class="hero-subtitle">讓 AI 成為你的免費流量入口</p>
-                <blockquote class="hero-quote">以前，我們優化給「搜尋引擎」看；現在，我們優化給「答案引擎」懂。</blockquote>
+        <!-- Header -->
+        <header class="py-20 text-center">
+            <div class="container mx-auto">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">AEO 入門指南
+                    </h1>
+                    <p class="text-xl text-gray-500 dark:text-gray-400 mb-10">讓 AI 成為你的免費流量入口</p>
+                    <blockquote
+                        class="relative pl-6 border-l-4 border-google-blue italic text-lg text-gray-700 dark:text-gray-300 text-left bg-gray-50 dark:bg-taux-card-dark p-6 rounded-r-xl">
+                        以前，我們優化給「搜尋引擎」看；現在，我們優化給「答案引擎」懂。
+                    </blockquote>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Main Content -->
-    <main class="aeo-guide-content">
-        <div class="container">
-            
-            <section class="guide-section" id="what-is-aeo">
-                <h2>首先，AEO 到底是什麼？</h2>
-                <div class="content-block">
-                    <p>AEO 的全名是 <strong>Answer Engine Optimization</strong>（答案引擎優化）。</p>
-                    <p>你可以把它想成是「專為 AI 打造的 SEO」。它的目標很簡單：讓你的內容，成為 AI 回答問題時的首選答案。</p>
-                    <ul>
-                        <li><strong>如果 SEO 是讓人在地圖上找到你的店...</strong></li>
-                        <li><strong>那 AEO 就是讓 AI 直接把客人帶進你的店裡。</strong></li>
-                    </ul>
-                </div>
-            </section>
+        <!-- Main Content -->
+        <main class="space-y-20">
+            <div class="container mx-auto">
 
-            <section class="guide-section" id="why-aeo-matters">
-                <h2>為什麼 AEO 現在這麼重要？</h2>
-                <div class="benefits-grid">
-                    <div class="benefit-item"><h3>🤖 AI 正在改變搜尋習慣</h3><p>越來越多人直接問 AI 問題，而不是輸入關鍵字。</p></div>
-                    <div class="benefit-item"><h3>📈 更精準的流量</h3><p>會問問題的用戶，通常離「購買」或「決策」更近。</p></div>
-                    <div class="benefit-item"><h3>🛡️ 建立品牌權威</h3><p>當 AI 都在引用你的觀點，你就是這個領域的專家。</p></div>
-                    <div class="benefit-item"><h3>🌐 內容的再利用</h3><p>好的 AEO 內容，同時也是絕佳的社群貼文、廣告素材。</p></div>
-                </div>
-            </section>
+                <section id="what-is-aeo" class="space-y-6">
+                    <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-6">什麼是 GEO (Generative
+                        Engine Optimization)？</h2>
+                    <div
+                        class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                        <p class="mb-6 text-lg text-gray-700 dark:text-gray-300">
+                            <strong>GEO (Generative Engine Optimization)</strong> 是一種優化網站內容的技術，旨在提高內容在生成式 AI (如 ChatGPT,
+                            Perplexity, Gemini) 輸出結果中的可見度與引用率。
+                        </p>
 
-            <section class="guide-section" id="aeo-vs-seo">
-                <h2>AEO 和 SEO 的差別，一張圖看懂</h2>
-                <div class="comparison-grid">
-                    <div class="comparison-item seo">
-                        <h4>SEO (搜尋引擎優化)</h4>
-                        <ul>
-                            <li><strong>目標：</strong>搶排名</li>
-                            <li><strong>對象：</strong>Google 演算法</li>
-                            <li><strong>方法：</strong>關鍵字、反向連結、網站速度</li>
-                            <li><strong>產出：</strong>排在前面的藍色連結</li>
-                        </ul>
+                        <dl class="space-y-4 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl">
+                            <div class="flex flex-col md:flex-row md:items-start gap-2">
+                                <dt class="min-w-[120px] font-bold text-gray-900 dark:text-white flex items-center">
+                                    <span class="mr-2">🎯</span> 核心目標：
+                                </dt>
+                                <dd class="text-gray-700 dark:text-gray-300">
+                                    爭取在 AI 回答中的<strong class="text-google-blue">「引用連結 (Citations)」</strong>與「推薦來源」。
+                                </dd>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-start gap-2">
+                                <dt class="min-w-[120px] font-bold text-gray-900 dark:text-white flex items-center">
+                                    <span class="mr-2">⚖️</span> 關鍵差異：
+                                </dt>
+                                <dd class="text-gray-700 dark:text-gray-300">
+                                    傳統 SEO 針對關鍵字排名；<strong class="text-gray-900 dark:text-white">GEO 針對 LLM
+                                        的語意理解與實體關聯</strong>。
+                                </dd>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-start gap-2">
+                                <dt class="min-w-[120px] font-bold text-gray-900 dark:text-white flex items-center">
+                                    <span class="mr-2">📈</span> 預期效益：
+                                </dt>
+                                <dd class="text-gray-700 dark:text-gray-300">
+                                    透過優化結構化數據與內容塊 (Chunks)，可顯著提升品牌在 AI 搜尋引擎中的曝光機會。
+                                </dd>
+                            </div>
+                        </dl>
                     </div>
+                </section>
 
-                    <div class="comparison-item aeo">
-                        <h4>AEO (答案引擎優化)</h4>
-                        <ul>
-                            <li><strong>目標：</strong>成為答案</li>
-                            <li><strong>對象：</strong>大型語言模型 (LLM)</li>
-                            <li><strong>方法：</strong>結構化數據、語意清晰、可引用性</li>
-                            <li><strong>產出：</strong>AI 回答中的一段話、一個引用來源</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="key-difference">
-                    <h3>一句話總結</h3>
-                    <div class="difference-highlight">
-                        <div class="diff-item"><strong>SEO:</strong> 爭取被點擊</div>
-                        <div class="diff-item"><strong>AEO:</strong> 爭取被引用</div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="guide-section" id="how-aeo-works">
-                <h2>我們如何執行 AEO？</h2>
-                <p class="section-subtitle">我們把這個過程稱為「打造答案容器」。</p>
-                
-                <div class="core-component">
-                    <h3>第一步：建立一個 AI 友善的網站 (容器)</h3>
-                    <p>這不是一個普通的網站。它的每個細節都為了讓 AI 容易讀懂而設計。</p>
-                    <ul>
-                        <li><strong>清晰的結構：</strong>用 schema.org 告訴 AI 每一頁的重點是什麼。</li>
-                        <li><strong>直接的內容：</strong>用問答、條列式的方式，直接給出答案。</li>
-                        <li><strong>高效能：</strong>網站速度快、沒有干擾，讓 AI 爬蟲暢行無阻。</li>
-                    </ul>
-                </div>
-
-                <div class="core-component">
-                    <h3>第二步：填入高品質的「答案」(內容)</h3>
-                    <p>我們會教你如何產出 AI 喜歡的內容。</p>
-                    <ul>
-                        <li><strong>從問題出發：</strong>思考你的客戶會問 AI 什麼問題。</li>
-                        <li><strong>提供獨特觀點：</strong>不只是整理資料，而是給出你的專家見解。</li>
-                        <li><strong>保持更新：</strong>定期回來看內容，確保它沒有過時。</li>
-                    </ul>
-                </div>
-
-                <div class="core-component">
-                    <h3>第三步：建立權威性 (外鏈)</h3>
-                    <p>讓其他值得信賴的網站，為你的答案背書。</p>
-                    <ul>
-                        <li><strong>相關性優先：</strong>找主題相關的網站建立連結。</li>
-                        <li><strong>品質重於數量：</strong>一個高品質的連結，勝過一百個垃圾連結。</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="final-cta">
-                <div class="container">
-                    <div class="cta-content">
-                        <h2>準備好讓 AI 為你工作了嗎？</h2>
-                        <p>AEO 是一項長期投資，但回報是建立一個可持續的、高品質的流量來源。</p>
-                        <div class="cta-buttons">
-                            <a class="btn btn-primary" href="index.html#contact-us">預約一次免費諮詢</a>
-                            <a class="btn btn-secondary" href="index.html#our-services">看看我們的其他服務</a>
+                <section id="why-aeo-matters" class="space-y-8 pt-12">
+                    <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8">為什麼 AEO 現在這麼重要？</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
+                                    class="mr-2">🤖</span> AI 正在改變搜尋習慣</h3>
+                            <p class="text-gray-600 dark:text-gray-400">越來越多人直接問 AI 問題，而不是輸入關鍵字。</p>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
+                                    class="mr-2">📈</span> 更精準的流量</h3>
+                            <p class="text-gray-600 dark:text-gray-400">會問問題的用戶，通常離「購買」或「決策」更近。</p>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
+                                    class="mr-2">🛡️</span> 建立品牌權威</h3>
+                            <p class="text-gray-600 dark:text-gray-400">當 AI 都在引用你的觀點，你就是這個領域的專家。</p>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all">
+                            <h3 class="text-xl font-bold mb-3 flex items-center text-gray-900 dark:text-white"><span
+                                    class="mr-2">🌐</span> 內容的再利用</h3>
+                            <p class="text-gray-600 dark:text-gray-400">好的 AEO 內容，同時也是絕佳的社群貼文、廣告素材。</p>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-        </div>
-    </main>
+                <section id="aeo-vs-seo" class="space-y-8 pt-12">
+                    <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8">AEO 和 SEO 的差別，一張圖看懂
+                    </h2>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="main-container">
-            <div class="footer-bottom">
+                    <div class="overflow-x-auto rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <table class="w-full text-left bg-white dark:bg-taux-card-dark border-collapse">
+                            <caption class="sr-only">SEO 與 AEO 的核心差異比較表</caption>
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
+                                    <th class="p-6 font-bold text-gray-900 dark:text-white whitespace-nowrap">維度</th>
+                                    <th class="p-6 font-bold text-google-red whitespace-nowrap">
+                                        <abbr title="Search Engine Optimization">SEO</abbr> (搜尋引擎優化)
+                                    </th>
+                                    <th class="p-6 font-bold text-google-blue whitespace-nowrap">
+                                        <abbr title="Generative Engine Optimization">GEO</abbr> (答案引擎優化)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                                <tr>
+                                    <td class="p-6 font-bold text-gray-900 dark:text-white">目標</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">搶排名 (Ranking)</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">成為答案 (Answer)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-gray-900 dark:text-white">對象</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">Google 演算法</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">
+                                        大型語言模型 (<abbr title="Large Language Model">LLM</abbr>)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-gray-900 dark:text-white">方法</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">關鍵字、反向連結、網站速度</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">結構化數據、語意清晰、可引用性</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-gray-900 dark:text-white">產出</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">排在前面的藍色連結</td>
+                                    <td class="p-6 text-gray-600 dark:text-gray-400">AI 回答中的引用來源</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl text-center mt-8">
+                        <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">一句話總結</h3>
+                        <div class="flex flex-col md:flex-row justify-center gap-8 text-lg">
+                            <div
+                                class="bg-white dark:bg-taux-card-dark px-6 py-3 rounded-full shadow-sm border border-gray-100 dark:border-gray-700">
+                                <strong class="text-google-red">SEO:</strong> <span data-metric="goal">爭取被點擊</span>
+                            </div>
+                            <div
+                                class="bg-white dark:bg-taux-card-dark px-6 py-3 rounded-full shadow-sm border border-gray-100 dark:border-gray-700">
+                                <strong class="text-google-blue">GEO:</strong> <span data-metric="goal">爭取被引用</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="how-aeo-works" class="space-y-8 pt-12">
+                    <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white">我們如何執行 AEO？</h2>
+                    <p class="text-xl text-gray-500 dark:text-gray-400 mb-8">我們把這個過程稱為「打造答案容器」。</p>
+
+                    <div class="space-y-6">
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第一步：建立一個 AI 友善的網站 (容器)
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">這不是一個普通的網站。它的每個細節都為了讓 AI 容易讀懂而設計。</p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-400">
+                                <li><strong>清晰的結構：</strong>用 schema.org 告訴 AI 每一頁的重點是什麼。</li>
+                                <li><strong>直接的內容：</strong>用問答、條列式的方式，直接給出答案。</li>
+                                <li><strong>高效能：</strong>網站速度快、沒有干擾，讓 AI 爬蟲暢行無阻。</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第二步：填入高品質的「答案」(內容)</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">我們會教你如何產出 AI 喜歡的內容。</p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-400">
+                                <li><strong>從問題出發：</strong>思考你的客戶會問 AI 什麼問題。</li>
+                                <li><strong>提供獨特觀點：</strong>不只是整理資料，而是給出你的專家見解。</li>
+                                <li><strong>保持更新：</strong>定期回來看內容，確保它沒有過時。</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-taux-card-dark p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">第三步：建立權威性 (外鏈)</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">讓其他值得信賴的網站，為你的答案背書。</p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-400">
+                                <li><strong>相關性優先：</strong>找主題相關的網站建立連結。</li>
+                                <li><strong>品質重於數量：</strong>一個高品質的連結，勝過一百個垃圾連結。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mt-20">
+                    <div
+                        class="bg-gradient-to-br from-white to-gray-50 dark:from-taux-card-dark dark:to-gray-900 rounded-3xl p-10 md:p-16 shadow-lg border border-gray-100 dark:border-gray-800 text-center">
+                        <h2 class="font-display text-3xl font-bold mb-4 text-gray-900 dark:text-white">準備好讓 AI 為你工作了嗎？
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">AEO 是一項長期投資，但回報是建立一個可持續的、高品質的流量來源。</p>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <a class="px-8 py-4 bg-google-blue text-white rounded-full text-lg font-bold hover:bg-blue-600 hover:shadow-lg transition-all"
+                                href="index.html#contact-us">預約一次免費諮詢</a>
+                            <a class="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-full text-lg font-bold hover:bg-gray-50 hover:border-gray-300 transition-all dark:bg-transparent dark:text-white dark:border-gray-700 dark:hover:bg-gray-800"
+                                href="index.html#our-services">看看我們的其他服務</a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-taux-card-dark border-t border-gray-200 dark:border-gray-800 mt-20">
+            <div class="max-w-7xl mx-auto py-8 px-6 text-center text-gray-500 dark:text-gray-500 text-sm">
                 <p>&copy; 2025 TauX 拓思科技有限公司</p>
             </div>
-        </div>
-    </footer>
+        </footer>
+
+    </div>
 
     <script src="script.min.js" defer></script>
 </body>
+
 </html>

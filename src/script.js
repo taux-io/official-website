@@ -4,44 +4,66 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNavigation();
     initScrollNavigation();
     initReadingProgress();
-    initScrollAnimations(); // <-- New animation function
+    initScrollAnimations();
     initLogoSpin();
     initEasterEggs();
 });
 
-// Mobile Navigation (Hamburger Menu)
+// Mobile Navigation
 function initMobileNavigation() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    if (!hamburger || !navMenu) return;
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenuOverlay');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
 
-    hamburger.addEventListener('click', () => {
-        const isActive = hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        hamburger.setAttribute('aria-expanded', isActive);
-        document.body.classList.toggle('nav-open', isActive);
-    });
+    if (!hamburger || !mobileMenu) return;
 
-    navMenu.querySelectorAll('.nav-link').forEach(link => {
+    function toggleMenu() {
+        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !isExpanded);
+
+        // Toggle specific bar transforms for hamburger animation
+        const bars = hamburger.querySelectorAll('span');
+        if (!isExpanded) {
+            // Open state
+            bars[0].classList.add('rotate-45', 'translate-y-2');
+            bars[1].classList.add('opacity-0');
+            bars[2].classList.add('-rotate-45', '-translate-y-2');
+
+            mobileMenu.classList.remove('translate-x-full');
+            document.body.classList.add('overflow-hidden');
+        } else {
+            // Closed state
+            bars[0].classList.remove('rotate-45', 'translate-y-2');
+            bars[1].classList.remove('opacity-0');
+            bars[2].classList.remove('-rotate-45', '-translate-y-2');
+
+            mobileMenu.classList.add('translate-x-full');
+            document.body.classList.remove('overflow-hidden');
+        }
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
         link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.classList.remove('nav-open');
+            if (hamburger.getAttribute('aria-expanded') === 'true') {
+                toggleMenu();
+            }
         });
     });
 }
 
-// Hide Nav on Scroll
+// Hide Nav on Scroll (Updated for Tailwind classes)
 function initScrollNavigation() {
-    const nav = document.querySelector('.main-navigation');
+    const nav = document.querySelector('nav[aria-label="Main Navigation"]');
     if (!nav) return;
     let lastScrollY = window.scrollY;
 
     window.addEventListener('scroll', () => {
         if (window.scrollY > 100 && window.scrollY > lastScrollY) {
-            nav.classList.add('hidden');
+            nav.classList.add('-translate-y-full');
         } else {
-            nav.classList.remove('hidden');
+            nav.classList.remove('-translate-y-full');
         }
         lastScrollY = window.scrollY;
     }, { passive: true });
@@ -49,9 +71,13 @@ function initScrollNavigation() {
 
 // Reading Progress Bar
 function initReadingProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'reading-progress';
-    document.body.appendChild(progressBar);
+    let progressBar = document.querySelector('.reading-progress');
+    if (!progressBar) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'reading-progress fixed top-0 left-0 h-1 bg-google-blue z-[1003] transition-all duration-100';
+        progressBar.style.width = '0%';
+        document.body.appendChild(progressBar);
+    }
 
     window.addEventListener('scroll', () => {
         const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
@@ -59,14 +85,15 @@ function initReadingProgress() {
     }, { passive: true });
 }
 
-// **NEW** Scroll-triggered Animations
+// Scroll-triggered Animations
 function initScrollAnimations() {
     if (!('IntersectionObserver' in window)) return;
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
+                entry.target.classList.remove('opacity-0', 'translate-y-8');
+                entry.target.classList.add('opacity-100', 'translate-y-0');
                 observer.unobserve(entry.target);
             }
         });
@@ -75,46 +102,33 @@ function initScrollAnimations() {
         rootMargin: '0px 0px -50px 0px'
     });
 
-    const elementsToAnimate = document.querySelectorAll('.hero-title, .hero-description, .section-title, .section-subtitle, .content-block, .benefit-item, .core-component, .comparison-item, .final-cta');
-    elementsToAnimate.forEach(el => observer.observe(el));
+    // Select semantic elements and key areas
+    const elementsToAnimate = document.querySelectorAll('section h1, section h2, section p, article, blockquote, .faq-content details');
 
-    // Add CSS for the animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0; /* Start hidden */
-        }
-    `;
-    document.head.appendChild(style);
+    elementsToAnimate.forEach(el => {
+        el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-8'); // Initial state
+        observer.observe(el);
+    });
 }
 
 // Logo Spin on Click
 function initLogoSpin() {
-    const logo = document.querySelector('.logo-text');
+    const logo = document.querySelector('a[title^="τ"]'); // Select by title attribute prefix
     if (!logo) return;
     logo.addEventListener('click', (e) => {
         e.preventDefault();
+        // Use Tailwind utility or inline style for specific animation
         logo.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
         logo.style.transform = `rotate(${Math.random() > 0.5 ? '' : '-'}360deg)`;
         setTimeout(() => {
             logo.style.transition = '';
             logo.style.transform = '';
+            window.location.href = '/'; // Navigate after spin
         }, 700);
     });
 }
 
-// Easter Eggs (Konami Code Style)
+// Easter Eggs
 function initEasterEggs() {
     let keyBuffer = '';
     const secretCode = 'TAUX';
