@@ -1,11 +1,21 @@
 User-agent: *
 Allow: /
 
+# GEO / AEO: Explicitly allow AI Crawlers and LLMs
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # Sitemap
 Sitemap: https://taux.io/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1
 
 # Block unnecessary files
 Disallow: /admin/
