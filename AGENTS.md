@@ -4,7 +4,7 @@
 - `src/`: Static site source (HTML/CSS/JS and assets)
   - `index.html`, `aeo-guide.html`, `what-is-llms-txt.html`: Pages
   - `styles.css`, `script.js`: Global styles and interactivity
-  - `robots.txt`, `sitemap.xml`, `site.webmanifest`: SEO/PWA
+  - `robots.txt`, `sitemap.xml`, `llms.txt`, `site.webmanifest`: SEO/PWA/AI
   - Favicons and images (e.g., `taux-logo-*.png`, `rocket.png`)
 - `Dockerfile`, `nginx.conf`, `docker-compose.yml`: Containerized nginx setup
 - `README.md`: Project overview and usage
@@ -24,13 +24,13 @@
 ## Testing Guidelines
 - Manual QA: Load locally, test mobile/desktop breakpoints, dark-mode behavior, and navigation
 - Browser checks: Console free of errors; links and assets resolve (200s)
-- SEO: Verify `robots.txt` and `sitemap.xml`; run Lighthouse for accessibility/performance
+- SEO: Verify `robots.txt`, `sitemap.xml` and `llms.txt`; run Lighthouse for accessibility/performance
 - No unit test framework is used; keep changes small and easy to verify
 
 ## Commit & Pull Request Guidelines
 - Commits: Prefer Conventional Commits (e.g., `feat:`, `fix:`, `chore(nginx): ...`). Short, imperative, English or zh-TW acceptable
 - PRs: Include summary, before/after screenshots (mobile + desktop), and any SEO implications; reference issues if applicable
-- Scope: For new pages, update navigation, styles, and `sitemap.xml`; for assets, use descriptive names and optimize size
+- Scope: For new pages, update navigation, styles, `sitemap.xml` and `llms.txt`; for assets, use descriptive names and optimize size
 
 ## Security & Configuration Tips
 - Do not expose server-side logic; this is a static site behind nginx
