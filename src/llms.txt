@@ -69,6 +69,7 @@ TauX 是一家專注於 **AEO (Answer Engine Optimization)** 與 **GEO (Generati
 ## 資源與連結
 
 -   [AEO 入門指南](https://taux.io/aeo-guide.html): 深入了解 AEO 與 SEO 的差異及執行細節。
+-   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt.html): AI 時代網站內容保護新規範。
 -   [官方網站](https://taux.io): 了解更多案例與服務。
 
 ## 聯絡資訊
