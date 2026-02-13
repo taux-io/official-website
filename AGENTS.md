@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 - `src/`: Static site source (HTML/CSS/JS and assets)
-  - `index.html`, `aeo-guide.html`, `what-is-llms-txt.html`: Pages
+  - `index.html`, `geo-guide.html`, `what-is-llms-txt.html`: Pages
   - `styles.css`, `script.js`: Global styles and interactivity
   - `robots.txt`, `sitemap.xml`, `llms.txt`, `site.webmanifest`: SEO/PWA/AI
   - Favicons and images (e.g., `taux-logo-*.png`, `rocket.png`)

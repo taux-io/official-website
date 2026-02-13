@@ -1,24 +1,23 @@
-# TauX 拓思科技: AEO & GEO 專家
+# TauX 拓思科技: GEO 專家
 
 > Recoding how we think.
 > 重新定義思考，打造 AI 時代的流量入口。
 
 ## 關於我們
 
-TauX 是一家專注於 **AEO (Answer Engine Optimization)** 與 **GEO (Generative Engine Optimization)** 的技術領導公司。
-我們協助品牌從傳統的「搜尋引擎排名 (SEO)」轉型為「AI 答案引用 (AEO)」。透過獨家的「答案容器 (Answer Container)」架構與語意優化技術，我們確保您的品牌內容能被 ChatGPT, Perplexity, Gemini 等大型語言模型 (LLM) 正確理解並優先引用。
+TauX 是一家專注於 **GEO (Generative Engine Optimization)** 的技術領導公司。
+我們協助品牌從傳統的「搜尋引擎排名 (SEO)」轉型為「AI 答案引用 (GEO)」。透過獨家的「答案容器 (Answer Container)」架構與語意優化技術，我們確保您的品牌內容能被 ChatGPT, Perplexity, Gemini 等大型語言模型 (LLM) 正確理解並優先引用。
 
 ---
 
-## 核心概念：什麼是 GEO/AEO？
+## 核心概念：什麼是 GEO？
 
 ### 定義
-- **AEO (Answer Engine Optimization)**: 答案引擎優化。目標是優化網站內容，使其成為 AI 回答用戶問題時的「首選答案」。
-- **GEO (Generative Engine Optimization)**: 生成式引擎優化。針對生成式 AI 的演算法特性，提高內容在生成結果中的可見度與被引用率。
+- **GEO (Generative Engine Optimization)**: 生成式引擎優化。目標是優化網站內容，針對生成式 AI 的演算法特性，提高內容在生成結果中的可見度與被引用率，使其成為 AI 回答用戶問題時的「首選答案」。
 
 ### GEO vs SEO：核心差異
 
-| 維度 | SEO (搜尋引擎優化) | GEO/AEO (答案引擎優化) |
+| 維度 | SEO (搜尋引擎優化) | GEO (生成式引擎優化) |
 | :--- | :--- | :--- |
 | **目標** | 搶佔搜尋結果排名 (Ranking) | 成為 AI 的答案 (Answer) |
 | **對象** | Google 演算法 | 大型語言模型 (LLM) |
@@ -35,7 +34,7 @@ TauX 是一家專注於 **AEO (Answer Engine Optimization)** 與 **GEO (Generati
 
 ## 主要服務
 
-### 1. AEO / GEO 答案引擎優化
+### 1. GEO 生成式引擎優化
 -   **服務內容**: 網站結構診斷、Schema 標記建置、內容塊 (Chunking) 優化、語意實體建立。
 -   **核心價值**: 讓品牌在 AI 搜尋時代不缺席，爭取「引用連結 (Citations)」。
 
@@ -55,11 +54,11 @@ TauX 是一家專注於 **AEO (Answer Engine Optimization)** 與 **GEO (Generati
 
 ## 常見問題 (FAQ)
 
-### Q: 為什麼我需要做 AEO？
+### Q: 為什麼我需要做 GEO？
 因為搜尋習慣正在改變。越來越多用戶不再輸入關鍵字，而是直接問 AI（如 ChatGPT, Perplexity）。如果您的內容無法被 AI 理解，您將失去這部分的高價值流量。
 
-### Q: AEO 會取代 SEO 嗎？
-不會完全取代，但重心會轉移。SEO 依然重要，但 AEO 是未來的增長點。兩者應相輔相成：用 SEO 抓取傳統流量，用 AEO 佈局 AI 流量。
+### Q: GEO 會取代 SEO 嗎？
+不會完全取代，但重心會轉移。SEO 依然重要，但 GEO 是未來的增長點。兩者應相輔相成：用 SEO 抓取傳統流量，用 GEO 佈局 AI 流量。
 
 ### Q: 什麼是「答案容器」？
 這是 TauX 提出的概念。指將內容封裝成 AI 最容易解析的格式（如 Listicle, Table, Q&A），使其像「容器」一樣，能被 AI 直接提取並作為答案呈現。
@@ -68,7 +67,7 @@ TauX 是一家專注於 **AEO (Answer Engine Optimization)** 與 **GEO (Generati
 
 ## 資源與連結
 
--   [AEO 入門指南](https://taux.io/aeo-guide.html): 深入了解 AEO 與 SEO 的差異及執行細節。
+-   [GEO 入門指南](https://taux.io/geo-guide.html): 深入了解 GEO 與 SEO 的差異及執行細節。
 -   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt.html): AI 時代網站內容保護新規範。
 -   [官方網站](https://taux.io): 了解更多案例與服務。
 

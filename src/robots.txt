@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# GEO / AEO: Explicitly allow AI Crawlers and LLMs
+# GEO: Explicitly allow AI Crawlers and LLMs
 User-agent: GPTBot
 Allow: /
 
