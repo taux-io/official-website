@@ -68,7 +68,8 @@ TauX 是一家專注於 **GEO (Generative Engine Optimization)** 的技術領導
 ## 資源與連結
 
 -   [GEO 入門指南](https://taux.io/geo-guide.html): 深入了解 GEO 與 SEO 的差異及執行細節。
--   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt.html): AI 時代網站內容保護新規範。
+-   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt.html): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
+-   [Prompt Injection 是什麼](https://taux.io/what-is-prompt-injection.html): 解釋 AI 提示詞注入攻擊的原理、案例與防禦措施。
 -   [官方網站](https://taux.io): 了解更多案例與服務。
 
 ## 聯絡資訊

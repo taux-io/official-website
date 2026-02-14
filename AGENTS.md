@@ -2,7 +2,10 @@
 
 ## Project Structure & Module Organization
 - `src/`: Static site source (HTML/CSS/JS and assets)
-  - `index.html`, `geo-guide.html`, `what-is-llms-txt.html`: Pages
+  - `index.html`: Main landing page
+  - `geo-guide.html`: Geographical guide page
+  - `what-is-llms-txt.html`: Explains the concept of `llms.txt` and its GEO impact
+  - `what-is-prompt-injection.html`: Analyzes AI prompt injection attacks and defenses
   - `styles.css`, `script.js`: Global styles and interactivity
   - `robots.txt`, `sitemap.xml`, `llms.txt`, `site.webmanifest`: SEO/PWA/AI
   - Favicons and images (e.g., `taux-logo-*.png`, `rocket.png`)
