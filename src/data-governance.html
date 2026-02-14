@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>傳統產業數據治理轉型指南 | Data Governance Transformation Guide | TauX 拓思科技</title>
+    <meta name="description" content="傳統產業數位轉型痛點解析。從資料管理、資料治理到數位治理的落地實踐路徑。包含成熟度評估、執行藍圖與文化衝突解決方案。">
+    <meta name="keywords" content="數據治理, Data Governance, 傳統產業轉型, 數位轉型, 資料管理, Data Management, TauX, 拓思科技">
+    <meta name="author" content="TauX">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://taux.io/data-governance.html">
+    <meta property="og:title" content="傳統產業數據治理轉型指南 | TauX 拓思科技">
+    <meta property="og:description" content="從資料管理到數位治理，傳統產業轉型的落地實踐指南。">
+    <meta property="og:image" content="https://taux.io/og-image.jpg">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:site_name" content="TauX">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://taux.io/data-governance.html">
+    <meta property="twitter:title" content="傳統產業數據治理轉型指南 | TauX 拓思科技">
+    <meta property="twitter:description" content="從資料管理到數位治理，傳統產業轉型的落地實踐指南。">
+    <meta property="twitter:image" content="https://taux.io/og-image.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://taux.io/data-governance.html">
+
+    <!-- Favicons -->
+    <link rel="icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- CSS -->
+    <link rel="preload" href="styles.min.css" as="style">
+    <link rel="stylesheet" href="styles.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Custom scrollbar override for this specific page if needed, 
+           but inheriting standard is usually better. 
+           Keeping chart-wrapper constraints. */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-wrapper {
+                height: 350px;
+            }
+        }
+
+        /* Steps transition */
+        .step-circle {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-taux-bg-light text-gray-900 font-sans antialiased selection:bg-tech-blue/30 dark:bg-taux-bg-dark dark:text-gray-100 bg-grid-pattern min-h-screen relative overflow-x-hidden">
+
+    <!-- Ambient Glow Blobs -->
+    <div
+        class="fixed top-0 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-[128px] -z-10 pointer-events-none mix-blend-screen">
+    </div>
+    <div
+        class="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[128px] -z-10 pointer-events-none mix-blend-screen">
+    </div>
+
+    <div class="max-w-[1024px] mx-auto px-5 pt-[90px]">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-50 glass-panel transition-all" aria-label="Main Navigation">
+            <div class="flex justify-between items-center py-4 px-6 max-w-7xl mx-auto">
+                <div class="z-[1002]">
+                    <a href="/"
+                        class="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-google-blue to-google-green hover:scale-105 transition-transform duration-300 block"
+                        title="τ ≈ 6.283185… × x 思維">TauX</a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div id="navMenu" class="hidden md:flex items-center gap-6">
+                    <a href="#concept"
+                        class="px-3 py-2 text-gray-600 hover:text-amber-700 font-medium transition-colors dark:text-gray-300">概念層級</a>
+                    <a href="#maturity"
+                        class="px-3 py-2 text-gray-600 hover:text-amber-700 font-medium transition-colors dark:text-gray-300">成熟度</a>
+                    <a href="#roadmap"
+                        class="px-3 py-2 text-gray-600 hover:text-amber-700 font-medium transition-colors dark:text-gray-300">執行藍圖</a>
+                    <a href="#culture"
+                        class="px-3 py-2 text-gray-600 hover:text-amber-700 font-medium transition-colors dark:text-gray-300">文化衝突</a>
+                    <a href="/#contact-us"
+                        class="ml-4 px-6 py-2.5 bg-google-blue text-white rounded-full hover:bg-blue-600 active:transform active:scale-95 transition-all font-semibold shadow-md hover:shadow-lg">聊一聊</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 z-[1002] focus:outline-none"
+                    id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-transform duration-300 origin-center bar-1"></span>
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-opacity duration-300 bar-2"></span>
+                    <span
+                        class="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 transition-transform duration-300 origin-center bar-3"></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenuOverlay"
+            class="fixed inset-0 bg-white dark:bg-taux-bg-dark backdrop-blur-xl z-[1001] translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 md:hidden">
+            <a href="#concept"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-amber-700 transition-colors mobile-link">概念層級</a>
+            <a href="#maturity"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-amber-700 transition-colors mobile-link">成熟度</a>
+            <a href="#roadmap"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-amber-700 transition-colors mobile-link">執行藍圖</a>
+            <a href="#culture"
+                class="text-2xl font-bold text-gray-800 dark:text-gray-100 hover:text-amber-700 transition-colors mobile-link">文化衝突</a>
+            <a href="/#contact-us"
+                class="text-2xl font-bold text-google-blue hover:text-blue-600 transition-colors mobile-link">聊一聊</a>
+        </div>
+
+
+        <!-- Hero Section -->
+        <header
+            class="py-20 animate-in fade-in slide-in-from-bottom-4 duration-700 border-b border-gray-200 dark:border-gray-800">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div
+                        class="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-sm font-semibold mb-6">
+                        傳統產業轉型專題
+                    </div>
+                    <h1
+                        class="font-display text-4xl md:text-6xl font-bold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+                        從 <span class="text-gray-500 dark:text-gray-500">資料管理</span> 到 <br>
+                        <span class="text-amber-700 dark:text-amber-500">數位治理</span>
+                    </h1>
+                    <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                        傳統產業正面臨「數據孤島」與「經驗斷層」的挑戰。本指南提供一套落地的實踐路徑，協助企業建立數據文化，減少轉型衝突，將數據轉化為決策資產。
+                    </p>
+                    <div class="mt-8 flex gap-4">
+                        <button onclick="scrollToSection('roadmap')"
+                            class="bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-6 rounded-full shadow-md transition transform hover:-translate-y-1">
+                            開始執行規劃
+                        </button>
+                        <button onclick="scrollToSection('culture')"
+                            class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 font-bold py-3 px-6 rounded-full shadow-sm transition">
+                            解決導入衝突
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-amber-50 dark:bg-amber-900/20 p-8 rounded-2xl border border-amber-100 dark:border-amber-800/50">
+                    <h3 class="text-xl font-bold text-amber-900 dark:text-amber-100 mb-6">為什麼需要數據治理？</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span
+                                class="flex-shrink-0 h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-100 flex items-center justify-center font-bold">1</span>
+                            <div class="ml-4">
+                                <strong class="block text-gray-900 dark:text-white mb-1">打破部門穀倉 (Silos)</strong>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">生產、業務、庫存數據不再打架，建立單一信任源 (SSOT)。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span
+                                class="flex-shrink-0 h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-100 flex items-center justify-center font-bold">2</span>
+                            <div class="ml-4">
+                                <strong class="block text-gray-900 dark:text-white mb-1">傳承老師傅經驗</strong>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">將隱性知識 (Tacit Knowledge)
+                                    轉化為可分析的參數與規則。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span
+                                class="flex-shrink-0 h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-100 flex items-center justify-center font-bold">3</span>
+                            <div class="ml-4">
+                                <strong class="block text-gray-900 dark:text-white mb-1">符合合規與ESG需求</strong>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">碳盤查與供應鏈管理需要精準且可追溯的數據歷程。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Section 1: Concept Hierarchy -->
+        <section id="concept" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">層級與定義：不只是管資料，而是管資產</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-500 dark:text-gray-400">
+                    許多傳統企業誤以為買了ERP就是做了數據治理。實際上，這分為三個不同的成熟度階段。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Data Management -->
+                <div class="glass-panel p-6 rounded-2xl cursor-pointer hover:border-gray-400 transition-all group"
+                    onclick="updateConceptDetail('dm')">
+                    <div
+                        class="h-12 w-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
+                        📂</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">1. 資料管理</h3>
+                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mt-1">Data Management</h4>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400 text-sm">基礎建設與維運。重點在於資料的「儲存」、「備份」與「存取效率」。</p>
+                </div>
+
+                <!-- Card 2: Data Governance -->
+                <div class="glass-panel p-6 rounded-2xl cursor-pointer hover:border-amber-500 transition-all ring-2 ring-amber-500/20 group"
+                    onclick="updateConceptDetail('dg')">
+                    <div
+                        class="h-12 w-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
+                        ⚖️</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">2. 資料治理</h3>
+                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mt-1">Data Governance</h4>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400 text-sm">制定規則與權責。重點在於資料的「品質」、「標準」、「安全」與「擁有權」。</p>
+                </div>
+
+                <!-- Card 3: Digital Governance -->
+                <div class="glass-panel p-6 rounded-2xl cursor-pointer hover:border-emerald-500 transition-all group"
+                    onclick="updateConceptDetail('dig')">
+                    <div
+                        class="h-12 w-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
+                        🚀</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">3. 數據/數位治理</h3>
+                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mt-1">Digital Governance</h4>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400 text-sm">價值創造與戰略。重點在於利用數據驅動「商業決策」、「創新」與「轉型」。</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Content Area -->
+            <div id="concept-detail"
+                class="mt-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 transition-all duration-300">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">請選擇上方卡片以查看詳細定義與執行重點</h3>
+                <p class="text-gray-600 dark:text-gray-400">了解不同階段的目標是成功轉型的第一步。</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Maturity Assessment (Radar Chart) -->
+        <section id="maturity" class="py-20 border-t border-gray-200 dark:border-gray-800">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-1">
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">現況成熟度評估</h2>
+                    <p class="mt-4 text-gray-500 dark:text-gray-400">
+                        傳統產業常見的數據體質分析。大多數企業在「技術平台」已有投入，但在「流程規範」與「數據文化」上往往落後。
+                    </p>
+                    <div class="mt-6 space-y-4">
+                        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                            <h4 class="font-bold text-gray-900 dark:text-white">常見痛點</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">報表人工彙整耗時、名詞定義不一、缺乏數據當責者。</p>
+                        </div>
+                        <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-l-4 border-amber-500">
+                            <h4 class="font-bold text-amber-900 dark:text-amber-100">目標狀態</h4>
+                            <p class="text-sm text-amber-800 dark:text-amber-200 mt-1">數據即時可視、品質可信、人人依賴數據做決策。</p>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">模擬改進效果
+                            (拖動滑桿):</label>
+                        <input type="range" id="maturitySlider" min="1" max="5" value="2"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">調整滑桿模擬治理與文化提升後的預測。</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 flex flex-col justify-center items-center">
+                    <div class="chart-wrapper bg-white dark:bg-gray-900 rounded-xl p-4 shadow-inner w-full">
+                        <canvas id="maturityRadarChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-gray-400 mt-4">圖表：五大維度成熟度評估 (雷達圖)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Implementation Roadmap -->
+        <section id="roadmap" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">落地執行五部曲</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-500 dark:text-gray-400">
+                    從混亂到有序，這是一場馬拉松。建議採用「大處著眼，小處著手，快速迭代」的策略。
+                </p>
+            </div>
+
+            <!-- Horizontal Stepper -->
+            <div class="relative mb-12">
+                <!-- Connecting Line -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-200 dark:bg-gray-800 -translate-y-1/2 z-0">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
+                    <!-- Step 1 to 5 generated by JS or manually here, keeping manual for structure control -->
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="updateRoadmap(1)">
+                        <div id="step-circle-1"
+                            class="step-circle w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg ring-4 ring-white dark:ring-gray-900 z-10">
+                            1</div>
+                        <h3 class="mt-4 font-bold text-gray-900 dark:text-white">盤點與評估</h3>
+                        <p class="text-xs text-gray-500">As-Is Analysis</p>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="updateRoadmap(2)">
+                        <div id="step-circle-2"
+                            class="step-circle w-12 h-12 bg-gray-300 dark:bg-gray-700 hover:bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-white dark:ring-gray-900 z-10">
+                            2</div>
+                        <h3 class="mt-4 font-bold text-gray-900 dark:text-white">組織與規範</h3>
+                        <p class="text-xs text-gray-500">Org & Policy</p>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="updateRoadmap(3)">
+                        <div id="step-circle-3"
+                            class="step-circle w-12 h-12 bg-gray-300 dark:bg-gray-700 hover:bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-white dark:ring-gray-900 z-10">
+                            3</div>
+                        <h3 class="mt-4 font-bold text-gray-900 dark:text-white">試點專案</h3>
+                        <p class="text-xs text-gray-500">Pilot Project</p>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="updateRoadmap(4)">
+                        <div id="step-circle-4"
+                            class="step-circle w-12 h-12 bg-gray-300 dark:bg-gray-700 hover:bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-white dark:ring-gray-900 z-10">
+                            4</div>
+                        <h3 class="mt-4 font-bold text-gray-900 dark:text-white">技術導入</h3>
+                        <p class="text-xs text-gray-500">Tech & Platform</p>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="updateRoadmap(5)">
+                        <div id="step-circle-5"
+                            class="step-circle w-12 h-12 bg-gray-300 dark:bg-gray-700 hover:bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-white dark:ring-gray-900 z-10">
+                            5</div>
+                        <h3 class="mt-4 font-bold text-gray-900 dark:text-white">擴散與維運</h3>
+                        <p class="text-xs text-gray-500">Scale & Optimize</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Panel -->
+            <div id="roadmap-content"
+                class="glass-panel overflow-hidden flex flex-col md:flex-row rounded-2xl transition-opacity duration-300">
+                <div class="bg-amber-700 p-8 md:w-1/3 text-white flex flex-col justify-center">
+                    <h3 id="roadmap-title" class="text-2xl font-bold mb-4">第一階段：盤點與評估</h3>
+                    <div class="text-amber-100 text-sm font-medium uppercase tracking-wider mb-2">關鍵產出 (Deliverables)
+                    </div>
+                    <ul id="roadmap-deliverables" class="list-disc list-inside space-y-2 text-amber-50">
+                        <li>數據資產目錄 (Data Catalog) 草稿</li>
+                        <li>數據流向圖 (Data Lineage)</li>
+                        <li>成熟度評估報告</li>
+                        <li>關鍵痛點列表</li>
+                    </ul>
+                </div>
+                <div class="p-8 md:w-2/3">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4">執行重點與方法</h4>
+                    <p id="roadmap-desc" class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                        在動手「治理」之前，必須先知道家裡有什麼。此階段重點在於訪談業務單位與IT單位，找出「關鍵數據」在哪裡（Excel? ERP? 紙本?）。
+                    </p>
+                    <div
+                        class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border-l-4 border-gray-400 dark:border-gray-500">
+                        <span class="font-bold text-gray-700 dark:text-gray-200">💡 專家建議：</span>
+                        <span id="roadmap-tip"
+                            class="text-gray-600 dark:text-gray-400">不要一開始就談「大數據平台」，先談「如何解決報表不準的問題」來爭取高層支持。</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Culture & Conflict -->
+        <section id="culture" class="py-20 border-t border-gray-200 dark:border-gray-800">
+            <div class="mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">文化衝擊與衝突解決</h2>
+                <p class="mt-4 text-gray-500 dark:text-gray-400 max-w-3xl">
+                    技術問題好解決，人的問題最難。傳統產業員工對數位工具常有抗拒感。以下列出常見衝突情境與建議的治理/管理解方。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Conflict Selector -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3
+                        class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+                        ❌ 常見衝突與抗拒 (點擊選擇)</h3>
+                    <div class="space-y-3">
+                        <button onclick="resolveConflict(0)"
+                            class="conflict-btn w-full text-left p-4 rounded-lg border border-red-100 bg-red-50 dark:bg-red-900/20 dark:border-red-900 hover:bg-red-100 dark:hover:bg-red-900/40 transition flex justify-between items-center group">
+                            <span class="font-medium text-red-800 dark:text-red-200">1. 「為什麼要我多做資料登打？增加我工作量！」</span>
+                            <span class="text-red-400 group-hover:translate-x-1 transition">👉</span>
+                        </button>
+                        <button onclick="resolveConflict(1)"
+                            class="conflict-btn w-full text-left p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition flex justify-between items-center group">
+                            <span class="font-medium text-gray-700 dark:text-gray-300">2. 「這是我們部門的資料，為什麼要開放給別人看？」</span>
+                            <span class="text-gray-400 group-hover:translate-x-1 transition">👉</span>
+                        </button>
+                        <button onclick="resolveConflict(2)"
+                            class="conflict-btn w-full text-left p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition flex justify-between items-center group">
+                            <span class="font-medium text-gray-700 dark:text-gray-300">3. 「數據錯了是IT的責任，不關業務的事。」</span>
+                            <span class="text-gray-400 group-hover:translate-x-1 transition">👉</span>
+                        </button>
+                        <button onclick="resolveConflict(3)"
+                            class="conflict-btn w-full text-left p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition flex justify-between items-center group">
+                            <span class="font-medium text-gray-700 dark:text-gray-300">4. 「以前憑經驗都做得好好的，看數據有比較準嗎？」</span>
+                            <span class="text-gray-400 group-hover:translate-x-1 transition">👉</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Solution Display -->
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <span class="text-9xl">💡</span>
+                    </div>
+                    <h3
+                        class="text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+                        ✅ 治理制度與管理辦法</h3>
+
+                    <div id="solution-content">
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">解決方案：源頭減負與價值回饋</h4>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">一線員工抗拒通常是因為「只有付出，沒有收穫」。</p>
+
+                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg mb-4">
+                            <h5 class="font-bold text-emerald-800 dark:text-emerald-200 text-sm uppercase mb-2">制度設計
+                            </h5>
+                            <p class="text-sm text-emerald-900 dark:text-emerald-100">
+                                1. <strong>自動化採集：</strong> 盡量透過IoT或系統介接取代人工Key-in。<br>
+                                2. <strong>數據回饋：</strong> 設計儀表板，讓輸入數據的人能立刻看到與自己績效相關的數字。
+                            </p>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                            <h5 class="font-bold text-blue-800 dark:text-blue-200 text-sm uppercase mb-2">溝通策略</h5>
+                            <p class="text-sm text-blue-900 dark:text-blue-100">
+                                強調「利他即利己」。如果不輸入準確數據，後端排程錯誤，最終還是要前線救火。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Chart -->
+            <div class="mt-8 glass-panel p-8 rounded-2xl">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">導入效益預估 (時間成本節省)</h3>
+                <div class="chart-wrapper bg-white dark:bg-gray-900 rounded-xl p-4 shadow-inner">
+                    <canvas id="impactChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-2">數據治理成熟後，資料準備時間將大幅下降，分析決策時間上升。</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-taux-card-dark border-t border-gray-200 dark:border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto py-16 px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white mb-4">TauX 拓思科技</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">一家專注於 GEO 與 AI
+                        整合的軟體公司。我們相信，最好的科技，是讓人感受不到科技的存在。</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-4">服務</h4>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+                        <li><a href="/#geo-optimization" class="hover:text-google-blue transition-colors">GEO
+                                生成式引擎優化</a>
+                        </li>
+                        <li><a href="/#software-development" class="hover:text-google-blue transition-colors">軟體平台開發</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-4">資源</h4>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+                        <li><a href="data-governance.html" class="text-amber-600 font-bold transition-colors">數據治理指南</a>
+                        </li>
+                        <li><a href="geo-guide.html" class="hover:text-google-blue transition-colors">GEO 指南</a></li>
+                        <li><a href="what-is-llms-txt.html" class="hover:text-google-blue transition-colors">LLMs.txt
+                                是什麼</a></li>
+                        <li><a href="what-is-prompt-injection.html"
+                                class="hover:text-google-blue transition-colors">Prompt Injection 是什麼</a></li>
+                    </ul>
+                </div>
+
+                <div itemscope itemtype="https://schema.org/Organization">
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-4">聯絡</h4>
+                    <address class="not-italic text-gray-600 dark:text-gray-400 space-y-3">
+                        <p><a href="mailto:hello@taux.io" itemprop="email"
+                                class="hover:text-google-blue transition-colors">hello@taux.io</a></p>
+                        <p itemprop="address">高雄市岡山區文賢路 57 號 2 樓</p>
+                    </address>
+                </div>
+            </div>
+            <div
+                class="border-t border-gray-100 dark:border-gray-700 pt-8 text-center text-gray-500 dark:text-gray-500 text-sm">
+                <p>&copy; 2025 TauX 拓思科技有限公司</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.min.js" defer></script>
+    <script>
+        // Data Definitions
+        const concepts = {
+            dm: {
+                title: "1. 資料管理 (Data Management)",
+                sub: "基礎建設層",
+                desc: "這是轉型的地基。如果你連資料在哪、是否有備份都不知道，就談不上治理。<br><br><strong>核心任務：</strong><ul class='list-disc pl-5 mt-2 space-y-1'><li>資料庫架構設計</li><li>資料備份與復原機制</li><li>主檔資料管理 (MDM) 基礎建設</li><li>資料存取權限控管 (ACL)</li></ul>",
+                colorClass: "text-gray-900 dark:text-white",
+                borderColor: "border-gray-400"
+            },
+            dg: {
+                title: "2. 資料治理 (Data Governance)",
+                sub: "規則與標準層",
+                desc: "這是轉型的骨架。定義「誰」可以對資料做「什麼」。解決「資料打架」的關鍵。<br><br><strong>核心任務：</strong><ul class='list-disc pl-5 mt-2 space-y-1'><li>定義資料擁有者 (Data Owner) 與管理者 (Data Steward)</li><li>建立資料字典與業務詞彙表</li><li>資料品質監控 (Data Quality)</li><li>合規性管理 (個資法/GDPR)</li></ul>",
+                colorClass: "text-amber-800 dark:text-amber-300",
+                borderColor: "border-amber-500"
+            },
+            dig: {
+                title: "3. 數據/數位治理 (Digital Governance)",
+                sub: "戰略與應用層",
+                desc: "這是轉型的靈魂。利用治理好的高品質數據，驅動業務創新。<br><br><strong>核心任務：</strong><ul class='list-disc pl-5 mt-2 space-y-1'><li>自助式分析文化 (Self-service BI)</li><li>AI/ML 模型應用</li><li>數據驅動的新商業模式</li><li>跨組織/跨供應鏈的數據協作</li></ul>",
+                colorClass: "text-emerald-800 dark:text-emerald-300",
+                borderColor: "border-emerald-500"
+            }
+        };
+
+        const roadmapSteps = [
+            {
+                id: 1,
+                title: "第一階段：盤點與評估 (As-Is Analysis)",
+                deliverables: ["數據資產目錄草稿", "數據流向圖", "成熟度報告", "痛點列表"],
+                desc: "在動手「治理」之前，必須先知道家裡有什麼。此階段重點在於訪談業務單位與IT單位，找出「關鍵數據」在哪裡。<br><br><strong>執行心法：</strong>不要想一次盤點全公司所有資料，那會耗時數年且無成效。應鎖定對營收影響最大的「高價值數據」（如：核心產品BOM表、客戶訂單）優先盤點。",
+                tip: "先談「解決報表錯誤」，不要一開始就談「大數據平台」。"
+            },
+            {
+                id: 2,
+                title: "第二階段：組織與規範 (Org & Policy)",
+                deliverables: ["數據治理委員會章程", "資料認責矩陣 (RACI)", "資料標準規範書"],
+                desc: "建立「有權責」的組織。傳統產業最怕這一步變成「大家一起負責=沒人負責」。<br><br><strong>執行心法：</strong>成立「數據治理委員會」，由高層（如總經理）掛帥。每個關鍵數據域（Data Domain）都要指定一個來自業務單位的 Data Owner，而不僅僅是推給IT。",
+                tip: "Data Owner 必須是有權決定數據定義的業務主管，而非IT人員。"
+            },
+            {
+                id: 3,
+                title: "第三階段：試點專案 (Pilot Project)",
+                deliverables: ["單一視圖 (如：客戶360)", "數據品質儀表板", "清洗後的黃金資料集"],
+                desc: "挑選一個「痛點最痛、且能在3個月內見效」的題目進行試點。例如：解決「業務報表跟財務報表數字對不起來」的問題。<br><br><strong>執行心法：</strong>透過實戰來驗證剛制定的規範是否可行。如果規範太嚴導致專案卡死，就要立刻修正規範。",
+                tip: "小勝 (Quick Win) 是建立信心的關鍵，失敗的試點會導致計畫終止。"
+            },
+            {
+                id: 4,
+                title: "第四階段：技術導入 (Tech & Platform)",
+                deliverables: ["資料治理平台", "自動化品質檢核工具", "元資料管理系統"],
+                desc: "當流程跑順了，才引入工具將其自動化。不要一開始就買昂貴的治理軟體。<br><br><strong>執行心法：</strong>導入工具是用來降低人工維護資料標準的成本。例如自動掃描資料庫欄位，自動生成資料血緣 (Lineage)。",
+                tip: "工具是加速器，不是萬靈丹。沒有流程的工具只是昂貴的垃圾。"
+            },
+            {
+                id: 5,
+                title: "第五階段：擴散與維運 (Scale & Optimize)",
+                deliverables: ["全企業數據素養培訓", "數據資產化KPI", "持續改善機制"],
+                desc: "將試點成功的經驗複製到其他部門。將數據品質列入部門KPI。<br><br><strong>執行心法：</strong>建立「數據文化」。讓員工習慣「用數據說話」。定期舉辦數據競賽或分享會，獎勵善用數據改善流程的員工。",
+                tip: "治理是持續的過程，不是專案。需要編列常態性預算與人力。"
+            }
+        ];
+
+        const conflicts = [
+            {
+                title: "解決方案：源頭減負與價值回饋",
+                intro: "一線員工抗拒通常是因為「只有付出，沒有收穫」。",
+                system: "1. <strong>自動化採集：</strong> 盡量透過IoT或系統介接取代人工Key-in。<br>2. <strong>數據回饋：</strong> 設計儀表板，讓輸入數據的人能立刻看到「這對我有什麼幫助」（如：庫存預警能讓他少跑倉庫）。",
+                comm: "強調「利他即利己」。如果不輸入準確數據，後端排程錯誤，最終還是要前線救火。"
+            },
+            {
+                title: "解決方案：打破孤島與權限分級",
+                intro: "這是典型的「穀倉效應」。部門將數據視為私有資產與權力來源。",
+                system: "1. <strong>資料分級分類：</strong> 區分「機密」與「可共享」資料，消除安全疑慮。<br>2. <strong>交換機制：</strong> 建立內部數據市集，讓部門A開放數據後，能從部門B獲得更有價值的回饋。",
+                comm: "由高層定調：「數據是公司的資產，不是部門的私產」。拒絕分享者需說明理由。"
+            },
+            {
+                title: "解決方案：建立資料認責制度 (Data Ownership)",
+                intro: "IT只是水管工（負責傳輸），業務才是水的製造者（負責內容）。",
+                system: "1. <strong>明確 Data Owner：</strong> 在規範中明訂，數據品質由「產生的源頭部門」負責。<br>2. <strong>品質儀表板：</strong> 公開展示各部門的數據品質分數（如：欄位缺漏率），利用同儕壓力。",
+                comm: "教育訓練：IT無法判斷「客戶地址」是否正確，只有業務知道。品質責任必須回歸源頭。"
+            },
+            {
+                title: "解決方案：雙軌並行與數據驗證",
+                intro: "老師傅的經驗很寶貴，不應直接否定，而是要「數位化」。",
+                system: "1. <strong>經驗參數化：</strong> 將老師傅判斷的邏輯轉化為系統規則。<br>2. <strong>A/B Testing：</strong> 在小範圍內比較「純經驗決策」與「數據輔助決策」的結果差異。",
+                comm: "強調數據是「輔助」而非「取代」。數據能幫老師傅記住細節，讓他們專注於更高層次的判斷。"
+            }
+        ];
+
+        // Functions
+        function updateConceptDetail(key) {
+            const data = concepts[key];
+            const container = document.getElementById('concept-detail');
+            container.innerHTML = `
+                <h3 class="text-2xl font-bold ${data.colorClass} mb-2">${data.title}</h3>
+                <span class="inline-block px-3 py-1 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xs font-bold text-gray-500 dark:text-gray-300 mb-4">${data.sub}</span>
+                <div class="text-gray-700 dark:text-gray-300 leading-relaxed">${data.desc}</div>
+            `;
+            // Note: Border color updates on container could be added, but a neutral container is cleaner in this design.
+        }
+
+        function updateRoadmap(stepId) {
+            // Update Circles
+            for (let i = 1; i <= 5; i++) {
+                const circle = document.getElementById(`step-circle-${i}`);
+                if (i === stepId) {
+                    circle.className = "step-circle w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg ring-4 ring-amber-100 dark:ring-amber-900/50 scale-110 z-20";
+                } else {
+                    circle.className = "step-circle w-12 h-12 bg-gray-300 dark:bg-gray-700 hover:bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-white dark:ring-gray-900 cursor-pointer z-10";
+                }
+            }
+
+            // Update Content
+            const data = roadmapSteps.find(s => s.id === stepId);
+            const title = document.getElementById('roadmap-title');
+            const list = document.getElementById('roadmap-deliverables');
+            const desc = document.getElementById('roadmap-desc');
+            const tip = document.getElementById('roadmap-tip');
+            const contentPanel = document.getElementById('roadmap-content');
+
+            contentPanel.style.opacity = '0.5';
+            setTimeout(() => {
+                title.innerText = data.title;
+                list.innerHTML = data.deliverables.map(d => `<li>${d}</li>`).join('');
+                desc.innerHTML = data.desc;
+                tip.innerText = data.tip;
+                contentPanel.style.opacity = '1';
+            }, 200);
+        }
+
+        function resolveConflict(index) {
+            const data = conflicts[index];
+            const container = document.getElementById('solution-content');
+            const buttons = document.querySelectorAll('.conflict-btn');
+
+            buttons.forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.className = "conflict-btn w-full text-left p-4 rounded-lg border border-red-200 bg-red-50 dark:bg-red-900/30 dark:border-red-800 shadow-inner flex justify-between items-center group";
+                    btn.querySelector('span:first-child').classList.add('text-red-800', 'dark:text-red-200');
+                    btn.querySelector('span:first-child').classList.remove('text-red-800'); // Clean previous logic
+                    // Re-adding specific text classes
+                    btn.querySelector('span:first-child').className = "font-medium text-red-800 dark:text-red-200";
+
+                } else {
+                    btn.className = "conflict-btn w-full text-left p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition flex justify-between items-center group";
+                    btn.querySelector('span:first-child').className = "font-medium text-gray-700 dark:text-gray-300";
+                }
+            });
+
+            container.innerHTML = `
+                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">${data.title}</h4>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">${data.intro}</p>
+                
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg mb-4 border-l-4 border-emerald-500">
+                    <h5 class="font-bold text-emerald-800 dark:text-emerald-200 text-sm uppercase mb-2">制度設計</h5>
+                    <p class="text-sm text-emerald-900 dark:text-emerald-100">${data.system}</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h5 class="font-bold text-blue-800 dark:text-blue-200 text-sm uppercase mb-2">溝通策略</h5>
+                    <p class="text-sm text-blue-900 dark:text-blue-100">${data.comm}</p>
+                </div>
+            `;
+        }
+
+        // Window Scroll Function is native smooth scroll, handled by CSS or standard anchor, 
+        // but for buttons:
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Charts Initialization
+        document.addEventListener('DOMContentLoaded', function () {
+            updateConceptDetail('dm');
+
+            // --- Radar Chart ---
+            const ctxRadar = document.getElementById('maturityRadarChart').getContext('2d');
+            const maturityData = {
+                labels: ['技術平台', '流程規範', '組織架構', '數據品質', '數據文化'],
+                datasets: [
+                    {
+                        label: '當前狀態',
+                        data: [3, 1, 2, 2, 1],
+                        fill: true,
+                        backgroundColor: 'rgba(107, 114, 128, 0.2)',
+                        borderColor: 'rgb(107, 114, 128)',
+                        pointBackgroundColor: 'rgb(107, 114, 128)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(107, 114, 128)'
+                    },
+                    {
+                        label: '目標狀態',
+                        data: [4, 4, 4, 5, 4],
+                        fill: true,
+                        backgroundColor: 'rgba(217, 119, 6, 0.2)', // Amber-600
+                        borderColor: 'rgb(217, 119, 6)',
+                        pointBackgroundColor: 'rgb(217, 119, 6)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(217, 119, 6)'
+                    }
+                ]
+            };
+
+            const radarChart = new Chart(ctxRadar, {
+                type: 'radar',
+                data: maturityData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true, color: 'rgba(128,128,128,0.2)' },
+                            grid: { color: 'rgba(128,128,128,0.2)' },
+                            pointLabels: { color: '#9ca3af', font: { size: 12 } },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            ticks: { stepSize: 1, backdropColor: 'transparent', display: false } // Hide numbers to clean up
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#9ca3af' } }
+                    }
+                }
+            });
+
+            // Slider Logic
+            const slider = document.getElementById('maturitySlider');
+            slider.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value);
+                const base = [3, 1, 2, 2, 1];
+                const improved = base.map(v => Math.min(5, v + (val - 1) * 0.8));
+                radarChart.data.datasets[0].data = improved;
+                radarChart.update();
+            });
+
+
+            // --- Impact Bar Chart ---
+            const ctxBar = document.getElementById('impactChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['資料搜尋', '資料清洗', '報表製作', '數據分析與決策'],
+                    datasets: [
+                        {
+                            label: '治理前 (小時/週)',
+                            data: [10, 15, 10, 5],
+                            backgroundColor: 'rgba(156, 163, 175, 0.7)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: '治理後 (小時/週)',
+                            data: [2, 3, 2, 20],
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)', // Emerald
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: '花費時間 (小時)', color: '#9ca3af' },
+                            grid: { color: 'rgba(128,128,128,0.1)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af' } },
+                        tooltip: {
+                            callbacks: {
+                                footer: (items) => {
+                                    return "轉型效益: 重分配高價值工作時間";
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
