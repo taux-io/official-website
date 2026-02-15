@@ -7,6 +7,7 @@
   - `what-is-llms-txt.html`: Explains the concept of `llms.txt` and its GEO impact
   - `what-is-prompt-injection.html`: Analyzes AI prompt injection attacks and defenses
   - `data-governance.html`: Guide for traditional industry data governance transformation
+  - `ai-smart-work.html`: Explores AI applications for smart work environments
   - `styles.css`, `script.js`: Global styles and interactivity
   - `robots.txt`, `sitemap.xml`, `llms.txt`, `site.webmanifest`: SEO/PWA/AI
   - Favicons and images (e.g., `taux-logo-*.png`, `rocket.png`)
