@@ -76,3 +76,22 @@ docker compose up -d --build
 - **Go 版本**: 嚴格要求 Go 1.24+。
 - **CSS 構建**: 如果樣式看起來不正確，請確保 `npm run build` 或 `npm run watch` 已成功更新 `static/css/styles.min.css`。
 - **技能**: 關於建立頁面、部署與故障排除的詳細流程，請參閱 `SKILL.md`。
+
+## 6. 工作流程閉環 (Workflow Loop)
+
+所有 AI Agent 在執行任務時，必須遵循以下「生成 -> 驗證 -> 修正」的閉環流程：
+
+1.  **生成 (Generate)**:
+    - 依據 `AGENTS.md` 架構與 `NOTES.md` 背景進行開發。
+    - 參考 `templates/` 中的現有檔案作為範本。
+
+2.  **驗證 (Verify)**:
+    - **必要步驟**: 執行 `SKILL.md` 第 4 節中的 **「品質保證 (QA) 與驗證檢查清單」**。
+    - 使用瀏覽器工具截圖驗證手機版與桌面版排版。
+    - 檢查是否符合 GEO/SEO 標準 (Schema, Meta tags)。
+
+3.  **修正 (Correct)**:
+    - 針對驗證中發現的錯誤進行修復。
+    - 更新 `NOTES.md` 記錄新的發現或解決方案。
+    - **只有在驗證全部通過後，才可交付任務。**
+
