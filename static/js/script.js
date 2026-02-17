@@ -43,10 +43,19 @@ function initMobileNavigation() {
         }
     }
 
-    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
 
     if (closeBtn) {
-        closeBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Force close
+            if (hamburger.getAttribute('aria-expanded') === 'true') {
+                toggleMenu();
+            }
+        });
     }
 
     mobileLinks.forEach(link => {
@@ -55,6 +64,15 @@ function initMobileNavigation() {
                 toggleMenu();
             }
         });
+    });
+
+    // Close on outside click (optional, but good UX)
+    document.addEventListener('click', (e) => {
+        if (hamburger.getAttribute('aria-expanded') === 'true' &&
+            !mobileMenu.contains(e.target) &&
+            !hamburger.contains(e.target)) {
+            toggleMenu();
+        }
     });
 }
 

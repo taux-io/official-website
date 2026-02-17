@@ -85,6 +85,11 @@ func main() {
 		c.HTML(http.StatusNotFound, "404.html", nil)
 	})
 
+	// Also serve /500.html explicitly for Nginx error_page redirection (500, 502, 503)
+	r.GET("/500.html", func(c *gin.Context) {
+		c.HTML(http.StatusInternalServerError, "500.html", nil)
+	})
+
 	// Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

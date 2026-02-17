@@ -40,7 +40,8 @@ taux-dev/
 │   ├── about.html              # 關於我們
 │   ├── privacy-policy.html     # 隱私權政策
 │   ├── terms-of-service.html   # 服務條款
-│   └── 404.html                # 自定義 404 頁面
+│   ├── 404.html                # 自定義 404 頁面
+│   └── 500.html                # 自定義 500 錯誤頁面
 ├── static/                     # 靜態資源
 │   ├── css/                    # 編譯後的 CSS
 │   ├── js/                     # 前端 JavaScript

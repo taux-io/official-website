@@ -49,7 +49,8 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-8">
                 <a href="/ai-smart-work"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Solutions</a>
+                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Smart
+                    Work</a>
                 <a href="/geo-guide"
                     class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">GEO
                     Guide</a>
@@ -60,7 +61,8 @@
                     class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Prompt
                     Guide</a>
                 <a href="/what-is-prompt-injection"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Security</a>
+                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Prompt
+                    Security</a>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
                     class="px-4 py-2 text-sm font-bold text-taux-bg bg-white rounded-full hover:bg-tech-cyan transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]">
                     Start Building
@@ -79,24 +81,27 @@
 
     <!-- Mobile Menu Overlay (Moved outside nav to avoid stacking context issues) -->
     <div id="mobileMenuOverlay"
-        class="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 transition-transform duration-500 translate-x-full md:hidden"
+        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden block"
         style="background-color: #030305 !important; opacity: 1 !important; z-index: 9999 !important;">
         <!-- Close Button -->
         <button id="mobileMenuClose"
-            class="absolute top-6 right-6 p-2 text-white hover:text-tech-cyan transition-colors focus:outline-none"
-            aria-label="Close menu">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+            class="absolute top-8 right-8 text-white hover:text-tech-cyan text-4xl font-light transition-colors duration-300 focus:outline-none z-[100] cursor-pointer"
+            aria-label="Close menu"
+            style="pointer-events: auto; position: absolute !important; top: 32px !important; right: 32px !important;">
+            &times;
         </button>
 
-        <a href="/" class="mobile-link text-2xl font-display font-bold text-white hover:text-tech-cyan">Home</a>
-        <a href="/ai-smart-work" class="mobile-link text-xl text-gray-300 hover:text-white">Solutions</a>
-        <a href="/geo-guide" class="mobile-link text-xl text-gray-300 hover:text-white">GEO Guide</a>
-        <a href="/data-governance" class="mobile-link text-xl text-gray-300 hover:text-white">Data Governance</a>
-        <a href="/agent-prompting-guide" class="mobile-link text-xl text-gray-300 hover:text-white">Prompt Guide</a>
-        <a href="/what-is-prompt-injection" class="mobile-link text-xl text-gray-300 hover:text-white">Security</a>
-        <a href="/what-is-llms-txt" class="mobile-link text-xl text-gray-300 hover:text-white">LLMs.txt</a>
+        <!-- Menu Items Container -->
+        <div class="h-full w-full flex flex-col items-center justify-center gap-8">
+            <a href="/" class="mobile-link text-2xl font-display font-bold text-white hover:text-tech-cyan">Home</a>
+            <a href="/ai-smart-work" class="mobile-link text-xl text-gray-300 hover:text-white">Smart Work</a>
+            <a href="/geo-guide" class="mobile-link text-xl text-gray-300 hover:text-white">GEO Guide</a>
+            <a href="/data-governance" class="mobile-link text-xl text-gray-300 hover:text-white">Data Governance</a>
+            <a href="/agent-prompting-guide" class="mobile-link text-xl text-gray-300 hover:text-white">Prompt Guide</a>
+            <a href="/what-is-prompt-injection" class="mobile-link text-xl text-gray-300 hover:text-white">Prompt
+                Security</a>
+            <a href="/what-is-llms-txt" class="mobile-link text-xl text-gray-300 hover:text-white">LLMs.txt</a>
+        </div>
     </div>
 
     <!-- Main Content Wrapper -->

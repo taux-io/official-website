@@ -1,0 +1,184 @@
+{{ define "500.html" }}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error - TauX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@500;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        taux: { bg: '#030305', card: '#0A0A0F', border: '#1F1F2E' },
+                        tech: { cyan: '#00F0FF', purple: '#7000FF', red: '#FF2A6D' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'glitch': 'glitch 1s linear infinite',
+                    },
+                    keyframes: {
+                        glitch: {
+                            '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
+                            '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
+                            '62%': { transform: 'translate(0,0) skew(5deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #030305;
+            color: #fff;
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #FF2A6D;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #00F0FF;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(30px, 9999px, 10px, 0);
+            }
+
+            10% {
+                clip: rect(80px, 9999px, 90px, 0);
+            }
+
+            20% {
+                clip: rect(20px, 9999px, 60px, 0);
+            }
+
+            30% {
+                clip: rect(50px, 9999px, 30px, 0);
+            }
+
+            40% {
+                clip: rect(10px, 9999px, 40px, 0);
+            }
+
+            50% {
+                clip: rect(70px, 9999px, 90px, 0);
+            }
+
+            60% {
+                clip: rect(20px, 9999px, 10px, 0);
+            }
+
+            70% {
+                clip: rect(60px, 9999px, 50px, 0);
+            }
+
+            80% {
+                clip: rect(30px, 9999px, 90px, 0);
+            }
+
+            90% {
+                clip: rect(10px, 9999px, 20px, 0);
+            }
+
+            100% {
+                clip: rect(50px, 9999px, 60px, 0);
+            }
+        }
+
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(15px, 9999px, 80px, 0);
+            }
+
+            20% {
+                clip: rect(90px, 9999px, 20px, 0);
+            }
+
+            40% {
+                clip: rect(30px, 9999px, 50px, 0);
+            }
+
+            60% {
+                clip: rect(70px, 9999px, 10px, 0);
+            }
+
+            80% {
+                clip: rect(20px, 9999px, 90px, 0);
+            }
+
+            100% {
+                clip: rect(50px, 9999px, 30px, 0);
+            }
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen relative overflow-hidden">
+    <!-- Background Grid -->
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none"
+        style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black, transparent 80%);">
+    </div>
+
+    <div class="relative z-10 text-center px-6">
+        <h1 class="font-display text-9xl font-bold mb-4 glitch-text tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-tech-red to-tech-purple"
+            data-text="500">
+            500
+        </h1>
+        <h2 class="font-display text-3xl font-bold text-white mb-6">System Malfunction / 系統故障</h2>
+        <p class="text-gray-400 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
+            Our AI agents have encountered an unexpected critical error. Retrying neural pathways...
+            <br>
+            我們的 AI 代理遇到意外嚴重錯誤。正在重試神經通路...
+        </p>
+
+        <a href="/"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-tech-red/50 rounded-full text-white font-semibold transition-all duration-300 backdrop-blur-sm group hover:scale-105">
+            <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                </path>
+            </svg>
+            Reboot System (Home)
+        </a>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="absolute top-1/4 left-10 w-2 h-2 bg-tech-red rounded-full animate-ping"></div>
+    <div class="absolute bottom-1/4 right-10 w-2 h-2 bg-tech-purple rounded-full animate-ping delay-700"></div>
+</body>
+
+</html>
+{{ end }}

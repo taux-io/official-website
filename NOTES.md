@@ -34,3 +34,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - 新增 "Building" (建置中) 頁面: 用於 "Blog", "Careers", "API" 等尚未完成的單元。
 - 新增 "About", "Privacy Policy", "Terms of Service" 頁面與 "404" 錯誤頁面。
 - 更新 Nginx 配置以支援自定義 404 處理。
+- 修復手機版選單 "關閉 (X)" 按鈕無效問題 (更新 `script.js` 事件監聽與 CSS 層級)。
+- 將 "Security" 連結名稱更新為 "Prompt Security" (Header & Footer)。
+- 新增自定义 `500.html` 錯誤頁面與 Nginx 配置。
+- 將導航選單中的 "Solutions" 統一名稱更正為 "Smart Work" (Header)。
