@@ -29,7 +29,7 @@ func main() {
 	r.StaticFile("/sitemap.xml", "./static/sitemap.xml")
 	r.StaticFile("/llms.txt", "./static/llms.txt")
 	r.StaticFile("/site.webmanifest", "./static/site.webmanifest")
-	
+
 	// Routes
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
@@ -46,13 +46,17 @@ func main() {
 	r.GET("/data-governance", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "data-governance.html", nil)
 	})
-	
+
 	r.GET("/what-is-llms-txt", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "what-is-llms-txt.html", nil)
 	})
 
 	r.GET("/what-is-prompt-injection", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "what-is-prompt-injection.html", nil)
+	})
+
+	r.GET("/agent-prompting-guide", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "agent-prompting-guide.html", nil)
 	})
 
 	// Health check
@@ -67,7 +71,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	
+
 	log.Printf("Server starting on port %s", port)
 	if err := r.Run(":" + port); err != nil {
 		log.Fatalf("Failed to run server: %v", err)

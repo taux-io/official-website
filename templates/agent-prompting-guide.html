@@ -1,0 +1,194 @@
+{{ template "header.html" . }}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/agent-prompting-guide.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首頁",
+                    "item": "https://taux.io"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "指令秘籍",
+                    "item": "https://taux.io/agent-prompting-guide"
+                }
+            ]
+        },
+        {
+            "@type": "Article",
+            "@id": "https://taux.io/agent-prompting-guide.html#article",
+            "headline": "如何讓 AI 聽懂人話？從新手到高手的指令秘籍",
+            "description": "Prompt Engineering（提示工程）是指揮 AI 的藝術。本指南涵蓋基礎單一任務指派到進階 AI 代理人 (Agent) 的設計原則。",
+            "author": { "@type": "Organization", "name": "TauX", "url": "https://taux.io" },
+            "publisher": { "@type": "Organization", "name": "TauX", "logo": { "@type": "ImageObject", "url": "https://taux.io/logo.png" }},
+            "datePublished": "2026-02-17",
+            "dateModified": "2026-02-17",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/agent-prompting-guide.html" },
+            "image": "https://taux.io/agent-prompting-og.jpg",
+            "isPartOf": { "@id": "https://taux.io/#website" }
+        }
+    ]
+}
+</script>
+
+<article class="relative pt-32 pb-24 px-6 relative overflow-hidden">
+    <!-- Background Decor -->
+    <div
+        class="absolute top-0 right-0 w-[500px] h-[500px] bg-tech-cyan/20 blur-[120px] rounded-full -z-10 animate-pulse-glow">
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="font-display text-4xl md:text-5xl font-bold mb-8 text-white text-glow leading-tight">
+                如何讓 AI 聽懂人話？<br>從新手到高手的指令秘籍
+            </h1>
+            <p class="text-xl text-tech-cyan mb-8">Prompt Engineering 實戰指南</p>
+
+            <div class="glass-card p-8 border-l-4 border-l-tech-cyan text-left">
+                <h3 class="text-lg font-bold text-white mb-2">導言：為什麼你的 AI 總是不懂你？</h3>
+                <p class="text-gray-300 italic mb-4">
+                    其實不是 AI 笨，是我們「交辦工作」的方式不夠清楚。Prompt Engineering（提示工程）就像是在用白話文寫程式。
+                    核心在於給出清晰的指令、必要的背景，並告訴 AI 該怎麼排列組合這些資訊。
+                </p>
+                <p class="text-gray-300">
+                    想像一下，Prompting 就像是在寫一份給「超級實習生」的工作指南。這個實習生很聰明，但如果你沒說清楚，他就會亂猜。
+                </p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="space-y-16">
+            <!-- Part 1: Prompting 101 -->
+            <section id="prompting-101" class="glass-card p-8 md:p-12">
+                <h2 class="font-display text-3xl font-bold text-white mb-2 flex items-center">
+                    <span
+                        class="w-10 h-10 rounded-full bg-tech-cyan/20 flex items-center justify-center mr-4 text-xl">1</span>
+                    第一部分：基礎篇 (Prompting 101)
+                </h2>
+                <p class="text-gray-400 mb-8 ml-14">適合場景：寫作、分析文件、單次問答、資料擷取。</p>
+
+                <div class="space-y-8">
+                    <!-- Point 1 -->
+                    <div class="pl-4 border-l-2 border-white/10">
+                        <h3 class="text-xl font-bold text-white mb-2">1. 給它一個「身分」與「任務」 (Context & Role)</h3>
+                        <p class="text-gray-300 mb-2">不要只丟一句話給 AI，你要像導演一樣設定角色。</p>
+                        <div class="bg-black/30 p-4 rounded-lg text-sm text-gray-300 mb-2">
+                            <span class="text-red-400">❌ 錯誤示範</span>： 「這是什麼？」<br>
+                            <span class="text-green-400">✅ 正確示範</span>： 「你是一間瑞典保險公司的理賠專員。你的任務是閱讀車禍報告並判斷誰有過失。」
+                        </div>
+                        <p class="text-sm text-gray-400">コーチの解讀：如果不說這是車禍報告，AI 可能會以為是滑雪意外。明確定義身分，AI 就不會瞎猜。</p>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="pl-4 border-l-2 border-white/10">
+                        <h3 class="text-xl font-bold text-white mb-2">2. 提供「參考書」 (Background Data)</h3>
+                        <p class="text-gray-300 mb-2">如果是固定不變的資訊（如標準表格、法規），請放在最前面 (System Prompt)。</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 ml-2 text-sm">
+                            <li><strong>為什麼？</strong> 讓 AI 專注填寫內容，不用重新學習格式。就像給實習生「員工手冊」。</li>
+                            <li><strong>小技巧：</strong> 善用 XML 標籤（如 <code>&lt;form&gt;內容&lt;/form&gt;</code>）。AI 喜歡結構化資料。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="pl-4 border-l-2 border-white/10">
+                        <h3 class="text-xl font-bold text-white mb-2">3. 下達「步驟指令」 (Step-by-Step Instructions)</h3>
+                        <p class="text-gray-300 mb-2">不要只求結果，要規定過程。人類怎麼思考，就叫 AI 照著做。</p>
+                        <div class="bg-black/30 p-4 rounded-lg text-sm text-gray-300 mb-2">
+                            <strong>指令寫法</strong>：「第一步：檢查表格勾選框。第二步：解讀現場圖。第三步：做出結論。」
+                        </div>
+                        <p class="text-sm text-gray-400">強迫 AI 把思考過程寫出來 (Show its work)，準確率會大幅提升。</p>
+                    </div>
+
+                    <!-- Point 4 -->
+                    <div class="pl-4 border-l-2 border-white/10">
+                        <h3 class="text-xl font-bold text-white mb-2">4. 規定「輸出格式」 (Output Formatting)</h3>
+                        <p class="text-gray-300 mb-2">告訴 AI：「請用 JSON 格式輸出」或「請把結論包在 <code>&lt;verdict&gt;</code> 標籤裡」。
+                        </p>
+                        <p class="text-sm text-gray-400">這樣你可以直接拿程式去抓取結果，不用人工複製貼上。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 2: Agents -->
+            <section id="agent-prompting" class="glass-card p-8 md:p-12 border border-tech-purple/20">
+                <h2 class="font-display text-3xl font-bold text-white mb-2 flex items-center">
+                    <span
+                        class="w-10 h-10 rounded-full bg-tech-purple/20 flex items-center justify-center mr-4 text-xl">2</span>
+                    第二部分：進階篇 (Prompting for Agents)
+                </h2>
+                <p class="text-gray-400 mb-8 ml-14">適合場景：使用工具、上網搜尋、寫程式、多步驟複雜任務。</p>
+
+                <div class="space-y-8">
+                    <!-- Point 1 -->
+                    <div class="pl-4 border-l-2 border-tech-purple/30">
+                        <h3 class="text-xl font-bold text-white mb-2">1. 什麼是代理人 (Agent)？</h3>
+                        <p class="text-gray-300">基礎篇 AI 像「問答機」。代理人則像「獨立員工」，在迴圈 (Loop) 裡工作：<br>
+                            <span class="text-tech-cyan">使用工具 → 觀察結果 → 思考下一步 → 再使用工具</span>，直到完成。
+                        </p>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="pl-4 border-l-2 border-tech-purple/30">
+                        <h3 class="text-xl font-bold text-white mb-2">2. 何時該用代理人？</h3>
+                        <p class="text-gray-300 mb-2">殺雞焉用牛刀。適合任務複雜、路徑不固定的場景。</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 ml-2 text-sm">
+                            <li><span class="text-green-400">適用</span>：做市場調查（不知道要搜尋幾次才能找到答案）。</li>
+                            <li><span class="text-red-400">不適用</span>：已有確切 SOP 的固定流程，或簡單任務。</li>
+                        </ul>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="pl-4 border-l-2 border-tech-purple/30">
+                        <h3 class="text-xl font-bold text-white mb-2">3. 關鍵心法：像代理人一樣思考 (Think Like an Agent)</h3>
+                        <p class="text-gray-300 mb-2">問自己：「如果我是剛畢業的實習生，給我這些工具，我會不會不知所措？」</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 ml-2 text-sm">
+                            <li><strong>工具設計要清楚</strong>：名稱簡單準確，不要重疊。</li>
+                            <li><strong>給原則，不要給腳本</strong>：範例：「簡單問題搜 5 次，複雜搜 10 次」或「找到答案就停止」。</li>
+                        </ul>
+                    </div>
+
+                    <!-- Point 4 -->
+                    <div class="pl-4 border-l-2 border-tech-purple/30">
+                        <h3 class="text-xl font-bold text-white mb-2">4. 讓它「先想再做」 (Plan & Guide Thinking)</h3>
+                        <p class="text-gray-300 mb-2">現在的模型 (Claude 3.5/GPT-4) 可以邊做邊想。</p>
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 ml-2 text-sm">
+                            <li><strong>指令技巧</strong>：要求呼叫工具前先規劃：「我要搜什麼關鍵字？找什麼來源？」</li>
+                            <li><strong>檢查機制</strong>：拿到結果後評估：「資料可信嗎？需要驗證嗎？」</li>
+                        </ul>
+                    </div>
+
+                    <!-- Point 5 -->
+                    <div class="pl-4 border-l-2 border-tech-purple/30">
+                        <h3 class="text-xl font-bold text-white mb-2">5. 如何測試？ (Evaluation)</h3>
+                        <p class="text-gray-300">從小開始。手動測試幾個案例，觀察日誌 (Logs)。<br>
+                            看看它調用了什麼工具？有沒有鬼打牆？這比只看最終答案更能優化指令。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEO Links (Hidden visually but structured for bots if needed, or just regular navigation) -->
+            <section class="mt-8 border-t border-white/10 pt-8">
+                <h3 class="text-white font-bold mb-4">延伸閱讀</h3>
+                <div class="flex flex-wrap gap-4">
+                    <a href="/geo-guide" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">GEO
+                        入門指南</a>
+                    <a href="/what-is-llms-txt" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">什麼是
+                        LLMs.txt？</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+
+{{ template "footer.html" . }}
