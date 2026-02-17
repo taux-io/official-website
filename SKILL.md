@@ -72,6 +72,7 @@ description: TauX 網站開發、測試與部署的通用工作流程。
   - [ ] 文字無溢出螢幕邊緣。
 - [ ] **Console 錯誤**: 瀏覽器開發者工具無紅字錯誤。
 - [ ] **連結檢查**: 所有內部連結與外部連結皆有效 (無 404)。
+- [ ] **導航一致性**: Header, Footer 與 Mobile Menu 的連結名稱與順序需保持一致。
 
 ### B. GEO 與 SEO 驗證
 - [ ] **Meta 標籤**: `templates/header.html` 或頁面中包含唯一的 `title` 與 `description`。

@@ -62,4 +62,12 @@
   .glow-effect {
     box-shadow: 0 0 20px -5px rgba(0, 240, 255, 0.3);
   }
+
+  .dark .dark\:hidden {
+    display: none;
+  }
+
+  .dark .dark\:block {
+    display: block;
+  }
 }
