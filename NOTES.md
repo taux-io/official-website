@@ -1,31 +1,31 @@
-# TauX Project Notes & Context Memory
+# TauX 專案筆記與背景記憶
 
-## Project Overview
-TauX (拓思科技) is a "GEO of Things" technology company focusing on AI-driven smart work solutions, data governance, and Generative Engine Optimization (GEO).
+## 專案概覽
+TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數據治理與生成式引擎優化 (GEO) 的 "GEO of Things" 科技公司。
 
-## Architecture
-- **Backend**: Go (Golang) 1.24+ using Gin framework.
-- **Frontend**: Server-Side Rendered (SSR) HTML templates with TailwindCSS v3.4.
-- **Infrastructure**: Dockerized environment with Nginx as a reverse proxy.
-- **Design System**: "Premium Tech" aesthetic (Deep Void Black `#030305`, Neon Cyan `#00F0FF`, Purple `#7000FF`).
+## 架構
+- **後端**: Go (Golang) 1.24+ 使用 Gin 框架。
+- **前端**: 伺服器端渲染 (SSR) HTML 模板，搭配 TailwindCSS v3.4。
+- **基礎設施**: Docker 化環境，使用 Nginx 作為反向代理。
+- **設計系統**: "Premium Tech" 美學 (深空黑 `#030305`, 霓虹青 `#00F0FF`, 紫色 `#7000FF`)。
 
-## Key Decisions & Conventions
-- **Template Structure**: `templates/` folder contains HTML. `header.html` and `footer.html` are partials.
-- **Static Files**: Served from `/static`. CSS is built from `src/input.css` to `static/css/styles.min.css`.
-- **Docker Build**: Multi-stage build (Golang builder -> Alpine runner).
-- **Tailwind**: Used for all styling. Configured in `tailwind.config.js`. Dark mode is class-based but default is dark.
+## 關鍵決策與慣例
+- **模板結構**: `templates/` 資料夾包含 HTML。`header.html` 與 `footer.html` 為局部模板 (partials)。
+- **靜態檔案**: 服務於 `/static`。CSS 由 `src/input.css` 構建至 `static/css/styles.min.css`。
+- **Docker 構建**: 多階段構建 (Golang builder -> Alpine runner)。
+- **Tailwind**: 用於所有樣式。配置於 `tailwind.config.js`。深色模式以類別控制，但預設為深色。
 
-## Common Issues & Fixes
-- **Mobile Menu Transparency**: The glassmorphism effect (`backdrop-blur`) caused readability issues on mobile. Fixed by enforcing a solid background color (`#030305`) with `!important` on the mobile menu overlay in `header.html`.
-- **Background Image**: Initially missing due to build issues. Fixed by ensuring `styles.min.css` is correctly built and loaded, and using a solid background color backup in `header.html`.
-- **Go Version**: `go.mod` requires Go 1.24. Ensure Dockerfile uses `golang:1.24-alpine`.
+## 常見問題與修復
+- **手機版選單透明度問題**: 玻璃擬態效果 (`backdrop-blur`) 在手機上導致可讀性問題。修復方法是在 `header.html` 中的手機版選單遮罩層強制加上實色背景 (`#030305`) 與 `!important`。
+- **背景圖片**: 最初因構建問題遺失。修復方法是確保 `styles.min.css` 正確構建與載入，並在 `header.html` 中使用實色背景作為備案。
+- **Go 版本**: `go.mod` 要求較新的 Go 版本。確保 Dockerfile 使用 `golang:1.24-alpine` (或相容版本)。
 
-## Commands
-- **Dev**: `go run main.go` (backend), `npm run watch` (css).
-- **Prod**: `docker compose up -d --build`.
+## 指令
+- **開發**: `go run main.go` (後端), `npm run watch` (CSS)。
+- **生產**: `docker compose up -d --build`。
 
-## Recent Updates
-- Refactored entire site from Python/Static to Go/Gin.
-- Implemented full "Tech Mode" redesign with Tailwind.
-- Added "LLMs.txt" and "Prompt Injection" pages.
-- Verified mobile responsiveness and Docker deployment.
+## 近期更新
+- 將整個網站從 Python/Static 重構為 Go/Gin。
+- 使用 Tailwind 實作完整的 "Tech Mode" (科技風) 改版。
+- 新增 "LLMs.txt" 與 "Prompt Injection" (提示注入) 頁面。
+- 驗證手機版響應式設計與 Docker 部署。

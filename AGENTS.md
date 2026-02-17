@@ -1,78 +1,78 @@
-# Repository Guidelines for AI Agents
+# AI Agent 專案指南
 
-## 1. Project Overview & Stack
-**TauX (拓思科技)** - AI for Smart Work & GEO.
+## 1. 專案概覽與技術堆疊
+**TauX (拓思科技)** - 致力於 AI 智能辦公與 GEO (生成式引擎優化)。
 
-- **Backend**: Go (Golang) 1.24+ with [Gin Web Framework](https://github.com/gin-gonic/gin).
-- **Frontend**: Server-Side Rendered (SSR) HTML templates (`templates/*.html`) styled with **TailwindCSS v3.4**.
-- **Containerization**: Docker & Docker Compose (Multi-stage build: Go builder -> Alpine runner).
-- **Reverse Proxy**: Nginx (proxies to Go app).
+- **後端**: Go (Golang) 1.24+ 搭配 [Gin Web Framework](https://github.com/gin-gonic/gin)。
+- **前端**: 伺服器端渲染 (SSR) HTML 模板 (`templates/*.html`)，樣式採用 **TailwindCSS v3.4**。
+- **容器化**: Docker 與 Docker Compose (多階段構建：Go builder -> Alpine runner)。
+- **反向代理**: Nginx (代理請求至 Go 應用程式)。
 
-## 2. Architecture & File Structure
+## 2. 架構與檔案結構
 
-### File Organization
-- **`main.go`**: Application entry point. Configures Gin router, loads templates, serves static files.
-- **`templates/`**: HTML files using Go templating syntax (`{{ template "header.html" . }}`).
-  - Partials: `header.html`, `footer.html`.
-  - Pages: `index.html`, `geo-guide.html`, `data-governance.html`, etc.
-- **`src/`**: Source files for frontend build tools.
-  - `input.css`: Main Tailwind CSS entry point (imports font, custom utilities).
-- **`static/`**: Served publicly at `/static`.
-  - `css/styles.min.css`: Compiled Tailwind output. **DO NOT EDIT DIRECTLY.**
-  - `js/script.js`: Client-side logic (mobile menu, animations).
-  - Images & Favicons.
-- **`NOTES.md`**: **CRITICAL**. Contains project context, architectural decisions, and recent fixes. **Read this first.**
+### 檔案組織
+- **`main.go`**: 應用程式入口點。配置 Gin 路由、載入模板、提供靜態檔案服務。
+- **`templates/`**: 使用 Go 模板語法 (`{{ template "header.html" . }}`) 的 HTML 檔案。
+  - 局部模板 (Partials): `header.html`, `footer.html`.
+  - 頁面: `index.html`, `geo-guide.html`, `data-governance.html` 等。
+- **`src/`**: 前端構建工具的原始碼。
+  - `input.css`: Tailwind CSS主要入口點 (匯入字體、自定義工具類)。
+- **`static/`**: 公開對外服務於 `/static` 路徑。
+  - `css/styles.min.css`: Tailwind 編譯後的輸出檔。**請勿直接編輯此檔案。**
+  - `js/script.js`: 客戶端邏輯 (手機版選單、動畫)。
+  - 圖片與 Favicons。
+- **`NOTES.md`**: **關鍵文件**。包含專案背景、架構決策與近期修復紀錄。**請務必優先閱讀此文件。**
 
-### Infrastructure
-- **`Dockerfile`**: Multi-stage build. Uses `golang:1.24-alpine` for building and `alpine:latest` for running.
-- **`docker-compose.yml`**: Orchestrates the `app` (Go) and `nginx` services.
-- **`nginx.conf`**: Reverse proxy configuration.
+### 基礎設施
+- **`Dockerfile`**: 多階段構建。使用 `golang:1.24-alpine` 進行構建，並使用 `alpine:latest` 運行。
+- **`docker-compose.yml`**: 編排 `app` (Go) 與 `nginx` 服務。
+- **`nginx.conf`**: 反向代理配置。
 
-## 3. Development Workflow
+## 3. 開發工作流程
 
-### Running Locally (Non-Docker)
-1.  **Frontend (Watch Mode)**:
+### 本地開發 (無 Docker)
+1.  **前端 (監聽模式)**:
     ```bash
     npm run watch
     ```
-    *Compiles `src/input.css` to `static/css/styles.min.css` on change.*
+    *當檔案變更時，自動編譯 `src/input.css` 至 `static/css/styles.min.css`。*
 
-2.  **Backend (Hot Reload)**:
+2.  **後端 (熱重載)**:
     ```bash
     go run main.go
     ```
-    *Server runs on `http://localhost:8080`.*
+    *伺服器運行於 `http://localhost:8080`。*
 
-### Running with Docker (Production-like)
+### 使用 Docker 運行 (類生產環境)
 ```bash
 docker compose up -d --build
 ```
-*App runs behind Nginx on `http://localhost:80` (or configured port).*
+*應用程式在 Nginx 後端運行於 `http://localhost:80` (或配置的端口)。*
 
-## 4. Coding Standards & Conventions
+## 4. 程式碼標準與規範
 
-### HTML & Templates
-- Use Go templates for layout (`{{ define "content" }}`, `{{ template "header.html" }}`).
-- **SEO**: Ensure `meta` tags (Title, Description, OG) are present in `header.html` or overridden in pages.
-- **Structure**: Semantic HTML5 (`main`, `section`, `article`, `nav`).
+### HTML 與模板
+- 使用 Go 模板進行佈局 (`{{ define "content" }}`, `{{ template "header.html" }}`)。
+- **SEO**: 確保 `meta` 標籤 (標題、描述、OG) 存在於 `header.html` 或在頁面中覆寫。
+- **結構**: 使用語意化 HTML5 (`main`, `section`, `article`, `nav`)。
 
-### CSS & Styling (TailwindCSS)
-- **Primary Method**: Use Tailwind utility classes directly in HTML.
-- **Custom Styles**: Add to `src/input.css` using `@layer components` or `@layer utilities` only if necessary.
-- **Design Token**:
-  - Background: `bg-taux-bg` (#030305)
-  - Accents: `text-tech-cyan` (#00F0FF), `text-tech-purple` (#7000FF).
-- **Dark Mode**: Enabled by default (`class="dark"` in `html`).
+### CSS 與樣式 (TailwindCSS)
+- **主要方法**: 直接在 HTML 中使用 Tailwind 工具類別。
+- **自定義樣式**: 僅在必要時於 `src/input.css` 使用 `@layer components` 或 `@layer utilities` 添加。
+- **設計 Token**:
+  - 背景色: `bg-taux-bg` (#030305)
+  - 強調色: `text-tech-cyan` (#00F0FF), `text-tech-purple` (#7000FF).
+- **深色模式**: 預設啟用 (`html` 標籤中有 `class="dark"` )。
 
 ### JavaScript
-- Vanilla JS only (no React/Vue/jQuery).
-- Keep logic in `static/js/script.js`.
-- Use `document.addEventListener('DOMContentLoaded', ...)` for initialization.
+- 僅使用原生 JS (Vanilla JS) (不使用 React/Vue/jQuery)。
+- 邏輯保持在 `static/js/script.js` 中。
+- 初始化請使用 `document.addEventListener('DOMContentLoaded', ...)`。
 
-## 5. Critical Context & Known Issues
-*Refer to `NOTES.md` for the most up-to-date list.*
+## 5. 關鍵背景與已知問題
+*請參閱 `NOTES.md` 以獲取最新列表。*
 
-- **Mobile Menu**: The overlay MUST have `z-index: 9999 !important` and a solid background to cover page content. See `templates/header.html`.
-- **Go Version**: Strictly requires Go 1.24+.
-- **CSS Build**: If styles look wrong, ensure `npm run build` or `npm run watch` successfully updated `static/css/styles.min.css`.
-- **Skills**: Refer to `SKILL.md` for detailed workflows on creating pages, deploying, and troubleshooting.
+- **手機版選單**: 遮罩層 (Overlay) 必須設定 `z-index: 9999 !important` 且背景必須為實色以遮蓋頁面內容。詳見 `templates/header.html`。
+- **Go 版本**: 嚴格要求 Go 1.24+。
+- **CSS 構建**: 如果樣式看起來不正確，請確保 `npm run build` 或 `npm run watch` 已成功更新 `static/css/styles.min.css`。
+- **技能**: 關於建立頁面、部署與故障排除的詳細流程，請參閱 `SKILL.md`。
