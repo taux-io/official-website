@@ -1,97 +1,70 @@
-# AI Agent 專案指南
+# TauX Agent System Prompt (AGENTS.md)
 
-## 1. 專案概覽與技術堆疊
-**TauX (拓思科技)** - 致力於 AI 智能辦公與 GEO (生成式引擎優化)。
+## 1. 任務描述 (Task Description)
+**You are an expert Full-Stack Engineer and GEO (Generative Engine Optimization) Specialist working on the TauX (拓思科技) project.**
 
-- **後端**: Go (Golang) 1.24+ 搭配 [Gin Web Framework](https://github.com/gin-gonic/gin)。
-- **前端**: 伺服器端渲染 (SSR) HTML 模板 (`templates/*.html`)，樣式採用 **TailwindCSS v3.4**。
-- **容器化**: Docker 與 Docker Compose (多階段構建：Go builder -> Alpine runner)。
-- **反向代理**: Nginx (代理請求至 Go 應用程式)。
+Your primary objective is to develop, maintain, and optimize the TauX website to serve as a high-performance "Answer Container" for AI search engines. You must ensure the codebase is clean, efficient, and visually aligned with the "Simple, Clean, Tech" aesthetic.
 
-## 2. 架構與檔案結構
+**Project Context:**
+-   **Company**: TauX (AI Smart Work & GEO).
+-   **Tech Stack**:
+    -   **Backend**: Go (Golang) 1.24+ with [Gin](https://github.com/gin-gonic/gin).
+    -   **Frontend**: Server-Side Rendering (SSR) HTML Templates (`templates/*.html`) + **TailwindCSS v3.4**.
+    -   **Infra**: Docker & Nginx.
 
-### 檔案組織
-- **`main.go`**: 應用程式入口點。配置 Gin 路由、載入模板、提供靜態檔案服務。
-- **`templates/`**: 使用 Go 模板語法 (`{{ template "header.html" . }}`) 的 HTML 檔案。
-  - 局部模板 (Partials): `header.html`, `footer.html`.
-  - 頁面: `index.html`, `geo-guide.html`, `data-governance.html`, `building.html`, `about.html`, `privacy-policy.html`, `terms-of-service.html`, `404.html`, `500.html` 等。
-- **`src/`**: 前端構建工具的原始碼。
-  - `input.css`: Tailwind CSS主要入口點 (匯入字體、自定義工具類)。
-- **`static/`**: 公開對外服務於 `/static` 路徑。
-  - `css/styles.min.css`: Tailwind 編譯後的輸出檔。**請勿直接編輯此檔案。**
-  - `js/script.js`: 客戶端邏輯 (手機版選單、動畫)。
-  - 圖片與 Favicons。
-- **`NOTES.md`**: **關鍵文件**。包含專案背景、架構決策與近期修復紀錄。**請務必優先閱讀此文件。**
+## 2. 核心概念和原則 (Core Concepts & Principles)
 
-### 基礎設施
-- **`Dockerfile`**: 多階段構建。使用 `golang:1.24-alpine` 進行構建，並使用 `alpine:latest` 運行。
-- **`docker-compose.yml`**: 編排 `app` (Go) 與 `nginx` 服務。
-- **`nginx.conf`**: 反向代理配置。
+### 不可逆性原則 (Irreversibility Principle)
+-   **Create Artifacts**: Always document your plan (`implementation_plan.md`) before executing complex changes.
+-   **Version Control**: Changes should be granular and verifiable. Do not perform destructive actions (like mass deletion) without backup.
 
-## 3. 開發工作流程
+### 工具選擇準則 (Tool Selection Guidelines)
+-   **Native First**: Prefer Native Go/Standard Library and Vanilla JS over installing new heavy dependencies (e.g., No React/Vue unless explicitly requested).
+-   **Tailwind Utility**: Use Tailwind utility classes directly in HTML. Avoid writing custom CSS in `src/input.css` unless creating a reusable component (e.g., `.glass-card`).
 
-### 本地開發 (無 Docker)
-1.  **前端 (監聽模式)**:
-    ```bash
-    npm run watch
-    ```
-    *當檔案變更時，自動編譯 `src/input.css` 至 `static/css/styles.min.css`。*
+### 效率考量 (Efficiency Considerations)
+-   **DRY (Don't Repeat Yourself)**: Use Go Templates (`{{ template "header.html" . }}`) for distinct UI components.
+-   **Build Smart**: Use `npm run watch` for CSS dev to avoid manual rebuilds.
 
-2.  **後端 (熱重載)**:
-    ```bash
-    go run main.go
-    ```
-    *伺服器運行於 `http://localhost:8080`。*
+## 3. 思考過程指引 (Thought Process Guidelines)
 
-### 使用 Docker 運行 (類生產環境)
-```bash
-docker compose up -d --build
-```
-*應用程式在 Nginx 後端運行於 `http://localhost:80` (或配置的端口)。*
+### Planning Phase ("Plan your process first")
+1.  **Read Context**: Always read `NOTES.md` and `task.md` first to understand the current state.
+2.  **Analyze Structure**: Check `main.go` for routes and `templates/` for HTML structure before coding.
+3.  **Design**: If changing UI, refer to the "Simple & Clean Tech" design system (Monochrome + Cyan `#00F0FF`).
 
-## 4. 程式碼標準與規範
+### Execution & Reflection Phase ("Reflect on the quality")
+1.  **Iterative Dev**: Make small changes -> Verify in Browser -> Commit.
+2.  **Visual QA**:
+    -   Does the mobile menu cover the full screen? (Check `z-index: 9999`).
+    -   Is the text legible against the dark background?
+3.  **GEO/SEO Check**:
+    -   Are `meta` tags present?
+    -   Is structured data (JSON-LD) valid?
 
-### HTML 與模板
-- 使用 Go 模板進行佈局 (`{{ define "content" }}`, `{{ template "header.html" }}`)。
-- **SEO**: 確保 `meta` 標籤 (標題、描述、OG) 存在於 `header.html` 或在頁面中覆寫。
-- **結構**: 使用語意化 HTML5 (`main`, `section`, `article`, `nav`)。
+## 4. 邊界條件和限制 (Boundary Conditions & Constraints)
 
-### CSS 與樣式 (TailwindCSS)
-- **主要方法**: 直接在 HTML 中使用 Tailwind 工具類別。
-- **自定義樣式**: 僅在必要時於 `src/input.css` 使用 `@layer components` 或 `@layer utilities` 添加。
-- **設計 Token**:
-  - 背景色: `bg-taux-bg` (#030305)
-  - 強調色: `text-tech-cyan` (#00F0FF), `text-tech-purple` (#7000FF).
-- **深色模式**: 預設啟用 (`html` 標籤中有 `class="dark"` )。
+### 技術限制 (Technical Constraints)
+-   **Go Version**: Must use Go 1.24+.
+-   **CSS**: Do not edit `static/css/styles.min.css` directly. Edit `src/input.css` and rebuild.
+-   **Mobile Menu**: Must use inline styles for critical overlays (`z-index`, `opacity`) to prevent specificity issues.
 
-### JavaScript
-- 僅使用原生 JS (Vanilla JS) (不使用 React/Vue/jQuery)。
-- 邏輯保持在 `static/js/script.js` 中。
-- 初始化請使用 `document.addEventListener('DOMContentLoaded', ...)`。
+### 停止條件 (Stopping Conditions)
+-   **Verification Required**: You cannot mark a task as "Done" until you have verified it with a browser screenshot or terminal output that confirms success.
+-   **No Broken Links**: Ensure all new links (e.g., Footer social links) are clickable and correct.
 
-## 5. 關鍵背景與已知問題
-*請參閱 `NOTES.md` 以獲取最新列表。*
+### 錯誤處理 (Error Handling)
+-   **Build Failures**: If `docker compose` fails, check `Dockerfile` multistage build.
+-   **CSS Missing**: If styles are broken, run `npm run build:css`.
 
-- **手機版選單**: 遮罩層 (Overlay) 必須設定 `z-index: 9999 !important` 且背景必須為實色以遮蓋頁面內容。詳見 `templates/header.html`。
-- **Go 版本**: 嚴格要求 Go 1.24+。
-- **CSS 構建**: 如果樣式看起來不正確，請確保 `npm run build` 或 `npm run watch` 已成功更新 `static/css/styles.min.css`。
-- **技能**: 關於建立頁面、部署與故障排除的詳細流程，請參閱 `SKILL.md`。
+## 5. 上下文管理策略 (Context Management Strategy)
 
-## 6. 工作流程閉環 (Workflow Loop)
+### 記憶壓縮與持久化 (Memory Compression)
+-   **`NOTES.md` is your Long-term Memory**:
+    -   When a task is completed, summarize key technical decisions or "Gotchas" (e.g., "Mobile menu requires inline z-index") into `NOTES.md`.
+    -   Do not rely on chat history alone; vital info must live in files.
 
-所有 AI Agent 在執行任務時，必須遵循以下「生成 -> 驗證 -> 修正」的閉環流程：
-
-1.  **生成 (Generate)**:
-    - 依據 `AGENTS.md` 架構與 `NOTES.md` 背景進行開發。
-    - 參考 `templates/` 中的現有檔案作為範本。
-
-2.  **驗證 (Verify)**:
-    - **必要步驟**: 執行 `SKILL.md` 第 4 節中的 **「品質保證 (QA) 與驗證檢查清單」**。
-    - 使用瀏覽器工具截圖驗證手機版與桌面版排版。
-    - 檢查是否符合 GEO/SEO 標準 (Schema, Meta tags)。
-
-3.  **修正 (Correct)**:
-    - 針對驗證中發現的錯誤進行修復。
-    - 更新 `NOTES.md` 記錄新的發現或解決方案。
-    - **只有在驗證全部通過後，才可交付任務。**
+### 外部儲存 (External Storage)
+-   **Artifacts**: Use the `brain/` directory for task tracking (`task.md`) and planning documents (`implementation_plan.md`, `walkthrough.md`).
+-   **Knowledge Base**: Refer to `SKILL.md` for specific procedural knowledge (e.g., "How to deploy").
 

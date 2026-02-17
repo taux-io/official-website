@@ -38,3 +38,4 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - 將 "Security" 連結名稱更新為 "Prompt Security" (Header & Footer)。
 - 新增自定义 `500.html` 錯誤頁面與 Nginx 配置。
 - 將導航選單中的 "Solutions" 統一名稱更正為 "Smart Work" (Header)。
+- **Documentation**: 重構 `AGENTS.md` (Agent Prompt 結構) 並同步 `SKILL.md` 與 `README.md`。

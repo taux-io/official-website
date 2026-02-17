@@ -22,7 +22,7 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 本專案升級為 Go (Gin Framework) 後端與 TailwindCSS 前端架構：
 
-- **Backend**: Go 1.23+, Gin Web Framework
+- **Backend**: Go 1.24+, Gin Web Framework
 - **Frontend**: HTML5 Templates, TailwindCSS 3.4
 - **Infrastructure**: Docker, Docker Compose, Nginx (Reverse Proxy)
 - **Design**: Glassmorphism, Premium Tech Aesthetic, Dark Mode Optimized
@@ -115,6 +115,8 @@ docker-compose up -d --build
 ## 🔧 開發指南
 
 ### 編輯內容
+**Developers**: Please refer to `AGENTS.md` and `SKILL.md` for detailed development workflows and standards.
+
 主要內容位於 `src/index.html`，使用語義化的 HTML5 標記：
 
 ```html
