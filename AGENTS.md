@@ -75,3 +75,4 @@ docker compose up -d --build
 - **Mobile Menu**: The overlay MUST have `z-index: 9999 !important` and a solid background to cover page content. See `templates/header.html`.
 - **Go Version**: Strictly requires Go 1.24+.
 - **CSS Build**: If styles look wrong, ensure `npm run build` or `npm run watch` successfully updated `static/css/styles.min.css`.
+- **Skills**: Refer to `SKILL.md` for detailed workflows on creating pages, deploying, and troubleshooting.

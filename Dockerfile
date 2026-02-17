@@ -32,6 +32,10 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/templates ./templates
 
+# Create a non-root user
+RUN adduser -D -g '' appuser
+USER appuser
+
 # Expose the port the app runs on
 EXPOSE 8080
 
