@@ -18,20 +18,25 @@ Your primary objective is to develop, maintain, and optimize the TauX website to
 -   **Create Artifacts**: Always document your plan (`implementation_plan.md`) before executing complex changes.
 -   **Version Control**: Changes should be granular and verifiable. Do not perform destructive actions (like mass deletion) without backup.
 
-### 工具選擇準則 (Tool Selection Guidelines)
--   **Native First**: Prefer Native Go/Standard Library and Vanilla JS over installing new heavy dependencies (e.g., No React/Vue unless explicitly requested).
--   **Tailwind Utility**: Use Tailwind utility classes directly in HTML. Avoid writing custom CSS in `src/input.css` unless creating a reusable component (e.g., `.glass-card`).
+### 工具選擇準則與啟發法 (Tool Selection & Heuristics)
+-   **Native First**: Prefer Native Go/Standard Library and Vanilla JS. Avoid heavy dependencies.
+-   **Heuristic: If CSS Fails**: Always run `npm run build:css` and check `static/css/styles.min.css`.
+-   **Heuristic: If Mobile Menu Fails**: 90% of the time it is a `z-index` or `opacity` issue with the overlay. Check inline styles.
 
 ### 效率考量 (Efficiency Considerations)
--   **DRY (Don't Repeat Yourself)**: Use Go Templates (`{{ template "header.html" . }}`) for distinct UI components.
--   **Build Smart**: Use `npm run watch` for CSS dev to avoid manual rebuilds.
+-   **DRY**: Use Go Templates (`{{ template "header.html" . }}`) for distinct UI components.
+-   **Build Smart**: Use `npm run watch` for CSS dev.
 
 ## 3. 思考過程指引 (Thought Process Guidelines)
 
-### Planning Phase ("Plan your process first")
-1.  **Read Context**: Always read `NOTES.md` and `task.md` first to understand the current state.
+### Planning Phase ("Plan and Simulate")
+1.  **Read Context (Context Window Management)**: 
+    -   **CRITICAL**: Always read `NOTES.md` and `task.md` FIRST to load the project state into your context.
+    -   Do not rely on your internal training data for project specifics.
 2.  **Analyze Structure**: Check `main.go` for routes and `templates/` for HTML structure before coding.
-3.  **Design**: If changing UI, refer to the "Simple & Clean Tech" design system (Monochrome + Cyan `#00F0FF`).
+3.  **Side Effect Analysis ("Unintended Consequences")**:
+    -   *Ask yourself*: "If I change this class in `input.css`, what other pages will break?"
+    -   *Ask yourself*: "If I update `header.html`, does it break the mobile menu z-index?"
 
 ### Execution & Reflection Phase ("Reflect on the quality")
 1.  **Iterative Dev**: Make small changes -> Verify in Browser -> Commit.
@@ -55,13 +60,14 @@ Your primary objective is to develop, maintain, and optimize the TauX website to
 
 ### 錯誤處理 (Error Handling)
 -   **Build Failures**: If `docker compose` fails, check `Dockerfile` multistage build.
--   **CSS Missing**: If styles are broken, run `npm run build:css`.
+-   **CSS Missing**: If styles are broken, automatically run `npm run build:css`.
 
 ## 5. 上下文管理策略 (Context Management Strategy)
 
 ### 記憶壓縮與持久化 (Memory Compression)
 -   **`NOTES.md` is your Long-term Memory**:
     -   When a task is completed, summarize key technical decisions or "Gotchas" (e.g., "Mobile menu requires inline z-index") into `NOTES.md`.
+    -   **Let Claude be Claude**: Use your reasoning to summarize *why* a decision was made, not just *what* changed.
     -   Do not rely on chat history alone; vital info must live in files.
 
 ### 外部儲存 (External Storage)
