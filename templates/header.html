@@ -1,0 +1,91 @@
+{{ define "header.html" }}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TauX - AI for Smart Work</title>
+    <meta name="description"
+        content="TauX provides advanced AI solutions for smart work, data governance, and generative engine optimization (GEO).">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=2">
+</head>
+
+<body class="bg-taux-bg text-gray-100 font-sans selection:bg-tech-cyan/30 selection:text-white"
+    style="background-color: #030305;">
+
+    <!-- Reading Progress -->
+    <div
+        class="reading-progress fixed top-0 left-0 h-0.5 bg-gradient-to-r from-tech-cyan to-tech-purple z-[100] w-0 transition-all duration-100">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-glass transition-all duration-300" aria-label="Main Navigation"
+        style="background-color: rgba(3, 3, 5, 0.8);">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2 group" aria-label="TauX Homepage">
+                <span
+                    class="font-display text-2xl font-bold tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-tech-cyan group-hover:to-tech-purple transition-all duration-300">
+                    TauX
+                </span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="/ai-smart-work"
+                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Solutions</a>
+                <a href="/geo-guide"
+                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">GEO
+                    Guide</a>
+                <a href="/data-governance"
+                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Governance</a>
+                <a href="https://github.com/foxhsiao" target="_blank" rel="noopener noreferrer"
+                    class="px-4 py-2 text-sm font-bold text-taux-bg bg-white rounded-full hover:bg-tech-cyan transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    Start Building
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-50 focus:outline-none"
+                aria-label="Toggle menu" aria-expanded="false">
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 opacity-100"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay (Moved outside nav to avoid stacking context issues) -->
+    <div id="mobileMenuOverlay"
+        class="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 transition-transform duration-500 translate-x-full md:hidden"
+        style="background-color: #030305 !important; opacity: 1 !important; z-index: 9999 !important;">
+        <a href="/" class="mobile-link text-2xl font-display font-bold text-white hover:text-tech-cyan">Home</a>
+        <a href="/ai-smart-work" class="mobile-link text-xl text-gray-300 hover:text-white">Solutions</a>
+        <a href="/geo-guide" class="mobile-link text-xl text-gray-300 hover:text-white">GEO Guide</a>
+        <a href="/data-governance" class="mobile-link text-xl text-gray-300 hover:text-white">Governance</a>
+        <a href="/what-is-llms-txt" class="mobile-link text-xl text-gray-300 hover:text-white">LLMs.txt</a>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <main class="pt-20 min-h-screen relative overflow-hidden">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none"
+            style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black, transparent 80%);">
+        </div>
+        {{ end }}

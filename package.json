@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build:css": "tailwindcss -i ./src/input.css -o ./src/styles.min.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./src/styles.min.css --watch"
+    "build:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

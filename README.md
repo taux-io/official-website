@@ -20,67 +20,67 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 ## 🛠️ 技術規格
 
-本專案使用現代化的前端技術架構：
+本專案升級為 Go (Gin Framework) 後端與 TailwindCSS 前端架構：
 
-- **HTML5** - 語義化標記與 SEO 優化
-- **CSS3** - 響應式設計與深色模式支援
-- **JavaScript** - 互動功能與主題切換
-- **Docker** - 容器化部署
-- **live-server** - 開發環境熱重載
+- **Backend**: Go 1.23+, Gin Web Framework
+- **Frontend**: HTML5 Templates, TailwindCSS 3.4
+- **Infrastructure**: Docker, Docker Compose, Nginx (Reverse Proxy)
+- **Design**: Glassmorphism, Premium Tech Aesthetic, Dark Mode Optimized
 
 ## 📁 專案結構
 
 ```
 taux-dev/
-├── README.md                    # 專案說明文件
-├── Dockerfile                   # Docker 容器配置
-├── docker-compose.yml           # Docker Compose 配置
-└── src/                        # 網站原始碼
-    ├── index.html              # 主頁面
-    ├── styles.css              # 樣式表
-    ├── robots.txt              # 搜尋引擎爬蟲規則
-    ├── sitemap.xml             # 網站地圖
-    ├── site.webmanifest        # PWA 配置
-    ├── taux-logo-light.png     # 淺色主題 Logo
-    ├── taux-logo-dark.png      # 深色主題 Logo
-    ├── rocket.png              # 火箭圖示
-    └── favicons/               # 網站圖標
-        ├── favicon.ico
-        ├── favicon-16x16.png
-        ├── favicon-32x32.png
-        ├── apple-touch-icon.png
-        ├── android-chrome-192x192.png
-        └── android-chrome-512x512.png
+├── main.go                     # Go 伺服器入口
+├── templates/                  # HTML 模板
+│   ├── index.html
+│   ├── header.html             # 共用頁首
+│   └── footer.html             # 共用頁尾
+├── static/                     # 靜態資源
+│   ├── css/                    # 編譯後的 CSS
+│   ├── js/                     # 前端 JavaScript
+│   └── img/                    # 圖片資源
+├── src/                        # 前端原始碼 (CSS input)
+├── tailwind.config.js          # Tailwind 設定
+├── Dockerfile                  # Go 應用容器設定
+├── docker-compose.yml          # 服務編排
+└── nginx.conf                  # Nginx 反向代理設定
 ```
 
 ## 🚀 快速開始
 
-### 方法一：使用 Docker（推薦）
+### 方法一：使用 Docker (推薦)
 
 ```bash
-# 複製專案
-git clone <repository-url>
-cd taux-dev
-
-# 使用 Docker Compose 啟動
-docker-compose up -d
+# 啟動服務 (App + Nginx)
+docker-compose up -d --build
 
 # 訪問網站
-open http://localhost:8080
+# http://localhost (Nginx, port 80)
+# http://localhost:8080 (Go App direct, if exposed)
 ```
 
 ### 方法二：本地開發
 
-```bash
-# 安裝 live-server
-npm install -g live-server
+1. **安裝依賴**
+   ```bash
+   npm install        # 安裝 Tailwind 依賴
+   go mod download    # 下載 Go 模組
+   ```
 
-# 啟動開發伺服器
-live-server src --port=8080 --host=0.0.0.0
+2. **啟動 CSS 監聽 (Terminal 1)**
+   ```bash
+   npm run watch
+   ```
 
-# 訪問網站
-open http://localhost:8080
-```
+3. **啟動 Go 伺服器 (Terminal 2)**
+   ```bash
+   export PORT=8080
+   go run main.go
+   ```
+
+4. **訪問**
+   open http://localhost:8080
 
 ## 🎨 功能特色
 

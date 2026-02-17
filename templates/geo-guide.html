@@ -1,0 +1,253 @@
+{{ template "header.html" . }}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/geo-guide.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首頁",
+                    "item": "https://taux.io"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "GEO 指南",
+                    "item": "https://taux.io/geo-guide.html"
+                }
+            ]
+        },
+        {
+            "@type": "Article",
+            "@id": "https://taux.io/geo-guide.html#article",
+            "headline": "GEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？",
+            "description": "本指南將解釋 GEO（生成式引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 GEO 在 AI 搜尋中獲得優勢。",
+            "author": { "@type": "Organization", "name": "TauX", "url": "https://taux.io" },
+            "publisher": { "@type": "Organization", "name": "TauX", "logo": { "@type": "ImageObject", "url": "https://taux.io/logo.png" }},
+            "datePublished": "2025-08-15",
+            "dateModified": "2026-02-12",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/geo-guide.html" },
+            "image": "https://taux.io/geo-guide-og.jpg",
+            "isPartOf": { "@id": "https://taux.io/#website" },
+            "mentions": [
+                { "@type": "Thing", "name": "Generative Artificial Intelligence", "sameAs": "https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
+                { "@type": "Thing", "name": "Search Engine Optimization", "sameAs": "https://en.wikipedia.org/wiki/Search_engine_optimization" }
+            ]
+        }
+    ]
+}
+</script>
+
+<article class="relative pt-32 pb-24 px-6 relative overflow-hidden">
+    <!-- Background Decor -->
+    <div
+        class="absolute top-0 right-0 w-[500px] h-[500px] bg-tech-purple/20 blur-[120px] rounded-full -z-10 animate-pulse-glow">
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="font-display text-4xl md:text-6xl font-bold mb-8 text-white text-glow">
+                GEO 入門指南
+            </h1>
+            <p class="text-xl md:text-2xl text-tech-cyan mb-8">讓 AI 成為你的免費流量入口</p>
+
+            <div class="glass-card p-8 border-l-4 border-l-tech-cyan text-left">
+                <blockquote class="text-lg text-gray-300 italic">
+                    "以前，我們優化給「搜尋引擎」看；現在，我們優化給「答案引擎」懂。"
+                </blockquote>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="space-y-16">
+            <!-- What is GEO -->
+            <section id="what-is-geo" class="glass-card p-8 md:p-12">
+                <h2 class="font-display text-3xl font-bold text-white mb-8 flex items-center">
+                    <span
+                        class="w-10 h-10 rounded-full bg-tech-cyan/20 flex items-center justify-center mr-4 text-xl">💡</span>
+                    什麼是 GEO？
+                </h2>
+
+                <p class="mb-8 text-lg text-gray-300 leading-relaxed">
+                    <strong>GEO (Generative Engine Optimization)</strong> 是一種優化網站內容的技術，旨在提高內容在生成式 AI (如 ChatGPT,
+                    Perplexity, Gemini) 輸出結果中的可見度與引用率。
+                </p>
+
+                <div class="space-y-6 bg-white/5 p-6 rounded-xl border border-white/10">
+                    <div class="flex gap-4">
+                        <span class="text-2xl">🎯</span>
+                        <div>
+                            <strong class="text-white block mb-1">核心目標</strong>
+                            <p class="text-gray-400">爭取在 AI 回答中的 <span class="text-tech-cyan">「引用連結 (Citations)」</span>
+                                與「推薦來源」。</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <span class="text-2xl">⚖️</span>
+                        <div>
+                            <strong class="text-white block mb-1">關鍵差異</strong>
+                            <p class="text-gray-400">傳統 SEO 針對關鍵字排名；<span class="text-white font-medium">GEO 針對 LLM
+                                    的語意理解與實體關聯</span>。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Matters -->
+            <section id="why-geo-matters">
+                <h2 class="font-display text-3xl font-bold text-white mb-8">為什麼 GEO 現在這麼重要？</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 hover:bg-white/10 transition-colors">
+                        <h3 class="text-xl font-bold mb-3 text-white flex items-center"><span
+                                class="mr-3 text-2xl">🤖</span> AI 改變搜尋習慣</h3>
+                        <p class="text-gray-400">越來越多人直接問 AI 問題，而不是輸入關鍵字搜尋。</p>
+                    </div>
+                    <div class="glass-card p-6 hover:bg-white/10 transition-colors">
+                        <h3 class="text-xl font-bold mb-3 text-white flex items-center"><span
+                                class="mr-3 text-2xl">📈</span> 更精準的流量</h3>
+                        <p class="text-gray-400">會問具體問題的用戶，通常離「決策」更近，轉化率更高。</p>
+                    </div>
+                    <div class="glass-card p-6 hover:bg-white/10 transition-colors">
+                        <h3 class="text-xl font-bold mb-3 text-white flex items-center"><span
+                                class="mr-3 text-2xl">🛡️</span> 建立品牌權威</h3>
+                        <p class="text-gray-400">當 AI 引用你的觀點作為答案時，你就是該領域的權威。</p>
+                    </div>
+                    <div class="glass-card p-6 hover:bg-white/10 transition-colors">
+                        <h3 class="text-xl font-bold mb-3 text-white flex items-center"><span
+                                class="mr-3 text-2xl">🌐</span> 內容再利用</h3>
+                        <p class="text-gray-400">好的 GEO 結構化內容，同時也是高品質的社群素材。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section id="geo-vs-seo">
+                <h2 class="font-display text-3xl font-bold text-white mb-8">GEO vs SEO：一張圖看懂</h2>
+                <div class="glass-card overflow-hidden p-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-white/5 border-b border-white/10">
+                                <tr>
+                                    <th class="p-6 font-bold text-white">維度</th>
+                                    <th class="p-6 font-bold text-tech-pink">SEO (搜尋引擎優化)</th>
+                                    <th class="p-6 font-bold text-tech-cyan">GEO (生成式引擎優化)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-gray-300">
+                                <tr>
+                                    <td class="p-6 font-bold text-white">目標</td>
+                                    <td class="p-6">搶排名 (Ranking)</td>
+                                    <td class="p-6">成為答案 (Answer)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-white">對象</td>
+                                    <td class="p-6">Google 演算法</td>
+                                    <td class="p-6">大型語言模型 (LLM)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-white">方法</td>
+                                    <td class="p-6">關鍵字、反向連結</td>
+                                    <td class="p-6">結構化數據、語意關聯</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-6 font-bold text-white">產出</td>
+                                    <td class="p-6">藍色連結列表</td>
+                                    <td class="p-6">直接的引用回答</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-4 text-center">
+                    <div class="glass-card px-8 py-4 rounded-full border-t border-tech-pink/30">
+                        <strong class="text-tech-pink block text-sm uppercase tracking-wider">SEO Goal</strong>
+                        <span class="text-white font-bold">爭取被點擊</span>
+                    </div>
+                    <div class="glass-card px-8 py-4 rounded-full border-t border-tech-cyan/30">
+                        <strong class="text-tech-cyan block text-sm uppercase tracking-wider">GEO Goal</strong>
+                        <span class="text-white font-bold">爭取被引用</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How it works -->
+            <section id="how-geo-works">
+                <h2 class="font-display text-3xl font-bold text-white mb-8">我們如何執行 GEO？</h2>
+                <div class="space-y-6">
+                    <div class="glass-card p-8 group hover:border-tech-cyan/50 transition-all">
+                        <h3 class="text-2xl font-bold mb-4 text-white group-hover:text-tech-cyan transition-colors">
+                            Step 1. 建立答案容器
+                        </h3>
+                        <p class="text-gray-400 mb-4">這不是普通網站，而是為機器人設計的圖書館。</p>
+                        <ul class="list-none space-y-2 text-gray-300">
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-cyan rounded-full mr-3"></span>清晰的 Schema.org 標記</li>
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-cyan rounded-full mr-3"></span>問答式 (Q&A) 內容結構</li>
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-cyan rounded-full mr-3"></span>極致的讀取效能</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-8 group hover:border-tech-purple/50 transition-all">
+                        <h3 class="text-2xl font-bold mb-4 text-white group-hover:text-tech-purple transition-colors">
+                            Step 2. 填入專家級內容
+                        </h3>
+                        <p class="text-gray-400 mb-4">AI 喜歡獨特觀點，討厭農場文。</p>
+                        <ul class="list-none space-y-2 text-gray-300">
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-purple rounded-full mr-3"></span>針對用戶真實痛點的回答</li>
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-purple rounded-full mr-3"></span>提供數據支持的專家見解</li>
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-purple rounded-full mr-3"></span>定期更新保持資訊鮮度</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-8 group hover:border-tech-pink/50 transition-all">
+                        <h3 class="text-2xl font-bold mb-4 text-white group-hover:text-tech-pink transition-colors">
+                            Step 3. 建立信任網路
+                        </h3>
+                        <p class="text-gray-400 mb-4">讓權威來源為你的答案背書。</p>
+                        <ul class="list-none space-y-2 text-gray-300">
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-pink rounded-full mr-3"></span>高相關性的外部連結</li>
+                            <li class="flex items-center"><span
+                                    class="w-1.5 h-1.5 bg-tech-pink rounded-full mr-3"></span>社群信號與品牌提及</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mt-20 glass-card p-12 text-center rounded-3xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-tech-blue/20 to-tech-purple/20 blur-xl opacity-50">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold text-white mb-6">準備好佈局 AI 時代了嗎？</h2>
+                    <p class="text-gray-300 mb-8 max-w-xl mx-auto">GEO 是一項長期投資，現在開始，您將比競爭對手早一步佔領 AI 的推薦版位。</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="mailto:hello@taux.io"
+                            class="px-8 py-4 bg-white text-taux-bg font-bold rounded-full hover:bg-tech-cyan hover:scale-105 transition-all">
+                            預約 GEO 諮詢
+                        </a>
+                        <a href="/index.html#our-services"
+                            class="px-8 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all">
+                            了解更多服務
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+
+{{ template "footer.html" . }}

@@ -1,21 +1,39 @@
-# Builder stage: generate minified assets
-FROM python:3.11-alpine AS builder
+# Build stage
+FROM golang:1.24-alpine AS builder
+
 WORKDIR /app
-COPY src/ src/
-COPY scripts/ scripts/
-RUN python3 scripts/minify.py
 
-# Runtime stage: nginx serving built site
-FROM nginx:alpine
+# Install required system dependencies for building (if any)
+# RUN apk add --no-cache git
 
-# 清空預設內容
-RUN rm -rf /usr/share/nginx/html/*
+# Copy go mod and sum files
+COPY go.mod go.sum ./
 
-# 複製生成後的靜態網站內容
-COPY --from=builder /app/src/ /usr/share/nginx/html/
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
 
-# 複製自訂 Nginx 設定
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy the source code
+COPY . .
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Build the application
+# CGO_ENABLED=0 disables Cgo, which is required for a static build
+# GOOS=linux ensures we build for Linux
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+# Run stage
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/main .
+
+# Copy static files and templates
+COPY --from=builder /app/static ./static
+COPY --from=builder /app/templates ./templates
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Command to run the executable
+CMD ["./main"]

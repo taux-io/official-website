@@ -1,0 +1,64 @@
+{{ template "header.html" . }}
+
+<div class="relative pt-32 pb-24 px-6 overflow-hidden">
+    <!-- Background Decor -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-tech-blue/10 blur-[120px] rounded-full -z-10"></div>
+
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-20">
+            <div
+                class="inline-flex items-center px-4 py-2 rounded-full bg-tech-cyan/10 border border-tech-cyan/30 text-tech-cyan text-sm font-semibold mb-6">
+                Data Strategy
+            </div>
+            <h1 class="font-display text-4xl md:text-6xl font-bold mb-6 text-white text-glow">數據治理指南</h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">從混亂到洞察：構建企業級的數據資產管理體系</p>
+        </header>
+
+        <section class="glass-card p-8 md:p-12 mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6">為什麼需要數據治理？</h2>
+            <p class="text-gray-300 leading-relaxed mb-6">
+                數據是新時代的石油，但未經提煉的石油無法驅動引擎。數據治理 (Data Governance) 是一套確保數據品質、安全性與可用性的管理框架。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <div class="text-tech-cyan text-xl mb-2 font-bold">準確性</div>
+                    <p class="text-sm text-gray-400">確保決策基於事實而非雜訊。</p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <div class="text-tech-purple text-xl mb-2 font-bold">合規性</div>
+                    <p class="text-sm text-gray-400">符合 GDPR、台灣個資法規範。</p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <div class="text-tech-pink text-xl mb-2 font-bold">可用性</div>
+                    <p class="text-sm text-gray-400">打破數據孤島，讓業務端隨取隨用。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-8">
+            <div class="glass-card p-8 border-l-4 border-l-tech-cyan">
+                <h3 class="text-xl font-bold text-white mb-4">1. 數據盤點 (Data Inventory)</h3>
+                <p class="text-gray-400">像盤點倉庫一樣，搞清楚你有哪些數據、存在哪裡、誰在負責。我們協助企業建立完整的數據目錄 (Data Catalog)。</p>
+            </div>
+
+            <div class="glass-card p-8 border-l-4 border-l-tech-purple">
+                <h3 class="text-xl font-bold text-white mb-4">2. 標準化 (Standardization)</h3>
+                <p class="text-gray-400">定義統一的數據語言。例如：「營收」是含稅還是未稅？「客戶」是指下單客戶還是潛在客戶？消除跨部門的雞同鴨講。</p>
+            </div>
+
+            <div class="glass-card p-8 border-l-4 border-l-tech-pink">
+                <h3 class="text-xl font-bold text-white mb-4">3. 數據品質監控 (Data Quality)</h3>
+                <p class="text-gray-400">建立自動化監測機制，即時發現空值、異常值或重複數據，在污染分析報表前就攔截修正。</p>
+            </div>
+        </section>
+
+        <div class="mt-16 text-center">
+            <a href="mailto:hello@taux.io"
+                class="inline-block px-8 py-4 bg-white text-taux-bg font-bold rounded-full hover:bg-tech-cyan hover:scale-105 transition-all">
+                索取數據治理白皮書
+            </a>
+        </div>
+    </div>
+</div>
+
+{{ template "footer.html" . }}
