@@ -17,7 +17,6 @@ This document provides specific **"How-to"** procedures and checklists required 
 -   **Command**: `docker compose up -d --build`
 -   **URL**: `http://localhost` (via Nginx)
 -   **Logs**: `docker compose logs -f`
--   **Note**: Always use `--build` if `go.mod` or dependencies change.
 
 ## 2. Standard Procedures (SOPs)
 

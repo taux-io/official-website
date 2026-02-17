@@ -1,5 +1,55 @@
 {{ template "header.html" . }}
 
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/what-is-llms-txt.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首頁",
+                    "item": "https://taux.io"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "LLMs.txt 說明",
+                    "item": "https://taux.io/what-is-llms-txt.html"
+                }
+            ]
+        },
+        {
+            "@type": "TechArticle",
+            "@id": "https://taux.io/what-is-llms-txt.html#article",
+            "headline": "LLMs.txt 是什麼？AI 時代網站內容保護新規範",
+            "description": "深入解析 LLMs.txt 的定義、功能及其與 robots.txt 的差異，協助網站管理者掌握 GEO 時代的內容存取權限。",
+            "author": {
+                "@type": "Organization",
+                "name": "TauX 拓思科技",
+                "url": "https://taux.io"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "TauX 拓思科技",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://taux.io/static/taux-logo-dark.png"
+                }
+            },
+            "datePublished": "2026-02-12",
+            "dateModified": "2026-02-18",
+            "image": "https://taux.io/static/taux-logo-dark.png",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/what-is-llms-txt.html" }
+        }
+    ]
+}
+</script>
+
 <div class="relative pt-32 pb-24 px-6 overflow-hidden">
     <!-- Background Decor -->
     <div

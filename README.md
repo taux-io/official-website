@@ -117,33 +117,10 @@ docker-compose up -d --build
 ### 編輯內容
 **Developers**: Please refer to `AGENTS.md` and `SKILL.md` for detailed development workflows and standards.
 
-主要內容位於 `src/index.html`，使用語義化的 HTML5 標記：
-
-```html
-<!-- 服務區塊 -->
-<section class="services-section" id="services">
-    <h3 class="service-title">💻 軟體平台開發</h3>
-    <p class="service-description">專業開發企業級軟體平台...</p>
-</section>
-```
-
-### 樣式自訂
-CSS 樣式位於 `src/styles.css`，支援 CSS 變數和深色模式：
-
-```css
-/* 深色模式變數 */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #1a1a1a;
-        --text-color: #e0e0e0;
-    }
-}
-```
-
 ### 新增頁面
-1. 在 `src/` 目錄下創建新的 HTML 檔案
-2. 更新導航選單 (`main-navigation`)
-3. 添加對應的 CSS 樣式
+1. 在 `templates/` 目錄下創建新的 HTML 檔案 (參考 `templates/index.html`)
+2. 在 `main.go` 中註冊新的 GET 路由
+3. 更新 `header.html` (PC & Mobile) 與 `footer.html` 導航連結
 4. 更新 `sitemap.xml`
 
 ## 📊 SEO 與分析
@@ -171,12 +148,7 @@ docker build -t taux-website .
 docker run -d -p 8080:8080 taux-website
 ```
 
-### 靜態網站部署
-將 `src/` 目錄內容部署至任何靜態網站託管服務：
-- Netlify
-- Vercel
-- GitHub Pages
-- Firebase Hosting
+
 
 ## 📞 聯絡資訊
 
