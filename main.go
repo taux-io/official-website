@@ -59,6 +59,32 @@ func main() {
 		c.HTML(http.StatusOK, "agent-prompting-guide.html", nil)
 	})
 
+	r.GET("/building", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "building.html", nil)
+	})
+
+	r.GET("/about", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "about.html", nil)
+	})
+
+	r.GET("/privacy-policy", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "privacy-policy.html", nil)
+	})
+
+	r.GET("/terms-of-service", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "terms-of-service.html", nil)
+	})
+
+	// Custom 404 Handler
+	r.NoRoute(func(c *gin.Context) {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+	})
+
+	// Also serve /404.html explicitly for Nginx error_page redirection
+	r.GET("/404.html", func(c *gin.Context) {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+	})
+
 	// Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

@@ -30,3 +30,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - 新增 "LLMs.txt" 與 "Prompt Injection" (提示注入) 頁面。
 - 驗證手機版響應式設計與 Docker 部署。
 - 導航選單同步: "Data Governance" 與 "Security" 連結更新。
+- 手機版選單優化: 新增 "關閉 (X)" 按鈕，解決全螢幕遮罩層無法關閉的問題。
+- 新增 "Building" (建置中) 頁面: 用於 "Blog", "Careers", "API" 等尚未完成的單元。
+- 新增 "About", "Privacy Policy", "Terms of Service" 頁面與 "404" 錯誤頁面。
+- 更新 Nginx 配置以支援自定義 404 處理。

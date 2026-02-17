@@ -14,7 +14,7 @@
 - **`main.go`**: 應用程式入口點。配置 Gin 路由、載入模板、提供靜態檔案服務。
 - **`templates/`**: 使用 Go 模板語法 (`{{ template "header.html" . }}`) 的 HTML 檔案。
   - 局部模板 (Partials): `header.html`, `footer.html`.
-  - 頁面: `index.html`, `geo-guide.html`, `data-governance.html` 等。
+  - 頁面: `index.html`, `geo-guide.html`, `data-governance.html`, `building.html`, `about.html`, `privacy-policy.html`, `terms-of-service.html`, `404.html` 等。
 - **`src/`**: 前端構建工具的原始碼。
   - `input.css`: Tailwind CSS主要入口點 (匯入字體、自定義工具類)。
 - **`static/`**: 公開對外服務於 `/static` 路徑。

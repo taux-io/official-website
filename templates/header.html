@@ -81,6 +81,15 @@
     <div id="mobileMenuOverlay"
         class="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 transition-transform duration-500 translate-x-full md:hidden"
         style="background-color: #030305 !important; opacity: 1 !important; z-index: 9999 !important;">
+        <!-- Close Button -->
+        <button id="mobileMenuClose"
+            class="absolute top-6 right-6 p-2 text-white hover:text-tech-cyan transition-colors focus:outline-none"
+            aria-label="Close menu">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
         <a href="/" class="mobile-link text-2xl font-display font-bold text-white hover:text-tech-cyan">Home</a>
         <a href="/ai-smart-work" class="mobile-link text-xl text-gray-300 hover:text-white">Solutions</a>
         <a href="/geo-guide" class="mobile-link text-xl text-gray-300 hover:text-white">GEO Guide</a>

@@ -35,7 +35,12 @@ taux-dev/
 ├── templates/                  # HTML 模板
 │   ├── index.html
 │   ├── header.html             # 共用頁首
-│   └── footer.html             # 共用頁尾
+│   ├── footer.html             # 共用頁尾
+│   ├── building.html           # 建置中頁面 (404/Coming Soon)
+│   ├── about.html              # 關於我們
+│   ├── privacy-policy.html     # 隱私權政策
+│   ├── terms-of-service.html   # 服務條款
+│   └── 404.html                # 自定義 404 頁面
 ├── static/                     # 靜態資源
 │   ├── css/                    # 編譯後的 CSS
 │   ├── js/                     # 前端 JavaScript

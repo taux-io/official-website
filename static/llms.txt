@@ -74,6 +74,8 @@ TauX 是一家專注於 **GEO (Generative Engine Optimization)** 的技術領導
 -   [AI for Smart Work](https://taux.io/ai-smart-work.html): 企業 AI 內訓服務，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。
 -   [Agent Prompting Guide](https://taux.io/agent-prompting-guide.html): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。
 -   [官方網站](https://taux.io): 了解更多案例與服務。
+-   [建置中頁面](https://taux.io/building.html): Blog, Careers, API 等單元目前正在建置中。
+-   [關於我們](https://taux.io/about.html): TauX 公司介紹、使命與聯絡方式。
 
 ## 聯絡資訊
 

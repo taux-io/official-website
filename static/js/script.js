@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMobileNavigation() {
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenuOverlay');
+    const closeBtn = document.getElementById('mobileMenuClose');
     const mobileLinks = document.querySelectorAll('.mobile-link');
 
     if (!hamburger || !mobileMenu) return;
@@ -43,6 +44,10 @@ function initMobileNavigation() {
     }
 
     hamburger.addEventListener('click', toggleMenu);
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', toggleMenu);
+    }
 
     mobileLinks.forEach(link => {
         link.addEventListener('click', () => {

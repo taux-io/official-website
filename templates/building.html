@@ -1,0 +1,52 @@
+{{ define "building.html" }}
+{{ template "header.html" . }}
+
+<section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 bg-taux-bg">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-tech-cyan/5 blur-[120px] rounded-full">
+        </div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-tech-purple/5 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <!-- Icon -->
+        <div class="mb-8 flex justify-center">
+            <div class="relative">
+                <div class="absolute inset-0 bg-tech-cyan/20 blur-xl rounded-full animate-pulse"></div>
+                <svg class="w-24 h-24 text-tech-cyan relative z-10" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                    </path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-tech-cyan to-tech-purple">
+                Building the Future
+            </span>
+        </h1>
+
+        <!-- Description -->
+        <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            We are currently crafting something extraordinary here. <br>
+            This page is under construction and will be available soon.
+        </p>
+
+        <!-- CTA -->
+        <a href="/"
+            class="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold text-taux-bg bg-white rounded-full hover:bg-tech-cyan transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                </path>
+            </svg>
+            Back to Home
+        </a>
+    </div>
+</section>
+
+{{ template "footer.html" . }}
+{{ end }}
