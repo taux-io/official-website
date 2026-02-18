@@ -74,3 +74,16 @@ Your primary objective is to develop, maintain, and optimize the TauX website to
 -   **Artifacts**: Use the `brain/` directory for task tracking (`task.md`) and planning documents (`implementation_plan.md`, `walkthrough.md`).
 -   **Knowledge Base**: Refer to `SKILL.md` for specific procedural knowledge (e.g., "How to deploy").
 
+
+## 6. 專家代理團隊 (Specialist Agents Team)
+
+When dealing with specific domains, invoke the following specialist agents:
+
+-   **[Chief Technology Officer (CTO)](agents/tech-lead.agent.md)**: Overall architecture, code standards, and technical decision making.
+-   **[Product Manager (PM)](agents/pm.agent.md)**: Product definition, user stories, and acceptance criteria.
+-   **[Project Management Office (PMO)](agents/pmo.agent.md)**: Task tracking, timeline management, and process enforcement.
+-   **[UI/UX Designer](agents/designer.agent.md)**: Visual design, user experience, and aesthetic consistency.
+-   **[GEO Specialist](agents/geo.agent.md)**: Generative Engine Optimization, AI search visibility, and Q&A content structure.
+-   **[SEO Specialist](agents/seo.agent.md)**: Traditional Search Engine Optimization, meta tags, and technical SEO.
+-   **[Security Specialist](agents/security.agent.md)**: Cyber security, infrastructure protection, and secret management.
+
