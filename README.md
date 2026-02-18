@@ -1,6 +1,6 @@
 # TauX 拓思科技有限公司 - 官方網站
 
-![TauX Logo](src/taux-logo-light.png)
+![TauX Logo](static/taux-logo-light.png)
 
 **Code the Future - 用科技創造未來**
 
