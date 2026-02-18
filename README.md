@@ -53,6 +53,14 @@ taux-dev/
 └── nginx.conf                  # Nginx 反向代理設定
 ```
 
+## 🤖 AI 協作體系
+
+本專案採用 AI 輔助開發流程，核心文件如下：
+
+- **[AGENTS.md](AGENTS.md)**: AI Agent 的核心系統提示詞與行為準則 (System Prompts & Behavioral Guidelines)。定義了角色設定、思考流程與開發原則。
+- **[SKILL.md](SKILL.md)**: 開發、測試與部署的具體操作流程與標準作業程序 (SOPs & Checklists)。包含環境建置、新頁面新增與風格指南。
+- **[NOTES.md](NOTES.md)**: 專案的長期記憶、技術決策紀錄與背景知識 (Project Context & Long-term Memory)。記錄關鍵決策與常見問題修復。
+
 ## 🚀 快速開始
 
 ### 方法一：使用 Docker (推薦)
