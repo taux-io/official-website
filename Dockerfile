@@ -3,9 +3,6 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Install required system dependencies for building (if any)
-# RUN apk add --no-cache git
-
 # Copy go mod and sum files
 COPY go.mod go.sum ./
 
@@ -20,8 +17,8 @@ COPY . .
 # GOOS=linux ensures we build for Linux
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-# Run stage
-FROM alpine:latest
+# Run stage - Use distroless static for minimal attack surface and no shell
+FROM gcr.io/distroless/static:nonroot
 
 WORKDIR /app
 
@@ -32,12 +29,8 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/templates ./templates
 
-# Create a non-root user
-RUN adduser -D -g '' appuser
-USER appuser
-
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main"]
+CMD ["/app/main"]

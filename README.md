@@ -24,7 +24,7 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 - **Backend**: Go 1.24+, Gin Web Framework
 - **Frontend**: HTML5 Templates, TailwindCSS 3.4
-- **Infrastructure**: Docker, Docker Compose, Nginx Proxy (Automated SSL)
+- **Infrastructure**: Docker (Distroless/Shell-less Go Runner), Docker Compose, Nginx Proxy (Automated SSL)
 - **Design**: Glassmorphism, Premium Tech Aesthetic, Dark Mode Optimized
 
 ## 📁 專案結構

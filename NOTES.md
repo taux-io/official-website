@@ -12,7 +12,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 ## 關鍵決策與慣例
 - **模板結構**: `templates/` 資料夾包含 HTML。`header.html` 與 `footer.html` 為局部模板 (partials)。
 - **靜態檔案**: 服務於 `/static`。CSS 由 `src/input.css` 構建至 `static/css/styles.min.css`。
-- **Docker 構建**: 多階段構建 (Golang builder -> Alpine runner)。
+- **Docker 構建**: 多階段構建 (Golang builder -> Distroless static runner)。安全、無 Shell 且極小化的 Image。
 - **Tailwind**: 用於所有樣式。配置於 `tailwind.config.js`。深色模式以類別控制，但預設為深色。
 - **SSL**: 使用 `nginxproxy/acme-companion`。不需要手動執行 certbot。確保 `docker-compose.prod.yml` 中的環境變數 (`VIRTUAL_HOST`, `LETSENCRYPT_HOST`) 正確。
 
