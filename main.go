@@ -182,8 +182,19 @@ func main() {
 		port = "8080"
 	}
 
+	// Configure custom HTTP server with timeouts to prevent DoS attacks (e.g., Slowloris)
+	server := &http.Server{
+		Addr:              ":" + port,
+		Handler:           r,
+		ReadTimeout:       5 * time.Second,  // Time to read the entire request
+		ReadHeaderTimeout: 2 * time.Second,  // Time to read just the headers
+		WriteTimeout:      10 * time.Second, // Time to write the response
+		IdleTimeout:       120 * time.Second,
+		MaxHeaderBytes:    1 << 20, // 1MB
+	}
+
 	log.Printf("Server starting on port %s", port)
-	if err := r.Run(":" + port); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to run server: %v", err)
 	}
 }
