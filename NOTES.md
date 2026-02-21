@@ -6,7 +6,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 ## 架構
 - **後端**: Go (Golang) 1.24+ 使用 Gin 框架。
 - **前端**: 伺服器端渲染 (SSR) HTML 模板，搭配 TailwindCSS v3.4。
-- **基礎設施**: Docker 化環境，使用 Nginx 作為反向代理。
+- **基礎設施**: Docker (nginx-proxy + acme-companion) 實現自動化 SSL 管理。
 - **設計系統**: "Premium Tech" 美學 (深空黑 `#030305`, 霓虹青 `#00F0FF`, 紫色 `#7000FF`)。
 
 ## 關鍵決策與慣例
@@ -14,6 +14,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - **靜態檔案**: 服務於 `/static`。CSS 由 `src/input.css` 構建至 `static/css/styles.min.css`。
 - **Docker 構建**: 多階段構建 (Golang builder -> Alpine runner)。
 - **Tailwind**: 用於所有樣式。配置於 `tailwind.config.js`。深色模式以類別控制，但預設為深色。
+- **SSL**: 使用 `nginxproxy/acme-companion`。不需要手動執行 certbot。確保 `docker-compose.prod.yml` 中的環境變數 (`VIRTUAL_HOST`, `LETSENCRYPT_HOST`) 正確。
 
 ## 常見問題與修復
 - **手機版選單透明度問題**: 玻璃擬態效果 (`backdrop-blur`) 在手機上導致可讀性問題。修復方法是在 `header.html` 中的手機版選單遮罩層強制加上實色背景 (`#030305`) 與 `!important`。
@@ -25,6 +26,7 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - **生產**: `docker compose up -d --build`。
 
 ## 近期更新
+- **基礎設施遷移**: 遷移至 `nginxproxy/acme-companion`，移除手動 Certbot 腳本與複雜的 Nginx SSL 配置。
 - 將整個網站從 Python/Static 重構為 Go/Gin。
 - 使用 Tailwind 實作完整的 "Tech Mode" (科技風) 改版。
 - 新增 "LLMs.txt" 與 "Prompt Injection" (提示注入) 頁面。
@@ -38,4 +40,5 @@ TauX (拓思科技) 是一家專注於 AI 驅動智能辦公解決方案、數�
 - 將 "Security" 連結名稱更新為 "Prompt Security" (Header & Footer)。
 - 新增自定义 `500.html` 錯誤頁面與 Nginx 配置。
 - 將導航選單中的 "Solutions" 統一名稱更正為 "Smart Work" (Header)。
-- **Documentation**: 重構 `AGENTS.md` (Agent Prompt 結構) 並同步 `SKILL.md` 與 `README.md`。
+- **Documentation**: 重構 `.agents/agents/` 目錄，將原先 7 個扁平化的 Agent 重新劃分為 7 大部門 (Engineering, Product, Marketing, Design, Project Management, Studio Operations, Testing)，共 38 個專業 AI 代理人架構，並同步更新了 `AGENTS.md` 與 `README.md`。
+- **Documentation**: 優化 `AGENTS.md` (Agent Prompt 結構) 並同步 `SKILL.md` 與 `README.md`。

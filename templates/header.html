@@ -5,9 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TauX - AI for Smart Work</title>
-    <meta name="description"
-        content="TauX provides advanced AI solutions for smart work, data governance, and generative engine optimization (GEO).">
+    <title>{{ .Title }}</title>
+    <meta name="description" content="{{ .Description }}">
+    {{ if .Canonical }}<link rel="canonical" href="{{ .Canonical }}">{{ end }}
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">

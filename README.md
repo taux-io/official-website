@@ -24,7 +24,7 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 - **Backend**: Go 1.24+, Gin Web Framework
 - **Frontend**: HTML5 Templates, TailwindCSS 3.4
-- **Infrastructure**: Docker, Docker Compose, Nginx (Reverse Proxy)
+- **Infrastructure**: Docker, Docker Compose, Nginx Proxy (Automated SSL)
 - **Design**: Glassmorphism, Premium Tech Aesthetic, Dark Mode Optimized
 
 ## 📁 專案結構
@@ -49,29 +49,32 @@ taux-dev/
 ├── src/                        # 前端原始碼 (CSS input)
 ├── tailwind.config.js          # Tailwind 設定
 ├── Dockerfile                  # Go 應用容器設定
-├── docker-compose.yml          # 服務編排
-└── nginx.conf                  # Nginx 反向代理設定
+├── docker-compose.yml          # Docker Compose 基礎設定
+├── docker-compose.dev.yml      # 開發環境部署設定 (網域綁定 localhost)
+├── docker-compose.prod.yml     # 生產環境部署設定 (Nginx Proxy + Acme Companion)
+└── nginx.conf                  # 內部 Nginx 設定
 ```
 
 ## 🤖 AI 協作體系
 
 本專案採用 AI 輔助開發流程，核心文件如下：
 
-- **[AGENTS.md](.agents/AGENTS.md)**: AI Agent 的核心系統提示詞與行為準則。定義了角色設定 (Tech Lead, PM, Designer, PMO) 與思考流程。
+- **[AGENTS.md](.agents/AGENTS.md)**: AI Agent 的核心系統提示詞與行為準則。定義了 7 大部門、共 38 個跨職能角色 (Engineering, Product, Marketing, Design, PM, Support, Testing) 的思維框架與任務守則。
 - **[SKILL.md](.agents/SKILL.md)**: 開發、測試與部署的 SOPs & Checklists。包含 refactor, generate-ui, refine-backlog 等技能。
 - **[NOTES.md](NOTES.md)**: 專案的長期記憶、技術決策紀錄與背景知識。
 
 ## 🚀 快速開始
 
-### 方法一：使用 Docker (推薦)
+### 方法一：使用 Docker (推薦 - 自動 SSL)
 
 ```bash
-# 啟動服務 (App + Nginx)
-docker-compose up -d --build
+# 啟動服務 (App + Nginx Proxy + Acme Companion)
+# 系統將自動申請並展期 Let's Encrypt 憑證
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
 # 訪問網站
-# http://localhost (Nginx, port 80)
-# http://localhost:8080 (Go App direct, if exposed)
+# https://taux.io (Production)
+# http://localhost (Local Development)
 ```
 
 ### 方法二：本地開發
@@ -147,14 +150,23 @@ docker-compose up -d --build
 
 ## 🚀 部署說明
 
-### 使用 Docker 部署
-```bash
-# 建構映像
-docker build -t taux-website .
+### 開發環境部署 (Development)
+在本地開發時，使用以下指令來啟動服務，此設定會將網域綁定在 `localhost`：
 
-# 執行容器
-docker run -d -p 8080:8080 taux-website
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
+
+### 生產環境部署 (Production)
+本專案生產環境使用 `nginxproxy/acme-companion` 處理 SSL 自動化。
+
+1. **DNS 設定**：確保網域 (A Record) 指向伺服器 IP。
+2. **環境變數**：在 `docker-compose.prod.yml` 中設定 `LETSENCRYPT_EMAIL`。
+3. **啟動**：
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   ```
+   容器啟動後，`acme-companion` 會自動偵測 `VIRTUAL_HOST` 並與 Let's Encrypt 通訊申請/更新憑證。
 
 
 
@@ -168,7 +180,7 @@ docker run -d -p 8080:8080 taux-website
 
 ## 📝 授權條款
 
-© 2025 TauX 拓思科技有限公司. 保留所有權利.
+© 2026 TauX 拓思科技有限公司. 保留所有權利.
 
 ---
 

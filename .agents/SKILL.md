@@ -15,7 +15,7 @@ This document provides specific **"How-to"** procedures and checklists required 
 
 ### Production Simulation (Docker)
 -   **Command**: `docker compose up -d --build`
--   **URL**: `http://localhost` (via Nginx)
+-   **URL**: `http://localhost` (Starts Nginx Proxy, checks VIRTUAL_HOST)
 -   **Logs**: `docker compose logs -f`
 
 ## 2. Standard Procedures (SOPs)

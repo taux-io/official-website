@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - GIN_MODE=debug
+      - PORT=8080
+
+  nginx:
+    ports:
+      - "80:80"
+    environment:
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=80
