@@ -1,44 +1,36 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./templates/**/*.html", "./static/js/**/*.js"],
-  darkMode: 'class', // Enable class-based dark mode (we'll default to dark mostly)
   theme: {
     extend: {
       colors: {
-        // Brand Colors
-        'taux-bg': '#030305',      // Deepest Void
-        'taux-card': '#0A0A12',    // Dark Panel
-        'taux-border': '#1F1F2E',  // Subtle Border
+        // Fintech Brand Colors
+        'brand-blue': '#1d4ed8', // blue-700 equivalent
+        'brand-blue-light': '#2563eb', // blue-600 equivalent
+        'brand-blue-dark': '#1e40af', // blue-800 equivalent
         
-        // Tech Accents
-        'tech-cyan': '#00F0FF',    // Primary Neon
-        'tech-purple': '#7000FF',  // Secondary Neon
-        'tech-pink': '#FF003C',    // Accent
-        'tech-blue': '#4285F4',    // Google Blue (Legacy/Trust)
+        // Fintech Backgrounds
+        'fintech-bg': '#f8fafc', // slate-50
+        'fintech-dark': '#0f172a', // slate-900
         
         // Semantic
-        'success': '#00FF94',
-        'warning': '#FFCC00',
-        'error': '#FF003C',
+        'success': '#10b981', // emerald-500
+        'warning': '#f59e0b', // amber-500
+        'error': '#ef4444',   // red-500
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'], // Tech feel
-        display: ['Outfit', 'Space Grotesk', 'sans-serif'], // Headlines
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #00F0FF33 0deg, #7000FF33 180deg, #00F0FF33 360deg)',
+        serif: ['"Playfair Display"', 'Georgia', 'serif'], // Elegant headings
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       animation: {
-        'spin-slow': 'spin 8s linear infinite',
-        'pulse-glow': 'pulse-glow 3s infinite',
+        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
         'float': 'float 6s ease-in-out infinite',
       },
       keyframes: {
-        'pulse-glow': {
-          '0%, 100%': { opacity: '0.6', filter: 'brightness(1)' },
-          '50%': { opacity: '1', filter: 'brightness(1.5)' },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'float': {
           '0%, 100%': { transform: 'translateY(0)' },

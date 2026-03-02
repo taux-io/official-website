@@ -1,36 +1,40 @@
-# Build stage
+# ==========================================
+# 1. Build stage (編譯階段保持不變，依舊使用 Alpine)
+# ==========================================
 FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copy go mod and sum files
+# 複製依賴檔並下載快取
 COPY go.mod go.sum ./
-
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
 
-# Copy the source code
+# 複製原始碼與資源檔
 COPY . .
 
-# Build the application
-# CGO_ENABLED=0 disables Cgo, which is required for a static build
-# GOOS=linux ensures we build for Linux
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+# 進行純靜態編譯 (CGO_ENABLED=0 是關鍵，確保執行檔不需要動態連結庫)
+# 加入 -a -installsuffix cgo 讓靜態編譯更徹底
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# Run stage - Use distroless static for minimal attack surface and no shell
-FROM gcr.io/distroless/static:nonroot
+
+# ==========================================
+# 2. Run stage (運行階段換成 Distroless)
+# ==========================================
+# 使用 Google 的 static-debian12 版本，且直接指定 nonroot 標籤
+FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 
-# Copy the binary from the builder stage
-COPY --from=builder /app/main .
+# 複製編譯好的二進位檔與靜態資源。
+# 💡 關鍵：使用 --chown=nonroot:nonroot 確保檔案擁有者正確
+COPY --from=builder --chown=nonroot:nonroot /app/main .
+COPY --from=builder --chown=nonroot:nonroot /app/static ./static
+COPY --from=builder --chown=nonroot:nonroot /app/templates ./templates
 
-# Copy static files and templates
-COPY --from=builder /app/static ./static
-COPY --from=builder /app/templates ./templates
+# 明確指定使用 distroless 內建的非 Root 使用者 (UID: 65532)
+USER nonroot:nonroot
 
-# Expose the port the app runs on
 EXPOSE 8080
 
-# Command to run the executable
+# 執行程式 (注意：這裡不能使用 shell 形式如 CMD ./main，必須使用 JSON 陣列形式)
 CMD ["/app/main"]

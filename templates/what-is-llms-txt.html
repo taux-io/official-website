@@ -50,105 +50,115 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6 overflow-hidden">
+<div class="relative pt-32 pb-24 px-6 overflow-hidden bg-brand-blue-light">
     <!-- Background Decor -->
-    <div
-        class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-tech-blue/10 blur-[120px] rounded-full -z-10 animate-pulse-glow">
-    </div>
-    <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-tech-purple/10 blur-[120px] rounded-full -z-10">
+    <div class="absolute inset-0 opacity-10"
+        style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;">
     </div>
 
-    <article class="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <article class="max-w-4xl mx-auto relative z-10">
         <header class="mb-16 text-center">
             <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-tech-blue/10 border border-tech-blue/30 text-tech-blue text-sm font-semibold mb-6">
+                class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold mb-6 backdrop-blur-sm">
                 GEO 技術觀點
             </div>
-            <h1 class="font-display text-4xl md:text-6xl font-bold leading-tight mb-8 text-white text-glow">
+            <h1 class="font-serif text-4xl md:text-6xl font-bold leading-tight mb-8 text-white">
                 LLMs.txt 是什麼？<br>
-                <span
-                    class="text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-tech-cyan to-tech-purple">AI
-                    時代網站內容保護新規範</span>
+                <span class="text-3xl md:text-5xl text-blue-100 mt-2 block font-medium">AI 時代網站內容保護新規範</span>
             </h1>
 
-            <div class="glass-card p-8 border-l-4 border-l-tech-cyan text-left relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🤖</div>
-                <blockquote class="text-lg text-gray-300 italic relative z-10">
+            <div
+                class="bg-white/10 backdrop-blur-sm p-8 border-l-4 border-white text-left rounded-r-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-brand-blue-light">
+                    <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <blockquote class="text-lg text-white italic relative z-10">
                     "LLMs.txt 就像是 AI 時代的 robots.txt。它是一個純文字檔案，用來告訴大型語言模型：這裡歡迎光臨，那裡請勿進入。"
                 </blockquote>
             </div>
         </header>
+    </article>
+</div>
 
-        <div class="space-y-16 text-gray-300">
-            <!-- Section 1 -->
-            <section>
-                <h2 class="text-3xl font-display font-bold text-white mb-8 flex items-center">
-                    <span
-                        class="w-10 h-10 rounded-full bg-tech-blue/20 flex items-center justify-center mr-4 text-tech-blue text-xl">1</span>
-                    LLMs.txt 是什麼？
-                </h2>
-                <div class="glass-card p-8 space-y-6">
-                    <p class="text-lg leading-relaxed">
-                        它的核心目的在於讓網站管理者可以明確表達內容存取與使用意圖，如<strong
-                            class="text-tech-cyan">允許或限制訓練、摘要、改寫與引用</strong>等行為。雖然目前尚未成為正式業界標準，但已反映出網站對 AI
-                        內容利用權限與智慧財產權控管的迫切需求。
-                    </p>
+<div class="bg-slate-50 py-24">
+    <div class="max-w-4xl mx-auto px-6 space-y-16">
+        <!-- Section 1 -->
+        <section>
+            <h2 class="text-3xl font-serif font-bold text-gray-900 mb-8 flex items-center">
+                <span
+                    class="w-12 h-12 rounded-full bg-blue-50 text-brand-blue-light flex items-center justify-center mr-4 text-2xl shadow-sm">1</span>
+                LLMs.txt 是什麼？
+            </h2>
+            <div class="fintech-card p-8 md:p-10 space-y-8">
+                <p class="text-lg leading-relaxed text-gray-600">
+                    它的核心目的在於讓網站管理者可以明確表達內容存取與使用意圖，如<strong
+                        class="text-brand-blue-light font-bold">允許或限制訓練、摘要、改寫與引用</strong>等行為。雖然目前尚未成為正式業界標準，但已反映出網站對 AI
+                    內容利用權限與智慧財產權控管的迫切需求。
+                </p>
 
-                    <div class="mt-8">
-                        <h3 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">與 robots.txt 的關鍵差異
-                        </h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-white/10">
-                                        <th class="py-4 px-4 font-bold text-white">特徵</th>
-                                        <th class="py-4 px-4 font-bold text-gray-400">robots.txt</th>
-                                        <th class="py-4 px-4 font-bold text-tech-cyan">LLMs.txt</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm md:text-base">
-                                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                        <td class="py-4 px-4 font-medium text-white">目標對象</td>
-                                        <td class="py-4 px-4">搜尋引擎爬蟲 (Googlebot)</td>
-                                        <td class="py-4 px-4 text-white">大型語言模型 (AI 訓練、問答)</td>
-                                    </tr>
-                                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                        <td class="py-4 px-4 font-medium text-white">行為範圍</td>
-                                        <td class="py-4 px-4">抓取控制 (Allow/Disallow)</td>
-                                        <td class="py-4 px-4 text-white">複雜行為 (訓練、改寫、引用)</td>
-                                    </tr>
-                                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                        <td class="py-4 px-4 font-medium text-white">主要目的</td>
-                                        <td class="py-4 px-4">索引管理</td>
-                                        <td class="py-4 px-4 text-white">智慧財產權、AI 利用權限</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="mt-8">
+                    <h3 class="text-xl font-serif font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">與
+                        robots.txt 的關鍵差異</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b-2 border-brand-blue-light/20 bg-blue-50/50">
+                                    <th class="py-4 px-6 font-bold text-gray-900">特徵</th>
+                                    <th class="py-4 px-6 font-bold text-gray-500">robots.txt</th>
+                                    <th class="py-4 px-6 font-bold text-brand-blue-light">LLMs.txt</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm md:text-base text-gray-600">
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6 font-medium text-gray-900">目標對象</td>
+                                    <td class="py-4 px-6">搜尋引擎爬蟲 (Googlebot)</td>
+                                    <td class="py-4 px-6 font-medium text-brand-blue-dark">大型語言模型 (AI 訓練、問答)</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6 font-medium text-gray-900">行為範圍</td>
+                                    <td class="py-4 px-6">抓取控制 (Allow/Disallow)</td>
+                                    <td class="py-4 px-6 font-medium text-brand-blue-dark">複雜行為 (訓練、改寫、引用)</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6 font-medium text-gray-900">主要目的</td>
+                                    <td class="py-4 px-6">索引管理</td>
+                                    <td class="py-4 px-6 font-medium text-brand-blue-dark">智慧財產權、AI 利用權限</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Section 2 -->
-            <section>
-                <h2 class="text-3xl font-display font-bold text-white mb-8 flex items-center">
-                    <span
-                        class="w-10 h-10 rounded-full bg-tech-purple/20 flex items-center justify-center mr-4 text-tech-purple text-xl">2</span>
-                    功能與指令範例
-                </h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold mb-4 text-white flex items-center">
-                            <span class="mr-2">📝</span> 簡易結構範例
-                        </h3>
-                        <div
-                            class="bg-black/50 p-4 rounded-xl border border-white/10 font-mono text-sm text-gray-300 overflow-x-auto">
-                            <div class="flex gap-2 mb-2 border-b border-white/10 pb-2">
-                                <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                                <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                            </div>
-                            <pre><code># Title
+        <!-- Section 2 -->
+        <section>
+            <h2 class="text-3xl font-serif font-bold text-gray-900 mb-8 flex items-center">
+                <span
+                    class="w-12 h-12 rounded-full bg-blue-50 text-brand-blue-light flex items-center justify-center mr-4 text-2xl shadow-sm">2</span>
+                功能與指令範例
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="fintech-card p-8">
+                    <h3 class="text-xl font-bold mb-6 text-gray-900 flex items-center">
+                        <span class="mr-3 text-brand-blue-light"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg></span> 簡易結構範例
+                    </h3>
+                    <div
+                        class="bg-slate-900 p-5 rounded-xl text-sm text-gray-300 font-mono overflow-x-auto shadow-inner">
+                        <div class="flex gap-2 mb-3 border-b border-gray-700 pb-3">
+                            <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                        </div>
+                        <pre class="leading-relaxed"><code># Title
 > Optional description goes here
 
 ## Section name
@@ -156,118 +166,166 @@
 
 ## Optional
 - [Link title](https://link_url)</code></pre>
-                        </div>
-                    </div>
-
-                    <div class="glass-card p-6">
-                        <h3 class="text-xl font-bold mb-4 text-white flex items-center">
-                            <span class="mr-2">🚀</span> 進階指令概念
-                        </h3>
-                        <ul class="space-y-4">
-                            <li class="flex items-start bg-white/5 p-3 rounded-lg">
-                                <span class="text-tech-cyan mr-3 mt-1">✔</span>
-                                <span><strong class="text-white block">品牌與定位</strong>說明核心服務，例如「企業 SEO 數位行銷公司」。</span>
-                            </li>
-                            <li class="flex items-start bg-white/5 p-3 rounded-lg">
-                                <span class="text-tech-cyan mr-3 mt-1">✔</span>
-                                <span><strong class="text-white block">給 AI 的提醒</strong>說明內容適用場景、工具版本與保留出處要求。</span>
-                            </li>
-                            <li class="flex items-start bg-white/5 p-3 rounded-lg">
-                                <span class="text-tech-cyan mr-3 mt-1">✔</span>
-                                <span><strong class="text-white block">區塊化導覽</strong>將頁面分為「教學」、「服務」等，引導 AI 理解結構。</span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
-            </section>
 
-            <!-- Section 3 -->
-            <section>
-                <h2 class="text-3xl font-display font-bold text-white mb-8 flex items-center">
-                    <span
-                        class="w-10 h-10 rounded-full bg-tech-pink/20 flex items-center justify-center mr-4 text-tech-pink text-xl">3</span>
-                    為何需要 LLMs.txt？
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 hover:border-tech-blue/50 transition-colors group">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🛡️</div>
-                        <h3 class="text-xl font-bold text-white mb-2">智慧財產權保護</h3>
-                        <p class="text-sm">避免原創內容被無限制用於訓練與生成，導致被大量複製或稀釋。</p>
-                    </div>
-                    <div class="glass-card p-6 hover:border-tech-purple/50 transition-colors group">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🔒</div>
-                        <h3 class="text-xl font-bold text-white mb-2">數據隱私與安全</h3>
-                        <p class="text-sm">宣示不希望 AI 存取特定區域（如 UGC 或敏感資訊）。</p>
-                    </div>
-                    <div class="glass-card p-6 hover:border-tech-cyan/50 transition-colors group">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">✨</div>
-                        <h3 class="text-xl font-bold text-white mb-2">品牌與內容品質</h3>
-                        <p class="text-sm">透過提供清楚的使用指南，降低 AI 錯誤引用或脫線解讀。</p>
-                    </div>
-                    <div class="glass-card p-6 hover:border-tech-pink/50 transition-colors group">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">⚙️</div>
-                        <h3 class="text-xl font-bold text-white mb-2">伺服器資源管理</h3>
-                        <p class="text-sm">LLMs.txt 可作為一種調節與限制大規模 AI 爬取的方式。</p>
-                    </div>
+                <div class="fintech-card p-8">
+                    <h3 class="text-xl font-bold mb-6 text-gray-900 flex items-center">
+                        <span class="mr-3 text-indigo-500"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg></span> 進階指令概念
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <span class="text-brand-blue-light mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span class="text-gray-600"><strong
+                                    class="text-gray-900 block mb-1">品牌與定位</strong>說明核心服務，例如「企業 SEO 數位行銷公司」。</span>
+                        </li>
+                        <li class="flex items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <span class="text-brand-blue-light mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span class="text-gray-600"><strong class="text-gray-900 block mb-1">給 AI
+                                    的提醒</strong>說明內容適用場景、工具版本與保留出處要求。</span>
+                        </li>
+                        <li class="flex items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <span class="text-brand-blue-light mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span class="text-gray-600"><strong
+                                    class="text-gray-900 block mb-1">區塊化導覽</strong>將頁面分為「教學」、「服務」等，引導 AI 理解結構。</span>
+                        </li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- FAQ Section -->
-            <section class="border-t border-white/10 pt-16">
-                <h2 class="text-3xl font-display font-bold text-center text-white mb-12">常見問題 (FAQ)</h2>
-                <div class="space-y-4 max-w-3xl mx-auto">
-                    <details class="group glass-card p-6 cursor-pointer">
-                        <summary class="font-bold text-lg text-white list-none flex justify-between items-center">
-                            Q: LLMs.txt 現在是正式標準嗎？
-                            <span class="transition-transform group-open:rotate-180 text-tech-cyan">▼</span>
-                        </summary>
-                        <div
-                            class="mt-4 text-gray-400 group-open:animate-in group-open:fade-in border-t border-white/5 pt-4">
-                            尚未，現階段多屬概念與實驗階段；多數 AI 仍主要依 robots.txt 控管存取。
-                        </div>
-                    </details>
-
-                    <details class="group glass-card p-6 cursor-pointer">
-                        <summary class="font-bold text-lg text-white list-none flex justify-between items-center">
-                            Q: 沒有 LLMs.txt 會怎樣？
-                            <span class="transition-transform group-open:rotate-180 text-tech-cyan">▼</span>
-                        </summary>
-                        <div
-                            class="mt-4 text-gray-400 group-open:animate-in group-open:fade-in border-t border-white/5 pt-4">
-                            短期不會有直接負面影響，但網站內容可能持續被 LLM 自由存取並用於訓練與生成。
-                        </div>
-                    </details>
-
-                    <details class="group glass-card p-6 cursor-pointer">
-                        <summary class="font-bold text-lg text-white list-none flex justify-between items-center">
-                            Q: 大型語言模型會遵守 LLMs.txt 嗎？
-                            <span class="transition-transform group-open:rotate-180 text-tech-cyan">▼</span>
-                        </summary>
-                        <div
-                            class="mt-4 text-gray-400 group-open:animate-in group-open:fade-in border-t border-white/5 pt-4">
-                            取決於各家 AI 公司是否採用。目前較明確的是對 robots.txt 中 AI 爬蟲相關 user-agent 的遵守承諾。
-                        </div>
-                    </details>
+        <!-- Section 3 -->
+        <section>
+            <h2 class="text-3xl font-serif font-bold text-gray-900 mb-8 flex items-center">
+                <span
+                    class="w-12 h-12 rounded-full bg-blue-50 text-brand-blue-light flex items-center justify-center mr-4 text-2xl shadow-sm">3</span>
+                為何需要 LLMs.txt？
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="fintech-card p-8 hover:-translate-y-1 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue-light mb-6 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">智慧財產權保護</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">避免原創內容被無限制用於訓練與生成，導致被大量複製或稀釋。</p>
                 </div>
-            </section>
-
-            <!-- CTA -->
-            <section
-                class="bg-gradient-to-r from-tech-blue/20 to-tech-purple/20 rounded-3xl p-12 relative overflow-hidden text-center border border-white/10">
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-tech-cyan/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2">
+                <div class="fintech-card p-8 hover:-translate-y-1 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue-light mb-6 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">數據隱私與安全</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">宣示不希望 AI 存取特定區域（如 UGC 或敏感資訊）。</p>
                 </div>
+                <div class="fintech-card p-8 hover:-translate-y-1 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue-light mb-6 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">品牌與內容品質</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">透過提供清楚的使用指南，降低 AI 錯誤引用或脫線解讀。</p>
+                </div>
+                <div class="fintech-card p-8 hover:-translate-y-1 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue-light mb-6 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">伺服器資源管理</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">LLMs.txt 可作為一種調節與限制大規模 AI 爬取的方式。</p>
+                </div>
+            </div>
+        </section>
 
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 relative z-10">想要保護您的網站內容？</h2>
-                <p class="text-gray-300 mb-8 max-w-xl mx-auto relative z-10">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
+        <!-- FAQ Section -->
+        <section class="border-t border-gray-200 pt-16">
+            <h2 class="text-3xl font-serif font-bold text-center text-gray-900 mb-12">常見問題 (FAQ)</h2>
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <details class="group fintech-card p-6 cursor-pointer">
+                    <summary class="font-bold text-lg text-gray-900 list-none flex justify-between items-center">
+                        Q: LLMs.txt 現在是正式標準嗎？
+                        <span class="transition-transform group-open:rotate-180 text-brand-blue-light">▼</span>
+                    </summary>
+                    <div
+                        class="mt-4 text-gray-600 group-open:animate-in group-open:fade-in border-t border-gray-100 pt-4 leading-relaxed">
+                        尚未，現階段多屬概念與實驗階段；多數 AI 仍主要依 robots.txt 控管存取。
+                    </div>
+                </details>
 
-                <a href="mailto:hello@taux.io"
-                    class="relative z-10 inline-block px-8 py-4 bg-white text-taux-bg font-bold rounded-full hover:bg-tech-cyan hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-                    聯絡我們
-                </a>
-            </section>
-        </div>
-    </article>
+                <details class="group fintech-card p-6 cursor-pointer">
+                    <summary class="font-bold text-lg text-gray-900 list-none flex justify-between items-center">
+                        Q: 沒有 LLMs.txt 會怎樣？
+                        <span class="transition-transform group-open:rotate-180 text-brand-blue-light">▼</span>
+                    </summary>
+                    <div
+                        class="mt-4 text-gray-600 group-open:animate-in group-open:fade-in border-t border-gray-100 pt-4 leading-relaxed">
+                        短期不會有直接負面影響，但網站內容可能持續被 LLM 自由存取並用於訓練與生成。
+                    </div>
+                </details>
+
+                <details class="group fintech-card p-6 cursor-pointer">
+                    <summary class="font-bold text-lg text-gray-900 list-none flex justify-between items-center">
+                        Q: 大型語言模型會遵守 LLMs.txt 嗎？
+                        <span class="transition-transform group-open:rotate-180 text-brand-blue-light">▼</span>
+                    </summary>
+                    <div
+                        class="mt-4 text-gray-600 group-open:animate-in group-open:fade-in border-t border-gray-100 pt-4 leading-relaxed">
+                        取決於各家 AI 公司是否採用。目前較明確的是對 robots.txt 中 AI 爬蟲相關 user-agent 的遵守承諾。
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section
+            class="mt-20 fintech-card p-12 text-center rounded-3xl relative overflow-hidden bg-white border-2 border-brand-blue-light/10">
+            <div class="relative z-10">
+                <h2 class="font-serif text-3xl font-bold text-gray-900 mb-6">想要保護您的網站內容？</h2>
+                <p class="text-gray-600 mb-10 max-w-xl mx-auto text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="mailto:hello@taux.io"
+                        class="px-8 py-4 bg-brand-blue-light text-white font-bold rounded-full hover:bg-brand-blue-dark hover:-translate-y-1 hover:shadow-lg transition-all shadow-md">
+                        聯絡我們
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
 
 {{ template "footer.html" . }}

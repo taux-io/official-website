@@ -1,0 +1,1237 @@
+{{ template "header.html" . }}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .skills-guide-body {
+        background-color: #e2e8f0;
+        display: grid;
+        gap: 30px;
+        grid-template-columns: 1fr;
+        margin: 0;
+        min-height: 100vh;
+        padding: 30px 15px;
+        place-items: center;
+        font-family: 'Noto Sans TC', sans-serif;
+        overflow-x: hidden;
+    }
+
+    .skills-guide-body .slide-container {
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1280px;
+        height: auto;
+        min-height: 720px;
+        justify-content: center;
+        overflow: hidden;
+        padding: 60px;
+        position: relative;
+        color: #334155;
+    }
+
+    .skills-guide-body .slide-container.dark-theme {
+        background-color: #0f172a;
+        color: #f8fafc;
+    }
+
+    .skills-guide-body .slide-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(90deg, #3b82f6, #14b8a6);
+        z-index: 0;
+    }
+
+    .skills-guide-body .slide-container.dark-theme::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(15, 23, 42, 0) 70%);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .skills-guide-body .slide-container>* {
+        position: relative;
+        z-index: 1;
+    }
+
+    .skills-guide-body h1,
+    .skills-guide-body h2,
+    .skills-guide-body h3,
+    .skills-guide-body th {
+        font-family: 'Poppins', 'Noto Sans TC', sans-serif;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .skills-guide-body h1 {
+        font-size: 72px;
+        letter-spacing: -1px;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .skills-guide-body .dark-theme h1 {
+        color: #ffffff;
+    }
+
+    .skills-guide-body .slide-title {
+        font-size: 44px;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: left;
+        width: 100%;
+        color: #0f172a;
+        border-left: 6px solid #3b82f6;
+        padding-left: 15px;
+    }
+
+    .skills-guide-body .dark-theme .slide-title {
+        color: #f8fafc;
+        border-left-color: #14b8a6;
+    }
+
+    .skills-guide-body h3 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        color: #1e293b;
+        line-height: 1.4;
+    }
+
+    .skills-guide-body .dark-theme h3 {
+        color: #e2e8f0;
+    }
+
+    .skills-guide-body p,
+    .skills-guide-body li,
+    .skills-guide-body td,
+    .skills-guide-body .subtitle,
+    .skills-guide-body .number-label {
+        font-size: 20px;
+        line-height: 1.6;
+        color: #475569;
+        margin: 0;
+        margin-bottom: 15px;
+    }
+
+    .skills-guide-body li {
+        margin-bottom: 15px;
+    }
+
+    .skills-guide-body td {
+        margin-bottom: 0;
+    }
+
+    .skills-guide-body .dark-theme p,
+    .skills-guide-body .dark-theme li,
+    .skills-guide-body .dark-theme td,
+    .skills-guide-body .dark-theme .subtitle,
+    .skills-guide-body .dark-theme .number-label {
+        color: #cbd5e1;
+    }
+
+    .skills-guide-body .subtitle {
+        font-size: 26px;
+        font-weight: 400;
+        color: #64748b;
+    }
+
+    .skills-guide-body .dark-theme .subtitle {
+        color: #94a3b8;
+    }
+
+    .skills-guide-body .content-area {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .title-layout {
+        text-align: center;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .skills-guide-body .title-layout .accent-text {
+        color: #3b82f6;
+    }
+
+    .skills-guide-body .dark-theme .title-layout .accent-text {
+        color: #14b8a6;
+    }
+
+    .skills-guide-body .section-title-layout {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .section-title-layout h2 {
+        font-size: 64px;
+        margin-bottom: 20px;
+        border: none;
+        padding: 0;
+    }
+
+    .skills-guide-body .section-title-layout p {
+        font-size: 28px;
+        max-width: 800px;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    .skills-guide-body .section-title-layout hr {
+        background: linear-gradient(90deg, #3b82f6, #14b8a6);
+        border: none;
+        height: 6px;
+        margin: 40px auto;
+        width: 120px;
+        border-radius: 3px;
+    }
+
+    .skills-guide-body .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .skills-guide-body .two-column ul {
+        list-style: disc;
+        margin: 0;
+        padding-left: 25px;
+    }
+
+    .skills-guide-body .image-wrapper {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        height: 400px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .skills-guide-body .image-wrapper img,
+    .skills-guide-body .image-wrapper svg {
+        height: 100%;
+        width: 100%;
+        display: block;
+        object-fit: contain;
+        background-color: #f8fafc;
+    }
+
+    .skills-guide-body .two-column.tiled {
+        align-items: stretch;
+    }
+
+    .skills-guide-body .two-column.tiled>div {
+        background-color: #f1f5f9;
+        border-radius: 12px;
+        padding: 40px;
+        border-top: 4px solid #3b82f6;
+        height: 100%;
+    }
+
+    .skills-guide-body .dark-theme .two-column.tiled>div {
+        background-color: #1e293b;
+        border-top-color: #14b8a6;
+    }
+
+    .skills-guide-body .timeline-layout {
+        align-items: stretch;
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+    }
+
+    .skills-guide-body .timeline-layout .timeline-line {
+        background-color: #cbd5e1;
+        height: 6px;
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-3px);
+        width: 100%;
+        z-index: 0;
+        border-radius: 3px;
+    }
+
+    .skills-guide-body .timeline-item {
+        position: relative;
+        text-align: center;
+        width: 22%;
+    }
+
+    .skills-guide-body .timeline-item::after {
+        background-color: #ffffff;
+        border-radius: 50%;
+        border: 5px solid #3b82f6;
+        content: '';
+        height: 24px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 24px;
+        z-index: 1;
+    }
+
+    .skills-guide-body .timeline-item .content-wrapper {
+        left: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .skills-guide-body .timeline-item:nth-child(odd) .content-wrapper {
+        bottom: 50%;
+        margin-bottom: 35px;
+    }
+
+    .skills-guide-body .timeline-item:nth-child(even) .content-wrapper {
+        margin-top: 35px;
+        top: 50%;
+    }
+
+    .skills-guide-body .timeline-item h3 {
+        color: #3b82f6;
+        font-size: 24px;
+    }
+
+    .skills-guide-body .timeline-item p {
+        font-size: 18px;
+    }
+
+    .skills-guide-body .highlight-numbers-layout>div:first-child {
+        flex: 0 0 45%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #f8fafc;
+        padding: 40px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .skills-guide-body .highlight-numbers-layout .number {
+        color: #3b82f6;
+        font-size: 100px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .skills-guide-body .highlight-numbers-layout .number-label {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .skills-guide-body .tiled-content {
+        align-items: stretch;
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .image-tile {
+        flex: 1;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .skills-guide-body .image-tile .image-wrapper {
+        height: 200px;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        box-shadow: none;
+    }
+
+    .skills-guide-body .image-tile h3 {
+        font-size: 22px;
+        color: #0f172a;
+        margin-bottom: 10px;
+    }
+
+    .skills-guide-body .image-tile p {
+        font-size: 16px;
+    }
+
+    .skills-guide-body .tile {
+        align-items: flex-start;
+        background-color: #f8fafc;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 40px 30px;
+        text-align: left;
+        transition: transform 0.2s ease;
+    }
+
+    .skills-guide-body .tile .icon {
+        color: #3b82f6;
+        font-size: 42px;
+        margin-bottom: 25px;
+        background: #eff6ff;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+    }
+
+    .skills-guide-body .tile h3 {
+        font-size: 24px;
+    }
+
+    .skills-guide-body .bullet-list {
+        max-width: 1000px;
+        width: 100%;
+        background: #f8fafc;
+        padding: 40px 50px;
+        border-radius: 16px;
+        border-left: 8px solid #3b82f6;
+        margin: 0 auto;
+    }
+
+    .skills-guide-body .bullet-list ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .skills-guide-body .bullet-list li {
+        font-size: 22px;
+        margin-bottom: 25px;
+        padding-left: 50px;
+        position: relative;
+    }
+
+    .skills-guide-body .bullet-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    .skills-guide-body .bullet-list i {
+        color: #14b8a6;
+        font-size: 28px;
+        left: 0;
+        position: absolute;
+        top: 2px;
+    }
+
+    .skills-guide-body .bullet-list li strong {
+        color: #1e293b;
+        font-weight: 700;
+    }
+
+    .skills-guide-body .table-layout {
+        width: 100%;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+    }
+
+    .skills-guide-body .table-layout table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .skills-guide-body .table-layout th,
+    .skills-guide-body .table-layout td {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 20px 30px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .skills-guide-body .table-layout th {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .skills-guide-body .table-layout tr:last-child td {
+        border-bottom: none;
+    }
+
+    .skills-guide-body .bleed-image-layout {
+        align-items: stretch;
+        display: grid;
+        gap: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0;
+    }
+
+    .skills-guide-body .bleed-image-layout>.content-container {
+        padding: 60px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .skills-guide-body .bleed-image-layout>.image-container {
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .skills-guide-body .bleed-image-layout img.bleed-image-side,
+    .skills-guide-body .bleed-image-layout svg.bleed-image-side {
+        display: block;
+        height: 100%;
+        min-height: 720px;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .skills-guide-body .bleed-text-side p {
+        margin-bottom: 20px;
+        font-size: 22px;
+    }
+
+    .skills-guide-body .qa-layout {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        align-self: center;
+    }
+
+    .skills-guide-body .qa-layout h2 {
+        font-size: 80px;
+        margin-bottom: 30px;
+        color: #0f172a;
+    }
+
+    .skills-guide-body .qa-layout p {
+        font-size: 28px;
+        color: #475569;
+    }
+
+    .skills-guide-body .qa-layout .contact-info {
+        color: #3b82f6;
+        font-size: 24px;
+        font-weight: 600;
+        margin-top: 50px;
+        padding: 20px 40px;
+        background: #eff6ff;
+        border-radius: 50px;
+        display: inline-block;
+    }
+
+    .skills-guide-body .highlight {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-weight: 600;
+        word-break: break-all;
+    }
+
+    .skills-guide-body .code-window {
+        background-color: #1e293b;
+        border-radius: 12px;
+        padding: 25px;
+        font-family: monospace;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #f8f8f2;
+        overflow: auto;
+        border: 1px solid #334155;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        text-align: left;
+        width: 100%;
+        min-height: 400px;
+        word-wrap: break-word;
+    }
+
+    .skills-guide-body .code-window .yaml-key {
+        color: #ff79c6;
+    }
+
+    .skills-guide-body .code-window .yaml-val {
+        color: #f1fa8c;
+    }
+
+    .skills-guide-body .code-window .md-h {
+        color: #8be9fd;
+        font-weight: 700;
+    }
+
+    .skills-guide-body .code-window .md-list {
+        color: #50fa7b;
+    }
+
+    .skills-guide-body .code-window .md-text {
+        color: #f8f8f2;
+    }
+
+    @media (max-width: 1024px) {
+        .skills-guide-body .slide-container {
+            padding: 40px 30px;
+            min-height: auto;
+        }
+
+        .skills-guide-body h1 {
+            font-size: 48px;
+        }
+
+        .skills-guide-body .slide-title {
+            font-size: 32px;
+            margin-bottom: 25px;
+            border-left-width: 4px;
+            padding-left: 12px;
+        }
+
+        .skills-guide-body h3 {
+            font-size: 24px;
+        }
+
+        .skills-guide-body p,
+        .skills-guide-body li,
+        .skills-guide-body td,
+        .skills-guide-body .subtitle,
+        .skills-guide-body .number-label {
+            font-size: 16px;
+        }
+
+        .skills-guide-body .section-title-layout h2 {
+            font-size: 42px;
+        }
+
+        .skills-guide-body .qa-layout h2 {
+            font-size: 48px;
+        }
+
+        .skills-guide-body .two-column {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .skills-guide-body .image-wrapper {
+            height: auto;
+            max-height: 300px;
+        }
+
+        .skills-guide-body .image-wrapper img {
+            height: auto;
+            max-height: 300px;
+        }
+
+        .skills-guide-body .tiled-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skills-guide-body .image-tile .image-wrapper {
+            max-height: 200px;
+        }
+
+        .skills-guide-body .code-window {
+            min-height: auto;
+            max-height: 400px;
+            font-size: 14px;
+        }
+
+        .skills-guide-body .timeline-layout {
+            flex-direction: column;
+            gap: 30px;
+            padding-left: 20px;
+        }
+
+        .skills-guide-body .timeline-layout .timeline-line {
+            width: 4px;
+            height: 100%;
+            left: 0;
+            top: 0;
+            transform: none;
+        }
+
+        .skills-guide-body .timeline-item {
+            width: 100%;
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        .skills-guide-body .timeline-item::after {
+            left: -2px;
+            top: 15px;
+            transform: translate(-50%, -50%);
+        }
+
+        .skills-guide-body .timeline-item .content-wrapper {
+            position: relative;
+            top: auto !important;
+            bottom: auto !important;
+            margin: 0 !important;
+        }
+
+        .skills-guide-body .bleed-image-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .skills-guide-body .bleed-image-layout>.image-container {
+            order: -1;
+            height: 250px;
+        }
+
+        .skills-guide-body .bleed-image-layout>.content-container {
+            padding: 40px 30px;
+        }
+
+        .skills-guide-body .bleed-image-layout img.bleed-image-side {
+            min-height: auto;
+            height: 100%;
+        }
+
+        .skills-guide-body .table-layout {
+            overflow-x: auto;
+        }
+
+        .skills-guide-body .table-layout table {
+            min-width: 700px;
+        }
+
+        .skills-guide-body .highlight-numbers-layout>div:first-child {
+            padding: 30px;
+        }
+
+        .skills-guide-body .highlight-numbers-layout .number {
+            font-size: 64px;
+        }
+
+        .skills-guide-body .bullet-list {
+            padding: 30px 20px;
+        }
+
+        .skills-guide-body .bullet-list li {
+            padding-left: 40px;
+            font-size: 18px;
+        }
+
+        .skills-guide-body .bullet-list i {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .skills-guide-body .slide-container {
+            padding: 30px 20px;
+        }
+
+        .skills-guide-body h1 {
+            font-size: 36px;
+        }
+
+        .skills-guide-body .slide-title {
+            font-size: 26px;
+        }
+
+        .skills-guide-body .qa-layout h2 {
+            font-size: 36px;
+        }
+
+        .skills-guide-body .qa-layout .contact-info {
+            font-size: 16px;
+            padding: 15px 25px;
+        }
+    }
+</style>
+<div class="skills-guide-body">
+
+    <!-- Slide 1: Title_Slide -->
+    <div class="slide-container dark-theme" id="slide1">
+        <div class="title-layout">
+            <h1>Claude Skills<br><span class="accent-text">實戰指南</span></h1>
+            <p class="subtitle">The Complete Guide to Building Skills for Claude<br><br>一份專為開發者與團隊打造的階梯式教育手冊，<br>教您如何將
+                SOP 與專家知識轉化為自動化工作流。</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Image_Right_Text_Left -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">核心概念：什麼是 Skill？</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p>Skill 是一個裝載了指令與工作流的資料夾，它能讓 Claude 精準掌握您專屬的作業流程，而無需每次對話都重新解釋背景。</p>
+                    <p>一個標準的 Skill 資料夾包含：</p>
+                    <ul>
+                        <li><span class="highlight">SKILL.md</span> (必填)：核心指令，包含決定何時觸發的 YAML 前置資料。</li>
+                        <li><span class="highlight">scripts/</span> (選填)：可執行的自動化腳本 (如 Python、Bash)。</li>
+                        <li><span class="highlight">references/</span> (選填)：讓 Claude 按需讀取的參考文件與手冊。</li>
+                    </ul>
+                    <p><strong>優勢：</strong>透過教導 Claude 一次，未來即可永久受益，並確保團隊產出的高度一致性。</p>
+                </div>
+                <div>
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                                    <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
+                                </filter>
+                            </defs>
+                            <rect width="400" height="400" fill="#f8fafc" />
+                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="#cbd5e1"
+                                opacity="0.4" />
+                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="#94a3b8"
+                                opacity="0.5" />
+                            <path d="M 120 160 L 180 160 L 200 190 L 360 190 L 360 320 L 120 320 Z"
+                                fill="url(#folderGrad)" filter="url(#shadow)" />
+                            <rect x="150" y="215" width="120" height="12" rx="6" fill="#ffffff" opacity="0.8" />
+                            <rect x="150" y="245" width="80" height="12" rx="6" fill="#ffffff" opacity="0.8" />
+                            <circle cx="280" cy="251" r="18" fill="#ffffff" opacity="0.9" />
+                            <polygon points="275,243 288,251 275,259" fill="#3b82f6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Timeline -->
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">階梯式開發路徑 (The Staircase)</h2>
+        <div class="content-area">
+            <div class="timeline-layout">
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 1. 規劃與場景</h3>
+                        <p>定義明確的 Use Case，決定觸發條件與目標，評估是否需要搭配外部工具 (MCP)。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 2. 結構建立</h3>
+                        <p>建立資料夾，配置必須的 SKILL.md，並遵循嚴格的 kebab-case 命名規範。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 3. 撰寫指令</h3>
+                        <p>設定精準的 YAML 觸發詞，並運用漸進式揭露原則撰寫強大的 Markdown 指令。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 4. 測試與發布</h3>
+                        <p>從手動單一任務測試開始，確認 API 與功能無誤後，打包為 ZIP 並發布給團隊。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Highlighted_Numbers -->
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">MCP 與 Skills 的強大組合</h2>
+        <div class="content-area">
+            <div class="two-column highlight-numbers-layout">
+                <div>
+                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:#64748b;">The
+                        Connectivity</div>
+                    <div class="number">MCP</div>
+                    <div class="number-label">提供外部連線能力<br><span
+                            style="font-size: 18px; font-weight:normal; color:#64748b; margin-top:10px; display:block;">(What
+                            Claude can do)</span></div>
+                </div>
+                <div>
+                    <h3>賦予工具靈魂的關鍵大腦</h3>
+                    <p>如果 MCP (Model Context Protocol) 提供了對外連線的「四肢」，例如讀取 Notion 或建立 Linear 任務；那麼 Skills 就是告訴 Claude
+                        該如何正確使用這些工具的「大腦」。</p>
+                    <p><strong>沒有 Skill 的 MCP：</strong>用戶面對工具箱不知從何下手，每次都需要重新下達複雜 Prompt。<br><br><strong>搭配 Skill 的
+                            MCP：</strong>預設工作流自動啟動，將最佳實踐 (Best Practices) 嵌入每一次互動中，降低整合學習門檻。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Tiled_Images -->
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">三大核心應用場景 (Use Cases)</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="#eff6ff" />
+                            <!-- Document -->
+                            <rect x="60" y="40" width="80" height="110" rx="8" fill="#ffffff" stroke="#3b82f6"
+                                stroke-width="4" />
+                            <line x1="75" y1="65" x2="125" y2="65" stroke="#cbd5e1" stroke-width="4"
+                                stroke-linecap="round" />
+                            <line x1="75" y1="85" x2="125" y2="85" stroke="#cbd5e1" stroke-width="4"
+                                stroke-linecap="round" />
+                            <line x1="75" y1="105" x2="105" y2="105" stroke="#cbd5e1" stroke-width="4"
+                                stroke-linecap="round" />
+                            <!-- Pencil / Wand -->
+                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="#14b8a6" />
+                            <polygon points="110,140 115,135 125,145" fill="#0d9488" />
+                        </svg>
+                    </div>
+                    <h3>1. 文件與資產生成</h3>
+                    <p>用於創建具備高度一致性與品質的輸出物。可嵌入品牌指南、模板結構與發布前的品質檢查清單。(無需外部工具)</p>
+                </div>
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="#f0fdfa" />
+                            <path
+                                d="M 95 40 L 105 40 L 110 55 C 115 57 120 60 125 64 L 140 58 L 148 66 L 142 80 C 146 85 149 90 151 95 L 165 100 L 165 110 L 151 115 C 149 120 146 125 142 130 L 148 144 L 140 152 L 125 146 C 120 150 115 153 110 155 L 105 170 L 95 170 L 90 155 C 85 153 80 150 75 146 L 60 152 L 52 144 L 58 130 C 54 125 51 120 49 115 L 35 110 L 35 100 L 49 95 C 51 90 54 85 58 80 L 52 66 L 60 58 L 75 64 C 80 60 85 57 90 55 Z"
+                                fill="#14b8a6" opacity="0.2" />
+                            <circle cx="100" cy="105" r="40" fill="none" stroke="#14b8a6" stroke-width="8"
+                                stroke-dasharray="15 8" />
+                            <circle cx="100" cy="105" r="18" fill="#14b8a6" />
+                            <circle cx="145" cy="145" r="25" fill="none" stroke="#3b82f6" stroke-width="6"
+                                stroke-dasharray="10 5" />
+                            <circle cx="145" cy="145" r="10" fill="#3b82f6" />
+                        </svg>
+                    </div>
+                    <h3>2. 工作流自動化</h3>
+                    <p>適用於多步驟流程，能確保 Claude 按部就班執行，並包含自動驗證機制。通常需協調多個 MCP 伺服器。</p>
+                </div>
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="#f8fafc" />
+                            <line x1="60" y1="70" x2="140" y2="100" stroke="#cbd5e1" stroke-width="4" />
+                            <line x1="140" y1="100" x2="80" y2="150" stroke="#cbd5e1" stroke-width="4" />
+                            <line x1="60" y1="70" x2="80" y2="150" stroke="#cbd5e1" stroke-width="4" />
+                            <circle cx="60" cy="70" r="14" fill="#3b82f6" />
+                            <circle cx="80" cy="150" r="14" fill="#3b82f6" />
+                            <circle cx="140" cy="100" r="22" fill="#14b8a6" />
+                            <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z"
+                                fill="#ffffff" />
+                        </svg>
+                    </div>
+                    <h3>3. MCP 增強防護</h3>
+                    <p>專為增強既有 MCP 伺服器所設計。注入領域知識 (如：Sentry 自動分析 Bug)、提供自動上下文，並預防常見的 API 錯誤。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Two_Column_Tiled_Text -->
+    <div class="slide-container dark-theme" id="slide6">
+        <h2 class="slide-title">YAML 撰寫準則：決定生死的第一線</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3>嚴格的命名規範 (Naming)</h3>
+                    <p>Claude 非常挑剔資料夾與檔案名稱的格式，任何微小的錯誤都會導致 Skill 無法載入。</p>
+                    <ul>
+                        <li>主檔名必須精確為 <span class="highlight">SKILL.md</span> (區分大小寫，不可寫成 skill.md)。</li>
+                        <li>資料夾與 <code>name:</code> 欄位必須使用 <span class="highlight">kebab-case</span>。</li>
+                        <li><strong>嚴格禁止</strong>包含空格、大寫字母或底線 (例如：<code>Notion_Setup</code> 是錯誤的)。</li>
+                        <li>禁止包含 <code>README.md</code> 於 Skill 根目錄內。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>描述與觸發詞 (Description)</h3>
+                    <p>Description 是 Claude 判斷是否主動啟動 Skill 的唯一依據，長度需小於 1024 字元。</p>
+                    <ul>
+                        <li>必須同時包含：<strong>「它能做什麼」</strong>與<strong>「何時該使用它」</strong>(具體觸發詞)。</li>
+                        <li>例如：「用於分析設計圖稿。當用戶上傳 fig 檔案，或要求『設計規格』時使用。」</li>
+                        <li><strong>資安禁令</strong>：絕對禁止在 YAML 中使用 XML 標籤 <code>&lt; &gt;</code>，以防 Prompt 注入攻擊。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">指令設計的最佳實踐 (Best Practices)</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+                    <h3>具體且可執行</h3>
+                    <p>避免空泛的指示。例如，不要寫「妥善驗證資料」，應該明確指示：「執行
+                        <code>scripts/validate.py</code>，若出現錯誤，請檢查是否遺漏必填欄位。」程式碼比語言更具確定性。
+                    </p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>漸進式揭露機制</h3>
+                    <p>為避免消耗過多 Token，保持 <code>SKILL.md</code> 精簡，僅放核心步驟。將詳細的 API 規範或龐大的樣板移至 <code>references/</code>
+                        資料夾，讓 Claude 需要時再去讀取。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>預設錯誤處理</h3>
+                    <p>預見系統可能發生的錯誤並提供解法。例如設立一個「常見問題」區塊：「若遭遇連線拒絕，請用戶至設定 > 擴充功能中重新連線。」這能大幅減少人工介入。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Practical Example 1 -->
+    <div class="slide-container" id="slide-example-1">
+        <h2 class="slide-title">實戰案例一：Code Review 助手</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3>單一任務標準結構</h3>
+                    <p>這是一個不需要外部 MCP 工具的標準 <code>SKILL.md</code> 寫法。重點在於明確的<strong>前置條件</strong>與<strong>防呆機制</strong>。
+                    </p>
+                    <ul>
+                        <li><span class="highlight">YAML 區塊</span>：精準定義觸發條件。</li>
+                        <li><span class="highlight">Role (角色設定)</span>：賦予 Claude 專家視角。</li>
+                        <li><span class="highlight">Workflow (工作流)</span>：用數字編號強制執行順序。</li>
+                        <li><span class="highlight">Rules (限制)</span>：明確告知「不該做什麼」，防止過度干預。</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="code-window">
+                        <span class="yaml-val">---</span><br>
+                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">當使用者上傳程式碼片段，或要求 Code Review
+                            時觸發。</span><br>
+                        <span class="yaml-val">---</span><br><br>
+                        <span class="md-h"># Role</span><br>
+                        <span class="md-text">你是一位嚴格且資深的後端架構師。</span><br><br>
+                        <span class="md-h"># Workflow</span><br>
+                        <span class="md-text">被觸發時，請嚴格按順序執行以下步驟：</span><br>
+                        <span class="md-list">1.</span> <span class="md-text">**安全性掃描**：檢查是否有 SQL Injection 或 Hardcoded
+                            密碼。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">**效能評估**：標出時間複雜度超過 O(N^2) 的寫法。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">**產出報告**：以 Markdown
+                            表格呈現修改建議。</span><br><br>
+                        <span class="md-h"># Rules</span><br>
+                        <span class="md-text">- 絕對**不要**直接給出完整重寫的程式碼。</span><br>
+                        <span class="md-text">- 只提供具體的修改指引與思路。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Practical Example 2 -->
+    <div class="slide-container dark-theme" id="slide-example-2">
+        <h2 class="slide-title">實戰案例二：串接 MCP 的自動化</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <div class="code-window"
+                        style="background-color: #0f172a; border-color: #1e293b; box-shadow: none;">
+                        <span class="yaml-val">---</span><br>
+                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">協助將對話中的錯誤日誌直接轉換為 Linear
+                            任務。</span><br>
+                        <span class="yaml-val">---</span><br><br>
+                        <span class="md-h"># Objective</span><br>
+                        <span class="md-text">分析錯誤日誌，並主動使用 `linear` MCP 建立 Bug Ticket。</span><br><br>
+                        <span class="md-h"># Instructions</span><br>
+                        <span class="md-list">1.</span> <span class="md-text">從使用者的 Error Log 中提取：代碼、時間、可能原因。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">自動呼叫 `linear_create_issue` 工具。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">將 Title 設定為 `[Bug] {錯誤代碼}`
+                            格式。</span><br><br>
+                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
+                        <span class="md-text">- 若找不到 `linear` 工具或連線失敗，**請勿道歉**。</span><br>
+                        <span class="md-text">- 直接回退：產出 Markdown Bug 報告，請使用者手動複製。</span>
+                    </div>
+                </div>
+                <div>
+                    <h3>多步驟與錯誤回退處理</h3>
+                    <p>這示範了如何讓 Claude 像一個 RPA 機器人一樣調用外部 API，並具備自我修復的邏輯。</p>
+                    <ul>
+                        <li><span class="highlight">Objective (目標)</span>：一句話講明這個腳本的最終目的。</li>
+                        <li><span class="highlight">工具調用指示</span>：明確寫出要呼叫的工具名稱 (如 <code>linear_create_issue</code>)。
+                        </li>
+                        <li><span class="highlight">Fallback (回退機制)</span>：<strong
+                                style="color: #14b8a6;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Section_Title -->
+    <div class="slide-container dark-theme" id="slide10">
+        <div class="section-title-layout">
+            <hr>
+            <h2>測試與驗證階段</h2>
+            <p>「先在單一任務上確保 Claude 能完美執行，再將該成功模式提取並封裝為 Skill。」</p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Table -->
+    <div class="slide-container" id="slide11">
+        <h2 class="slide-title">全面測試指南：三個關鍵維度</h2>
+        <div class="content-area">
+            <div class="table-layout">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">測試維度</th>
+                            <th style="width: 35%;">測試目標</th>
+                            <th style="width: 40%;">衡量與檢驗標準 (Metrics)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>觸發測試 (Triggering)</strong></td>
+                            <td>確保 Skill 在正確的時機點被載入，並且不會在無關話題中過度觸發。</td>
+                            <td>90% 的相關請求能自動觸發 Skill (不需用戶手動叫出)；使用無關指令時保持靜默。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>功能測試 (Functional)</strong></td>
+                            <td>驗證工作流是否如預期產出正確結果，且妥善處理各種邊緣情況。</td>
+                            <td>0 個未處理的 API 錯誤；工具呼叫皆成功完成；確保輸出格式結構一致。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>效能對比 (Performance)</strong></td>
+                            <td>證明導入 Skill 後，整體流程效率優於原始的「人工引導」基線。</td>
+                            <td>對話來回次數大幅減少；所需的 Token 消耗量降低；無需用戶介入糾正。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Styled_Bullet_Points -->
+    <div class="slide-container" id="slide12">
+        <h2 class="slide-title">進階設計：五大常見專家模式</h2>
+        <div class="content-area">
+            <div class="bullet-list">
+                <ul>
+                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>順序編排 (Sequential Workflow)：</strong>嚴格定義步驟 1
+                        到步驟 N。適用於具備先後依賴關係的任務，如「新建客戶 -> 設定付款 -> 寄送歡迎信」。</li>
+                    <li><i class="fa-solid fa-network-wired"></i> <strong>多 MCP 協同 (Multi-MCP)：</strong>跨服務編排。如將 Figma
+                        設計匯出 (MCP 1)、存入 Google Drive (MCP 2)、並在 Linear 建立任務 (MCP 3)。</li>
+                    <li><i class="fa-solid fa-rotate"></i> <strong>迭代優化 (Iterative Refinement)：</strong>建立「產出草稿 -> 腳本驗證
+                        -> 自動修正」的封閉迴圈，直到品質達標才結束對話。</li>
+                    <li><i class="fa-solid fa-sitemap"></i> <strong>上下文感知 (Context-aware)：</strong>為 Claude
+                        建立決策樹。例如：「若檔案大於 10MB，調用雲端硬碟 MCP；若為程式碼，調用 GitHub MCP。」</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>領域知識注入 (Domain-specific)：</strong>在呼叫 API
+                        前嵌入合規檢查或風控邏輯，讓 Claude 表現得像一位資深專家。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Bleed_Image_Right -->
+    <div class="slide-container bleed-image-layout" id="slide13">
+        <div class="content-container">
+            <h2 class="slide-title">最終步：封裝與發布</h2>
+            <div class="content-area">
+                <div class="bleed-text-side">
+                    <p><strong>打包與安裝：</strong>完成測試後，將資料夾壓縮為 <code>.zip</code>。個人用戶可透過 Claude.ai 上傳；企業團隊管理員則可將其佈署至整個
+                        Workspace (自動更新)。</p>
+                    <p><strong>開源與 API：</strong>您可以將 Skill 託管於 GitHub，提供清晰的 <code>README.md</code> 安裝教學。若是應用程式開發者，也能透過
+                        API 的 <code>container.skills</code> 參數以程式化方式調用。</p>
+                    <p><strong>行銷定位：</strong>在推廣時，專注於「成果」而非技術。強調「此 Skill 能在幾秒鐘內為您完成專案配置」，讓 MCP 與 Skill 成為您系統整合的最大賣點。</p>
+                </div>
+            </div>
+        </div>
+        <div class="image-container">
+            <svg class="bleed-image-side" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="600" height="800" fill="url(#bgGrad)" />
+                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="#334155" stroke-width="1"
+                    opacity="0.3" />
+                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="#334155" stroke-width="1" opacity="0.3" />
+                <path d="M 150 250 C 250 250, 300 400, 300 400" fill="none" stroke="#3b82f6" stroke-width="3"
+                    stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="#14b8a6" stroke-width="3"
+                    stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 200 550 C 250 450, 300 400, 300 400" fill="none" stroke="#0ea5e9" stroke-width="3"
+                    stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 420 520 C 360 460, 300 400, 300 400" fill="none" stroke="#8b5cf6" stroke-width="3"
+                    stroke-dasharray="10 6" opacity="0.6" />
+                <circle cx="300" cy="400" r="90" fill="#0f172a" stroke="url(#accentGrad)" stroke-width="8" />
+                <rect x="250" y="375" width="100" height="50" rx="8" fill="#3b82f6" opacity="0.9" />
+                <circle cx="275" cy="400" r="8" fill="#ffffff" />
+                <rect x="295" y="396" width="40" height="8" rx="4" fill="#ffffff" />
+                <circle cx="150" cy="250" r="40" fill="#3b82f6" opacity="0.9" />
+                <circle cx="150" cy="235" r="12" fill="#ffffff" />
+                <path d="M 130 265 Q 150 245 170 265 L 170 275 C 170 280 130 280 130 275 Z" fill="#ffffff" />
+                <circle cx="450" cy="280" r="45" fill="#14b8a6" opacity="0.9" />
+                <circle cx="450" cy="265" r="14" fill="#ffffff" />
+                <path d="M 425 298 Q 450 275 475 298 L 475 308 C 475 313 425 313 425 308 Z" fill="#ffffff" />
+                <circle cx="200" cy="550" r="35" fill="#0ea5e9" opacity="0.9" />
+                <circle cx="200" cy="538" r="10" fill="#ffffff" />
+                <path d="M 182 563 Q 200 545 218 563 L 218 570 C 218 575 182 575 182 570 Z" fill="#ffffff" />
+                <circle cx="420" cy="520" r="30" fill="#8b5cf6" opacity="0.9" />
+                <circle cx="420" cy="510" r="9" fill="#ffffff" />
+                <path d="M 405 532 Q 420 518 435 532 L 435 538 C 435 542 405 542 405 538 Z" fill="#ffffff" />
+                <circle cx="210" cy="330" r="4" fill="#ffffff" opacity="0.8" />
+                <circle cx="390" cy="330" r="4" fill="#ffffff" opacity="0.8" />
+                <circle cx="260" cy="460" r="4" fill="#ffffff" opacity="0.8" />
+                <circle cx="350" cy="450" r="4" fill="#ffffff" opacity="0.8" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Slide 14: Q&A -->
+    <div class="slide-container" id="slide14">
+        <div class="qa-layout">
+            <h2>準備好打造專屬 Skill 了嗎？</h2>
+            <p>「用知識驅動工具，讓自動化成為團隊標準」</p>
+            <div class="contact-info">
+                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> 善用內建的 skill-creator 快速起步！
+            </div>
+        </div>
+    </div>
+
+</div>
+{{ template "footer.html" . }}

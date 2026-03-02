@@ -9,65 +9,33 @@
   }
 
   body {
-    @apply bg-taux-bg text-gray-100 font-sans antialiased overflow-x-hidden;
-    background-image:
-      radial-gradient(circle at 15% 50%, rgba(112, 0, 255, 0.08), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.08), transparent 25%);
+    @apply bg-slate-50 text-gray-600 font-sans antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-gray-900;
   }
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-taux-bg;
+    @apply bg-slate-100;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-taux-border rounded-full hover:bg-tech-cyan/50 transition-colors;
+    @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-tech-cyan to-tech-purple;
+  .fintech-card {
+    @apply bg-white rounded-2xl p-8 md:p-12 shadow-xl hover:shadow-2xl transition-all duration-300 border border-slate-100;
   }
 
-  .text-gradient-gold {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FC0] to-[#F90];
-  }
-
-  .glass {
-    @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-xl;
-  }
-
-  .glass-card {
-    @apply glass rounded-2xl p-6 transition-all duration-300 hover:border-tech-cyan/30 hover:shadow-tech-cyan/10 hover:-translate-y-1;
-  }
-
-  .nav-glass {
-    @apply backdrop-blur-lg bg-taux-bg/80 border-b border-white/5;
-  }
-
-  .tech-border {
-    position: relative;
-  }
-
-  .tech-border::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tech-cyan/50 to-transparent opacity-50;
-  }
-
-  .glow-effect {
-    box-shadow: 0 0 20px -5px rgba(0, 240, 255, 0.3);
-  }
-
-  .dark .dark\:hidden {
-    display: none;
-  }
-
-  .dark .dark\:block {
-    display: block;
+  .watermark {
+    @apply absolute select-none text-slate-100 pointer-events-none font-serif font-black;
   }
 }

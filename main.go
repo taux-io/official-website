@@ -103,6 +103,16 @@ func main() {
 		})
 	})
 
+	r.GET("/claude-skills-guide", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "claude-skills-guide.html", PageData{
+			Title:       "Claude Skills 實戰指南 | TauX GEO Tech",
+			Description: "The Complete Guide to Building Skills for Claude. 一份專為開發者與團隊打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。",
+			Canonical:   "https://taux.io/claude-skills-guide",
+			Year:        time.Now().Year(),
+		})
+	})
+
+
 	r.GET("/building", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "building.html", PageData{
 			Title:       "Building in Public | TauX",

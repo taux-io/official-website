@@ -43,215 +43,237 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6 overflow-hidden">
-    <!-- Abstract Shapes -->
-    <div
-        class="absolute top-1/4 left-0 w-[800px] h-[800px] bg-tech-blue/10 blur-[150px] rounded-full -z-10 animate-float">
-    </div>
-    <div
-        class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-tech-purple/10 blur-[150px] rounded-full -z-10 animate-pulse-glow">
+<div class="relative pt-32 pb-24 overflow-hidden bg-brand-blue-light">
+    <!-- Abstract Design -->
+    <div class="absolute inset-0 opacity-10"
+        style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;">
     </div>
 
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
         <!-- Hero Section -->
-        <header class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
-            <div class="animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <header class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
                 <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-tech-blue/10 border border-tech-blue/30 text-tech-blue text-sm font-semibold mb-8">
-                    <span class="w-2 h-2 bg-tech-blue rounded-full mr-2 animate-pulse"></span>
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-white/20 text-white text-sm font-semibold mb-8 backdrop-blur-sm">
+                    <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
                     AI Corporate Training
                 </div>
 
-                <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight mb-8 text-white">
+                <h1 class="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8 text-white">
                     95% 的人只用<br>AI 生成內容，<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-tech-cyan to-white">
-                        5% 的人懂得用<br>AI 輔助決策
-                    </span>
+                    5% 的人懂得用<br>AI 輔助決策
                 </h1>
 
-                <p class="text-xl text-gray-400 leading-relaxed max-w-xl mb-10">
+                <p class="text-xl text-blue-100 leading-relaxed max-w-xl mb-10">
                     從「人工智慧」進化到「數智化」思維。我們協助企業與個人打造專屬的 AI 數智化助理 (Gem)，讓 AI 不只是工具，而是你的最強大腦。
                 </p>
 
                 <a href="mailto:hello@taux.io"
-                    class="inline-flex items-center px-8 py-4 bg-tech-blue text-white font-bold rounded-full hover:bg-blue-600 hover:shadow-[0_0_30px_rgba(66,133,244,0.4)] transition-all transform hover:-translate-y-1">
+                    class="inline-flex items-center px-8 py-4 bg-white text-brand-blue-light font-bold rounded-full hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
                     預約企業內訓諮詢
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
                 </a>
             </div>
 
             <!-- Visual Abstract -->
-            <div class="relative hidden lg:block">
-                <div class="relative w-full aspect-square max-w-md mx-auto">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-tr from-tech-blue/20 to-tech-purple/20 rounded-full blur-3xl animate-pulse-glow">
+            <div class="hidden lg:flex justify-center">
+                <div class="w-80 h-80 bg-white rounded-full shadow-2xl flex items-center justify-center relative p-8">
+                    <div class="absolute inset-4 border-2 border-dashed border-gray-200 rounded-full animate-spin-slow">
                     </div>
-                    <div
-                        class="relative z-10 w-full h-full glass-card flex items-center justify-center overflow-hidden border-tech-blue/20">
-                        <!-- Grid lines representing structure -->
-                        <div class="absolute inset-0 opacity-20"
-                            style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;">
-                        </div>
-
-                        <!-- Glowing Core -->
-                        <div
-                            class="w-40 h-40 bg-black/40 border border-tech-cyan/50 rounded-full shadow-[0_0_50px_rgba(0,240,255,0.3)] backdrop-blur-md flex items-center justify-center relative group animate-float">
-                            <div
-                                class="absolute inset-0 rounded-full border border-t-tech-cyan/80 border-r-transparent border-b-tech-purple/80 border-l-transparent animate-spin-slow">
-                            </div>
-                            <span class="text-5xl">🧠</span>
-                        </div>
-
-                        <!-- Satellites -->
-                        <div class="absolute w-full h-full animate-spin-slow [animation-duration:20s]">
-                            <div
-                                class="absolute top-10 left-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center -translate-x-1/2 shadow-lg">
-                                ⚡</div>
-                        </div>
-                        <div
-                            class="absolute w-full h-full animate-spin-slow [animation-duration:15s] direction-reverse">
-                            <div
-                                class="absolute bottom-20 right-10 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 flex items-center justify-center shadow-lg">
-                                🔗</div>
-                        </div>
+                    <!-- Central Brain / Tech Icon replacing the brain emoji -->
+                    <div class="text-brand-blue-light relative z-10 p-6 bg-blue-50 rounded-full">
+                        <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
                     </div>
                 </div>
             </div>
         </header>
-
-        <!-- Problem Section -->
-        <section class="py-20 border-t border-white/5">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">為什麼你的 AI 總是給出<span
-                        class="text-gray-500">平庸</span>的答案？</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-tech-blue to-transparent mx-auto rounded-full"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8 hover:border-tech-pink/50 transition-colors group">
-                    <div
-                        class="w-14 h-14 bg-tech-pink/10 rounded-2xl flex items-center justify-center text-tech-pink mb-6 text-2xl group-hover:scale-110 transition-transform">
-                        🗑️</div>
-                    <h3 class="text-xl font-bold text-white mb-4">Garbage In, Garbage Out</h3>
-                    <p class="text-gray-400 leading-relaxed">指令模糊，結果就模糊。不懂精確描述需求，AI 就只能給你泛泛之談。</p>
-                </div>
-
-                <div class="glass-card p-8 hover:border-tech-cyan/50 transition-colors group">
-                    <div
-                        class="w-14 h-14 bg-tech-cyan/10 rounded-2xl flex items-center justify-center text-tech-cyan mb-6 text-2xl group-hover:scale-110 transition-transform">
-                        💬</div>
-                    <h3 class="text-xl font-bold text-white mb-4">溝通斷層</h3>
-                    <p class="text-gray-400 leading-relaxed">還在用搜尋引擎的方式對話？AI 需要的是結構化的「工程化語言」，而非閒聊。</p>
-                </div>
-
-                <div class="glass-card p-8 hover:border-tech-purple/50 transition-colors group">
-                    <div
-                        class="w-14 h-14 bg-tech-purple/10 rounded-2xl flex items-center justify-center text-tech-purple mb-6 text-2xl group-hover:scale-110 transition-transform">
-                        🎭</div>
-                    <h3 class="text-xl font-bold text-white mb-4">缺乏角色</h3>
-                    <p class="text-gray-400 leading-relaxed">沒有設定 Persona 的 AI 就像沒有靈魂的機器。賦予它角色，它才能切換視角。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Methodology -->
-        <section id="methodology" class="py-20">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                <div>
-                    <span class="text-tech-cyan font-bold tracking-wider uppercase text-sm mb-2 block">Our
-                        Methodology</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-white">掌握 AI 溝通的<br>「數位口才學」</h2>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Method 1 -->
-                <div class="glass-card p-8 hover:bg-tech-blue/5 transition-colors border-t-4 border-t-tech-blue">
-                    <div class="mb-6">
-                        <span class="text-4xl">📐</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">PTCF 結構化提示詞</h3>
-                    <p class="text-gray-400 mb-6">獨家架構：角色 (Persona)、任務 (Task)、背景 (Context)、格式 (Format)。精準控制 AI 輸出。</p>
-                    <div class="flex gap-2 text-xs font-mono text-tech-blue/80">
-                        <span>#Precision</span> <span>#Structure</span>
-                    </div>
-                </div>
-
-                <!-- Method 2 -->
-                <div class="glass-card p-8 hover:bg-tech-purple/5 transition-colors border-t-4 border-t-tech-purple">
-                    <div class="mb-6">
-                        <span class="text-4xl">🔗</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">深度推理 (CoT)</h3>
-                    <p class="text-gray-400 mb-6">啟動邏輯區。運用思維鏈 (Chain of Thought)，讓 AI 協助你進行複雜決策與推演。</p>
-                    <div class="flex gap-2 text-xs font-mono text-tech-purple/80">
-                        <span>#Logic</span> <span>#Reasoning</span>
-                    </div>
-                </div>
-
-                <!-- Method 3 -->
-                <div class="glass-card p-8 hover:bg-tech-cyan/5 transition-colors border-t-4 border-t-tech-cyan">
-                    <div class="mb-6">
-                        <span class="text-4xl">📚</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">知識庫管理 (RAG)</h3>
-                    <p class="text-gray-400 mb-6">利用 NotebookLM 打造專屬大腦。將千頁文件轉化為可對話的智慧資產。</p>
-                    <div class="flex gap-2 text-xs font-mono text-tech-cyan/80">
-                        <span>#Knowledge</span> <span>#Insight</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Use Cases -->
-        <section id="cases" class="py-20 border-t border-white/5">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-16">讓 AI 成為你的百變分身</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8">
-                    <div class="text-4xl mb-4">🍔</div>
-                    <h3 class="text-xl font-bold text-white mb-2">精準點餐模式</h3>
-                    <p class="text-tech-cyan text-sm mb-4">應用：客戶服務、訂單處理</p>
-                    <p class="text-gray-300 text-sm italic border-l-2 border-white/20 pl-4">
-                        "將口語化的需求轉化為標準化數據表格，像專業店員一樣精準執行任務。"</p>
-                </div>
-
-                <div class="glass-card p-8">
-                    <div class="text-4xl mb-4">⚖️</div>
-                    <h3 class="text-xl font-bold text-white mb-2">會議決策模擬</h3>
-                    <p class="text-tech-purple text-sm mb-4">應用：專案管理、風險評估</p>
-                    <p class="text-gray-300 text-sm italic border-l-2 border-white/20 pl-4">"模擬
-                        PM、工地主任與品管經理三方辯論，針對專案風險進行交叉詰問。"</p>
-                </div>
-
-                <div class="glass-card p-8">
-                    <div class="text-4xl mb-4">📰</div>
-                    <h3 class="text-xl font-bold text-white mb-2">自動化新聞稿</h3>
-                    <p class="text-tech-pink text-sm mb-4">應用：公關行銷、政府文書</p>
-                    <p class="text-gray-300 text-sm italic border-l-2 border-white/20 pl-4">
-                        "輸入法規與事實，自動生成符合政府風格與格式的標準新聞稿。"</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="py-20 text-center">
-            <div class="glass-card p-12 md:p-16 max-w-4xl mx-auto shadow-2xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-tech-blue/20 to-tech-purple/20 opacity-50"></div>
-                <div class="relative z-10">
-                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 text-glow">懂得問，AI 才會答；<br>懂得想，AI 才能幫</h2>
-                    <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">不要只是工作，要「數智化」你的工作。立即聯繫我們，構建您的 AI 競爭力。</p>
-                    <a href="mailto:hello@taux.io"
-                        class="inline-block px-10 py-5 bg-white text-taux-bg rounded-full text-lg font-bold hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-                        開始諮詢
-                    </a>
-                </div>
-            </div>
-        </section>
     </div>
 </div>
+
+<!-- Problem Section -->
+<section class="py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="font-serif text-3xl md:text-5xl font-bold text-gray-900 mb-6">為什麼你的 AI 總是給出<span
+                    class="text-gray-400">平庸</span>的答案？</h2>
+            <div class="w-24 h-1 bg-brand-blue-light mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+                class="fintech-card text-center hover:-translate-y-2 transition-transform bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div
+                    class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Garbage In, Garbage Out</h3>
+                <p class="text-gray-600 leading-relaxed">指令模糊，結果就模糊。不懂精確描述需求，AI 就只能給你泛泛之談。</p>
+            </div>
+
+            <div
+                class="fintech-card text-center hover:-translate-y-2 transition-transform bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div
+                    class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">溝通斷層</h3>
+                <p class="text-gray-600 leading-relaxed">還在用搜尋引擎的方式對話？AI 需要的是結構化的「工程化語言」，而非閒聊。</p>
+            </div>
+
+            <div
+                class="fintech-card text-center hover:-translate-y-2 transition-transform bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div
+                    class="w-16 h-16 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">缺乏角色</h3>
+                <p class="text-gray-600 leading-relaxed">沒有設定 Persona 的 AI 就像沒有靈魂的機器。賦予它角色，它才能切換視角。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Methodology -->
+<section id="methodology" class="py-24 bg-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <span class="text-brand-blue-light font-bold tracking-wider uppercase text-sm mb-2 block">Our
+                Methodology</span>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900">掌握 AI 溝通的「數位口才學」</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Method 1 -->
+            <div
+                class="fintech-card border-t-4 border-t-brand-blue-light bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 text-brand-blue-light">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">PTCF 結構化提示詞</h3>
+                <p class="text-gray-600 mb-6">獨家架構：角色 (Persona)、任務 (Task)、背景 (Context)、格式 (Format)。精準控制 AI 輸出。</p>
+            </div>
+
+            <!-- Method 2 -->
+            <div
+                class="fintech-card border-t-4 border-t-indigo-500 bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 text-indigo-500">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">深度推理 (CoT)</h3>
+                <p class="text-gray-600 mb-6">啟動邏輯區。運用思維鏈 (Chain of Thought)，讓 AI 協助你進行複雜決策與推演。</p>
+            </div>
+
+            <!-- Method 3 -->
+            <div
+                class="fintech-card border-t-4 border-t-teal-500 bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 text-teal-500">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">知識庫管理 (RAG)</h3>
+                <p class="text-gray-600 mb-6">利用 NotebookLM 打造專屬大腦。將千頁文件轉化為可對話的智慧資產。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section id="cases" class="py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">讓 AI 成為你的百變分身</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="fintech-card bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 flex justify-center text-brand-blue-light">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-2 text-center">精準點餐模式</h3>
+                <p class="text-brand-blue-light text-sm mb-4 font-semibold text-center">應用：客戶服務、訂單處理</p>
+                <p class="text-gray-600 text-sm italic bg-gray-50 p-4 rounded-lg border-l-4 border-gray-200">
+                    "將口語化的需求轉化為標準化數據表格，像專業店員一樣精準執行任務。"
+                </p>
+            </div>
+
+            <div class="fintech-card bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 flex justify-center text-indigo-500">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-2 text-center">會議決策模擬</h3>
+                <p class="text-indigo-500 text-sm mb-4 font-semibold text-center">應用：專案管理、風險評估</p>
+                <p class="text-gray-600 text-sm italic bg-gray-50 p-4 rounded-lg border-l-4 border-gray-200">
+                    "模擬 PM、工地主任與品管經理三方辯論，針對專案風險進行交叉詰問。"
+                </p>
+            </div>
+
+            <div class="fintech-card bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                <div class="mb-6 flex justify-center text-pink-500">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900 mb-2 text-center">自動化新聞稿</h3>
+                <p class="text-pink-500 text-sm mb-4 font-semibold text-center">應用：公關行銷、政府文書</p>
+                <p class="text-gray-600 text-sm italic bg-gray-50 p-4 rounded-lg border-l-4 border-gray-200">
+                    "輸入法規與事實，自動生成符合政府風格與格式的標準新聞稿。"
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 text-center bg-white">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="bg-brand-blue-light rounded-3xl p-12 md:p-16 shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
+            </div>
+            <div class="relative z-10">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">懂得問，AI
+                    才會答；<br>懂得想，AI 才能幫</h2>
+                <p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">不要只是工作，要「數智化」你的工作。立即聯繫我們，構建您的 AI 競爭力。</p>
+                <a href="mailto:hello@taux.io"
+                    class="inline-block px-10 py-5 bg-white text-brand-blue-light rounded-full text-lg font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg">
+                    開始諮詢
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 {{ template "footer.html" . }}

@@ -1,94 +1,111 @@
 {{ template "header.html" . }}
 
-<section id="about-us" class="py-24 md:py-32 text-center relative overflow-hidden">
-    <!-- Hero Glow -->
-    <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tech-cyan/20 blur-[150px] rounded-full -z-10 animate-pulse-glow">
+<section id="about-us" class="pt-32 pb-24 md:pt-40 md:pb-32 text-center relative overflow-hidden bg-brand-blue-light">
+    <!-- Three.js Background Container -->
+    <div id="three-container"
+        class="absolute inset-0 z-0 pointer-events-none opacity-80 mix-blend-screen overflow-hidden"></div>
+
+    <!-- Abstract Background Pattern (Fallback/Base) -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none"
+        style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;">
     </div>
 
-    <div class="max-w-4xl mx-auto px-6">
-        <img src="/static/taux-logo-light.png" alt="TauX Logo"
-            class="w-24 md:w-32 h-auto mx-auto mb-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] animate-float block dark:hidden"
-            loading="eager" decoding="async" fetchpriority="high" />
-        <img src="/static/taux-logo-dark.png" alt="TauX Logo"
-            class="w-24 md:w-32 h-auto mx-auto mb-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] animate-float hidden dark:block"
-            loading="eager" decoding="async" fetchpriority="high" />
+    <div class="max-w-4xl mx-auto px-6 relative z-10">
 
-        <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight mb-8">
+        <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight mb-8 text-white tracking-tight">
             你的網站，<br class="md:hidden" />
-            <span
-                class="text-transparent bg-clip-text bg-gradient-to-r from-tech-cyan via-white to-tech-purple text-glow">
-                準備好被 AI 問了嗎？
-            </span>
+            準備好被 AI 問了嗎？
         </h1>
 
-        <div class="text-left text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto" itemscope
+        <div class="text-left text-lg md:text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto" itemscope
             itemtype="https://schema.org/Organization">
-            <blockquote
-                class="relative pl-6 border-l-4 border-tech-cyan my-8 italic bg-white/5 p-4 rounded-r-xl backdrop-blur-sm">
-                <p class="text-gray-100 font-medium">"重要的不是你說了什麼，而是 AI 聽懂了什麼。"</p>
+            <blockquote class="relative pl-6 border-l-4 border-white my-8 italic">
+                <p class="font-medium">"重要的不是你說了什麼，而是 AI 聽懂了什麼。"</p>
             </blockquote>
             <span itemprop="description">
-                <strong>TauX 是一家專注於 GEO (Generative Engine Optimization) of Things 的技術公司。</strong>
+                <strong class="text-white">TauX 是一家專注於 GEO (Generative Engine Optimization) of Things 的技術公司。</strong>
                 我們透過「答案容器」架構與語意優化技術，協助品牌成為生成式 AI 搜尋時代的首選答案。
             </span>
         </div>
 
         <div class="mt-12 flex flex-col md:flex-row gap-6 justify-center">
             <a href="#our-services"
-                class="px-8 py-4 bg-white text-taux-bg font-bold rounded-full hover:bg-tech-cyan hover:scale-105 transition-all duration-300">
+                class="px-8 py-4 bg-white text-brand-blue-light font-bold rounded-full hover:bg-gray-100 hover:shadow-lg transition-all duration-300">
                 探索服務
             </a>
             <a href="#contact-us"
-                class="px-8 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/10 hover:border-tech-cyan/50 transition-all duration-300 backdrop-blur-sm">
+                class="px-8 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300">
                 聯絡我們
             </a>
         </div>
     </div>
 </section>
 
-<section id="our-services" class="py-24 relative" itemscope itemtype="https://schema.org/Service">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="font-display text-3xl md:text-5xl font-bold text-center mb-4 text-white">
-            我們如何幫你成為<span class="text-tech-cyan">答案</span>？
-        </h2>
-        <div class="text-center text-gray-400 text-lg mb-16">我們把複雜的技術，變成簡單的服務。</div>
+<section id="our-services" class="py-24 relative bg-white" itemscope itemtype="https://schema.org/Service">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+                我們如何幫你成為<span class="text-brand-blue-light">答案</span>？
+            </h2>
+            <p class="text-gray-500 text-lg">我們把複雜的技術，變成簡單的服務。</p>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Strategic Approach -->
-            <article class="glass-card md:col-span-2">
-                <div class="p-4">
-                    <p class="font-medium text-white mb-6 text-xl">在動手前，我們會先問：</p>
+            <article class="fintech-card md:col-span-2 bg-slate-50 border-none">
+                <div class="p-2">
+                    <p class="font-serif font-bold text-gray-900 mb-6 text-2xl">在動手前，我們會先問：</p>
                     <ul class="space-y-4">
-                        <li class="flex items-center p-3 bg-white/5 rounded-lg">
-                            <span class="text-tech-cyan mr-3 text-xl">✔</span>
-                            <span class="text-gray-300">用戶（或 AI）最想知道的答案是什麼？</span>
+                        <li class="flex items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                            <span class="text-brand-blue-light mr-4 text-xl">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="text-gray-700 font-medium">用戶（或 AI）最想知道的答案是什麼？</span>
                         </li>
-                        <li class="flex items-center p-3 bg-white/5 rounded-lg">
-                            <span class="text-tech-cyan mr-3 text-xl">✔</span>
-                            <span class="text-gray-300">這個答案，可以用更直接的方式表達嗎？</span>
+                        <li class="flex items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                            <span class="text-brand-blue-light mr-4 text-xl">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="text-gray-700 font-medium">這個答案，可以用更直接的方式表達嗎？</span>
                         </li>
-                        <li class="flex items-center p-3 bg-white/5 rounded-lg">
-                            <span class="text-tech-cyan mr-3 text-xl">✔</span>
-                            <span class="text-gray-300">我們做的，是幫你被找到，還是被推薦？</span>
+                        <li class="flex items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                            <span class="text-brand-blue-light mr-4 text-xl">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="text-gray-700 font-medium">我們做的，是幫你被找到，還是被推薦？</span>
                         </li>
                     </ul>
                 </div>
             </article>
 
             <!-- GEO Service -->
-            <article class="glass-card group">
-                <h3 itemprop="name" id="geo-optimization" class="text-2xl font-bold mb-4 flex items-center text-white">
+            <article class="fintech-card group">
+                <h3 itemprop="name" id="geo-optimization"
+                    class="text-2xl font-serif font-bold mb-4 flex items-center text-gray-900">
                     <span
-                        class="w-12 h-12 rounded-full bg-tech-cyan/20 flex items-center justify-center mr-4 group-hover:bg-tech-cyan/40 transition-colors">🔍</span>
-                    <abbr title="Generative Engine Optimization">GEO</abbr> 生成式引擎優化
+                        class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 text-brand-blue-light transition-colors group-hover:bg-brand-blue-light group-hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </span>
+                    <abbr title="Generative Engine Optimization" class="no-underline">GEO</abbr> 生成式引擎優化
                 </h3>
-                <p itemprop="description" class="text-gray-400 leading-relaxed mb-6">
-                    <strong>定義：</strong>透過優化網站結構與內容語意，讓 AI 能輕易讀懂並引用的技術服務。<br>
-                    <strong>核心價值：</strong>建立「答案容器」，讓品牌內容成為 AI 回答問題時的標準引用來源。
+                <p itemprop="description" class="text-gray-600 leading-relaxed mb-6">
+                    <strong class="text-gray-900">定義：</strong>透過優化網站結構與內容語意，讓 AI 能輕易讀懂並引用的技術服務。<br>
+                    <strong class="text-gray-900">核心價值：</strong>建立「答案容器」，讓品牌內容成為 AI 回答問題時的標準引用來源。
                 </p>
                 <a href="/geo-guide"
-                    class="inline-flex items-center font-semibold text-tech-cyan hover:text-white transition-colors">
+                    class="inline-flex items-center font-semibold text-brand-blue-light hover:text-brand-blue-dark transition-colors">
                     GEO 和 SEO 到底哪裡不一樣？
                     <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -99,155 +116,180 @@
             </article>
 
             <!-- Software Dev -->
-            <article class="glass-card group">
+            <article class="fintech-card group">
                 <h3 itemprop="name" id="software-development"
-                    class="text-2xl font-bold mb-4 flex items-center text-white">
+                    class="text-2xl font-serif font-bold mb-4 flex items-center text-gray-900">
                     <span
-                        class="w-12 h-12 rounded-full bg-tech-purple/20 flex items-center justify-center mr-4 group-hover:bg-tech-purple/40 transition-colors">💻</span>
+                        class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 text-brand-blue-light transition-colors group-hover:bg-brand-blue-light group-hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </span>
                     軟體平台開發
                 </h3>
-                <p itemprop="description" class="text-gray-400 leading-relaxed">
-                    <strong>定義：</strong>客製化開發高效能的 Web 應用、APP 與 SaaS 管理平台。<br>
-                    <strong>核心價值：</strong>不僅是寫程式，更是打造能解決商業問題、具備高擴充性的數位資產。
+                <p itemprop="description" class="text-gray-600 leading-relaxed">
+                    <strong class="text-gray-900">定義：</strong>客製化開發高效能的 Web 應用、APP 與 SaaS 管理平台。<br>
+                    <strong class="text-gray-900">核心價值：</strong>不僅是寫程式，更是打造能解決商業問題、具備高擴充性的數位資產。
                 </p>
             </article>
 
             <!-- Video Production -->
-            <article class="glass-card group">
-                <h3 class="text-2xl font-bold mb-4 flex items-center text-white" id="video-production">
+            <article class="fintech-card group">
+                <h3 class="text-2xl font-serif font-bold mb-4 flex items-center text-gray-900" id="video-production">
                     <span
-                        class="w-12 h-12 rounded-full bg-tech-pink/20 flex items-center justify-center mr-4 group-hover:bg-tech-pink/40 transition-colors">🎬</span>
+                        class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 text-brand-blue-light transition-colors group-hover:bg-brand-blue-light group-hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </span>
                     短影片製作
                 </h3>
-                <p class="text-gray-400 leading-relaxed">
-                    <strong>定義：</strong>針對 TikTok、Reels、Shorts 等短影音平台的內容策略與製作服務。<br>
-                    <strong>核心價值：</strong>在三秒內抓住眼球，將複雜的產品資訊轉化為易於傳播的視覺語言。
+                <p class="text-gray-600 leading-relaxed">
+                    <strong class="text-gray-900">定義：</strong>針對 TikTok、Reels、Shorts 等短影音平台的內容策略與製作服務。<br>
+                    <strong class="text-gray-900">核心價值：</strong>在三秒內抓住眼球，將複雜的產品資訊轉化為易於傳播的視覺語言。
                 </p>
             </article>
 
             <!-- AI Solutions -->
-            <article class="glass-card group">
-                <h3 class="text-2xl font-bold mb-4 flex items-center text-white" id="ai-solutions">
+            <article class="fintech-card group">
+                <h3 class="text-2xl font-serif font-bold mb-4 flex items-center text-gray-900" id="ai-solutions">
                     <span
-                        class="w-12 h-12 rounded-full bg-tech-blue/20 flex items-center justify-center mr-4 group-hover:bg-tech-blue/40 transition-colors">🤖</span>
+                        class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 text-brand-blue-light transition-colors group-hover:bg-brand-blue-light group-hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </span>
                     AI 整合與自動化
                 </h3>
-                <p class="text-gray-400 leading-relaxed">
-                    <strong>定義：</strong>整合智能客服、流程自動化與數據分析的 AI 解決方案。<br>
-                    <strong>核心價值：</strong>讓 AI 承擔重複性工作，提升團隊效率，專注於創造更高價值的決策。
+                <p class="text-gray-600 leading-relaxed">
+                    <strong class="text-gray-900">定義：</strong>整合智能客服、流程自動化與數據分析的 AI 解決方案。<br>
+                    <strong class="text-gray-900">核心價值：</strong>讓 AI 承擔重複性工作，提升團隊效率，專注於創造更高價值的決策。
                 </p>
             </article>
         </div>
 
-        <div class="mt-20 text-center">
-            <blockquote
-                class="text-2xl font-display italic text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 mb-6">
+        <div class="mt-24 text-center">
+            <blockquote class="text-3xl font-serif italic text-gray-800 mb-6">
                 "最好的工具，是讓你感覺不到工具的存在。"
             </blockquote>
-            <p class="text-tech-cyan/80 font-mono text-sm tracking-widest uppercase">Technology for Humanity</p>
+            <p class="text-gray-400 font-sans text-sm tracking-widest uppercase mt-4">Technology for Humanity</p>
         </div>
     </div>
 </section>
 
-<section id="frequently-asked-questions" class="py-24 bg-black/20">
-    <div class="max-w-4xl mx-auto px-6">
-        <h2 class="font-display text-3xl md:text-5xl font-bold text-center mb-16 text-white">
+<section id="frequently-asked-questions" class="py-32 bg-slate-50 relative overflow-hidden">
+    <!-- Huge background watermark -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50 overflow-hidden">
+        <span
+            class="font-serif text-[15rem] leading-none text-gray-200 opacity-30 select-none whitespace-nowrap">FAQ</span>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 relative z-10">
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">
             你可能想問
         </h2>
         <div class="space-y-4">
-            <!-- FAQ Items (Clean List Style) -->
-            <details id="faq-geo-vs-seo" class="group">
+            <!-- FAQ Items -->
+            <details id="faq-geo-vs-seo"
+                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center py-6 cursor-pointer list-none text-white hover:text-tech-cyan transition-colors">
-                    <h3 class="font-bold text-lg flex items-center">
+                    class="flex justify-between items-center px-8 py-6 cursor-pointer list-none text-gray-900 hover:text-brand-blue-light transition-colors">
+                    <h3 class="font-bold text-lg font-serif flex items-center">
                         GEO 和 SEO 有什麼不同？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-tech-cyan/50 group-hover:text-tech-cyan">
+                        class="transition-transform duration-300 group-open:rotate-180 text-gray-400 group-hover:text-brand-blue-light">
                         <svg fill="none" class="w-6 h-6" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="pb-6 text-gray-400 leading-relaxed">
+                <div class="px-8 pb-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 mt-2 pt-4">
                     簡單來說，SEO 的目標是讓用戶「找到你」，通常是爭取搜尋結果前幾名的藍色連結。GEO 的目標是讓 AI「直接推薦你」，成為 AI 回答問題時引用的主要來源。一個是搶門票，一個是直接當主角。
                 </div>
             </details>
 
-            <details id="faq-cost" class="group">
+            <details id="faq-cost" class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center py-6 cursor-pointer list-none text-white hover:text-tech-cyan transition-colors">
-                    <h3 class="font-bold text-lg flex items-center">
+                    class="flex justify-between items-center px-8 py-6 cursor-pointer list-none text-gray-900 hover:text-brand-blue-light transition-colors">
+                    <h3 class="font-bold text-lg font-serif flex items-center">
                         費用怎麼算？會很貴嗎？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-tech-cyan/50 group-hover:text-tech-cyan">
+                        class="transition-transform duration-300 group-open:rotate-180 text-gray-400 group-hover:text-brand-blue-light">
                         <svg fill="none" class="w-6 h-6" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="pb-6 text-gray-400 leading-relaxed">
+                <div class="px-8 pb-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 mt-2 pt-4">
                     費用取決於您的需求。一個形象網站可能在 15-50 萬之間，而一個客製化的管理系統可能在 30-150 萬。最好的方式是直接跟我們聊聊，我們提供免費諮詢，幫您找出最划算的方案。
                 </div>
             </details>
 
-            <details id="faq-timeline" class="group">
+            <details id="faq-timeline"
+                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center py-6 cursor-pointer list-none text-white hover:text-tech-cyan transition-colors">
-                    <h3 class="font-bold text-lg flex items-center">
+                    class="flex justify-between items-center px-8 py-6 cursor-pointer list-none text-gray-900 hover:text-brand-blue-light transition-colors">
+                    <h3 class="font-bold text-lg font-serif flex items-center">
                         專案大概需要多久？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-tech-cyan/50 group-hover:text-tech-cyan">
+                        class="transition-transform duration-300 group-open:rotate-180 text-gray-400 group-hover:text-brand-blue-light">
                         <svg fill="none" class="w-6 h-6" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="pb-6 text-gray-400 leading-relaxed">
+                <div class="px-8 pb-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 mt-2 pt-4">
                     這得看專案大小。一個網站大概 2-4 週，一支短影片 1-2 週。在我們確認需求後，會給您一份詳細的時程表。
                 </div>
             </details>
 
-            <details id="faq-support" class="group">
+            <details id="faq-support"
+                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center py-6 cursor-pointer list-none text-white hover:text-tech-cyan transition-colors">
-                    <h3 class="font-bold text-lg flex items-center">
+                    class="flex justify-between items-center px-8 py-6 cursor-pointer list-none text-gray-900 hover:text-brand-blue-light transition-colors">
+                    <h3 class="font-bold text-lg font-serif flex items-center">
                         專案結束後，你們會消失嗎？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-tech-cyan/50 group-hover:text-tech-cyan">
+                        class="transition-transform duration-300 group-open:rotate-180 text-gray-400 group-hover:text-brand-blue-light">
                         <svg fill="none" class="w-6 h-6" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="pb-6 text-gray-400 leading-relaxed">
+                <div class="px-8 pb-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 mt-2 pt-4">
                     當然不會！我們的軟體專案都包含一年的技術支援。後續也可以簽訂維護合約，把我們當成您的技術夥伴。我們希望長久合作，而不是做一次性生意。
                 </div>
             </details>
 
-            <details id="faq-start" class="group">
+            <details id="faq-start" class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center py-6 cursor-pointer list-none text-white hover:text-tech-cyan transition-colors">
-                    <h3 class="font-bold text-lg flex items-center">
+                    class="flex justify-between items-center px-8 py-6 cursor-pointer list-none text-gray-900 hover:text-brand-blue-light transition-colors">
+                    <h3 class="font-bold text-lg font-serif flex items-center">
                         如何開始第一步？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-tech-cyan/50 group-hover:text-tech-cyan">
+                        class="transition-transform duration-300 group-open:rotate-180 text-gray-400 group-hover:text-brand-blue-light">
                         <svg fill="none" class="w-6 h-6" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="pb-6 text-gray-400 leading-relaxed">
-                    寄一封 email 到 <a href="mailto:hello@taux.io" class="text-tech-cyan hover:underline">hello@taux.io</a>
+                <div class="px-8 pb-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 mt-2 pt-4">
+                    寄一封 email 到 <a href="mailto:hello@taux.io"
+                        class="text-brand-blue-light font-bold hover:underline">hello@taux.io</a>
                     給我們，告訴我們您的想法。流程很簡單：聊聊需求 → 我們提方案報價 → 簽約開工。就這麼簡單！
                 </div>
             </details>
@@ -255,45 +297,66 @@
     </div>
 </section>
 
-<section class="py-12 border-t border-white/10 bg-black/40">
-    <div class="max-w-4xl mx-auto px-6">
-        <h3 class="text-white font-bold mb-4">延伸閱讀</h3>
-        <div class="flex flex-wrap gap-6">
-            <a href="/geo-guide" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">GEO 入門指南</a>
-            <a href="/agent-prompting-guide" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">指令秘籍
+<section class="py-12 border-t border-b border-gray-200 bg-white">
+    <div class="max-w-4xl mx-auto px-6 text-center md:text-left flex flex-col md:flex-row items-center gap-6 md:gap-12">
+        <h3 class="text-gray-900 font-serif font-bold text-xl whitespace-nowrap">延伸閱讀</h3>
+        <div class="flex flex-wrap justify-center md:justify-start gap-4">
+            <a href="/geo-guide"
+                class="text-sm font-medium px-4 py-2 bg-slate-50 border border-gray-100 rounded-full text-gray-600 hover:text-brand-blue-light hover:border-brand-blue-light transition-colors">GEO
+                入門指南</a>
+            <a href="/agent-prompting-guide"
+                class="text-sm font-medium px-4 py-2 bg-slate-50 border border-gray-100 rounded-full text-gray-600 hover:text-brand-blue-light hover:border-brand-blue-light transition-colors">指令秘籍
                 (Prompt Guide)</a>
-            <a href="/what-is-llms-txt" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">什麼是
+            <a href="/what-is-llms-txt"
+                class="text-sm font-medium px-4 py-2 bg-slate-50 border border-gray-100 rounded-full text-gray-600 hover:text-brand-blue-light hover:border-brand-blue-light transition-colors">什麼是
                 LLMs.txt？</a>
-            <a href="/what-is-prompt-injection" class="text-sm text-gray-400 hover:text-tech-cyan transition-colors">什麼是
+            <a href="/what-is-prompt-injection"
+                class="text-sm font-medium px-4 py-2 bg-slate-50 border border-gray-100 rounded-full text-gray-600 hover:text-brand-blue-light hover:border-brand-blue-light transition-colors">什麼是
                 Prompt Injection？</a>
         </div>
     </div>
 </section>
 
-<section id="contact-us" class="py-24 text-center relative overflow-hidden" itemscope
+<section id="contact-us" class="py-32 text-center relative overflow-hidden bg-slate-50" itemscope
     itemtype="https://schema.org/ContactPage">
-    <!-- Glow Effect -->
-    <div class="absolute inset-0 bg-gradient-to-t from-tech-purple/20 to-transparent opacity-50 pointer-events-none">
-    </div>
+    <!-- Faint background circle -->
+    <div class="absolute inset-0 bg-brand-blue-light opacity-[0.02] transform -skew-y-3"></div>
 
-    <div class="max-w-4xl mx-auto px-6 relative z-10">
-        <div class="glass-card p-12 md:p-16 border-tech-cyan/20 shadow-[0_0_50px_rgba(0,240,255,0.1)]">
-            <img src="/static/rocket.png" alt="TauX Rocket" class="w-32 h-auto mx-auto mb-8 animate-float"
-                loading="lazy" />
+    <div class="max-w-3xl mx-auto px-6 relative z-10">
+        <div class="bg-white rounded-3xl p-12 md:p-16 shadow-xl border border-gray-100">
+            <!-- You can use an icon in place of the rocket for a cleaner look, here we will just use typography -->
+            <div
+                class="w-20 h-20 mx-auto bg-slate-50 text-brand-blue-light flex items-center justify-center rounded-full mb-8 shadow-sm">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
+                </svg>
+            </div>
 
-            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6 text-white text-glow">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6 text-gray-900">
                 準備好聊聊了嗎？
             </h2>
 
-            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            <p class="text-xl text-gray-600 mb-10 max-w-xl mx-auto">
                 告訴我們你遇到了什麼問題，或是有什麼瘋狂的點子。<br>我們會在 24 小時內回覆你。
             </p>
 
             <a href="mailto:hello@taux.io"
-                class="inline-block px-10 py-5 bg-gradient-to-r from-tech-cyan to-tech-purple text-white rounded-full text-xl font-bold hover:shadow-[0_0_40px_rgba(0,240,255,0.5)] hover:-translate-y-1 transition-all duration-300 shadow-xl transform hover:scale-105">
-                <span class="mr-2">✉️</span> 寄信給我們
+                class="inline-flex items-center justify-center px-10 py-4 gap-2 bg-brand-blue-light text-white rounded-full text-lg font-bold hover:bg-brand-blue-dark transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                    </path>
+                </svg>
+                <span>寄信給我們</span>
             </a>
         </div>
     </div>
 </section>
+
+<!-- Three.js Library & Custom Background Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/static/js/three-bg.js"></script>
+
 {{ template "footer.html" . }}

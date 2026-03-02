@@ -1,13 +1,14 @@
 {{ define "header.html" }}
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
     <meta name="description" content="{{ .Description }}">
-    {{ if .Canonical }}<link rel="canonical" href="{{ .Canonical }}">{{ end }}
+    {{ if .Canonical }}
+    <link rel="canonical" href="{{ .Canonical }}">{{ end }}
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
@@ -19,29 +20,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="/static/css/styles.min.css?v=2">
 </head>
 
-<body class="bg-taux-bg text-gray-100 font-sans selection:bg-tech-cyan/30 selection:text-white"
-    style="background-color: #030305;">
+<body class="bg-fintech-bg text-gray-600 font-sans selection:bg-brand-blue/30 selection:text-brand-blue-dark">
 
     <!-- Reading Progress -->
-    <div
-        class="reading-progress fixed top-0 left-0 h-0.5 bg-gradient-to-r from-tech-cyan to-tech-purple z-[100] w-0 transition-all duration-100">
+    <div class="reading-progress fixed top-0 left-0 h-1 bg-brand-blue z-[100] w-0 transition-all duration-100">
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 nav-glass transition-all duration-300" aria-label="Main Navigation"
-        style="background-color: rgba(3, 3, 5, 0.8);">
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300 shadow-sm"
+        aria-label="Main Navigation">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="/" class="flex items-center gap-2 group" aria-label="TauX Homepage">
                 <span
-                    class="font-display text-2xl font-bold tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-tech-cyan group-hover:to-tech-purple transition-all duration-300">
+                    class="font-serif text-2xl font-bold tracking-tight text-brand-blue group-hover:text-brand-blue-light transition-all duration-300">
                     TauX
                 </span>
             </a>
@@ -49,22 +48,25 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-8">
                 <a href="/ai-smart-work"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Smart
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">Smart
                     Work</a>
                 <a href="/geo-guide"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">GEO
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">GEO
                     Guide</a>
                 <a href="/data-governance"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Data
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">Data
                     Governance</a>
                 <a href="/agent-prompting-guide"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Prompt
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">Prompt
                     Guide</a>
                 <a href="/what-is-prompt-injection"
-                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Prompt
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">Prompt
                     Security</a>
+                <a href="/claude-skills-guide"
+                    class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors duration-200">Skills
+                    Guide</a>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
-                    class="px-4 py-2 text-sm font-bold text-taux-bg bg-white rounded-full hover:bg-tech-cyan transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    class="px-6 py-2.5 text-sm font-medium text-white bg-brand-blue rounded-full hover:bg-brand-blue-dark transition-all duration-300 transform hover:scale-105 shadow-md">
                     Start Building
                 </a>
             </div>
@@ -72,28 +74,27 @@
             <!-- Mobile Menu Button -->
             <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-50 focus:outline-none"
                 aria-label="Toggle menu" aria-expanded="false">
-                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300 opacity-100"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-0.5 bg-gray-800 transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-0.5 bg-gray-800 transition-all duration-300 opacity-100"></span>
+                <span class="w-6 h-0.5 bg-gray-800 transition-all duration-300 origin-center"></span>
             </button>
         </div>
     </nav>
 
     <!-- Mobile Menu Overlay (Moved outside nav to avoid stacking context issues) -->
     <div id="mobileMenuOverlay"
-        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden block"
-        style="background-color: #030305 !important; opacity: 1 !important; z-index: 9999 !important;">
+        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden bg-fintech-dark flex items-center justify-center">
         <!-- Close Button -->
         <button id="mobileMenuClose"
-            class="absolute top-8 right-8 text-white hover:text-tech-cyan text-4xl font-light transition-colors duration-300 focus:outline-none z-[100] cursor-pointer"
-            aria-label="Close menu"
-            style="pointer-events: auto; position: absolute !important; top: 32px !important; right: 32px !important;">
+            class="absolute top-8 right-8 text-white hover:text-brand-blue-light text-4xl font-light transition-colors duration-300 focus:outline-none z-[100] cursor-pointer"
+            aria-label="Close menu">
             &times;
         </button>
 
         <!-- Menu Items Container -->
-        <div class="h-full w-full flex flex-col items-center justify-center gap-8">
-            <a href="/" class="mobile-link text-2xl font-display font-bold text-white hover:text-tech-cyan">Home</a>
+        <div class="flex flex-col items-center justify-center gap-8">
+            <a href="/"
+                class="mobile-link text-2xl font-serif font-bold text-white hover:text-brand-blue-light">Home</a>
             <a href="/ai-smart-work" class="mobile-link text-xl text-gray-300 hover:text-white">Smart Work</a>
             <a href="/geo-guide" class="mobile-link text-xl text-gray-300 hover:text-white">GEO Guide</a>
             <a href="/data-governance" class="mobile-link text-xl text-gray-300 hover:text-white">Data Governance</a>
@@ -101,13 +102,10 @@
             <a href="/what-is-prompt-injection" class="mobile-link text-xl text-gray-300 hover:text-white">Prompt
                 Security</a>
             <a href="/what-is-llms-txt" class="mobile-link text-xl text-gray-300 hover:text-white">LLMs.txt</a>
+            <a href="/claude-skills-guide" class="mobile-link text-xl text-gray-300 hover:text-white">Skills Guide</a>
         </div>
     </div>
 
     <!-- Main Content Wrapper -->
-    <main class="pt-20 min-h-screen relative overflow-hidden">
-        <!-- Background Grid -->
-        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none"
-            style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black, transparent 80%);">
-        </div>
+    <main class="pt-20 min-h-screen relative overflow-hidden bg-slate-50">
         {{ end }}
