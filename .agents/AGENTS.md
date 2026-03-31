@@ -126,6 +126,7 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Workflow Optimizer](agents/testing/workflow-optimizer.md)**: Build speed, pipeline efficiency, and dev experience.
 - **[Performance Benchmarker](agents/testing/performance-benchmarker.md)**: Load testing, Core Web Vitals, and time-to-first-byte measurements.
 - **[Test Results Analyzer](agents/testing/test-results-analyzer.md)**: Synthesizing test failures and suggesting fixes.
+- **[Security Tester](agents/testing/security-tester.md)**: Comprehensive security auditing across all stack layers (Go, Nginx, Docker, Templates).
 
 ## 7. ADK Design Patterns (5 Agent Skill Design Patterns)
 

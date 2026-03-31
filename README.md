@@ -4,7 +4,7 @@
 
 **Code the Future - 用科技創造未來**
 
-TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合，運用 AI 技術為企業打造全方位數位轉型解決方案。
+TauX 拓思科技有限公司專注於 AI Smart Work 與 GEO (Generative Engine Optimization)，運用 AI 技術為企業打造全方位數位轉型解決方案。
 
 ## 🚀 關於我們
 
@@ -20,23 +20,31 @@ TauX 拓思科技有限公司專注於軟體平台開發與短影片行銷整合
 
 ## 🛠️ 技術規格
 
-本專案升級為 Go (Gin Framework) 後端與 TailwindCSS 前端架構：
+本專案採用 Go (Gin Framework) 後端搭配 TailwindCSS SSR 前端架構：
 
 - **Backend**: Go 1.24+, Gin Web Framework
-- **Frontend**: HTML5 Templates, TailwindCSS 3.4
-- **Infrastructure**: Docker (Distroless/Shell-less Go Runner), Docker Compose, Nginx Proxy (Automated SSL)
-- **Design**: Glassmorphism, Premium Tech Aesthetic, Dark Mode Optimized
+- **Frontend**: HTML5 Templates (SSR), TailwindCSS 3.4
+- **Infrastructure**: Docker (Distroless/nonroot), Docker Compose, Nginx Proxy + Acme Companion (Auto SSL)
+- **Design**: Premium Tech Aesthetic, Glassmorphism, Dark Mode Optimized
+- **Security**: Defense-in-depth Security Headers (Go + Nginx), Hardened CSP, Distroless Container
 
 ## 📁 專案結構
 
 ```
 taux-dev/
-├── main.go                     # Go 伺服器入口
+├── main.go                     # Go 伺服器入口 (含 Security Headers Middleware)
 ├── templates/                  # HTML 模板
-│   ├── index.html
+│   ├── index.html              # 首頁
 │   ├── header.html             # 共用頁首
 │   ├── footer.html             # 共用頁尾
-│   ├── building.html           # 建置中頁面 (404/Coming Soon)
+│   ├── geo-guide.html          # GEO 指南
+│   ├── ai-smart-work.html      # AI Smart Work
+│   ├── data-governance.html    # 資料治理
+│   ├── what-is-llms-txt.html   # LLMs.txt 介紹
+│   ├── what-is-prompt-injection.html # Prompt Injection 安全
+│   ├── agent-prompting-guide.html    # Agent Prompting 指南
+│   ├── claude-skills-guide.html      # Claude Skills 實戰指南
+│   ├── building.html           # Building in Public
 │   ├── about.html              # 關於我們
 │   ├── privacy-policy.html     # 隱私權政策
 │   ├── terms-of-service.html   # 服務條款
@@ -47,21 +55,67 @@ taux-dev/
 │   ├── js/                     # 前端 JavaScript
 │   └── img/                    # 圖片資源
 ├── src/                        # 前端原始碼 (CSS input)
+├── .agents/                    # AI 協作體系
+│   ├── AGENTS.md               # 核心系統提示詞
+│   ├── agents/                 # 7 大部門專家代理
+│   ├── skills/                 # 開發技能 (SOPs)
+│   └── workflows/              # 自動化工作流程
 ├── tailwind.config.js          # Tailwind 設定
-├── Dockerfile                  # Go 應用容器設定
+├── Dockerfile                  # Go 應用容器設定 (Distroless + nonroot)
 ├── docker-compose.yml          # Docker Compose 基礎設定
-├── docker-compose.dev.yml      # 開發環境部署設定 (網域綁定 localhost)
-├── docker-compose.prod.yml     # 生產環境部署設定 (Nginx Proxy + Acme Companion)
-└── nginx.conf                  # 內部 Nginx 設定
+├── docker-compose.dev.yml      # 開發環境部署設定
+├── docker-compose.prod.yml     # 生產環境部署設定 (Nginx Proxy + Acme)
+└── nginx.conf                  # Nginx 設定 (Security Headers + Hardened CSP)
 ```
 
 ## 🤖 AI 協作體系
 
-本專案採用 AI 輔助開發流程，核心文件如下：
+本專案採用基於 Google Cloud Tech **《5 Agent Skill Design Patterns》** 的 AI 輔助開發架構：
 
-- **[AGENTS.md](.agents/AGENTS.md)**: AI Agent 的核心系統提示詞與行為準則。定義了 7 大部門、共 38 個跨職能角色 (Engineering, Product, Marketing, Design, PM, Support, Testing) 的思維框架與任務守則。
-- **[SKILL.md](.agents/SKILL.md)**: 開發、測試與部署的 SOPs & Checklists。包含 refactor, generate-ui, refine-backlog 等技能。
-- **[NOTES.md](NOTES.md)**: 專案的長期記憶、技術決策紀錄與背景知識。
+### 設計模式
+所有 Agent 皆嚴格實作以下 5 種模式：
+1. **Tool Wrapper** - 將領域知識封裝為按需載入的 Skills
+2. **Generator** - 使用標準模板確保產出一致性
+3. **Reviewer** - 分離生成與驗證，使用 Checklist 自我審查
+4. **Inversion** - 先蒐集必要上下文再開始執行 (Ask-before-Code)
+5. **Pipeline** - 強制多階段工作流 (Diagnosis → Execution → Validation)
+
+### 核心文件
+- **[AGENTS.md](.agents/AGENTS.md)** - Agent 核心系統提示詞與行為準則，定義 7 大部門、34+ 跨職能角色
+- **[SKILL.md](.agents/skills/taux-core/SKILL.md)** - 開發、測試與部署的 SOPs & Checklists
+- **[NOTES.md](NOTES.md)** - 專案長期記憶、技術決策紀錄
+
+### 代理部門
+| 部門 | 角色數 | 職責範圍 |
+|---|---|---|
+| Engineering | 6 | 前端、後端、行動裝置、AI、DevOps、原型開發 |
+| Product | 3 | 趨勢研究、回饋統整、Sprint 優先排序 |
+| Marketing | 7 | 社群經營 (TikTok/IG/Twitter/Reddit)、ASO、成長駭客 |
+| Design | 5 | UI/UX、品牌守護、視覺敘事、趣味注入 |
+| Project Management | 3 | 實驗追蹤、專案出貨、製作統籌 |
+| Studio Operations | 5 | 客服、分析、基礎設施、法遵、財務 |
+| Testing | 5 | 工具評估、API 測試、效能測試、資安測試 |
+
+## 🔒 安全機制
+
+### 應用層安全 (Go Middleware)
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy: geolocation=(), microphone=(), camera=()`
+
+### 基礎設施安全 (Nginx)
+- Hardened Content-Security-Policy (無 `unsafe-inline` script-src)
+- `Strict-Transport-Security` (HSTS)
+- `frame-ancestors 'none'`
+- `server_tokens off`
+
+### 容器安全 (Docker)
+- Google Distroless `static-debian12:nonroot` 基底映像
+- 非 root 使用者 (UID 65532) 運行
+- 多階段建置，僅部署編譯產物
+- CGO_ENABLED=0 純靜態編譯
 
 ## 🚀 快速開始
 
@@ -106,16 +160,12 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 - 移動裝置優先設計
 - 觸控友好的使用者介面
 
-### 🌙 深色模式支援
-- 自動偵測系統主題偏好
-- 平滑的主題切換動畫
-- 響應式 Logo 自動切換
-
-### 🔍 SEO 優化
+### 🔍 SEO & GEO 優化
 - 完整的 Meta 標籤配置
-- 結構化數據 (Schema.org)
+- 結構化數據 (Schema.org: Organization, FAQPage, BreadcrumbList)
 - 多語言支援 (zh-TW, en)
 - 社群媒體優化 (Open Graph, Twitter Cards)
+- LLMs.txt 支援 AI 搜尋引擎
 
 ### ⚡ 效能優化
 - 圖片延遲載入
@@ -133,20 +183,6 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 2. 在 `main.go` 中註冊新的 GET 路由
 3. 更新 `header.html` (PC & Mobile) 與 `footer.html` 導航連結
 4. 更新 `sitemap.xml`
-
-## 📊 SEO 與分析
-
-### 結構化數據
-網站包含完整的 Schema.org 結構化數據：
-- Organization (組織資訊)
-- LocalBusiness (本地商家)
-- FAQPage (常見問題)
-- BreadcrumbList (麵包屑導航)
-
-### 社群媒體整合
-- Open Graph 標籤 (Facebook)
-- Twitter Cards 標籤
-- 社群分享優化圖片
 
 ## 🚀 部署說明
 
@@ -167,8 +203,6 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```
    容器啟動後，`acme-companion` 會自動偵測 `VIRTUAL_HOST` 並與 Let's Encrypt 通訊申請/更新憑證。
-
-
 
 ## 📞 聯絡資訊
 

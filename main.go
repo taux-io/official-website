@@ -27,6 +27,18 @@ func main() {
 
 	r := gin.Default()
 
+	// Security Headers Middleware (Defense-in-depth)
+	// These headers are also set by Nginx in production, but we apply them
+	// at the Go layer as well to protect direct access scenarios.
+	r.Use(func(c *gin.Context) {
+		c.Header("X-Content-Type-Options", "nosniff")
+		c.Header("X-Frame-Options", "DENY")
+		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+		c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+		c.Header("X-XSS-Protection", "1; mode=block")
+		c.Next()
+	})
+
 	// Load HTML templates
 	r.LoadHTMLGlob("templates/*.html")
 

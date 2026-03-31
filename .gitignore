@@ -1,2 +1,25 @@
-node_modules
+# Dependencies
+node_modules/
 npm-debug.log
+
+# Environment variables
+.env
+.env.*
+
+# Go build output
+/main
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# SSL certificates
+ssl/*.pem
+ssl/*.key
+ssl/*.crt
+
+# OS
+.DS_Store
+Thumbs.db
