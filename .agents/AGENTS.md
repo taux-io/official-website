@@ -124,7 +124,7 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Tool Evaluator](agents/testing/tool-evaluator.md)**: Assessing third-party services and libraries.
 - **[API Tester](agents/testing/api-tester.md)**: Endpoint validation, integration, and security checks.
 - **[Workflow Optimizer](agents/testing/workflow-optimizer.md)**: Build speed, pipeline efficiency, and dev experience.
-- **[Performance Benchmarker](agents/testing/performance-benchmarker.md)**: Load testing, Core Web Vitals, and time-to-first-byte measurements.
+- **[Performance Benchmarker](agents/testing/performance-benchmarker.md)**: Comprehensive load testing, latency profiling, Core Web Vitals benchmarking, and throughput analysis.
 - **[Test Results Analyzer](agents/testing/test-results-analyzer.md)**: Synthesizing test failures and suggesting fixes.
 - **[Security Tester](agents/testing/security-tester.md)**: Comprehensive security auditing across all stack layers (Go, Nginx, Docker, Templates).
 

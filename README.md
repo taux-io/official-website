@@ -81,7 +81,7 @@ taux-dev/
 5. **Pipeline** - 強制多階段工作流 (Diagnosis → Execution → Validation)
 
 ### 核心文件
-- **[AGENTS.md](.agents/AGENTS.md)** - Agent 核心系統提示詞與行為準則，定義 7 大部門、34+ 跨職能角色
+- **[AGENTS.md](.agents/AGENTS.md)** - Agent 核心系統提示詞與行為準則，定義 7 大部門、35 個跨職能角色
 - **[SKILL.md](.agents/skills/taux-core/SKILL.md)** - 開發、測試與部署的 SOPs & Checklists
 - **[NOTES.md](NOTES.md)** - 專案長期記憶、技術決策紀錄
 
@@ -94,7 +94,7 @@ taux-dev/
 | Design | 5 | UI/UX、品牌守護、視覺敘事、趣味注入 |
 | Project Management | 3 | 實驗追蹤、專案出貨、製作統籌 |
 | Studio Operations | 5 | 客服、分析、基礎設施、法遵、財務 |
-| Testing | 5 | 工具評估、API 測試、效能測試、資安測試 |
+| Testing | 6 | 工具評估、API 測試、壓力/效能測試 (7 類基準)、資安測試 (15 類掃描)、工作流程優化、測試結果分析 |
 
 ## 🔒 安全機制
 
