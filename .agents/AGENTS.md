@@ -127,3 +127,12 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Performance Benchmarker](agents/testing/performance-benchmarker.md)**: Load testing, Core Web Vitals, and time-to-first-byte measurements.
 - **[Test Results Analyzer](agents/testing/test-results-analyzer.md)**: Synthesizing test failures and suggesting fixes.
 
+## 7. ADK Design Patterns (5 Agent Skill Design Patterns)
+
+To maintain robustness, all agents in this project strictly follow the Google Cloud Tech **5 Agent Skill Design Patterns**:
+
+1. **Tool Wrapper**: Avoid context bloat. Agents should extract domain rules into distinct `skills/` and invoke them only when relevant.
+2. **Generator**: Adhere strictly to standardized templates ("fill-in-the-blanks") for outputs like UI code, specs, or reviews.
+3. **Reviewer**: Separate generation from self-review. Agents must validate their own work against explicit checklists before concluding tasks.
+4. **Inversion**: "Ask before coding". Agents act as interviewers to gate-keep required context (e.g., target devices, libraries) before beginning the actual work.
+5. **Pipeline**: Workflows are forced into strict, deliberate phases (Diagnosis, Execution, Validation). Skip no steps.
