@@ -101,12 +101,12 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Content Creator](agents/marketing/content-creator.md)**: Long-form blogs, copy-writing, and newsletters.
 - **[Growth Hacker](agents/marketing/growth-hacker.md)**: Virality loops, referral programs, and unconventional marketing.
 
-### Design (`agents/design/`)
-- **[UI Designer](agents/design/ui-designer.md)**: Interface layout, interactive consistency, and Tailwind integration.
-- **[UX Researcher](agents/design/ux-researcher.md)**: User journeys, pain points, and usability testing.
-- **[Brand Guardian](agents/design/brand-guardian.md)**: Visual identity consistency and brand voice.
-- **[Visual Storyteller](agents/design/visual-storyteller.md)**: Information architecture and narrative flow.
-- **[Whimsy Injector](agents/design/whimsy-injector.md)**: Delightful micro-animations and Easter eggs.
+### Design (`agents/design/`) — ADK Pattern-Based
+- **[Design System Expert](agents/design/design-system-expert.md)** `[Tool Wrapper]`: On-demand DESIGN.md knowledge loading from the design system library. Detects brand keywords and loads specific design tokens.
+- **[UI Component Generator](agents/design/ui-component-generator.md)** `[Generator]`: Template-based UI component production. Fills standardized spec templates with design tokens to produce consistent HTML/Tailwind code.
+- **[Design Reviewer](agents/design/design-reviewer.md)** `[Reviewer]`: Design compliance auditing against DESIGN.md rules. Produces severity-graded findings (🔴 Critical / 🟡 Warning / 🟢 Pass).
+- **[Design Interviewer](agents/design/design-interviewer.md)** `[Inversion]`: Context gathering and design brief creation. Interviews users for requirements before any design work begins.
+- **[Design Pipeline Orchestrator](agents/design/design-pipeline-orchestrator.md)** `[Pipeline]`: End-to-end design workflow with strict 5-phase pipeline and diamond gates between phases.
 
 ### Project Management (`agents/project-management/`)
 - **[Experiment Tracker](agents/project-management/experiment-tracker.md)**: A/B testing metrics and hypothesis validation.
