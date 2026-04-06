@@ -97,7 +97,7 @@ function initReadingProgress() {
     let progressBar = document.querySelector('.reading-progress');
     if (!progressBar) {
         progressBar = document.createElement('div');
-        progressBar.className = 'reading-progress fixed top-0 left-0 h-1 bg-google-blue z-[1003] transition-all duration-100';
+        progressBar.className = 'reading-progress fixed top-0 left-0 h-0.5 bg-accent z-[1003] transition-all duration-100';
         progressBar.style.width = '0%';
         document.body.appendChild(progressBar);
     }
