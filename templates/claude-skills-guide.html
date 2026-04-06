@@ -5,7 +5,7 @@
     }
 
     .skills-guide-body {
-        background-color: #e2e8f0;
+        background-color: #0a0a0f;
         display: grid;
         gap: 30px;
         grid-template-columns: 1fr;
@@ -13,15 +13,16 @@
         min-height: 100vh;
         padding: 30px 15px;
         place-items: center;
-        font-family: 'Noto Sans TC', sans-serif;
+        font-family: 'Inter', 'Noto Sans TC', sans-serif;
         overflow-x: hidden;
     }
 
     .skills-guide-body .slide-container {
         align-items: center;
-        background-color: #ffffff;
+        background-color: #12121a;
         border-radius: 12px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255,255,255,0.06);
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -32,12 +33,12 @@
         overflow: hidden;
         padding: 60px;
         position: relative;
-        color: #334155;
+        color: #8b8b9e;
     }
 
     .skills-guide-body .slide-container.dark-theme {
-        background-color: #0f172a;
-        color: #f8fafc;
+        background-color: #0d0d14;
+        color: #e8e8ed;
     }
 
     .skills-guide-body .slide-container::before {
@@ -46,8 +47,8 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 8px;
-        background: linear-gradient(90deg, #3b82f6, #14b8a6);
+        height: 4px;
+        background: linear-gradient(90deg, #00d4ff, #14b8a6);
         z-index: 0;
     }
 
@@ -59,7 +60,7 @@
         width: 800px;
         height: 800px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(15, 23, 42, 0) 70%);
+        background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, rgba(10, 10, 15, 0) 70%);
         z-index: 0;
         pointer-events: none;
     }
@@ -73,7 +74,7 @@
     .skills-guide-body h2,
     .skills-guide-body h3,
     .skills-guide-body th {
-        font-family: 'Poppins', 'Noto Sans TC', sans-serif;
+        font-family: 'Space Grotesk', 'Noto Sans TC', sans-serif;
         font-weight: 700;
         margin: 0;
     }
@@ -95,25 +96,25 @@
         margin-bottom: 40px;
         text-align: left;
         width: 100%;
-        color: #0f172a;
-        border-left: 6px solid #3b82f6;
+        color: #e8e8ed;
+        border-left: 6px solid #00d4ff;
         padding-left: 15px;
     }
 
     .skills-guide-body .dark-theme .slide-title {
-        color: #f8fafc;
-        border-left-color: #14b8a6;
+        color: #e8e8ed;
+        border-left-color: #00d4ff;
     }
 
     .skills-guide-body h3 {
         font-size: 28px;
         margin-bottom: 15px;
-        color: #1e293b;
+        color: #e8e8ed;
         line-height: 1.4;
     }
 
     .skills-guide-body .dark-theme h3 {
-        color: #e2e8f0;
+        color: #e8e8ed;
     }
 
     .skills-guide-body p,
@@ -123,7 +124,7 @@
     .skills-guide-body .number-label {
         font-size: 20px;
         line-height: 1.6;
-        color: #475569;
+        color: #8b8b9e;
         margin: 0;
         margin-bottom: 15px;
     }
@@ -147,11 +148,11 @@
     .skills-guide-body .subtitle {
         font-size: 26px;
         font-weight: 400;
-        color: #64748b;
+        color: #8b8b9e;
     }
 
     .skills-guide-body .dark-theme .subtitle {
-        color: #94a3b8;
+        color: #8b8b9e;
     }
 
     .skills-guide-body .content-area {
@@ -169,11 +170,11 @@
     }
 
     .skills-guide-body .title-layout .accent-text {
-        color: #3b82f6;
+        color: #00d4ff;
     }
 
     .skills-guide-body .dark-theme .title-layout .accent-text {
-        color: #14b8a6;
+        color: #00d4ff;
     }
 
     .skills-guide-body .section-title-layout {
@@ -201,7 +202,7 @@
     }
 
     .skills-guide-body .section-title-layout hr {
-        background: linear-gradient(90deg, #3b82f6, #14b8a6);
+        background: linear-gradient(90deg, #00d4ff, #14b8a6);
         border: none;
         height: 6px;
         margin: 40px auto;
@@ -237,7 +238,7 @@
         width: 100%;
         display: block;
         object-fit: contain;
-        background-color: #f8fafc;
+        background-color: #0d0d14;
     }
 
     .skills-guide-body .two-column.tiled {
@@ -245,16 +246,18 @@
     }
 
     .skills-guide-body .two-column.tiled>div {
-        background-color: #f1f5f9;
+        background-color: rgba(255,255,255,0.03);
         border-radius: 12px;
         padding: 40px;
-        border-top: 4px solid #3b82f6;
+        border-top: 4px solid #00d4ff;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-top: 4px solid #00d4ff;
         height: 100%;
     }
 
     .skills-guide-body .dark-theme .two-column.tiled>div {
-        background-color: #1e293b;
-        border-top-color: #14b8a6;
+        background-color: rgba(255,255,255,0.03);
+        border-top-color: #00d4ff;
     }
 
     .skills-guide-body .timeline-layout {
@@ -267,7 +270,7 @@
     }
 
     .skills-guide-body .timeline-layout .timeline-line {
-        background-color: #cbd5e1;
+        background-color: rgba(255,255,255,0.08);
         height: 6px;
         left: 0;
         position: absolute;
@@ -285,9 +288,9 @@
     }
 
     .skills-guide-body .timeline-item::after {
-        background-color: #ffffff;
+        background-color: #0a0a0f;
         border-radius: 50%;
-        border: 5px solid #3b82f6;
+        border: 5px solid #00d4ff;
         content: '';
         height: 24px;
         left: 50%;
@@ -315,7 +318,7 @@
     }
 
     .skills-guide-body .timeline-item h3 {
-        color: #3b82f6;
+        color: #00d4ff;
         font-size: 24px;
     }
 
@@ -330,14 +333,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: #f8fafc;
+        background: rgba(255,255,255,0.03);
         padding: 40px;
         border-radius: 16px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255,255,255,0.06);
     }
 
     .skills-guide-body .highlight-numbers-layout .number {
-        color: #3b82f6;
+        color: #00d4ff;
         font-size: 100px;
         font-weight: 700;
         line-height: 1;
@@ -347,7 +350,7 @@
     .skills-guide-body .highlight-numbers-layout .number-label {
         font-size: 24px;
         font-weight: 700;
-        color: #1e293b;
+        color: #e8e8ed;
     }
 
     .skills-guide-body .tiled-content {
@@ -360,9 +363,9 @@
 
     .skills-guide-body .image-tile {
         flex: 1;
-        background: #ffffff;
+        background: rgba(255,255,255,0.03);
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255,255,255,0.06);
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -377,7 +380,7 @@
 
     .skills-guide-body .image-tile h3 {
         font-size: 22px;
-        color: #0f172a;
+        color: #e8e8ed;
         margin-bottom: 10px;
     }
 
@@ -387,9 +390,9 @@
 
     .skills-guide-body .tile {
         align-items: flex-start;
-        background-color: #f8fafc;
+        background-color: rgba(255,255,255,0.03);
         border-radius: 16px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255,255,255,0.06);
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -399,10 +402,10 @@
     }
 
     .skills-guide-body .tile .icon {
-        color: #3b82f6;
+        color: #00d4ff;
         font-size: 42px;
         margin-bottom: 25px;
-        background: #eff6ff;
+        background: rgba(0,212,255,0.08);
         width: 80px;
         height: 80px;
         display: flex;
@@ -418,10 +421,10 @@
     .skills-guide-body .bullet-list {
         max-width: 1000px;
         width: 100%;
-        background: #f8fafc;
+        background: rgba(255,255,255,0.03);
         padding: 40px 50px;
         border-radius: 16px;
-        border-left: 8px solid #3b82f6;
+        border-left: 8px solid #00d4ff;
         margin: 0 auto;
     }
 
@@ -443,7 +446,7 @@
     }
 
     .skills-guide-body .bullet-list i {
-        color: #14b8a6;
+        color: #00d4ff;
         font-size: 28px;
         left: 0;
         position: absolute;
@@ -451,17 +454,16 @@
     }
 
     .skills-guide-body .bullet-list li strong {
-        color: #1e293b;
+        color: #e8e8ed;
         font-weight: 700;
     }
 
     .skills-guide-body .table-layout {
         width: 100%;
-        background: #ffffff;
+        background: rgba(255,255,255,0.03);
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255,255,255,0.06);
     }
 
     .skills-guide-body .table-layout table {
@@ -471,15 +473,15 @@
 
     .skills-guide-body .table-layout th,
     .skills-guide-body .table-layout td {
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
         padding: 20px 30px;
         text-align: left;
         vertical-align: top;
     }
 
     .skills-guide-body .table-layout th {
-        background-color: #f1f5f9;
-        color: #0f172a;
+        background-color: rgba(255,255,255,0.04);
+        color: #e8e8ed;
         font-size: 20px;
         font-weight: 700;
     }
@@ -536,28 +538,28 @@
     .skills-guide-body .qa-layout h2 {
         font-size: 80px;
         margin-bottom: 30px;
-        color: #0f172a;
+        color: #e8e8ed;
     }
 
     .skills-guide-body .qa-layout p {
         font-size: 28px;
-        color: #475569;
+        color: #8b8b9e;
     }
 
     .skills-guide-body .qa-layout .contact-info {
-        color: #3b82f6;
+        color: #00d4ff;
         font-size: 24px;
         font-weight: 600;
         margin-top: 50px;
         padding: 20px 40px;
-        background: #eff6ff;
+        background: rgba(0,212,255,0.08);
         border-radius: 50px;
         display: inline-block;
     }
 
     .skills-guide-body .highlight {
-        background: rgba(59, 130, 246, 0.1);
-        color: #3b82f6;
+        background: rgba(0, 212, 255, 0.1);
+        color: #00d4ff;
         padding: 2px 8px;
         border-radius: 4px;
         font-family: monospace;
@@ -566,16 +568,15 @@
     }
 
     .skills-guide-body .code-window {
-        background-color: #1e293b;
+        background-color: #0d0d14;
         border-radius: 12px;
         padding: 25px;
         font-family: monospace;
         font-size: 16px;
         line-height: 1.6;
-        color: #f8f8f2;
+        color: #e8e8ed;
         overflow: auto;
-        border: 1px solid #334155;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255,255,255,0.06);
         text-align: left;
         width: 100%;
         min-height: 400px;
@@ -812,17 +813,17 @@
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
                                 </filter>
                             </defs>
-                            <rect width="400" height="400" fill="#f8fafc" />
-                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="#cbd5e1"
+                            <rect width="400" height="400" fill="#12121a" />
+                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="#1a1a2e"
                                 opacity="0.4" />
-                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="#94a3b8"
+                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="#2a2a40"
                                 opacity="0.5" />
                             <path d="M 120 160 L 180 160 L 200 190 L 360 190 L 360 320 L 120 320 Z"
                                 fill="url(#folderGrad)" filter="url(#shadow)" />
                             <rect x="150" y="215" width="120" height="12" rx="6" fill="#ffffff" opacity="0.8" />
                             <rect x="150" y="245" width="80" height="12" rx="6" fill="#ffffff" opacity="0.8" />
                             <circle cx="280" cy="251" r="18" fill="#ffffff" opacity="0.9" />
-                            <polygon points="275,243 288,251 275,259" fill="#3b82f6" />
+                            <polygon points="275,243 288,251 275,259" fill="#00d4ff" />
                         </svg>
                     </div>
                 </div>
@@ -874,11 +875,11 @@
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
-                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:#64748b;">The
+                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:#8b8b9e;">The
                         Connectivity</div>
                     <div class="number">MCP</div>
                     <div class="number-label">提供外部連線能力<br><span
-                            style="font-size: 18px; font-weight:normal; color:#64748b; margin-top:10px; display:block;">(What
+                            style="font-size: 18px; font-weight:normal; color:#8b8b9e; margin-top:10px; display:block;">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
@@ -900,15 +901,15 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#eff6ff" />
+                            <rect width="200" height="200" fill="#12121a" />
                             <!-- Document -->
-                            <rect x="60" y="40" width="80" height="110" rx="8" fill="#ffffff" stroke="#3b82f6"
+                            <rect x="60" y="40" width="80" height="110" rx="8" fill="#1a1a2e" stroke="#00d4ff"
                                 stroke-width="4" />
-                            <line x1="75" y1="65" x2="125" y2="65" stroke="#cbd5e1" stroke-width="4"
+                            <line x1="75" y1="65" x2="125" y2="65" stroke="#3a3a50" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="85" x2="125" y2="85" stroke="#cbd5e1" stroke-width="4"
+                            <line x1="75" y1="85" x2="125" y2="85" stroke="#3a3a50" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="105" x2="105" y2="105" stroke="#cbd5e1" stroke-width="4"
+                            <line x1="75" y1="105" x2="105" y2="105" stroke="#3a3a50" stroke-width="4"
                                 stroke-linecap="round" />
                             <!-- Pencil / Wand -->
                             <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="#14b8a6" />
@@ -921,7 +922,7 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#f0fdfa" />
+                            <rect width="200" height="200" fill="#12121a" />
                             <path
                                 d="M 95 40 L 105 40 L 110 55 C 115 57 120 60 125 64 L 140 58 L 148 66 L 142 80 C 146 85 149 90 151 95 L 165 100 L 165 110 L 151 115 C 149 120 146 125 142 130 L 148 144 L 140 152 L 125 146 C 120 150 115 153 110 155 L 105 170 L 95 170 L 90 155 C 85 153 80 150 75 146 L 60 152 L 52 144 L 58 130 C 54 125 51 120 49 115 L 35 110 L 35 100 L 49 95 C 51 90 54 85 58 80 L 52 66 L 60 58 L 75 64 C 80 60 85 57 90 55 Z"
                                 fill="#14b8a6" opacity="0.2" />
@@ -939,12 +940,12 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#f8fafc" />
-                            <line x1="60" y1="70" x2="140" y2="100" stroke="#cbd5e1" stroke-width="4" />
-                            <line x1="140" y1="100" x2="80" y2="150" stroke="#cbd5e1" stroke-width="4" />
-                            <line x1="60" y1="70" x2="80" y2="150" stroke="#cbd5e1" stroke-width="4" />
-                            <circle cx="60" cy="70" r="14" fill="#3b82f6" />
-                            <circle cx="80" cy="150" r="14" fill="#3b82f6" />
+                            <rect width="200" height="200" fill="#12121a" />
+                            <line x1="60" y1="70" x2="140" y2="100" stroke="#3a3a50" stroke-width="4" />
+                            <line x1="140" y1="100" x2="80" y2="150" stroke="#3a3a50" stroke-width="4" />
+                            <line x1="60" y1="70" x2="80" y2="150" stroke="#3a3a50" stroke-width="4" />
+                            <circle cx="60" cy="70" r="14" fill="#00d4ff" />
+                            <circle cx="80" cy="150" r="14" fill="#00d4ff" />
                             <circle cx="140" cy="100" r="22" fill="#14b8a6" />
                             <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z"
                                 fill="#ffffff" />
@@ -1086,7 +1087,7 @@
                         <li><span class="highlight">工具調用指示</span>：明確寫出要呼叫的工具名稱 (如 <code>linear_create_issue</code>)。
                         </li>
                         <li><span class="highlight">Fallback (回退機制)</span>：<strong
-                                style="color: #14b8a6;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
+                                style="color: #00d4ff;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
                         </li>
                     </ul>
                 </div>

@@ -16,5 +16,7 @@ services:
       - "80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static/502.html:/usr/share/nginx/html/errors/502.html:ro
+      - ./static/503.html:/usr/share/nginx/html/errors/503.html:ro
     depends_on:
       - app
