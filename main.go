@@ -124,6 +124,14 @@ func main() {
 		})
 	})
 
+	r.GET("/adk-skill-patterns", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "adk-skill-patterns.html", PageData{
+			Title:       "5 種 Agent Skill 設計模式 | TauX ADK Guide",
+			Description: "整理 Google Cloud 分享的五種 ADK Agent Skill 設計模式：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline，打造更可靠的 AI 代理人工作流。",
+			Canonical:   "https://taux.io/adk-skill-patterns",
+			Year:        time.Now().Year(),
+		})
+	})
 
 	r.GET("/building", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "building.html", PageData{
