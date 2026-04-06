@@ -55,7 +55,7 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", PageData{
 			Title:       "TauX - AI Smart Work & GEO Solutions",
-			Description: "TauX helps brands become the 'Answer' in AI search through Generative Engine Optimization (GEO) technology.",
+			Description: "TauX helps enterprises land AI First strategies with technology development services.",
 			Canonical:   "https://taux.io/",
 			Year:        time.Now().Year(),
 		})

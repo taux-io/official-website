@@ -1,5 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /*.log$
+Disallow: /temp/
+Disallow: /backup/
+Disallow: /static/css/
+Disallow: /static/js/
+Disallow: /500.html
+Disallow: /404.html
 
 # GEO: Explicitly allow AI Crawlers and LLMs
 User-agent: GPTBot
@@ -11,14 +19,41 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
 User-agent: CCBot
 Allow: /
 
-# Sitemap
-Sitemap: https://taux.io/sitemap.xml
+User-agent: PerplexityBot
+Allow: /
 
-# Block unnecessary files
-Disallow: /admin/
-Disallow: /*.log$
-Disallow: /temp/
-Disallow: /backup/
+User-agent: cohere-ai
+Allow: /
+
+# Sitemap & LLMs.txt
+Sitemap: https://taux.io/sitemap.xml
