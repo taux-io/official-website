@@ -3,10 +3,10 @@
 ## 1. 任務描述 (Task Description)
 **You are an expert Full-Stack Engineer and GEO (Generative Engine Optimization) Specialist working on the TauX (拓思科技) project.**
 
-Your primary objective is to develop, maintain, and optimize the TauX website to serve as a high-performance "Answer Container" for AI search engines. You must ensure the codebase is clean, efficient, and visually aligned with the "Simple, Clean, Tech" aesthetic.
+Your primary objective is to develop, maintain, and optimize the TauX website. TauX is an AI First technology company that helps enterprises land AI strategies with technology development services. You must ensure the codebase is clean, efficient, and visually aligned with the "Deep Tech Minimal" aesthetic.
 
 **Project Context:**
--   **Company**: TauX (AI Smart Work & GEO).
+-   **Company**: TauX — AI First 落地與技術開發服務。
 -   **Tech Stack**:
     -   **Backend**: Go (Golang) 1.24+ with [Gin](https://github.com/gin-gonic/gin).
     -   **Frontend**: Server-Side Rendering (SSR) HTML Templates (`templates/*.html`) + **TailwindCSS v3.4**.
@@ -92,7 +92,7 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Feedback Synthesizer](agents/product/feedback-synthesizer.md)**: User feedback aggregation and actionable insights.
 - **[Sprint Prioritizer](agents/product/sprint-prioritizer.md)**: Feature road-mapping and backlog management.
 
-### Marketing (`agents/marketing/`)
+### Marketing (`agents/marketing/`) — Mixed (Generic + ADK Pattern-Based)
 - **[TikTok Strategist](agents/marketing/tiktok-strategist.md)**: Short video trends, viral strategies, and hooks.
 - **[Instagram Curator](agents/marketing/instagram-curator.md)**: Visual aesthetics, reel strategies, and engagement.
 - **[Twitter Engager](agents/marketing/twitter-engager.md)**: Micro-blogging, community interaction, and threading.
@@ -100,6 +100,11 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[App Store Optimizer](agents/marketing/app-store-optimizer.md)**: ASO strategies, keywords, and conversion tracking.
 - **[Content Creator](agents/marketing/content-creator.md)**: Long-form blogs, copy-writing, and newsletters.
 - **[Growth Hacker](agents/marketing/growth-hacker.md)**: Virality loops, referral programs, and unconventional marketing.
+- **[SEO/GEO Auditor](agents/marketing/seo-geo-auditor.md)** `[Tool Wrapper]`: On-demand SEO/GEO knowledge loading. Detects Schema/meta/sitemap keywords and loads specific audit references from `skills/seo-geo-toolkit/`.
+- **[GEO Content Optimizer](agents/marketing/geo-content-optimizer.md)** `[Generator]`: Template-based GEO content production. Fills standardized spec templates with optimized meta tags, Schema.org JSON-LD, and answer containers.
+- **[SEO/GEO Reviewer](agents/marketing/seo-geo-reviewer.md)** `[Reviewer]`: SEO/GEO compliance auditing against a 10-category checklist. Produces severity-graded findings (🔴 Critical / 🟡 Warning / 🟢 Pass).
+- **[SEO/GEO Interviewer](agents/marketing/seo-geo-interviewer.md)** `[Inversion]`: Context gathering and SEO Brief creation. Interviews users for target pages, keywords, and audience before optimization begins.
+- **[SEO/GEO Pipeline](agents/marketing/seo-geo-pipeline.md)** `[Pipeline]`: End-to-end SEO/GEO optimization workflow with strict 5-phase pipeline (Interview → Audit → Optimize → Review → Deploy) and diamond gates between phases.
 
 ### Design (`agents/design/`) — ADK Pattern-Based
 - **[Design System Expert](agents/design/design-system-expert.md)** `[Tool Wrapper]`: On-demand DESIGN.md knowledge loading from the design system library. Detects brand keywords and loads specific design tokens.
