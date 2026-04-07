@@ -118,7 +118,7 @@ func main() {
 	r.GET("/claude-skills-guide", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "claude-skills-guide.html", PageData{
 			Title:       "Claude Skills 實戰指南 | TauX GEO Tech",
-			Description: "The Complete Guide to Building Skills for Claude. 一份專為開發者與團隊打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。",
+			Description: "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。",
 			Canonical:   "https://taux.io/claude-skills-guide",
 			Year:        time.Now().Year(),
 		})
@@ -127,7 +127,7 @@ func main() {
 	r.GET("/adk-skill-patterns", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "adk-skill-patterns.html", PageData{
 			Title:       "5 種 Agent Skill 設計模式 | TauX ADK Guide",
-			Description: "整理 Google Cloud 分享的五種 ADK Agent Skill 設計模式：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline，打造更可靠的 AI 代理人工作流。",
+			Description: "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。",
 			Canonical:   "https://taux.io/adk-skill-patterns",
 			Year:        time.Now().Year(),
 		})
@@ -154,7 +154,7 @@ func main() {
 	r.GET("/privacy-policy", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "privacy-policy.html", PageData{
 			Title:       "Privacy Policy | TauX",
-			Description: "Our commitment to your privacy and data security.",
+			Description: "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。了解您的資料權利與我們的安全承諾。",
 			Canonical:   "https://taux.io/privacy-policy",
 			Year:        time.Now().Year(),
 		})
@@ -163,7 +163,7 @@ func main() {
 	r.GET("/terms-of-service", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "terms-of-service.html", PageData{
 			Title:       "Terms of Service | TauX",
-			Description: "Terms and conditions for using TauX services.",
+			Description: "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務，以及我們的服務範圍。",
 			Canonical:   "https://taux.io/terms-of-service",
 			Year:        time.Now().Year(),
 		})

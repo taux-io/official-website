@@ -1,6 +1,18 @@
 {{ define "building.html" }}
 {{ template "header.html" . }}
 
+<!-- Schema.org JSON-LD: WebPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Building in Public",
+  "description": "Follow our journey as we build TauX. Transparency, updates, and behind-the-scenes.",
+  "url": "https://taux.io/building",
+  "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" }
+}
+</script>
+
 <section class="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-deep-bg">
     <!-- Background Effects -->
     <div class="absolute inset-0">

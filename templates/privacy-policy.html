@@ -1,6 +1,18 @@
 {{ define "privacy-policy.html" }}
 {{ template "header.html" . }}
 
+<!-- Schema.org JSON-LD: WebPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Privacy Policy | TauX",
+  "description": "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。",
+  "url": "https://taux.io/privacy-policy",
+  "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" }
+}
+</script>
+
 <section class="relative pt-24 pb-20">
     <div class="max-w-4xl mx-auto px-6">
         <h1 class="text-4xl font-display font-bold text-white mb-8">Privacy Policy</h1>

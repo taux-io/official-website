@@ -1,5 +1,81 @@
 {{ template "header.html" . }}
 
+<!-- Schema.org JSON-LD: Organization + WebPage + FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "TauX 拓思科技",
+      "url": "https://taux.io",
+      "email": "hello@taux.io",
+      "telephone": "+886-7-6211033",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "高雄市岡山區文賢路 57 號 2 樓",
+        "addressLocality": "高雄市",
+        "addressRegion": "台灣",
+        "postalCode": "820"
+      },
+      "description": "TauX 是一家協助企業 AI First 落地與技術開發服務的公司。",
+      "sameAs": ["https://github.com/taux-io"]
+    },
+    {
+      "@type": "WebPage",
+      "name": "TauX - AI Smart Work & GEO Solutions",
+      "description": "TauX helps enterprises land AI First strategies with technology development services.",
+      "url": "https://taux.io/"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "GEO 和 SEO 有什麼不同？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SEO 的目標是讓用戶找到你，通常是爭取搜尋結果前幾名的藍色連結。GEO 的目標是讓 AI 直接推薦你，成為 AI 回答問題時引用的主要來源。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "費用怎麼算？會很貴嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "費用取決於您的需求。一個形象網站可能在 15-50 萬之間，而一個客製化的管理系統可能在 30-150 萬。我們提供免費諮詢，幫您找出最划算的方案。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "專案大概需要多久？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "一個網站大概 2-4 週，一支短影片 1-2 週。在確認需求後，會給您一份詳細的時程表。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "專案結束後，你們會消失嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "我們的軟體專案都包含一年的技術支援。後續也可以簽訂維護合約，把我們當成您的技術夥伴。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "如何開始第一步？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "寄一封 email 到 hello@taux.io，告訴我們您的想法。流程很簡單：聊聊需求、我們提方案報價、簽約開工。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <section id="about-us" class="pt-24 pb-20 md:pt-32 md:pb-28 text-center relative overflow-hidden hero-gradient">
     <!-- Three.js Background Container -->
     <div id="three-container"

@@ -10,6 +10,19 @@
     {{ if .Canonical }}
     <link rel="canonical" href="{{ .Canonical }}">{{ end }}
 
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ .Title }}">
+    <meta property="og:description" content="{{ .Description }}">
+    <meta property="og:type" content="website">
+    {{ if .Canonical }}<meta property="og:url" content="{{ .Canonical }}">{{ end }}
+    <meta property="og:site_name" content="TauX 拓思科技">
+    <meta property="og:locale" content="zh_TW">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ .Title }}">
+    <meta name="twitter:description" content="{{ .Description }}">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">

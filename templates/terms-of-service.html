@@ -1,6 +1,18 @@
 {{ define "terms-of-service.html" }}
 {{ template "header.html" . }}
 
+<!-- Schema.org JSON-LD: WebPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Terms of Service | TauX",
+  "description": "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務。",
+  "url": "https://taux.io/terms-of-service",
+  "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" }
+}
+</script>
+
 <section class="relative pt-24 pb-20">
     <div class="max-w-4xl mx-auto px-6">
         <h1 class="text-4xl font-display font-bold text-white mb-8">Terms of Service</h1>
