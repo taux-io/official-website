@@ -9,103 +9,185 @@
   }
 
   body {
-    @apply bg-deep-bg text-text-secondary font-sans antialiased overflow-x-hidden;
+    @apply bg-anthro-cream text-anthro-body font-sans antialiased overflow-x-hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    @apply text-text-primary font-bold;
+    font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+    @apply text-anthro-dark font-normal;
   }
 
-  /* Custom Scrollbar - Dark Theme */
+  /* Custom Scrollbar - Warm Theme */
   ::-webkit-scrollbar {
     width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-deep-bg;
+    @apply bg-anthro-cream;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-text-muted rounded-full;
+    @apply bg-anthro-warm-gray rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-text-secondary;
+    @apply bg-anthro-muted;
+  }
+
+  /* Anthropic-style link underlines */
+  a {
+    @apply transition-colors duration-200;
   }
 }
 
 @layer components {
-  /* Glassmorphism Card */
+  /* Clean Card (replaces glass-card) */
+  .anthro-card {
+    @apply bg-white rounded-xl p-8 md:p-12 border border-black/[0.06] transition-all duration-300;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .anthro-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    @apply border-black/[0.1];
+  }
+
+  /* Legacy alias */
   .glass-card {
-    @apply bg-deep-surface/80 backdrop-blur-xl rounded-2xl p-8 md:p-12 border border-white/[0.06] transition-all duration-300;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    @apply anthro-card;
   }
 
-  .glass-card:hover {
-    @apply bg-deep-surface-hover border-white/[0.1];
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  /* Primary Button (solid dark) */
+  .anthro-btn {
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-lg transition-all duration-200;
+    @apply bg-anthro-dark text-white;
   }
 
-  /* Accent Glow Button */
+  .anthro-btn:hover {
+    @apply bg-anthro-charcoal;
+    transform: translateY(-1px);
+  }
+
+  /* Legacy alias */
   .glow-btn {
-    @apply inline-flex items-center justify-center px-8 py-4 font-bold rounded-xl transition-all duration-300;
-    @apply bg-accent text-deep-bg;
-    box-shadow: 0 0 20px rgba(0,212,255,0.2);
+    @apply anthro-btn;
   }
 
-  .glow-btn:hover {
-    box-shadow: 0 0 40px rgba(0,212,255,0.4);
-    @apply -translate-y-0.5;
+  /* Outline Button */
+  .anthro-btn-outline {
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-lg transition-all duration-200;
+    @apply border border-anthro-dark text-anthro-dark bg-transparent;
   }
 
-  /* Ghost Button */
+  .anthro-btn-outline:hover {
+    @apply bg-anthro-dark text-white;
+  }
+
+  /* Legacy alias */
   .ghost-btn {
-    @apply inline-flex items-center justify-center px-8 py-4 font-bold rounded-xl transition-all duration-300;
-    @apply border border-white/10 text-text-primary hover:border-accent/30 hover:text-accent;
+    @apply anthro-btn-outline;
   }
 
-  /* Gradient Mesh Background */
-  .mesh-gradient {
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(99,102,241,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,212,255,0.04) 0%, transparent 50%),
-      #0a0a0f;
+  /* Section backgrounds */
+  .section-cream {
+    @apply bg-anthro-cream;
   }
 
-  /* Hero gradient */
-  .hero-gradient {
-    background:
-      radial-gradient(ellipse 100% 80% at 50% -20%, rgba(0,212,255,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
-      #0a0a0f;
+  .section-sand {
+    @apply bg-anthro-sand;
   }
 
-  /* Dot grid pattern */
-  .dot-grid {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
-    background-size: 32px 32px;
+  .section-dark {
+    @apply bg-anthro-dark text-white;
   }
 
-  /* Accent text */
-  .accent-text {
-    @apply text-accent;
+  .section-dark h1,
+  .section-dark h2,
+  .section-dark h3,
+  .section-dark h4,
+  .section-dark h5,
+  .section-dark h6 {
+    @apply text-white;
+  }
+
+  .section-dark p,
+  .section-dark span,
+  .section-dark li {
+    @apply text-white/70;
+  }
+
+  /* Anthropic-style text highlight (bold underline) */
+  .anthro-highlight {
+    @apply font-semibold;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
 
   /* Subtle divider */
   .divider {
-    @apply border-t border-white/[0.06];
+    @apply border-t border-black/[0.08];
+  }
+
+  /* Anthropic-style blockquote */
+  .anthro-quote {
+    @apply relative pl-6 border-l-2 border-anthro-dark/20 my-8;
+  }
+
+  .anthro-quote p {
+    @apply text-anthro-dark/80 italic font-display text-lg;
+  }
+
+  /* Badge / Tag */
+  .anthro-tag {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium tracking-wider uppercase rounded-full;
+    @apply bg-anthro-sand text-anthro-muted border border-black/[0.06];
+  }
+
+  /* Nav link with underline animation */
+  .nav-link {
+    @apply text-sm font-medium text-anthro-body relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute left-0 bottom-0 w-full h-[1px] bg-anthro-dark scale-x-0 origin-right transition-transform duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply scale-x-100 origin-left;
+  }
+
+  .nav-link:hover {
+    @apply text-anthro-dark;
   }
 }
 
 @layer utilities {
   /* Keep legacy class name for backward compat during migration */
   .fintech-card {
-    @apply glass-card;
+    @apply anthro-card;
   }
 
   .watermark {
-    @apply absolute select-none text-white/[0.03] pointer-events-none font-display font-black;
+    @apply absolute select-none text-black/[0.03] pointer-events-none font-display font-black;
+  }
+
+  /* Anthropic-style generous spacing */
+  .anthro-prose {
+    @apply max-w-prose mx-auto;
+    line-height: 1.8;
+  }
+
+  .anthro-prose p {
+    @apply mb-6;
+  }
+
+  .anthro-prose h2 {
+    @apply mt-16 mb-6;
+  }
+
+  .anthro-prose h3 {
+    @apply mt-12 mb-4;
   }
 }

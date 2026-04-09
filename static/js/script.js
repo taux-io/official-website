@@ -1,11 +1,9 @@
-// Jules-Inspired Interactivity
+// TauX Interactivity (Anthropic-style, minimal)
 
 document.addEventListener('DOMContentLoaded', () => {
     initMobileNavigation();
     initScrollNavigation();
-    initReadingProgress();
     initScrollAnimations();
-    initLogoSpin();
     initEasterEggs();
 });
 
@@ -76,7 +74,7 @@ function initMobileNavigation() {
     });
 }
 
-// Hide Nav on Scroll (Updated for Tailwind classes)
+// Hide Nav on Scroll
 function initScrollNavigation() {
     const nav = document.querySelector('nav[aria-label="Main Navigation"]');
     if (!nav) return;
@@ -92,62 +90,29 @@ function initScrollNavigation() {
     }, { passive: true });
 }
 
-// Reading Progress Bar
-function initReadingProgress() {
-    let progressBar = document.querySelector('.reading-progress');
-    if (!progressBar) {
-        progressBar = document.createElement('div');
-        progressBar.className = 'reading-progress fixed top-0 left-0 h-0.5 bg-accent z-[1003] transition-all duration-100';
-        progressBar.style.width = '0%';
-        document.body.appendChild(progressBar);
-    }
-
-    window.addEventListener('scroll', () => {
-        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-        progressBar.style.width = `${scrollPercent}%`;
-    }, { passive: true });
-}
-
-// Scroll-triggered Animations
+// Scroll-triggered Animations (subtle, Anthropic-style)
 function initScrollAnimations() {
     if (!('IntersectionObserver' in window)) return;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.remove('opacity-0', 'translate-y-8');
+                entry.target.classList.remove('opacity-0', 'translate-y-4');
                 entry.target.classList.add('opacity-100', 'translate-y-0');
                 observer.unobserve(entry.target);
             }
         });
     }, {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -30px 0px'
     });
 
     // Select semantic elements and key areas
-    const elementsToAnimate = document.querySelectorAll('section h1, section h2, section p, article, blockquote, .faq-content details');
+    const elementsToAnimate = document.querySelectorAll('section h1, section h2, section p, article, blockquote, details');
 
     elementsToAnimate.forEach(el => {
-        el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-8'); // Initial state
+        el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-4'); // Initial state — subtle 4px shift
         observer.observe(el);
-    });
-}
-
-// Logo Spin on Click
-function initLogoSpin() {
-    const logo = document.querySelector('a[title^="τ"]'); // Select by title attribute prefix
-    if (!logo) return;
-    logo.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Use Tailwind utility or inline style for specific animation
-        logo.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-        logo.style.transform = `rotate(${Math.random() > 0.5 ? '' : '-'}360deg)`;
-        setTimeout(() => {
-            logo.style.transition = '';
-            logo.style.transform = '';
-            window.location.href = '/'; // Navigate after spin
-        }, 700);
     });
 }
 

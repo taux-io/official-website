@@ -4,36 +4,42 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Deep Tech Brand Colors
-        'deep-bg': '#0a0a0f',
-        'deep-surface': '#12121a',
-        'deep-surface-hover': '#1a1a25',
-        'deep-border': 'rgba(255,255,255,0.06)',
+        // Anthropic-inspired Warm Palette
+        'anthro-cream': '#F5F2ED',
+        'anthro-sand': '#EBE7E0',
+        'anthro-warm-gray': '#D4CFC7',
+        'anthro-dark': '#191918',
+        'anthro-charcoal': '#2A2A29',
+        'anthro-muted': '#6B6B6B',
+        'anthro-body': '#3D3D3C',
+        'anthro-light': '#FAF9F7',
 
-        // Accent
-        'accent': '#00d4ff',
-        'accent-dim': '#00a5c7',
-        'accent-glow': 'rgba(0,212,255,0.15)',
+        // Legacy aliases for backward compatibility during migration
+        'deep-bg': '#F5F2ED',
+        'deep-surface': '#FFFFFF',
+        'deep-surface-hover': '#FAF9F7',
+        'deep-border': 'rgba(0,0,0,0.08)',
 
-        // Text
-        'text-primary': '#e8e8ed',
-        'text-secondary': '#8b8b9e',
-        'text-muted': '#555568',
+        'accent': '#191918',
+        'accent-dim': '#2A2A29',
+
+        'text-primary': '#191918',
+        'text-secondary': '#3D3D3C',
+        'text-muted': '#6B6B6B',
 
         // Semantic
-        'success': '#34d399',
-        'warning': '#fbbf24',
-        'error': '#f87171',
+        'success': '#2D6A4F',
+        'warning': '#B8860B',
+        'error': '#C1292E',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"Libre Baskerville"', 'Georgia', 'Times New Roman', 'serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
         'float': 'float 6s ease-in-out infinite',
-        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
       },
       keyframes: {
         fadeInUp: {
@@ -44,16 +50,24 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(0,212,255,0.15)' },
-          '50%': { boxShadow: '0 0 40px rgba(0,212,255,0.3)' },
-        },
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(0,212,255,0.15)',
-        'glow-lg': '0 0 40px rgba(0,212,255,0.25)',
-        'glow-xl': '0 0 60px rgba(0,212,255,0.3)',
-        'card': '0 4px 30px rgba(0,0,0,0.3)',
+        'card': '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+        'card-hover': '0 4px 12px rgba(0,0,0,0.08)',
+        'elevated': '0 8px 30px rgba(0,0,0,0.08)',
+      },
+      fontSize: {
+        'display-lg': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'display-md': ['2.75rem', { lineHeight: '1.15', letterSpacing: '-0.01em' }],
+        'display-sm': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+      },
+      maxWidth: {
+        'prose': '42rem',
+        'content': '64rem',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
       },
     },
   },

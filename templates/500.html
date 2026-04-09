@@ -8,13 +8,13 @@
     <title>Server Error - TauX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background: #0a0a0f;
-            color: #8b8b9e;
+            background: #F5F2ED;
+            color: #3D3D3C;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -22,40 +22,39 @@
             overflow: hidden;
         }
         h1 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-family: 'Libre Baskerville', Georgia, serif;
             font-size: 8rem;
-            font-weight: 700;
-            color: #00d4ff;
+            font-weight: 400;
+            color: #191918;
             line-height: 1;
             margin-bottom: 1rem;
         }
         h2 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-family: 'Libre Baskerville', Georgia, serif;
             font-size: 1.5rem;
-            color: #e8e8ed;
+            color: #191918;
             margin-bottom: 1.5rem;
+            font-weight: 400;
         }
-        p { font-size: 1.1rem; max-width: 28rem; margin: 0 auto 2.5rem; line-height: 1.7; }
+        p { font-size: 1.1rem; max-width: 28rem; margin: 0 auto 2.5rem; line-height: 1.7; color: #6B6B6B; }
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.875rem 2rem;
-            background: #00d4ff;
-            color: #0a0a0f;
-            border-radius: 0.75rem;
-            font-weight: 700;
+            background: #191918;
+            color: #fff;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
             text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0,212,255,0.2);
+            transition: all 0.2s;
         }
-        .btn:hover { box-shadow: 0 0 40px rgba(0,212,255,0.4); transform: translateY(-2px); }
-        .glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 500px; background: rgba(0,212,255,0.04); border-radius: 50%; filter: blur(100px); pointer-events: none; }
+        .btn:hover { background: #2A2A29; transform: translateY(-1px); }
     </style>
 </head>
 
 <body>
-    <div class="glow"></div>
     <div style="position:relative;z-index:10;text-align:center;padding:1.5rem;">
         <h1>500</h1>
         <h2>System Error / 系統錯誤</h2>
