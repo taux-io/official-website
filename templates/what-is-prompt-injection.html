@@ -272,8 +272,8 @@
         const ctx = document.getElementById('jailbreakChart').getContext('2d');
 
         // Light Theme overrides
-        Chart.defaults.color = '#8b8b9e'; // slate-500
-        Chart.defaults.borderColor = 'rgba(255,255,255,0.06)'; // slate-200
+        Chart.defaults.color = '#6B6963';
+        Chart.defaults.borderColor = 'rgba(0,0,0,0.08)';
         Chart.defaults.font.family = "'Inter', sans-serif";
 
         new Chart(ctx, {
@@ -284,7 +284,7 @@
                     {
                         label: '大型語言模型 (高風險)',
                         data: [5, 15, 30, 50, 70, 85, 92, 95, 98, 99, 100],
-                        borderColor: '#ef4444', // red-500
+                        borderColor: '#ef4444',
                         backgroundColor: '#ef4444',
                         borderWidth: 3,
                         tension: 0.4,
@@ -295,7 +295,7 @@
                     {
                         label: '微調小型模型',
                         data: [2, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-                        borderColor: '#3b82f6', // blue-500
+                        borderColor: '#3b82f6',
                         backgroundColor: '#3b82f6',
                         borderWidth: 3,
                         tension: 0.4,
@@ -312,7 +312,7 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#e8e8ed', // slate-700
+                            color: '#191918',
                             usePointStyle: true,
                             padding: 20
                         }
@@ -320,10 +320,10 @@
                     tooltip: {
                         mode: 'index',
                         intersect: false,
-                        backgroundColor: 'rgba(18, 18, 26, 0.95)',
-                        titleColor: '#e8e8ed', // slate-900
-                        bodyColor: '#8b8b9e', // slate-600
-                        borderColor: 'rgba(255,255,255,0.1)', // slate-200
+                        backgroundColor: 'rgba(25, 25, 24, 0.92)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#E0DBD3',
+                        borderColor: 'rgba(0,0,0,0.1)',
                         borderWidth: 1,
                         padding: 12,
                         boxPadding: 6,
@@ -334,12 +334,12 @@
                     y: {
                         beginAtZero: true,
                         max: 100,
-                        title: { display: true, text: '攻擊成功率 (%)', color: '#8b8b9e', padding: 10 },
-                        grid: { color: 'rgba(255,255,255,0.04)' }, // slate-100
+                        title: { display: true, text: '攻擊成功率 (%)', color: '#6B6963', padding: 10 },
+                        grid: { color: 'rgba(0,0,0,0.06)' },
                         border: { display: false }
                     },
                     x: {
-                        title: { display: true, text: '偽造範例數量 (Shots)', color: '#8b8b9e', padding: 10 },
+                        title: { display: true, text: '偽造範例數量 (Shots)', color: '#6B6963', padding: 10 },
                         grid: { display: false },
                         border: { display: false }
                     }
