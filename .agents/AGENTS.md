@@ -79,13 +79,16 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 
 When dealing with specific domains, invoke the corresponding specialist agents from the following departments:
 
-### Engineering (`agents/engineering/`)
+### Engineering (`agents/engineering/`) — Mixed (Generic + ADK Pattern-Based)
 - **[Frontend Developer](agents/engineering/frontend-developer.md)**: Web interface and UI component logic.
 - **[Backend Architect](agents/engineering/backend-architect.md)**: Server logic, API design, and database schema.
 - **[Mobile App Builder](agents/engineering/mobile-app-builder.md)**: Mobile responsiveness and application frameworks.
 - **[AI Engineer](agents/engineering/ai-engineer.md)**: AI integrations, prompt engineering, and LLM optimizations.
-- **[DevOps Automator](agents/engineering/devops-automator.md)**: CI/CD pipelines, Docker, and Nginx setups.
 - **[Rapid Prototyper](agents/engineering/rapid-prototyper.md)**: POC development and quick technical spikes.
+- **[Infra Knowledge Expert](agents/engineering/devops-automator.md)** `[Tool Wrapper]`: On-demand Docker/Nginx/Compose knowledge loading. Detects infra keywords and loads specific references from `skills/infra-toolkit/`.
+- **[Infra Config Generator](agents/engineering/infra-config-generator.md)** `[Generator]`: Template-based infrastructure config production. Fills standardized Dockerfile, docker-compose, nginx.conf templates with deployment parameters.
+- **[Infra Interviewer](agents/engineering/infra-interviewer.md)** `[Inversion]`: Context gathering and Infra Brief creation. Interviews users for target environment, change scope, and constraints before infrastructure work begins.
+- **[Infra Pipeline Orchestrator](agents/engineering/infra-pipeline.md)** `[Pipeline]`: End-to-end infrastructure workflow with strict 5-phase pipeline (Interview → Audit → Generate → Review → Deploy) and diamond gates between phases.
 
 ### Product (`agents/product/`)
 - **[Trend Researcher](agents/product/trend-researcher.md)**: Market analysis and competitive product intelligence.
@@ -118,10 +121,10 @@ When dealing with specific domains, invoke the corresponding specialist agents f
 - **[Project Shipper](agents/project-management/project-shipper.md)**: Release trains, milestone tracking, and QA coordination.
 - **[Studio Producer](agents/project-management/studio-producer.md)**: Holistic project oversight and resource management.
 
-### Studio Operations (`agents/studio-operations/`)
+### Studio Operations (`agents/studio-operations/`) — Mixed (Generic + ADK Pattern-Based)
 - **[Support Responder](agents/studio-operations/support-responder.md)**: Customer inquiry handling and SLA enforcement.
 - **[Analytics Reporter](agents/studio-operations/analytics-reporter.md)**: Web and product analytics dashboards.
-- **[Infrastructure Maintainer](agents/studio-operations/infrastructure-maintainer.md)**: Server health, backups, and SSL renewals.
+- **[Infra Reviewer](agents/studio-operations/infrastructure-maintainer.md)** `[Reviewer]`: Infrastructure compliance auditing against an 8-category deployment checklist. Produces severity-graded findings (🔴 Critical / 🟡 Warning / 🟢 Pass) for Dockerfile, Compose, Nginx, SSL, and env security.
 - **[Legal Compliance Checker](agents/studio-operations/legal-compliance-checker.md)**: Data privacy (GDPR/ROC regulations) and basic compliance.
 - **[Finance Tracker](agents/studio-operations/finance-tracker.md)**: API cost estimations and budget monitoring.
 

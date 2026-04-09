@@ -23,7 +23,7 @@
     }
 
     .skills-guide-body {
-        background-color: #0a0a0f;
+        background-color: #F5F2ED;
         display: grid;
         gap: 30px;
         grid-template-columns: 1fr;
@@ -37,10 +37,10 @@
 
     .skills-guide-body .slide-container {
         align-items: center;
-        background-color: #12121a;
+        background-color: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255,255,255,0.06);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        border: 1px solid #E0DBD3;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -51,12 +51,12 @@
         overflow: hidden;
         padding: 60px;
         position: relative;
-        color: #8b8b9e;
+        color: #3D3D3A;
     }
 
     .skills-guide-body .slide-container.dark-theme {
-        background-color: #0d0d14;
-        color: #e8e8ed;
+        background-color: #FAF8F5;
+        color: #3D3D3A;
     }
 
     .skills-guide-body .slide-container::before {
@@ -65,8 +65,8 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #00d4ff, #14b8a6);
+        height: 2px;
+        background: #E0DBD3;
         z-index: 0;
     }
 
@@ -78,7 +78,7 @@
         width: 800px;
         height: 800px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, rgba(10, 10, 15, 0) 70%);
+        background: none;
         z-index: 0;
         pointer-events: none;
     }
@@ -92,7 +92,7 @@
     .skills-guide-body h2,
     .skills-guide-body h3,
     .skills-guide-body th {
-        font-family: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+        font-family: 'Libre Baskerville', 'Noto Serif TC', serif;
         font-weight: 700;
         margin: 0;
     }
@@ -105,7 +105,7 @@
     }
 
     .skills-guide-body .dark-theme h1 {
-        color: #ffffff;
+        color: #191918;
     }
 
     .skills-guide-body .slide-title {
@@ -114,25 +114,25 @@
         margin-bottom: 40px;
         text-align: left;
         width: 100%;
-        color: #e8e8ed;
-        border-left: 6px solid #00d4ff;
+        color: #191918;
+        border-left: 3px solid #191918;
         padding-left: 15px;
     }
 
     .skills-guide-body .dark-theme .slide-title {
-        color: #e8e8ed;
-        border-left-color: #00d4ff;
+        color: #191918;
+        border-left-color: #191918;
     }
 
     .skills-guide-body h3 {
         font-size: 28px;
         margin-bottom: 15px;
-        color: #e8e8ed;
+        color: #191918;
         line-height: 1.4;
     }
 
     .skills-guide-body .dark-theme h3 {
-        color: #e8e8ed;
+        color: #191918;
     }
 
     .skills-guide-body p,
@@ -142,7 +142,7 @@
     .skills-guide-body .number-label {
         font-size: 20px;
         line-height: 1.6;
-        color: #8b8b9e;
+        color: #6B6963;
         margin: 0;
         margin-bottom: 15px;
     }
@@ -160,17 +160,17 @@
     .skills-guide-body .dark-theme td,
     .skills-guide-body .dark-theme .subtitle,
     .skills-guide-body .dark-theme .number-label {
-        color: #cbd5e1;
+        color: #3D3D3A;
     }
 
     .skills-guide-body .subtitle {
         font-size: 26px;
         font-weight: 400;
-        color: #8b8b9e;
+        color: #6B6963;
     }
 
     .skills-guide-body .dark-theme .subtitle {
-        color: #8b8b9e;
+        color: #6B6963;
     }
 
     .skills-guide-body .content-area {
@@ -188,11 +188,11 @@
     }
 
     .skills-guide-body .title-layout .accent-text {
-        color: #00d4ff;
+        color: #191918;
     }
 
     .skills-guide-body .dark-theme .title-layout .accent-text {
-        color: #00d4ff;
+        color: #191918;
     }
 
     .skills-guide-body .section-title-layout {
@@ -215,14 +215,14 @@
     .skills-guide-body .section-title-layout p {
         font-size: 28px;
         max-width: 800px;
-        color: #94a3b8;
+        color: #6B6963;
         font-weight: 500;
     }
 
     .skills-guide-body .section-title-layout hr {
-        background: linear-gradient(90deg, #00d4ff, #14b8a6);
+        background: #191918;
         border: none;
-        height: 6px;
+        height: 2px;
         margin: 40px auto;
         width: 120px;
         border-radius: 3px;
@@ -244,7 +244,7 @@
 
     .skills-guide-body .image-wrapper {
         border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         height: 400px;
         width: 100%;
         overflow: hidden;
@@ -256,7 +256,7 @@
         width: 100%;
         display: block;
         object-fit: contain;
-        background-color: #0d0d14;
+        background-color: #FAF8F5;
     }
 
     .skills-guide-body .two-column.tiled {
@@ -264,18 +264,18 @@
     }
 
     .skills-guide-body .two-column.tiled>div {
-        background-color: rgba(255,255,255,0.03);
+        background-color: #FAF8F5;
         border-radius: 12px;
         padding: 40px;
-        border-top: 4px solid #00d4ff;
-        border: 1px solid rgba(255,255,255,0.06);
-        border-top: 4px solid #00d4ff;
+        border-top: 2px solid #191918;
+        border: 1px solid #E0DBD3;
+        border-top: 2px solid #191918;
         height: 100%;
     }
 
     .skills-guide-body .dark-theme .two-column.tiled>div {
-        background-color: rgba(255,255,255,0.03);
-        border-top-color: #00d4ff;
+        background-color: #FAF8F5;
+        border-top-color: #191918;
     }
 
     .skills-guide-body .timeline-layout {
@@ -288,8 +288,8 @@
     }
 
     .skills-guide-body .timeline-layout .timeline-line {
-        background-color: rgba(255,255,255,0.08);
-        height: 6px;
+        background-color: #E0DBD3;
+        height: 2px;
         left: 0;
         position: absolute;
         top: 50%;
@@ -306,9 +306,9 @@
     }
 
     .skills-guide-body .timeline-item::after {
-        background-color: #0a0a0f;
+        background-color: #F5F2ED;
         border-radius: 50%;
-        border: 5px solid #00d4ff;
+        border: 3px solid #191918;
         content: '';
         height: 24px;
         left: 50%;
@@ -336,7 +336,7 @@
     }
 
     .skills-guide-body .timeline-item h3 {
-        color: #00d4ff;
+        color: #191918;
         font-size: 24px;
     }
 
@@ -351,14 +351,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: rgba(255,255,255,0.03);
+        background: #ffffff;
         padding: 40px;
         border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #E0DBD3;
     }
 
     .skills-guide-body .highlight-numbers-layout .number {
-        color: #00d4ff;
+        color: #191918;
         font-size: 100px;
         font-weight: 700;
         line-height: 1;
@@ -368,7 +368,7 @@
     .skills-guide-body .highlight-numbers-layout .number-label {
         font-size: 24px;
         font-weight: 700;
-        color: #e8e8ed;
+        color: #191918;
     }
 
     .skills-guide-body .tiled-content {
@@ -381,9 +381,9 @@
 
     .skills-guide-body .image-tile {
         flex: 1;
-        background: rgba(255,255,255,0.03);
+        background: #ffffff;
         border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #E0DBD3;
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -398,7 +398,7 @@
 
     .skills-guide-body .image-tile h3 {
         font-size: 22px;
-        color: #e8e8ed;
+        color: #191918;
         margin-bottom: 10px;
     }
 
@@ -408,9 +408,9 @@
 
     .skills-guide-body .tile {
         align-items: flex-start;
-        background-color: rgba(255,255,255,0.03);
+        background-color: #FAF8F5;
         border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #E0DBD3;
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -420,10 +420,10 @@
     }
 
     .skills-guide-body .tile .icon {
-        color: #00d4ff;
+        color: #191918;
         font-size: 42px;
         margin-bottom: 25px;
-        background: rgba(0,212,255,0.08);
+        background: rgba(25,25,24,0.06);
         width: 80px;
         height: 80px;
         display: flex;
@@ -439,10 +439,10 @@
     .skills-guide-body .bullet-list {
         max-width: 1000px;
         width: 100%;
-        background: rgba(255,255,255,0.03);
+        background: #ffffff;
         padding: 40px 50px;
         border-radius: 16px;
-        border-left: 8px solid #00d4ff;
+        border-left: 4px solid #191918;
         margin: 0 auto;
     }
 
@@ -464,7 +464,7 @@
     }
 
     .skills-guide-body .bullet-list i {
-        color: #00d4ff;
+        color: #191918;
         font-size: 28px;
         left: 0;
         position: absolute;
@@ -472,16 +472,16 @@
     }
 
     .skills-guide-body .bullet-list li strong {
-        color: #e8e8ed;
+        color: #191918;
         font-weight: 700;
     }
 
     .skills-guide-body .table-layout {
         width: 100%;
-        background: rgba(255,255,255,0.03);
+        background: #ffffff;
         border-radius: 12px;
         overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #E0DBD3;
     }
 
     .skills-guide-body .table-layout table {
@@ -491,15 +491,15 @@
 
     .skills-guide-body .table-layout th,
     .skills-guide-body .table-layout td {
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid #E0DBD3;
         padding: 20px 30px;
         text-align: left;
         vertical-align: top;
     }
 
     .skills-guide-body .table-layout th {
-        background-color: rgba(255,255,255,0.04);
-        color: #e8e8ed;
+        background-color: #FAF8F5;
+        color: #191918;
         font-size: 20px;
         font-weight: 700;
     }
@@ -556,28 +556,28 @@
     .skills-guide-body .qa-layout h2 {
         font-size: 80px;
         margin-bottom: 30px;
-        color: #e8e8ed;
+        color: #191918;
     }
 
     .skills-guide-body .qa-layout p {
         font-size: 28px;
-        color: #8b8b9e;
+        color: #6B6963;
     }
 
     .skills-guide-body .qa-layout .contact-info {
-        color: #00d4ff;
+        color: #191918;
         font-size: 24px;
         font-weight: 600;
         margin-top: 50px;
         padding: 20px 40px;
-        background: rgba(0,212,255,0.08);
+        background: rgba(25,25,24,0.06);
         border-radius: 50px;
         display: inline-block;
     }
 
     .skills-guide-body .highlight {
-        background: rgba(0, 212, 255, 0.1);
-        color: #00d4ff;
+        background: rgba(25,25,24,0.08);
+        color: #191918;
         padding: 2px 8px;
         border-radius: 4px;
         font-family: monospace;
@@ -586,15 +586,15 @@
     }
 
     .skills-guide-body .code-window {
-        background-color: #0d0d14;
+        background-color: #FAF8F5;
         border-radius: 12px;
         padding: 25px;
         font-family: monospace;
         font-size: 16px;
         line-height: 1.6;
-        color: #e8e8ed;
+        color: #191918;
         overflow: auto;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #E0DBD3;
         text-align: left;
         width: 100%;
         min-height: 400px;
@@ -602,24 +602,24 @@
     }
 
     .skills-guide-body .code-window .yaml-key {
-        color: #ff79c6;
+        color: #8B4513;
     }
 
     .skills-guide-body .code-window .yaml-val {
-        color: #f1fa8c;
+        color: #556B2F;
     }
 
     .skills-guide-body .code-window .md-h {
-        color: #8be9fd;
+        color: #191918;
         font-weight: 700;
     }
 
     .skills-guide-body .code-window .md-list {
-        color: #50fa7b;
+        color: #6B6963;
     }
 
     .skills-guide-body .code-window .md-text {
-        color: #f8f8f2;
+        color: #191918;
     }
 
     @media (max-width: 1024px) {
@@ -824,24 +824,24 @@
                         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+                                    <stop offset="0%" style="stop-color:#191918;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#6B6963;stop-opacity:1" />
                                 </linearGradient>
                                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
                                 </filter>
                             </defs>
-                            <rect width="400" height="400" fill="#12121a" />
-                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="#1a1a2e"
+                            <rect width="400" height="400" fill="#F5F2ED" />
+                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="#EDE8E0"
                                 opacity="0.4" />
-                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="#2a2a40"
+                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="#E8E3DB"
                                 opacity="0.5" />
                             <path d="M 120 160 L 180 160 L 200 190 L 360 190 L 360 320 L 120 320 Z"
                                 fill="url(#folderGrad)" filter="url(#shadow)" />
                             <rect x="150" y="215" width="120" height="12" rx="6" fill="#ffffff" opacity="0.8" />
                             <rect x="150" y="245" width="80" height="12" rx="6" fill="#ffffff" opacity="0.8" />
                             <circle cx="280" cy="251" r="18" fill="#ffffff" opacity="0.9" />
-                            <polygon points="275,243 288,251 275,259" fill="#00d4ff" />
+                            <polygon points="275,243 288,251 275,259" fill="#191918" />
                         </svg>
                     </div>
                 </div>
@@ -919,19 +919,19 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#12121a" />
+                            <rect width="200" height="200" fill="#F5F2ED" />
                             <!-- Document -->
-                            <rect x="60" y="40" width="80" height="110" rx="8" fill="#1a1a2e" stroke="#00d4ff"
+                            <rect x="60" y="40" width="80" height="110" rx="8" fill="#EDE8E0" stroke="#191918"
                                 stroke-width="4" />
-                            <line x1="75" y1="65" x2="125" y2="65" stroke="#3a3a50" stroke-width="4"
+                            <line x1="75" y1="65" x2="125" y2="65" stroke="#C8C2B8" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="85" x2="125" y2="85" stroke="#3a3a50" stroke-width="4"
+                            <line x1="75" y1="85" x2="125" y2="85" stroke="#C8C2B8" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="105" x2="105" y2="105" stroke="#3a3a50" stroke-width="4"
+                            <line x1="75" y1="105" x2="105" y2="105" stroke="#C8C2B8" stroke-width="4"
                                 stroke-linecap="round" />
                             <!-- Pencil / Wand -->
-                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="#14b8a6" />
-                            <polygon points="110,140 115,135 125,145" fill="#0d9488" />
+                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="#6B6963" />
+                            <polygon points="110,140 115,135 125,145" fill="#4D4A46" />
                         </svg>
                     </div>
                     <h3>1. 文件與資產生成</h3>
@@ -940,16 +940,16 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#12121a" />
+                            <rect width="200" height="200" fill="#F5F2ED" />
                             <path
                                 d="M 95 40 L 105 40 L 110 55 C 115 57 120 60 125 64 L 140 58 L 148 66 L 142 80 C 146 85 149 90 151 95 L 165 100 L 165 110 L 151 115 C 149 120 146 125 142 130 L 148 144 L 140 152 L 125 146 C 120 150 115 153 110 155 L 105 170 L 95 170 L 90 155 C 85 153 80 150 75 146 L 60 152 L 52 144 L 58 130 C 54 125 51 120 49 115 L 35 110 L 35 100 L 49 95 C 51 90 54 85 58 80 L 52 66 L 60 58 L 75 64 C 80 60 85 57 90 55 Z"
-                                fill="#14b8a6" opacity="0.2" />
-                            <circle cx="100" cy="105" r="40" fill="none" stroke="#14b8a6" stroke-width="8"
+                                fill="#6B6963" opacity="0.2" />
+                            <circle cx="100" cy="105" r="40" fill="none" stroke="#6B6963" stroke-width="8"
                                 stroke-dasharray="15 8" />
-                            <circle cx="100" cy="105" r="18" fill="#14b8a6" />
-                            <circle cx="145" cy="145" r="25" fill="none" stroke="#3b82f6" stroke-width="6"
+                            <circle cx="100" cy="105" r="18" fill="#6B6963" />
+                            <circle cx="145" cy="145" r="25" fill="none" stroke="#191918" stroke-width="6"
                                 stroke-dasharray="10 5" />
-                            <circle cx="145" cy="145" r="10" fill="#3b82f6" />
+                            <circle cx="145" cy="145" r="10" fill="#191918" />
                         </svg>
                     </div>
                     <h3>2. 工作流自動化</h3>
@@ -958,13 +958,13 @@
                 <div class="image-tile">
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="200" height="200" fill="#12121a" />
-                            <line x1="60" y1="70" x2="140" y2="100" stroke="#3a3a50" stroke-width="4" />
-                            <line x1="140" y1="100" x2="80" y2="150" stroke="#3a3a50" stroke-width="4" />
-                            <line x1="60" y1="70" x2="80" y2="150" stroke="#3a3a50" stroke-width="4" />
-                            <circle cx="60" cy="70" r="14" fill="#00d4ff" />
-                            <circle cx="80" cy="150" r="14" fill="#00d4ff" />
-                            <circle cx="140" cy="100" r="22" fill="#14b8a6" />
+                            <rect width="200" height="200" fill="#F5F2ED" />
+                            <line x1="60" y1="70" x2="140" y2="100" stroke="#C8C2B8" stroke-width="4" />
+                            <line x1="140" y1="100" x2="80" y2="150" stroke="#C8C2B8" stroke-width="4" />
+                            <line x1="60" y1="70" x2="80" y2="150" stroke="#C8C2B8" stroke-width="4" />
+                            <circle cx="60" cy="70" r="14" fill="#191918" />
+                            <circle cx="80" cy="150" r="14" fill="#191918" />
+                            <circle cx="140" cy="100" r="22" fill="#6B6963" />
                             <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z"
                                 fill="#ffffff" />
                         </svg>
@@ -1079,7 +1079,7 @@
             <div class="two-column">
                 <div>
                     <div class="code-window"
-                        style="background-color: #0f172a; border-color: #1e293b; box-shadow: none;">
+                        style="background-color: #FAF8F5; border-color: #E0DBD3; box-shadow: none;">
                         <span class="yaml-val">---</span><br>
                         <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
                         <span class="yaml-key">description:</span> <span class="yaml-val">協助將對話中的錯誤日誌直接轉換為 Linear
@@ -1105,7 +1105,7 @@
                         <li><span class="highlight">工具調用指示</span>：明確寫出要呼叫的工具名稱 (如 <code>linear_create_issue</code>)。
                         </li>
                         <li><span class="highlight">Fallback (回退機制)</span>：<strong
-                                style="color: #00d4ff;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
+                                style="color: #191918; font-weight: 600;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
                         </li>
                     </ul>
                 </div>
@@ -1197,40 +1197,40 @@
                 xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:#EDE8E0;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#E0DBD3;stop-opacity:1" />
                     </linearGradient>
                     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:#191918;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#6B6963;stop-opacity:1" />
                     </linearGradient>
                 </defs>
                 <rect width="600" height="800" fill="url(#bgGrad)" />
-                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="#334155" stroke-width="1"
+                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="#D5CFC7" stroke-width="1"
                     opacity="0.3" />
-                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="#334155" stroke-width="1" opacity="0.3" />
-                <path d="M 150 250 C 250 250, 300 400, 300 400" fill="none" stroke="#3b82f6" stroke-width="3"
+                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="#D5CFC7" stroke-width="1" opacity="0.3" />
+                <path d="M 150 250 C 250 250, 300 400, 300 400" fill="none" stroke="#191918" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
-                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="#14b8a6" stroke-width="3"
+                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="#6B6963" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
                 <path d="M 200 550 C 250 450, 300 400, 300 400" fill="none" stroke="#0ea5e9" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
                 <path d="M 420 520 C 360 460, 300 400, 300 400" fill="none" stroke="#8b5cf6" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
-                <circle cx="300" cy="400" r="90" fill="#0f172a" stroke="url(#accentGrad)" stroke-width="8" />
-                <rect x="250" y="375" width="100" height="50" rx="8" fill="#3b82f6" opacity="0.9" />
+                <circle cx="300" cy="400" r="90" fill="#EDE8E0" stroke="url(#accentGrad)" stroke-width="8" />
+                <rect x="250" y="375" width="100" height="50" rx="8" fill="#191918" opacity="0.9" />
                 <circle cx="275" cy="400" r="8" fill="#ffffff" />
                 <rect x="295" y="396" width="40" height="8" rx="4" fill="#ffffff" />
-                <circle cx="150" cy="250" r="40" fill="#3b82f6" opacity="0.9" />
+                <circle cx="150" cy="250" r="40" fill="#191918" opacity="0.9" />
                 <circle cx="150" cy="235" r="12" fill="#ffffff" />
                 <path d="M 130 265 Q 150 245 170 265 L 170 275 C 170 280 130 280 130 275 Z" fill="#ffffff" />
-                <circle cx="450" cy="280" r="45" fill="#14b8a6" opacity="0.9" />
+                <circle cx="450" cy="280" r="45" fill="#6B6963" opacity="0.9" />
                 <circle cx="450" cy="265" r="14" fill="#ffffff" />
                 <path d="M 425 298 Q 450 275 475 298 L 475 308 C 475 313 425 313 425 308 Z" fill="#ffffff" />
-                <circle cx="200" cy="550" r="35" fill="#0ea5e9" opacity="0.9" />
+                <circle cx="200" cy="550" r="35" fill="#8B8580" opacity="0.9" />
                 <circle cx="200" cy="538" r="10" fill="#ffffff" />
                 <path d="M 182 563 Q 200 545 218 563 L 218 570 C 218 575 182 575 182 570 Z" fill="#ffffff" />
-                <circle cx="420" cy="520" r="30" fill="#8b5cf6" opacity="0.9" />
+                <circle cx="420" cy="520" r="30" fill="#A39E98" opacity="0.9" />
                 <circle cx="420" cy="510" r="9" fill="#ffffff" />
                 <path d="M 405 532 Q 420 518 435 532 L 435 538 C 435 542 405 542 405 538 Z" fill="#ffffff" />
                 <circle cx="210" cy="330" r="4" fill="#ffffff" opacity="0.8" />
