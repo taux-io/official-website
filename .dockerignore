@@ -1,0 +1,24 @@
+# 版本控制與 IDE
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# 專案內部 AI 代理資產與日誌
+.agents
+.gemini
+*.log
+test_build
+app_test
+
+# 前端套件依賴 (最關鍵！避免打包數百 MB 垃圾)
+node_modules
+npm-debug.log
+
+# 部署與本地文件
+README.md
+NOTES.md
+implementation_plan.md
+task.md
+walkthrough.md

@@ -9,47 +9,50 @@
   }
 
   body {
-    @apply bg-anthro-cream text-anthro-body font-sans antialiased overflow-x-hidden;
+    @apply bg-[#191915] text-white/75 font-sans antialiased overflow-x-hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
-    @apply text-anthro-dark font-normal;
+    @apply text-white font-normal;
   }
 
-  /* Custom Scrollbar - Warm Theme */
+  /* Custom Scrollbar - Glasswing Dark Theme */
   ::-webkit-scrollbar {
     width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-anthro-cream;
+    background: #191915;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-anthro-warm-gray rounded-full;
+    @apply bg-white/20 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-anthro-muted;
+    @apply bg-white/40;
   }
 
-  /* Anthropic-style link underlines */
+  /* Glasswing-style link */
   a {
     @apply transition-colors duration-200;
   }
 }
 
 @layer components {
-  /* Clean Card (replaces glass-card) */
+  /* Glasswing Card (subtle glass on dark) */
   .anthro-card {
-    @apply bg-white rounded-xl p-8 md:p-12 border border-black/[0.06] transition-all duration-300;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    @apply rounded-xl p-8 md:p-12 border transition-all duration-300;
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
 
   .anthro-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    @apply border-black/[0.1];
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.10);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
 
   /* Legacy alias */
@@ -57,14 +60,14 @@
     @apply anthro-card;
   }
 
-  /* Primary Button (solid dark) */
+  /* Primary Button (white on dark — Glasswing style) */
   .anthro-btn {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-lg transition-all duration-200;
-    @apply bg-anthro-dark text-white;
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-200;
+    @apply bg-white text-[#191915];
   }
 
   .anthro-btn:hover {
-    @apply bg-anthro-charcoal;
+    @apply bg-white/90;
     transform: translateY(-1px);
   }
 
@@ -73,14 +76,14 @@
     @apply anthro-btn;
   }
 
-  /* Outline Button */
+  /* Outline Button (white border on dark) */
   .anthro-btn-outline {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-lg transition-all duration-200;
-    @apply border border-anthro-dark text-anthro-dark bg-transparent;
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-200;
+    @apply border border-white/20 text-white bg-transparent;
   }
 
   .anthro-btn-outline:hover {
-    @apply bg-anthro-dark text-white;
+    @apply bg-white/10 border-white/30;
   }
 
   /* Legacy alias */
@@ -90,15 +93,16 @@
 
   /* Section backgrounds */
   .section-cream {
-    @apply bg-anthro-cream;
+    background: #191915;
   }
 
   .section-sand {
-    @apply bg-anthro-sand;
+    background: #232320;
   }
 
   .section-dark {
-    @apply bg-anthro-dark text-white;
+    background: #111110;
+    @apply text-white;
   }
 
   .section-dark h1,
@@ -116,42 +120,46 @@
     @apply text-white/70;
   }
 
-  /* Anthropic-style text highlight (bold underline) */
+  /* Glasswing-style text highlight */
   .anthro-highlight {
-    @apply font-semibold;
+    @apply font-semibold text-white;
     text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.30);
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 
   /* Subtle divider */
   .divider {
-    @apply border-t border-black/[0.08];
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
 
-  /* Anthropic-style blockquote */
+  /* Glasswing-style blockquote */
   .anthro-quote {
-    @apply relative pl-6 border-l-2 border-anthro-dark/20 my-8;
+    @apply relative pl-6 my-8;
+    border-left: 2px solid rgba(255,255,255,0.15);
   }
 
   .anthro-quote p {
-    @apply text-anthro-dark/80 italic font-display text-lg;
+    @apply text-white/80 italic font-display text-lg;
   }
 
   /* Badge / Tag */
   .anthro-tag {
     @apply inline-flex items-center px-3 py-1 text-xs font-medium tracking-wider uppercase rounded-full;
-    @apply bg-anthro-sand text-anthro-muted border border-black/[0.06];
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.50);
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   /* Nav link with underline animation */
   .nav-link {
-    @apply text-sm font-medium text-anthro-body relative;
+    @apply text-sm font-medium text-white/60 relative;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute left-0 bottom-0 w-full h-[1px] bg-anthro-dark scale-x-0 origin-right transition-transform duration-300;
+    @apply absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 origin-right transition-transform duration-300;
   }
 
   .nav-link:hover::after {
@@ -159,21 +167,21 @@
   }
 
   .nav-link:hover {
-    @apply text-anthro-dark;
+    @apply text-white;
   }
 }
 
 @layer utilities {
-  /* Keep legacy class name for backward compat during migration */
+  /* Keep legacy class name for backward compat */
   .fintech-card {
     @apply anthro-card;
   }
 
   .watermark {
-    @apply absolute select-none text-black/[0.03] pointer-events-none font-display font-black;
+    @apply absolute select-none text-white/[0.03] pointer-events-none font-display font-black;
   }
 
-  /* Anthropic-style generous spacing */
+  /* Glasswing-style generous spacing */
   .anthro-prose {
     @apply max-w-prose mx-auto;
     line-height: 1.8;

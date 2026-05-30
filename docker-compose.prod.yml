@@ -12,6 +12,8 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - frontend-network
     restart: always
 
   acme-companion:
@@ -25,12 +27,18 @@ services:
       - DEFAULT_EMAIL=app-service@bonbondi.com
     depends_on:
       - nginx-proxy
+    networks:
+      - frontend-network
     restart: always
 
   app:
+    build: .
     environment:
       - GIN_MODE=release
       - PORT=8080
+    networks:
+      - backend-network
+    restart: always
 
   nginx:
     environment:
@@ -40,9 +48,20 @@ services:
       - LETSENCRYPT_EMAIL=app-service@bonbondi.com
     depends_on:
       - app
+    networks:
+      - frontend-network
+      - backend-network
+    restart: always
 
 volumes:
   certs:
   vhost:
   html:
   acme:
+
+networks:
+  frontend-network:
+    name: taux_frontend
+  backend-network:
+    name: taux_backend
+    internal: true # 宣告為內部網絡，完全不與外界直接相連

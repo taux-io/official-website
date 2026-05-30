@@ -4,33 +4,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Anthropic-inspired Warm Palette
-        'anthro-cream': '#F5F2ED',
-        'anthro-sand': '#EBE7E0',
-        'anthro-warm-gray': '#D4CFC7',
-        'anthro-dark': '#191918',
-        'anthro-charcoal': '#2A2A29',
-        'anthro-muted': '#6B6B6B',
-        'anthro-body': '#3D3D3C',
-        'anthro-light': '#FAF9F7',
+        // Anthropic Glasswing Dark Palette
+        'anthro-cream': '#191915',        // Primary background (near-black warm)
+        'anthro-sand': '#232320',          // Elevated surface
+        'anthro-warm-gray': '#2E2E2A',    // Tertiary surface
+        'anthro-dark': '#FFFFFF',          // Primary text (white)
+        'anthro-charcoal': '#E8E8E3',     // Hover / emphasis text
+        'anthro-muted': 'rgba(255,255,255,0.40)', // Muted text
+        'anthro-body': 'rgba(255,255,255,0.75)',   // Body text
+        'anthro-light': '#0F0F0D',        // Deepest bg (footer)
 
-        // Legacy aliases for backward compatibility during migration
-        'deep-bg': '#F5F2ED',
-        'deep-surface': '#FFFFFF',
-        'deep-surface-hover': '#FAF9F7',
-        'deep-border': 'rgba(0,0,0,0.08)',
+        // Surface & border aliases
+        'deep-bg': '#191915',
+        'deep-surface': 'rgba(255,255,255,0.04)',
+        'deep-surface-hover': 'rgba(255,255,255,0.07)',
+        'deep-border': 'rgba(255,255,255,0.06)',
 
-        'accent': '#191918',
-        'accent-dim': '#2A2A29',
+        'accent': '#FFFFFF',
+        'accent-dim': 'rgba(255,255,255,0.60)',
 
-        'text-primary': '#191918',
-        'text-secondary': '#3D3D3C',
-        'text-muted': '#6B6B6B',
+        'text-primary': '#FFFFFF',
+        'text-secondary': 'rgba(255,255,255,0.75)',
+        'text-muted': 'rgba(255,255,255,0.40)',
 
-        // Semantic
-        'success': '#2D6A4F',
-        'warning': '#B8860B',
-        'error': '#C1292E',
+        // Semantic (slightly brighter for dark bg)
+        'success': '#4ADE80',
+        'warning': '#FBBF24',
+        'error': '#F87171',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -52,9 +52,9 @@ module.exports = {
         },
       },
       boxShadow: {
-        'card': '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
-        'card-hover': '0 4px 12px rgba(0,0,0,0.08)',
-        'elevated': '0 8px 30px rgba(0,0,0,0.08)',
+        'card': '0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2)',
+        'card-hover': '0 4px 12px rgba(0,0,0,0.4)',
+        'elevated': '0 8px 30px rgba(0,0,0,0.5)',
       },
       fontSize: {
         'display-lg': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],

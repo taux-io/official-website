@@ -37,34 +37,34 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=4">
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=5">
 </head>
 
-<body class="bg-anthro-cream text-anthro-body font-sans">
+<body class="bg-[#191915] text-white/75 font-sans">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-anthro-cream/95 backdrop-blur-sm border-b border-black/[0.06] transition-all duration-300"
+    <nav class="fixed w-full z-50 bg-[#191915]/90 backdrop-blur-md border-b border-white/[0.06] transition-all duration-300"
         aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- Logo -->
             <a href="/" class="flex items-center gap-2 group" aria-label="TauX Homepage">
                 <span
-                    class="font-display text-xl font-bold tracking-tight text-anthro-dark group-hover:opacity-70 transition-opacity duration-300">
+                    class="font-display text-xl font-bold tracking-tight text-white group-hover:opacity-70 transition-opacity duration-300">
                     TauX
                 </span>
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-8">
-                <a href="/ai-smart-work" class="nav-link">Smart Work</a>
-                <a href="/geo-guide" class="nav-link">GEO Guide</a>
-                <a href="/data-governance" class="nav-link">Data Governance</a>
-                <a href="/agent-prompting-guide" class="nav-link">Prompt Guide</a>
-                <a href="/what-is-prompt-injection" class="nav-link">Prompt Security</a>
-                <a href="/claude-skills-guide" class="nav-link">Skills Guide</a>
-                <a href="/adk-skill-patterns" class="nav-link">ADK Patterns</a>
+                <a href="/ai-smart-work" class="text-sm text-white/60 hover:text-white transition-colors duration-200">Smart Work</a>
+                <a href="/geo-guide" class="text-sm text-white/60 hover:text-white transition-colors duration-200">GEO Guide</a>
+                <a href="/data-governance" class="text-sm text-white/60 hover:text-white transition-colors duration-200">Data Governance</a>
+                <a href="/agent-prompting-guide" class="text-sm text-white/60 hover:text-white transition-colors duration-200">Prompt Guide</a>
+                <a href="/what-is-prompt-injection" class="text-sm text-white/60 hover:text-white transition-colors duration-200">Prompt Security</a>
+                <a href="/claude-skills-guide" class="text-sm text-white/60 hover:text-white transition-colors duration-200">Skills Guide</a>
+                <a href="/adk-skill-patterns" class="text-sm text-white/60 hover:text-white transition-colors duration-200">ADK Patterns</a>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
-                    class="anthro-btn text-sm">
+                    class="px-4 py-2 bg-white text-[#191915] text-sm font-semibold rounded-full hover:bg-white/90 transition-all duration-200">
                     Start Building
                 </a>
             </div>
@@ -72,19 +72,19 @@
             <!-- Mobile Menu Button -->
             <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-50 focus:outline-none"
                 aria-label="Toggle menu" aria-expanded="false">
-                <span class="w-6 h-0.5 bg-anthro-dark transition-all duration-300 origin-center"></span>
-                <span class="w-6 h-0.5 bg-anthro-dark transition-all duration-300 opacity-100"></span>
-                <span class="w-6 h-0.5 bg-anthro-dark transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 opacity-100"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center"></span>
             </button>
         </div>
     </nav>
 
     <!-- Mobile Menu Overlay -->
     <div id="mobileMenuOverlay"
-        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden bg-anthro-cream flex items-center justify-center">
+        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden bg-[#191915] flex items-center justify-center">
         <!-- Close Button -->
         <button id="mobileMenuClose"
-            class="absolute top-6 right-6 text-anthro-dark hover:opacity-60 text-3xl font-light transition-opacity duration-300 focus:outline-none z-[100] cursor-pointer"
+            class="absolute top-6 right-6 text-white hover:opacity-60 text-3xl font-light transition-opacity duration-300 focus:outline-none z-[100] cursor-pointer"
             aria-label="Close menu">
             &times;
         </button>
@@ -92,19 +92,19 @@
         <!-- Menu Items Container -->
         <div class="flex flex-col items-center justify-center gap-6">
             <a href="/"
-                class="mobile-link text-2xl font-display text-anthro-dark hover:opacity-60 transition-opacity">Home</a>
-            <a href="/ai-smart-work" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">Smart Work</a>
-            <a href="/geo-guide" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">GEO Guide</a>
-            <a href="/data-governance" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">Data Governance</a>
-            <a href="/agent-prompting-guide" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">Prompt Guide</a>
-            <a href="/what-is-prompt-injection" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">Prompt
+                class="mobile-link text-2xl font-display text-white hover:opacity-60 transition-opacity">Home</a>
+            <a href="/ai-smart-work" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">Smart Work</a>
+            <a href="/geo-guide" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">GEO Guide</a>
+            <a href="/data-governance" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">Data Governance</a>
+            <a href="/agent-prompting-guide" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">Prompt Guide</a>
+            <a href="/what-is-prompt-injection" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">Prompt
                 Security</a>
-            <a href="/what-is-llms-txt" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">LLMs.txt</a>
-            <a href="/claude-skills-guide" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">Skills Guide</a>
-            <a href="/adk-skill-patterns" class="mobile-link text-lg text-anthro-body hover:text-anthro-dark transition-colors">ADK Patterns</a>
+            <a href="/what-is-llms-txt" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">LLMs.txt</a>
+            <a href="/claude-skills-guide" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">Skills Guide</a>
+            <a href="/adk-skill-patterns" class="mobile-link text-lg text-white/60 hover:text-white transition-colors">ADK Patterns</a>
         </div>
     </div>
 
     <!-- Main Content Wrapper -->
-    <main class="pt-16 min-h-screen relative overflow-hidden bg-anthro-cream">
+    <main class="pt-16 min-h-screen relative overflow-hidden bg-[#191915]">
         {{ end }}
