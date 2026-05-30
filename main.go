@@ -54,7 +54,7 @@ func main() {
 	// Routes
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", PageData{
-			Title:       "TauX - AI Smart Work & GEO Solutions",
+			Title:       "拓思科技有限公司｜TauX - AI Smart Work & GEO Solutions",
 			Description: "TauX helps enterprises land AI First strategies with technology development services.",
 			Canonical:   "https://taux.io/",
 			Year:        time.Now().Year(),
