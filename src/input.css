@@ -14,7 +14,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
-    @apply text-white font-normal;
+    @apply text-white font-normal tracking-tight;
   }
 
   /* Custom Scrollbar - Glasswing Dark Theme */
@@ -41,18 +41,25 @@
 }
 
 @layer components {
-  /* Glasswing Card (subtle glass on dark) */
+  /* Glasswing Card (subtle glass on dark with premium depth) */
   .anthro-card {
-    @apply rounded-xl p-8 md:p-12 border transition-all duration-300;
-    background: rgba(255,255,255,0.03);
-    border-color: rgba(255,255,255,0.06);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    @apply rounded-xl p-8 md:p-12 border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border-color: rgba(255,255,255,0.05);
+    box-shadow: 
+      0 0 0 1px rgba(255,255,255,0.01),
+      0 2px 4px rgba(0,0,0,0.4),
+      0 12px 24px rgba(0,0,0,0.3);
   }
 
   .anthro-card:hover {
-    background: rgba(255,255,255,0.05);
-    border-color: rgba(255,255,255,0.10);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 
+      0 0 0 1px rgba(255,255,255,0.04),
+      0 8px 16px rgba(0,0,0,0.5),
+      0 24px 48px rgba(0,0,0,0.4);
   }
 
   /* Legacy alias */
@@ -60,15 +67,19 @@
     @apply anthro-card;
   }
 
-  /* Primary Button (white on dark — Glasswing style) */
+  /* Primary Button (white on dark — springy responsive) */
   .anthro-btn {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-200;
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_4px_12px_rgba(255,255,255,0.08)];
     @apply bg-white text-[#191915];
   }
 
   .anthro-btn:hover {
-    @apply bg-white/90;
-    transform: translateY(-1px);
+    @apply bg-[#E8E8E3] shadow-[0_8px_20px_rgba(255,255,255,0.14)];
+    transform: translateY(-1.5px) scale(1.01);
+  }
+
+  .anthro-btn:active {
+    transform: translateY(0.5px) scale(0.99);
   }
 
   /* Legacy alias */
@@ -78,12 +89,17 @@
 
   /* Outline Button (white border on dark) */
   .anthro-btn-outline {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-200;
+    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
     @apply border border-white/20 text-white bg-transparent;
   }
 
   .anthro-btn-outline:hover {
-    @apply bg-white/10 border-white/30;
+    @apply bg-white/5 border-white/40 shadow-[0_4px_12px_rgba(255,255,255,0.04)];
+    transform: translateY(-1.5px) scale(1.01);
+  }
+
+  .anthro-btn-outline:active {
+    transform: translateY(0.5px) scale(0.99);
   }
 
   /* Legacy alias */
@@ -197,5 +213,22 @@
 
   .anthro-prose h3 {
     @apply mt-12 mb-4;
+  }
+
+  /* Ambient glow effects */
+  .bg-glow-radial {
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+  }
+  .bg-glow-warm {
+    background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.03) 0%, rgba(25, 25, 21, 0) 60%);
+  }
+
+  /* Interactive FAQ styles */
+  .faq-details {
+    @apply transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+  }
+
+  .faq-details[open] {
+    @apply bg-white/[0.06] border-white/10 shadow-[0_12px_24px_rgba(0,0,0,0.3)];
   }
 }

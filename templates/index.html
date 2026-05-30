@@ -78,7 +78,9 @@
 
 <!-- Hero Section -->
 <section id="about-us" class="pt-28 pb-24 md:pt-40 md:pb-36 relative overflow-hidden bg-[#191915]">
-    <div class="max-w-3xl mx-auto px-6 relative z-10">
+    <!-- Ambient Radial Glow background element -->
+    <div class="absolute inset-0 bg-glow-warm opacity-80 pointer-events-none z-0"></div>
+    <div class="max-w-3xl mx-auto px-6 relative z-10 animate-fade-in-up">
 
         <h1 class="font-display text-4xl md:text-display-lg leading-tight mb-8 text-white">
             Code the future<br />
@@ -255,104 +257,104 @@
         <h2 class="font-display text-3xl md:text-display-sm text-center mb-16 text-white">
             你可能想問
         </h2>
-        <div class="space-y-3">
+        <div class="space-y-4">
             <!-- FAQ Items -->
             <details id="faq-geo-vs-seo"
-                class="group bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
+                class="faq-details group bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-70 transition-opacity">
+                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-90 transition-opacity">
                     <h3 class="font-display text-lg flex items-center">
                         GEO 和 SEO 有什麼不同？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-white/40">
+                        class="transition-transform duration-500 group-open:rotate-180 text-white/40">
                         <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="px-8 pb-6 text-white/75 leading-relaxed border-t border-white/[0.06] pt-4">
+                <div class="px-8 pb-6 text-white/70 leading-relaxed border-t border-white/5 pt-4 transition-all duration-300">
                     簡單來說，SEO 的目標是讓用戶「找到你」，通常是爭取搜尋結果前幾名的藍色連結。GEO 的目標是讓 AI「直接推薦你」，成為 AI 回答問題時引用的主要來源。一個是搶門票，一個是直接當主角。
                 </div>
             </details>
 
-            <details id="faq-cost" class="group bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
+            <details id="faq-cost" class="faq-details group bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-70 transition-opacity">
+                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-90 transition-opacity">
                     <h3 class="font-display text-lg flex items-center">
                         費用怎麼算？會很貴嗎？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-white/40">
+                        class="transition-transform duration-500 group-open:rotate-180 text-white/40">
                         <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="px-8 pb-6 text-white/75 leading-relaxed border-t border-white/[0.06] pt-4">
+                <div class="px-8 pb-6 text-white/70 leading-relaxed border-t border-white/5 pt-4 transition-all duration-300">
                     費用取決於您的需求。一個形象網站可能在 15-50 萬之間，而一個客製化的管理系統可能在 30-150 萬。最好的方式是直接跟我們聊聊，我們提供免費諮詢，幫您找出最划算的方案。
                 </div>
             </details>
 
             <details id="faq-timeline"
-                class="group bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
+                class="faq-details group bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-70 transition-opacity">
+                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-90 transition-opacity">
                     <h3 class="font-display text-lg flex items-center">
                         專案大概需要多久？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-white/40">
+                        class="transition-transform duration-500 group-open:rotate-180 text-white/40">
                         <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="px-8 pb-6 text-white/75 leading-relaxed border-t border-white/[0.06] pt-4">
+                <div class="px-8 pb-6 text-white/70 leading-relaxed border-t border-white/5 pt-4 transition-all duration-300">
                     這得看專案大小。一個網站大概 2-4 週，一支短影片 1-2 週。在我們確認需求後，會給您一份詳細的時程表。
                 </div>
             </details>
 
             <details id="faq-support"
-                class="group bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
+                class="faq-details group bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-70 transition-opacity">
+                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-90 transition-opacity">
                     <h3 class="font-display text-lg flex items-center">
                         專案結束後，你們會消失嗎？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-white/40">
+                        class="transition-transform duration-500 group-open:rotate-180 text-white/40">
                         <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="px-8 pb-6 text-white/75 leading-relaxed border-t border-white/[0.06] pt-4">
+                <div class="px-8 pb-6 text-white/70 leading-relaxed border-t border-white/5 pt-4 transition-all duration-300">
                     當然不會！我們的軟體專案都包含一年的技術支援。後續也可以簽訂維護合約，把我們當成您的技術夥伴。我們希望長久合作，而不是做一次性生意。
                 </div>
             </details>
 
-            <details id="faq-start" class="group bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
+            <details id="faq-start" class="faq-details group bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
                 <summary
-                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-70 transition-opacity">
+                    class="flex justify-between items-center px-8 py-5 cursor-pointer list-none text-white hover:opacity-90 transition-opacity">
                     <h3 class="font-display text-lg flex items-center">
                         如何開始第一步？
                     </h3>
                     <span
-                        class="transition-transform duration-300 group-open:rotate-180 text-white/40">
+                        class="transition-transform duration-500 group-open:rotate-180 text-white/40">
                         <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
                 </summary>
-                <div class="px-8 pb-6 text-white/75 leading-relaxed border-t border-white/[0.06] pt-4">
+                <div class="px-8 pb-6 text-white/70 leading-relaxed border-t border-white/5 pt-4 transition-all duration-300">
                     寄一封 email 到 <a href="mailto:hello@taux.io"
-                        class="text-white font-bold hover:opacity-60 underline underline-offset-2">hello@taux.io</a>
+                        class="text-white font-bold hover:opacity-80 underline underline-offset-2">hello@taux.io</a>
                     給我們，告訴我們您的想法。流程很簡單：聊聊需求 → 我們提方案報價 → 簽約開工。就這麼簡單！
                 </div>
             </details>
