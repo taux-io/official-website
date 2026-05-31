@@ -5,61 +5,65 @@
 @layer base {
   html {
     @apply scroll-smooth;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
   }
 
   body {
-    @apply bg-[#191915] text-white/75 font-sans antialiased overflow-x-hidden;
+    background-color: #fbfbfe;
+    color: #141316;
+    @apply font-sans antialiased overflow-x-hidden;
   }
 
+  /* 400 Regular is the dominant weight for the Jules system to convey quiet precision */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
-    @apply text-white font-normal tracking-tight;
+    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    color: #141316;
+    @apply tracking-tight;
   }
 
-  /* Custom Scrollbar - Glasswing Dark Theme */
+  /* Custom Scrollbar - Sterile Violet Theme */
   ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #191915;
+    background: #fbfbfe;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/20 rounded-full;
+    background: rgba(115, 92, 229, 0.15);
+    @apply rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/40;
+    background: rgba(115, 92, 229, 0.35);
   }
 
-  /* Glasswing-style link */
   a {
     @apply transition-colors duration-200;
   }
 }
 
 @layer components {
-  /* Glasswing Card (subtle glass on dark with premium depth) */
+  /* Jules-style Floating Sheet Card */
   .anthro-card {
-    @apply rounded-xl p-8 md:p-12 border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-    border-color: rgba(255,255,255,0.05);
+    @apply rounded-2xl p-8 md:p-12 border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-[#fbfbfe];
+    border-color: rgba(113, 92, 215, 0.15);
     box-shadow: 
-      0 0 0 1px rgba(255,255,255,0.01),
-      0 2px 4px rgba(0,0,0,0.4),
-      0 12px 24px rgba(0,0,0,0.3);
+      0 0 0 1px rgba(113, 92, 215, 0.02),
+      0 2px 4px rgba(57, 40, 86, 0.01),
+      0 16px 36px 4px rgba(57, 40, 86, 0.055);
   }
 
   .anthro-card:hover {
     transform: translateY(-2px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-    border-color: rgba(255,255,255,0.12);
+    border-color: #715cd7;
     box-shadow: 
-      0 0 0 1px rgba(255,255,255,0.04),
-      0 8px 16px rgba(0,0,0,0.5),
-      0 24px 48px rgba(0,0,0,0.4);
+      0 0 0 1px rgba(113, 92, 215, 0.06),
+      0 8px 16px rgba(57, 40, 86, 0.03),
+      0 24px 48px rgba(57, 40, 86, 0.075);
   }
 
   /* Legacy alias */
@@ -67,19 +71,24 @@
     @apply anthro-card;
   }
 
-  /* Primary Button (white on dark — springy responsive) */
+  /* Primary Button (Google Sign-in / Pill Style) */
   .anthro-btn {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_4px_12px_rgba(255,255,255,0.08)];
-    @apply bg-white text-[#191915];
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    background-color: #fbfbfe;
+    color: #141316;
+    border: 1.5px solid #141316;
+    box-shadow: 0 2px 6px rgba(57, 40, 86, 0.03);
   }
 
   .anthro-btn:hover {
-    @apply bg-[#E8E8E3] shadow-[0_8px_20px_rgba(255,255,255,0.14)];
-    transform: translateY(-1.5px) scale(1.01);
+    color: #735ce5;
+    border-color: #735ce5;
+    box-shadow: 0 4px 12px rgba(115, 92, 229, 0.08);
+    transform: translateY(-1px);
   }
 
   .anthro-btn:active {
-    transform: translateY(0.5px) scale(0.99);
+    transform: translateY(0.5px);
   }
 
   /* Legacy alias */
@@ -87,19 +96,22 @@
     @apply anthro-btn;
   }
 
-  /* Outline Button (white border on dark) */
+  /* Outline Button (Muted Border) */
   .anthro-btn-outline {
-    @apply inline-flex items-center justify-center px-7 py-3.5 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    @apply border border-white/20 text-white bg-transparent;
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    border: 1.5px solid rgba(20, 19, 22, 0.15);
+    color: #676573;
+    background-color: transparent;
   }
 
   .anthro-btn-outline:hover {
-    @apply bg-white/5 border-white/40 shadow-[0_4px_12px_rgba(255,255,255,0.04)];
-    transform: translateY(-1.5px) scale(1.01);
+    color: #141316;
+    border-color: #141316;
+    background-color: rgba(20, 19, 22, 0.02);
   }
 
   .anthro-btn-outline:active {
-    transform: translateY(0.5px) scale(0.99);
+    transform: translateY(0.5px);
   }
 
   /* Legacy alias */
@@ -107,18 +119,19 @@
     @apply anthro-btn-outline;
   }
 
-  /* Section backgrounds */
+  /* Section layouts */
   .section-cream {
-    background: #191915;
+    background-color: #fbfbfe;
   }
 
   .section-sand {
-    background: #232320;
+    background-color: #fbfbfe;
+    background-image: linear-gradient(180deg, #fbfbfe 0%, #f7f7fa 100%);
   }
 
   .section-dark {
-    background: #111110;
-    @apply text-white;
+    background-color: #fbfbfe;
+    @apply text-[#141316];
   }
 
   .section-dark h1,
@@ -127,55 +140,56 @@
   .section-dark h4,
   .section-dark h5,
   .section-dark h6 {
-    @apply text-white;
+    @apply text-[#141316];
   }
 
   .section-dark p,
   .section-dark span,
   .section-dark li {
-    @apply text-white/70;
+    @apply text-[#676573];
   }
 
-  /* Glasswing-style text highlight */
+  /* Highlight underlines */
   .anthro-highlight {
-    @apply font-semibold text-white;
+    @apply font-semibold text-[#141316];
     text-decoration: underline;
-    text-decoration-color: rgba(255,255,255,0.30);
+    text-decoration-color: rgba(115, 92, 229, 0.25);
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 
-  /* Subtle divider */
   .divider {
-    border-top: 1px solid rgba(255,255,255,0.06);
+    border-top: 1px solid rgba(115, 92, 229, 0.08);
   }
 
-  /* Glasswing-style blockquote */
+  /* Academic-style time constant blockquote */
   .anthro-quote {
     @apply relative pl-6 my-8;
-    border-left: 2px solid rgba(255,255,255,0.15);
+    border-left: 2px solid #735ce5;
   }
 
   .anthro-quote p {
-    @apply text-white/80 italic font-display text-lg;
+    color: #141316;
+    font-family: "Google Sans", "Inter", sans-serif;
+    @apply italic text-lg leading-relaxed;
   }
 
-  /* Badge / Tag */
+  /* Tag badge */
   .anthro-tag {
     @apply inline-flex items-center px-3 py-1 text-xs font-medium tracking-wider uppercase rounded-full;
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.50);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(115, 92, 229, 0.05);
+    color: #735ce5;
+    border: 1px solid rgba(115, 92, 229, 0.1);
   }
 
-  /* Nav link with underline animation */
+  /* Navigation Links */
   .nav-link {
-    @apply text-sm font-medium text-white/60 relative;
+    @apply text-sm font-medium text-[#676573] relative;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 origin-right transition-transform duration-300;
+    @apply absolute left-0 bottom-0 w-full h-[1.5px] bg-[#735ce5] scale-x-0 origin-right transition-transform duration-300;
   }
 
   .nav-link:hover::after {
@@ -183,52 +197,105 @@
   }
 
   .nav-link:hover {
-    @apply text-white;
+    @apply text-[#141316];
   }
 }
 
 @layer utilities {
-  /* Keep legacy class name for backward compat */
   .fintech-card {
     @apply anthro-card;
   }
 
   .watermark {
-    @apply absolute select-none text-white/[0.03] pointer-events-none font-display font-black;
+    @apply absolute select-none text-[#735ce5]/[0.02] pointer-events-none font-display font-black;
   }
 
-  /* Glasswing-style generous spacing */
   .anthro-prose {
     @apply max-w-prose mx-auto;
     line-height: 1.8;
   }
 
   .anthro-prose p {
-    @apply mb-6;
+    @apply mb-6 text-[#676573];
   }
 
   .anthro-prose h2 {
-    @apply mt-16 mb-6;
+    @apply mt-16 mb-6 text-[#141316];
   }
 
   .anthro-prose h3 {
-    @apply mt-12 mb-4;
+    @apply mt-12 mb-4 text-[#141316];
   }
 
-  /* Ambient glow effects */
+  /* Technical Blueprint Grid Pattern */
+  .bg-grid-tech {
+    background-image: 
+      linear-gradient(rgba(115, 92, 229, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(115, 92, 229, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Purple Ambient glows */
   .bg-glow-radial {
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+    background: radial-gradient(circle at 50% 50%, rgba(115, 92, 229, 0.04) 0%, rgba(251, 251, 254, 0) 70%);
   }
   .bg-glow-warm {
-    background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.03) 0%, rgba(25, 25, 21, 0) 60%);
+    background: radial-gradient(circle at 70% 30%, rgba(115, 92, 229, 0.03) 0%, rgba(251, 251, 254, 0) 60%);
   }
 
-  /* Interactive FAQ styles */
   .faq-details {
     @apply transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
   }
 
   .faq-details[open] {
-    @apply bg-white/[0.06] border-white/10 shadow-[0_12px_24px_rgba(0,0,0,0.3)];
+    @apply bg-white border-[#715cd7]/20 shadow-[0_12px_24px_rgba(57,40,86,0.04)];
+  }
+
+  /* Entrance Stagger Reveals */
+  .animate-stagger-1 {
+    animation: stagger-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 100ms;
+    opacity: 0;
+  }
+  .animate-stagger-2 {
+    animation: stagger-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 200ms;
+    opacity: 0;
+  }
+  .animate-stagger-3 {
+    animation: stagger-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 300ms;
+    opacity: 0;
+  }
+  .animate-stagger-4 {
+    animation: stagger-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 400ms;
+    opacity: 0;
+  }
+
+  @keyframes stagger-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Tau-Pulse keyframe for dynamic rings */
+  @keyframes tau-pulse {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
   }
 }

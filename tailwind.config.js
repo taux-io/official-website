@@ -4,37 +4,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Anthropic Glasswing Dark Palette
-        'anthro-cream': '#191915',        // Primary background (near-black warm)
-        'anthro-sand': '#232320',          // Elevated surface
-        'anthro-warm-gray': '#2E2E2A',    // Tertiary surface
-        'anthro-dark': '#FFFFFF',          // Primary text (white)
-        'anthro-charcoal': '#E8E8E3',     // Hover / emphasis text
-        'anthro-muted': 'rgba(255,255,255,0.40)', // Muted text
-        'anthro-body': 'rgba(255,255,255,0.75)',   // Body text
-        'anthro-light': '#0F0F0D',        // Deepest bg (footer)
+        // Jules Google-style Canvas Palette
+        'jules-canvas': '#fbfbfe',         // Sterile Canvas White background
+        'jules-card': '#fbfbfe',           // Card surface
+        'jules-violet': '#735ce5',         // Signal Violet
+        'jules-violet-deep': '#715cd7',    // Signal Violet Deep
+        'jules-ink': '#141316',            // Primary Ink text
+        'jules-body': '#676573',           // Body text
+        'jules-muted': '#9792af',          // Muted Gray
+        'jules-soft': '#fbfbfe',           // Background UI inputs
 
-        // Surface & border aliases
-        'deep-bg': '#191915',
-        'deep-surface': 'rgba(255,255,255,0.04)',
-        'deep-surface-hover': 'rgba(255,255,255,0.07)',
-        'deep-border': 'rgba(255,255,255,0.06)',
+        // Surface & border aliases for compatibility
+        'taux-bg': '#fbfbfe',
+        'taux-border': 'rgba(113, 92, 215, 0.15)',
+        'tech-cyan': '#735ce5',
+        'tech-purple': '#715cd7',
 
-        'accent': '#FFFFFF',
-        'accent-dim': 'rgba(255,255,255,0.60)',
-
-        'text-primary': '#FFFFFF',
-        'text-secondary': 'rgba(255,255,255,0.75)',
-        'text-muted': 'rgba(255,255,255,0.40)',
-
-        // Semantic (slightly brighter for dark bg)
-        'success': '#4ADE80',
-        'warning': '#FBBF24',
-        'error': '#F87171',
+        // Semantic
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Libre Baskerville"', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['"Google Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"Google Sans"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       animation: {
