@@ -11,7 +11,7 @@
 [[page]]
 path        = "/"
 template    = "index.html"
-title       = "拓思科技有限公司｜TauX - AI Smart Work & GEO Solutions"
+title       = "拓思科技股份有限公司｜TauX - AI Smart Work & GEO Solutions"
 description = "TauX helps enterprises land AI First strategies with technology development services."
 canonical   = "https://taux.io/"
 
@@ -21,6 +21,7 @@ template    = "geo-guide.html"
 title       = "GEO Guide - Generative Engine Optimization | TauX"
 description = "Learn how to optimize your content for AI search engines like ChatGPT and Perplexity. The ultimate guide to GEO."
 canonical   = "https://taux.io/geo-guide"
+date_published = "2025-08-15"
 
 [[page]]
 path        = "/ai-smart-work"
@@ -42,6 +43,7 @@ template    = "workspace-ai-roi.html"
 title       = "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX"
 description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
 canonical   = "https://taux.io/workspace-ai-roi"
+date_published = "2026-07-26"
 
 [[page]]
 path        = "/what-is-llms-txt"
@@ -49,6 +51,7 @@ template    = "what-is-llms-txt.html"
 title       = "What is LLMs.txt? | TauX GEO Tech"
 description = "Understand the new standard for controlling AI bot access to your content. LLMs.txt explained."
 canonical   = "https://taux.io/what-is-llms-txt"
+date_published = "2026-02-12"
 
 [[page]]
 path        = "/what-is-prompt-injection"
@@ -63,6 +66,7 @@ template    = "agent-prompting-guide.html"
 title       = "Agent Prompting Guide | TauX"
 description = "Master the art of prompting for AI agents. Comprehensive guide for developers and power users."
 canonical   = "https://taux.io/agent-prompting-guide"
+date_published = "2026-02-17"
 
 [[page]]
 path        = "/claude-skills-guide"
@@ -70,6 +74,7 @@ template    = "claude-skills-guide.html"
 title       = "Claude Skills 實戰指南 | TauX GEO Tech"
 description = "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。"
 canonical   = "https://taux.io/claude-skills-guide"
+date_published = "2026-03-02"
 
 [[page]]
 path        = "/adk-skill-patterns"
@@ -77,6 +82,7 @@ template    = "adk-skill-patterns.html"
 title       = "5 種 Agent Skill 設計模式 | TauX ADK Guide"
 description = "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
 canonical   = "https://taux.io/adk-skill-patterns"
+date_published = "2026-04-06"
 
 [[page]]
 path        = "/building"

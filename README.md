@@ -1,10 +1,10 @@
-# TauX 拓思科技有限公司 - 官方網站
+# TauX 拓思科技股份有限公司 - 官方網站
 
 ![TauX Logo](static/taux-logo-light.png)
 
 **Code the Future - 用科技創造未來**
 
-TauX 拓思科技有限公司專注於 AI Smart Work 與 GEO (Generative Engine Optimization)，運用 AI 技術為企業打造全方位數位轉型解決方案。
+TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative Engine Optimization)，運用 AI 技術為企業打造全方位數位轉型解決方案。
 
 ## 🚀 關於我們
 
@@ -215,7 +215,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 ## 📞 聯絡資訊
 
-- **公司名稱**: TauX 拓思科技有限公司
+- **公司名稱**: TauX 拓思科技股份有限公司
 - **網站**: https://taux.io
 - **電子郵件**: hello@taux.io
 - **電話**: 07-6211033
@@ -223,7 +223,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 ## 📝 授權條款
 
-© 2026 TauX 拓思科技有限公司. 保留所有權利.
+© 2026 TauX 拓思科技股份有限公司. 保留所有權利.
 
 ---
 

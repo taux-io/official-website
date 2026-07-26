@@ -15,6 +15,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process;
+use std::process::Command;
 
 use minijinja::value::Value;
 use minijinja::{context, Environment};
@@ -48,6 +49,15 @@ struct Page {
     title: String,
     description: String,
     canonical: String,
+    /// Overrides the date derived from git. Set it when a commit touched a
+    /// template without changing what the page says — a class rename, a typo
+    /// fix — because a modification date that moves on cosmetic edits is a
+    /// freshness claim the content does not support, and search engines
+    /// discount sites that make it.
+    #[serde(default)]
+    date_modified: Option<String>,
+    /// When the page was first published. A fact, so it is written by hand.
+    date_published: Option<String>,
 }
 
 impl Page {
@@ -114,8 +124,20 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let year = current_year();
     let mut written = BTreeMap::new();
+    let mut sitemap = Vec::new();
 
     for page in &site.page {
+        // Every page declared its own dateModified by hand, and every one of
+        // them was wrong: all six carried a date from April or May while the
+        // content had been rewritten that day, and four contradicted the
+        // sitemap's own lastmod for the same URL. Deriving it from the commit
+        // that last touched the template makes it correct by construction.
+        let modified = page
+            .date_modified
+            .clone()
+            .or_else(|| last_commit_date(&root.join("templates").join(&page.template)))
+            .unwrap_or_else(|| format!("{year}-01-01"));
+
         let tmpl = env.get_template(&page.template)?;
         // Titles and descriptions are escaped — one of them contains an
         // ampersand. The two URLs are not: they are ours, from site.toml, and
@@ -129,8 +151,12 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
             ),
+            date_modified => &modified,
+            date_published => page.date_published.as_deref().unwrap_or(&modified),
         })?;
         let html = strip_comments(&html);
+
+        sitemap.push((page.canonical.clone(), modified.clone()));
 
         let dest = page.output_path(&out);
         if let Some(parent) = dest.parent() {
@@ -153,6 +179,21 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         written.insert(format!("({})", doc.output), PathBuf::from(&doc.output));
     }
 
+    // Generated from the same table and the same dates as the pages, so a URL
+    // cannot be missing from it and its lastmod cannot disagree with the
+    // structured data — both of which were true of the file it replaces.
+    let mut xml = String::from(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
+         <urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n",
+    );
+    for (loc, lastmod) in &sitemap {
+        xml.push_str(&format!(
+            "  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n  </url>\n"
+        ));
+    }
+    xml.push_str("</urlset>\n");
+    fs::write(out.join("sitemap.xml"), &xml)?;
+
     copy_tree(&root.join("static"), &out.join("static"))?;
 
     // Host configuration travels with the output.
@@ -165,13 +206,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     // These sit at the root in the served site but live under static/ in the
     // repo, matching the routes the Go server exposed for them.
-    for name in [
-        "favicon.ico",
-        "robots.txt",
-        "sitemap.xml",
-        "llms.txt",
-        "site.webmanifest",
-    ] {
+    for name in ["favicon.ico", "robots.txt", "llms.txt", "site.webmanifest"] {
         let from = root.join("static").join(name);
         if from.exists() {
             fs::copy(&from, out.join(name))?;
@@ -303,6 +338,25 @@ fn copy_tree(from: &Path, to: &Path) -> std::io::Result<()> {
         }
     }
     Ok(())
+}
+
+/// The date of the last commit that touched a file, as YYYY-MM-DD.
+///
+/// Returns None outside a repository or for a file git does not know, in which
+/// case the caller falls back rather than inventing a date.
+fn last_commit_date(path: &Path) -> Option<String> {
+    let out = Command::new("git")
+        .args(["log", "-1", "--format=%ad", "--date=short", "--"])
+        .arg(path)
+        .output()
+        .ok()?;
+    let s = String::from_utf8(out.stdout).ok()?;
+    let s = s.trim();
+    if s.is_empty() {
+        None
+    } else {
+        Some(s.to_string())
+    }
 }
 
 /// Baked at build time. The Go server read the clock on every request to fill
