@@ -294,6 +294,44 @@
     color: rgba(255, 255, 255, 0.9);
   }
 
+  /* Primary Button (Google Sign-in / Pill Style) */
+  .anthro-btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    background-color: #fbfbfe;
+    color: #141316;
+    border: 1.5px solid #141316;
+    box-shadow: 0 2px 6px rgba(57, 40, 86, 0.03);
+  }
+
+  .anthro-btn:hover {
+    color: #735ce5;
+    border-color: #735ce5;
+    box-shadow: 0 4px 12px rgba(115, 92, 229, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .anthro-btn:active {
+    transform: translateY(0.5px);
+  }
+
+  /* Outline Button (Muted Border) */
+  .anthro-btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    border: 1.5px solid rgba(20, 19, 22, 0.15);
+    color: #676573;
+    background-color: transparent;
+  }
+
+  .anthro-btn-outline:hover {
+    color: #141316;
+    border-color: #141316;
+    background-color: rgba(20, 19, 22, 0.02);
+  }
+
+  .anthro-btn-outline:active {
+    transform: translateY(0.5px);
+  }
+
   /* Section layouts */
   .section-cream {
     background-color: #fbfbfe;
