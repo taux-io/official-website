@@ -81,9 +81,12 @@
      mock product shell that used to sit on the right was fabricated
      evidence for a product that does not exist. -->
 <section id="about-us" class="relative min-h-[86vh] flex items-center overflow-hidden bg-surface-deep">
-    <canvas data-tau-curve class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+    <!-- Overscaled by 40% so the parallax travel, bounded at half the
+             section height times the factor, never exposes an edge. -->
+        <canvas data-tau-curve data-parallax="0.35"
+            class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none"></canvas>
 
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-28 md:py-36">
+    <div data-parallax="0.08" class="max-w-6xl mx-auto px-6 relative z-10 w-full py-28 md:py-36">
         <p class="eyebrow mb-8 animate-stagger-1">TauX — 拓思科技</p>
 
         <h1 class="font-display text-4xl md:text-display-lg leading-[1.05] mb-10 text-ink animate-stagger-1 max-w-3xl">
