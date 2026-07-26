@@ -1,0 +1,110 @@
+{{ template "header.html" . }}
+
+<!-- Schema.org JSON-LD: BreadcrumbList + Article.
+     Citations and the FAQ block are added with the content. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://taux.io/workspace-ai-roi#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "首頁", "item": "https://taux.io" },
+        { "@type": "ListItem", "position": 2, "name": "Workspace AI 導入效益", "item": "https://taux.io/workspace-ai-roi" }
+      ]
+    },
+    {
+      "@type": "Article",
+      "@id": "https://taux.io/workspace-ai-roi#article",
+      "headline": "手動 vs 自動：效率革命",
+      "description": "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。",
+      "author": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "TauX 拓思科技",
+        "logo": { "@type": "ImageObject", "url": "https://taux.io/static/brand/logo-on-light.png" }
+      },
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-07-26",
+      "inLanguage": "zh-Hant-TW",
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/workspace-ai-roi" },
+      "image": "https://taux.io/static/og/workspace-ai-roi.png"
+    }
+  ]
+}
+</script>
+
+<article class="relative pt-32 pb-16 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header>
+            <p class="eyebrow mb-8">Google Workspace — 導入效益</p>
+
+            <h1 class="font-display text-4xl md:text-display-lg leading-[1.05] mb-8 text-ink">
+                手動 vs 自動：效率革命
+            </h1>
+
+            <p class="text-lg md:text-xl text-ink-body leading-relaxed max-w-2xl">
+                廠商公布的導入效益數字都很漂亮。問題不在它們是真是假——四組主要數據我們逐一查證過，數字全部屬實——
+                而在於它們<strong class="text-ink font-normal">測的是什麼</strong>，以及那個測法能不能預測你的組織會發生什麼。
+            </p>
+        </header>
+
+        <!-- The same step response as the homepage, drawn once and left still. -->
+        <div class="relative h-16 md:h-20 border-t border-line mt-12">
+            <canvas data-tau-curve="static" data-parallax="0.25"
+                class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
+        </div>
+    </div>
+</article>
+
+<section id="vendor-figures" class="py-20 md:py-24 bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <p class="eyebrow mb-8">01 — 廠商公布的數字</p>
+        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-6">他們說省下了多少</h2>
+        <p class="text-ink-body leading-relaxed max-w-2xl">
+            四組被引用最廣的數據，來自 Forrester 的委託研究、Google 的企業調查，以及兩家企業的導入案例。
+            每一組都附上調查方法、樣本規模與資料年份。
+        </p>
+    </div>
+</section>
+
+<section id="independent-evidence" class="py-20 md:py-24 bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <p class="eyebrow mb-8">02 — 獨立研究怎麼說</p>
+        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-6">效益是真的，這點有非廠商證據</h2>
+        <p class="text-ink-body leading-relaxed max-w-2xl">
+            隨機對照與實地實驗確實測到生產力提升，而且對經驗較少的工作者效益不成比例地大。
+            這些研究不是任何廠商委託的。
+        </p>
+    </div>
+</section>
+
+<section id="measurement-gap" class="py-20 md:py-24 bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <p class="eyebrow mb-8">03 — 但測法決定了數字的意義</p>
+        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-6">人對自己省下多少時間的判斷並不可靠</h2>
+        <p class="text-ink-body leading-relaxed max-w-2xl">
+            目前唯一一項針對資深專業工作者、以客觀計時進行的隨機對照試驗，得到的結果與受試者的自我評估方向相反。
+            這不否定 AI 的效益，但它決定了廠商數字該怎麼讀。
+        </p>
+    </div>
+</section>
+
+<section id="what-to-do" class="py-20 md:py-24 bg-surface-deep border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <p class="eyebrow mb-8">04 — 那該怎麼辦</p>
+        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-6">用量測回答，不要用簡報回答</h2>
+        <p class="text-lg text-ink-body leading-relaxed max-w-xl mb-12">
+            沒有任何一份報告能告訴你在你的組織會發生什麼。能回答那個問題的只有量測，
+            而量測要在導入之前就設計好。
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/ai-smart-work" class="anthro-btn">企業 AI 內訓</a>
+            <a href="/#contact-us" class="anthro-btn-outline">聊聊你的導入</a>
+        </div>
+    </div>
+</section>
+
+{{ template "footer.html" . }}
