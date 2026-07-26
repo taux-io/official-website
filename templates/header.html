@@ -29,15 +29,15 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="manifest" href="/static/site.webmanifest">
 
-    <!-- Fonts: Inter + Google Sans fallback -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Fonts: D-DIN self-hosted, Latin only. CJK renders from the system
+         faces, so no Chinese webfont is downloaded and no reflow waits on one.
+         The two regular weights are preloaded because they set the first
+         paint; the bold faces load on demand. -->
+    <link rel="preload" href="/static/fonts/D-DIN.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=6">
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=7">
 </head>
 
 <body class="bg-[#fbfbfe] text-[#141316] font-sans antialiased">
@@ -54,7 +54,7 @@
                 </span>
             </a>
 
-            <!-- Desktop Menu (Regular 400 Google Sans style) -->
+            <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-8">
                 <a href="/ai-smart-work" class="nav-link pb-1">Smart Work</a>
                 <a href="/geo-guide" class="nav-link pb-1">GEO Guide</a>

@@ -47,10 +47,71 @@
   --radius: 0px;
 }
 
+/* ===========================================================================
+   D-DIN, self-hosted. Copyright (C) 2017 Datto Inc, SIL Open Font License 1.1;
+   the licence ships alongside the files at static/fonts/OFL-1.1.txt.
+
+   A DIN 1451 derivative — the German industrial standard used for road signs,
+   machine plates and instrument panels. It carries the Latin only; the font
+   covers Basic Latin and Latin-1 and nothing else, and CJK is left to the
+   system faces deliberately. A Traditional Chinese webfont runs to hundreds of
+   kilobytes even with unicode-range subsetting, and its swap visibly reflows
+   the page, which is not a trade worth making on the guide pages whose search
+   performance is the point of them.
+
+   unicode-range keeps that separation strict: with CJK outside the declared
+   range the browser never blocks a Chinese glyph on this download, so the
+   text of a guide paints from PingFang or Microsoft JhengHei immediately and
+   only the Latin swaps in behind it.
+
+   Self-hosted rather than served from a CDN: one less DNS lookup and TLS
+   handshake, the files ride the same HTTP/2 connection as the stylesheet, and
+   nothing breaks on networks where Google Fonts is unreachable.
+   =========================================================================== */
+
+@font-face {
+  font-family: "D-DIN";
+  src: url("/static/fonts/D-DIN.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN";
+  src: url("/static/fonts/D-DIN-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN Condensed";
+  src: url("/static/fonts/D-DINCondensed.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN Condensed";
+  src: url("/static/fonts/D-DINCondensed-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
 @layer base {
   html {
-    @apply scroll-smooth;
-    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+    @apply scroll-smooth font-sans;
   }
 
   body {
@@ -59,12 +120,14 @@
     @apply font-sans antialiased overflow-x-hidden;
   }
 
-  /* 400 Regular is the dominant weight for the Jules system to convey quiet precision */
+  /* Regular is the dominant weight. DIN carries only 400 and 700, so the
+     font-medium and font-semibold left in the templates resolve to the nearest
+     real face rather than a synthesised one — they come out as the templates
+     migrate. */
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+    @apply font-display tracking-tight;
     font-weight: 400;
     color: #141316;
-    @apply tracking-tight;
   }
 
   /* Custom Scrollbar - Sterile Violet Theme */
@@ -423,7 +486,7 @@
 
   .anthro-quote p {
     color: #141316;
-    font-family: "Google Sans", "Inter", sans-serif;
+    @apply font-sans;
     @apply italic text-lg leading-relaxed;
   }
 
