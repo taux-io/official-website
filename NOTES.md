@@ -104,7 +104,7 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
 - **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `taux-logo-light.png` 裁切而來。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
-- **OG 分享卡**：15 張，標題取自 `main.go`，檔名由 canonical URL 推導——與 `ogImage` template helper 用同一條規則，兩邊不可能分歧。
+- **OG 分享卡**：每條路由一張，標題取自 `main.go`，檔名由 canonical URL 推導——與 `ogImage` template helper 用同一條規則，兩邊不可能分歧。
 
 ---
 

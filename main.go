@@ -155,7 +155,7 @@ func main() {
 
 	r.GET("/workspace-ai-roi", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "workspace-ai-roi.html", PageData{
-			Title:       "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX",
+			Title:       "手動 vs 自動：效率革命｜Google Workspace AI 導入效益與 ROI | TauX",
 			Description: "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。",
 			Canonical:   "https://taux.io/workspace-ai-roi",
 			Year:        time.Now().Year(),
