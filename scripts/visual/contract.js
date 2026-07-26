@@ -180,10 +180,39 @@ async function main() {
     // Resolve every declared URL from the page's own origin, so a share image
     // advertised at the production host is checked against the local build.
     const local = (u) => u.replace(ORIGIN, BASE_URL);
+
+    // Assets referenced from inside other assets are the ones that go missing
+    // unnoticed: a manifest names its icons, a stylesheet names its fonts, and
+    // neither appears in the DOM. The first version of this check walked the
+    // DOM only — so a 404ing manifest icon passed, which is the exact defect
+    // the ticket cites as its reason for existing.
+    const queue = [...doc.assetUrls];
+    const seen = new Set();
     doc.assets = [];
-    for (const url of doc.assetUrls) {
+    while (queue.length) {
+      const url = queue.shift();
+      if (seen.has(url)) continue;
+      seen.add(url);
+
       const r = await page.request.get(local(url));
       doc.assets.push({ url: url.replace(BASE_URL, ""), status: r.status() });
+      if (r.status() !== 200) continue;
+
+      const abs = (ref) => new URL(ref, local(url)).href.replace(BASE_URL, ORIGIN);
+      if (/\.webmanifest(\?|$)/.test(url)) {
+        try {
+          for (const icon of (await r.json()).icons || []) {
+            if (icon.src) queue.push(abs(icon.src));
+          }
+        } catch {
+          doc.assets.push({ url: url.replace(BASE_URL, "") + " (unparseable)", status: 0 });
+        }
+      } else if (/\.css(\?|$)/.test(url)) {
+        const css = await r.text();
+        for (const m of css.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g)) {
+          if (!m[1].startsWith("data:")) queue.push(abs(m[1]));
+        }
+      }
     }
     if (doc.ogImage) {
       const r = await page.request.get(local(doc.ogImage));

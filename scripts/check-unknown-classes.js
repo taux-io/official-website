@@ -37,6 +37,20 @@ function localClasses(html) {
   return found;
 }
 
+// Variants sit in front of the utility they modify — `hover:`, `md:`,
+// `group-open:`, `[&>svg]:` — and stack. They have to come off before the base
+// is recognised, because the first version of this tested the whole candidate
+// against the list below and no variant name is in it: every hover-, focus- and
+// breakpoint-prefixed invalid class was silently skipped. `group-hover:` was
+// the sole exception, and only by accident, since `group-` happens to match.
+const VARIANT_PREFIX = /^(?:[a-z0-9-]+|\[[^\]]*\]):/;
+
+function stripVariants(candidate) {
+  let base = candidate;
+  while (VARIANT_PREFIX.test(base)) base = base.replace(VARIANT_PREFIX, "");
+  return base;
+}
+
 // Utilities are what Tailwind generates. Anything that does not look like one
 // is markup vocabulary, not a candidate — checking it would only produce noise.
 const LOOKS_LIKE_UTILITY =
@@ -92,10 +106,9 @@ function main() {
         for (const raw of attr[1].split(/\s+/)) {
           if (!raw || raw.includes("{{")) continue; // template expressions
           if (local.has(raw)) continue;
-          if (!LOOKS_LIKE_UTILITY.test(raw)) continue;
-
-          // Variants are separate selectors in the output, so the whole
-          // candidate is what has to be declared, prefix included.
+          // Recognise the base, but look up the whole candidate: Tailwind emits
+          // a separate selector per variant combination, prefix included.
+          if (!LOOKS_LIKE_UTILITY.test(stripVariants(raw))) continue;
           if (declared.has(raw)) continue;
 
           const rel = path.relative(ROOT, file);
