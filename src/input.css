@@ -498,22 +498,74 @@
     border: 1px solid rgba(115, 92, 229, 0.1);
   }
 
-  /* Navigation Links */
+  /* Navigation.
+
+     This is where the typographic signature lives. CJK has no uppercase and
+     takes badly to wide tracking, so the treatment that makes the design
+     recognisable — condensed, uppercase, widely letterspaced — has to be
+     carried entirely by the Latin elements, and the nav is where most of them
+     are. Condensed also buys back the width the tracking costs: the same items
+     set in the regular face would overrun the container. */
   .nav-link {
-    @apply text-sm font-medium text-[#676573] relative;
+    @apply font-display text-[0.7rem] uppercase tracking-[0.2em] text-ink-muted relative
+           transition-colors duration-200 bg-transparent cursor-pointer;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute left-0 bottom-0 w-full h-[1.5px] bg-[#735ce5] scale-x-0 origin-right transition-transform duration-300;
+    @apply absolute left-0 -bottom-1 w-full h-px bg-ink scale-x-0 origin-right transition-transform duration-300;
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-link[aria-expanded="true"]::after {
     @apply scale-x-100 origin-left;
   }
 
-  .nav-link:hover {
-    @apply text-[#141316];
+  .nav-link:hover,
+  .nav-link[aria-expanded="true"] {
+    @apply text-ink;
+  }
+
+  /* Square, hairline-bordered, uppercase. Inverting to a solid fill on hover
+     is the whole interaction — no lift, no shadow, no colour. */
+  .nav-cta {
+    @apply inline-flex items-center font-display text-[0.7rem] uppercase tracking-[0.2em]
+           px-5 py-2 transition-colors duration-200;
+    /* Set directly rather than via @apply: alongside an arbitrary text-[0.7rem]
+       in the same declaration, Tailwind drops `text-ink` — the DEFAULT key of a
+       colour scale collides with the font-size candidate under the same
+       `text-` prefix. `text-ink-muted` survives the same pairing, which is what
+       makes the omission easy to miss. */
+    color: var(--text-primary);
+    border: 1px solid var(--line-strong);
+  }
+
+  .nav-cta:hover {
+    background-color: var(--text-primary);
+    color: var(--surface-deep);
+  }
+
+  /* Overlay menu links: larger, still uppercase, still tracked. */
+  .menu-link {
+    @apply font-display text-lg md:text-xl uppercase tracking-[0.12em] text-ink-body
+           transition-colors duration-200;
+  }
+
+  .menu-link:hover {
+    @apply text-ink;
+  }
+
+  /* Latin eyebrow label — section numbers, column headings, kickers. */
+  .eyebrow {
+    @apply font-display text-eyebrow uppercase text-ink-muted;
+  }
+
+  .footer-link {
+    @apply text-sm text-ink-body transition-colors duration-200;
+  }
+
+  .footer-link:hover {
+    @apply text-ink;
   }
 }
 
