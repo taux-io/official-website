@@ -23,3 +23,6 @@ ssl/*.crt
 # OS
 .DS_Store
 Thumbs.db
+
+# Visual regression captures
+.visual/
