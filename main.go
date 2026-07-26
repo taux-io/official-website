@@ -286,8 +286,27 @@ func main() {
 		port = "8080"
 	}
 
+	// Gin's r.Run hands the router to http.ListenAndServe, whose default server
+	// sets no timeouts at all: a client that opens a connection and sends its
+	// request one byte at a time holds a goroutine indefinitely, and enough of
+	// them exhaust the server without any traffic worth the name. That is
+	// Slowloris, and the defence is to give every phase a deadline.
+	//
+	// The values suit what this server actually does — render a template of a
+	// few hundred kilobytes at most, from memory, with no upstream calls. They
+	// are deliberately not generous: nothing legitimate here needs longer.
+	// ReadHeaderTimeout is the one that closes the Slowloris case specifically.
+	server := &http.Server{
+		Addr:              ":" + port,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+
 	log.Printf("Server starting on port %s", port)
-	if err := r.Run(":" + port); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to run server: %v", err)
 	}
 }
