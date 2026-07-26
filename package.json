@@ -5,6 +5,7 @@
     "check:css": "sh scripts/check-css-fresh.sh",
     "screenshot": "node scripts/visual/screenshot.js",
     "contrast": "node scripts/visual/contrast.js",
+    "contract": "node scripts/visual/contract.js",
     "diff": "node scripts/visual/diff.js",
     "build:icons": "node scripts/assets/build-icons.js",
     "build:og": "node scripts/assets/build-og.js",
