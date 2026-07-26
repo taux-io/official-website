@@ -11,17 +11,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Dark Theme (Glasswing)
         // Read from the token layer so a palette change carries the chart with
-        // it. This file previously held the only two colour values left on the
-        // site — the monochrome migration compared class attributes and never
-        // looked inside JavaScript.
+        // it. This file held the last two hues on the site — the monochrome
+        // migration compared class attributes and never looked inside
+        // JavaScript — and the first pass at fixing that replaced the series
+        // colours while leaving the axes, grid, tooltip and legend on
+        // hand-picked rgba values. They are all tokens now.
         const token = (name, fallback) =>
             getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-        const INK = `rgb(${token('--text-primary-rgb', '255 255 255')})`;
-        const MUTED = `rgb(${token('--text-muted-rgb', '138 138 145')})`;
+        const INK_RGB = token('--text-primary-rgb', '255 255 255');
+        const MUTED_RGB = token('--text-muted-rgb', '138 138 145');
+        const LINE_RGB = token('--line-rgb', '255 255 255');
+        const SURFACE_RAISED_RGB = token('--surface-raised-rgb', '15 15 17');
 
-        Chart.defaults.color = 'rgba(255,255,255,0.50)';
-        Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
-        Chart.defaults.font.family = "'D-DIN', 'PingFang TC', 'Microsoft JhengHei', sans-serif";
+        const ink = (a) => `rgb(${INK_RGB} / ${a})`;
+        const line = (a) => `rgb(${LINE_RGB} / ${a})`;
+        const INK = `rgb(${INK_RGB})`;
+        const MUTED = `rgb(${MUTED_RGB})`;
+
+        Chart.defaults.color = ink(0.5);
+        Chart.defaults.borderColor = line(0.08);
+        Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
 
         new Chart(ctx, {
             type: 'line',
@@ -64,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: 'rgba(255,255,255,0.70)',
+                            color: ink(0.7),
                             usePointStyle: true,
                             padding: 20
                         }
@@ -72,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     tooltip: {
                         mode: 'index',
                         intersect: false,
-                        backgroundColor: 'rgba(15, 15, 13, 0.95)',
-                        titleColor: '#ffffff',
-                        bodyColor: 'rgba(255,255,255,0.70)',
-                        borderColor: 'rgba(255,255,255,0.10)',
+                        backgroundColor: `rgb(${SURFACE_RAISED_RGB} / 0.95)`,
+                        titleColor: INK,
+                        bodyColor: ink(0.7),
+                        borderColor: line(0.2),
                         borderWidth: 1,
                         padding: 12,
                         boxPadding: 6,
@@ -86,12 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     y: {
                         beginAtZero: true,
                         max: 100,
-                        title: { display: true, text: '攻擊成功率 (%)', color: 'rgba(255,255,255,0.50)', padding: 10 },
-                        grid: { color: 'rgba(255,255,255,0.06)' },
+                        title: { display: true, text: '攻擊成功率 (%)', color: ink(0.5), padding: 10 },
+                        grid: { color: line(0.08) },
                         border: { display: false }
                     },
                     x: {
-                        title: { display: true, text: '偽造範例數量 (Shots)', color: 'rgba(255,255,255,0.50)', padding: 10 },
+                        title: { display: true, text: '偽造範例數量 (Shots)', color: ink(0.5), padding: 10 },
                         grid: { display: false },
                         border: { display: false }
                     }

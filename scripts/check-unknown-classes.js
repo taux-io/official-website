@@ -65,26 +65,44 @@ function walk(dir, out = []) {
   return out;
 }
 
-// A class is present if the stylesheet declares a selector for it.
+// Class names appearing in selector position within some CSS text.
 //
-// Only selector text is scanned — everything between a rule's opening brace and
-// the one before it. Reading the whole file instead matches the decimal point in
-// every `margin:.75rem`, which is how the first version of this reported that
-// `mb-4` generates no CSS.
+// Only selector text is scanned — what precedes the innermost brace of each
+// rule — so decimal points inside declarations are never mistaken for class
+// names. Reading the whole file instead reports that `mb-4` generates no CSS,
+// because of the `.75rem` in `margin:.75rem`.
 //
 // Escapes are stripped so the generated `.md\:h-20` matches the candidate
 // `md:h-20`, and `.h-\[140\%\]` matches `h-[140%]`.
-function declaredClasses(css) {
+function selectorClasses(css) {
   const found = new Set();
   for (const chunk of css.split("}")) {
     const parts = chunk.split("{");
     if (parts.length < 2) continue;
-    // The selector is whatever precedes the innermost brace, so a rule nested
-    // inside an at-rule prelude is read rather than the prelude.
-    const selector = parts[parts.length - 2];
-    for (const m of selector.matchAll(/\.((?:\\.|[a-zA-Z0-9_-])+)/g)) {
+    // The innermost brace, so a rule nested inside an at-rule prelude is read
+    // rather than the prelude itself.
+    for (const m of parts[parts.length - 2].matchAll(/\.((?:\\.|[a-zA-Z0-9_-])+)/g)) {
       found.add(m[1].replace(/\\/g, ""));
     }
+  }
+  return found;
+}
+
+// What the built stylesheet declares.
+const declaredClasses = (css) => selectorClasses(css);
+
+// What a template declares in its own <style> blocks. Reading them beats
+// maintaining a list of prefixes by hand — the list goes stale, and each stale
+// entry is a false report that trains people to ignore this check.
+//
+// The recognition list below is the opposite trade: it is hand-maintained, and
+// its staleness mode is a silent miss rather than a false report. That is the
+// safer direction for a list that decides what to *examine*, but it does mean
+// an unrecognised utility prefix is skipped rather than flagged.
+function localClasses(html) {
+  const found = new Set();
+  for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
+    for (const c of selectorClasses(block[1])) found.add(c);
   }
   return found;
 }

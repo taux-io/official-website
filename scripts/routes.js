@@ -45,6 +45,7 @@ function readRoutes() {
     // slug from the canonical URL. Deriving it here too keeps all three in step.
     const slug =
       canonical.replace(ORIGIN, "").replace(/^\/|\/$/g, "") || "index";
+    const isError = /^(404|500)$/.test(slug);
     out.push({
       path: route,
       name: slug,
@@ -52,12 +53,12 @@ function readRoutes() {
       description,
       canonical,
       // Error routes answer with their own status rather than 200.
-      expectedStatus: /^(404|500)$/.test(slug) ? Number(slug) : 200,
+      expectedStatus: isError ? Number(slug) : 200,
       // Error pages are never shared and must not be indexed, so the canonical
       // URL, share card and structured data that every content page owes are
       // not part of their contract. 500 is a standalone template with its own
       // head and carries none of them at all.
-      isError: /^(404|500)$/.test(slug),
+      isError,
       standalone: false,
     });
   }
