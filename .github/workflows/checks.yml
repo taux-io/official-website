@@ -59,6 +59,12 @@ jobs:
       - name: classes resolve
         run: npm run check:classes
 
+      # llms.txt is written for models rather than people, so a page missing
+      # from it is invisible to the audience the GEO work exists to reach. The
+      # newest article shipped absent from it and nothing noticed.
+      - name: llms.txt lists every page
+        run: npm run check:llms
+
   audit:
     runs-on: ubuntu-latest
     steps:
