@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   Design tokens.
+
+   Every previous restyle rewrote hex values across the templates, which is why
+   four generations of palette now sit side by side in them. These variables
+   are the single place a palette is chosen; the templates reference semantic
+   names (bg-surface, text-ink-body, border-line) that resolve here.
+
+   Each colour is stored as space-separated channels so Tailwind's opacity
+   modifiers work — bg-surface/50 compiles to rgb(var(--surface-rgb) / 0.5) —
+   with a plain colour alias alongside it for hand-written CSS, including the
+   inline <style> block in claude-skills-guide.html.
+   =========================================================================== */
+:root {
+  /* Surfaces. Deep is reserved for full-bleed hero sections; the base surface
+     is a hair off black, which keeps dense CJK glyphs from haloing the way
+     they do against #000. */
+  --surface-deep-rgb: 0 0 0;
+  --surface-rgb: 10 10 11;
+  --surface-raised-rgb: 15 15 17;
+
+  /* Text. Body sits below pure white for the same reason — long-form reading
+     against maximum contrast is what causes halation, not the black itself. */
+  --text-primary-rgb: 255 255 255;
+  --text-body-rgb: 200 200 204;
+  --text-muted-rgb: 138 138 145;
+
+  /* Hairlines. Two weights only: a divider and a button edge. */
+  --line-rgb: 255 255 255;
+
+  --surface-deep: rgb(var(--surface-deep-rgb));
+  --surface: rgb(var(--surface-rgb));
+  --surface-raised: rgb(var(--surface-raised-rgb));
+  --text-primary: rgb(var(--text-primary-rgb));
+  --text-body: rgb(var(--text-body-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --line: rgb(var(--line-rgb) / 0.08);
+  --line-strong: rgb(var(--line-rgb) / 0.2);
+
+  /* Square by default. Rounded rectangles read as consumer software; circles
+     are left alone, since gauges, orbits and dials belong to this vocabulary.
+     Tailwind's `full` step is preserved in the config for exactly that. */
+  --radius: 0px;
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
@@ -64,11 +109,6 @@
       0 0 0 1px rgba(113, 92, 215, 0.06),
       0 8px 16px rgba(57, 40, 86, 0.03),
       0 24px 48px rgba(57, 40, 86, 0.075);
-  }
-
-  /* Legacy alias */
-  .glass-card {
-    @apply anthro-card;
   }
 
   /* ---------------------------------------------------------------------
@@ -415,29 +455,8 @@
 }
 
 @layer utilities {
-  .fintech-card {
-    @apply anthro-card;
-  }
-
   .watermark {
     @apply absolute select-none text-[#735ce5]/[0.02] pointer-events-none font-display font-black;
-  }
-
-  .anthro-prose {
-    @apply max-w-prose mx-auto;
-    line-height: 1.8;
-  }
-
-  .anthro-prose p {
-    @apply mb-6 text-[#676573];
-  }
-
-  .anthro-prose h2 {
-    @apply mt-16 mb-6 text-[#141316];
-  }
-
-  .anthro-prose h3 {
-    @apply mt-12 mb-4 text-[#141316];
   }
 
   /* Technical Blueprint Grid Pattern */
