@@ -16,49 +16,38 @@
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
+const { ROUTES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
 const OUT_DIR = path.join(ROOT, "static", "og");
 const WIDTH = 1200;
 const HEIGHT = 630;
 
+// Routes come from the shared table, which reads main.go. Parsing it here a
+// second time is how a card and the tag pointing at it could drift apart.
 function routes() {
-  const go = fs.readFileSync(path.join(ROOT, "main.go"), "utf8");
-  const re =
-    /r\.GET\("([^"]+)",[\s\S]*?Title:\s*"([^"]*)"[\s\S]*?Description:\s*"([^"]*)"[\s\S]*?Canonical:\s*"([^"]*)"/g;
-  const out = [];
-  let m;
-  while ((m = re.exec(go))) {
-    const [, route, title, description, canonical] = m;
-    // The filename is derived from the canonical URL exactly as main.go's
-    // ogImage helper derives it, so a card and the tag pointing at it cannot
-    // drift apart. Deriving it from the route instead is how /404.html ended
-    // up advertising an image that was never generated.
-    const slug = canonical.replace(/^https:\/\/taux\.io/, "").replace(/^\/|\/$/g, "") || "index";
-    out.push({
-      route,
-      // The brand suffix is for a browser tab; the card already carries the
-      // wordmark, so repeating it wastes the largest line on the image. It is
-      // not always the trailing segment — "About TauX | AI & GEO Specialists"
-      // puts it first — so segments are filtered rather than truncated.
-      title: title
-        .split(/[|｜]/)
-        .map((part) =>
-          part
-            .replace(/\bTauX\b/g, "")
-            // Removing the brand can strand the dash that joined it to the
-            // rest: "TauX - AI Smart Work" leaves "- AI Smart Work".
-            .replace(/^[\s\-–—]+|[\s\-–—]+$/g, "")
-            .replace(/\s{2,}/g, " ")
-            .trim()
-        )
-        .filter(Boolean)
-        .join(" — "),
-      description,
-      name: slug,
-    });
-  }
-  return out;
+  return ROUTES.filter((r) => !r.standalone).map((r) => ({
+    route: r.path,
+    // The brand suffix is for a browser tab; the card already carries the
+    // wordmark, so repeating it wastes the largest line on the image. It is
+    // not always the trailing segment — "About TauX | AI & GEO Specialists"
+    // puts it first — so segments are filtered rather than truncated.
+    title: r.title
+      .split(/[|｜]/)
+      .map((part) =>
+        part
+          .replace(/\bTauX\b/g, "")
+          // Removing the brand can strand the dash that joined it to the
+          // rest: "TauX - AI Smart Work" leaves "- AI Smart Work".
+          .replace(/^[\s\-–—]+|[\s\-–—]+$/g, "")
+          .replace(/\s{2,}/g, " ")
+          .trim()
+      )
+      .filter(Boolean)
+      .join(" — "),
+    description: r.description,
+    name: r.name,
+  }));
 }
 
 const CARD = (item, fontCss) => `
