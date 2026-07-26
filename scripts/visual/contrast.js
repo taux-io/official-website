@@ -12,7 +12,7 @@
 // background, compositing alpha up the ancestor chain.
 
 const { chromium } = require("playwright");
-const { ROUTES, VIEWPORTS, BASE_URL } = require("./routes");
+const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
 
 const SHOW_ALL = process.argv.includes("--all");
 

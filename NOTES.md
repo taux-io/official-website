@@ -67,12 +67,22 @@ npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
 npm run build:assets   # 圖示 + 結構化資料 logo + OG 分享卡
 npm run contrast       # WCAG 稽核（CI 閘門）
+npm run contract       # 路由對外宣告的契約（CI 閘門）
+npm run check:classes  # 找出不產生任何 CSS 的類別（CI 閘門）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 go run main.go         # 預設 :8080，可用 PORT 覆寫
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `go build` / `go vet` / `gofmt` / `check:css` / `contrast`。**對比稽核目前是 0 隱形、0 不符 AA，閘門就是「不准變成非零」**——趁乾淨時設門檻，才不需要維護一份豁免清單。截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `go build` / `go vet` / `gofmt` / `check:css` / `check:classes` / `contrast` / `contract`。
+
+三道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
+
+- **contrast** —— 0 隱形元素、0 不符 WCAG AA
+- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤
+- **check:classes** —— 沒有任何類別產生不出 CSS
+
+截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
 
 ### `styles.min.css` 是進版控的建置產物
 
@@ -104,7 +114,7 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
 - **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `taux-logo-light.png` 裁切而來。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
-- **OG 分享卡**：15 張，標題取自 `main.go`，檔名由 canonical URL 推導——與 `ogImage` template helper 用同一條規則，兩邊不可能分歧。
+- **OG 分享卡**：每條路由一張，標題取自 `main.go`，檔名由 canonical URL 推導——與 `ogImage` template helper 用同一條規則，兩邊不可能分歧。
 
 ---
 

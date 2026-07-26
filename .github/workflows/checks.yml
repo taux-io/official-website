@@ -54,6 +54,12 @@ jobs:
       - name: stylesheet is current
         run: npm run check:css
 
+      # Tailwind emits nothing for a candidate it cannot resolve, so a class
+      # naming a config key that does not exist looks deliberate, builds
+      # cleanly, and silently has no effect. The redesign found 55 of them.
+      - name: classes resolve
+        run: npm run check:classes
+
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -87,3 +93,10 @@ jobs:
       # under 1.5:1 is reported separately as effectively invisible.
       - name: contrast audit
         run: npm run contrast
+
+      # What each route declares to the machines that read it: status, document
+      # language, canonical URL, share card, structured data, every referenced
+      # asset, policy violations and script errors. Most of the defects found
+      # during the redesign lived here rather than in anything a person looks at.
+      - name: route contract
+        run: npm run contract
