@@ -25,13 +25,6 @@ module.exports = {
           strong: "rgb(var(--line-rgb) / 0.2)",
         },
 
-        // Pending removal. Nine usages remain, all labelling correct-versus-
-        // incorrect prompt examples in the guides — where the ❌ and ✅ glyphs
-        // already carry the meaning. They go when those templates migrate to
-        // the monochrome palette; keeping them until then avoids silently
-        // dropping the styling off nine live elements.
-        success: "#10B981",
-        error: "#EF4444",
       },
       fontFamily: {
         // D-DIN carries the Latin; CJK falls through to the system faces,

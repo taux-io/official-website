@@ -24,9 +24,9 @@ TauX 拓思科技有限公司專注於 AI Smart Work 與 GEO (Generative Engine 
 
 - **Backend**: Go 1.24+, Gin Web Framework
 - **Frontend**: HTML5 Templates (SSR), TailwindCSS 3.4
-- **Infrastructure**: Docker (Distroless/nonroot), Docker Compose, Nginx Proxy + Acme Companion (Auto SSL)
-- **Design**: Premium Tech Aesthetic, Glassmorphism, Dark Mode Optimized
-- **Security**: Defense-in-depth Security Headers (Go + Nginx), Hardened CSP, Distroless Container
+- **Infrastructure**: Docker (Distroless/nonroot), nginx-proxy + Acme Companion (Auto SSL)
+- **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、方角、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`
+- **Security**: 安全標頭與 CSP 全部在 `main.go` middleware，隨應用程式部署；Distroless 容器
 
 ## 📁 專案結構
 
@@ -64,8 +64,9 @@ taux-dev/
 ├── Dockerfile                  # Go 應用容器設定 (Distroless + nonroot)
 ├── docker-compose.yml          # Docker Compose 基礎設定
 ├── docker-compose.dev.yml      # 開發環境部署設定
-├── docker-compose.prod.yml     # 生產環境部署設定 (Nginx Proxy + Acme)
-└── nginx.conf                  # Nginx 設定 (Security Headers + Hardened CSP)
+├── scripts/visual/             # 對比稽核、截圖、像素比對
+├── scripts/assets/             # 圖示、結構化資料 logo、OG 分享卡生成
+└── deploy.prod.sh              # 生產環境部署 (唯一有效路徑)
 ```
 
 ## 🤖 AI 協作體系
@@ -105,11 +106,13 @@ taux-dev/
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
 
-### 基礎設施安全 (Nginx)
-- Hardened Content-Security-Policy (無 `unsafe-inline` script-src)
-- `Strict-Transport-Security` (HSTS)
-- `frame-ancestors 'none'`
-- `server_tokens off`
+### Content-Security-Policy (`main.go`)
+- `script-src 'self' https://cdn.jsdelivr.net` — **無 `unsafe-inline`**
+- `style-src` 需要 `unsafe-inline`（16 個 style 屬性 + 2 個行內區塊）
+- `font-src 'self'` — 字體已自架
+- `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`
+
+> 此 policy 先前只存在於 `nginx.conf`，而該檔案不在實際運行的拓撲中，等於從未生效。現已移入 Go middleware。
 
 ### 容器安全 (Docker)
 - Google Distroless `static-debian12:nonroot` 基底映像
@@ -122,9 +125,11 @@ taux-dev/
 ### 方法一：使用 Docker (推薦 - 自動 SSL)
 
 ```bash
-# 啟動服務 (App + Nginx Proxy + Acme Companion)
-# 系統將自動申請並展期 Let's Encrypt 憑證
+# 開發環境
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+# 生產環境：在正式機上執行 ./deploy.prod.sh
+# (docker-compose.prod.yml 已刪除 — 它的 nginx 服務缺少 image/build，無法啟動)
 
 # 訪問網站
 # https://taux.io (Production)
@@ -194,15 +199,19 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
 
 ### 生產環境部署 (Production)
-本專案生產環境使用 `nginxproxy/acme-companion` 處理 SSL 自動化。
 
-1. **DNS 設定**：確保網域 (A Record) 指向伺服器 IP。
-2. **環境變數**：在 `docker-compose.prod.yml` 中設定 `LETSENCRYPT_EMAIL`。
+**唯一有效的部署路徑是在正式機上執行 `./deploy.prod.sh`。** 它會 `git pull`、`docker build`，再直接 `docker run` 把 Go 容器掛上 `VIRTUAL_HOST=taux.io` 接到 `taux_frontend` 網路，由既有的 nginx-proxy 反向代理。SSL 由 `nginxproxy/acme-companion` 偵測 `VIRTUAL_HOST` 後自動申請與展期。
+
+1. **DNS 設定**：確保網域 (A Record) 指向伺服器 IP
+2. **環境變數**：`VIRTUAL_HOST` / `LETSENCRYPT_HOST` / `LETSENCRYPT_EMAIL` 定義在 `deploy.prod.sh` 的 `docker run` 參數中
 3. **啟動**：
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   ./deploy.prod.sh
    ```
-   容器啟動後，`acme-companion` 會自動偵測 `VIRTUAL_HOST` 並與 Let's Encrypt 通訊申請/更新憑證。
+
+> `docker-compose.prod.yml` 已刪除。它的 `nginx` 服務既無 `image` 也無 `build`，`docker compose config` 判定為無效專案，不可能啟動過。
+>
+> 502/503 錯誤頁由 nginx-proxy 從自己的 `html` volume（`/usr/share/nginx/html/`）供應，`git pull` 碰不到——要客製需手動複製 `static/502.html`、`static/503.html` 進該 volume。
 
 ## 📞 聯絡資訊
 

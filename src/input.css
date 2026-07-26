@@ -150,6 +150,20 @@
   a {
     @apply transition-colors duration-200;
   }
+
+  /* Keyboard focus. Two controls carried focus:outline-none, which removes the
+     browser's indicator without replacing it — the menu button and its close
+     control were unmarkable for anyone navigating by keyboard. A stated ring
+     also keeps the indicator inside the design's vocabulary instead of leaving
+     it to a default drawn to survive any background.
+
+     :focus-visible rather than :focus, so it appears for keyboard use and not
+     on mouse clicks. */
+  :focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+    border-radius: 0;
+  }
 }
 
 @layer components {
@@ -298,12 +312,6 @@
     animation-delay: 300ms;
     opacity: 0;
   }
-  .animate-stagger-4 {
-    animation: stagger-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 400ms;
-    opacity: 0;
-  }
-
   @keyframes stagger-reveal {
     from {
       opacity: 0;

@@ -1,0 +1,89 @@
+name: checks
+
+# Every defect this repo has carried was something nobody re-checked: text that
+# rendered white on white for an entire release, a stylesheet committed a build
+# behind its templates, class names pointing at config keys that never existed.
+# None of them were subtle. They simply had nothing watching for them.
+#
+# The contrast audit is the gate because its verdict is computed rather than
+# eyeballed, and because the site currently passes it cleanly — so the rule is
+# "must stay at zero" and needs no list of tolerated exceptions. Screenshots and
+# the pixel diff are deliberately not gates: font rasterisation differs between
+# machines and they would fail on noise. They are tools for a person deciding
+# whether a change looks right.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: go build
+        run: go build -o /tmp/taux .
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "not gofmt'd:"; echo "$unformatted"; exit 1
+          fi
+
+      # styles.min.css is a build artifact under version control, generated from
+      # the classes Tailwind finds in the templates. Editing a template after a
+      # build leaves it silently short a rule — which has happened.
+      - name: stylesheet is current
+        run: npm run check:css
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: install chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: start the site
+        run: |
+          PORT=8099 GIN_MODE=release go run main.go &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:8099/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:8099/ || { echo "server never came up"; exit 1; }
+
+      # Exits non-zero on any element below its WCAG AA threshold. Anything
+      # under 1.5:1 is reported separately as effectively invisible.
+      - name: contrast audit
+        run: npm run contrast

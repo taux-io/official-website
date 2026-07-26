@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="zh-Hant-TW" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -62,6 +62,12 @@
             回到首頁
         </a>
     </div>
+    <!-- This script stays inline on purpose. nginx-proxy serves this page when
+         the backend is down, and at that moment nothing under /static is
+         reachable — an external file would simply 404. The app's CSP forbids
+         inline script, but the app is not what serves this page; the policy
+         only applies if someone opens /static/502.html directly, which by
+         definition means the backend is up and this page is not in use. -->
     <script>
         // Auto-retry: check if server is back every 5 seconds
         let n = 0;

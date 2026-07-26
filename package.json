@@ -8,7 +8,8 @@
     "diff": "node scripts/visual/diff.js",
     "build:icons": "node scripts/assets/build-icons.js",
     "build:og": "node scripts/assets/build-og.js",
-    "build:assets": "npm run build:icons && npm run build:og"
+    "build:assets": "npm run build:icons && npm run build:logo && npm run build:og",
+    "build:logo": "node scripts/assets/build-logo.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

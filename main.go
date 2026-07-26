@@ -29,15 +29,65 @@ func main() {
 
 	r := gin.Default()
 
-	// Security Headers Middleware (Defense-in-depth)
-	// These headers are also set by Nginx in production, but we apply them
-	// at the Go layer as well to protect direct access scenarios.
+	// Security headers.
+	//
+	// These used to be split between here and nginx.conf, with the policy —
+	// the one header that actually constrains what the page may load — living
+	// only in nginx. That file was never part of the running topology:
+	// deploy.prod.sh hands the app container to nginx-proxy directly, so the
+	// site has been serving no policy at all while the README advertised a
+	// hardened one. Setting it here means it travels with the application and
+	// applies wherever the app runs.
+	//
+	// The sources are the ones the site actually uses. jsdelivr carries Chart.js
+	// on the prompt-injection page and is the only remaining third party; the
+	// Google Fonts, Tag Manager, Analytics and cdnjs origins the old policy
+	// allowed are unused. 'unsafe-inline' is needed for styles — sixteen style
+	// attributes and two inline blocks — but not for scripts: there is not one
+	// inline event handler in the templates.
+	const contentSecurityPolicy = "default-src 'self'; " +
+		"script-src 'self' https://cdn.jsdelivr.net; " +
+		"style-src 'self' 'unsafe-inline'; " +
+		"font-src 'self'; " +
+		"img-src 'self' data:; " +
+		"connect-src 'self'; " +
+		"frame-ancestors 'none'; " +
+		"base-uri 'self'; " +
+		"form-action 'self'"
+
 	r.Use(func(c *gin.Context) {
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("X-Frame-Options", "DENY")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
 		c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
-		c.Header("X-XSS-Protection", "1; mode=block")
+		c.Header("Content-Security-Policy", contentSecurityPolicy)
+		c.Next()
+	})
+
+	// Caching for static assets, which were being served with nothing but a
+	// Last-Modified date — every repeat visit paid a conditional request per
+	// asset to be told nothing had changed.
+	//
+	// Fonts are immutable for a year: their contents never change, and a
+	// replacement would arrive under a different name. Images get a week.
+	//
+	// CSS and JS deliberately do not get long lives, even though they are
+	// cache-busted by a ?v= query. Nothing enforces that the number is
+	// incremented — it is remembered, or it is not, and forgetting it while
+	// serving immutable would strand every returning visitor on a stale
+	// stylesheet with no way to recover. An hour plus revalidation drops
+	// almost all of the round trips without betting on anyone's memory.
+	r.Use(func(c *gin.Context) {
+		p := c.Request.URL.Path
+		switch {
+		case strings.HasPrefix(p, "/static/fonts/"):
+			c.Header("Cache-Control", "public, max-age=31536000, immutable")
+		case strings.HasPrefix(p, "/static/og/"), strings.HasSuffix(p, ".png"),
+			strings.HasSuffix(p, ".ico"), strings.HasSuffix(p, ".webmanifest"):
+			c.Header("Cache-Control", "public, max-age=604800")
+		case strings.HasPrefix(p, "/static/"):
+			c.Header("Cache-Control", "public, max-age=3600")
+		}
 		c.Next()
 	})
 
