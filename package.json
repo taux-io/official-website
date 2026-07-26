@@ -3,6 +3,7 @@
     "build:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --minify",
     "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch",
     "check:css": "sh scripts/check-css-fresh.sh",
+    "check:classes": "node scripts/check-unknown-classes.js",
     "screenshot": "node scripts/visual/screenshot.js",
     "contrast": "node scripts/visual/contrast.js",
     "contract": "node scripts/visual/contract.js",

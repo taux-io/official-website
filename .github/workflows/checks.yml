@@ -54,6 +54,14 @@ jobs:
       - name: stylesheet is current
         run: npm run check:css
 
+      # Tailwind emits nothing for a candidate it cannot resolve, so a class
+      # naming a config key that does not exist looks deliberate, builds
+      # cleanly, and silently has no effect. The redesign found 55 of them.
+      - name: classes resolve
+        run: |
+          npm run build:css
+          npm run check:classes
+
   audit:
     runs-on: ubuntu-latest
     steps:
