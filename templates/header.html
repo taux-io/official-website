@@ -10,18 +10,25 @@
     {{ if .Canonical }}
     <link rel="canonical" href="{{ .Canonical }}">{{ end }}
 
-    <!-- Open Graph -->
+    <!-- Open Graph. The share card is built from the same tokens, typeface and
+         tau curve as the page; rerun scripts/assets/build-og.js after a
+         palette change and every image follows. -->
     <meta property="og:title" content="{{ .Title }}">
     <meta property="og:description" content="{{ .Description }}">
     <meta property="og:type" content="website">
     {{ if .Canonical }}<meta property="og:url" content="{{ .Canonical }}">{{ end }}
     <meta property="og:site_name" content="TauX 拓思科技">
     <meta property="og:locale" content="zh_TW">
+    <meta property="og:image" content="{{ ogImage .Canonical }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ .Title }}">
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ .Title }}">
     <meta name="twitter:description" content="{{ .Description }}">
+    <meta name="twitter:image" content="{{ ogImage .Canonical }}">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">

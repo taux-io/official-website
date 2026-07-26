@@ -1,9 +1,11 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -37,6 +39,19 @@ func main() {
 		c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
 		c.Header("X-XSS-Protection", "1; mode=block")
 		c.Next()
+	})
+
+	// Derive each page's share card from its canonical URL, so adding a route
+	// does not mean remembering to set an image path by hand. Cards are built
+	// by scripts/assets/build-og.js from the same route table.
+	r.SetFuncMap(template.FuncMap{
+		"ogImage": func(canonical string) string {
+			slug := strings.Trim(strings.TrimPrefix(canonical, "https://taux.io"), "/")
+			if slug == "" {
+				slug = "index"
+			}
+			return "https://taux.io/static/og/" + slug + ".png"
+		},
 	})
 
 	// Load HTML templates
