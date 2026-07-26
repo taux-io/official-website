@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('jailbreakChart').getContext('2d');
 
         // Dark Theme (Glasswing)
+        // Read from the token layer so a palette change carries the chart with
+        // it. This file previously held the only two colour values left on the
+        // site — the monochrome migration compared class attributes and never
+        // looked inside JavaScript.
+        const token = (name, fallback) =>
+            getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+        const INK = `rgb(${token('--text-primary-rgb', '255 255 255')})`;
+        const MUTED = `rgb(${token('--text-muted-rgb', '138 138 145')})`;
+
         Chart.defaults.color = 'rgba(255,255,255,0.50)';
         Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
         Chart.defaults.font.family = "'D-DIN', 'PingFang TC', 'Microsoft JhengHei', sans-serif";
@@ -22,9 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     {
                         label: '大型語言模型 (高風險)',
                         data: [5, 15, 30, 50, 70, 85, 92, 95, 98, 99, 100],
-                        borderColor: '#ef4444',
-                        backgroundColor: '#ef4444',
-                        borderWidth: 3,
+                        // The two series are told apart by weight and by a solid
+                        // versus dashed stroke rather than by hue. The palette
+                        // has no colour in it, and the legend labels already say
+                        // which line is which.
+                        borderColor: INK,
+                        backgroundColor: INK,
+                        borderWidth: 2,
                         tension: 0.4,
                         pointRadius: 2,
                         pointHoverRadius: 6,
@@ -33,9 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     {
                         label: '微調小型模型',
                         data: [2, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-                        borderColor: '#3b82f6',
-                        backgroundColor: '#3b82f6',
-                        borderWidth: 3,
+                        borderColor: MUTED,
+                        backgroundColor: MUTED,
+                        borderWidth: 2,
+                        borderDash: [5, 4],
                         tension: 0.4,
                         pointRadius: 2,
                         pointHoverRadius: 6,
