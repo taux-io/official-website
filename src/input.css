@@ -71,52 +71,227 @@
     @apply anthro-card;
   }
 
-  /* Primary Button (Google Sign-in / Pill Style) */
-  .anthro-btn {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    background-color: #fbfbfe;
+  /* ---------------------------------------------------------------------
+     Readability shim for the nine templates predating the Jules canvas pivot.
+
+     Those templates were authored against a dark palette: dark section and
+     panel backgrounds, card text marked `text-white`, headings left to
+     inherit. The pivot turned .anthro-card white and set `color: #141316` on
+     body and on h1-h6 in the base layer, but only migrated header, footer and
+     index — leaving 261 elements across nine pages rendering white-on-white or
+     near-black on near-black, including the whole of the privacy policy and
+     the terms of service.
+
+     Surfaces nest in both directions here, so the rules are ordered by
+     specificity rather than by page:
+
+       tier 1  a card left at the default #fbfbfe is genuinely white, so the
+               white text inside it has to go dark
+       tier 2  a dark section or panel lifts everything that merely inherits
+       tier 3  a dark panel nested inside a white card — common in the guides,
+               which wrap code blocks and comparison tables in dark panels —
+               must outrank tier 1, since tier 1's descendant selector reaches
+               into it and would otherwise darken text that was already correct
+
+     Cards overridden to a dark surface are excluded from tier 1 by :not();
+     only two such override classes exist across all templates.
+
+     Remove once every template is migrated off the old palette.
+     --------------------------------------------------------------------- */
+
+  /* tier 1 — card is white */
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(.text-white, .text-white\/90) {
     color: #141316;
-    border: 1.5px solid #141316;
-    box-shadow: 0 2px 6px rgba(57, 40, 86, 0.03);
   }
 
-  .anthro-btn:hover {
-    color: #735ce5;
-    border-color: #735ce5;
-    box-shadow: 0 4px 12px rgba(115, 92, 229, 0.08);
-    transform: translateY(-1px);
-  }
-
-  .anthro-btn:active {
-    transform: translateY(0.5px);
-  }
-
-  /* Legacy alias */
-  .glow-btn {
-    @apply anthro-btn;
-  }
-
-  /* Outline Button (Muted Border) */
-  .anthro-btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    border: 1.5px solid rgba(20, 19, 22, 0.15);
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(.text-white\/75, .text-white\/50) {
     color: #676573;
-    background-color: transparent;
   }
 
-  .anthro-btn-outline:hover {
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60) .text-white\/40 {
+    color: #9792af;
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60) .text-yellow-400 {
+    color: #a16207;
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(h1, h2, h3, h4, h5, h6) {
     color: #141316;
-    border-color: #141316;
-    background-color: rgba(20, 19, 22, 0.02);
   }
 
-  .anthro-btn-outline:active {
-    transform: translateY(0.5px);
+  /* tier 2 — dark section or panel */
+  :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    ) {
+    color: #e8e8e6;
   }
 
-  /* Legacy alias */
-  .ghost-btn {
-    @apply anthro-btn-outline;
+  :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    :is(h1, h2, h3, h4, h5, h6) {
+    color: #ffffff;
+  }
+
+  /* tier 3 — dark panel nested inside a white card */
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    :is(.text-white, .text-white\/90) {
+    color: #ffffff;
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    :is(.text-white\/75, .text-white\/50) {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    .text-white\/40 {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    .text-yellow-400 {
+    color: #facc15;
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    )
+    :is(h1, h2, h3, h4, h5, h6) {
+    color: #ffffff;
+  }
+
+  /* tier 3b — the dark surface and the white text land on the same element,
+     as in the numbered step badges (`bg-[#232320] text-white`). The descendant
+     form above cannot see these, since there is no dark ancestor to match. */
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    ):is(.text-white, .text-white\/90) {
+    color: #ffffff;
+  }
+
+  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
+    :is(
+      .bg-\[\#232320\],
+      .bg-\[\#191915\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#0d0d14\],
+      .bg-\[\#111110\],
+      .bg-\[\#141316\]
+    ):is(.text-white\/75, .text-white\/50) {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* The translucent dark panels composite over a white parent in the migrated
+     shell, landing on mid grey (#232320 at 60% over #fbfbfe reads #797979) —
+     a background no text colour reads well against. They were authored to sit
+     on a dark page, so restoring full opacity is what the templates intended
+     and it lets the white text inside them work again. The doubled class lifts
+     specificity above the generated utility, which is emitted after this
+     layer. */
+  .bg-\[\#232320\]\/60.bg-\[\#232320\]\/60,
+  .bg-\[\#232320\]\/50.bg-\[\#232320\]\/50,
+  .bg-\[\#232320\]\/40.bg-\[\#232320\]\/40,
+  .bg-\[\#232320\]\/30.bg-\[\#232320\]\/30 {
+    background-color: #232320;
+  }
+
+  /* .anthro-quote hard-codes dark text, which loses on the dark panels the
+     guides place their pull quotes in. */
+  .anthro-quote:is(
+      .bg-\[\#232320\],
+      .bg-\[\#232320\]\/60,
+      .bg-\[\#232320\]\/50,
+      .bg-\[\#232320\]\/40,
+      .bg-\[\#232320\]\/30,
+      .bg-\[\#191915\]
+    ) p {
+    color: rgba(255, 255, 255, 0.9);
   }
 
   /* Section layouts */
