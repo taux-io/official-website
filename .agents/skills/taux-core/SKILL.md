@@ -10,24 +10,30 @@ This document provides specific **"How-to"** procedures and checklists required 
 ## 1. Environment & Execution
 
 ### Local Development (Fast Loop)
--   **Backend**: `go run main.go` (http://localhost:8080)
+-   **Site**: `npm run build:site` (Renders `templates/` to `dist/` via the Rust generator)
 -   **Frontend**: `npm run watch` (Watches `src/input.css` -> `static/css/styles.min.css`)
 
-### Production Simulation (Docker)
--   **Command**: `docker compose up -d --build`
--   **URL**: `http://localhost` (Starts Nginx Proxy, checks VIRTUAL_HOST)
--   **Logs**: `docker compose logs -f`
+### Production Simulation
+-   **Command**: `npx wrangler pages dev dist --port 8099`
+-   **URL**: `http://127.0.0.1:8099` (Applies `_headers`, so CSP and caching behave as deployed)
+-   **Why**: A plain static file server does not read `_headers`, so it cannot catch a
+    header rule that never matches — which is how the CSP went a year without applying.
 
 ## 2. Standard Procedures (SOPs)
 
 ### A. Creating a New Page
 1.  **Template**: Copy an existing file (e.g., `templates/index.html`) to `templates/new-page.html`.
-2.  **Route**: Register GET route in `main.go`.
-    ```go
-    r.GET("/new-page", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "new-page.html", nil)
-    })
+2.  **Route**: Add a `[[page]]` entry to `site.toml`.
+    ```toml
+    [[page]]
+    path        = "/new-page"
+    template    = "new-page.html"
+    title       = "..."
+    description = "..."
+    canonical   = "https://taux.io/new-page"
     ```
+    That one entry brings the generator, the sitemap, the share card, the contrast
+    audit and the route-contract test along with it — nothing else lists pages.
 3.  **Navigation**: Update `templates/header.html` (Desktop & Mobile) and `templates/footer.html`.
 
 ### B. Styling with Tailwind

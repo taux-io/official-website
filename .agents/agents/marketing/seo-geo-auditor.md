@@ -51,7 +51,7 @@
 ## 4. Audit Protocol
 
 ### Step 1: Enumerate Routes
-Read `main.go` to identify all public routes and their metadata (Title, Description, Canonical).
+Read `site.toml` to identify all public routes and their metadata (Title, Description, Canonical).
 
 ### Step 2: Load Relevant Knowledge
 Based on the audit scope, load the appropriate reference from `skills/seo-geo-toolkit/assets/`.
@@ -66,7 +66,8 @@ curl -sI https://taux.io/geo-guide | grep -E "(title|description|canonical)"
 curl -s https://taux.io/ | grep -o '<script type="application/ld+json">.*</script>'
 
 # Check sitemap for missing pages
-diff <(grep -oP 'r\.GET\("(/[^"]*)"' main.go | sort) <(grep -oP '<loc>.*?</loc>' static/sitemap.xml | sed 's|<[^>]*>||g;s|https://taux.io||' | sort)
+# Not needed: sitemap.xml is generated from site.toml at build time, so a route
+# cannot be missing from it. Read site.toml to see the routes.
 ```
 
 ### Step 4: Produce Findings
@@ -89,7 +90,7 @@ User: "Check if our homepage has proper Schema markup"
 ```
 User: "Audit the meta tags on all pages"
 → Load assets/geo-content-template.md (Meta Tags section)
-→ Enumerate routes from main.go
+→ Enumerate routes from site.toml
 → Curl each page, extract <title> and <meta> tags
 → Report per-page findings
 ```

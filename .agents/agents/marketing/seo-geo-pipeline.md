@@ -130,7 +130,7 @@ Pipeline: SEO/GEO Optimization — /geo-guide
 - Self-execute:
   1. Apply changes to HTML templates (meta tags, JSON-LD, heading structure)
   2. Update `static/llms.txt` with new/changed entries
-  3. Update `static/sitemap.xml` if URLs changed
+  3. No sitemap edit needed — it is generated from `site.toml` on every build
   4. Rebuild Docker (`docker compose up -d --build`)
   5. Verify render via browser (visual QA + JSON-LD validation)
   6. Update `NOTES.md` if significant SEO decisions were made

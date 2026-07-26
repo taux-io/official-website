@@ -75,10 +75,9 @@ npm run contract       # 路由對外宣告的契約（CI 閘門）
 npm run check:classes  # 找出不產生任何 CSS 的類別（CI 閘門）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
-go run main.go         # 預設 :8080，可用 PORT 覆寫
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `go build` / `go vet` / `gofmt` / `check:css` / `check:classes` / `contrast` / `contract`。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `cargo fmt` / `cargo clippy` / `build:site` / `check:css` / `check:classes` / `contrast` / `contract`。後兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
 
 三道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
 
@@ -135,7 +134,7 @@ npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
 
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
 - **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `taux-logo-light.png` 裁切而來。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
-- **OG 分享卡**：每條路由一張，標題取自 `main.go`，檔名由 canonical URL 推導——與 `ogImage` template helper 用同一條規則，兩邊不可能分歧。
+- **OG 分享卡**：每條路由一張，標題取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。
 
 ---
 

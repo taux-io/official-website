@@ -11,7 +11,7 @@
 // reader, which is why they survived.
 //
 // Runs against the same server as the contrast audit and reads the same route
-// table, so adding a page in main.go is enough to bring it under test.
+// table, so adding a page to site.toml is enough to bring it under test.
 
 const { chromium } = require("playwright");
 const { ROUTES, BASE_URL, ORIGIN } = require("../routes");

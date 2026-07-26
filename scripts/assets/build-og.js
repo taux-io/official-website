@@ -10,7 +10,7 @@
 // follow — which is exactly what did not happen with the logo referenced in
 // the structured data, still light-on-white from two restyles ago.
 //
-// Titles are read from main.go so a card cannot drift from the page it
+// Titles are read from site.toml so a card cannot drift from the page it
 // represents.
 
 const fs = require("fs");
@@ -23,7 +23,7 @@ const OUT_DIR = path.join(ROOT, "static", "og");
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// Routes come from the shared table, which reads main.go. Parsing it here a
+// Routes come from the shared table, which reads site.toml. Parsing it here a
 // second time is how a card and the tag pointing at it could drift apart.
 function routes() {
   return ROUTES.filter((r) => !r.standalone).map((r) => ({

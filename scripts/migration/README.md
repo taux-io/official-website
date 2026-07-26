@@ -8,6 +8,11 @@ tag, structured-data block, heading, internal link or meta description can have
 changed — their union *is* the file. It is binary, complete, and needs no
 judgement about which signals matter.
 
+> **This is now a record, not a runnable check.** The Go server has been
+> deleted, so the capture step cannot be repeated. All 14 pages matched
+> byte-for-byte under the rules below before it was removed; the scripts are
+> kept because how the claim was checked is part of the claim.
+
 ```
 node scripts/migration/capture.js go    # against the Go server, once
 npm run build:site

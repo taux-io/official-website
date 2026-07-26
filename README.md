@@ -20,20 +20,28 @@ TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative E
 
 ## 🛠️ 技術規格
 
-本專案採用 Go (Gin Framework) 後端搭配 TailwindCSS SSR 前端架構：
+本站是**靜態網站**：建置時把模板算完，執行期沒有任何伺服器。
 
-- **Backend**: Go 1.24+, Gin Web Framework
-- **Frontend**: HTML5 Templates (SSR), TailwindCSS 3.4
-- **Infrastructure**: Docker (Distroless/nonroot), nginx-proxy + Acme Companion (Auto SSL)
+會走到這裡，是因為先前的 Go 伺服器對每個請求做的唯一變化只有頁尾的年份——同一條路由連續兩次請求回傳的位元組完全相同。既然如此就沒有東西需要在執行期算，只有檔案需要算一次交給 CDN，而那才是真正改善台灣以外讀者與爬蟲 TTFB 的做法。
+
+- **Generator**: Rust，用 minijinja 把 `templates/*.html` 算成 `dist/` 底下的靜態檔
+- **Frontend**: 靜態 HTML + TailwindCSS 3.4
+- **Infrastructure**: Cloudflare Pages；標頭與快取宣告在 `_headers`
 - **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、方角、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`
-- **Security**: 安全標頭與 CSP 全部在 `main.go` middleware，隨應用程式部署；Distroless 容器
+- **Security**: CSP 與安全標頭定義在 `_headers`，隨靜態檔一起部署
+
+### 頁面宣告於 `site.toml`
+
+所有頁面只在 `site.toml` 宣告一次。Rust generator、Node 工具鏈都讀同一張表，沒有任何一邊去解析另一邊的原始碼。新增一個 `[[page]]` 就同時帶動：算出 HTML、寫進 `sitemap.xml`、產生 OG 分享卡、納入對比稽核與路由契約測試。
 
 ## 📁 專案結構
 
 ```
 taux-dev/
-├── main.go                     # Go 伺服器入口 (含 Security Headers Middleware)
-├── templates/                  # HTML 模板
+├── site.toml                   # 頁面宣告 (路由、title、description、canonical、日期)
+├── generator/                  # Rust 靜態網站產生器
+├── _headers                    # Cloudflare Pages 標頭與快取規則 (含 CSP)
+├── templates/                  # Jinja 模板
 │   ├── index.html              # 首頁
 │   ├── header.html             # 共用頁首
 │   ├── footer.html             # 共用頁尾
@@ -61,12 +69,9 @@ taux-dev/
 │   ├── skills/                 # 開發技能 (SOPs)
 │   └── workflows/              # 自動化工作流程
 ├── tailwind.config.js          # Tailwind 設定
-├── Dockerfile                  # Go 應用容器設定 (Distroless + nonroot)
-├── docker-compose.yml          # Docker Compose 基礎設定
-├── docker-compose.dev.yml      # 開發環境部署設定
-├── scripts/visual/             # 對比稽核、截圖、像素比對
+├── scripts/visual/             # 對比稽核、路由契約測試、截圖、像素比對
 ├── scripts/assets/             # 圖示、結構化資料 logo、OG 分享卡生成
-└── deploy.prod.sh              # 生產環境部署 (唯一有效路徑)
+└── dist/                       # 建置產物 (不進版控)
 ```
 
 ## 🤖 AI 協作體系
@@ -99,64 +104,60 @@ taux-dev/
 
 ## 🔒 安全機制
 
-### 應用層安全 (Go Middleware)
+### 標頭 (`_headers`)
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `X-XSS-Protection: 1; mode=block`
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
 
-### Content-Security-Policy (`main.go`)
+### Content-Security-Policy (`_headers`)
 - `script-src 'self' https://cdn.jsdelivr.net` — **無 `unsafe-inline`**
 - `style-src` 需要 `unsafe-inline`（16 個 style 屬性 + 2 個行內區塊）
 - `font-src 'self'` — 字體已自架
 - `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`
 
-> 此 policy 先前只存在於 `nginx.conf`，而該檔案不在實際運行的拓撲中，等於從未生效。現已移入 Go middleware。
+> 此 policy 曾經只存在於 `nginx.conf`，而該檔案不在實際運行的拓撲中，等於從未生效——整整一年沒有人發現，因為缺少 CSP 的頁面看起來和有 CSP 的頁面一模一樣。現在它在 `_headers`，而路由契約測試會對每一條路由斷言標頭確實存在且內容相符。
 
-### 容器安全 (Docker)
-- Google Distroless `static-debian12:nonroot` 基底映像
-- 非 root 使用者 (UID 65532) 運行
-- 多階段建置，僅部署編譯產物
-- CGO_ENABLED=0 純靜態編譯
+### 為什麼一定要用 wrangler 在本機驗
+
+一般的靜態檔案伺服器不讀 `_headers`。用它預覽，一條永遠匹配不到的規則看起來會完全正常——上面那個一年沒生效的 CSP 就是這樣活下來的。`npx wrangler pages dev dist` 會套用真正的規則，稽核才有意義。
 
 ## 🚀 快速開始
 
-### 方法一：使用 Docker (推薦 - 自動 SSL)
-
-```bash
-# 開發環境
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
-
-# 生產環境：在正式機上執行 ./deploy.prod.sh
-# (docker-compose.prod.yml 已刪除 — 它的 nginx 服務缺少 image/build，無法啟動)
-
-# 訪問網站
-# https://taux.io (Production)
-# http://localhost (Local Development)
-```
-
-### 方法二：本地開發
-
 1. **安裝依賴**
    ```bash
-   npm install        # 安裝 Tailwind 依賴
-   go mod download    # 下載 Go 模組
+   npm install        # Tailwind 與工具鏈
+   # Rust toolchain：https://rustup.rs
    ```
 
-2. **啟動 CSS 監聽 (Terminal 1)**
+2. **建置**
+   ```bash
+   npm run build:css   # src/input.css -> static/css/styles.min.css
+   npm run build:site  # templates/ + site.toml -> dist/
+   ```
+
+3. **預覽 (務必用 wrangler，它才會套用 `_headers`)**
+   ```bash
+   npx wrangler pages dev dist --port 8099
+   open http://127.0.0.1:8099
+   ```
+
+4. **改 CSS 時開監聽**
    ```bash
    npm run watch
    ```
 
-3. **啟動 Go 伺服器 (Terminal 2)**
-   ```bash
-   export PORT=8080
-   go run main.go
-   ```
+### 檢查
 
-4. **訪問**
-   open http://localhost:8080
+```bash
+npm run check:css      # styles.min.css 與 input.css 是否同步
+npm run check:classes  # 模板裡有沒有 Tailwind 產不出 CSS 的 class
+npm run contrast       # WCAG 對比稽核 (需 wrangler 在 8099)
+npm run contract       # 路由契約：狀態碼、canonical、標頭、結構化資料、JS 錯誤
+```
+
+`check:classes` 是這個專案最高頻的風險。Tailwind 遇到解析不出來的 class 什麼都不產，所以 markup 看起來是刻意的、建置也成功，只有效果消失——改版時一次找出 55 個這種 class，其中包括讓 prompting 指南整條時間軸的圓點隱形的那些。
 
 ## 🎨 功能特色
 
@@ -185,33 +186,38 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
 ### 新增頁面
 1. 在 `templates/` 目錄下創建新的 HTML 檔案 (參考 `templates/index.html`)
-2. 在 `main.go` 中註冊新的 GET 路由
+2. 在 `site.toml` 新增一個 `[[page]]` 區塊
 3. 更新 `header.html` (PC & Mobile) 與 `footer.html` 導航連結
-4. 更新 `sitemap.xml`
+
+`sitemap.xml` 不用改——它是從 `site.toml` 產生的，所以頁面不可能漏掉，`lastmod` 也不可能和頁面自己的結構化資料打架。這兩件事在手寫 sitemap 的時代都發生過。
+
+### 日期
+
+`dateModified` 取自最後一次改動該模板的 commit。頁面自己手寫日期時每一個都是錯的：六篇文章全部寫著四月，內容卻是當天重寫的，其中四篇還和 sitemap 對同一個 URL 的 `lastmod` 互相矛盾。
+
+若某次 commit 動了模板但沒有改變頁面說的內容（改 class 名、修錯字），在 `site.toml` 寫一行 `date_modified` 覆寫——修改日期跟著裝飾性改動跳動，是內容撐不起來的新鮮度宣稱。
+
+`date_published` 維持手寫，放在 `site.toml`：那是事實，不是推導值。
 
 ## 🚀 部署說明
 
-### 開發環境部署 (Development)
-在本地開發時，使用以下指令來啟動服務，此設定會將網域綁定在 `localhost`：
+建置產物是 `dist/`，一個純靜態目錄，交給 Cloudflare Pages。
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+npm run build:css && npm run build:site
 ```
 
-### 生產環境部署 (Production)
+- **建置指令**：`npm run build:css && npm run build:site`
+- **輸出目錄**：`dist`
+- **標頭與快取**：`_headers`，隨檔案一起部署
 
-**唯一有效的部署路徑是在正式機上執行 `./deploy.prod.sh`。** 它會 `git pull`、`docker build`，再直接 `docker run` 把 Go 容器掛上 `VIRTUAL_HOST=taux.io` 接到 `taux_frontend` 網路，由既有的 nginx-proxy 反向代理。SSL 由 `nginxproxy/acme-companion` 偵測 `VIRTUAL_HOST` 後自動申請與展期。
+### 檔案為什麼是扁平的 `.html`
 
-1. **DNS 設定**：確保網域 (A Record) 指向伺服器 IP
-2. **環境變數**：`VIRTUAL_HOST` / `LETSENCRYPT_HOST` / `LETSENCRYPT_EMAIL` 定義在 `deploy.prod.sh` 的 `docker run` 參數中
-3. **啟動**：
-   ```bash
-   ./deploy.prod.sh
-   ```
+`geo-guide.html` 而不是 `geo-guide/index.html`。後者在 `/geo-guide/` 被供應，而 `/geo-guide` 會拿到一個 308 轉址——每一條已經被索引的 URL 都多一跳，canonical 指向的位置主機還不直接供應。扁平檔案在 `/geo-guide` 直接命中，沒有轉址。
 
-> `docker-compose.prod.yml` 已刪除。它的 `nginx` 服務既無 `image` 也無 `build`，`docker compose config` 判定為無效專案，不可能啟動過。
->
-> 502/503 錯誤頁由 nginx-proxy 從自己的 `html` volume（`/usr/share/nginx/html/`）供應，`git pull` 碰不到——要客製需手動複製 `static/502.html`、`static/503.html` 進該 volume。
+### 尚未處理
+
+`static/502.html` 與 `static/503.html` 是給 nginx-proxy 的錯誤頁。靜態託管沒有會掛掉的來源伺服器，這兩個檔在新拓撲裡沒有對應角色，但稽核仍然涵蓋它們。要留要刪，等部署方式定案再決定。
 
 ## 📞 聯絡資訊
 
