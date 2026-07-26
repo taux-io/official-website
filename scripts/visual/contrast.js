@@ -117,6 +117,10 @@ const AUDIT = () => {
     if (parseFloat(cs.opacity) === 0) continue;
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) continue;
+    // Screen-reader-only text is meant to be invisible; contrast is not a
+    // property it has. Tailwind's sr-only clips it to a 1px box.
+    if (cs.clip === "rect(0px, 0px, 0px, 0px)" || cs.clipPath === "inset(50%)") continue;
+    if (rect.width <= 1 && rect.height <= 1) continue;
 
     const fg = parseColor(cs.color);
     if (!fg) continue;

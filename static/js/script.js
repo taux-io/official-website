@@ -3,7 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMenu();
     initScrollNavigation();
-    initScrollAnimations();
     initEasterEggs();
 });
 
@@ -94,32 +93,22 @@ function initScrollNavigation() {
     }, { passive: true });
 }
 
-// Scroll-triggered Animations (subtle, Anthropic-style)
-function initScrollAnimations() {
-    if (!('IntersectionObserver' in window)) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.remove('opacity-0', 'translate-y-4');
-                entry.target.classList.add('opacity-100', 'translate-y-0');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -30px 0px'
-    });
-
-    // Select semantic elements and key areas
-    const elementsToAnimate = document.querySelectorAll('section h1, section h2, section p, article, blockquote, details');
-
-    elementsToAnimate.forEach(el => {
-        el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-4'); // Initial state — subtle 4px shift
-        observer.observe(el);
-    });
-}
-
+// Scroll-triggered reveals were removed here deliberately.
+//
+// The previous implementation set opacity-0 from JS on every `section h1,
+// section h2, section p, article, blockquote, details` and cleared it from an
+// IntersectionObserver. Two problems, one cosmetic and one not:
+//
+//   Fast scrolling outran the observer. It reports the state at delivery time,
+//   so an element that entered and left the viewport between two deliveries
+//   was only ever seen as non-intersecting and stayed hidden permanently — a
+//   full programmatic scroll of the homepage left 19 elements invisible, and a
+//   trackpad fling or the End key does the same thing.
+//
+//   More importantly it made body copy visible only if JavaScript ran. On a
+//   site whose value is its written content and its standing in search, that
+//   is not a dependency worth having for a fade.
+//
 // Easter Eggs
 function initEasterEggs() {
     let keyBuffer = '';

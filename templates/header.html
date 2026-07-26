@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="/static/css/styles.min.css?v=7">
 </head>
 
-<body class="bg-[#fbfbfe] text-[#141316] font-sans antialiased">
+<body class="bg-surface text-ink-body font-sans antialiased">
 
     <!-- Navigation.
 
@@ -130,8 +130,7 @@
         </div>
     </div>
 
-    <!-- Main Content Wrapper.
-         TODO: the surface here flips to bg-surface with the page templates.
-         Holding it light until then keeps the unmigrated content readable. -->
-    <main class="pt-16 min-h-screen relative overflow-hidden bg-[#fbfbfe]">
+    <!-- Main Content Wrapper. The nav is translucent, so a light surface here
+         would show through it. -->
+    <main class="pt-16 min-h-screen relative overflow-hidden bg-surface">
         {{ end }}
