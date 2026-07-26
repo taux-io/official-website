@@ -58,6 +58,12 @@ module.exports = {
       },
       // Every rectangular step collapses to the radius token; `full` is kept
       // so genuine circles survive.
+      //
+      // Most of these steps are unused by the templates and must stay anyway.
+      // They are not dead entries — they are what enforces the rule. Delete the
+      // unused ones and a later `rounded-md` falls back to Tailwind's own
+      // 0.375rem, so the square-corner decision breaks silently, with no error
+      // and nothing in the diff to explain it.
       borderRadius: {
         none: "0px",
         sm: "var(--radius)",
@@ -69,19 +75,14 @@ module.exports = {
         "3xl": "var(--radius)",
         full: "9999px",
       },
-      animation: {
-        "fade-in-up": "fadeInUp 0.8s ease-out forwards",
-      },
-      keyframes: {
-        fadeInUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-      },
       fontSize: {
         // Latin eyebrows and section numbers: uppercase, widely tracked. This
         // is where the SpaceX typographic signature lives, since CJK has no
         // uppercase to borrow it from.
+        //
+        // display-md is currently unused. Kept for the completeness of the
+        // scale: removing the middle step leaves lg and sm with a gap between
+        // them, and the next person needing that size invents a one-off.
         eyebrow: [
           "0.75rem",
           { lineHeight: "1", letterSpacing: "0.25em", fontWeight: "500" },
@@ -94,11 +95,6 @@ module.exports = {
         // 68ch is the reading measure for the long-form pages; CJK runs denser
         // than Latin, so the comfortable line is shorter than the usual 75ch.
         prose: "68ch",
-        content: "64rem",
-      },
-      spacing: {
-        18: "4.5rem",
-        22: "5.5rem",
       },
     },
   },
