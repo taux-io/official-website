@@ -1,76 +1,79 @@
 // TauX Interactivity (Anthropic-style, minimal)
 
 document.addEventListener('DOMContentLoaded', () => {
-    initMobileNavigation();
+    initMenu();
     initScrollNavigation();
-    initScrollAnimations();
     initEasterEggs();
 });
 
-// Mobile Navigation
-function initMobileNavigation() {
+// Full-screen menu. One overlay, two triggers: the hamburger on small screens
+// and the Guides item on large ones.
+function initMenu() {
+    const overlay = document.getElementById('menuOverlay');
     const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenuOverlay');
-    const closeBtn = document.getElementById('mobileMenuClose');
-    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const trigger = document.getElementById('menuTrigger');
+    const closeBtn = document.getElementById('menuClose');
 
-    if (!hamburger || !mobileMenu) return;
+    if (!overlay) return;
 
-    function toggleMenu() {
-        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', !isExpanded);
+    const triggers = [hamburger, trigger].filter(Boolean);
+    let lastFocused = null;
 
-        // Toggle specific bar transforms for hamburger animation
+    const isOpen = () => overlay.classList.contains('opacity-100');
+
+    function setHamburgerBars(open) {
+        if (!hamburger) return;
         const bars = hamburger.querySelectorAll('span');
-        if (!isExpanded) {
-            // Open state
-            bars[0].classList.add('rotate-45', 'translate-y-2');
-            bars[1].classList.add('opacity-0');
-            bars[2].classList.add('-rotate-45', '-translate-y-2');
-
-            mobileMenu.classList.remove('translate-x-full');
-            document.body.classList.add('overflow-hidden');
-        } else {
-            // Closed state
-            bars[0].classList.remove('rotate-45', 'translate-y-2');
-            bars[1].classList.remove('opacity-0');
-            bars[2].classList.remove('-rotate-45', '-translate-y-2');
-
-            mobileMenu.classList.add('translate-x-full');
-            document.body.classList.remove('overflow-hidden');
-        }
+        if (bars.length < 3) return;
+        bars[0].classList.toggle('rotate-45', open);
+        bars[0].classList.toggle('translate-y-2', open);
+        bars[1].classList.toggle('opacity-0', open);
+        bars[2].classList.toggle('-rotate-45', open);
+        bars[2].classList.toggle('-translate-y-2', open);
+        hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     }
 
-    hamburger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
+    function open() {
+        lastFocused = document.activeElement;
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100');
+        document.body.classList.add('overflow-hidden');
+        triggers.forEach(t => t.setAttribute('aria-expanded', 'true'));
+        setHamburgerBars(true);
+        if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        overlay.classList.remove('opacity-100');
+        document.body.classList.remove('overflow-hidden');
+        triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+        setHamburgerBars(false);
+        // Return focus to whatever opened it, so keyboard users do not land
+        // back at the top of the document.
+        if (lastFocused && document.contains(lastFocused)) lastFocused.focus();
+    }
+
+    triggers.forEach(t => {
+        t.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isOpen() ? close() : open();
+        });
     });
 
     if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            // Force close
-            if (hamburger.getAttribute('aria-expanded') === 'true') {
-                toggleMenu();
-            }
+            close();
         });
     }
 
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (hamburger.getAttribute('aria-expanded') === 'true') {
-                toggleMenu();
-            }
-        });
+    overlay.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => close());
     });
 
-    // Close on outside click (optional, but good UX)
-    document.addEventListener('click', (e) => {
-        if (hamburger.getAttribute('aria-expanded') === 'true' &&
-            !mobileMenu.contains(e.target) &&
-            !hamburger.contains(e.target)) {
-            toggleMenu();
-        }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen()) close();
     });
 }
 
@@ -90,32 +93,22 @@ function initScrollNavigation() {
     }, { passive: true });
 }
 
-// Scroll-triggered Animations (subtle, Anthropic-style)
-function initScrollAnimations() {
-    if (!('IntersectionObserver' in window)) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.remove('opacity-0', 'translate-y-4');
-                entry.target.classList.add('opacity-100', 'translate-y-0');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -30px 0px'
-    });
-
-    // Select semantic elements and key areas
-    const elementsToAnimate = document.querySelectorAll('section h1, section h2, section p, article, blockquote, details');
-
-    elementsToAnimate.forEach(el => {
-        el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-4'); // Initial state — subtle 4px shift
-        observer.observe(el);
-    });
-}
-
+// Scroll-triggered reveals were removed here deliberately.
+//
+// The previous implementation set opacity-0 from JS on every `section h1,
+// section h2, section p, article, blockquote, details` and cleared it from an
+// IntersectionObserver. Two problems, one cosmetic and one not:
+//
+//   Fast scrolling outran the observer. It reports the state at delivery time,
+//   so an element that entered and left the viewport between two deliveries
+//   was only ever seen as non-intersecting and stayed hidden permanently — a
+//   full programmatic scroll of the homepage left 19 elements invisible, and a
+//   trackpad fling or the End key does the same thing.
+//
+//   More importantly it made body copy visible only if JavaScript ran. On a
+//   site whose value is its written content and its standing in search, that
+//   is not a dependency worth having for a fade.
+//
 // Easter Eggs
 function initEasterEggs() {
     let keyBuffer = '';

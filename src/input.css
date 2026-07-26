@@ -2,43 +2,149 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   Design tokens.
+
+   Every previous restyle rewrote hex values across the templates, which is why
+   four generations of palette now sit side by side in them. These variables
+   are the single place a palette is chosen; the templates reference semantic
+   names (bg-surface, text-ink-body, border-line) that resolve here.
+
+   Each colour is stored as space-separated channels so Tailwind's opacity
+   modifiers work — bg-surface/50 compiles to rgb(var(--surface-rgb) / 0.5) —
+   with a plain colour alias alongside it for hand-written CSS, including the
+   inline <style> block in claude-skills-guide.html.
+   =========================================================================== */
+:root {
+  /* Surfaces. Deep is reserved for full-bleed hero sections; the base surface
+     is a hair off black, which keeps dense CJK glyphs from haloing the way
+     they do against #000. */
+  --surface-deep-rgb: 0 0 0;
+  --surface-rgb: 10 10 11;
+  --surface-raised-rgb: 15 15 17;
+
+  /* Text. Body sits below pure white for the same reason — long-form reading
+     against maximum contrast is what causes halation, not the black itself. */
+  --text-primary-rgb: 255 255 255;
+  --text-body-rgb: 200 200 204;
+  --text-muted-rgb: 138 138 145;
+
+  /* Hairlines. Two weights only: a divider and a button edge. */
+  --line-rgb: 255 255 255;
+
+  --surface-deep: rgb(var(--surface-deep-rgb));
+  --surface: rgb(var(--surface-rgb));
+  --surface-raised: rgb(var(--surface-raised-rgb));
+  --text-primary: rgb(var(--text-primary-rgb));
+  --text-body: rgb(var(--text-body-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --line: rgb(var(--line-rgb) / 0.08);
+  --line-strong: rgb(var(--line-rgb) / 0.2);
+
+  /* Square by default. Rounded rectangles read as consumer software; circles
+     are left alone, since gauges, orbits and dials belong to this vocabulary.
+     Tailwind's `full` step is preserved in the config for exactly that. */
+  --radius: 0px;
+}
+
+/* ===========================================================================
+   D-DIN, self-hosted. Copyright (C) 2017 Datto Inc, SIL Open Font License 1.1;
+   the licence ships alongside the files at static/fonts/OFL-1.1.txt.
+
+   A DIN 1451 derivative — the German industrial standard used for road signs,
+   machine plates and instrument panels. It carries the Latin only; the font
+   covers Basic Latin and Latin-1 and nothing else, and CJK is left to the
+   system faces deliberately. A Traditional Chinese webfont runs to hundreds of
+   kilobytes even with unicode-range subsetting, and its swap visibly reflows
+   the page, which is not a trade worth making on the guide pages whose search
+   performance is the point of them.
+
+   unicode-range keeps that separation strict: with CJK outside the declared
+   range the browser never blocks a Chinese glyph on this download, so the
+   text of a guide paints from PingFang or Microsoft JhengHei immediately and
+   only the Latin swaps in behind it.
+
+   Self-hosted rather than served from a CDN: one less DNS lookup and TLS
+   handshake, the files ride the same HTTP/2 connection as the stylesheet, and
+   nothing breaks on networks where Google Fonts is unreachable.
+   =========================================================================== */
+
+@font-face {
+  font-family: "D-DIN";
+  src: url("/static/fonts/D-DIN.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN";
+  src: url("/static/fonts/D-DIN-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN Condensed";
+  src: url("/static/fonts/D-DINCondensed.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
+@font-face {
+  font-family: "D-DIN Condensed";
+  src: url("/static/fonts/D-DINCondensed-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
+    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+
 @layer base {
   html {
-    @apply scroll-smooth;
-    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+    @apply scroll-smooth font-sans;
   }
 
   body {
-    background-color: #fbfbfe;
-    color: #141316;
+    background-color: var(--surface);
+    color: var(--text-body);
     @apply font-sans antialiased overflow-x-hidden;
   }
 
-  /* 400 Regular is the dominant weight for the Jules system to convey quiet precision */
+  /* Regular is the dominant weight. DIN carries only 400 and 700, so the
+     font-medium and font-semibold left in the templates resolve to the nearest
+     real face rather than a synthesised one — they come out as the templates
+     migrate. */
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+    @apply font-display tracking-tight;
     font-weight: 400;
-    color: #141316;
-    @apply tracking-tight;
+    color: var(--text-primary);
   }
 
-  /* Custom Scrollbar - Sterile Violet Theme */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #fbfbfe;
+    background: var(--surface);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(115, 92, 229, 0.15);
-    @apply rounded-full;
+    background: var(--line-strong);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(115, 92, 229, 0.35);
+    background: rgb(var(--line-rgb) / 0.35);
   }
 
   a {
@@ -47,421 +153,133 @@
 }
 
 @layer components {
-  /* Jules-style Floating Sheet Card */
-  .anthro-card {
-    @apply rounded-2xl p-8 md:p-12 border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-[#fbfbfe];
-    border-color: rgba(113, 92, 215, 0.15);
-    box-shadow: 
-      0 0 0 1px rgba(113, 92, 215, 0.02),
-      0 2px 4px rgba(57, 40, 86, 0.01),
-      0 16px 36px 4px rgba(57, 40, 86, 0.055);
-  }
-
-  .anthro-card:hover {
-    transform: translateY(-2px);
-    border-color: #715cd7;
-    box-shadow: 
-      0 0 0 1px rgba(113, 92, 215, 0.06),
-      0 8px 16px rgba(57, 40, 86, 0.03),
-      0 24px 48px rgba(57, 40, 86, 0.075);
-  }
-
-  /* Legacy alias */
-  .glass-card {
-    @apply anthro-card;
-  }
-
-  /* ---------------------------------------------------------------------
-     Readability shim for the nine templates predating the Jules canvas pivot.
-
-     Those templates were authored against a dark palette: dark section and
-     panel backgrounds, card text marked `text-white`, headings left to
-     inherit. The pivot turned .anthro-card white and set `color: #141316` on
-     body and on h1-h6 in the base layer, but only migrated header, footer and
-     index — leaving 261 elements across nine pages rendering white-on-white or
-     near-black on near-black, including the whole of the privacy policy and
-     the terms of service.
-
-     Surfaces nest in both directions here, so the rules are ordered by
-     specificity rather than by page:
-
-       tier 1  a card left at the default #fbfbfe is genuinely white, so the
-               white text inside it has to go dark
-       tier 2  a dark section or panel lifts everything that merely inherits
-       tier 3  a dark panel nested inside a white card — common in the guides,
-               which wrap code blocks and comparison tables in dark panels —
-               must outrank tier 1, since tier 1's descendant selector reaches
-               into it and would otherwise darken text that was already correct
-
-     Cards overridden to a dark surface are excluded from tier 1 by :not();
-     only two such override classes exist across all templates.
-
-     Remove once every template is migrated off the old palette.
-     --------------------------------------------------------------------- */
-
-  /* tier 1 — card is white */
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(.text-white, .text-white\/90) {
-    color: #141316;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(.text-white\/75, .text-white\/50) {
-    color: #676573;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60) .text-white\/40 {
-    color: #9792af;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60) .text-yellow-400 {
-    color: #a16207;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(h1, h2, h3, h4, h5, h6) {
-    color: #141316;
-  }
-
-  /* tier 2 — dark section or panel */
-  :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    ) {
-    color: #e8e8e6;
-  }
-
-  :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    :is(h1, h2, h3, h4, h5, h6) {
-    color: #ffffff;
-  }
-
-  /* tier 3 — dark panel nested inside a white card */
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    :is(.text-white, .text-white\/90) {
-    color: #ffffff;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    :is(.text-white\/75, .text-white\/50) {
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    .text-white\/40 {
-    color: rgba(255, 255, 255, 0.55);
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    .text-yellow-400 {
-    color: #facc15;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    )
-    :is(h1, h2, h3, h4, h5, h6) {
-    color: #ffffff;
-  }
-
-  /* tier 3b — the dark surface and the white text land on the same element,
-     as in the numbered step badges (`bg-[#232320] text-white`). The descendant
-     form above cannot see these, since there is no dark ancestor to match. */
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    ):is(.text-white, .text-white\/90) {
-    color: #ffffff;
-  }
-
-  .anthro-card:not(.bg-white\/\[0\.04\], .bg-\[\#232320\]\/60)
-    :is(
-      .bg-\[\#232320\],
-      .bg-\[\#191915\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#0d0d14\],
-      .bg-\[\#111110\],
-      .bg-\[\#141316\]
-    ):is(.text-white\/75, .text-white\/50) {
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  /* The translucent dark panels composite over a white parent in the migrated
-     shell, landing on mid grey (#232320 at 60% over #fbfbfe reads #797979) —
-     a background no text colour reads well against. They were authored to sit
-     on a dark page, so restoring full opacity is what the templates intended
-     and it lets the white text inside them work again. The doubled class lifts
-     specificity above the generated utility, which is emitted after this
-     layer. */
-  .bg-\[\#232320\]\/60.bg-\[\#232320\]\/60,
-  .bg-\[\#232320\]\/50.bg-\[\#232320\]\/50,
-  .bg-\[\#232320\]\/40.bg-\[\#232320\]\/40,
-  .bg-\[\#232320\]\/30.bg-\[\#232320\]\/30 {
-    background-color: #232320;
-  }
-
-  /* .anthro-quote hard-codes dark text, which loses on the dark panels the
-     guides place their pull quotes in. */
-  .anthro-quote:is(
-      .bg-\[\#232320\],
-      .bg-\[\#232320\]\/60,
-      .bg-\[\#232320\]\/50,
-      .bg-\[\#232320\]\/40,
-      .bg-\[\#232320\]\/30,
-      .bg-\[\#191915\]
-    ) p {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  /* Primary Button (Google Sign-in / Pill Style) */
+  /* Buttons. Square, hairline-bordered, uppercase and tracked; the whole
+     interaction is an inversion to a solid fill. No lift, no shadow, no
+     colour — a pill with a drop shadow is consumer-app language. */
   .anthro-btn {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    background-color: #fbfbfe;
-    color: #141316;
-    border: 1.5px solid #141316;
-    box-shadow: 0 2px 6px rgba(57, 40, 86, 0.03);
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
+           text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
+    color: var(--text-primary);
+    border: 1px solid var(--line-strong);
+    background-color: transparent;
   }
 
   .anthro-btn:hover {
-    color: #735ce5;
-    border-color: #735ce5;
-    box-shadow: 0 4px 12px rgba(115, 92, 229, 0.08);
-    transform: translateY(-1px);
+    background-color: var(--text-primary);
+    color: var(--surface-deep);
   }
 
-  .anthro-btn:active {
-    transform: translateY(0.5px);
-  }
-
-  /* Outline Button (Muted Border) */
   .anthro-btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-sm rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
-    border: 1.5px solid rgba(20, 19, 22, 0.15);
-    color: #676573;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
+           text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
+    color: var(--text-muted);
+    border: 1px solid var(--line);
     background-color: transparent;
   }
 
   .anthro-btn-outline:hover {
-    color: #141316;
-    border-color: #141316;
-    background-color: rgba(20, 19, 22, 0.02);
+    color: var(--text-primary);
+    border-color: var(--line-strong);
   }
 
-  .anthro-btn-outline:active {
-    transform: translateY(0.5px);
-  }
-
-  /* Section layouts */
-  .section-cream {
-    background-color: #fbfbfe;
-  }
-
-  .section-sand {
-    background-color: #fbfbfe;
-    background-image: linear-gradient(180deg, #fbfbfe 0%, #f7f7fa 100%);
-  }
-
-  .section-dark {
-    background-color: #fbfbfe;
-    @apply text-[#141316];
-  }
-
-  .section-dark h1,
-  .section-dark h2,
-  .section-dark h3,
-  .section-dark h4,
-  .section-dark h5,
-  .section-dark h6 {
-    @apply text-[#141316];
-  }
-
-  .section-dark p,
-  .section-dark span,
-  .section-dark li {
-    @apply text-[#676573];
-  }
-
-  /* Highlight underlines */
-  .anthro-highlight {
-    @apply font-semibold text-[#141316];
-    text-decoration: underline;
-    text-decoration-color: rgba(115, 92, 229, 0.25);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
-  .divider {
-    border-top: 1px solid rgba(115, 92, 229, 0.08);
-  }
-
-  /* Academic-style time constant blockquote */
+  /* Pull quote: a hairline rule rather than a coloured bar. Left upright —
+     synthetic obliques on CJK are what italic actually produces here. */
   .anthro-quote {
     @apply relative pl-6 my-8;
-    border-left: 2px solid #735ce5;
+    border-left: 1px solid var(--line-strong);
   }
 
   .anthro-quote p {
-    color: #141316;
-    font-family: "Google Sans", "Inter", sans-serif;
-    @apply italic text-lg leading-relaxed;
+    @apply font-display text-lg leading-relaxed;
+    color: var(--text-primary);
   }
 
-  /* Tag badge */
   .anthro-tag {
-    @apply inline-flex items-center px-3 py-1 text-xs font-medium tracking-wider uppercase rounded-full;
-    background: rgba(115, 92, 229, 0.05);
-    color: #735ce5;
-    border: 1px solid rgba(115, 92, 229, 0.1);
+    @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--line);
   }
 
-  /* Navigation Links */
+  /* Navigation.
+
+     This is where the typographic signature lives. CJK has no uppercase and
+     takes badly to wide tracking, so the treatment that makes the design
+     recognisable — condensed, uppercase, widely letterspaced — has to be
+     carried entirely by the Latin elements, and the nav is where most of them
+     are. Condensed also buys back the width the tracking costs: the same items
+     set in the regular face would overrun the container. */
   .nav-link {
-    @apply text-sm font-medium text-[#676573] relative;
+    @apply font-display text-[0.7rem] uppercase tracking-[0.2em] text-ink-muted relative
+           transition-colors duration-200 bg-transparent cursor-pointer;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute left-0 bottom-0 w-full h-[1.5px] bg-[#735ce5] scale-x-0 origin-right transition-transform duration-300;
+    @apply absolute left-0 -bottom-1 w-full h-px bg-ink scale-x-0 origin-right transition-transform duration-300;
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-link[aria-expanded="true"]::after {
     @apply scale-x-100 origin-left;
   }
 
-  .nav-link:hover {
-    @apply text-[#141316];
+  .nav-link:hover,
+  .nav-link[aria-expanded="true"] {
+    @apply text-ink;
+  }
+
+  /* Square, hairline-bordered, uppercase. Inverting to a solid fill on hover
+     is the whole interaction — no lift, no shadow, no colour. */
+  .nav-cta {
+    @apply inline-flex items-center font-display text-[0.7rem] uppercase tracking-[0.2em]
+           px-5 py-2 transition-colors duration-200;
+    /* Set directly rather than via @apply: alongside an arbitrary text-[0.7rem]
+       in the same declaration, Tailwind drops `text-ink` — the DEFAULT key of a
+       colour scale collides with the font-size candidate under the same
+       `text-` prefix. `text-ink-muted` survives the same pairing, which is what
+       makes the omission easy to miss. */
+    color: var(--text-primary);
+    border: 1px solid var(--line-strong);
+  }
+
+  .nav-cta:hover {
+    background-color: var(--text-primary);
+    color: var(--surface-deep);
+  }
+
+  /* Overlay menu links: larger, still uppercase, still tracked. */
+  .menu-link {
+    @apply font-display text-lg md:text-xl uppercase tracking-[0.12em] text-ink-body
+           transition-colors duration-200;
+  }
+
+  .menu-link:hover {
+    @apply text-ink;
+  }
+
+  /* Latin eyebrow label — section numbers, column headings, kickers. */
+  .eyebrow {
+    @apply font-display text-eyebrow uppercase text-ink-muted;
+  }
+
+  .footer-link {
+    @apply text-sm text-ink-body transition-colors duration-200;
+  }
+
+  .footer-link:hover {
+    @apply text-ink;
   }
 }
 
 @layer utilities {
-  .fintech-card {
-    @apply anthro-card;
-  }
-
-  .watermark {
-    @apply absolute select-none text-[#735ce5]/[0.02] pointer-events-none font-display font-black;
-  }
-
-  .anthro-prose {
-    @apply max-w-prose mx-auto;
-    line-height: 1.8;
-  }
-
-  .anthro-prose p {
-    @apply mb-6 text-[#676573];
-  }
-
-  .anthro-prose h2 {
-    @apply mt-16 mb-6 text-[#141316];
-  }
-
-  .anthro-prose h3 {
-    @apply mt-12 mb-4 text-[#141316];
-  }
-
-  /* Technical Blueprint Grid Pattern */
-  .bg-grid-tech {
-    background-image: 
-      linear-gradient(rgba(115, 92, 229, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(115, 92, 229, 0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-
-  /* Purple Ambient glows */
-  .bg-glow-radial {
-    background: radial-gradient(circle at 50% 50%, rgba(115, 92, 229, 0.04) 0%, rgba(251, 251, 254, 0) 70%);
-  }
-  .bg-glow-warm {
-    background: radial-gradient(circle at 70% 30%, rgba(115, 92, 229, 0.03) 0%, rgba(251, 251, 254, 0) 60%);
-  }
-
+  /* Disclosure rows sit directly on the surface; the hairline above each one
+     is the only separator. */
   .faq-details {
-    @apply transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    @apply transition-colors duration-300;
   }
 
-  .faq-details[open] {
-    @apply bg-white border-[#715cd7]/20 shadow-[0_12px_24px_rgba(57,40,86,0.04)];
+  .faq-details summary::-webkit-details-marker {
+    display: none;
   }
 
   /* Entrance Stagger Reveals */

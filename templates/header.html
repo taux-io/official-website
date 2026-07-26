@@ -10,18 +10,25 @@
     {{ if .Canonical }}
     <link rel="canonical" href="{{ .Canonical }}">{{ end }}
 
-    <!-- Open Graph -->
+    <!-- Open Graph. The share card is built from the same tokens, typeface and
+         tau curve as the page; rerun scripts/assets/build-og.js after a
+         palette change and every image follows. -->
     <meta property="og:title" content="{{ .Title }}">
     <meta property="og:description" content="{{ .Description }}">
     <meta property="og:type" content="website">
     {{ if .Canonical }}<meta property="og:url" content="{{ .Canonical }}">{{ end }}
     <meta property="og:site_name" content="TauX 拓思科技">
     <meta property="og:locale" content="zh_TW">
+    <meta property="og:image" content="{{ ogImage .Canonical }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ .Title }}">
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ .Title }}">
     <meta name="twitter:description" content="{{ .Description }}">
+    <meta name="twitter:image" content="{{ ogImage .Canonical }}">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
@@ -29,81 +36,108 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="manifest" href="/static/site.webmanifest">
 
-    <!-- Fonts: Inter + Google Sans fallback -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Fonts: D-DIN self-hosted, Latin only. CJK renders from the system
+         faces, so no Chinese webfont is downloaded and no reflow waits on one.
+         The two regular weights are preloaded because they set the first
+         paint; the bold faces load on demand. -->
+    <link rel="preload" href="/static/fonts/D-DIN.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=6">
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=7">
 </head>
 
-<body class="bg-[#fbfbfe] text-[#141316] font-sans antialiased">
+<body class="bg-surface text-ink-body font-sans antialiased">
 
-    <!-- Navigation (Jules Sterile White Style) -->
-    <nav class="fixed w-full z-50 bg-[#fbfbfe]/80 backdrop-blur-lg border-b border-[#715cd7]/10 transition-all duration-300"
+    <!-- Navigation.
+
+         Five of the seven previous items were guide articles, which made this
+         a table of contents rather than a navigation — and set uppercase and
+         tracked they overran the container besides. The guides now live behind
+         one item that opens the full-screen menu, the way a mega menu works;
+         every link stays one interaction away and, since the overlay markup is
+         always in the document, still visible to crawlers. -->
+    <nav class="fixed w-full z-50 bg-surface-deep/90 backdrop-blur-md border-b border-line transition-transform duration-300"
         aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="/" class="flex items-center gap-2 group" aria-label="TauX Homepage">
-                <span
-                    class="font-sans text-xl font-medium tracking-tight text-[#141316] group-hover:text-[#735ce5] transition-colors duration-300">
-                    TauX
-                </span>
+            <a href="/" class="font-display text-xl uppercase tracking-[0.22em] text-ink transition-opacity duration-200 hover:opacity-70"
+                aria-label="TauX Homepage">
+                TauX
             </a>
 
-            <!-- Desktop Menu (Regular 400 Google Sans style) -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="/ai-smart-work" class="nav-link pb-1">Smart Work</a>
-                <a href="/geo-guide" class="nav-link pb-1">GEO Guide</a>
-                <a href="/data-governance" class="nav-link pb-1">Data Governance</a>
-                <a href="/agent-prompting-guide" class="nav-link pb-1">Prompt Guide</a>
-                <a href="/what-is-prompt-injection" class="nav-link pb-1">Prompt Security</a>
-                <a href="/claude-skills-guide" class="nav-link pb-1">Skills Guide</a>
-                <a href="/adk-skill-patterns" class="nav-link pb-1">ADK Patterns</a>
-                <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
-                    class="px-4 py-1.5 border border-[#141316] text-[#141316] text-xs font-medium rounded-full bg-[#fbfbfe] hover:border-[#735ce5] hover:text-[#735ce5] hover:-translate-y-[0.5px] transition-all duration-300">
+            <div class="hidden md:flex items-center gap-10">
+                <a href="/ai-smart-work" class="nav-link">Smart Work</a>
+                <a href="/data-governance" class="nav-link">Data Governance</a>
+                <button type="button" id="menuTrigger" class="nav-link" aria-expanded="false"
+                    aria-controls="menuOverlay">
+                    Guides
+                </button>
+                <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="nav-cta">
                     Start Building
                 </a>
             </div>
 
-            <!-- Mobile Menu Button -->
-            <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-50 focus:outline-none"
-                aria-label="Toggle menu" aria-expanded="false">
-                <span class="w-6 h-0.5 bg-[#141316] transition-all duration-300 origin-center"></span>
-                <span class="w-6 h-0.5 bg-[#141316] transition-all duration-300 opacity-100"></span>
-                <span class="w-6 h-0.5 bg-[#141316] transition-all duration-300 origin-center"></span>
+            <button type="button" id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-50 focus:outline-none"
+                aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
+                <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-px bg-ink transition-all duration-300 opacity-100"></span>
+                <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
             </button>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay (Jules Cool Canvas White) -->
-    <div id="mobileMenuOverlay"
-        class="fixed inset-0 z-[60] transition-transform duration-500 translate-x-full md:hidden bg-[#fbfbfe] flex items-center justify-center">
-        <!-- Close Button -->
-        <button id="mobileMenuClose"
-            class="absolute top-6 right-6 text-[#141316] hover:opacity-60 text-3xl font-light transition-opacity duration-300 focus:outline-none z-[100] cursor-pointer"
-            aria-label="Close menu">
-            &times;
-        </button>
+    <!-- Full-screen menu. One overlay serves both triggers: the hamburger on
+         small screens and Guides on large ones. -->
+    <div id="menuOverlay"
+        class="fixed inset-0 z-[60] bg-surface-deep opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto"
+        role="dialog" aria-modal="true" aria-label="Site menu">
+        <div class="max-w-6xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-between h-10">
+                <span class="font-display text-xl uppercase tracking-[0.22em] text-ink">TauX</span>
+                <button type="button" id="menuClose"
+                    class="font-display text-eyebrow uppercase text-ink-muted hover:text-ink transition-colors duration-200 focus:outline-none"
+                    aria-label="Close menu">
+                    Close
+                </button>
+            </div>
 
-        <!-- Menu Items Container -->
-        <div class="flex flex-col items-center justify-center gap-6">
-            <a href="/"
-                class="mobile-link text-2xl font-sans text-[#141316] hover:text-[#735ce5] transition-colors">Home</a>
-            <a href="/ai-smart-work" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">Smart Work</a>
-            <a href="/geo-guide" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">GEO Guide</a>
-            <a href="/data-governance" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">Data Governance</a>
-            <a href="/agent-prompting-guide" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">Prompt Guide</a>
-            <a href="/what-is-prompt-injection" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">Prompt Security</a>
-            <a href="/what-is-llms-txt" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">LLMs.txt</a>
-            <a href="/claude-skills-guide" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">Skills Guide</a>
-            <a href="/adk-skill-patterns" class="mobile-link text-lg text-[#676573] hover:text-[#735ce5] transition-colors">ADK Patterns</a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mt-16 md:mt-24 pb-16">
+                <div>
+                    <h2 class="eyebrow mb-8">01 — Services</h2>
+                    <ul class="space-y-5">
+                        <li><a href="/ai-smart-work" class="menu-link">Smart Work</a></li>
+                        <li><a href="/data-governance" class="menu-link">Data Governance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="eyebrow mb-8">02 — Guides</h2>
+                    <ul class="space-y-5">
+                        <li><a href="/geo-guide" class="menu-link">GEO Guide</a></li>
+                        <li><a href="/agent-prompting-guide" class="menu-link">Prompt Guide</a></li>
+                        <li><a href="/what-is-prompt-injection" class="menu-link">Prompt Security</a></li>
+                        <li><a href="/claude-skills-guide" class="menu-link">Skills Guide</a></li>
+                        <li><a href="/adk-skill-patterns" class="menu-link">ADK Patterns</a></li>
+                        <li><a href="/what-is-llms-txt" class="menu-link">LLMs.txt</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="eyebrow mb-8">03 — Company</h2>
+                    <ul class="space-y-5">
+                        <li><a href="/" class="menu-link">Home</a></li>
+                        <li><a href="/about" class="menu-link">About</a></li>
+                        <li>
+                            <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
+                                class="menu-link">GitHub</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Main Content Wrapper -->
-    <main class="pt-16 min-h-screen relative overflow-hidden bg-[#fbfbfe]">
+    <!-- Main Content Wrapper. The nav is translucent, so a light surface here
+         would show through it. -->
+    <main class="pt-16 min-h-screen relative overflow-hidden bg-surface">
         {{ end }}
