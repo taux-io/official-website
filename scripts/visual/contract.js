@@ -18,6 +18,27 @@ const { ROUTES, BASE_URL, ORIGIN } = require("../routes");
 
 const VIEWPORT = { width: 1440, height: 900 };
 
+// What the host is configured to send, asserted rather than assumed.
+const EXPECTED_HEADERS = {
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "DENY",
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "permissions-policy": "geolocation=(), microphone=(), camera=()",
+  "content-security-policy":
+    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; " +
+    "style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; " +
+    "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+};
+
+// One representative of each tier. Overlapping rules in the host config produce
+// a header carrying two max-age directives, which a browser resolves by taking
+// the first — so the value is compared exactly, not merely for presence.
+const CACHE_TIERS = {
+  "/static/fonts/D-DIN.woff2": "public, max-age=31536000, immutable",
+  "/static/og/index.png": "public, max-age=604800",
+  "/static/css/styles.min.css": "public, max-age=3600",
+};
+
 // A page-level assertion.
 //
 // `contentOnly` marks what a page owes because it is meant to be found and
@@ -93,12 +114,57 @@ const CHECKS = [
     },
   },
   {
+    // Two assertions, not one. The first catches the policy going missing, the
+    // second catches it blocking something it should not.
+    //
+    // Only the second existed to begin with, and it passes when there is no
+    // policy at all: no header means no violations means green. That is the
+    // failure this project has already had once — a policy that lived in a
+    // config file outside the running topology, advertised in the README,
+    // never sent. A check that reports success when the thing it checks has
+    // disappeared is worse than no check.
     name: "policy",
-    // The error pages are the documented exception: their retry script has to
-    // be inline to run at all when the app is unreachable, and the app's policy
-    // does not apply to them where they are actually served.
     skipStandalone: true,
-    run: ({ violations }) => (violations.length ? violations[0] : null),
+    run: ({ headers, violations }) => {
+      const sent = headers["content-security-policy"];
+      if (!sent) return "no Content-Security-Policy header";
+      if (sent !== EXPECTED_HEADERS["content-security-policy"]) {
+        return `policy differs from the expected value: ${sent}`;
+      }
+      return violations.length ? violations[0] : null;
+    },
+  },
+  {
+    // The headers the host is configured to send. Nothing else verifies that
+    // _headers reaches a response — the byte comparison covers HTML, not what
+    // is wrapped around it.
+    name: "security headers",
+    skipStandalone: true,
+    run: ({ headers }) => {
+      const missing = Object.entries(EXPECTED_HEADERS)
+        .filter(([k]) => k !== "content-security-policy")
+        .filter(([k, v]) => headers[k] !== v)
+        .map(([k, v]) => `${k}: expected "${v}", got "${headers[k] || "(absent)"}"`);
+      return missing.length ? missing.join("; ") : null;
+    },
+  },
+  {
+    // Three tiers, and until now none of them were tested. A font served with
+    // an hour's cache instead of a year is invisible: nothing breaks, the site
+    // is simply slower for everyone who comes back.
+    name: "cache tiers",
+    skipStandalone: true,
+    run: async ({ request }) => {
+      const problems = [];
+      for (const [url, expected] of Object.entries(CACHE_TIERS)) {
+        const r = await request.get(BASE_URL + url);
+        const got = r.headers()["cache-control"];
+        if (got !== expected) {
+          problems.push(`${url}: expected "${expected}", got "${got || "(absent)"}"`);
+        }
+      }
+      return problems.length ? problems.join("; ") : null;
+    },
   },
   {
     name: "no js errors",
@@ -222,13 +288,39 @@ async function main() {
     page.off("console", onConsole);
     page.off("pageerror", onError);
 
-    const ctx = { route, status: response ? response.status() : 0, doc, violations, errors };
+    const ctx = {
+      route,
+      status: response ? response.status() : 0,
+      headers: response ? response.headers() : {},
+      request: page.request,
+      doc,
+      violations,
+      errors,
+    };
     for (const check of CHECKS) {
       if (check.skipStandalone && route.standalone) continue;
       if (check.contentOnly && route.isError) continue;
       checked++;
-      const problem = check.run(ctx);
+      const problem = await check.run(ctx);
       if (problem) failures.push({ route: route.path, check: check.name, problem });
+    }
+  }
+
+  // The classic static-host mistake: the 404 document served at a 200, which
+  // Google reads as a soft 404 and can cost the paths around it their place in
+  // the index. It is not a route, so it is asserted here rather than in CHECKS.
+  {
+    checked++;
+    const res = await page.goto(BASE_URL + "/this-path-does-not-exist", {
+      waitUntil: "domcontentloaded",
+    });
+    const status = res ? res.status() : 0;
+    if (status !== 404) {
+      failures.push({
+        route: "(unmatched path)",
+        check: "not found",
+        problem: `expected 404, got ${status}`,
+      });
     }
   }
 

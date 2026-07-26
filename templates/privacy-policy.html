@@ -1,5 +1,4 @@
-{{ define "privacy-policy.html" }}
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <!-- Schema.org JSON-LD: WebPage -->
 <script type="application/ld+json">
@@ -74,5 +73,4 @@
     </div>
 </section>
 
-{{ template "footer.html" . }}
-{{ end }}
+{% include "footer.html" %}

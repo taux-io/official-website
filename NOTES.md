@@ -12,9 +12,10 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 
 ## 架構
 
-- **後端**：Go 1.24+ / Gin，伺服器端渲染
+- **產生器**：Rust（minijinja），build 時輸出靜態 HTML
 - **前端**：`templates/*.html` + TailwindCSS 3.4，無前端框架
-- **基礎設施**：Docker（distroless/nonroot）+ nginx-proxy + acme-companion 自動 SSL
+- **工具鏈**：Node 負責 CSS 建置、資產生成與全部驗證（Tailwind 與 Playwright 沒有堪用的 Rust 替代品，所以這個 repo 是雙語言的）
+- **基礎設施**：Cloudflare Pages，無執行期伺服器
 
 ---
 
@@ -62,6 +63,9 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 ## 建置與檢查
 
 ```bash
+npm run build:site     # cargo build + 產生 dist/
+npm run serve          # wrangler pages dev dist（套用 _headers）
+npm run compare        # 與 Go 版輸出逐位元比對（見 scripts/migration/README.md）
 npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
@@ -96,15 +100,32 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 ## 部署
 
-**`deploy.prod.sh` 是唯一有效的部署路徑。** 它在正式機上 `git pull`、`docker build`、然後直接 `docker run` 把 Go 容器掛上 `VIRTUAL_HOST=taux.io` 接到 `taux_frontend` 網路，由 nginx-proxy 反向代理。
+**靜態網站，由 Cloudflare Pages 從邊緣節點供應。** 沒有執行期伺服器。
 
-- `docker-compose.prod.yml` 與 `nginx.conf` **已於清理時刪除**。前者的 `nginx` 服務既無 `image` 也無 `build`，`docker compose config` 直接判定無效，不可能啟動過；後者從未在這個拓撲中生效。若你的部署確實依賴它們，`git log` 裡有。
-- **安全標頭與 CSP 現在都在 `main.go` 的 middleware**，隨應用程式走。先前 CSP 只寫在 `nginx.conf` 裡，等於從未生效。
-- **502/503 錯誤頁由 nginx-proxy 從它自己的 `html` volume 供應**（`/usr/share/nginx/html/`），`git pull` 碰不到。倉庫裡的 `static/502.html`、`static/503.html` 是原始版本，要客製得由部署方複製進 volume。它們的行內 `<script>` 必須保持行內——後端已死時 `/static` 拿不到。
+```bash
+npm run build:site   # cargo build + 產生 dist/
+npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
+```
 
-### SSL
+`dist/` 由 `generator/`（Rust + minijinja）從 `templates/` 與 `site.toml` 產生。推送到 main 觸發 Cloudflare 建置。
 
-`nginxproxy/acme-companion` 自動處理，不需要手動 certbot。確認容器的 `VIRTUAL_HOST` 與 `LETSENCRYPT_HOST` 正確即可。
+### 幾個必須知道的細節
+
+- **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
+- **`_headers` 的規則必須互不重疊。** Cloudflare **合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中會產生 `max-age=3600, max-age=31536000` —— 瀏覽器取第一個，字體實際只快取一小時。這已經發生過一次。
+- **`404.html` 不是路由。** 它在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑並附上 404 狀態。**靜態主機最常見的錯誤是用 200 送出 404 頁面**，Google 視為 soft 404 並可能連帶降權周邊路徑。契約測試會斷言這一點。
+- **靜態站沒有 500。** 沒有應用程式可以失敗，該頁已移除。
+- **502/503 由 nginx-proxy 從自己的 volume 供應**，不在 `dist/` 裡。它們的行內 `<script>` 必須保持行內——後端已死時 `/static` 拿不到。
+
+### 標頭
+
+安全標頭與 CSP 在 `_headers`，進版控、可 review、**且由契約測試斷言實際送出的值**。
+
+它們先前在 Go middleware，更早在一個從未生效的 `nginx.conf` 裡——那個檔案不在運行中的拓撲裡，policy 被 README 宣稱了數個月卻從未送出任何一次。所以測試斷言的是**回應帶回來的值**，不是「設定檔存在」。
+
+### 本機測試必須用 `wrangler pages dev`
+
+普通靜態伺服器不套用 `_headers`。用它跑測試，標頭斷言會對著沒人送出的標頭通過——正是上面那個失敗模式的重演。
 
 ---
 
