@@ -1,7 +1,11 @@
 {
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch"
+    "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch",
+    "check:css": "sh scripts/check-css-fresh.sh",
+    "screenshot": "node scripts/visual/screenshot.js",
+    "contrast": "node scripts/visual/contrast.js",
+    "diff": "node scripts/visual/diff.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
