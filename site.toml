@@ -59,6 +59,7 @@ template    = "what-is-prompt-injection.html"
 title       = "What is Prompt Injection? | TauX Security"
 description = "Learn about prompt injection attacks and how to secure your LLM applications against them."
 canonical   = "https://taux.io/what-is-prompt-injection"
+date_published = "2026-02-17"
 
 [[page]]
 path        = "/agent-prompting-guide"
