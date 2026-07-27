@@ -57,7 +57,6 @@ taux-dev/
 │   ├── privacy-policy.html     # 隱私權政策
 │   ├── terms-of-service.html   # 服務條款
 │   ├── 404.html                # 自定義 404 頁面
-│   └── 500.html                # 自定義 500 錯誤頁面
 ├── static/                     # 靜態資源
 │   ├── css/                    # 編譯後的 CSS
 │   ├── js/                     # 前端 JavaScript
@@ -215,9 +214,9 @@ npm run build:css && npm run build:site
 
 `geo-guide.html` 而不是 `geo-guide/index.html`。後者在 `/geo-guide/` 被供應，而 `/geo-guide` 會拿到一個 308 轉址——每一條已經被索引的 URL 都多一跳，canonical 指向的位置主機還不直接供應。扁平檔案在 `/geo-guide` 直接命中，沒有轉址。
 
-### 尚未處理
+### 錯誤頁
 
-`static/502.html` 與 `static/503.html` 是給 nginx-proxy 的錯誤頁。靜態託管沒有會掛掉的來源伺服器，這兩個檔在新拓撲裡沒有對應角色，但稽核仍然涵蓋它們。要留要刪，等部署方式定案再決定。
+只有 404。500 沒有應用程式可以失敗，502／503 沒有來源伺服器可以失效——三者在靜態託管下都沒有任何機制會供應，已移除。
 
 ## 📞 聯絡資訊
 

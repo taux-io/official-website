@@ -16,14 +16,12 @@ const { parse } = require("smol-toml");
 const ROOT = path.join(__dirname, "..");
 const ORIGIN = "https://taux.io";
 
-// Served by nginx-proxy from its own volume when the origin is unreachable, so
-// they are never part of the generated site. They are still pages a visitor can
-// be shown, so the audits cover them; the contract test knows not to expect the
-// host's headers on them.
-const STANDALONE = [
-  { path: "/static/502.html", name: "502", standalone: true, isError: true, expectedStatus: 200 },
-  { path: "/static/503.html", name: "503", standalone: true, isError: true, expectedStatus: 200 },
-];
+// There used to be 502 and 503 documents here, served by nginx-proxy from its
+// own volume when the origin was unreachable. Static hosting has no origin that
+// can be unreachable, so nothing serves them and the audits were walking two
+// pages no visitor could ever be shown. They are gone; this list is kept because
+// it is the seam a genuinely host-served document would attach to.
+const STANDALONE = [];
 
 function readRoutes() {
   const site = parse(fs.readFileSync(path.join(ROOT, "site.toml"), "utf8"));

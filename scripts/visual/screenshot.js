@@ -39,7 +39,7 @@ async function main() {
       const url = BASE_URL + route.path;
       const response = await page.goto(url, { waitUntil: "networkidle" });
       const status = response ? response.status() : 0;
-      if (status >= 400 && !route.name.match(/^(404|500|502|503)$/)) {
+      if (status >= 400 && route.name !== "404") {
         console.warn(`  ! ${route.path} returned ${status}`);
       }
       // Several templates reveal content on scroll via IntersectionObserver.
