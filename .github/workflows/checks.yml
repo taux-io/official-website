@@ -74,6 +74,12 @@ jobs:
       - name: dates are declared and coherent
         run: npm run check:dates
 
+      # JSON.parse cannot report a duplicate key — it silently keeps the last
+      # one, which is why the check that was supposed to catch seven of them
+      # passed. This scans the text instead.
+      - name: structured data is valid
+        run: npm run check:jsonld
+
   audit:
     runs-on: ubuntu-latest
     steps:

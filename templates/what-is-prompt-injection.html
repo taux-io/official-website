@@ -28,21 +28,8 @@
     "@id": "https://taux.io/what-is-prompt-injection#article",
     "headline": "什麼是 Prompt Injection？AI 時代的資安危機",
     "description": "解析提示詞注入的攻擊原理、與越獄的差異，以及縱深防禦的實務做法。",
-    "author": {
-      "@type": "Organization",
-      "legalName": "拓思科技股份有限公司",
-      "name": "TauX 拓思科技",
-      "url": "https://taux.io"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "legalName": "拓思科技股份有限公司",
-      "name": "TauX 拓思科技",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://taux.io/static/brand/logo-on-light.png"
-      }
-    },
+    "author": {% include "_org.html" %},
+    "publisher": {% include "_org-publisher.html" %},
     "datePublished": "{{ date_published }}",
     "dateModified": "{{ date_modified }}",
     "image": "https://taux.io/static/brand/logo-on-light.png",

@@ -28,23 +28,8 @@
             "@id": "https://taux.io/what-is-llms-txt#article",
             "headline": "LLMs.txt 是什麼？AI 時代網站內容保護新規範",
             "description": "深入解析 LLMs.txt 的定義、功能及其與 robots.txt 的差異，協助網站管理者掌握 GEO 時代的內容存取權限。",
-            "author": {
-                "@type": "Organization",
-                "legalName": "拓思科技股份有限公司",
-                "name": "TauX 拓思科技",
-                "legalName": "拓思科技股份有限公司",
-                "url": "https://taux.io"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "legalName": "拓思科技股份有限公司",
-                "name": "TauX 拓思科技",
-                "legalName": "拓思科技股份有限公司",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://taux.io/static/brand/logo-on-light.png"
-                }
-            },
+            "author": {% include "_org.html" %},
+            "publisher": {% include "_org-publisher.html" %},
             "datePublished": "{{ date_published }}",
             "dateModified": "{{ date_modified }}",
             "image": "https://taux.io/static/brand/logo-on-light.png",
