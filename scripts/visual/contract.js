@@ -59,6 +59,19 @@ const CHECKS = [
         : `expected ${route.expectedStatus}, got ${status}`,
   },
   {
+    // A page can answer GET with 200 and HEAD with 404, and every check that
+    // loads the page in a browser will pass while it does. taux.io was doing
+    // exactly that in production: GET / returned the homepage with 200, HEAD /
+    // returned 404. Link checkers, uptime monitors and some crawlers use HEAD,
+    // so the homepage read as missing to all of them, and nothing here could
+    // see it because a browser never issues HEAD for a navigation.
+    name: "head status",
+    run: ({ route, headStatus }) =>
+      headStatus === route.expectedStatus
+        ? null
+        : `HEAD expected ${route.expectedStatus}, got ${headStatus} (GET may still be fine — that is the failure)`,
+  },
+  {
     name: "lang",
     run: ({ doc }) =>
       doc.lang === "zh-Hant-TW"
@@ -288,9 +301,14 @@ async function main() {
     page.off("console", onConsole);
     page.off("pageerror", onError);
 
+    // Issued separately from the navigation, because a browser never sends HEAD
+    // to load a page and so cannot reveal a host that answers it differently.
+    const head = await page.request.fetch(BASE_URL + route.path, { method: "HEAD" });
+
     const ctx = {
       route,
       status: response ? response.status() : 0,
+      headStatus: head.status(),
       headers: response ? response.headers() : {},
       request: page.request,
       doc,

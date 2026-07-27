@@ -1,0 +1,7 @@
+# The toolchain every build uses — CI, a laptop, and the deployment host all
+# read this file, so there is one answer to "which Rust" rather than three
+# environments that happen to agree until one of them does not.
+[toolchain]
+channel = "1.90"
+profile = "minimal"
+components = ["rustfmt", "clippy"]
