@@ -117,7 +117,7 @@ taux-dev/
 
 4. **改 CSS 時開監聽**
    ```bash
-   npm run watch
+   npm run watch:css
    ```
 
 ### 檢查
@@ -125,8 +125,13 @@ taux-dev/
 ```bash
 npm run check:css      # styles.min.css 與 input.css 是否同步
 npm run check:classes  # 模板裡有沒有 Tailwind 產不出 CSS 的 class
+npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面
+npm run check:dates    # 每頁都有可用的日期，且沒有未來或早於發布的修改日
+npm run check:jsonld   # 結構化資料有效，且沒有重複鍵
+npm run dates          # 宣告的日期 vs git 認為的（僅報告，不會寫入）
 npm run contrast       # WCAG 對比稽核 (需 wrangler 在 8099)
 npm run contract       # 路由契約：狀態碼、canonical、標頭、結構化資料、JS 錯誤
+cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、slug、註解剝除
 ```
 
 `check:classes` 是這個專案最高頻的風險。Tailwind 遇到解析不出來的 class 什麼都不產，所以 markup 看起來是刻意的、建置也成功，只有效果消失——改版時一次找出 55 個這種 class，其中包括讓 prompting 指南整條時間軸的圓點隱形的那些。

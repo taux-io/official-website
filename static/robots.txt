@@ -1,12 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /*.log$
-Disallow: /temp/
-Disallow: /backup/
 Disallow: /static/css/
 Disallow: /static/js/
-Disallow: /500.html
 Disallow: /404.html
 
 # GEO: Explicitly allow AI Crawlers and LLMs

@@ -28,7 +28,6 @@ Thumbs.db
 .visual/
 
 # Migration reference captures
-.migration/
 
 # Rust build output
 generator/target/

@@ -3,7 +3,6 @@
     "build:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --minify",
     "build:site": "cargo build --release --manifest-path generator/Cargo.toml && ./generator/target/release/generate",
     "serve": "wrangler pages dev dist --port 8099 --ip 127.0.0.1",
-    "compare": "node scripts/migration/compare.js",
     "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch",
     "check:css": "sh scripts/check-css-fresh.sh",
     "check:classes": "node scripts/check-unknown-classes.js",
