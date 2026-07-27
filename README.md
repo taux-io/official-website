@@ -57,17 +57,11 @@ taux-dev/
 │   ├── privacy-policy.html     # 隱私權政策
 │   ├── terms-of-service.html   # 服務條款
 │   ├── 404.html                # 自定義 404 頁面
-│   └── 500.html                # 自定義 500 錯誤頁面
 ├── static/                     # 靜態資源
 │   ├── css/                    # 編譯後的 CSS
 │   ├── js/                     # 前端 JavaScript
 │   └── img/                    # 圖片資源
 ├── src/                        # 前端原始碼 (CSS input)
-├── .agents/                    # AI 協作體系
-│   ├── AGENTS.md               # 核心系統提示詞
-│   ├── agents/                 # 7 大部門專家代理
-│   ├── skills/                 # 開發技能 (SOPs)
-│   └── workflows/              # 自動化工作流程
 ├── tailwind.config.js          # Tailwind 設定
 ├── scripts/visual/             # 對比稽核、路由契約測試、截圖、像素比對
 ├── scripts/assets/             # 圖示、結構化資料 logo、OG 分享卡生成
@@ -76,31 +70,9 @@ taux-dev/
 
 ## 🤖 AI 協作體系
 
-本專案採用基於 Google Cloud Tech **《5 Agent Skill Design Patterns》** 的 AI 輔助開發架構：
+`.agents/` 不在版本控制內。它描述的是「怎麼在這個專案上工作」而不是「這個專案是什麼」，而它的基礎設施那一半仍在描述已經刪除的 Docker 與 nginx 部署——一份被 check in 的文件如果過時，讀它的人沒有理由懷疑它。
 
-### 設計模式
-所有 Agent 皆嚴格實作以下 5 種模式：
-1. **Tool Wrapper** - 將領域知識封裝為按需載入的 Skills
-2. **Generator** - 使用標準模板確保產出一致性
-3. **Reviewer** - 分離生成與驗證，使用 Checklist 自我審查
-4. **Inversion** - 先蒐集必要上下文再開始執行 (Ask-before-Code)
-5. **Pipeline** - 強制多階段工作流 (Diagnosis → Execution → Validation)
-
-### 核心文件
-- **[AGENTS.md](.agents/AGENTS.md)** - Agent 核心系統提示詞與行為準則，定義 7 大部門、35 個跨職能角色
-- **[SKILL.md](.agents/skills/taux-core/SKILL.md)** - 開發、測試與部署的 SOPs & Checklists
-- **[NOTES.md](NOTES.md)** - 專案長期記憶、技術決策紀錄
-
-### 代理部門
-| 部門 | 角色數 | 職責範圍 |
-|---|---|---|
-| Engineering | 6 | 前端、後端、行動裝置、AI、DevOps、原型開發 |
-| Product | 3 | 趨勢研究、回饋統整、Sprint 優先排序 |
-| Marketing | 7 | 社群經營 (TikTok/IG/Twitter/Reddit)、ASO、成長駭客 |
-| Design | 5 | UI/UX、品牌守護、視覺敘事、趣味注入 |
-| Project Management | 3 | 實驗追蹤、專案出貨、製作統籌 |
-| Studio Operations | 5 | 客服、分析、基礎設施、法遵、財務 |
-| Testing | 6 | 工具評估、API 測試、壓力/效能測試 (7 類基準)、資安測試 (15 類掃描)、工作流程優化、測試結果分析 |
+專案本身的長期記憶與技術決策紀錄在 **[NOTES.md](NOTES.md)**。
 
 ## 🔒 安全機制
 
@@ -145,7 +117,7 @@ taux-dev/
 
 4. **改 CSS 時開監聽**
    ```bash
-   npm run watch
+   npm run watch:css
    ```
 
 ### 檢查
@@ -153,8 +125,13 @@ taux-dev/
 ```bash
 npm run check:css      # styles.min.css 與 input.css 是否同步
 npm run check:classes  # 模板裡有沒有 Tailwind 產不出 CSS 的 class
+npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面
+npm run check:dates    # 每頁都有可用的日期，且沒有未來或早於發布的修改日
+npm run check:jsonld   # 結構化資料有效，且沒有重複鍵
+npm run dates          # 宣告的日期 vs git 認為的（僅報告，不會寫入）
 npm run contrast       # WCAG 對比稽核 (需 wrangler 在 8099)
 npm run contract       # 路由契約：狀態碼、canonical、標頭、結構化資料、JS 錯誤
+cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、slug、註解剝除
 ```
 
 `check:classes` 是這個專案最高頻的風險。Tailwind 遇到解析不出來的 class 什麼都不產，所以 markup 看起來是刻意的、建置也成功，只有效果消失——改版時一次找出 55 個這種 class，其中包括讓 prompting 指南整條時間軸的圓點隱形的那些。
@@ -182,7 +159,7 @@ npm run contract       # 路由契約：狀態碼、canonical、標頭、結構�
 ## 🔧 開發指南
 
 ### 編輯內容
-**Developers**: Please refer to `AGENTS.md` and `SKILL.md` for detailed development workflows and standards.
+**Developers**: 建置、檢查與新增頁面的流程見上方各節；技術決策紀錄見 `NOTES.md`。
 
 ### 新增頁面
 1. 在 `templates/` 目錄下創建新的 HTML 檔案 (參考 `templates/index.html`)
@@ -215,9 +192,9 @@ npm run build:css && npm run build:site
 
 `geo-guide.html` 而不是 `geo-guide/index.html`。後者在 `/geo-guide/` 被供應，而 `/geo-guide` 會拿到一個 308 轉址——每一條已經被索引的 URL 都多一跳，canonical 指向的位置主機還不直接供應。扁平檔案在 `/geo-guide` 直接命中，沒有轉址。
 
-### 尚未處理
+### 錯誤頁
 
-`static/502.html` 與 `static/503.html` 是給 nginx-proxy 的錯誤頁。靜態託管沒有會掛掉的來源伺服器，這兩個檔在新拓撲裡沒有對應角色，但稽核仍然涵蓋它們。要留要刪，等部署方式定案再決定。
+只有 404。500 沒有應用程式可以失敗，502／503 沒有來源伺服器可以失效——三者在靜態託管下都沒有任何機制會供應，已移除。
 
 ## 📞 聯絡資訊
 

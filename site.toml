@@ -14,6 +14,7 @@ template    = "index.html"
 title       = "拓思科技股份有限公司｜TauX - AI Smart Work & GEO Solutions"
 description = "TauX helps enterprises land AI First strategies with technology development services."
 canonical   = "https://taux.io/"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/geo-guide"
@@ -21,6 +22,7 @@ template    = "geo-guide.html"
 title       = "GEO Guide - Generative Engine Optimization | TauX"
 description = "Learn how to optimize your content for AI search engines like ChatGPT and Perplexity. The ultimate guide to GEO."
 canonical   = "https://taux.io/geo-guide"
+date_modified = "2026-07-26"
 date_published = "2025-08-15"
 
 [[page]]
@@ -29,6 +31,7 @@ template    = "ai-smart-work.html"
 title       = "AI Smart Work Solutions | TauX"
 description = "Automate workflows and enhance productivity with TauX's AI-driven smart work solutions."
 canonical   = "https://taux.io/ai-smart-work"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/data-governance"
@@ -36,6 +39,7 @@ template    = "data-governance.html"
 title       = "Data Governance & AI Security | TauX"
 description = "Protect your enterprise data with acceptable use policies and governance frameworks compliant with AI standards."
 canonical   = "https://taux.io/data-governance"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/workspace-ai-roi"
@@ -43,6 +47,7 @@ template    = "workspace-ai-roi.html"
 title       = "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX"
 description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
 canonical   = "https://taux.io/workspace-ai-roi"
+date_modified = "2026-07-26"
 date_published = "2026-07-26"
 
 [[page]]
@@ -51,6 +56,7 @@ template    = "what-is-llms-txt.html"
 title       = "What is LLMs.txt? | TauX GEO Tech"
 description = "Understand the new standard for controlling AI bot access to your content. LLMs.txt explained."
 canonical   = "https://taux.io/what-is-llms-txt"
+date_modified = "2026-07-26"
 date_published = "2026-02-12"
 
 [[page]]
@@ -59,6 +65,7 @@ template    = "what-is-prompt-injection.html"
 title       = "What is Prompt Injection? | TauX Security"
 description = "Learn about prompt injection attacks and how to secure your LLM applications against them."
 canonical   = "https://taux.io/what-is-prompt-injection"
+date_modified = "2026-07-26"
 date_published = "2026-02-17"
 
 [[page]]
@@ -67,6 +74,7 @@ template    = "agent-prompting-guide.html"
 title       = "Agent Prompting Guide | TauX"
 description = "Master the art of prompting for AI agents. Comprehensive guide for developers and power users."
 canonical   = "https://taux.io/agent-prompting-guide"
+date_modified = "2026-07-26"
 date_published = "2026-02-17"
 
 [[page]]
@@ -75,6 +83,7 @@ template    = "claude-skills-guide.html"
 title       = "Claude Skills 實戰指南 | TauX GEO Tech"
 description = "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。"
 canonical   = "https://taux.io/claude-skills-guide"
+date_modified = "2026-07-26"
 date_published = "2026-03-02"
 
 [[page]]
@@ -83,6 +92,7 @@ template    = "adk-skill-patterns.html"
 title       = "5 種 Agent Skill 設計模式 | TauX ADK Guide"
 description = "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
 canonical   = "https://taux.io/adk-skill-patterns"
+date_modified = "2026-07-26"
 date_published = "2026-04-06"
 
 [[page]]
@@ -91,6 +101,7 @@ template    = "building.html"
 title       = "Building in Public | TauX"
 description = "Follow our journey as we build TauX. Transparency, updates, and behind-the-scenes."
 canonical   = "https://taux.io/building"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/about"
@@ -98,6 +109,7 @@ template    = "about.html"
 title       = "About TauX | AI & GEO Specialists"
 description = "Meet the team behind TauX. We are dedicated to bridging the gap between human needs and AI capabilities."
 canonical   = "https://taux.io/about"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/privacy-policy"
@@ -105,6 +117,7 @@ template    = "privacy-policy.html"
 title       = "Privacy Policy | TauX"
 description = "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。了解您的資料權利與我們的安全承諾。"
 canonical   = "https://taux.io/privacy-policy"
+date_modified = "2026-07-26"
 
 [[page]]
 path        = "/terms-of-service"
@@ -112,6 +125,7 @@ template    = "terms-of-service.html"
 title       = "Terms of Service | TauX"
 description = "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務，以及我們的服務範圍。"
 canonical   = "https://taux.io/terms-of-service"
+date_modified = "2026-07-26"
 
 # Generated as documents rather than declared as visitable routes. Cloudflare
 # answers any unmatched path with 404.html at a 404 status — the Go server had

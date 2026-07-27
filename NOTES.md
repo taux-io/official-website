@@ -65,7 +65,6 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 ```bash
 npm run build:site     # cargo build + 產生 dist/
 npm run serve          # wrangler pages dev dist（套用 _headers）
-npm run compare        # 與 Go 版輸出逐位元比對（見 scripts/migration/README.md）
 npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
@@ -73,17 +72,24 @@ npm run build:assets   # 圖示 + 結構化資料 logo + OG 分享卡
 npm run contrast       # WCAG 稽核（CI 閘門）
 npm run contract       # 路由對外宣告的契約（CI 閘門）
 npm run check:classes  # 找出不產生任何 CSS 的類別（CI 閘門）
+npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面（CI 閘門）
+npm run check:dates    # 日期已宣告且自洽（CI 閘門）
+npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
+npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 ```
 
 `.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `cargo fmt` / `cargo clippy` / `build:site` / `check:css` / `check:classes` / `contrast` / `contract`。後兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
 
-三道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
+六道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
 - **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤
 - **check:classes** —— 沒有任何類別產生不出 CSS
+- **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
+- **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
+- **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）
 
 截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
 
@@ -114,7 +120,7 @@ npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
 - **`_headers` 的規則必須互不重疊。** Cloudflare **合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中會產生 `max-age=3600, max-age=31536000` —— 瀏覽器取第一個，字體實際只快取一小時。這已經發生過一次。
 - **`404.html` 不是路由。** 它在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑並附上 404 狀態。**靜態主機最常見的錯誤是用 200 送出 404 頁面**，Google 視為 soft 404 並可能連帶降權周邊路徑。契約測試會斷言這一點。
 - **靜態站沒有 500。** 沒有應用程式可以失敗，該頁已移除。
-- **502/503 由 nginx-proxy 從自己的 volume 供應**，不在 `dist/` 裡。它們的行內 `<script>` 必須保持行內——後端已死時 `/static` 拿不到。
+- **靜態站沒有 502／503。** 沒有會失效的來源伺服器，沒有機制會供應它們，該兩頁已移除。
 
 ### 標頭
 
@@ -125,6 +131,33 @@ npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
 ### 本機測試必須用 `wrangler pages dev`
 
 普通靜態伺服器不套用 `_headers`。用它跑測試，標頭斷言會對著沒人送出的標頭通過——正是上面那個失敗模式的重演。
+
+---
+
+## 從 Go 遷移到 Rust 的紀錄
+
+比對工具已刪除。它需要一台跑著 Go 伺服器的機器來產生基準，而那個伺服器已經不存在，所以它不可能再跑一次；留著一個永遠報 14 個差異的指令，看起來像壞掉的檢查而不是完成的驗證。留下的是知識。
+
+**主張**：產生的網站與 Go 伺服器供應的內容逐位元相同。14 頁全數相符。
+
+這個主張比檢查表值錢：如果每個位元組都相符，就不可能有任何 canonical、結構化資料、標題、內部連結或 meta description 改變過——它們的聯集就是那個檔案。是二元的、完整的，不需要判斷哪些訊號重要。
+
+**被正規化掉的三件事，各自的理由**：
+
+| 規則 | 理由 |
+|---|---|
+| 版權年份 | Go 每個請求讀時鐘，generator 在建置時烘進去。同一個值，不同機制。 |
+| 前後空白 | Go 的 `{{ define }}` 在 doctype 前留了一個空行。那個構造已經不存在，而 doctype 之前的空白不帶任何意義。 |
+| 字元參照寫法 | Go 把跳脫的單引號寫成 `&#39;`，minijinja 寫成 `&#x27;`。同一個字元。 |
+
+每一條都是真的回歸可以藏身的地方，所以清單保持很短，而且每一條都在上面寫明理由，而不是靜靜累積。
+
+**這個比對看不到的東西**，而遷移出錯的兩次都在那裡：
+
+- `/geo-guide` 回 **308** 而不是 200。寫成 `geo-guide/index.html` 的頁面在 `/geo-guide/` 供應，裸路徑會轉址——每一條已索引的 URL 都多一跳，canonical 還指向主機不直接供應的形式。
+- 字體的 `Cache-Control` 回來是 `max-age=3600, max-age=31536000`。主機把每條匹配的規則合併而不是讓最 specific 的勝出，瀏覽器取第一個，於是為了效能自架的字體會被快取一小時。
+
+兩個都是靠 wrangler 真的供應輸出、問它要標頭才抓到的。兩個在 HTML 裡都看不見。這就是為什麼路由契約測試跑在 `npm run serve` 上，而且對標頭值做正面斷言。
 
 ---
 

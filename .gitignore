@@ -28,7 +28,6 @@ Thumbs.db
 .visual/
 
 # Migration reference captures
-.migration/
 
 # Rust build output
 generator/target/
@@ -36,3 +35,12 @@ dist/
 
 # wrangler local state
 .wrangler/
+
+# Agent tooling. Local to whoever is working here, not part of the site: it
+# describes how to work on the project rather than what the project is, and its
+# infrastructure half still documented a Docker and nginx deployment that no
+# longer exists. Keeping it out of version control means it cannot go stale in
+# the repo, and cannot mislead someone who trusts a checked-in document.
+.agents/
+.claude/
+skills-lock.json

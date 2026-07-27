@@ -29,23 +29,8 @@
       "@id": "https://taux.io/workspace-ai-roi#article",
       "headline": "手動 vs 自動：效率革命",
       "description": "廠商公布的 Workspace AI 導入效益數據該怎麼判讀：四組數字的調查方法、樣本規模與資料年份，對照非廠商委託的獨立研究，以及為什麼自陳式的時間節省需要用量測驗證。",
-      "author": {
-        "@type": "Organization",
-        "legalName": "拓思科技股份有限公司",
-        "name": "TauX 拓思科技",
-        "legalName": "拓思科技股份有限公司",
-        "url": "https://taux.io"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "legalName": "拓思科技股份有限公司",
-        "name": "TauX 拓思科技",
-        "legalName": "拓思科技股份有限公司",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://taux.io/static/brand/logo-on-light.png"
-        }
-      },
+      "author": {% include "_org.html" %},
+      "publisher": {% include "_org-publisher.html" %},
       "datePublished": "{{ date_published }}",
       "dateModified": "{{ date_modified }}",
       "inLanguage": "zh-Hant-TW",
@@ -202,7 +187,7 @@
 
         <!-- The same step response as the homepage, drawn once and left still. -->
         <div class="relative h-16 md:h-20 border-t border-line mt-12">
-            <canvas data-tau-curve="static" data-parallax="0.25"
+            <canvas data-tau-curve="static" data-parallax="0.5"
                 class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
         </div>
     </div>

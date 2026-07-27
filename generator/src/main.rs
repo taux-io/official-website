@@ -15,10 +15,9 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process;
-use std::process::Command;
 
 use minijinja::value::Value;
-use minijinja::{context, Environment};
+use minijinja::{context, Environment, UndefinedBehavior};
 use serde::Deserialize;
 
 const ORIGIN: &str = "https://taux.io";
@@ -49,14 +48,24 @@ struct Page {
     title: String,
     description: String,
     canonical: String,
-    /// Overrides the date derived from git. Set it when a commit touched a
-    /// template without changing what the page says — a class rename, a typo
-    /// fix — because a modification date that moves on cosmetic edits is a
-    /// freshness claim the content does not support, and search engines
-    /// discount sites that make it.
+    /// When the page's content last changed. Required, and written by hand.
+    ///
+    /// This used to be derived from the commit that last touched the template,
+    /// which was wrong in a way that got worse with every deploy: CI and
+    /// Cloudflare Pages both clone shallowly, and in a one-commit history git
+    /// attributes every file to that commit. Every page's date collapsed to the
+    /// date of whatever was deployed last — a README typo would have restamped
+    /// the whole site as freshly revised.
+    ///
+    /// So the build no longer reads git at all; it is reproducible from the tree
+    /// alone. `npm run dates` compares what is declared here against what git
+    /// knows, and a person decides. A mechanical commit that changes no content
+    /// simply does not move the date, because nothing moves it automatically.
+    date_modified: String,
+    /// When the page was first published. A fact, so it is written by hand, and
+    /// it has no default: a page whose template asks for it and whose entry does
+    /// not supply it fails the build rather than borrowing another date.
     #[serde(default)]
-    date_modified: Option<String>,
-    /// When the page was first published. A fact, so it is written by hand.
     date_published: Option<String>,
 }
 
@@ -114,6 +123,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut env = Environment::new();
     env.set_loader(minijinja::path_loader(root.join("templates")));
+    // A template that asks for something the page does not provide fails the
+    // build. The permissive default renders it as empty, which is how a page
+    // could have shipped an empty datePublished and looked fine.
+    env.set_undefined_behavior(UndefinedBehavior::Strict);
 
     // A fresh tree each run, so a page removed from site.toml stops being
     // published rather than lingering as an orphan the audits never visit.
@@ -127,17 +140,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut sitemap = Vec::new();
 
     for page in &site.page {
-        // Every page declared its own dateModified by hand, and every one of
-        // them was wrong: all six carried a date from April or May while the
-        // content had been rewritten that day, and four contradicted the
-        // sitemap's own lastmod for the same URL. Deriving it from the commit
-        // that last touched the template makes it correct by construction.
-        let modified = page
-            .date_modified
-            .clone()
-            .or_else(|| last_commit_date(&root.join("templates").join(&page.template)))
-            .unwrap_or_else(|| format!("{year}-01-01"));
-
         let tmpl = env.get_template(&page.template)?;
         // Titles and descriptions are escaped — one of them contains an
         // ampersand. The two URLs are not: they are ours, from site.toml, and
@@ -151,12 +153,17 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
             ),
-            date_modified => &modified,
-            date_published => page.date_published.as_deref().unwrap_or(&modified),
+            date_modified => &page.date_modified,
+            ..match &page.date_published {
+                Some(d) => context! { date_published => d },
+                // Absent rather than empty, so a template that wants it fails
+                // loudly under the strict undefined behaviour set above.
+                None => context! {},
+            }
         })?;
         let html = strip_comments(&html);
 
-        sitemap.push((page.canonical.clone(), modified.clone()));
+        sitemap.push((page.canonical.clone(), page.date_modified.clone()));
 
         let dest = page.output_path(&out);
         if let Some(parent) = dest.parent() {
@@ -256,6 +263,11 @@ fn strip_comments(html: &str) -> String {
                 let stop = i + end + "</script>".len();
                 out.push_str(&html[i..stop]);
                 i = stop;
+                // Back to the top, so a comment sitting immediately after the
+                // closing tag is still recognised. Falling through to the plain
+                // character copy below emitted its `<` and left the rest of the
+                // comment as ordinary text.
+                continue;
             }
         }
         // Style bodies keep their CSS but lose their CSS comments, for the same
@@ -266,6 +278,7 @@ fn strip_comments(html: &str) -> String {
                 let stop = i + end + "</style>".len();
                 out.push_str(&strip_css_comments(&html[i..stop]));
                 i = stop;
+                continue;
             }
         }
         if i >= bytes.len() {
@@ -340,25 +353,6 @@ fn copy_tree(from: &Path, to: &Path) -> std::io::Result<()> {
     Ok(())
 }
 
-/// The date of the last commit that touched a file, as YYYY-MM-DD.
-///
-/// Returns None outside a repository or for a file git does not know, in which
-/// case the caller falls back rather than inventing a date.
-fn last_commit_date(path: &Path) -> Option<String> {
-    let out = Command::new("git")
-        .args(["log", "-1", "--format=%ad", "--date=short", "--"])
-        .arg(path)
-        .output()
-        .ok()?;
-    let s = String::from_utf8(out.stdout).ok()?;
-    let s = s.trim();
-    if s.is_empty() {
-        None
-    } else {
-        Some(s.to_string())
-    }
-}
-
 /// Baked at build time. The Go server read the clock on every request to fill
 /// in a copyright year, which is the only thing it did that a file cannot —
 /// and a rebuild once a year is a cheaper answer than a server.
@@ -377,4 +371,111 @@ fn current_year() -> i32 {
     let mp = (5 * doy + 2) / 153;
     let y = yoe + era * 400;
     (y + if mp >= 10 { 1 } else { 0 }) as i32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn page(path: &str, canonical: &str) -> Page {
+        Page {
+            path: path.to_string(),
+            template: "t.html".to_string(),
+            title: String::new(),
+            description: String::new(),
+            canonical: canonical.to_string(),
+            date_modified: "2026-01-01".to_string(),
+            date_published: None,
+        }
+    }
+
+    // Every URL below is already indexed, so these are not style preferences.
+    // A page written to `geo-guide/index.html` is served at `/geo-guide/` and the
+    // bare path answers 308 — a redirect hop on an indexed URL, and a canonical
+    // tag pointing at a form the host will not serve directly.
+    #[test]
+    fn home_becomes_index() {
+        let out = page("/", "https://taux.io").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/index.html"));
+    }
+
+    #[test]
+    fn routes_become_flat_files_not_directories() {
+        let out = page("/geo-guide", "https://taux.io/geo-guide").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/geo-guide.html"));
+    }
+
+    #[test]
+    fn a_path_that_is_already_a_filename_keeps_its_name() {
+        let out = page("/404.html", "https://taux.io/404").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/404.html"));
+    }
+
+    // The share-card builder derives the same slug from the same canonical URL.
+    // Deriving it from the route instead is how a page once advertised an image
+    // that was never generated.
+    #[test]
+    fn slug_comes_from_the_canonical_url() {
+        assert_eq!(
+            page("/geo-guide", "https://taux.io/geo-guide").slug(),
+            "geo-guide"
+        );
+    }
+
+    #[test]
+    fn the_home_page_slug_is_index() {
+        assert_eq!(page("/", "https://taux.io").slug(), "index");
+        assert_eq!(page("/", "https://taux.io/").slug(), "index");
+    }
+
+    #[test]
+    fn comments_are_removed() {
+        assert_eq!(
+            strip_comments("<p>a</p><!-- note --><p>b</p>"),
+            "<p>a</p><p>b</p>"
+        );
+    }
+
+    // Stepping over a script or style body used to fall through to the plain
+    // character copy without retesting for a comment opener, so a comment sitting
+    // immediately after the closing tag was emitted verbatim. No template put one
+    // there, which is exactly why nothing caught it.
+    #[test]
+    fn a_comment_right_after_a_script_is_removed() {
+        assert_eq!(
+            strip_comments("<script>x</script><!-- note --><p>b</p>"),
+            "<script>x</script><p>b</p>"
+        );
+    }
+
+    #[test]
+    fn a_comment_right_after_a_style_is_removed() {
+        assert_eq!(
+            strip_comments("<style>a{b:c}</style><!-- note --><p>b</p>"),
+            "<style>a{b:c}</style><p>b</p>"
+        );
+    }
+
+    // A `<!--` inside a script string literal would otherwise swallow everything
+    // up to the next `-->`.
+    #[test]
+    fn script_bodies_are_not_scanned_for_comments() {
+        let html = r#"<script>var s = "<!-- not a comment -->";</script>"#;
+        assert_eq!(strip_comments(html), html);
+    }
+
+    // Go stripped these too, and the migration had to match it byte for byte.
+    // The space matters: `a/*x*/b` is two tokens, `ab` is one.
+    #[test]
+    fn css_comments_are_replaced_by_a_space() {
+        assert_eq!(strip_css_comments("a/*x*/b"), "a b");
+    }
+
+    #[test]
+    fn a_comment_opener_inside_a_css_string_is_left_alone() {
+        assert_eq!(
+            strip_css_comments(r#"a{content:"/*"}"#),
+            r#"a{content:"/*"}"#
+        );
+    }
 }

@@ -42,7 +42,10 @@ jobs:
         run: cargo fmt --manifest-path generator/Cargo.toml -- --check
 
       - name: cargo clippy
-        run: cargo clippy --manifest-path generator/Cargo.toml -- -D warnings
+        run: cargo clippy --manifest-path generator/Cargo.toml --all-targets -- -D warnings
+
+      - name: cargo test
+        run: cargo test --manifest-path generator/Cargo.toml
 
       - name: build the site
         run: npm run build:site
@@ -64,6 +67,18 @@ jobs:
       # newest article shipped absent from it and nothing noticed.
       - name: llms.txt lists every page
         run: npm run check:llms
+
+      # The build reads no git, so it cannot invent a date; this asserts every
+      # page supplies one, that it parses, and that nothing claims to have been
+      # revised in the future or published after it was revised.
+      - name: dates are declared and coherent
+        run: npm run check:dates
+
+      # JSON.parse cannot report a duplicate key — it silently keeps the last
+      # one, which is why the check that was supposed to catch seven of them
+      # passed. This scans the text instead.
+      - name: structured data is valid
+        run: npm run check:jsonld
 
   audit:
     runs-on: ubuntu-latest
@@ -96,7 +111,7 @@ jobs:
       # was not part of the running topology.
       - name: serve the built site
         run: |
-          npx wrangler pages dev dist --port 8099 --ip 127.0.0.1 &
+          npm run serve &
           for i in $(seq 1 40); do
             curl -sf -o /dev/null http://127.0.0.1:8099/ && break
             sleep 1

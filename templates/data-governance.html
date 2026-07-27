@@ -27,13 +27,7 @@
             "@type": "Service",
             "@id": "https://taux.io/data-governance#service",
             "serviceType": "Data Governance Strategy",
-            "provider": {
-                "@type": "Organization",
-                "legalName": "拓思科技股份有限公司",
-                "name": "TauX 拓思科技",
-                "legalName": "拓思科技股份有限公司",
-                "url": "https://taux.io"
-            },
+            "provider": {% include "_org.html" %},
             "name": "企業數據治理服務",
             "description": "提供數據盤點、標準化與品質監控服務，協助企業建立完善磁鐵般的數據資產管理體系。",
             "offers": {
@@ -63,9 +57,15 @@
 
             <!-- The same step response as the homepage, drawn once and left
                  still. A reader spends minutes on this page, so it carries the
-                 mark without carrying the animation's cost. -->
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
             <div class="relative h-16 md:h-20 border-t border-line mt-4">
-                <canvas data-tau-curve="static" data-parallax="0.25"
+                <canvas data-tau-curve="static" data-parallax="0.5"
                     class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
             </div>
     </div>
