@@ -112,7 +112,11 @@ npm run build:site   # cargo build + 產生 dist/
 npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
 ```
 
-`dist/` 由 `generator/`（Rust + minijinja）從 `templates/` 與 `site.toml` 產生。推送到 main 觸發 Cloudflare 建置。
+`dist/` 由 `generator/`（Rust + minijinja）從 `templates/` 與 `site.toml` 產生。
+
+**部署步驟在 [DEPLOYMENT.md](DEPLOYMENT.md)，不在這裡。** 這一節記錄的是為什麼，不是怎麼做。
+
+接法目前是**預期而非既成**：推送到 main 應該觸發 Cloudflare 建置，但這條路徑還沒實際走過一次。接上並驗證過之後再把這句改成肯定句——這個專案已經被「文件宣稱一個不在運行拓撲裡的東西」咬過一次（見下方的標頭）。
 
 ### 幾個必須知道的細節
 

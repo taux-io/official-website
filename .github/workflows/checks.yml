@@ -23,9 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
+      # No toolchain action and no version here. The runner ships rustup, which
+      # reads rust-toolchain.toml on the first cargo invocation — so the channel
+      # and components are declared in one file that CI, a laptop and the
+      # deployment host all obey, rather than three places that agree until one
+      # of them is edited.
 
       - uses: Swatinem/rust-cache@v2
         with:
@@ -33,7 +35,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - run: npm ci
@@ -85,7 +87,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
+      # rustup on the runner reads rust-toolchain.toml — see the build job.
 
       - uses: Swatinem/rust-cache@v2
         with:
@@ -93,7 +95,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - run: npm ci

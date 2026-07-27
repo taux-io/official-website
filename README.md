@@ -99,9 +99,10 @@ taux-dev/
 
 1. **安裝依賴**
    ```bash
-   npm install        # Tailwind 與工具鏈
-   # Rust toolchain：https://rustup.rs
+   npm ci             # Tailwind、wrangler 與工具鏈
    ```
+   Rust toolchain 見 https://rustup.rs。版本不用自己選——`rust-toolchain.toml`
+   與 `.nvmrc` 釘好了，rustup 與 nvm 會自己讀。
 
 2. **建置**
    ```bash
@@ -111,7 +112,7 @@ taux-dev/
 
 3. **預覽 (務必用 wrangler，它才會套用 `_headers`)**
    ```bash
-   npx wrangler pages dev dist --port 8099
+   npm run serve
    open http://127.0.0.1:8099
    ```
 
@@ -178,15 +179,17 @@ cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、
 
 ## 🚀 部署說明
 
-建置產物是 `dist/`，一個純靜態目錄，交給 Cloudflare Pages。
+**部署照 [DEPLOYMENT.md](DEPLOYMENT.md) 做，那是唯一依據。** 這裡只是摘要。
 
-```bash
-npm run build:css && npm run build:site
-```
+| 項目 | 值 |
+|---|---|
+| 建置指令 | `npm ci && npm run build:css && npm run build:site` |
+| 輸出目錄 | `dist` |
+| 環境變數 | 無 |
+| Node | 22（`.nvmrc`） |
+| Rust | 1.90（`rust-toolchain.toml`）—— **預設映像沒有 cargo，見 DEPLOYMENT.md 的完整指令** |
 
-- **建置指令**：`npm run build:css && npm run build:site`
-- **輸出目錄**：`dist`
-- **標頭與快取**：`_headers`，隨檔案一起部署
+DEPLOYMENT.md 另外寫了三件不在這裡的事：線上現況與切換（`taux.io` 現在的 HEAD 回 404、內容停在改名前）、主機必須做對的四件事（`_headers` 有沒有套用、規則互不重疊、未匹配路徑回 404 而非 200、扁平 `.html` 不加尾斜線），以及上線後怎麼驗證。四件都出過錯，四件都不會在瀏覽器裡看起來不對。
 
 ### 檔案為什麼是扁平的 `.html`
 
