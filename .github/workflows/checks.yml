@@ -68,6 +68,12 @@ jobs:
       - name: llms.txt lists every page
         run: npm run check:llms
 
+      # The build reads no git, so it cannot invent a date; this asserts every
+      # page supplies one, that it parses, and that nothing claims to have been
+      # revised in the future or published after it was revised.
+      - name: dates are declared and coherent
+        run: npm run check:dates
+
   audit:
     runs-on: ubuntu-latest
     steps:

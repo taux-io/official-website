@@ -15,10 +15,9 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process;
-use std::process::Command;
 
 use minijinja::value::Value;
-use minijinja::{context, Environment};
+use minijinja::{context, Environment, UndefinedBehavior};
 use serde::Deserialize;
 
 const ORIGIN: &str = "https://taux.io";
@@ -49,14 +48,24 @@ struct Page {
     title: String,
     description: String,
     canonical: String,
-    /// Overrides the date derived from git. Set it when a commit touched a
-    /// template without changing what the page says — a class rename, a typo
-    /// fix — because a modification date that moves on cosmetic edits is a
-    /// freshness claim the content does not support, and search engines
-    /// discount sites that make it.
+    /// When the page's content last changed. Required, and written by hand.
+    ///
+    /// This used to be derived from the commit that last touched the template,
+    /// which was wrong in a way that got worse with every deploy: CI and
+    /// Cloudflare Pages both clone shallowly, and in a one-commit history git
+    /// attributes every file to that commit. Every page's date collapsed to the
+    /// date of whatever was deployed last — a README typo would have restamped
+    /// the whole site as freshly revised.
+    ///
+    /// So the build no longer reads git at all; it is reproducible from the tree
+    /// alone. `npm run dates` compares what is declared here against what git
+    /// knows, and a person decides. A mechanical commit that changes no content
+    /// simply does not move the date, because nothing moves it automatically.
+    date_modified: String,
+    /// When the page was first published. A fact, so it is written by hand, and
+    /// it has no default: a page whose template asks for it and whose entry does
+    /// not supply it fails the build rather than borrowing another date.
     #[serde(default)]
-    date_modified: Option<String>,
-    /// When the page was first published. A fact, so it is written by hand.
     date_published: Option<String>,
 }
 
@@ -114,6 +123,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut env = Environment::new();
     env.set_loader(minijinja::path_loader(root.join("templates")));
+    // A template that asks for something the page does not provide fails the
+    // build. The permissive default renders it as empty, which is how a page
+    // could have shipped an empty datePublished and looked fine.
+    env.set_undefined_behavior(UndefinedBehavior::Strict);
 
     // A fresh tree each run, so a page removed from site.toml stops being
     // published rather than lingering as an orphan the audits never visit.
@@ -127,17 +140,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut sitemap = Vec::new();
 
     for page in &site.page {
-        // Every page declared its own dateModified by hand, and every one of
-        // them was wrong: all six carried a date from April or May while the
-        // content had been rewritten that day, and four contradicted the
-        // sitemap's own lastmod for the same URL. Deriving it from the commit
-        // that last touched the template makes it correct by construction.
-        let modified = page
-            .date_modified
-            .clone()
-            .or_else(|| last_commit_date(&root.join("templates").join(&page.template)))
-            .unwrap_or_else(|| format!("{year}-01-01"));
-
         let tmpl = env.get_template(&page.template)?;
         // Titles and descriptions are escaped — one of them contains an
         // ampersand. The two URLs are not: they are ours, from site.toml, and
@@ -151,12 +153,17 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
             ),
-            date_modified => &modified,
-            date_published => page.date_published.as_deref().unwrap_or(&modified),
+            date_modified => &page.date_modified,
+            ..match &page.date_published {
+                Some(d) => context! { date_published => d },
+                // Absent rather than empty, so a template that wants it fails
+                // loudly under the strict undefined behaviour set above.
+                None => context! {},
+            }
         })?;
         let html = strip_comments(&html);
 
-        sitemap.push((page.canonical.clone(), modified.clone()));
+        sitemap.push((page.canonical.clone(), page.date_modified.clone()));
 
         let dest = page.output_path(&out);
         if let Some(parent) = dest.parent() {
@@ -346,25 +353,6 @@ fn copy_tree(from: &Path, to: &Path) -> std::io::Result<()> {
     Ok(())
 }
 
-/// The date of the last commit that touched a file, as YYYY-MM-DD.
-///
-/// Returns None outside a repository or for a file git does not know, in which
-/// case the caller falls back rather than inventing a date.
-fn last_commit_date(path: &Path) -> Option<String> {
-    let out = Command::new("git")
-        .args(["log", "-1", "--format=%ad", "--date=short", "--"])
-        .arg(path)
-        .output()
-        .ok()?;
-    let s = String::from_utf8(out.stdout).ok()?;
-    let s = s.trim();
-    if s.is_empty() {
-        None
-    } else {
-        Some(s.to_string())
-    }
-}
-
 /// Baked at build time. The Go server read the clock on every request to fill
 /// in a copyright year, which is the only thing it did that a file cannot —
 /// and a rebuild once a year is a cheaper answer than a server.
@@ -396,7 +384,7 @@ mod tests {
             title: String::new(),
             description: String::new(),
             canonical: canonical.to_string(),
-            date_modified: None,
+            date_modified: "2026-01-01".to_string(),
             date_published: None,
         }
     }
