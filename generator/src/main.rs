@@ -256,6 +256,11 @@ fn strip_comments(html: &str) -> String {
                 let stop = i + end + "</script>".len();
                 out.push_str(&html[i..stop]);
                 i = stop;
+                // Back to the top, so a comment sitting immediately after the
+                // closing tag is still recognised. Falling through to the plain
+                // character copy below emitted its `<` and left the rest of the
+                // comment as ordinary text.
+                continue;
             }
         }
         // Style bodies keep their CSS but lose their CSS comments, for the same
@@ -266,6 +271,7 @@ fn strip_comments(html: &str) -> String {
                 let stop = i + end + "</style>".len();
                 out.push_str(&strip_css_comments(&html[i..stop]));
                 i = stop;
+                continue;
             }
         }
         if i >= bytes.len() {
@@ -377,4 +383,111 @@ fn current_year() -> i32 {
     let mp = (5 * doy + 2) / 153;
     let y = yoe + era * 400;
     (y + if mp >= 10 { 1 } else { 0 }) as i32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn page(path: &str, canonical: &str) -> Page {
+        Page {
+            path: path.to_string(),
+            template: "t.html".to_string(),
+            title: String::new(),
+            description: String::new(),
+            canonical: canonical.to_string(),
+            date_modified: None,
+            date_published: None,
+        }
+    }
+
+    // Every URL below is already indexed, so these are not style preferences.
+    // A page written to `geo-guide/index.html` is served at `/geo-guide/` and the
+    // bare path answers 308 — a redirect hop on an indexed URL, and a canonical
+    // tag pointing at a form the host will not serve directly.
+    #[test]
+    fn home_becomes_index() {
+        let out = page("/", "https://taux.io").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/index.html"));
+    }
+
+    #[test]
+    fn routes_become_flat_files_not_directories() {
+        let out = page("/geo-guide", "https://taux.io/geo-guide").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/geo-guide.html"));
+    }
+
+    #[test]
+    fn a_path_that_is_already_a_filename_keeps_its_name() {
+        let out = page("/404.html", "https://taux.io/404").output_path(Path::new("dist"));
+        assert_eq!(out, Path::new("dist/404.html"));
+    }
+
+    // The share-card builder derives the same slug from the same canonical URL.
+    // Deriving it from the route instead is how a page once advertised an image
+    // that was never generated.
+    #[test]
+    fn slug_comes_from_the_canonical_url() {
+        assert_eq!(
+            page("/geo-guide", "https://taux.io/geo-guide").slug(),
+            "geo-guide"
+        );
+    }
+
+    #[test]
+    fn the_home_page_slug_is_index() {
+        assert_eq!(page("/", "https://taux.io").slug(), "index");
+        assert_eq!(page("/", "https://taux.io/").slug(), "index");
+    }
+
+    #[test]
+    fn comments_are_removed() {
+        assert_eq!(
+            strip_comments("<p>a</p><!-- note --><p>b</p>"),
+            "<p>a</p><p>b</p>"
+        );
+    }
+
+    // Stepping over a script or style body used to fall through to the plain
+    // character copy without retesting for a comment opener, so a comment sitting
+    // immediately after the closing tag was emitted verbatim. No template put one
+    // there, which is exactly why nothing caught it.
+    #[test]
+    fn a_comment_right_after_a_script_is_removed() {
+        assert_eq!(
+            strip_comments("<script>x</script><!-- note --><p>b</p>"),
+            "<script>x</script><p>b</p>"
+        );
+    }
+
+    #[test]
+    fn a_comment_right_after_a_style_is_removed() {
+        assert_eq!(
+            strip_comments("<style>a{b:c}</style><!-- note --><p>b</p>"),
+            "<style>a{b:c}</style><p>b</p>"
+        );
+    }
+
+    // A `<!--` inside a script string literal would otherwise swallow everything
+    // up to the next `-->`.
+    #[test]
+    fn script_bodies_are_not_scanned_for_comments() {
+        let html = r#"<script>var s = "<!-- not a comment -->";</script>"#;
+        assert_eq!(strip_comments(html), html);
+    }
+
+    // Go stripped these too, and the migration had to match it byte for byte.
+    // The space matters: `a/*x*/b` is two tokens, `ab` is one.
+    #[test]
+    fn css_comments_are_replaced_by_a_space() {
+        assert_eq!(strip_css_comments("a/*x*/b"), "a b");
+    }
+
+    #[test]
+    fn a_comment_opener_inside_a_css_string_is_left_alone() {
+        assert_eq!(
+            strip_css_comments(r#"a{content:"/*"}"#),
+            r#"a{content:"/*"}"#
+        );
+    }
 }

@@ -42,7 +42,10 @@ jobs:
         run: cargo fmt --manifest-path generator/Cargo.toml -- --check
 
       - name: cargo clippy
-        run: cargo clippy --manifest-path generator/Cargo.toml -- -D warnings
+        run: cargo clippy --manifest-path generator/Cargo.toml --all-targets -- -D warnings
+
+      - name: cargo test
+        run: cargo test --manifest-path generator/Cargo.toml
 
       - name: build the site
         run: npm run build:site
