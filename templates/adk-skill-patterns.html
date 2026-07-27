@@ -1,5 +1,4 @@
-{{ define "adk-skill-patterns.html" }}
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <!-- Article Schema -->
 <script type="application/ld+json">
@@ -19,10 +18,12 @@
             "@id": "https://taux.io/adk-skill-patterns#article",
             "headline": "5 種 Agent Skill 設計模式：每個 ADK 開發者都該知道的事",
             "description": "整理自 Google Cloud Tech 分享的五種 Agent Skill 設計模式：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline，協助開發者打造更可靠的 AI 代理人工作流。",
-            "author": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" },
-            "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "logo": { "@type": "ImageObject", "url": "https://taux.io/static/brand/logo-on-light.png" }},
-            "datePublished": "2026-04-06",
-            "dateModified": "2026-04-06",
+            "author": { "@type": "Organization", "name": "TauX 拓思科技",
+                                                 "legalName": "拓思科技股份有限公司", "url": "https://taux.io" },
+            "publisher": { "@type": "Organization", "name": "TauX 拓思科技",
+                                                    "legalName": "拓思科技股份有限公司", "logo": { "@type": "ImageObject", "url": "https://taux.io/static/brand/logo-on-light.png" }},
+            "datePublished": "{{ date_published }}",
+            "dateModified": "{{ date_modified }}",
             "image": "https://taux.io/static/brand/logo-on-light.png",
             "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/adk-skill-patterns" }
         }
@@ -471,5 +472,4 @@
     </div>
 </div>
 
-{{ template "footer.html" . }}
-{{ end }}
+{% include "footer.html" %}

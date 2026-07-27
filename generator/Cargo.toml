@@ -1,0 +1,19 @@
+[package]
+name = "taux-generator"
+version = "0.1.0"
+edition = "2021"
+description = "Renders the site to static HTML."
+
+[dependencies]
+# Jinja-family templating, so the existing Go templates convert mechanically
+# rather than being rewritten: {{ .Title }} becomes {{ title }}, and a
+# {{ template "header.html" . }} becomes {% include "header.html" %}. The HTML
+# itself — 70 inline SVGs, two page-specific style blocks, fifteen distinct
+# JSON-LD shapes — is the asset here, and none of it is touched.
+minijinja = { version = "2", features = ["loader"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+
+[[bin]]
+name = "generate"
+path = "src/main.rs"

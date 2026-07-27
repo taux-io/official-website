@@ -1,4 +1,4 @@
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <!-- Organization Schema -->
 <script type="application/ld+json">
@@ -27,6 +27,7 @@
             "@type": "Organization",
             "@id": "https://taux.io/#organization",
             "name": "TauX 拓思科技",
+            "legalName": "拓思科技股份有限公司",
             "url": "https://taux.io",
             "logo": "https://taux.io/static/brand/logo-on-light.png",
             "contactPoint": {
@@ -112,4 +113,4 @@
     </div>
 </section>
 
-{{ template "footer.html" . }}
+{% include "footer.html" %}

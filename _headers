@@ -1,0 +1,68 @@
+# Response headers, served by the host.
+#
+# These were in the Go middleware, and before that in an nginx.conf that was
+# never part of the running topology — so the policy below was advertised for
+# months while no response actually carried it. Keeping them here means they are
+# in the repository, in review, and verifiable: the contract test asserts the
+# values a real request comes back with, not that a file exists.
+#
+# The rules must not overlap. Cloudflare merges every matching rule instead of
+# letting the most specific one win, so a font matching both /static/* and
+# /static/fonts/* comes back with `max-age=3600, max-age=31536000` — two
+# directives in one header, and the browser takes the first. Measured, not
+# assumed: the first version of this file did exactly that.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+# Stylesheet and scripts are busted by a ?v= query that nothing enforces the
+# incrementing of. An hour plus revalidation drops nearly every round trip
+# without betting on anyone remembering; immutable would strand a returning
+# visitor on a stale stylesheet with no way to recover.
+/static/css/*
+  Cache-Control: public, max-age=3600
+
+/static/js/*
+  Cache-Control: public, max-age=3600
+
+# Images change when their content does, and their names change with them.
+/static/og/*
+  Cache-Control: public, max-age=604800
+
+/static/brand/*
+  Cache-Control: public, max-age=604800
+
+# Listed one by one rather than as /static/*.png, because Cloudflare's `*`
+# crosses directory separators: that glob also matched /static/og/index.png,
+# which then came back carrying two identical max-age directives.
+/static/android-chrome-192x192.png
+  Cache-Control: public, max-age=604800
+
+/static/android-chrome-512x512.png
+  Cache-Control: public, max-age=604800
+
+/static/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+/static/favicon-16x16.png
+  Cache-Control: public, max-age=604800
+
+/static/favicon-32x32.png
+  Cache-Control: public, max-age=604800
+
+/static/favicon.ico
+  Cache-Control: public, max-age=604800
+
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+/site.webmanifest
+  Cache-Control: public, max-age=604800
+
+# Font files are stable: a replacement arrives under a different name.
+/static/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

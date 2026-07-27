@@ -1,5 +1,4 @@
-{{ define "404.html" }}
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <section class="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-surface">
     <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
@@ -23,5 +22,4 @@
     </div>
 </section>
 
-{{ template "footer.html" . }}
-{{ end }}
+{% include "footer.html" %}

@@ -1,4 +1,4 @@
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <!-- Article Schema -->
 <script type="application/ld+json">
@@ -28,10 +28,12 @@
             "@id": "https://taux.io/geo-guide#article",
             "headline": "GEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？",
             "description": "本指南將解釋 GEO（生成式引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 GEO 在 AI 搜尋中獲得優勢。",
-            "author": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" },
-            "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "logo": { "@type": "ImageObject", "url": "https://taux.io/static/brand/logo-on-light.png" }},
-            "datePublished": "2025-08-15",
-            "dateModified": "2026-05-31",
+            "author": { "@type": "Organization", "name": "TauX 拓思科技",
+                                                 "legalName": "拓思科技股份有限公司", "url": "https://taux.io" },
+            "publisher": { "@type": "Organization", "name": "TauX 拓思科技",
+                                                    "legalName": "拓思科技股份有限公司", "logo": { "@type": "ImageObject", "url": "https://taux.io/static/brand/logo-on-light.png" }},
+            "datePublished": "{{ date_published }}",
+            "dateModified": "{{ date_modified }}",
             "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/geo-guide" },
             "image": "https://taux.io/static/brand/logo-on-light.png",
             "isPartOf": { "@id": "https://taux.io/#website" },
@@ -404,4 +406,4 @@
     </div>
 </div>
 
-{{ template "footer.html" . }}
+{% include "footer.html" %}

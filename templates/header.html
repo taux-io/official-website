@@ -1,34 +1,33 @@
-{{ define "header.html" }}
 <!DOCTYPE html>
 <html lang="zh-Hant-TW" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
-    <meta name="description" content="{{ .Description }}">
-    {{ if .Canonical }}
-    <link rel="canonical" href="{{ .Canonical }}">{{ end }}
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
+    {% if canonical %}
+    <link rel="canonical" href="{{ canonical }}">{% endif %}
 
     <!-- Open Graph. The share card is built from the same tokens, typeface and
          tau curve as the page; rerun scripts/assets/build-og.js after a
          palette change and every image follows. -->
-    <meta property="og:title" content="{{ .Title }}">
-    <meta property="og:description" content="{{ .Description }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
     <meta property="og:type" content="website">
-    {{ if .Canonical }}<meta property="og:url" content="{{ .Canonical }}">{{ end }}
+    {% if canonical %}<meta property="og:url" content="{{ canonical }}">{% endif %}
     <meta property="og:site_name" content="TauX 拓思科技">
     <meta property="og:locale" content="zh_TW">
-    <meta property="og:image" content="{{ ogImage .Canonical }}">
+    <meta property="og:image" content="{{ og_image }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{{ .Title }}">
+    <meta property="og:image:alt" content="{{ title }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ .Title }}">
-    <meta name="twitter:description" content="{{ .Description }}">
-    <meta name="twitter:image" content="{{ ogImage .Canonical }}">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ og_image }}">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
@@ -141,4 +140,4 @@
     <!-- Main Content Wrapper. The nav is translucent, so a light surface here
          would show through it. -->
     <main class="pt-16 min-h-screen relative overflow-hidden bg-surface">
-        {{ end }}
+        

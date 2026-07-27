@@ -1,5 +1,4 @@
-{{ define "building.html" }}
-{{ template "header.html" . }}
+{% include "header.html" %}
 
 <!-- Schema.org JSON-LD: WebPage -->
 <script type="application/ld+json">
@@ -9,7 +8,8 @@
   "name": "Building in Public",
   "description": "Follow our journey as we build TauX. Transparency, updates, and behind-the-scenes.",
   "url": "https://taux.io/building",
-  "publisher": { "@type": "Organization", "name": "TauX 拓思科技", "url": "https://taux.io" }
+  "publisher": { "@type": "Organization", "name": "TauX 拓思科技",
+                                          "legalName": "拓思科技股份有限公司", "url": "https://taux.io" }
 }
 </script>
 
@@ -47,5 +47,4 @@
     </div>
 </section>
 
-{{ template "footer.html" . }}
-{{ end }}
+{% include "footer.html" %}

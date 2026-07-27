@@ -16,7 +16,7 @@
 
 ### Secondary: Cross-File Consistency
 - Verify `llms.txt` entries match actual page content
-- Verify `sitemap.xml` URLs match Go routes in `main.go`
+- `sitemap.xml` is generated from `site.toml`; it cannot drift from the routes, so audit `site.toml` itself
 - Verify `robots.txt` permits all intended AI crawlers
 - Verify canonical URLs are consistent across HTML, sitemap, and llms.txt
 
@@ -69,7 +69,7 @@ Go through each of the 10 categories. For each:
 ### Step 3: Cross-File Consistency Check
 ```bash
 # Compare Go routes vs sitemap entries
-diff <(grep 'r.GET' main.go | grep -oP '"/[^"]*"') <(grep '<loc>' static/sitemap.xml)
+# Not needed: sitemap.xml is generated from site.toml, so the two cannot disagree.
 
 # Compare llms.txt links vs actual routes
 grep 'https://taux.io/' static/llms.txt | grep -oP '/[a-z-]+'

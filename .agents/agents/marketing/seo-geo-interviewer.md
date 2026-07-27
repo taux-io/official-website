@@ -47,7 +47,7 @@
 - Before finalizing the SEO Brief, self-check:
   - [x] All 3 Required questions answered
   - [x] No conflicting optimization goals
-  - [x] Target page exists in `main.go` routes
+  - [x] Target page exists in `site.toml` routes
   - [x] Keywords are specific enough (not just "SEO" or "AI")
   - [x] Brief follows the output template format
 

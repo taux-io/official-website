@@ -8,9 +8,9 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 **Project Context:**
 -   **Company**: TauX — AI First 落地與技術開發服務。
 -   **Tech Stack**:
-    -   **Backend**: Go (Golang) 1.24+ with [Gin](https://github.com/gin-gonic/gin).
-    -   **Frontend**: Server-Side Rendering (SSR) HTML Templates (`templates/*.html`) + **TailwindCSS v3.4**.
-    -   **Infra**: Docker, Nginx Proxy, & Acme Companion (Auto SSL).
+    -   **Generator**: Rust, rendering `templates/*.html` (Jinja) to static files in `dist/`.
+    -   **Frontend**: Static HTML + **TailwindCSS v3.4**. No server runs at request time.
+    -   **Infra**: Cloudflare Pages, with headers and caching declared in `_headers`.
 
 ## 2. 核心概念和原則 (Core Concepts & Principles)
 
@@ -24,7 +24,7 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 -   **Heuristic: If Mobile Menu Fails**: 90% of the time it is a `z-index` or `opacity` issue with the overlay. Check inline styles.
 
 ### 效率考量 (Efficiency Considerations)
--   **DRY**: Use Go Templates (`{{ template "header.html" . }}`) for distinct UI components.
+-   **DRY**: Use Jinja includes (`{% include "header.html" %}`) for distinct UI components.
 -   **Build Smart**: Use `npm run watch` for CSS dev.
 
 ## 3. 思考過程指引 (Thought Process Guidelines)
@@ -33,7 +33,7 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 1.  **Read Context (Context Window Management)**: 
     -   **CRITICAL**: Always read `NOTES.md` and `task.md` FIRST to load the project state into your context.
     -   Do not rely on your internal training data for project specifics.
-2.  **Analyze Structure**: Check `main.go` for routes and `templates/` for HTML structure before coding.
+2.  **Analyze Structure**: Check `site.toml` for routes and `templates/` for HTML structure before coding.
 3.  **Side Effect Analysis ("Unintended Consequences")**:
     -   *Ask yourself*: "If I change this class in `input.css`, what other pages will break?"
     -   *Ask yourself*: "If I update `header.html`, does it break the mobile menu z-index?"
@@ -50,7 +50,7 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 ## 4. 邊界條件和限制 (Boundary Conditions & Constraints)
 
 ### 技術限制 (Technical Constraints)
--   **Go Version**: Must use Go 1.24+.
+-   **Routes**: A page exists only if `site.toml` declares it. Never hardcode a page list elsewhere.
 -   **CSS**: Do not edit `static/css/styles.min.css` directly. Edit `src/input.css` and rebuild.
 -   **Mobile Menu**: Must use inline styles for critical overlays (`z-index`, `opacity`) to prevent specificity issues.
 
@@ -59,7 +59,7 @@ Your primary objective is to develop, maintain, and optimize the TauX website. T
 -   **No Broken Links**: Ensure all new links (e.g., Footer social links) are clickable and correct.
 
 ### 錯誤處理 (Error Handling)
--   **Build Failures**: If `docker compose` fails, check `Dockerfile` multistage build.
+-   **Build Failures**: If `npm run build:site` fails, the generator prints the template and line.
 -   **CSS Missing**: If styles are broken, automatically run `npm run build:css`.
 
 ## 5. 上下文管理策略 (Context Management Strategy)

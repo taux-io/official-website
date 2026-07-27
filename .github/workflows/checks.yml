@@ -23,10 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v5
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          go-version-file: go.mod
-          cache: true
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: generator
 
       - uses: actions/setup-node@v4
         with:
@@ -35,18 +38,14 @@ jobs:
 
       - run: npm ci
 
-      - name: go build
-        run: go build -o /tmp/taux .
+      - name: cargo fmt
+        run: cargo fmt --manifest-path generator/Cargo.toml -- --check
 
-      - name: go vet
-        run: go vet ./...
+      - name: cargo clippy
+        run: cargo clippy --manifest-path generator/Cargo.toml -- -D warnings
 
-      - name: gofmt
-        run: |
-          unformatted=$(gofmt -l .)
-          if [ -n "$unformatted" ]; then
-            echo "not gofmt'd:"; echo "$unformatted"; exit 1
-          fi
+      - name: build the site
+        run: npm run build:site
 
       # styles.min.css is a build artifact under version control, generated from
       # the classes Tailwind finds in the templates. Editing a template after a
@@ -60,15 +59,22 @@ jobs:
       - name: classes resolve
         run: npm run check:classes
 
+      # llms.txt is written for models rather than people, so a page missing
+      # from it is invisible to the audience the GEO work exists to reach. The
+      # newest article shipped absent from it and nothing noticed.
+      - name: llms.txt lists every page
+        run: npm run check:llms
+
   audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v5
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
         with:
-          go-version-file: go.mod
-          cache: true
+          workspaces: generator
 
       - uses: actions/setup-node@v4
         with:
@@ -80,14 +86,22 @@ jobs:
       - name: install chromium
         run: npx playwright install --with-deps chromium
 
-      - name: start the site
+      - name: build the site
+        run: npm run build:site
+
+      # Served through the host emulator rather than a plain file server, so
+      # _headers is applied. Without it the policy and cache assertions would
+      # pass against headers nothing had sent — which is the failure this
+      # project already had once, when the policy lived in a config file that
+      # was not part of the running topology.
+      - name: serve the built site
         run: |
-          PORT=8099 GIN_MODE=release go run main.go &
-          for i in $(seq 1 30); do
-            curl -sf -o /dev/null http://localhost:8099/ && break
+          npx wrangler pages dev dist --port 8099 --ip 127.0.0.1 &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://127.0.0.1:8099/ && break
             sleep 1
           done
-          curl -sf -o /dev/null http://localhost:8099/ || { echo "server never came up"; exit 1; }
+          curl -sf -o /dev/null http://127.0.0.1:8099/ || { echo "host emulator never came up"; exit 1; }
 
       # Exits non-zero on any element below its WCAG AA threshold. Anything
       # under 1.5:1 is reported separately as effectively invisible.
