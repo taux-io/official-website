@@ -111,7 +111,7 @@ jobs:
       # was not part of the running topology.
       - name: serve the built site
         run: |
-          npx wrangler pages dev dist --port 8099 --ip 127.0.0.1 &
+          npm run serve &
           for i in $(seq 1 40); do
             curl -sf -o /dev/null http://127.0.0.1:8099/ && break
             sleep 1
