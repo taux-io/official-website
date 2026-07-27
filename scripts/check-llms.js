@@ -29,7 +29,8 @@ function main() {
     linked.add(m[1] && m[1] !== "/" ? m[1] : "/");
   }
 
-  const missing = ROUTES.filter((r) => !r.standalone && !linked.has(r.path));
+  const published = ROUTES.filter((r) => !r.standalone);
+  const missing = published.filter((r) => !linked.has(r.path));
 
   if (missing.length) {
     console.log("");
@@ -45,7 +46,7 @@ function main() {
     return;
   }
 
-  console.log(`every published page is listed in llms.txt (${ROUTES.length - 2} pages)`);
+  console.log(`every published page is listed in llms.txt (${published.length} pages)`);
 }
 
 main();
