@@ -49,6 +49,25 @@
   // so they do not carry the standing duplicate-content problem above.
   "preview_urls": true,
 
+  // The hostnames this Worker answers. Attaching these is what replaced the Go
+  // host that had been serving taux.io — it rewrites the zone's DNS records to
+  // point here, so it is the cutover rather than a description of it.
+  //
+  // `wrangler versions deploy`, which is what CI runs, does NOT apply trigger
+  // changes. Editing this block and pushing therefore changes nothing on its
+  // own: it takes a `wrangler deploy` or `wrangler triggers deploy` from a
+  // machine with credentials. That split is deliberate — content ships on every
+  // merge, hostnames move only when a person decides to move them.
+  //
+  // www is attached rather than left pointing at the old origin, and is then
+  // turned into a 301 to the apex by a zone Redirect Rule. It cannot be done in
+  // _redirects: Cloudflare's source side accepts paths only and does not
+  // support domain-level redirects.
+  "routes": [
+    { "pattern": "taux.io", "custom_domain": true },
+    { "pattern": "www.taux.io", "custom_domain": true }
+  ],
+
   "observability": {
     "enabled": true
   }

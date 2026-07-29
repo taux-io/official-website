@@ -111,6 +111,18 @@ Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secre
 **這一段是不可逆的、會影響現有流量的動作，而且不由 CI 執行。** 做之前先確認第 4 節已經跑過至少一次、production 版本是綠的。
 
 1. **接上 custom domain。** Workers & Pages → `taux-io` → Settings → Domains & Routes → Add custom domain：`taux.io`。Cloudflare 會改寫該 zone 既有的 DNS 記錄指向 Worker。
+
+   **要用 dashboard，不要用 `wrangler deploy`。** `wrangler.jsonc` 的 `routes` 已經宣告了這兩個 hostname，但從 CLI 套用會失敗：
+
+   ```
+   PUT .../workers/scripts/taux-io/domains/records → 409 Conflict
+   ✘ Some triggers failed to deploy for taux-io
+   ```
+
+   `taux.io` 與 `www.taux.io` 現在都有代理中的 A 記錄指向 Go 主機，而 Cloudflare 不會在 API 呼叫裡默默覆寫既有記錄。dashboard 的流程會顯示衝突並讓你確認覆寫——那個確認正是 409 缺的東西，而且覆寫是原子的。先刪 DNS 記錄再從 CLI 接也可以，但那會有一段兩邊都不通的空窗。
+
+   這是**安全的失敗**：2026-07-29 實際撞過一次，Worker 的內容照常部署，只有 triggers 沒套用，線上服務完全未受影響。
+
 2. **同樣接上 `www.taux.io`**，或不接而直接做下一步——兩者都可以，重點是 www 不能繼續指著舊的 Go 主機。
 3. **建立 www → apex 的 301。** Rules → Redirect Rules，來源 `www.taux.io/*`，目標 `https://taux.io/$1`，狀態 301。
    **不要試圖寫在 `_redirects` 裡**：Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
