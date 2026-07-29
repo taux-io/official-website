@@ -135,6 +135,24 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `_redirects` 裡——Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
 
+### 切換那天壞掉的三件事
+
+三件都是「看起來成立、實際不成立」，而且三件的第一版檢查都放行了它們。記在這裡是因為每一件的**檢查方式**才是教訓，不是那個設定本身。
+
+**`${{ runner.temp }}` 不能寫在 job 層的 `env`。** `runner` context 只存在於 step。放在 job 層不是某個 step 失敗——GitHub 在建立任何 job **之前**就拒收整份 workflow，於是 run 在 0 秒內失敗、沒有 log、`gh pr checks` 回報「沒有任何 check」。那個空白很容易被讀成「CI 還沒開始跑」。
+
+放行它的檢查是一段 regex，掃檔案找 job 名稱——它把 `on:` 底下的 `pull_request` 和 `push` 也報成了 job。那個明顯錯誤的輸出當下沒有被追究。**YAML 要用解析器驗，不是用 regex 掃**；現在的做法是真的 parse 出 `jobs` 的 key，並掃描每個 job 層 `env` 有沒有用到 step-only 的 context。
+
+**Workers Builds 的失敗不是缺 `cargo`。** 當時的假設是「Cloudflare 的建置映像沒有 Rust」，因為那正是離開 Pages 的理由，聽起來完全合理。實際 log 顯示它根本沒設建置指令：`npm ci` 之後直接跑 `wrangler versions upload`，所以 `dist/` 從未被產生，連需要 `cargo` 的那一步都沒走到。
+
+教訓不是那個成因，是**一個符合既有敘事的假設最不容易被查證**。log 一直都拿得到，只是沒去讀。
+
+**Redirect Rules 的 wildcard `*` 不匹配空字串。** `https://www.taux.io/*` 匹配 `/geo-guide`，但**不匹配裸的根路徑** `https://www.taux.io/`。所以第一版規則做出來的結果是：所有子路徑正確轉址，首頁靜靜地繼續回 200。
+
+官方文件沒有寫 `*` 能不能匹配空字串，所以現在的規則改用 `http.host eq "www.taux.io"` 搭配 `concat("https://taux.io", http.request.uri.path)`——**匹配條件是 hostname 而不是 URL 形狀**，根路徑因此按定義包含在內，不依賴任何沒被文件化的行為。
+
+契約測試同時斷言 `/` 和 `/geo-guide` 就是為了這個。只測其中一條，兩種常見的錯誤設定各有一種會全綠通過。
+
 ### 幾個必須知道的細節
 
 - **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
