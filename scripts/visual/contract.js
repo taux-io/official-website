@@ -30,6 +30,23 @@ const EXPECTED_HEADERS = {
     "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
+// Two things this site relies on are configured at the Cloudflare zone rather
+// than in this repository: HSTS, and the redirect from www to the apex. Neither
+// reaches a version preview URL or the local emulator, because neither is part
+// of what `wrangler deploy` uploads.
+//
+// That is the cost of putting them there, and it is paid here: those assertions
+// can only run against the production origin. The handling is to say so out
+// loud at the end of a run rather than let one report green on assertions it
+// never made — the same failure mode as a policy that lived outside the running
+// topology and was advertised for months while no response carried it.
+const AGAINST_ORIGIN = BASE_URL === ORIGIN;
+
+// The Go server that preceded this sent max-age=31536000. The bar here is the
+// widely-used six-month minimum, so that a deliberately shorter zone setting is
+// still allowed to pass while an absent or token one is not.
+const HSTS_MIN_MAX_AGE = 15552000;
+
 // One representative of each tier. Overlapping rules in the host config produce
 // a header carrying two max-age directives, which a browser resolves by taking
 // the first — so the value is compared exactly, not merely for presence.
@@ -340,6 +357,85 @@ async function main() {
         problem: `expected 404, got ${status}`,
       });
     }
+
+    // The status alone was already correct before `not_found_handling` was set,
+    // because the host answers an unmatched path with its own bare 404 — plain
+    // text, no markup, none of this site's language or navigation. The status
+    // is what crawlers read; the body is what a person is left looking at, and
+    // only one of the two was ever being checked.
+    checked++;
+    const body = await page.evaluate(() => ({
+      lang: document.documentElement.lang,
+      title: document.title,
+      type: document.contentType,
+    }));
+    if (body.type !== "text/html") {
+      failures.push({
+        route: "(unmatched path)",
+        check: "not found body",
+        problem: `served as ${body.type}, so it is the host's own error page rather than 404.html`,
+      });
+    } else if (body.lang !== "zh-Hant-TW" || !body.title) {
+      failures.push({
+        route: "(unmatched path)",
+        check: "not found body",
+        problem: `lang "${body.lang || "(empty)"}", title "${body.title || "(empty)"}" — not this site's 404 document`,
+      });
+    }
+  }
+
+  // Configured at the zone, so only observable from the zone. See AGAINST_ORIGIN.
+  const skipped = [];
+  if (AGAINST_ORIGIN) {
+    checked++;
+    const res = await page.request.get(ORIGIN + "/");
+    const hsts = res.headers()["strict-transport-security"];
+    const maxAge = hsts && /max-age=(\d+)/.exec(hsts);
+    if (!hsts) {
+      failures.push({
+        route: "/",
+        check: "hsts",
+        problem: "no Strict-Transport-Security header",
+      });
+    } else if (!maxAge || Number(maxAge[1]) < HSTS_MIN_MAX_AGE) {
+      failures.push({
+        route: "/",
+        check: "hsts",
+        problem: `max-age below ${HSTS_MIN_MAX_AGE}: "${hsts}"`,
+      });
+    }
+
+    // Asserted on a path rather than the bare host, because a redirect rule
+    // that drops everything after the origin sends every indexed www URL to the
+    // homepage and looks correct when the only thing tried was "/".
+    //
+    // Node's fetch rather than Playwright's request context: the latter throws
+    // when maxRedirects is exceeded instead of handing back the 3xx, so there
+    // would be no Location header left to compare against.
+    const WWW = ORIGIN.replace("://", "://www.");
+    for (const path of ["/", "/geo-guide"]) {
+      checked++;
+      const r = await fetch(WWW + path, { redirect: "manual" });
+      const location = r.headers.get("location");
+      if (r.status !== 301) {
+        failures.push({
+          route: "www" + path,
+          check: "www redirect",
+          problem: `expected 301, got ${r.status}`,
+        });
+      } else if (location !== ORIGIN + path) {
+        failures.push({
+          route: "www" + path,
+          check: "www redirect",
+          problem: `redirects to ${location || "(no Location)"}, expected ${ORIGIN + path}`,
+        });
+      }
+    }
+  } else {
+    skipped.push(
+      "hsts and www redirect — configured at the Cloudflare zone, so they are",
+      `not observable from ${BASE_URL}. Run with BASE_URL=${ORIGIN} to assert them.`
+    );
   }
 
   await browser.close();
@@ -350,6 +446,13 @@ async function main() {
       console.log(`  FAIL  ${f.route}`);
       console.log(`        ${f.check}: ${f.problem}`);
     }
+  }
+
+  // Printed on every run that did not make them, so that "0 failing" is never
+  // read as "everything was checked".
+  if (skipped.length) {
+    console.log("\n  NOT ASSERTED");
+    for (const line of skipped) console.log(`        ${line}`);
   }
 
   console.log(
