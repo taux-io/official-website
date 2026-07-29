@@ -6,19 +6,19 @@
 
 TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative Engine Optimization)，運用 AI 技術為企業打造全方位數位轉型解決方案。
 
-## 🚀 關於我們
+## 關於我們
 
 我們是高雄在地的專業團隊，致力於為台灣企業提供最優質的數位化服務。結合軟體開發專業與創意行銷策略，為您的品牌創造數位時代的競爭優勢。
 
-### 🎯 核心服務
+### 核心服務
 
-- **💻 軟體平台開發** - 企業級 Web 應用、APP、SaaS 平台開發
-- **🎬 短影片製作與策略** - TikTok、Instagram Reels、YouTube Shorts 內容製作
-- **📈 數位行銷整合** - 社群媒體經營、SEO、廣告投放策略
-- **🤖 AI 智能解決方案** - 智能客服、數據分析、自動化工具
-- **⚙️ 系統整合與自動化** - CRM/ERP 系統串接、工作流程優化
+- **軟體平台開發** - 企業級 Web 應用、APP、SaaS 平台開發
+- **短影片製作與策略** - TikTok、Instagram Reels、YouTube Shorts 內容製作
+- **數位行銷整合** - 社群媒體經營、SEO、廣告投放策略
+- **AI 智能解決方案** - 智能客服、數據分析、自動化工具
+- **系統整合與自動化** - CRM/ERP 系統串接、工作流程優化
 
-## 🛠️ 技術規格
+## 技術規格
 
 本站是**靜態網站**：建置時把模板算完，執行期沒有任何伺服器。
 
@@ -34,7 +34,7 @@ TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative E
 
 所有頁面只在 `site.toml` 宣告一次。Rust generator、Node 工具鏈都讀同一張表，沒有任何一邊去解析另一邊的原始碼。新增一個 `[[page]]` 就同時帶動：算出 HTML、寫進 `sitemap.xml`、產生 OG 分享卡、納入對比稽核與路由契約測試。
 
-## 📁 專案結構
+## 專案結構
 
 ```
 taux-dev/
@@ -69,13 +69,13 @@ taux-dev/
 └── dist/                       # 建置產物 (不進版控)
 ```
 
-## 🤖 AI 協作體系
+## AI 協作體系
 
 `.agents/` 不在版本控制內。它描述的是「怎麼在這個專案上工作」而不是「這個專案是什麼」，而它的基礎設施那一半仍在描述已經刪除的 Docker 與 nginx 部署——一份被 check in 的文件如果過時，讀它的人沒有理由懷疑它。
 
 專案本身的長期記憶與技術決策紀錄在 **[NOTES.md](NOTES.md)**。
 
-## 🔒 安全機制
+## 安全機制
 
 ### 標頭 (`_headers`)
 - `X-Content-Type-Options: nosniff`
@@ -96,7 +96,7 @@ taux-dev/
 
 一般的靜態檔案伺服器不讀 `_headers`。用它預覽，一條永遠匹配不到的規則看起來會完全正常——上面那個一年沒生效的 CSP 就是這樣活下來的。`npm run serve`（即 `wrangler dev`）會讀 `wrangler.jsonc` 並套用真正的規則，稽核才有意義。
 
-## 🚀 快速開始
+## 快速開始
 
 1. **安裝依賴**
    ```bash
@@ -138,27 +138,27 @@ cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、
 
 `check:classes` 是這個專案最高頻的風險。Tailwind 遇到解析不出來的 class 什麼都不產，所以 markup 看起來是刻意的、建置也成功，只有效果消失——改版時一次找出 55 個這種 class，其中包括讓 prompting 指南整條時間軸的圓點隱形的那些。
 
-## 🎨 功能特色
+## 功能特色
 
-### 📱 響應式設計
+### 響應式設計
 - 自適應各種螢幕尺寸
 - 移動裝置優先設計
 - 觸控友好的使用者介面
 
-### 🔍 SEO & GEO 優化
+### SEO & GEO 優化
 - 完整的 Meta 標籤配置
 - 結構化數據 (Schema.org: Organization, FAQPage, BreadcrumbList)
 - 多語言支援 (zh-TW, en)
 - 社群媒體優化 (Open Graph, Twitter Cards)
 - LLMs.txt 支援 AI 搜尋引擎
 
-### ⚡ 效能優化
+### 效能優化
 - 圖片延遲載入
 - 字體預加載
 - CSS/JS 最佳化
 - 快取策略
 
-## 🔧 開發指南
+## 開發指南
 
 ### 編輯內容
 **Developers**: 建置、檢查與新增頁面的流程見上方各節；技術決策紀錄見 `NOTES.md`。
@@ -178,7 +178,7 @@ cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、
 
 `date_published` 維持手寫，放在 `site.toml`：那是事實，不是推導值。
 
-## 🚀 部署說明
+## 部署說明
 
 **部署照 [DEPLOYMENT.md](DEPLOYMENT.md) 做，那是唯一依據。** 這裡只是摘要。
 
@@ -200,7 +200,7 @@ DEPLOYMENT.md 另外寫了三件不在這裡的事：線上現況與切換（`ta
 
 只有 404。500 沒有應用程式可以失敗，502／503 沒有來源伺服器可以失效——三者在靜態託管下都沒有任何機制會供應，已移除。
 
-## 📞 聯絡資訊
+## 聯絡資訊
 
 - **公司名稱**: TauX 拓思科技股份有限公司
 - **網站**: https://taux.io
@@ -208,10 +208,10 @@ DEPLOYMENT.md 另外寫了三件不在這裡的事：線上現況與切換（`ta
 - **電話**: 07-6211033
 - **地址**: 高雄市岡山區文賢路 57 號 2 樓
 
-## 📝 授權條款
+## 授權條款
 
 © 2026 TauX 拓思科技股份有限公司. 保留所有權利.
 
 ---
 
-**Code the Future - 用科技創造未來** 🚀
+**Code the Future - 用科技創造未來**
