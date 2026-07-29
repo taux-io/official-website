@@ -26,7 +26,7 @@ TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative E
 
 - **Generator**: Rust，用 minijinja 把 `templates/*.html` 算成 `dist/` 底下的靜態檔
 - **Frontend**: 靜態 HTML + TailwindCSS 3.4
-- **Infrastructure**: Cloudflare Pages；標頭與快取宣告在 `_headers`
+- **Infrastructure**: Cloudflare Workers（靜態資產，無 `main`，不執行任何程式碼）；標頭與快取宣告在 `_headers`，資產行為宣告在 `wrangler.jsonc`
 - **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、方角、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`
 - **Security**: CSP 與安全標頭定義在 `_headers`，隨靜態檔一起部署
 
@@ -40,7 +40,8 @@ TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative E
 taux-dev/
 ├── site.toml                   # 頁面宣告 (路由、title、description、canonical、日期)
 ├── generator/                  # Rust 靜態網站產生器
-├── _headers                    # Cloudflare Pages 標頭與快取規則 (含 CSP)
+├── wrangler.jsonc              # 部署拓撲 (資產目錄、404 處理、URL 形狀)
+├── _headers                    # Cloudflare 標頭與快取規則 (含 CSP)
 ├── templates/                  # Jinja 模板
 │   ├── index.html              # 首頁
 │   ├── header.html             # 共用頁首
@@ -93,7 +94,7 @@ taux-dev/
 
 ### 為什麼一定要用 wrangler 在本機驗
 
-一般的靜態檔案伺服器不讀 `_headers`。用它預覽，一條永遠匹配不到的規則看起來會完全正常——上面那個一年沒生效的 CSP 就是這樣活下來的。`npx wrangler pages dev dist` 會套用真正的規則，稽核才有意義。
+一般的靜態檔案伺服器不讀 `_headers`。用它預覽，一條永遠匹配不到的規則看起來會完全正常——上面那個一年沒生效的 CSP 就是這樣活下來的。`npm run serve`（即 `wrangler dev`）會讀 `wrangler.jsonc` 並套用真正的規則，稽核才有意義。
 
 ## 🚀 快速開始
 

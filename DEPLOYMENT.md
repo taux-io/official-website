@@ -2,7 +2,9 @@
 
 這份文件是部署這個網站的唯一依據。README.md 講開發，NOTES.md 記錄為什麼做了某些決定，**部署照這份做**。
 
-網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有環境變數、沒有機密。建置產生一個目錄，主機供應那個目錄。
+網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有執行期環境變數、沒有執行期機密。建置產生一個目錄，Cloudflare Workers 從邊緣供應那個目錄。`wrangler.jsonc` 裡沒有 `main`，所以沒有任何程式碼會執行。
+
+**部署是自動的。** 推送到 `main`，CI 建置、上傳一個版本、對那個版本跑完整路由契約測試，通過才把它推成 production。人要做的只有第 3 節的一次性設定與第 5 節的切換。
 
 ---
 
@@ -10,23 +12,26 @@
 
 `taux.io` 現在有流量，而且**線上版本是壞的**。切換之前先知道自己在取代什麼。
 
-用 2026-07-27 量到的：
+用 2026-07-29 量到的：
 
 ```
-GET  https://taux.io/           200   內容是改名前的「拓思科技有限公司」
-HEAD https://taux.io/           404
-GET  https://taux.io/geo-guide  200
-HEAD https://taux.io/geo-guide  404
+GET  https://taux.io/   200   內容是改名前的「拓思科技有限公司」
+HEAD https://taux.io/   404
 server: cloudflare
+cf-cache-status: DYNAMIC
+x-xss-protection: 1; mode=block          ← Go middleware 的產物
+strict-transport-security: max-age=31536000
+（沒有 content-security-policy）
 ```
 
-三件事：
+四件事：
 
-- **真實頁面對 HEAD 回 404。** 用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會判定首頁不存在。本機用 wrangler 供應 `dist/` 時 HEAD 回 200，所以新部署會修掉它。契約測試現在對每條路由斷言 HEAD 的狀態碼，這類分歧不會再靜靜存在。
-- **內容停在公司改名之前。** 線上首頁仍寫「拓思科技有限公司」，正確的是「拓思科技股份有限公司」。
-- **已經在 Cloudflare 後面。** 所以這次不是把 DNS 從別的地方搬過來，是換掉 Cloudflare 後面供應內容的東西。
+- **那台 Go 主機還活著，而且它就是現在服務 `taux.io` 的東西。** `cf-cache-status: DYNAMIC` 表示代理到某個來源，而 `x-xss-protection` 只有 Go middleware 會送。切換完**一定要收掉它**——留著一台沒人部署、沒人更新、卻還能回應的來源，是下一次「線上跟 repo 不一樣」的來源。
+- **真實頁面對 HEAD 回 404。** 用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會判定首頁不存在。新的 Worker 已在真實邊緣量過 `HEAD / → 200`，所以切換會修掉它。契約測試對每條路由斷言 HEAD 狀態碼，這類分歧不會再靜靜存在。
+- **內容停在公司改名之前。** 線上首頁仍寫「拓思科技有限公司」，正確的是「拓思科技股份有限公司」。已上傳的 Worker 版本供應的是後者。
+- **`www.taux.io` 直接回 200**，不是轉址到 apex。切換後它必須有明確歸宿（第 5 節）。
 
-`taux.io` 過去是一台跑 Go 容器、由 nginx-proxy 反向代理、acme-companion 發 SSL 的主機。那套已經從 repo 移除（`main.go`、`Dockerfile`、`docker-compose*.yml`、`deploy.prod.sh` 都刪了），但**如果那台機器還在跑，切換完要記得收掉**——留著一台沒人部署、沒人更新、卻還能回應的來源，是下一次「線上跟 repo 不一樣」的來源。
+先前的計畫是 Cloudflare Pages。**那一步從來沒有真的走完，Pages 專案不存在**——不需要停用或刪除任何 Pages 專案。理由見 NOTES.md〈為什麼是 Workers 而不是 Pages〉。
 
 ---
 
@@ -39,64 +44,95 @@ npm run build:css && npm run build:site
 
 輸出在 `dist/`。
 
-### 前置需求：Rust
+建置需要 Rust toolchain。版本不要自己選，repo 裡釘好了：`rust-toolchain.toml`（channel 1.90）與 `.nvmrc`（Node 22）。rustup 會自己讀前者，`actions/setup-node` 與 `nvm` 會讀後者。
 
-**建置需要 Rust toolchain。這是這次改版新增的條件，Cloudflare Pages 的預設映像沒有 `cargo`。**
+**建置只發生在 GitHub Actions。** Cloudflare 的建置映像沒有 `cargo`，先前的做法是把 rustup 的安裝塞進建置指令欄——那讓每次部署重裝一次 toolchain，而且 CI 驗過的產物跟上線的產物不是同一份。現在沒有任何一段 Cloudflare 端的建置設定要維護。
 
-版本不要自己選，repo 裡釘好了：`rust-toolchain.toml`（channel 1.90）與 `.nvmrc`（Node 22）。rustup 會自己讀前者，`actions/setup-node` 與 `nvm` 會讀後者。
+---
 
-在沒有 cargo 的映像上，**這一整段就是可以貼進 Cloudflare Pages 建置指令欄的內容**：
+## 3. 一次性設定
+
+這三步只做一次。做完之後推送到 `main` 就會自動部署。
+
+### 3.1 Worker 已經存在
+
+Worker `taux-io` 已於 2026-07-29 以 `wrangler deploy` 建立於帳號 `taux.io`（`5164de0801b523f919f7a9eac9bbf9bf`）。這一步是必要的引導：**`wrangler versions upload` 無法對尚不存在的 Worker 執行**，所以第一次必須是 `deploy`。
+
+它目前**沒有任何對外網址**——`workers_dev` 是 `false`，也還沒接任何 route，`wrangler deploy` 回報 `No targets deployed`。也就是說它已經存在、已經驗過，但還沒有人能連到它。這是刻意的：切換是第 5 節，不是這一步的副作用。
+
+若日後需要在別的帳號重建：
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && . "$HOME/.cargo/env" && npm ci && npm run build:css && npm run build:site
+npx wrangler deploy      # 只有第一次，用來讓 Worker 存在
 ```
 
-`rustup` 安裝完會讀 `rust-toolchain.toml`，所以不需要在指令裡指定版本。
+### 3.2 建立 API token 並放進 repo secret
 
-### 設定摘要
+CI 需要一組 token 才能上傳與推廣版本。**這是建置期的機密，不是執行期的**——網站本身仍然沒有任何執行期機密或環境變數。
 
-| 項目 | 值 |
-|---|---|
-| Repository | `github.com/taux-io/official-website` |
-| 分支 | `main` |
-| 建置指令 | 見上（含 rustup 安裝那一整行） |
-| 輸出目錄 | `dist` |
-| 環境變數 | 無 |
-| Node | 22（`.nvmrc`） |
-| Rust | 1.90（`rust-toolchain.toml`） |
+在 Cloudflare Dashboard → My Profile → API Tokens 建立，權限：
 
----
+| 類型 | 項目 | 權限 |
+|---|---|---|
+| Account | Workers Scripts | Edit |
 
-## 3. 主機必須做對的四件事
+放進 GitHub repo 的 secret，名稱必須是 `CLOUDFLARE_API_TOKEN`（`.github/workflows/checks.yml` 的 deploy job 讀這個名字）。
 
-這四件都出過錯，而且四件都不會在 HTML 裡顯示出來。
+Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secret。
 
-**`_headers` 必須被套用。** 安全標頭與 CSP 全部在這個檔案裡，隨 `dist/` 一起部署。它們曾經在一個從未進入運行拓撲的 `nginx.conf` 裡，被 README 宣稱了好幾個月而一次都沒送出過。所以驗證的方式是**看回應帶回來的值**，不是確認檔案存在。
+### 3.3 開啟 zone 層的 HSTS
 
-**`_headers` 的規則必須互不重疊。** Cloudflare 會**合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中，字體會拿到 `max-age=3600, max-age=31536000`，瀏覽器取第一個——為了效能自架的字體實際只快取一小時。這已經發生過一次，現在的規則是互斥的，改它的時候要維持這件事。
+`Strict-Transport-Security` 設在 SSL/TLS → Edge Certificates → HTTP Strict Transport Security，**不在 `_headers` 裡**。切換前的 Go 主機送的是 `max-age=31536000`，設成同值或更長。
 
-**未匹配路徑必須回 404 狀態，不是 200。** `404.html` 在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑。靜態主機最常見的錯誤是用 200 送出 404 頁面，Google 判定為 soft 404，可能連帶降權周邊路徑。
-
-**檔案是扁平的 `.html`，不要開啟任何「目錄索引」或「加上尾斜線」的行為。** `geo-guide.html` 在 `/geo-guide` 直接供應。若主機把它當成目錄，`/geo-guide` 會 308 到 `/geo-guide/`——每一條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
+契約測試會斷言它，但只有在 `BASE_URL` 指向 `https://taux.io` 時做得到（zone 設定不會套用到 preview URL）。取捨的理由記在 NOTES.md。
 
 ---
 
-## 4. 上線後驗證
+## 4. 每次部署怎麼走
 
-**部署完一定要跑這一段。** 上面四件事沒有一件會在瀏覽器裡看起來不對。
+推送到 `main` 之後，`.github/workflows/checks.yml` 依序做：
+
+1. `build` job：cargo fmt / clippy / test、建置、樣式表新鮮度、class 可解析、llms.txt 完整、日期一致、結構化資料有效
+2. `audit` job：用 `npm run serve`（`wrangler dev`，會套用 `_headers`）供應輸出，跑對比稽核與路由契約測試
+3. `deploy` job：**相依前兩者都通過**，且只在 push 到 `main` 時執行
+   - `wrangler versions upload` → 得到 version id 與 preview URL（從 wrangler 的結構化輸出讀，不是刮 console）
+   - 等 preview URL 真的可供應（**版本上傳回傳的當下還不能服務**，實測過會先回一陣子 404）
+   - `BASE_URL=<preview URL> npm run contract` ← **這是上線關卡**
+   - 通過才 `wrangler versions deploy <id>@100`
+
+契約測試的 canonical 一律對 `https://taux.io` 斷言，不管內容是哪個 host 送出的（`scripts/routes.js` 的 `ORIGIN`），所以對 preview URL 跑它是在驗**版本**，不是在驗主機名。
+
+**壞的版本到不了訪客。** 這取代了先前那段人工的「上線後驗證」——那個流程只能在災難已經發生之後報告它。
+
+---
+
+## 5. 切換：把 `taux.io` 指過來
+
+**這一段是不可逆的、會影響現有流量的動作，而且不由 CI 執行。** 做之前先確認第 4 節已經跑過至少一次、production 版本是綠的。
+
+1. **接上 custom domain。** Workers & Pages → `taux-io` → Settings → Domains & Routes → Add custom domain：`taux.io`。Cloudflare 會改寫該 zone 既有的 DNS 記錄指向 Worker。
+2. **同樣接上 `www.taux.io`**，或不接而直接做下一步——兩者都可以，重點是 www 不能繼續指著舊的 Go 主機。
+3. **建立 www → apex 的 301。** Rules → Redirect Rules，來源 `www.taux.io/*`，目標 `https://taux.io/$1`，狀態 301。
+   **不要試圖寫在 `_redirects` 裡**：Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
+   目標一定要帶 `$1`。丟掉路徑的規則會把每一條已索引的 www URL 全部送到首頁，而且只測 `/` 的時候看起來完全正確——契約測試因此同時對 `/` 和 `/geo-guide` 斷言。
+4. **跑第 6 節的驗證。**
+5. **收掉那台 Go 主機。** 驗證通過之後才做，但一定要做。它現在還在回應。
+
+---
+
+## 6. 切換後驗證
+
+**第 5 節做完一定要跑這一段。** 這裡驗的是**主機與 zone 的行為**——內容在 CI 就驗過了。
 
 ```bash
 npm ci
+npx playwright install chromium
 BASE_URL=https://taux.io npm run contract
 ```
 
-契約測試對每一條路由斷言：GET 狀態碼、**HEAD 狀態碼**、`lang`、canonical、分享圖、結構化資料、每一個被引用的資產（含 manifest 裡的圖示與 CSS 裡的字體）、CSP 是否實際送出且內容相符、快取分層、以及頁面有沒有拋 JS 錯誤。14 條路由、155 個斷言。
+對 production 跑的時候，契約測試會**額外**做三項在上線關卡裡做不到的斷言（因為它們設在 zone，不在這個 repo 部署的東西裡）：HSTS 存在且 `max-age` 夠長、`www.taux.io/` 301 到 `https://taux.io/`、`www.taux.io/geo-guide` 301 到 `https://taux.io/geo-guide`。
 
-它需要 Playwright 的瀏覽器：
-
-```bash
-npx playwright install chromium
-```
+指向非 production 的每一次執行都會印出 `NOT ASSERTED` 區塊列出這些項目，所以 `0 failing` 不會被誤讀成「全部都檢查過了」。
 
 對比稽核可以一起跑：
 
@@ -104,30 +140,56 @@ npx playwright install chromium
 BASE_URL=https://taux.io npm run contrast
 ```
 
-不想裝瀏覽器的話，最低限度用 curl 確認上面第 3 節的四件事：
+不想裝瀏覽器的話，最低限度用 curl：
 
 ```bash
-curl -sI https://taux.io/            | grep -i 'content-security-policy\|^HTTP'
+curl -sI https://taux.io/ | grep -i 'content-security-policy\|strict-transport-security\|^HTTP'
 curl -sI https://taux.io/static/fonts/D-DIN.woff2 | grep -i 'cache-control'   # 只能有一個 max-age
-curl -s -o /dev/null -w '%{http_code}\n' https://taux.io/no-such-page          # 必須是 404
-curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/geo-guide  # 必須是 200，無轉址
-curl -sI -o /dev/null -w '%{http_code}\n' https://taux.io/                     # 必須是 200，不是 404
+curl -s  -o /dev/null -w '%{http_code}\n' https://taux.io/no-such-page        # 必須是 404
+curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/geo-guide  # 200，無轉址
+curl -sI -o /dev/null -w '%{http_code}\n' https://taux.io/                    # 必須是 200，不是 404
+curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.taux.io/geo-guide  # 301 到 apex 同路徑
 ```
 
 ---
 
-## 5. 回滾
+## 7. 主機必須做對的四件事
 
-建置產物是純靜態檔案，沒有資料遷移、沒有狀態。回滾就是重新部署上一個 commit。
+這四件都出過錯，四件都不會在 HTML 裡顯示出來。**四件都已在真實邊緣量測通過**（2026-07-29，對已上傳的版本），但改動 `wrangler.jsonc` 或 `_headers` 時要維持它們。
 
-Cloudflare Pages 保留每次部署，可以直接在儀表板上把舊的部署設回 production。
+**`_headers` 必須被套用。** 安全標頭與 CSP 全部在這個檔案裡，隨 `dist/` 一起部署。它們曾經在一個從未進入運行拓撲的 `nginx.conf` 裡，被 README 宣稱了好幾個月而一次都沒送出過。所以驗證的方式是**看回應帶回來的值**，不是確認檔案存在。
 
-如果是內容問題而不是部署問題，正常流程是修 → 合併到 `main` → 重新部署；`main` 上每個 commit 都經過 CI 的 `build` 與 `audit` 兩個 job。
+**`_headers` 的規則必須互不重疊。** Cloudflare 會**合併**所有符合的規則，不是最具體的勝出——Workers 與 Pages 在這點行為一致。`/static/*` 與 `/static/fonts/*` 同時命中，字體會拿到 `max-age=3600, max-age=31536000`，瀏覽器取第一個。這已經發生過一次，現在的規則是互斥的，改它的時候要維持這件事。
+
+**未匹配路徑必須回 404 狀態，而且是本站的 404 文件。** `wrangler.jsonc` 的 `not_found_handling: "404-page"` 負責這件事。**不設它狀態碼也會是 404**——但送出的是 Cloudflare 自己的純文字錯誤頁，不是這個站的 `404.html`。狀態碼是爬蟲讀的，body 是人看的，契約測試兩件都斷言。
+
+**檔案是扁平的 `.html`，不要改動 `html_handling`。** 現值 `auto-trailing-slash` 讓 `geo-guide.html` 在 `/geo-guide` 直接供應。若改成把它當目錄，`/geo-guide` 會 308 到 `/geo-guide/`——每一條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
 
 ---
 
-## 6. 部署方需要知道、但不在這份文件裡的事
+## 8. 回滾
 
-- **CI 已經驗過的東西不需要在部署時重驗**：每個進 `main` 的 commit 都跑過對比稽核（1475 個文字元素、0 個低於 WCAG AA）與契約測試。上線後驗證要驗的是**主機的行為**，不是內容。
+建置產物是純靜態檔案，沒有資料遷移、沒有狀態。
+
+Cloudflare 保留每一個上傳過的版本：
+
+```bash
+npx wrangler versions list        # 最近 10 個版本
+npx wrangler deployments status   # 現在 production 是哪一個
+npx wrangler rollback <version-id> --message "為什麼"
+```
+
+`wrangler rollback` 不重新建置、不重新上傳，直接把 production 指回一個已經存在的版本——所以它比「revert 再等一輪 CI」快，適合止血。
+
+止血之後，正常流程仍然是修 → 合併到 `main` → 自動部署；`main` 上每個 commit 都經過 `build`、`audit`，以及對即將上線的版本跑的契約測試。
+
+**注意：回滾不會回滾 zone 設定。** HSTS、www 轉址、custom domain 都不在版本裡（見第 3 節與第 5 節）。那些要在 Dashboard 改回去。
+
+---
+
+## 9. 部署方需要知道、但不在這份文件裡的事
+
+- **CI 已經驗過的東西不需要在切換時重驗**：每個進 `main` 的 commit 都跑過對比稽核（1475 個文字元素、0 個低於 WCAG AA）與契約測試，而且契約測試還對即將上線的那個版本在真實邊緣再跑一次。第 6 節要驗的是**zone 的行為**，不是內容。
 - **建置不讀 git。** 頁面日期宣告在 `site.toml`，所以淺層 clone 不影響任何輸出。先前的版本會讓每次部署把全站每一頁的修改日期蓋成部署當天——包括改個 README 錯字觸發的那次。
-- **沒有機密、沒有環境變數。** 若部署設定裡出現任何一個，那是誤加的。
+- **沒有執行期機密、沒有執行期環境變數。** 唯一的機密是 CI 用來部署的 `CLOUDFLARE_API_TOKEN`（第 3.2 節）。若 Worker 的設定裡出現任何 binding、變數或機密，那是誤加的。
+- **沒有 `*.workers.dev` 網址。** `workers_dev` 設為 `false`：整個站掛在第二個永久網域上，等於每一頁都有一份 canonical 指向別處的完整複本。per-version 的 preview URL 仍然開著，那是上線關卡跑測試的地方，它們不公開列出且每個版本都不同。

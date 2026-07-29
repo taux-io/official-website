@@ -105,18 +105,35 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 ## 部署
 
-**靜態網站，由 Cloudflare Pages 從邊緣節點供應。** 沒有執行期伺服器。
+**靜態網站，由 Cloudflare Workers 以靜態資產（static assets）從邊緣節點供應。** 沒有執行期伺服器，`wrangler.jsonc` 裡也沒有 `main`——沒有任何程式碼會執行。
 
 ```bash
 npm run build:site   # cargo build + 產生 dist/
-npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
+npm run serve        # wrangler dev（本機，會套用 _headers）
 ```
 
 `dist/` 由 `generator/`（Rust + minijinja）從 `templates/` 與 `site.toml` 產生。
 
 **部署步驟在 [DEPLOYMENT.md](DEPLOYMENT.md)，不在這裡。** 這一節記錄的是為什麼，不是怎麼做。
 
-接法目前是**預期而非既成**：推送到 main 應該觸發 Cloudflare 建置，但這條路徑還沒實際走過一次。接上並驗證過之後再把這句改成肯定句——這個專案已經被「文件宣稱一個不在運行拓撲裡的東西」咬過一次（見下方的標頭）。
+### 為什麼是 Workers 而不是 Pages
+
+先前的計畫是 Cloudflare Pages，而且 repo 一度整個是那個形狀（`wrangler pages dev`、Pages 的建置設定表）。**那一步從來沒有真的走完**——`taux.io` 直到切換前都還是那台 Go 主機在服務，Pages 專案根本不存在。所以這不是「從 Pages 遷移」，是在還沒落地前換掉目標。
+
+換的理由有兩個，都跟建置有關而不是跟供應有關：
+
+- **建置在哪裡發生。** Pages（與 Workers Builds）的建置映像沒有 `cargo`，所以任何一種「Cloudflare 自己 clone 自己 build」的接法，都得在建置指令欄塞一串 `curl … sh.rustup.rs | sh`。那讓每次部署都重裝一次 toolchain、依賴一個外部網域，而且**CI 驗過的產物跟上線的產物不是同一份**。現在建置只發生在 GitHub Actions，`cargo` 的問題直接消失。
+- **上線關卡的位置。** Workers 的 `versions upload` 會發佈一個版本並給出 preview URL，**但不導任何流量過去**。路由契約測試因此可以跑在「即將成為 production 的那個版本」上，而不是跑在本機模擬器、也不是在訪客已經被餵到壞東西之後。DEPLOYMENT.md 先前那段「上線後驗證」只能報告災難已經發生。
+
+`_headers` 在兩者的行為一致，包括**合併**而非最具體者勝出——所以下面那條互不重疊的紀律原封不動繼續有效。
+
+### 為什麼 HSTS 不在 `_headers` 裡
+
+`Strict-Transport-Security` 設在 Cloudflare zone（SSL/TLS → Edge Certificates），不在 `_headers`。這是刻意的取捨，也**違反**本文件其他地方的偏好（政策要在 repo 裡），所以記在這裡：zone 設定涵蓋整個網域而不只這個 Worker 供應的路徑。
+
+代價是真的：它重蹈了「設定活在後台、無法在 review 裡看到」這個這個專案被咬過的模式。緩解方式是契約測試**照樣對回應斷言它**——但只有在 `BASE_URL` 指向 `https://taux.io` 時才做得到，因為 zone 設定不會套到 preview URL。所以這一項不在上線關卡裡，只能在切換後驗。契約測試會在沒做這些斷言的每一次執行印出 `NOT ASSERTED`，避免「0 failing」被讀成「全部都檢查過了」。
+
+www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `_redirects` 裡——Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
 
 ### 幾個必須知道的細節
 
@@ -132,9 +149,11 @@ npm run serve        # wrangler pages dev dist（本機，會套用 _headers）
 
 它們先前在 Go middleware，更早在一個從未生效的 `nginx.conf` 裡——那個檔案不在運行中的拓撲裡，policy 被 README 宣稱了數個月卻從未送出任何一次。所以測試斷言的是**回應帶回來的值**，不是「設定檔存在」。
 
-### 本機測試必須用 `wrangler pages dev`
+### 本機測試必須用 `wrangler dev`
 
 普通靜態伺服器不套用 `_headers`。用它跑測試，標頭斷言會對著沒人送出的標頭通過——正是上面那個失敗模式的重演。
+
+`wrangler dev` 讀 `wrangler.jsonc`，所以本機拿到的是跟邊緣同一份資產設定（含 `not_found_handling`）。實測過四條硬規則在本機與真實邊緣的行為一致，這是 PR 階段仍然只跑本機模擬器的依據。
 
 ---
 
