@@ -11,7 +11,7 @@
 // compares each text element's computed colour against its *effective*
 // background, compositing alpha up the ancestor chain.
 
-const { chromium } = require("playwright");
+const { launch } = require("../browser");
 const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
 
 const SHOW_ALL = process.argv.includes("--all");
@@ -154,7 +154,7 @@ const AUDIT = () => {
 };
 
 async function main() {
-  const browser = await chromium.launch();
+  const browser = await launch();
   const context = await browser.newContext({
     viewport: { width: VIEWPORT.width, height: VIEWPORT.height },
     reducedMotion: "reduce",

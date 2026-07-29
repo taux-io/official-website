@@ -13,7 +13,7 @@
 // Runs against the same server as the contrast audit and reads the same route
 // table, so adding a page to site.toml is enough to bring it under test.
 
-const { chromium } = require("playwright");
+const { launch } = require("../browser");
 const { ROUTES, BASE_URL, ORIGIN } = require("../routes");
 
 const VIEWPORT = { width: 1440, height: 900 };
@@ -252,7 +252,7 @@ const READ_DOCUMENT = () => {
 };
 
 async function main() {
-  const browser = await chromium.launch();
+  const browser = await launch();
   const context = await browser.newContext({ viewport: VIEWPORT, reducedMotion: "reduce" });
   const page = await context.newPage();
 
