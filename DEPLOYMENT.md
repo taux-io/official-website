@@ -8,28 +8,37 @@
 
 ---
 
-## 1. 現況：這不是全新上線，是一次切換
+## 1. 現況：切換已於 2026-07-29 完成
 
-`taux.io` 現在有流量，而且**線上版本是壞的**。切換之前先知道自己在取代什麼。
+`taux.io` 現在由 Worker `taux-io` 供應。切換那天量到的都記在這裡，因為沒有一項會在瀏覽器裡看起來不對。
 
-用 2026-07-29 量到的：
+切換前後對照，同一天量的：
 
-```
-GET  https://taux.io/   200   內容是改名前的「拓思科技有限公司」
-HEAD https://taux.io/   404
-server: cloudflare
-cf-cache-status: DYNAMIC
-x-xss-protection: 1; mode=block          ← Go middleware 的產物
-strict-transport-security: max-age=31536000
-（沒有 content-security-policy）
-```
+| | 切換前（Go 主機） | 現在（Worker） |
+|---|---|---|
+| `HEAD /` | **404**（`GET /` 是 200） | **200** |
+| `content-security-policy` | 無 | 送出，與 `_headers` 逐字相符 |
+| `x-xss-protection` | `1; mode=block` | 消失（Go middleware 的產物） |
+| 字體 `cache-control` | `max-age=14400` | `public, max-age=31536000, immutable` |
+| 首頁公司名 | 拓思科技**有限公司** | 拓思科技**股份**有限公司 |
+| `cf-cache-status` | `DYNAMIC`（代理到來源） | `HIT` |
 
-四件事：
+`HEAD /` 回 404 而 `GET /` 回 200，是用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會把首頁判定為不存在——瀏覽器永遠不會發 HEAD 來載入頁面，所以那個分歧在畫面上不可見，活了很久。契約測試現在對每條路由分別斷言 GET 與 HEAD。
 
-- **那台 Go 主機還活著，而且它就是現在服務 `taux.io` 的東西。** `cf-cache-status: DYNAMIC` 表示代理到某個來源，而 `x-xss-protection` 只有 Go middleware 會送。切換完**一定要收掉它**——留著一台沒人部署、沒人更新、卻還能回應的來源，是下一次「線上跟 repo 不一樣」的來源。
-- **真實頁面對 HEAD 回 404。** 用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會判定首頁不存在。新的 Worker 已在真實邊緣量過 `HEAD / → 200`，所以切換會修掉它。契約測試對每條路由斷言 HEAD 狀態碼，這類分歧不會再靜靜存在。
-- **內容停在公司改名之前。** 線上首頁仍寫「拓思科技有限公司」，正確的是「拓思科技股份有限公司」。已上傳的 Worker 版本供應的是後者。
-- **`www.taux.io` 直接回 200**，不是轉址到 apex。切換後它必須有明確歸宿（第 5 節）。
+切換當天的驗證跑了兩輪。第一輪 **134 條斷言、3 條失敗**，三條全是 zone 層設定尚未建立——HSTS 未開、www 回 200 而不是 301。兩者補上之後重跑：**14 條路由、134 條斷言、0 條失敗**。主機行為沒有任何一項出錯。
+
+那三條失敗值得留下來，因為它們是**選擇把設定放在 zone 而不是 repo 的代價**具體長什麼樣：切換當下 HSTS 是真的消失了（Go 主機原本送 `max-age=31536000`），而那個倒退不會出現在任何一次 CI 的綠燈裡，只有對 production 跑才看得到。
+
+### 還在跑但不該再跑的東西
+
+- **Workers Builds 的 Git 整合還連著，而且每次推送都失敗。** 它沒有設定建置指令，所以 `npm ci` 之後直接跑 `wrangler versions upload`，`dist/` 從未被產生：
+
+  ```
+  ✘ [ERROR] The directory specified by the "assets.directory" field
+    does not exist: /opt/buildhome/repo/dist
+  ```
+
+  **不要修它，斷開它**（Workers & Pages → `taux-io` → 設定 → 建置 → Disconnect）。要讓它成功就得在指令欄補上 rustup 安裝，那正是第 2 節說明要擺脫的東西，而且會讓兩條路徑各自建置同一份產物。它目前的 deploy command 是 `versions upload`，所以就算成功也只累積版本、不會換掉線上——但那是一個下拉選單就能改成 `deploy` 的距離。
 
 先前的計畫是 Cloudflare Pages。**那一步從來沒有真的走完，Pages 專案不存在**——不需要停用或刪除任何 Pages 專案。理由見 NOTES.md〈為什麼是 Workers 而不是 Pages〉。
 
@@ -108,15 +117,39 @@ Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secre
 
 ## 5. 切換：把 `taux.io` 指過來
 
+**第 1、2 步已於 2026-07-29 完成，第 3 步還沒。** 步驟保留在這裡是因為它們是重建這個拓撲的依據，不是因為還沒做。
+
 **這一段是不可逆的、會影響現有流量的動作，而且不由 CI 執行。** 做之前先確認第 4 節已經跑過至少一次、production 版本是綠的。
 
 1. **接上 custom domain。** Workers & Pages → `taux-io` → Settings → Domains & Routes → Add custom domain：`taux.io`。Cloudflare 會改寫該 zone 既有的 DNS 記錄指向 Worker。
+
+   **要用 dashboard，不要用 `wrangler deploy`。** `wrangler.jsonc` 的 `routes` 已經宣告了這兩個 hostname，但從 CLI 套用會失敗：
+
+   ```
+   PUT .../workers/scripts/taux-io/domains/records → 409 Conflict
+   ✘ Some triggers failed to deploy for taux-io
+   ```
+
+   `taux.io` 與 `www.taux.io` 現在都有代理中的 A 記錄指向 Go 主機，而 Cloudflare 不會在 API 呼叫裡默默覆寫既有記錄。dashboard 的流程會顯示衝突並讓你確認覆寫——那個確認正是 409 缺的東西，而且覆寫是原子的。先刪 DNS 記錄再從 CLI 接也可以，但那會有一段兩邊都不通的空窗。
+
+   這是**安全的失敗**：2026-07-29 實際撞過一次，Worker 的內容照常部署，只有 triggers 沒套用，線上服務完全未受影響。
+
 2. **同樣接上 `www.taux.io`**，或不接而直接做下一步——兩者都可以，重點是 www 不能繼續指著舊的 Go 主機。
 3. **建立 www → apex 的 301。** Rules → Redirect Rules，來源 `www.taux.io/*`，目標 `https://taux.io/$1`，狀態 301。
    **不要試圖寫在 `_redirects` 裡**：Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
    目標一定要帶 `$1`。丟掉路徑的規則會把每一條已索引的 www URL 全部送到首頁，而且只測 `/` 的時候看起來完全正確——契約測試因此同時對 `/` 和 `/geo-guide` 斷言。
 4. **跑第 6 節的驗證。**
-5. **收掉那台 Go 主機。** 驗證通過之後才做，但一定要做。它現在還在回應。
+5. **移除 taux.io 在舊主機上的那一份。已於 2026-07-29 交給該機器的管理者處理，不在這個 repo 的範圍內。**
+
+   **不要收掉那台機器**——它用 nginx-proxy 同時代管其他網站，關掉會弄壞跟這個專案無關的東西。要移除的只有 taux.io 專屬的容器，它是這樣起的（來自已刪除的 `deploy.prod.sh`）：
+
+   ```
+   --env "VIRTUAL_HOST=taux.io,www.taux.io"
+   --env "LETSENCRYPT_HOST=taux.io,www.taux.io"
+   taux-website-prod:latest
+   ```
+
+   容器移除後那兩個環境變數就不存在，nginx-proxy 會自動撤掉該 vhost、acme-companion 停止續約。**續約這件事是有時效的**：DNS 已經指向 Cloudflare，HTTP-01 challenge 到不了那台機器，所以留著只會無限重試失敗。
 
 ---
 
