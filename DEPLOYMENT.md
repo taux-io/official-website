@@ -29,16 +29,35 @@
 
 那三條失敗值得留下來，因為它們是**選擇把設定放在 zone 而不是 repo 的代價**具體長什麼樣：切換當下 HSTS 是真的消失了（Go 主機原本送 `max-age=31536000`），而那個倒退不會出現在任何一次 CI 的綠燈裡，只有對 production 跑才看得到。
 
-### 還在跑但不該再跑的東西
+### Workers Builds 的 Git 整合：已於 2026-07-29 斷開，不要接回去
 
-- **Workers Builds 的 Git 整合還連著，而且每次推送都失敗。** 它沒有設定建置指令，所以 `npm ci` 之後直接跑 `wrangler versions upload`，`dist/` 從未被產生：
+連著的那段期間每一次推送都失敗。它沒有設定建置指令，所以 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生：
 
-  ```
-  ✘ [ERROR] The directory specified by the "assets.directory" field
-    does not exist: /opt/buildhome/repo/dist
-  ```
+```
+✘ [ERROR] The directory specified by the "assets.directory" field
+  does not exist: /opt/buildhome/repo/dist
+```
 
-  **不要修它，斷開它**（Workers & Pages → `taux-io` → 設定 → 建置 → Disconnect）。要讓它成功就得在指令欄補上 rustup 安裝，那正是第 2 節說明要擺脫的東西，而且會讓兩條路徑各自建置同一份產物。它目前的 deploy command 是 `versions upload`，所以就算成功也只累積版本、不會換掉線上——但那是一個下拉選單就能改成 `deploy` 的距離。
+**接回去比留著壞掉更糟，有兩個理由。**
+
+要讓它成功就得在建置指令欄補上 rustup 安裝——那正是第 2 節說明要擺脫的東西，而且會留下兩條路徑各自建置同一份產物：CI 驗過的那份，與 Cloudflare 自己 clone 後建出來的那份。
+
+更直接的是**連接對話框的 deploy command 預設值是 `npx wrangler deploy`**。那個指令會直接推成 production 並套用 triggers，也就是每次推送都繞過第 4 節整套「upload → 對 preview URL 跑契約測試 → 才推」的關卡。斷開之前它被設成 `versions upload`，只累積版本不換線上；預設值沒有那個保護。
+
+### 怎麼判定它是不是真的斷了
+
+**看有沒有名為 `Workers Builds: taux-io` 的 check _run_，不是看有沒有 `cloudflare-workers-and-pages` 的 check _suite_。**
+
+斷開之後，推送仍然會產生一個 `cloudflare-workers-and-pages` 的 check suite，狀態停在 `queued`、`latest_check_runs` 是 0。那是 Cloudflare 的 GitHub App 還安裝在 repo 上的殘影——App 的安裝是 repo 層的，跟 Worker 的 Git 整合是兩回事。**它看起來像整合還在，其實沒有任何建置被建立。**
+
+```bash
+gh api repos/taux-io/official-website/commits/<sha>/check-runs \
+  --jq '[.check_runs[] | select(.app.slug=="cloudflare-workers-and-pages")] | length'
+```
+
+`0` 就是斷了。斷開前這個數字是 1，而且大約一分鐘內就會出現；確認用的探測推送等了三分鐘仍是 0。
+
+**dashboard 的畫面不是證據。** 前兩次嘗試斷開後 dashboard 都顯示正常，而接下來的推送它照樣為每個 commit 建立新的 build。
 
 先前的計畫是 Cloudflare Pages。**那一步從來沒有真的走完，Pages 專案不存在**——不需要停用或刪除任何 Pages 專案。理由見 NOTES.md〈為什麼是 Workers 而不是 Pages〉。
 
