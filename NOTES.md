@@ -141,7 +141,7 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 `Strict-Transport-Security` 設在 Cloudflare zone（SSL/TLS → Edge Certificates），不在 `_headers`。這是刻意的取捨，也**違反**本文件其他地方的偏好（政策要在 repo 裡），所以記在這裡：zone 設定涵蓋整個網域而不只這個 Worker 供應的路徑。
 
-代價是真的：它重蹈了「設定活在後台、無法在 review 裡看到」這個這個專案被咬過的模式。緩解方式是契約測試**照樣對回應斷言它**——但只有在 `BASE_URL` 指向 `https://taux.io` 時才做得到，因為 zone 設定不會套到 preview URL。所以這一項不在上線關卡裡，只能在切換後驗。契約測試會在沒做這些斷言的每一次執行印出 `NOT ASSERTED`，避免「0 failing」被讀成「全部都檢查過了」。
+代價是真的：它重蹈了「設定活在後台、無法在 review 裡看到」這個這個專案被咬過的模式。緩解方式是契約測試**照樣對回應斷言它**——但只有在 `BASE_URL` 指向 `https://taux.io` 時才做得到，因為 zone 設定不會套到 preview URL。所以這一項對 preview URL 驗不到，只能對 production 驗。契約測試會在沒做這些斷言的每一次執行印出 `NOT ASSERTED`，避免「0 failing」被讀成「全部都檢查過了」。
 
 www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `_redirects` 裡——Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
 
@@ -202,7 +202,7 @@ curl 收到的 HTML    含 cloudflareinsights = false（位元組等同 dist/ind
 |---|---|
 | `curl` 那組最低限度驗證 | 注入不會發生，curl 拿到的 HTML 跟建置產物逐位元相同 |
 | CI 的對比稽核與契約測試 | 跑在 `wrangler dev` 上，本機不經過 Cloudflare 邊緣 |
-| 部署前的上線關卡 | preview URL 在 `workers.dev`，**不在 `taux.io` 這個 zone 裡**，zone 層功能一概不生效 |
+| 任何對 preview URL 的檢查 | preview URL 在 `workers.dev`，**不在 `taux.io` 這個 zone 裡**，zone 層功能一概不生效 |
 | 任何不開瀏覽器的驗證 | 它是 CSP 違規，只有渲染頁面時才會發生 |
 
 所以「對 production 跑一次完整契約測試」不是儀式。**這一項在別的地方一次都看不到**，而它在瀏覽器啟動後幾分鐘內就被抓到。

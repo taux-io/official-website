@@ -5,8 +5,8 @@
 // complete, all four visual tools are simply unavailable — which is not a small
 // inconvenience. The CSP defect found on 2026-07-30 was visible only to a
 // browser pointed at production: curl never triggers the injection that causes
-// it, the local emulator is not behind the zone, and the preview URL the deploy
-// gate tests is on workers.dev rather than in the zone. It went unfound for as
+// it, the local emulator is not behind the zone, and the preview URLs a build
+// uploads are on workers.dev rather than in the zone. It went unfound for as
 // long as no browser could be started, and it was found within minutes of one
 // being started.
 //
