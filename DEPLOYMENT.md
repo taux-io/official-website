@@ -104,17 +104,28 @@ Workers & Pages → `taux-io` → 設定 → 建置 → **Connect**，選 `taux-
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && . "$HOME/.cargo/env" && npm run build:css && npm run build:site
 ```
 
-**Deploy command**：
+**Deploy command**（用於 production branch，也就是 `main`）：
 
 ```
 npx wrangler versions upload
 ```
 
-三件事不能弄錯：
+**Non-production branch deploy command**（用於 PR 分支，dashboard 的摘要頁把它顯示為 `Version command`）——**同一串**：
+
+```
+npx wrangler versions upload
+```
+
+其餘欄位：Production branch `main`、Builds for non-production branches **啟用**、Root directory `/`、Build watch paths `*`、Build cache **停用**。
+
+四件事不能弄錯：
 
 - **Build command 不可留空。** 空著就是 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生，建置必然失敗於 `assets.directory ... does not exist`。這個錯誤實際發生過一整天。
+- **那兩格 deploy command 不要填反。** 只填非 production 那格的話，PR 分支會上傳版本而推 `main` 什麼都不做——正好是想要的相反。這也實際發生過一次。
 - **不需要 `npm ci`。** Workers Builds 會自己跑 `npm clean-install`，建置指令從 `build:css` 開始就好。
 - **Deploy command 絕對不要用預設的 `npx wrangler deploy`。** 那會直接推成 production 並套用 triggers，也就是每一次推送都自動上線、沒有任何人看過。`versions upload` 只上傳版本、不導流量，推廣是第 4 節的手動步驟。
+
+**Build cache 停用是刻意的。** 它只快取 npm／yarn／pnpm／bun 的套件目錄與特定框架的輸出——**不快取 Rust／cargo 產物，也不快取 `~/.cargo`**。這個專案的耗時集中在 rustup 安裝與 generator 的冷編譯，那兩項它都幫不上；而且快取在 7 天未讀後就會被清除，以這個站的推送頻率大多是冷的。
 
 不需要 API token。Workers Builds 用的是它自己的 Git 整合憑證，GitHub 的 repo secret 裡**不應該有** `CLOUDFLARE_API_TOKEN`——若還留著，那是先前從 GitHub Actions 部署時的殘留，可以刪除。
 
