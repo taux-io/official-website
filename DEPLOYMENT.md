@@ -8,28 +8,41 @@
 
 ---
 
-## 1. 現況：這不是全新上線，是一次切換
+## 1. 現況：切換已於 2026-07-29 完成
 
-`taux.io` 現在有流量，而且**線上版本是壞的**。切換之前先知道自己在取代什麼。
+`taux.io` 現在由 Worker `taux-io` 供應。切換那天量到的、以及**還沒做完的**都記在這裡，因為剩下的兩項都不會在瀏覽器裡看起來不對。
 
-用 2026-07-29 量到的：
+切換前後對照，同一天量的：
 
-```
-GET  https://taux.io/   200   內容是改名前的「拓思科技有限公司」
-HEAD https://taux.io/   404
-server: cloudflare
-cf-cache-status: DYNAMIC
-x-xss-protection: 1; mode=block          ← Go middleware 的產物
-strict-transport-security: max-age=31536000
-（沒有 content-security-policy）
-```
+| | 切換前（Go 主機） | 現在（Worker） |
+|---|---|---|
+| `HEAD /` | **404**（`GET /` 是 200） | **200** |
+| `content-security-policy` | 無 | 送出，與 `_headers` 逐字相符 |
+| `x-xss-protection` | `1; mode=block` | 消失（Go middleware 的產物） |
+| 字體 `cache-control` | `max-age=14400` | `public, max-age=31536000, immutable` |
+| 首頁公司名 | 拓思科技**有限公司** | 拓思科技**股份**有限公司 |
+| `cf-cache-status` | `DYNAMIC`（代理到來源） | `HIT` |
 
-四件事：
+`HEAD /` 回 404 而 `GET /` 回 200，是用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會把首頁判定為不存在——瀏覽器永遠不會發 HEAD 來載入頁面，所以那個分歧在畫面上不可見，活了很久。契約測試現在對每條路由分別斷言 GET 與 HEAD。
 
-- **那台 Go 主機還活著，而且它就是現在服務 `taux.io` 的東西。** `cf-cache-status: DYNAMIC` 表示代理到某個來源，而 `x-xss-protection` 只有 Go middleware 會送。切換完**一定要收掉它**——留著一台沒人部署、沒人更新、卻還能回應的來源，是下一次「線上跟 repo 不一樣」的來源。
-- **真實頁面對 HEAD 回 404。** 用 HEAD 的連結檢查器、uptime 監控與部分爬蟲會判定首頁不存在。新的 Worker 已在真實邊緣量過 `HEAD / → 200`，所以切換會修掉它。契約測試對每條路由斷言 HEAD 狀態碼，這類分歧不會再靜靜存在。
-- **內容停在公司改名之前。** 線上首頁仍寫「拓思科技有限公司」，正確的是「拓思科技股份有限公司」。已上傳的 Worker 版本供應的是後者。
-- **`www.taux.io` 直接回 200**，不是轉址到 apex。切換後它必須有明確歸宿（第 5 節）。
+切換當天的驗證：**14 條路由、134 條斷言、3 條失敗**，三條全部是下面那兩項未完成的設定。主機行為沒有任何一項出錯。
+
+### 還沒做完的兩件事
+
+- **zone 層 HSTS 尚未開啟。** Go 主機原本送 `strict-transport-security: max-age=31536000`，Worker 不送（`_headers` 裡沒有它，這是刻意的，理由見 NOTES.md），而 zone 設定還沒開。**切換造成的實質倒退，每個新訪客少一層。** 做法見第 3.3 節。
+- **`www.taux.io` 回 200 而不是 301。** 它已經接到 Worker 上，但 Redirect Rule 還沒建，所以全站內容現在有兩個位址。做法見第 5 節第 3 步。
+
+### 還在跑但不該再跑的東西
+
+- **那台 Go 主機還活著。** 已經沒有流量進去了，但它還在回應。**要收掉**——留著一台沒人部署、沒人更新、卻還能回應的來源，是下一次「線上跟 repo 不一樣」的來源。
+- **Workers Builds 的 Git 整合還連著，而且每次推送都失敗。** 它沒有設定建置指令，所以 `npm ci` 之後直接跑 `wrangler versions upload`，`dist/` 從未被產生：
+
+  ```
+  ✘ [ERROR] The directory specified by the "assets.directory" field
+    does not exist: /opt/buildhome/repo/dist
+  ```
+
+  **不要修它，斷開它**（Workers & Pages → `taux-io` → 設定 → 建置 → Disconnect）。要讓它成功就得在指令欄補上 rustup 安裝，那正是第 2 節說明要擺脫的東西，而且會讓兩條路徑各自建置同一份產物。它目前的 deploy command 是 `versions upload`，所以就算成功也只累積版本、不會換掉線上——但那是一個下拉選單就能改成 `deploy` 的距離。
 
 先前的計畫是 Cloudflare Pages。**那一步從來沒有真的走完，Pages 專案不存在**——不需要停用或刪除任何 Pages 專案。理由見 NOTES.md〈為什麼是 Workers 而不是 Pages〉。
 
@@ -107,6 +120,8 @@ Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secre
 ---
 
 ## 5. 切換：把 `taux.io` 指過來
+
+**第 1、2 步已於 2026-07-29 完成，第 3 步還沒。** 步驟保留在這裡是因為它們是重建這個拓撲的依據，不是因為還沒做。
 
 **這一段是不可逆的、會影響現有流量的動作，而且不由 CI 執行。** 做之前先確認第 4 節已經跑過至少一次、production 版本是綠的。
 
