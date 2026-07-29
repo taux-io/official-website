@@ -15,7 +15,7 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 - **產生器**：Rust（minijinja），build 時輸出靜態 HTML
 - **前端**：`templates/*.html` + TailwindCSS 3.4，無前端框架
 - **工具鏈**：Node 負責 CSS 建置、資產生成與全部驗證（Tailwind 與 Playwright 沒有堪用的 Rust 替代品，所以這個 repo 是雙語言的）
-- **基礎設施**：Cloudflare Pages，無執行期伺服器
+- **基礎設施**：Cloudflare Workers 靜態資產，無執行期伺服器
 
 ---
 
@@ -64,7 +64,7 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 
 ```bash
 npm run build:site     # cargo build + 產生 dist/
-npm run serve          # wrangler pages dev dist（套用 _headers）
+npm run serve          # wrangler dev（套用 _headers）
 npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
@@ -120,12 +120,22 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 先前的計畫是 Cloudflare Pages，而且 repo 一度整個是那個形狀（`wrangler pages dev`、Pages 的建置設定表）。**那一步從來沒有真的走完**——`taux.io` 直到切換前都還是那台 Go 主機在服務，Pages 專案根本不存在。所以這不是「從 Pages 遷移」，是在還沒落地前換掉目標。
 
-換的理由有兩個，都跟建置有關而不是跟供應有關：
-
-- **建置在哪裡發生。** Pages（與 Workers Builds）的建置映像沒有 `cargo`，所以任何一種「Cloudflare 自己 clone 自己 build」的接法，都得在建置指令欄塞一串 `curl … sh.rustup.rs | sh`。那讓每次部署都重裝一次 toolchain、依賴一個外部網域，而且**CI 驗過的產物跟上線的產物不是同一份**。現在建置只發生在 GitHub Actions，`cargo` 的問題直接消失。
-- **上線關卡的位置。** Workers 的 `versions upload` 會發佈一個版本並給出 preview URL，**但不導任何流量過去**。路由契約測試因此可以跑在「即將成為 production 的那個版本」上，而不是跑在本機模擬器、也不是在訪客已經被餵到壞東西之後。DEPLOYMENT.md 先前那段「上線後驗證」只能報告災難已經發生。
+換掉的理由是 `versions upload`：它會發佈一個版本並給出 preview URL，**但不導任何流量過去**。Pages 沒有這個形狀的東西。這讓「上線」可以跟「建置」分開成兩個決定，而不是推送即上線。
 
 `_headers` 在兩者的行為一致，包括**合併**而非最具體者勝出——所以下面那條互不重疊的紀律原封不動繼續有效。
+
+### 建置為什麼從 GitHub Actions 搬回 Cloudflare
+
+2026-07-29 的第一版把建置與部署都放在 GitHub Actions，理由寫得很硬：Cloudflare 的建置映像沒有 `cargo`，所以走它的整合就得在指令欄塞一串 rustup 安裝；而且 CI 驗過的產物跟上線的產物不是同一份。
+
+**兩個理由到今天都還成立，是取捨的權重改了。** 決定是把部署收斂到單一供應商，接受那兩個代價，換掉「維護一組 API token、一個 deploy job、以及兩個系統之間的接縫」。
+
+代價要說清楚，因為它們不會自己浮現：
+
+- **自動的上線關卡沒有了。** 先前 CI 的流程是 `upload → 拿 preview URL → 跑 156 條契約測試 → 通過才推`。Workers Builds 的建置流程裡跑不了 Playwright、也拿不到 preview URL 去測，更沒有「檢查失敗就不推」的機制。現在擋在訪客前面的是人：版本上傳後不會自動上線，推廣是手動的一步。
+- **上線的產物沒有被驗過。** CI 仍然建置並跑完整檢查，但那份產物不會被部署；上線的是 Cloudflare 自己 clone 後建的。同一個 commit、同一組釘死的 toolchain 版本，理論上相同——**但沒有任何東西在比對它們**。
+
+保留 GitHub Actions 的 `build` 與 `audit` 是這個決定的另一半：PR 階段的六道閘門一個都沒少，少掉的只有 `deploy` job。
 
 ### 為什麼 HSTS 不在 `_headers` 裡
 

@@ -36,10 +36,6 @@ dist/
 # wrangler local state
 .wrangler/
 
-# Where the deploy job has wrangler write its structured output, so the version
-# id and preview URL can be read as data rather than scraped from console text.
-.wrangler-output/
-
 # Agent tooling. Local to whoever is working here, not part of the site: it
 # describes how to work on the project rather than what the project is, and its
 # infrastructure half still documented a Docker and nginx deployment that no

@@ -4,7 +4,7 @@
 
 網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有執行期環境變數、沒有執行期機密。建置產生一個目錄，Cloudflare Workers 從邊緣供應那個目錄。`wrangler.jsonc` 裡沒有 `main`，所以沒有任何程式碼會執行。
 
-**部署是自動的。** 推送到 `main`，CI 建置、上傳一個版本、對那個版本跑完整路由契約測試，通過才把它推成 production。人要做的只有第 3 節的一次性設定與第 5 節的切換。
+**建置是自動的，上線不是。** 推送到 `main`，Cloudflare 會自己 clone、建置、上傳一個版本——但那個版本不承載任何流量。**把它推成 production 是人的一步**，理由與代價見第 4 節。
 
 ---
 
@@ -29,35 +29,31 @@
 
 那三條失敗值得留下來，因為它們是**選擇把設定放在 zone 而不是 repo 的代價**具體長什麼樣：切換當下 HSTS 是真的消失了（Go 主機原本送 `max-age=31536000`），而那個倒退不會出現在任何一次 CI 的綠燈裡，只有對 production 跑才看得到。
 
-### Workers Builds 的 Git 整合：已於 2026-07-29 斷開，不要接回去
-
-連著的那段期間每一次推送都失敗。它沒有設定建置指令，所以 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生：
-
-```
-✘ [ERROR] The directory specified by the "assets.directory" field
-  does not exist: /opt/buildhome/repo/dist
-```
-
-**接回去比留著壞掉更糟，有兩個理由。**
-
-要讓它成功就得在建置指令欄補上 rustup 安裝——那正是第 2 節說明要擺脫的東西，而且會留下兩條路徑各自建置同一份產物：CI 驗過的那份，與 Cloudflare 自己 clone 後建出來的那份。
-
-更直接的是**連接對話框的 deploy command 預設值是 `npx wrangler deploy`**。那個指令會直接推成 production 並套用 triggers，也就是每次推送都繞過第 4 節整套「upload → 對 preview URL 跑契約測試 → 才推」的關卡。斷開之前它被設成 `versions upload`，只累積版本不換線上；預設值沒有那個保護。
-
-### 怎麼判定它是不是真的斷了
+### 怎麼判定 Workers Builds 有沒有在動
 
 **看有沒有名為 `Workers Builds: taux-io` 的 check _run_，不是看有沒有 `cloudflare-workers-and-pages` 的 check _suite_。**
 
-斷開之後，推送仍然會產生一個 `cloudflare-workers-and-pages` 的 check suite，狀態停在 `queued`、`latest_check_runs` 是 0。那是 Cloudflare 的 GitHub App 還安裝在 repo 上的殘影——App 的安裝是 repo 層的，跟 Worker 的 Git 整合是兩回事。**它看起來像整合還在，其實沒有任何建置被建立。**
+沒有連 Git 整合時，推送仍然會產生一個 `cloudflare-workers-and-pages` 的 check suite，狀態停在 `queued`、`latest_check_runs` 是 0。那是 Cloudflare 的 GitHub App 還安裝在 repo 上的殘影——**App 的安裝是 repo 層的，跟 Worker 的 Git 整合是兩回事**。它看起來像整合還在，其實沒有任何建置被建立。
 
 ```bash
 gh api repos/taux-io/official-website/commits/<sha>/check-runs \
   --jq '[.check_runs[] | select(.app.slug=="cloudflare-workers-and-pages")] | length'
 ```
 
-`0` 就是斷了。斷開前這個數字是 1，而且大約一分鐘內就會出現；確認用的探測推送等了三分鐘仍是 0。
+`1` 表示真的有建置，而且大約一分鐘內就會出現。`0` 表示沒有。
 
-**dashboard 的畫面不是證據。** 前兩次嘗試斷開後 dashboard 都顯示正常，而接下來的推送它照樣為每個 commit 建立新的 build。
+**dashboard 的畫面不是證據。** 2026-07-29 為了移除重複部署路徑而斷開它時，前兩次 dashboard 都顯示已斷開，而接下來的推送它照樣為每個 commit 建立新的 build。判準只有推送。
+
+### 曾經失敗一整天的原因
+
+那段期間整合是連著的、但**建置指令欄是空的**，所以 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生：
+
+```
+✘ [ERROR] The directory specified by the "assets.directory" field
+  does not exist: /opt/buildhome/repo/dist
+```
+
+當時的診斷一度假設成因是「映像沒有 `cargo`」——那個假設完全合理卻是錯的，它連需要 cargo 的那一步都沒走到。第 3.2 節那串建置指令同時解決了兩件事：空指令，以及映像確實沒有 cargo。
 
 先前的計畫是 Cloudflare Pages。**那一步從來沒有真的走完，Pages 專案不存在**——不需要停用或刪除任何 Pages 專案。理由見 NOTES.md〈為什麼是 Workers 而不是 Pages〉。
 
@@ -74,13 +70,15 @@ npm run build:css && npm run build:site
 
 建置需要 Rust toolchain。版本不要自己選，repo 裡釘好了：`rust-toolchain.toml`（channel 1.90）與 `.nvmrc`（Node 22）。rustup 會自己讀前者，`actions/setup-node` 與 `nvm` 會讀後者。
 
-**建置只發生在 GitHub Actions。** Cloudflare 的建置映像沒有 `cargo`，先前的做法是把 rustup 的安裝塞進建置指令欄——那讓每次部署重裝一次 toolchain，而且 CI 驗過的產物跟上線的產物不是同一份。現在沒有任何一段 Cloudflare 端的建置設定要維護。
+**上線用的建置發生在 Cloudflare（Workers Builds），不在 GitHub Actions。** CI 仍然會建置，但那份產物只用來跑檢查，不會被部署——上線的是 Cloudflare 自己 clone、自己建出來的那一份。
+
+**Cloudflare 的建置映像沒有 `cargo`**，它偵測到的只有 Node 與 npm。所以建置指令必須自己裝 rustup，那一整串記在第 3.2 節，且必須與 dashboard 裡的值逐字一致。
 
 ---
 
 ## 3. 一次性設定
 
-這三步只做一次。做完之後推送到 `main` 就會自動部署。
+這三步只做一次。做完之後推送到 `main` 就會自動建置並上傳版本；推成 production 仍然是手動的（第 4 節）。
 
 ### 3.1 Worker 已經存在
 
@@ -94,19 +92,31 @@ Worker `taux-io` 已於 2026-07-29 以 `wrangler deploy` 建立於帳號 `taux.i
 npx wrangler deploy      # 只有第一次，用來讓 Worker 存在
 ```
 
-### 3.2 建立 API token 並放進 repo secret
+### 3.2 接上 Workers Builds，並填入這兩段指令
 
-CI 需要一組 token 才能上傳與推廣版本。**這是建置期的機密，不是執行期的**——網站本身仍然沒有任何執行期機密或環境變數。
+Workers & Pages → `taux-io` → 設定 → 建置 → **Connect**，選 `taux-io/official-website`，production branch `main`。
 
-在 Cloudflare Dashboard → My Profile → API Tokens 建立，權限：
+接著填入這兩格。**它們是這份 runbook 的一部分，改 dashboard 就要同步改這裡**——實際生效的值活在後台，這是這個做法明確接受的代價（見 NOTES.md）。
 
-| 類型 | 項目 | 權限 |
-|---|---|---|
-| Account | Workers Scripts | Edit |
+**Build command**（一整行，含 rustup 安裝）：
 
-放進 GitHub repo 的 secret，名稱必須是 `CLOUDFLARE_API_TOKEN`（`.github/workflows/checks.yml` 的 deploy job 讀這個名字）。
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && . "$HOME/.cargo/env" && npm run build:css && npm run build:site
+```
 
-Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secret。
+**Deploy command**：
+
+```
+npx wrangler versions upload
+```
+
+三件事不能弄錯：
+
+- **Build command 不可留空。** 空著就是 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生，建置必然失敗於 `assets.directory ... does not exist`。這個錯誤實際發生過一整天。
+- **不需要 `npm ci`。** Workers Builds 會自己跑 `npm clean-install`，建置指令從 `build:css` 開始就好。
+- **Deploy command 絕對不要用預設的 `npx wrangler deploy`。** 那會直接推成 production 並套用 triggers，也就是每一次推送都自動上線、沒有任何人看過。`versions upload` 只上傳版本、不導流量，推廣是第 4 節的手動步驟。
+
+不需要 API token。Workers Builds 用的是它自己的 Git 整合憑證，GitHub 的 repo secret 裡**不應該有** `CLOUDFLARE_API_TOKEN`——若還留著，那是先前從 GitHub Actions 部署時的殘留，可以刪除。
 
 ### 3.3 開啟 zone 層的 HSTS
 
@@ -118,19 +128,34 @@ Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secre
 
 ## 4. 每次部署怎麼走
 
-推送到 `main` 之後，`.github/workflows/checks.yml` 依序做：
+**兩件事平行發生，而且它們互不相依。**
+
+`.github/workflows/checks.yml` 在 PR 與推送 `main` 時跑：
 
 1. `build` job：cargo fmt / clippy / test、建置、樣式表新鮮度、class 可解析、llms.txt 完整、日期一致、結構化資料有效
 2. `audit` job：用 `npm run serve`（`wrangler dev`，會套用 `_headers`）供應輸出，跑對比稽核與路由契約測試
-3. `deploy` job：**相依前兩者都通過**，且只在 push 到 `main` 時執行
-   - `wrangler versions upload` → 得到 version id 與 preview URL（從 wrangler 的結構化輸出讀，不是刮 console）
-   - 等 preview URL 真的可供應（**版本上傳回傳的當下還不能服務**，實測過會先回一陣子 404）
-   - `BASE_URL=<preview URL> npm run contract` ← **這是上線關卡**
-   - 通過才 `wrangler versions deploy <id>@100`
 
-契約測試的 canonical 一律對 `https://taux.io` 斷言，不管內容是哪個 host 送出的（`scripts/routes.js` 的 `ORIGIN`），所以對 preview URL 跑它是在驗**版本**，不是在驗主機名。
+Workers Builds 在推送 `main` 時 clone、建置、`wrangler versions upload`，產出一個**已上傳但沒有任何流量的版本**。
 
-**壞的版本到不了訪客。** 這取代了先前那段人工的「上線後驗證」——那個流程只能在災難已經發生之後報告它。
+### 上線是手動的一步
+
+```bash
+npx wrangler versions list          # 找出剛上傳的 version id
+npx wrangler versions deploy <id>@100 --yes
+```
+
+或在 dashboard 的「部署」分頁把該版本推成 production。
+
+### 這裡沒有自動的上線關卡，這是刻意的取捨
+
+先前 GitHub Actions 的做法是 `upload → 拿 preview URL → 跑 156 條契約測試 → 通過才推`，**壞的版本到不了訪客**。Workers Builds 做不到中間那一步：它沒有辦法在建置流程裡取得 preview URL 去跑 Playwright，也沒有「檢查失敗就不推」的機制。
+
+所以現在擋在訪客前面的是**人**——推廣之前該做的事：
+
+1. 確認該 commit 的 GitHub Actions 是綠的（build 與 audit）
+2. 用 preview URL 看一眼，或至少推廣後立刻跑第 6 節的驗證
+
+**CI 驗過的產物與上線的產物不是同一份。** CI 建的那份只用來跑檢查；上線的是 Cloudflare 自己建的。兩者理論上相同——同一個 commit、同一組釘死的 toolchain 版本——但沒有任何東西在比對它們。這是把建置搬到 Cloudflare 換來的第二個代價。
 
 ---
 
@@ -138,7 +163,7 @@ Account ID 不是機密，寫在 `wrangler.jsonc` 裡，不需要第二個 secre
 
 **第 1、2 步已於 2026-07-29 完成，第 3 步還沒。** 步驟保留在這裡是因為它們是重建這個拓撲的依據，不是因為還沒做。
 
-**這一段是不可逆的、會影響現有流量的動作，而且不由 CI 執行。** 做之前先確認第 4 節已經跑過至少一次、production 版本是綠的。
+**這一段是不可逆的、會影響現有流量的動作，而且不由任何自動化執行。** 做之前先確認第 4 節的建置已經跑過至少一次、且有一個可推廣的版本。
 
 1. **接上 custom domain。** Workers & Pages → `taux-io` → Settings → Domains & Routes → Add custom domain：`taux.io`。Cloudflare 會改寫該 zone 既有的 DNS 記錄指向 Worker。
 
@@ -182,7 +207,7 @@ npx playwright install chromium
 BASE_URL=https://taux.io npm run contract
 ```
 
-對 production 跑的時候，契約測試會**額外**做三項在上線關卡裡做不到的斷言（因為它們設在 zone，不在這個 repo 部署的東西裡）：HSTS 存在且 `max-age` 夠長、`www.taux.io/` 301 到 `https://taux.io/`、`www.taux.io/geo-guide` 301 到 `https://taux.io/geo-guide`。
+對 production 跑的時候，契約測試會**額外**做三項只有在這裡做得到的斷言（因為它們設在 zone，不在這個 repo 部署的東西裡）：HSTS 存在且 `max-age` 夠長、`www.taux.io/` 301 到 `https://taux.io/`、`www.taux.io/geo-guide` 301 到 `https://taux.io/geo-guide`。
 
 指向非 production 的每一次執行都會印出 `NOT ASSERTED` 區塊列出這些項目，所以 `0 failing` 不會被誤讀成「全部都檢查過了」。
 
@@ -243,5 +268,5 @@ npx wrangler rollback <version-id> --message "為什麼"
 
 - **CI 已經驗過的東西不需要在切換時重驗**：每個進 `main` 的 commit 都跑過對比稽核（1475 個文字元素、0 個低於 WCAG AA）與契約測試，而且契約測試還對即將上線的那個版本在真實邊緣再跑一次。第 6 節要驗的是**zone 的行為**，不是內容。
 - **建置不讀 git。** 頁面日期宣告在 `site.toml`，所以淺層 clone 不影響任何輸出。先前的版本會讓每次部署把全站每一頁的修改日期蓋成部署當天——包括改個 README 錯字觸發的那次。
-- **沒有執行期機密、沒有執行期環境變數。** 唯一的機密是 CI 用來部署的 `CLOUDFLARE_API_TOKEN`（第 3.2 節）。若 Worker 的設定裡出現任何 binding、變數或機密，那是誤加的。
-- **沒有 `*.workers.dev` 網址。** `workers_dev` 設為 `false`：整個站掛在第二個永久網域上，等於每一頁都有一份 canonical 指向別處的完整複本。per-version 的 preview URL 仍然開著，那是上線關卡跑測試的地方，它們不公開列出且每個版本都不同。
+- **沒有機密，執行期或建置期都沒有。** Workers Builds 用它自己的 Git 整合憑證，這個 repo 不需要任何 secret。若 Worker 的設定裡出現任何 binding、變數或機密，那是誤加的。
+- **沒有 `*.workers.dev` 網址。** `workers_dev` 設為 `false`：整個站掛在第二個永久網域上，等於每一頁都有一份 canonical 指向別處的完整複本。per-version 的 preview URL 仍然開著，推廣之前可以用它看一眼；它們不公開列出且每個版本都不同。
