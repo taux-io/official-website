@@ -12,7 +12,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { chromium } = require("playwright");
+const { launch } = require("../browser");
 
 const [labelA, labelB] = process.argv.slice(2);
 if (!labelA || !labelB) {
@@ -92,7 +92,7 @@ async function main() {
     .filter((f) => f.endsWith(".png"))
     .sort();
 
-  const browser = await chromium.launch();
+  const browser = await launch();
   const page = await browser.newPage();
 
   // Served over an intercepted route rather than inlined as data URIs: the

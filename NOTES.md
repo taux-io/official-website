@@ -183,6 +183,36 @@ www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `
 
 `wrangler dev` 讀 `wrangler.jsonc`，所以本機拿到的是跟邊緣同一份資產設定（含 `not_found_handling`）。實測過四條硬規則在本機與真實邊緣的行為一致，這是 PR 階段仍然只跑本機模擬器的依據。
 
+### 但有一類缺陷只有「瀏覽器 + production」看得到
+
+2026-07-30 對 production 跑完整契約測試，14 條路由**每一條都失敗**，全是同一件事：CSP 擋掉 `https://static.cloudflareinsights.com/beacon.min.js`。
+
+那個腳本不在 `dist/` 裡，也不在 `templates/` 裡。**是 Cloudflare 在邊緣注入的**——Web Analytics 對「代理中的網站預設開啟」，沒有人打開過它。而且它只注入給帶完整瀏覽器標頭的請求：
+
+```
+瀏覽器收到的 HTML   含 cloudflareinsights = true
+curl 收到的 HTML    含 cloudflareinsights = false（位元組等同 dist/index.html）
+```
+
+**是切換造成的。** 舊的 Go 主機根本沒送 CSP，所以 beacon 一直正常載入；讓 CSP 真的生效之後它就被擋了。處置是在 zone 關掉 Web Analytics（Web Analytics → Manage Site → Disable），而不是把第三方來源加進 `script-src`。
+
+真正值得記的是**它同時避開了每一道既有的檢查**：
+
+| 檢查 | 為什麼看不到 |
+|---|---|
+| `curl` 那組最低限度驗證 | 注入不會發生，curl 拿到的 HTML 跟建置產物逐位元相同 |
+| CI 的對比稽核與契約測試 | 跑在 `wrangler dev` 上，本機不經過 Cloudflare 邊緣 |
+| 部署前的上線關卡 | preview URL 在 `workers.dev`，**不在 `taux.io` 這個 zone 裡**，zone 層功能一概不生效 |
+| 任何不開瀏覽器的驗證 | 它是 CSP 違規，只有渲染頁面時才會發生 |
+
+所以「對 production 跑一次完整契約測試」不是儀式。**這一項在別的地方一次都看不到**，而它在瀏覽器啟動後幾分鐘內就被抓到。
+
+這也是 `scripts/browser.js` 存在的理由：Playwright 自帶的 Chromium 在某些機器上下載不下來，而那會讓四個視覺工具全部無法使用——這個缺陷就是在那種狀態下藏了一整天。`PLAYWRIGHT_CHANNEL=chrome` 改用系統已安裝的瀏覽器，不設就是原本的行為。
+
+```bash
+PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
+```
+
 ---
 
 ## 從 Go 遷移到 Rust 的紀錄

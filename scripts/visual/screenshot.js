@@ -9,7 +9,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { chromium } = require("playwright");
+const { launch } = require("../browser");
 const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
 
 const label = process.argv[2];
@@ -22,7 +22,7 @@ const outDir = path.join(__dirname, "..", "..", ".visual", label);
 
 async function main() {
   fs.mkdirSync(outDir, { recursive: true });
-  const browser = await chromium.launch();
+  const browser = await launch();
   let count = 0;
 
   for (const viewport of VIEWPORTS) {
