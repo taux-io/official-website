@@ -12,12 +12,29 @@
 # directives in one header, and the browser takes the first. Measured, not
 # assumed: the first version of this file did exactly that.
 
+# script-src carries static.cloudflareinsights.com because Cloudflare injects its
+# Web Analytics beacon into HTML at the edge — enabled by default for proxied
+# zones, present in no file this repository builds. Until 2026-07-30 the policy
+# refused it on every page, so the analytics collected nothing while each visit
+# still paid for a blocked request.
+#
+# The origin is allowed rather than the path the docs suggest. The injected URL
+# is .../beacon.min.js/v4513226cd..., and a CSP source whose path does not end in
+# a slash must match the path exactly — so `.../beacon.min.js` would match
+# nothing. That host serves this one script, so restricting the path buys nothing
+# real and adds a way for a version bump to break it silently.
+#
+# connect-src needs no change: under automatic injection the beacon reports to
+# /cdn-cgi/rum on this origin, which 'self' already covers. Verified that
+# /cdn-cgi/* is answered by Cloudflare ahead of the Worker rather than falling
+# through to 404.html.
+
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 # Stylesheet and scripts are busted by a ?v= query that nothing enforces the
 # incrementing of. An hour plus revalidation drops nearly every round trip
