@@ -120,7 +120,9 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 先前的計畫是 Cloudflare Pages，而且 repo 一度整個是那個形狀（`wrangler pages dev`、Pages 的建置設定表）。**那一步從來沒有真的走完**——`taux.io` 直到切換前都還是那台 Go 主機在服務，Pages 專案根本不存在。所以這不是「從 Pages 遷移」，是在還沒落地前換掉目標。
 
-換掉的理由是 `versions upload`：它會發佈一個版本並給出 preview URL，**但不導任何流量過去**。Pages 沒有這個形狀的東西。這讓「上線」可以跟「建置」分開成兩個決定，而不是推送即上線。
+換掉的理由是 `versions upload`：它會發佈一個版本並給出 preview URL，**但不導任何流量過去**。Pages 沒有這個形狀的東西，而它是切換那幾天唯一能對「即將上線的東西」跑完整契約測試的地方。
+
+日常部署已經不用它了（合併即上線），但手動要驗一個尚未上線的版本時，它仍然是唯一的辦法。
 
 `_headers` 在兩者的行為一致，包括**合併**而非最具體者勝出——所以下面那條互不重疊的紀律原封不動繼續有效。
 
@@ -132,7 +134,9 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 代價要說清楚，因為它們不會自己浮現：
 
-- **自動的上線關卡沒有了。** 先前 CI 的流程是 `upload → 拿 preview URL → 跑 156 條契約測試 → 通過才推`。Workers Builds 的建置流程裡跑不了 Playwright、也拿不到 preview URL 去測，更沒有「檢查失敗就不推」的機制。現在擋在訪客前面的是人：版本上傳後不會自動上線，推廣是手動的一步。
+- **自動的上線關卡沒有了。** 先前 CI 的流程是 `upload → 拿 preview URL → 跑 156 條契約測試 → 通過才推`。Workers Builds 的建置流程裡跑不了 Playwright、也拿不到 preview URL 去測，更沒有「檢查失敗就不推」的機制。
+
+  中間曾用手動推廣來保留把關——版本上傳後不自動上線，由人執行 `wrangler versions deploy`。那撐了不到一天就換掉了：**一個每次改動都要人做的步驟，遲早會變成沒人做的步驟**，而它守的是一道本來就只在 CI 全綠之後才會遇到的門。現在 production branch 的 deploy command 是 `wrangler deploy`，合併即上線，把關全部落在 PR 階段。
 - **上線的產物沒有被驗過。** CI 仍然建置並跑完整檢查，但那份產物不會被部署；上線的是 Cloudflare 自己 clone 後建的。同一個 commit、同一組釘死的 toolchain 版本，理論上相同——**但沒有任何東西在比對它們**。
 
 保留 GitHub Actions 的 `build` 與 `audit` 是這個決定的另一半：PR 階段的六道閘門一個都沒少，少掉的只有 `deploy` job。

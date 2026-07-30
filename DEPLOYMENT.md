@@ -4,7 +4,7 @@
 
 網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有執行期環境變數、沒有執行期機密。建置產生一個目錄，Cloudflare Workers 從邊緣供應那個目錄。`wrangler.jsonc` 裡沒有 `main`，所以沒有任何程式碼會執行。
 
-**建置是自動的，上線不是。** 推送到 `main`，Cloudflare 會自己 clone、建置、上傳一個版本——但那個版本不承載任何流量。**把它推成 production 是人的一步**，理由與代價見第 4 節。
+**部署是全自動的。** 推送到 `main`，Cloudflare 會自己 clone、建置、上線。**沒有自動的上線關卡**——擋在 production 前面的是 PR 階段的 CI，理由與代價見第 4 節。
 
 ---
 
@@ -78,7 +78,7 @@ npm run build:css && npm run build:site
 
 ## 3. 一次性設定
 
-這三步只做一次。做完之後推送到 `main` 就會自動建置並上傳版本；推成 production 仍然是手動的（第 4 節）。
+這三步只做一次。做完之後推送到 `main` 就會自動建置並上線（第 4 節）。
 
 ### 3.1 Worker 已經存在
 
@@ -107,23 +107,23 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 **Deploy command**（用於 production branch，也就是 `main`）：
 
 ```
+npx wrangler deploy
+```
+
+**Non-production branch deploy command**（dashboard 的摘要頁把它顯示為 `Version command`）——**留空或留著都無所謂**，因為非 production 分支的建置已經關閉：
+
+```
 npx wrangler versions upload
 ```
 
-**Non-production branch deploy command**（用於 PR 分支，dashboard 的摘要頁把它顯示為 `Version command`）——**同一串**：
-
-```
-npx wrangler versions upload
-```
-
-其餘欄位：Production branch `main`、Builds for non-production branches **啟用**、Root directory `/`、Build watch paths `*`、Build cache **停用**。
+其餘欄位：Production branch `main`、Builds for non-production branches **停用**（理由見第 4 節）、Root directory `/`、Build watch paths `*`、Build cache **停用**。
 
 四件事不能弄錯：
 
 - **Build command 不可留空。** 空著就是 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生，建置必然失敗於 `assets.directory ... does not exist`。這個錯誤實際發生過一整天。
-- **那兩格 deploy command 不要填反。** 只填非 production 那格的話，PR 分支會上傳版本而推 `main` 什麼都不做——正好是想要的相反。這也實際發生過一次。
+- **不要把 `wrangler deploy` 填到非 production 那格。** production 那格才是 `wrangler deploy`。只填非 production 那格的話，推 `main` 什麼都不做——正好是想要的相反，而且這實際發生過一次。
 - **不需要 `npm ci`。** Workers Builds 會自己跑 `npm clean-install`，建置指令從 `build:css` 開始就好。
-- **Deploy command 絕對不要用預設的 `npx wrangler deploy`。** 那會直接推成 production 並套用 triggers，也就是每一次推送都自動上線、沒有任何人看過。`versions upload` 只上傳版本、不導流量，推廣是第 4 節的手動步驟。
+- **`wrangler deploy` 會套用 triggers，那是刻意的也是安全的。** `wrangler.jsonc` 宣告了 `taux.io` 與 `www.taux.io` 兩個 custom domain，每次部署都會重新套用。2026-07-29 從 CLI 第一次嘗試時這一步撞過 409 Conflict，因為當時 DNS 還指向舊的 Go 主機；域名接上這個 Worker 之後重複套用是等冪的，實測回報 `Deployed taux-io triggers` 而非衝突。**如果它哪天又開始 409，每一次建置都會失敗**，成因會在 DNS 而不在這裡。
 
 **Build cache 停用是刻意的。** 它只快取 npm／yarn／pnpm／bun 的套件目錄與特定框架的輸出——**不快取 Rust／cargo 產物，也不快取 `~/.cargo`**。這個專案的耗時集中在 rustup 安裝與 generator 的冷編譯，那兩項它都幫不上；而且快取在 7 天未讀後就會被清除，以這個站的推送頻率大多是冷的。
 
@@ -146,46 +146,41 @@ npx wrangler versions upload
 1. `build` job：cargo fmt / clippy / test、建置、樣式表新鮮度、class 可解析、llms.txt 完整、日期一致、結構化資料有效
 2. `audit` job：用 `npm run serve`（`wrangler dev`，會套用 `_headers`）供應輸出，跑對比稽核與路由契約測試
 
-Workers Builds 在推送 `main` 時 clone、建置、`wrangler versions upload`，產出一個**已上傳但沒有任何流量的版本**。
+Workers Builds 在推送 `main` 時 clone、建置、`wrangler deploy`——**直接上線**。合併就是上線。
 
-### 上線是手動的一步
+**非 production 分支不會有可用的建置，所以「Builds for non-production branches」應該關閉。** Build command 只在 production branch 執行——實測過四次分支建置（含設定存檔後的 retry）都沒有出現 `Executing user build command`，而同樣設定下的 `main` 建置每次都跑滿約 140 秒的 rustup 與 cargo。分支上 `dist/` 因此永遠不會被產生，`versions upload` 必然失敗於 `assets.directory ... does not exist`。
 
-```bash
-npx wrangler versions list          # 找出剛上傳的 version id
-npx wrangler versions deploy <id>@100 --yes
-```
+留著它只會在每個 PR 上掛一個注定失敗的紅燈，**而那正是「反正那個一直是紅的」的養成方式**——這個 repo 的 CI 註解開頭就在講這件事。位置：設定 → 建置 → Branch control。
 
-或在 dashboard 的「部署」分頁把該版本推成 production。
+### 這裡沒有自動的上線關卡
 
-### 這裡沒有自動的上線關卡，這是刻意的取捨
+**擋在 production 前面的是 PR 階段的 CI，不是部署流程。** 一個改動要進 `main` 必須先通過 build 與 audit，包含 156 條路由契約斷言與 1475 個元素的對比稽核。合併之後就沒有第二道門了。
 
-先前 GitHub Actions 的做法是 `upload → 拿 preview URL → 跑 156 條契約測試 → 通過才推`，**壞的版本到不了訪客**。Workers Builds 做不到中間那一步：它沒有辦法在建置流程裡取得 preview URL 去跑 Playwright，也沒有「檢查失敗就不推」的機制。
+先前 GitHub Actions 的做法是 `upload → 拿 preview URL → 跑契約測試 → 通過才推`，**壞的版本到不了訪客**。Workers Builds 的建置流程裡跑不了 Playwright、也拿不到剛建立的 preview URL，所以那一步搬不過來。中間曾改成手動推廣來保留把關，但那讓每次改動都要一個人執行一行指令——**一個每次都要人做的步驟，遲早會變成沒人做的步驟**，所以換成自動上線加上 PR 把關。
 
-所以現在擋在訪客前面的是**人**——推廣之前該做的事：
+**這個安排真正的代價有兩個，都不會自己浮現：**
 
-1. 確認該 commit 的 GitHub Actions 是綠的（build 與 audit）
-2. 用 preview URL 看一眼，或至少推廣後立刻跑第 6 節的驗證
-
-**CI 驗過的產物與上線的產物不是同一份。** CI 建的那份只用來跑檢查；上線的是 Cloudflare 自己建的。兩者理論上相同——同一個 commit、同一組釘死的 toolchain 版本——但沒有任何東西在比對它們。這是把建置搬到 Cloudflare 換來的第二個代價。
+- **上線的產物沒有被驗過。** CI 建置並跑完整檢查，但那份產物不會被部署；上線的是 Cloudflare 自己 clone 後建的。同一個 commit、同一組釘死的 toolchain，理論上相同——**但沒有任何東西在比對它們**。
+- **zone 層的東西仍然只能事後驗。** HSTS、www 轉址、以及 Cloudflare 注入的分析 beacon 都不在 preview URL 上生效。這一類缺陷在 CI 全綠時完全看不到——2026-07-30 那個被 CSP 擋掉的 beacon 就是這樣藏了一天。**所以第 6 節那段對 production 的驗證不是儀式。**
 
 ---
 
 ## 5. 切換：把 `taux.io` 指過來
 
-**第 1、2 步已於 2026-07-29 完成，第 3 步還沒。** 步驟保留在這裡是因為它們是重建這個拓撲的依據，不是因為還沒做。
+**三步都已於 2026-07-29 完成。** 步驟保留在這裡是因為它們是重建這個拓撲的依據，不是因為還沒做。
 
-**這一段是不可逆的、會影響現有流量的動作，而且不由任何自動化執行。** 做之前先確認第 4 節的建置已經跑過至少一次、且有一個可推廣的版本。
+**這一段是不可逆的、會影響現有流量的動作。** 它只在重建這個拓撲時需要——日常部署不碰域名，`wrangler deploy` 每次重新套用的是已經存在的同一組 trigger。
 
 1. **接上 custom domain。** Workers & Pages → `taux-io` → Settings → Domains & Routes → Add custom domain：`taux.io`。Cloudflare 會改寫該 zone 既有的 DNS 記錄指向 Worker。
 
-   **要用 dashboard，不要用 `wrangler deploy`。** `wrangler.jsonc` 的 `routes` 已經宣告了這兩個 hostname，但從 CLI 套用會失敗：
+   **第一次接上必須用 dashboard，不能用 `wrangler deploy`。**（之後就沒這個限制——見第 3.2 節，域名接上之後每次部署重新套用是等冪的。）`wrangler.jsonc` 的 `routes` 已經宣告了這兩個 hostname，但在 DNS 還指向別處時從 CLI 套用會失敗：
 
    ```
    PUT .../workers/scripts/taux-io/domains/records → 409 Conflict
    ✘ Some triggers failed to deploy for taux-io
    ```
 
-   `taux.io` 與 `www.taux.io` 現在都有代理中的 A 記錄指向 Go 主機，而 Cloudflare 不會在 API 呼叫裡默默覆寫既有記錄。dashboard 的流程會顯示衝突並讓你確認覆寫——那個確認正是 409 缺的東西，而且覆寫是原子的。先刪 DNS 記錄再從 CLI 接也可以，但那會有一段兩邊都不通的空窗。
+   當時 `taux.io` 與 `www.taux.io` 都有代理中的 A 記錄指向 Go 主機，而 Cloudflare 不會在 API 呼叫裡默默覆寫既有記錄。dashboard 的流程會顯示衝突並讓你確認覆寫——那個確認正是 409 缺的東西，而且覆寫是原子的。先刪 DNS 記錄再從 CLI 接也可以，但那會有一段兩邊都不通的空窗。
 
    這是**安全的失敗**：2026-07-29 實際撞過一次，Worker 的內容照常部署，只有 triggers 沒套用，線上服務完全未受影響。
 
