@@ -25,7 +25,7 @@ const EXPECTED_HEADERS = {
   "referrer-policy": "strict-origin-when-cross-origin",
   "permissions-policy": "geolocation=(), microphone=(), camera=()",
   "content-security-policy":
-    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; " +
+    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; " +
     "style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; " +
     "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };

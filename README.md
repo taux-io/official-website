@@ -80,12 +80,11 @@ taux-dev/
 ### 標頭 (`_headers`)
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
-- `X-XSS-Protection: 1; mode=block`
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
 
 ### Content-Security-Policy (`_headers`)
-- `script-src 'self' https://cdn.jsdelivr.net` — **無 `unsafe-inline`**
+- `script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com` — **無 `unsafe-inline`**
 - `style-src` 需要 `unsafe-inline`（16 個 style 屬性 + 2 個行內區塊）
 - `font-src 'self'` — 字體已自架
 - `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`
