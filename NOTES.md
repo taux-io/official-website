@@ -120,7 +120,9 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 先前的計畫是 Cloudflare Pages，而且 repo 一度整個是那個形狀（`wrangler pages dev`、Pages 的建置設定表）。**那一步從來沒有真的走完**——`taux.io` 直到切換前都還是那台 Go 主機在服務，Pages 專案根本不存在。所以這不是「從 Pages 遷移」，是在還沒落地前換掉目標。
 
-換掉的理由是 `versions upload`：它會發佈一個版本並給出 preview URL，**但不導任何流量過去**。Pages 沒有這個形狀的東西。production branch 現在不用它（合併即上線），但 PR 分支用——每個分支的建置都產生一個可以實際打開來看的 URL，那是合併前唯一的人工檢視點。
+換掉的理由是 `versions upload`：它會發佈一個版本並給出 preview URL，**但不導任何流量過去**。Pages 沒有這個形狀的東西，而它是切換那幾天唯一能對「即將上線的東西」跑完整契約測試的地方。
+
+日常部署已經不用它了（合併即上線），但手動要驗一個尚未上線的版本時，它仍然是唯一的辦法。
 
 `_headers` 在兩者的行為一致，包括**合併**而非最具體者勝出——所以下面那條互不重疊的紀律原封不動繼續有效。
 

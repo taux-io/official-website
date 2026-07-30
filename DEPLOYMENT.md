@@ -110,18 +110,18 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 npx wrangler deploy
 ```
 
-**Non-production branch deploy command**（用於 PR 分支，dashboard 的摘要頁把它顯示為 `Version command`）——**同一串**：
+**Non-production branch deploy command**（dashboard 的摘要頁把它顯示為 `Version command`）——**留空或留著都無所謂**，因為非 production 分支的建置已經關閉：
 
 ```
 npx wrangler versions upload
 ```
 
-其餘欄位：Production branch `main`、Builds for non-production branches **啟用**、Root directory `/`、Build watch paths `*`、Build cache **停用**。
+其餘欄位：Production branch `main`、Builds for non-production branches **停用**（理由見第 4 節）、Root directory `/`、Build watch paths `*`、Build cache **停用**。
 
 四件事不能弄錯：
 
 - **Build command 不可留空。** 空著就是 `npm ci` 之後直接跑 deploy command，`dist/` 從未被產生，建置必然失敗於 `assets.directory ... does not exist`。這個錯誤實際發生過一整天。
-- **那兩格 deploy command 不要填反，而且它們不一樣。** production 那格是 `wrangler deploy`（上線），非 production 那格是 `wrangler versions upload`（只上傳）。只填非 production 那格的話，PR 分支會上傳版本而推 `main` 什麼都不做——正好是想要的相反。這實際發生過一次。
+- **不要把 `wrangler deploy` 填到非 production 那格。** production 那格才是 `wrangler deploy`。只填非 production 那格的話，推 `main` 什麼都不做——正好是想要的相反，而且這實際發生過一次。
 - **不需要 `npm ci`。** Workers Builds 會自己跑 `npm clean-install`，建置指令從 `build:css` 開始就好。
 - **`wrangler deploy` 會套用 triggers，那是刻意的也是安全的。** `wrangler.jsonc` 宣告了 `taux.io` 與 `www.taux.io` 兩個 custom domain，每次部署都會重新套用。2026-07-29 從 CLI 第一次嘗試時這一步撞過 409 Conflict，因為當時 DNS 還指向舊的 Go 主機；域名接上這個 Worker 之後重複套用是等冪的，實測回報 `Deployed taux-io triggers` 而非衝突。**如果它哪天又開始 409，每一次建置都會失敗**，成因會在 DNS 而不在這裡。
 
@@ -148,7 +148,9 @@ npx wrangler versions upload
 
 Workers Builds 在推送 `main` 時 clone、建置、`wrangler deploy`——**直接上線**。合併就是上線。
 
-PR 分支則跑 `wrangler versions upload`，產生一個不承載流量的版本與一個 preview URL，那是合併前可以實際看一眼的地方。
+**非 production 分支不會有可用的建置，所以「Builds for non-production branches」應該關閉。** Build command 只在 production branch 執行——實測過四次分支建置（含設定存檔後的 retry）都沒有出現 `Executing user build command`，而同樣設定下的 `main` 建置每次都跑滿約 140 秒的 rustup 與 cargo。分支上 `dist/` 因此永遠不會被產生，`versions upload` 必然失敗於 `assets.directory ... does not exist`。
+
+留著它只會在每個 PR 上掛一個注定失敗的紅燈，**而那正是「反正那個一直是紅的」的養成方式**——這個 repo 的 CI 註解開頭就在講這件事。位置：設定 → 建置 → Branch control。
 
 ### 這裡沒有自動的上線關卡
 
