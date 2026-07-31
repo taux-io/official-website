@@ -6,8 +6,6 @@ npm-debug.log
 .env
 .env.*
 
-# Go build output
-/main
 
 # IDE
 .idea/
