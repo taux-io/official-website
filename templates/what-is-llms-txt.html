@@ -1,39 +1,16 @@
-{% include "header.html" %}
+{% include"header.html" %}
 
 <!-- Article Schema -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "BreadcrumbList",
-            "@id": "https://taux.io/what-is-llms-txt#breadcrumb",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "首頁",
-                    "item": "https://taux.io"
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/what-is-llms-txt#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"首頁","item":"https://taux.io"
                 },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "LLMs.txt 說明",
-                    "item": "https://taux.io/what-is-llms-txt"
+                {"@type":"ListItem","position": 2,"name":"LLMs.txt 說明","item":"https://taux.io/what-is-llms-txt"
                 }
             ]
         },
-        {
-            "@type": "TechArticle",
-            "@id": "https://taux.io/what-is-llms-txt#article",
-            "headline": "LLMs.txt 是什麼？AI 時代網站內容保護新規範",
-            "description": "深入解析 LLMs.txt 的定義、功能及其與 robots.txt 的差異，協助網站管理者掌握 GEO 時代的內容存取權限。",
-            "author": {% include "_org.html" %},
-            "publisher": {% include "_org-publisher.html" %},
-            "datePublished": "{{ date_published }}",
-            "dateModified": "{{ date_modified }}",
-            "image": "https://taux.io/static/brand/logo-on-light.png",
-            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://taux.io/what-is-llms-txt" }
+        {"@type":"TechArticle","@id":"https://taux.io/what-is-llms-txt#article","headline":"LLMs.txt 是什麼？AI 時代網站內容保護新規範","description":"深入解析 LLMs.txt 的定義、功能及其與 robots.txt 的差異，協助網站管理者掌握 GEO 時代的內容存取權限。","author": {% include"_org.html" %},"publisher": {% include"_org-publisher.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/what-is-llms-txt" }
         }
     ]
 }
@@ -46,9 +23,9 @@
     </div>
 
     <article class="max-w-4xl mx-auto relative z-10">
-        <header class="mb-16 text-center">
+        <header class="mb-16">
             <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-surface-raised border border-line text-ink-muted text-sm font-semibold mb-6">
+                class="inline-flex items-center px-4 py-2 rounded-full border border-line text-ink-muted text-sm font-semibold mb-6">
                 GEO 技術觀點
             </div>
             <h1 class="mb-8">
@@ -57,15 +34,14 @@
         </h1>
 
             <div
-                class="bg-surface-raised p-8 border-l-2 border-line text-left rounded-r-xl relative overflow-hidden">
+                class="border-t border-line pt-6 p-8 border-l border-line text-left relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10 text-ink font-semibold">
                     <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                     </svg>
                 </div>
-                <blockquote class="text-lg text-ink italic relative z-10">
-                    "LLMs.txt 就像是 AI 時代的 robots.txt。它是一個純文字檔案，用來告訴大型語言模型：這裡歡迎光臨，那裡請勿進入。"
+                <blockquote class="text-lg text-ink relative z-10">"LLMs.txt 就像是 AI 時代的 robots.txt。它是一個純文字檔案，用來告訴大型語言模型：這裡歡迎光臨，那裡請勿進入。"
                 </blockquote>
             </div>
         </header>
@@ -87,12 +63,13 @@
 </div>
 
 <div class="bg-surface py-24">
-    <div class="max-w-4xl mx-auto px-6 space-y-16">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
         <!-- Section 1 -->
-        <section>
+        <section class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">01</p>
             <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
-                    class="w-12 h-12 rounded-full bg-surface-raised text-ink font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                    class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
                 LLMs.txt 是什麼？
             </h2>
             <div class="p-8 md:p-10 space-y-8">
@@ -108,7 +85,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b-2 border-line bg-surface-raised">
+                                <tr class="border-b border-line">
                                     <th class="py-4 px-6 font-bold text-ink">特徵</th>
                                     <th class="py-4 px-6 font-bold text-ink-body">robots.txt</th>
                                     <th class="py-4 px-6 font-bold text-ink font-semibold">LLMs.txt</th>
@@ -138,10 +115,11 @@
         </section>
 
         <!-- Section 2 -->
-        <section>
+        <section class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">02</p>
             <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
-                    class="w-12 h-12 rounded-full bg-surface-raised text-ink font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                    class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
                 功能與指令範例
             </h2>
             <div class="grid md:grid-cols-2 gap-8">
@@ -155,7 +133,7 @@
                             </svg></span> 簡易結構範例
                     </h3>
                     <div
-                        class="bg-surface-deep p-5 rounded-xl text-sm text-ink-body font-mono overflow-x-auto shadow-inner">
+                        class="bg-surface-deep p-5 text-sm text-ink-body font-mono overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
                             <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
@@ -181,7 +159,7 @@
                             </svg></span> 進階指令概念
                     </h3>
                     <ul class="space-y-4">
-                        <li class="flex items-start bg-surface-raised p-4 rounded-xl">
+                        <li class="flex items-start border-t border-line pt-6 p-4">
                             <span class="text-ink font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -190,7 +168,7 @@
                             <span class="text-ink-body"><strong
                                     class="text-ink block mb-1">品牌與定位</strong>說明核心服務，例如「企業 SEO 數位行銷公司」。</span>
                         </li>
-                        <li class="flex items-start bg-surface-raised p-4 rounded-xl">
+                        <li class="flex items-start border-t border-line pt-6 p-4">
                             <span class="text-ink font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -199,7 +177,7 @@
                             <span class="text-ink-body"><strong class="text-ink block mb-1">給 AI
                                     的提醒</strong>說明內容適用場景、工具版本與保留出處要求。</span>
                         </li>
-                        <li class="flex items-start bg-surface-raised p-4 rounded-xl">
+                        <li class="flex items-start border-t border-line pt-6 p-4">
                             <span class="text-ink font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -214,16 +192,17 @@
         </section>
 
         <!-- Section 3 -->
-        <section>
+        <section class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">03</p>
             <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
-                    class="w-12 h-12 rounded-full bg-surface-raised text-ink font-semibold flex items-center justify-center mr-4 text-2xl">3</span>
+                    class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">3</span>
                 為何需要 LLMs.txt？
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="p-8">
                     <div
-                        class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink font-semibold mb-6">
+                        class="w-12 h-12 rounded-full flex items-center justify-center text-ink font-semibold mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
@@ -235,7 +214,7 @@
                 </div>
                 <div class="p-8">
                     <div
-                        class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink font-semibold mb-6">
+                        class="w-12 h-12 rounded-full flex items-center justify-center text-ink font-semibold mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
@@ -247,7 +226,7 @@
                 </div>
                 <div class="p-8">
                     <div
-                        class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink font-semibold mb-6">
+                        class="w-12 h-12 rounded-full flex items-center justify-center text-ink font-semibold mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
@@ -259,7 +238,7 @@
                 </div>
                 <div class="p-8">
                     <div
-                        class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink font-semibold mb-6">
+                        class="w-12 h-12 rounded-full flex items-center justify-center text-ink font-semibold mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
@@ -276,8 +255,9 @@
 
         <!-- FAQ Section -->
         <section class="border-t border-line pt-16">
-            <h2 class="text-3xl font-display font-bold text-center text-ink mb-12">常見問題 (FAQ)</h2>
-            <div class="space-y-4 max-w-3xl mx-auto">
+            <p class="eyebrow mb-8 font-mono">04</p>
+            <h2 class="text-3xl font-display font-bold text-ink mb-12">常見問題 (FAQ)</h2>
+            <div class="space-y-4">
                 <details class="group p-8 p-6 cursor-pointer">
                     <summary class="font-bold text-lg text-ink list-none flex justify-between items-center">
                         Q: LLMs.txt 現在是正式標準嗎？
@@ -315,14 +295,14 @@
 
         <!-- CTA -->
         <section
-            class="mt-20 p-8 p-12 text-center relative overflow-hidden">
+            class="mt-20 p-8 p-12 relative overflow-hidden">
             <div class="relative z-10">
                 <h2 class="font-display text-3xl font-bold text-ink mb-6">想要保護您的網站內容？</h2>
-                <p class="text-ink-body mb-10 max-w-xl mx-auto text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
+                <p class="text-ink-body mb-10 max-w-[42ch] text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
 
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <a href="mailto:hello@taux.io"
-                        class="px-8 py-4 bg-surface-raised text-ink font-bold rounded-full hover:bg-surface-raised hover:-translate-y-1 hover: transition-all">
+                        class="btn">
                         聯絡我們
                     </a>
                 </div>
@@ -331,4 +311,4 @@
     </div>
 </div>
 
-{% include "footer.html" %}
+{% include"footer.html" %}
