@@ -50,14 +50,15 @@ function routes() {
   }));
 }
 
-const CARD = (item, fontCss) => `
+const CARD = (item, fontCss, tokenCss) => `
 <style>
   ${fontCss}
+  ${tokenCss}
   * { margin: 0; box-sizing: border-box; }
   html, body { width: ${WIDTH}px; height: ${HEIGHT}px; }
   body {
-    background: #000;
-    color: #fff;
+    background: rgb(var(--surface-deep-rgb));
+    color: rgb(var(--ink-rgb));
     font-family: "D-DIN", "PingFang TC", sans-serif;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 72px 80px;
@@ -65,21 +66,21 @@ const CARD = (item, fontCss) => `
   }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
-  .mark { font-family: "D-DIN Condensed", sans-serif; font-size: 26px; letter-spacing: 0.22em; text-transform: uppercase; }
-  .kicker { font-family: "D-DIN Condensed", sans-serif; font-size: 17px; letter-spacing: 0.25em; text-transform: uppercase; color: #8a8a91; }
+  .mark { font-family: "D-DIN Condensed", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
+  .kicker { font-family: "D-DIN Condensed", sans-serif; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb) / 0.8); }
   h1 {
     position: relative; z-index: 1;
     font-family: "D-DIN Condensed", "PingFang TC", sans-serif;
     font-size: ${item.title.length > 34 ? 62 : 80}px;
-    font-weight: 400; line-height: 1.1; letter-spacing: -0.01em;
+    font-weight: 700; line-height: 1.1; letter-spacing: -0.017em;
     max-width: 940px;
   }
   p {
     position: relative; z-index: 1;
-    color: #c8c8cc; font-size: 23px; line-height: 1.55; max-width: 820px;
+    color: rgb(var(--ink-rgb) / 0.8); font-size: 23px; line-height: 1.55; max-width: 820px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .rule { position: relative; z-index: 1; height: 1px; background: rgba(255,255,255,0.2); margin-bottom: 28px; }
+  .rule { position: relative; z-index: 1; height: 1px; background: rgb(var(--line-rgb) / 0.35); margin-bottom: 28px; }
 </style>
 <canvas data-tau-curve="static"></canvas>
 <div class="row"><span class="mark">TauX</span><span class="kicker">拓思科技</span></div>
@@ -103,7 +104,26 @@ async function main() {
   const fontCss = [
     face("D-DIN", "D-DIN.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed.woff2", 400),
+    face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
   ].join("\n");
+
+  // The tokens are read out of src/input.css rather than restated here.
+  //
+  // This file used to hardcode #fff, #c8c8cc, #8a8a91 and 0.25em, which meant a
+  // palette change updated the site and quietly left fifteen share cards on the
+  // previous one. A share card is the only asset that is seen away from the
+  // site and never noticed to be wrong in a browser, so it is the one most
+  // easily missed — the answer is not to remember, it is to not have a second
+  // copy of the values.
+  const rootCss = fs.readFileSync(path.join(ROOT, "src", "input.css"), "utf8");
+  const token = (name) => {
+    const m = new RegExp(`--${name}:\\s*([^;]+);`).exec(rootCss);
+    if (!m) throw new Error(`build-og: --${name} not found in src/input.css`);
+    return m[1].trim();
+  };
+  const tokenCss = `:root{--ink-rgb:${token("ink-rgb")};--line-rgb:${token(
+    "line-rgb"
+  )};--surface-deep-rgb:${token("surface-deep-rgb")};}`;
 
   const curveJs = fs.readFileSync(path.join(ROOT, "static", "js", "tau-curve.js"), "utf8");
 
@@ -116,7 +136,7 @@ async function main() {
   const page = await context.newPage();
 
   for (const item of items) {
-    await page.setContent(CARD(item, fontCss), { waitUntil: "load" });
+    await page.setContent(CARD(item, fontCss, tokenCss), { waitUntil: "load" });
     await page.addScriptTag({ content: curveJs });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(120);
