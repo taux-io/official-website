@@ -47,13 +47,9 @@
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
         <!-- Hero Section -->
-        <header class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        <header class="mb-16">
             <div>
-                <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-surface-raised text-ink-muted text-sm font-semibold mb-8">
-                    <span class="w-2 h-2 bg-surface-raised rounded-full mr-2 animate-pulse"></span>
-                    AI Corporate Training
-                </div>
+<span class="tag mb-8">AI Corporate Training</span>
 
                 <h1 class="mb-8">
             <span class="display-lead">From Generating to Deciding</span>
@@ -65,26 +61,11 @@
                 </p>
 
                 <a href="mailto:hello@taux.io"
-                    class="inline-flex items-center px-8 py-4 bg-surface-raised text-ink font-bold rounded-full hover:bg-surface-raised transition-all hover:shadow-xl hover:-translate-y-1">
+                    class="btn">
                     預約企業內訓諮詢
                 </a>
             </div>
 
-            <!-- Visual Abstract -->
-            <div class="hidden lg:flex justify-center">
-                <div class="w-80 h-80 bg-surface-raised rounded-full shadow-2xl flex items-center justify-center relative p-8">
-                    <div class="absolute inset-4 border-2 border-dashed border-line rounded-full">
-                    </div>
-                    <!-- Central Brain / Tech Icon replacing the brain emoji -->
-                    <div class="text-ink font-semibold relative z-10 p-6 bg-surface-raised rounded-full">
-                        <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
         </header>
 
             <!-- The same step response as the homepage, drawn once and left
@@ -104,17 +85,20 @@
 </div>
 
 <!-- Problem Section -->
-<section class="py-24 bg-surface">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="font-display text-3xl md:text-5xl font-bold text-ink mb-6">為什麼你的 AI 總是給出<span
-                    class="text-ink-muted">平庸</span>的答案？</h2>
-            <div class="w-24 h-1 bg-surface mx-auto rounded-full"></div>
+<section class="relative min-h-[86vh] flex items-center overflow-hidden py-24 bg-surface border-t border-line">
+    <canvas data-figure="polar-grid" data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+        <div class="mb-16">
+            <h2 class="mb-6">
+                <span class="display-lead md:text-display-sm">Why the Answers Are Average</span>
+                <span class="display-sub">為什麼你的 AI 總是給出平庸的答案？</span>
+            </h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div
-                class="p-8 text-center">
+                class="p-8">
                 <div
                     class="w-16 h-16 bg-surface-raised text-ink rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,7 +112,7 @@
             </div>
 
             <div
-                class="p-8 text-center">
+                class="p-8">
                 <div
                     class="w-16 h-16 bg-surface-raised text-ink-muted rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +126,7 @@
             </div>
 
             <div
-                class="p-8 text-center">
+                class="p-8">
                 <div
                     class="w-16 h-16 bg-surface-raised text-ink-muted rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,12 +142,15 @@
 </section>
 
 <!-- Methodology -->
-<section id="methodology" class="py-24 bg-surface-raised relative overflow-hidden">
+<section id="methodology" class="relative min-h-[86vh] flex items-center overflow-hidden py-24 bg-surface-raised border-t border-line">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
+        <div class="mb-16">
             <span class="text-ink font-bold tracking-wider uppercase text-sm mb-2 block">Our
                 Methodology</span>
-            <h2 class="font-display text-4xl md:text-5xl font-bold text-ink">掌握 AI 溝通的「數位口才學」</h2>
+            <h2>
+                <span class="display-lead md:text-display-sm">The Craft of Asking</span>
+                <span class="display-sub">掌握 AI 溝通的「數位口才學」</span>
+            </h2>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -213,9 +200,12 @@
 </section>
 
 <!-- Use Cases -->
-<section id="cases" class="py-24 bg-surface">
+<section id="cases" class="relative min-h-[86vh] flex items-center overflow-hidden py-24 bg-surface border-t border-line">
     <div class="max-w-7xl mx-auto px-6">
-        <h2 class="font-display text-4xl md:text-5xl font-bold text-center text-ink mb-16">讓 AI 成為你的百變分身</h2>
+        <h2 class="mb-16">
+            <span class="display-lead md:text-display-sm">Many Roles, One Assistant</span>
+            <span class="display-sub">讓 AI 成為你的百變分身</span>
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="p-8">
@@ -226,9 +216,9 @@
                         </path>
                     </svg>
                 </div>
-                <h3 class="font-display text-2xl font-bold text-ink mb-2 text-center">精準點餐模式</h3>
-                <p class="text-ink-muted text-sm mb-4 font-semibold text-center">應用：客戶服務、訂單處理</p>
-                <p class="text-ink-body text-sm italic bg-surface-raised p-4 rounded-lg border-l-2 border-line">
+                <h3 class="font-display text-2xl font-bold text-ink mb-2">精準點餐模式</h3>
+                <p class="text-ink-muted text-sm mb-4 font-semibold">應用：客戶服務、訂單處理</p>
+                <p class="text-ink-body text-sm bg-surface-raised p-4 border-l-2 border-line">
                     "將口語化的需求轉化為標準化數據表格，像專業店員一樣精準執行任務。"
                 </p>
             </div>
@@ -241,9 +231,9 @@
                         </path>
                     </svg>
                 </div>
-                <h3 class="font-display text-2xl font-bold text-ink mb-2 text-center">會議決策模擬</h3>
-                <p class="text-ink-muted text-sm mb-4 font-semibold text-center">應用：專案管理、風險評估</p>
-                <p class="text-ink-body text-sm italic bg-surface-raised p-4 rounded-lg border-l-2 border-line">
+                <h3 class="font-display text-2xl font-bold text-ink mb-2">會議決策模擬</h3>
+                <p class="text-ink-muted text-sm mb-4 font-semibold">應用：專案管理、風險評估</p>
+                <p class="text-ink-body text-sm bg-surface-raised p-4 border-l-2 border-line">
                     "模擬 PM、工地主任與品管經理三方辯論，針對專案風險進行交叉詰問。"
                 </p>
             </div>
@@ -256,9 +246,9 @@
                         </path>
                     </svg>
                 </div>
-                <h3 class="font-display text-2xl font-bold text-ink mb-2 text-center">自動化新聞稿</h3>
-                <p class="text-ink-muted text-sm mb-4 font-semibold text-center">應用：公關行銷、政府文書</p>
-                <p class="text-ink-body text-sm italic bg-surface-raised p-4 rounded-lg border-l-2 border-line">
+                <h3 class="font-display text-2xl font-bold text-ink mb-2">自動化新聞稿</h3>
+                <p class="text-ink-muted text-sm mb-4 font-semibold">應用：公關行銷、政府文書</p>
+                <p class="text-ink-body text-sm bg-surface-raised p-4 border-l-2 border-line">
                     "輸入法規與事實，自動生成符合政府風格與格式的標準新聞稿。"
                 </p>
             </div>
@@ -267,18 +257,20 @@
 </section>
 
 <!-- CTA -->
-<section class="py-24 text-center bg-surface-raised">
+<section class="py-24 bg-surface-raised">
     <div class="max-w-4xl mx-auto px-6">
-        <div class="bg-surface rounded-3xl p-12 md:p-16 shadow-2xl relative overflow-hidden">
+        <div class="bg-surface p-12 md:p-16 relative overflow-hidden">
             <div class="absolute inset-0 opacity-20"
                 style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
             </div>
             <div class="relative z-10">
-                <h2 class="font-display text-4xl md:text-5xl font-bold text-ink mb-6 leading-tight">懂得問，AI
-                    才會答；<br>懂得想，AI 才能幫</h2>
+                <h2 class="mb-6">
+                        <span class="display-lead md:text-display-sm">Ask Well, Think Better</span>
+                        <span class="display-sub">懂得問，AI才會答；懂得想，AI才能幫</span>
+                    </h2>
                 <p class="text-xl text-ink-body mb-10 max-w-2xl mx-auto">不要只是工作，要「數智化」你的工作。立即聯繫我們，構建您的 AI 競爭力。</p>
                 <a href="mailto:hello@taux.io"
-                    class="inline-block px-10 py-5 bg-surface-raised text-ink font-semibold rounded-full text-lg font-bold hover:scale-105 hover:shadow-xl transition-all">
+                    class="btn">
                     開始諮詢
                 </a>
             </div>

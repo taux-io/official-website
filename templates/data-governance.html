@@ -39,18 +39,15 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6 overflow-hidden bg-surface">
+<div class="relative min-h-[86vh] flex items-center pt-32 pb-24 px-6 overflow-hidden bg-surface">
+    <canvas data-figure="polar-grid" data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
     <!-- Background Decor -->
-    <div class="absolute inset-0 pointer-events-none"
-        class="pointer-events-none">
-    </div>
+
 
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="text-center mb-20">
-            <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-surface-raised border border-line text-ink-muted text-sm font-semibold mb-6">
-                Data Strategy
-            </div>
+        <header class="mb-20">
+<span class="tag mb-6">Data Strategy</span>
             <h1 class="mb-6">
             <span class="display-lead">Govern the Data First</span>
             <span class="display-sub">數據治理指南</span>
@@ -74,23 +71,21 @@
     </div>
 </div>
 
-<div class="bg-surface py-24 px-6">
-    <div class="max-w-4xl mx-auto">
-        <section class="p-8 md:p-12 mb-16 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-6 opacity-5 text-ink font-semibold flex items-center justify-center">
-                <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                    </path>
-                </svg>
-            </div>
-            <h2 class="text-3xl font-display font-bold text-ink mb-6 relative z-10">為什麼需要數據治理？</h2>
+<div class="relative min-h-[86vh] flex items-center overflow-hidden bg-surface py-24 px-6 border-t border-line">
+    <canvas data-figure="interference" data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <h2 class="mb-6 relative z-10">
+                <span class="display-lead md:text-display-sm">Why Governance First</span>
+                <span class="display-sub">為什麼需要數據治理？</span>
+            </h2>
             <p class="text-ink-body text-lg leading-relaxed mb-10 relative z-10">
                 數據是新時代的石油，但未經提煉的石油無法驅動引擎。數據治理 (Data Governance) 是一套確保數據品質、安全性與可用性的管理框架。
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 relative z-10">
                 <div
-                    class="bg-surface-raised p-6 rounded-xl hover: transition-shadow">
+                    class="border-t border-line pt-6">
                     <div class="text-ink text-xl mb-3 font-bold flex items-center">
                         <span class="mr-2 text-ink font-semibold">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +97,7 @@
                     <p class="text-sm text-ink-body leading-relaxed">確保決策基於事實而非雜訊。</p>
                 </div>
                 <div
-                    class="bg-surface-raised p-6 rounded-xl hover: transition-shadow">
+                    class="border-t border-line pt-6">
                     <div class="text-ink text-xl mb-3 font-bold flex items-center">
                         <span class="mr-2 text-ink font-semibold">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +110,7 @@
                     <p class="text-sm text-ink-body leading-relaxed">符合 GDPR、台灣個資法規範。</p>
                 </div>
                 <div
-                    class="bg-surface-raised p-6 rounded-xl hover: transition-shadow">
+                    class="border-t border-line pt-6">
                     <div class="text-ink text-xl mb-3 font-bold flex items-center">
                         <span class="mr-2 text-ink font-semibold">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,13 +125,13 @@
         </section>
 
         <section class="space-y-6">
-            <h2 class="text-3xl font-display font-bold text-ink mb-8 text-center">核心服務流程</h2>
-
-            <section class="space-y-6">
-                <h2 class="text-3xl font-display font-bold text-ink mb-8 text-center">核心服務流程</h2>
+            <h2 class="mb-8">
+                <span class="display-lead md:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">核心服務流程</span>
+            </h2>
 
                 <div
-                    class="border-line p-8 border-l-4 border-line-strong flex items-start group">
+                    class="border-line p-8 border-l border-line-strong flex items-start group">
                     <div
                         class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                         1</div>
@@ -150,7 +145,7 @@
                 </div>
 
                 <div
-                    class="border-line p-8 border-l-4 border-line-strong flex items-start group">
+                    class="border-line p-8 border-l border-line-strong flex items-start group">
                     <div
                         class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                         2</div>
@@ -164,7 +159,7 @@
                 </div>
 
                 <div
-                    class="border-line p-8 border-l-4 border-line-strong flex items-start group">
+                    class="border-line p-8 border-l border-line-strong flex items-start group">
                     <div
                         class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                         3</div>
@@ -179,13 +174,16 @@
 
             <!-- CTA -->
             <section
-                class="mt-20 p-8 p-12 text-center relative overflow-hidden">
+                class="mt-20 border-t border-line pt-12 relative overflow-hidden">
                 <div class="relative z-10">
-                    <h2 class="font-display text-3xl font-bold text-ink mb-6">準備好啟動數據治理了嗎？</h2>
+                    <h2 class="mb-6">
+                        <span class="display-lead md:text-display-sm">Ready to Start</span>
+                        <span class="display-sub">準備好啟動數據治理了嗎？</span>
+                    </h2>
                     <p class="text-ink-body mb-10 max-w-xl mx-auto text-lg">讓 TauX 協助您打通數據任督二脈，為企業 AI 轉型奠定堅實基礎。</p>
 
                     <a href="mailto:hello@taux.io"
-                        class="inline-block px-10 py-4 bg-surface-raised text-ink font-bold rounded-full hover:bg-surface-raised hover:-translate-y-1 hover: transition-all">
+                        class="btn">
                         預約諮詢
                     </a>
                 </div>
