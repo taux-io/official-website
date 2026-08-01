@@ -95,7 +95,7 @@
             <span class="display-sub">用科技定義未來</span>
         </h1>
 
-        <div class="max-w-2xl" itemscope itemtype="https://schema.org/Organization">
+        <div class="max-w-[42ch]" itemscope itemtype="https://schema.org/Organization">
             <blockquote class="quote my-8">
                 <p>&ldquo;重要的不是你說了什麼，而是 AI 聽懂了什麼。&rdquo;</p>
             </blockquote>
@@ -111,7 +111,6 @@
 
         <div class="mt-12 flex flex-col sm:flex-row gap-4">
             <a href="#our-services" class="btn">探索服務</a>
-            <a href="#contact-us" class="btn-quiet">聯絡我們</a>
         </div>
     </div>
 </section>
@@ -119,15 +118,18 @@
 <!-- Services. Cards flattened to hairline-separated rows: without word spaces,
      Chinese leans on rules and numbering to stay scannable, and numbered
      sections are the native idiom of engineering documentation anyway. -->
-<section id="our-services" class="py-24 md:py-32 bg-surface border-t border-line" itemscope
+<section id="our-services" class="relative min-h-[86vh] flex items-center overflow-hidden py-24 md:py-32 bg-surface border-t border-line" itemscope
     itemtype="https://schema.org/Service">
-    <div class="max-w-6xl mx-auto px-6">
+    <canvas data-figure="polar-grid" data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
         <p class="eyebrow mb-8">01 &mdash; Services</p>
 
-        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-5 max-w-2xl">
-            我們如何幫你成為答案？
+        <h2 class="mb-5 max-w-2xl">
+            <span class="display-lead md:text-display-sm">Become the Answer</span>
+            <span class="display-sub">我們如何幫你成為答案？</span>
         </h2>
-        <p class="text-ink-body text-lg max-w-xl mb-20">我們把複雜的技術，變成簡單的服務。</p>
+        <p class="text-ink-body text-lg max-w-[42ch] mb-20">我們把複雜的技術，變成簡單的服務。</p>
 
         <div class="mb-24">
             <p class="eyebrow mb-8">Before we start</p>
@@ -206,10 +208,15 @@
 </section>
 
 <!-- FAQ -->
-<section id="frequently-asked-questions" class="py-24 md:py-32 bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6">
+<section id="frequently-asked-questions" class="relative min-h-[86vh] flex items-center overflow-hidden py-24 md:py-32 bg-surface border-t border-line">
+    <canvas data-figure="interference" data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
         <p class="eyebrow mb-8">02 &mdash; Questions</p>
-        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-16">你可能想問</h2>
+        <h2 class="mb-16">
+            <span class="display-lead md:text-display-sm">Common Questions</span>
+            <span class="display-sub">你可能想問</span>
+        </h2>
 
         <details id="faq-geo-vs-seo" class="faq-details group border-t border-line">
             <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
@@ -304,14 +311,19 @@
 </section>
 
 <!-- Contact -->
-<section id="contact-us" class="py-24 md:py-32 bg-surface-deep border-t border-line" itemscope
+<section id="contact-us" class="relative min-h-[86vh] flex items-center overflow-hidden py-24 md:py-32 bg-surface-deep border-t border-line" itemscope
     itemtype="https://schema.org/ContactPage">
-    <div class="max-w-4xl mx-auto px-6">
+    <canvas data-figure="polar-grid" data-static data-parallax="0.35"
+        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
         <p class="eyebrow mb-8">04 &mdash; Contact</p>
 
-        <h2 class="font-display text-3xl md:text-display-sm text-ink mb-6">準備好聊聊了嗎？</h2>
+        <h2 class="mb-6">
+            <span class="display-lead md:text-display-sm">Start a Conversation</span>
+            <span class="display-sub">準備好聊聊了嗎？</span>
+        </h2>
 
-        <p class="text-lg text-ink-body mb-12 max-w-xl leading-relaxed">
+        <p class="text-lg text-ink-body mb-12 max-w-[42ch] leading-relaxed">
             告訴我們你遇到了什麼問題，或是有什麼瘋狂的點子。我們會在 24 小時內回覆你。
         </p>
 
