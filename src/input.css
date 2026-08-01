@@ -244,51 +244,92 @@
 }
 
 @layer components {
-  /* Buttons. Square, hairline-bordered, uppercase and tracked; the whole
-     interaction is an inversion to a solid fill. No lift, no shadow, no
-     colour — a pill with a drop shadow is consumer-app language. */
-  .anthro-btn {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
-           text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
+  /* Buttons, at the reference site's measured geometry: 48px tall, 20px of
+     horizontal padding, a 0.35 hairline, the control radius, and a half-opaque
+     black ground.
+
+     The hover changes the ground rather than inverting the whole control, and
+     it takes 500ms on an expo-out curve — more than twice the previous 200ms,
+     and deliberately so. The quality being copied here comes from things
+     arriving slowly.
+
+     Tracking is 0, which is measured and is also a real loss: the Latin
+     signature had three carriers (nav, eyebrow, button) and this gives one up.
+     The other two stay at 0.09em uppercase.
+
+     The arrow is the character, not an icon font and not an SVG. As a
+     pseudo-element it cannot be forgotten on a new button, and it removed two
+     hand-rolled SVGs that were doing the same job differently. */
+  .btn {
+    @apply inline-flex items-center justify-center font-display text-button uppercase;
+    height: 48px;
+    padding: 0 20px;
+    gap: 0.5rem;
     color: var(--ink);
     border: 1px solid var(--line-strong);
-    background-color: transparent;
+    border-radius: var(--radius-control);
+    background-color: rgb(0 0 0 / 0.5);
+    transition: background-color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  .anthro-btn:hover {
-    background-color: var(--ink);
-    color: var(--surface-deep);
+  .btn::after {
+    content: "→";
   }
 
-  .anthro-btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
-           text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
+  .btn:hover {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+  }
+
+  /* The quieter of the two. DESIGN.md defines one button and says a section
+     carries at most one, which is where the layout work is going — but until
+     those sections are rebuilt, four pages pair a primary CTA with a secondary
+     one, and making both the same control reads as an accident. Same geometry,
+     the divider hairline instead of the control edge, muted label. It should
+     disappear as the layout tickets land; if it has not, that is a sign the
+     one-button rule did not actually hold. */
+  .btn-quiet {
+    @apply inline-flex items-center justify-center font-display text-button uppercase;
+    height: 48px;
+    padding: 0 20px;
+    gap: 0.5rem;
     color: var(--ink-muted);
     border: 1px solid var(--line);
+    border-radius: var(--radius-control);
     background-color: transparent;
+    transition: background-color 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+      color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  .anthro-btn-outline:hover {
+  .btn-quiet::after {
+    content: "→";
+  }
+
+  .btn-quiet:hover {
     color: var(--ink);
-    border-color: var(--line-strong);
+    background-color: rgb(var(--ink-rgb) / 0.06);
   }
 
-  /* Pull quote: a hairline rule rather than a coloured bar. Left upright —
-     synthetic obliques on CJK are what italic actually produces here. */
-  .anthro-quote {
+  /* Pull quote: a hairline rule rather than a coloured bar, no quotation
+     glyph, no fill. Left upright — italic on CJK is not italic, it is the
+     browser shearing an upright glyph. */
+  .quote {
     @apply relative pl-6 my-8;
     border-left: 1px solid var(--line-strong);
   }
 
-  .anthro-quote p {
+  .quote p {
     @apply font-display text-lg leading-relaxed;
+    font-style: normal;
     color: var(--ink);
   }
 
-  .anthro-tag {
+  /* A tag is a control's near relative — it is bounded, so it takes the
+     control's radius and the divider hairline. */
+  .tag {
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
-    color: var(--ink-muted);
+    color: var(--ink-body);
     border: 1px solid var(--line);
+    border-radius: var(--radius-control);
   }
 
   /* Navigation.
@@ -300,7 +341,7 @@
      are. Condensed also buys back the width the tracking costs: the same items
      set in the regular face would overrun the container. */
   .nav-link {
-    @apply font-display text-[0.7rem] uppercase tracking-[0.2em] text-ink-muted relative
+    @apply font-display text-nav uppercase text-ink-muted relative
            transition-colors duration-200 bg-transparent cursor-pointer;
   }
 
@@ -319,28 +360,15 @@
     @apply text-ink;
   }
 
-  /* Square, hairline-bordered, uppercase. Inverting to a solid fill on hover
-     is the whole interaction — no lift, no shadow, no colour. */
-  .nav-cta {
-    @apply inline-flex items-center font-display text-[0.7rem] uppercase tracking-[0.2em]
-           px-5 py-2 transition-colors duration-200;
-    /* Set directly rather than via @apply: alongside an arbitrary text-[0.7rem]
-       in the same declaration, Tailwind drops `text-ink` — the DEFAULT key of a
-       colour scale collides with the font-size candidate under the same
-       `text-` prefix. `text-ink-muted` survives the same pairing, which is what
-       makes the omission easy to miss. */
-    color: var(--ink);
-    border: 1px solid var(--line-strong);
-  }
+  /* The navigation CTA is just .btn — DESIGN.md gives the site one button, and
+     a second definition that only differed by a few pixels is how two buttons
+     drift apart. The old .nav-cta is gone; header.html now asks for .btn.
 
-  .nav-cta:hover {
-    background-color: var(--ink);
-    color: var(--surface-deep);
-  }
+     Its 48px height sits inside the 64px bar with 8px to spare. */
 
   /* Overlay menu links: larger, still uppercase, still tracked. */
   .menu-link {
-    @apply font-display text-lg md:text-xl uppercase tracking-[0.12em] text-ink-body
+    @apply font-display text-lg md:text-xl uppercase tracking-[0.09em] text-ink-body
            transition-colors duration-200;
   }
 
@@ -348,9 +376,13 @@
     @apply text-ink;
   }
 
-  /* Latin eyebrow label — section numbers, column headings, kickers. */
+  /* Latin eyebrow label — section numbers, column headings, kickers.
+     text-ink-body rather than muted: with one ink and no --text-muted role
+     left, the step below body is made by size, case and tracking rather than by
+     dimming. Eyebrows and captions come out brighter than before, which is the
+     intended consequence and not a regression. */
   .eyebrow {
-    @apply font-display text-eyebrow uppercase text-ink-muted;
+    @apply font-display text-eyebrow uppercase text-ink-body;
   }
 
   .footer-link {
