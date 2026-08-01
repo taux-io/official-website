@@ -10,10 +10,16 @@
    are the single place a palette is chosen; the templates reference semantic
    names (bg-surface, text-ink-body, border-line) that resolve here.
 
-   Each colour is stored as space-separated channels so Tailwind's opacity
-   modifiers work — bg-surface/50 compiles to rgb(var(--surface-rgb) / 0.5) —
-   with a plain colour alias alongside it for hand-written CSS, including the
-   inline <style> block in claude-skills-guide.html.
+   Colours are stored as space-separated channels so a value can be composed
+   with an alpha — rgb(var(--ink-rgb) / 0.8) — with a plain alias alongside it
+   for hand-written CSS, including the inline <style> block in
+   claude-skills-guide.html.
+
+   The surfaces keep Tailwind's <alpha-value> placeholder, so bg-surface-deep/90
+   still compiles. The ink does not: its three steps ARE alphas, and the
+   placeholder is substituted with the modifier or with 1, which leaves no way
+   to say "0.8 unless told otherwise". text-ink-body/50 therefore does not
+   compose. Nothing uses it, and the hairlines have always been written this way.
    =========================================================================== */
 :root {
   /* Surfaces. Deep is reserved for full-bleed hero sections; the base surface
@@ -23,28 +29,58 @@
   --surface-rgb: 10 10 11;
   --surface-raised-rgb: 15 15 17;
 
-  /* Text. Body sits below pure white for the same reason — long-form reading
-     against maximum contrast is what causes halation, not the black itself. */
-  --text-primary-rgb: 255 255 255;
-  --text-body-rgb: 200 200 204;
-  --text-muted-rgb: 138 138 145;
+  /* One ink. Levels are alpha, not separate greys.
 
-  /* Hairlines. Two weights only: a divider and a button edge. */
-  --line-rgb: 255 255 255;
+     This replaces three independent values (#ffffff / #c8c8cc / #8a8a91). The
+     reference site carries a single ink and builds hierarchy from type — size,
+     case and tracking — rather than from brightness, and three greys are how a
+     fourth one eventually gets invented for a case none of them fit. */
+  --ink-rgb: 240 240 250;
+
+  /* Hairlines, same source as the ink. Two weights only: a divider and a
+     control edge. A third weight is how hairlines drift back into decoration. */
+  --line-rgb: 240 240 250;
 
   --surface-deep: rgb(var(--surface-deep-rgb));
   --surface: rgb(var(--surface-rgb));
   --surface-raised: rgb(var(--surface-raised-rgb));
-  --text-primary: rgb(var(--text-primary-rgb));
-  --text-body: rgb(var(--text-body-rgb));
-  --text-muted: rgb(var(--text-muted-rgb));
+
+  /* The three steps.
+
+     0.8 for body and 0.9 for muted looks inverted and is not a typo. The
+     reference site puts .9 on navigation and .8 on meta; body text here sits at
+     0.8 because it composites to roughly #C0C0C8 — the same brightness step as
+     the #c8c8cc it replaces, so the halation margin that dense CJK strokes need
+     survives the change of model. 0.9 is safe for Latin navigation; it is not
+     safe for a page of Chinese body text. */
+  --ink: rgb(var(--ink-rgb));
+  --ink-body: rgb(var(--ink-rgb) / 0.8);
+  --ink-muted: rgb(var(--ink-rgb) / 0.9);
+
+  /* Deprecated aliases, kept pointing at the new values.
+
+     The inline <style> block in claude-skills-guide.html makes 61 references to
+     these names. Repointing them here means that page picks up the new palette
+     without being touched, which is what lets this change be a token change
+     rather than a site-wide edit. They come out in #63, when that template
+     migrates and the last caller disappears. */
+  --text-primary: var(--ink);
+  --text-body: var(--ink-body);
+  --text-muted: var(--ink-muted);
+
   --line: rgb(var(--line-rgb) / 0.08);
-  --line-strong: rgb(var(--line-rgb) / 0.2);
+  /* 0.35 rather than 0.2 — the measured value of the reference site's button
+     border. */
+  --line-strong: rgb(var(--line-rgb) / 0.35);
 
   /* Square by default. Rounded rectangles read as consumer software; circles
      are left alone, since gauges, orbits and dials belong to this vocabulary.
      Tailwind's `full` step is preserved in the config for exactly that. */
   --radius: 0px;
+  /* Corners are for things you can touch. Buttons, inputs, selects, tags — the
+     things that would lose their edge entirely without one. Layout stays
+     square. */
+  --radius-control: 4px;
 }
 
 /* ===========================================================================
@@ -116,7 +152,7 @@
 
   body {
     background-color: var(--surface);
-    color: var(--text-body);
+    color: var(--ink-body);
     @apply font-sans antialiased overflow-x-hidden;
   }
 
@@ -127,7 +163,7 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
     font-weight: 400;
-    color: var(--text-primary);
+    color: var(--ink);
   }
 
   ::-webkit-scrollbar {
@@ -160,7 +196,7 @@
      :focus-visible rather than :focus, so it appears for keyboard use and not
      on mouse clicks. */
   :focus-visible {
-    outline: 2px solid var(--text-primary);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
     border-radius: 0;
   }
@@ -173,26 +209,26 @@
   .anthro-btn {
     @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
            text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
-    color: var(--text-primary);
+    color: var(--ink);
     border: 1px solid var(--line-strong);
     background-color: transparent;
   }
 
   .anthro-btn:hover {
-    background-color: var(--text-primary);
+    background-color: var(--ink);
     color: var(--surface-deep);
   }
 
   .anthro-btn-outline {
     @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-display
            text-[0.7rem] uppercase tracking-[0.2em] transition-colors duration-200;
-    color: var(--text-muted);
+    color: var(--ink-muted);
     border: 1px solid var(--line);
     background-color: transparent;
   }
 
   .anthro-btn-outline:hover {
-    color: var(--text-primary);
+    color: var(--ink);
     border-color: var(--line-strong);
   }
 
@@ -205,12 +241,12 @@
 
   .anthro-quote p {
     @apply font-display text-lg leading-relaxed;
-    color: var(--text-primary);
+    color: var(--ink);
   }
 
   .anthro-tag {
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
-    color: var(--text-muted);
+    color: var(--ink-muted);
     border: 1px solid var(--line);
   }
 
@@ -252,12 +288,12 @@
        colour scale collides with the font-size candidate under the same
        `text-` prefix. `text-ink-muted` survives the same pairing, which is what
        makes the omission easy to miss. */
-    color: var(--text-primary);
+    color: var(--ink);
     border: 1px solid var(--line-strong);
   }
 
   .nav-cta:hover {
-    background-color: var(--text-primary);
+    background-color: var(--ink);
     color: var(--surface-deep);
   }
 

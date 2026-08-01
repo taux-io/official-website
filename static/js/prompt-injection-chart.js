@@ -18,9 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // hand-picked rgba values. They are all tokens now.
         const token = (name, fallback) =>
             getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-        const INK_RGB = token('--text-primary-rgb', '255 255 255');
-        const MUTED_RGB = token('--text-muted-rgb', '138 138 145');
-        const LINE_RGB = token('--line-rgb', '255 255 255');
+        const INK_RGB = token('--ink-rgb', '240 240 250');
+        // Muted is no longer its own colour — it is the same ink at 0.9, which
+        // is why this reads the one token and applies the step itself.
+        const MUTED_RGB = INK_RGB;
+        const LINE_RGB = token('--line-rgb', '240 240 250');
         const SURFACE_RAISED_RGB = token('--surface-raised-rgb', '15 15 17');
 
         const ink = (a) => `rgb(${INK_RGB} / ${a})`;
