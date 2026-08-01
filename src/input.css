@@ -376,6 +376,38 @@
     @apply text-ink;
   }
 
+  /* The two-line heading.
+
+     The reference site stakes its identity almost entirely on the headline:
+     bold, uppercase, set tighter than its own size, hand-broken, left-aligned.
+     Chinese has no uppercase, so on a Chinese site that signature can only be
+     carried by a Latin line — hence a Latin lead with the Chinese demoted to a
+     sub rather than a translation underneath.
+
+     Both halves of the existing bilingual headings survive this: the pages that
+     already had "什麼是 Prompt Injection？/ AI 時代的資安危機" keep the question
+     as the lead in English and the claim as the Chinese sub. What genuinely
+     changes is the four routes whose H1 was Chinese only, where the largest
+     text on the page becomes English. That is the acknowledged cost.
+
+     .display-sub MUST carry its own line-height. line-height 0.9 belongs to the
+     Latin lead and nowhere near a CJK glyph, which fills its em box and has no
+     descender gap to give back. This is the single easiest rule in the document
+     to destroy by tidying up, so the value is set here rather than left to a
+     utility on the element — and it is set after the @apply so it wins inside
+     the rule rather than depending on layer order. */
+  .display-lead {
+    @apply block font-display uppercase text-4xl md:text-display-lg;
+    color: var(--ink);
+  }
+
+  .display-sub {
+    @apply block font-sans normal-case text-xl md:text-[1.75rem] mt-3 text-ink-muted;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+
   /* Latin eyebrow label — section numbers, column headings, kickers.
      text-ink-body rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
