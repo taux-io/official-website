@@ -75,8 +75,8 @@
     // Read the ink colour from the token layer so the curve follows a palette
     // change like everything else.
     const ink = getComputedStyle(document.documentElement)
-      .getPropertyValue("--text-primary-rgb")
-      .trim() || "255 255 255";
+      .getPropertyValue("--ink-rgb")
+      .trim() || "240 240 250";
     const stroke = (a) => `rgb(${ink} / ${a})`;
 
     function resize() {

@@ -13,16 +13,23 @@ module.exports = {
           deep: "rgb(var(--surface-deep-rgb) / <alpha-value>)",
           raised: "rgb(var(--surface-raised-rgb) / <alpha-value>)",
         },
+        // One ink; the steps are alpha. The <alpha-value> placeholder cannot
+        // survive that: it is substituted with the opacity modifier or with 1,
+        // so there is no way to express "0.8 unless told otherwise". Baking the
+        // alpha means `text-ink-body/50` no longer composes — nothing uses it,
+        // and `line` below has always been written this way for the same
+        // reason. The surfaces keep the placeholder, which is what bg-surface-
+        // deep/90 in the header depends on.
         ink: {
-          DEFAULT: "rgb(var(--text-primary-rgb) / <alpha-value>)",
-          body: "rgb(var(--text-body-rgb) / <alpha-value>)",
-          muted: "rgb(var(--text-muted-rgb) / <alpha-value>)",
+          DEFAULT: "rgb(var(--ink-rgb))",
+          body: "rgb(var(--ink-rgb) / 0.8)",
+          muted: "rgb(var(--ink-rgb) / 0.9)",
         },
-        // Fixed at two weights on purpose — a divider and a button edge. More
+        // Fixed at two weights on purpose — a divider and a control edge. More
         // steps than that is how hairlines drift back into decoration.
         line: {
           DEFAULT: "rgb(var(--line-rgb) / 0.08)",
-          strong: "rgb(var(--line-rgb) / 0.2)",
+          strong: "rgb(var(--line-rgb) / 0.35)",
         },
 
       },
@@ -66,6 +73,10 @@ module.exports = {
       // and nothing in the diff to explain it.
       borderRadius: {
         none: "0px",
+        // The only step that is not square. Named for what may use it rather
+        // than for a size, so `rounded-control` reads as a claim about the
+        // element — and check-design.js can hold you to it.
+        control: "var(--radius-control)",
         sm: "var(--radius)",
         DEFAULT: "var(--radius)",
         md: "var(--radius)",
