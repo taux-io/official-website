@@ -90,21 +90,41 @@ module.exports = {
         "3xl": "var(--radius)",
         full: "9999px",
       },
+      // One scale, and the tracking changes sign along it: positive on small
+      // caps, zero on buttons and body, negative on the largest display step.
+      // That progression is the measured behaviour of the reference site, and
+      // stating it as a scale is what stops the next size from being chosen on
+      // its own. check-design.js holds arbitrary tracking values to this set.
+      //
+      // Weights sit in the tokens because DIN carries only 400 and 700; a
+      // display step is always the bold face, an eyebrow is always the regular
+      // one, and leaving that to a utility is how font-semibold ends up
+      // synthesised against a face that has no such weight.
       fontSize: {
-        // Latin eyebrows and section numbers: uppercase, widely tracked. This
-        // is where the SpaceX typographic signature lives, since CJK has no
-        // uppercase to borrow it from.
-        //
-        // display-md is currently unused. Kept for the completeness of the
-        // scale: removing the middle step leaves lg and sm with a gap between
-        // them, and the next person needing that size invents a one-off.
         eyebrow: [
           "0.75rem",
-          { lineHeight: "1", letterSpacing: "0.25em", fontWeight: "500" },
+          { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "400" },
         ],
-        "display-lg": ["3.5rem", { lineHeight: "1.05", letterSpacing: "-0.01em" }],
-        "display-md": ["2.75rem", { lineHeight: "1.1", letterSpacing: "-0.01em" }],
-        "display-sm": ["2rem", { lineHeight: "1.15", letterSpacing: "0" }],
+        nav: [
+          "0.8125rem",
+          { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "400" },
+        ],
+        button: [
+          "0.75rem",
+          { lineHeight: "1", letterSpacing: "0", fontWeight: "400" },
+        ],
+        // 1.6 rather than Tailwind's 1.5. CJK sets denser than Latin and reads
+        // better with the extra leading over a long measure.
+        base: ["1rem", { lineHeight: "1.6", letterSpacing: "0" }],
+
+        // LINE-HEIGHT BELOW 1 IS FOR LATIN ONLY. A CJK glyph fills its em box
+        // and has no descender gap to give back, so 0.9 crops strokes rather
+        // than tightening the line. display-lg is therefore only safe on
+        // .display-lead; anything Chinese wearing this token needs its own
+        // leading, and until #55 replaces those headings a few still do.
+        "display-sm": ["2rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "700" }],
+        "display-md": ["3rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
+        "display-lg": ["3.75rem", { lineHeight: "0.9", letterSpacing: "-0.017em", fontWeight: "700" }],
       },
       maxWidth: {
         // 68ch is the reading measure for the long-form pages; CJK runs denser

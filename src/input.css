@@ -192,13 +192,18 @@
     @apply font-sans antialiased overflow-x-hidden;
   }
 
-  /* Regular is the dominant weight. DIN carries only 400 and 700, so the
-     font-medium and font-semibold left in the templates resolve to the nearest
-     real face rather than a synthesised one — they come out as the templates
-     migrate. */
+  /* Display headings are bold. This line used to say 400 while every template
+     carried font-bold, so the utilities layer won and the declaration was
+     simply false — one of the two drifted claims that started DESIGN.md. It now
+     says what actually renders.
+
+     tracking is gone from here too. It was tracking-tight, which is not a step
+     on the scale, and it applied to every heading regardless of size — the
+     opposite of a scale whose whole point is that tracking changes with size.
+     The display tokens carry their own. */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight;
-    font-weight: 400;
+    @apply font-display;
+    font-weight: 700;
     color: var(--ink);
   }
 
