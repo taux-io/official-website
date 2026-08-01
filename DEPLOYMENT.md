@@ -31,18 +31,25 @@
 
 ### 怎麼判定 Workers Builds 有沒有在動
 
-**看有沒有名為 `Workers Builds: taux-io` 的 check _run_，不是看有沒有 `cloudflare-workers-and-pages` 的 check _suite_。**
+**不要看 GitHub 上那個檢查是不是綠的。** 2026-08-01 它在 19 次合併上全部回報 success，而其中 0 次到達訪客——version 一直在建、一直在上傳，沒有任何一個被推廣到 100% 流量。詳見 #88。
 
-沒有連 Git 整合時，推送仍然會產生一個 `cloudflare-workers-and-pages` 的 check suite，狀態停在 `queued`、`latest_check_runs` 是 0。那是 Cloudflare 的 GitHub App 還安裝在 repo 上的殘影——**App 的安裝是 repo 層的，跟 Worker 的 Git 整合是兩回事**。它看起來像整合還在，其實沒有任何建置被建立。
+判準是**部署時間有沒有前進**：
 
 ```bash
-gh api repos/taux-io/official-website/commits/<sha>/check-runs \
-  --jq '[.check_runs[] | select(.app.slug=="cloudflare-workers-and-pages")] | length'
+npx wrangler deployments list | grep '^Created:' | tail -1   # 真正承載流量的
+npx wrangler versions list    | grep '^Created:' | tail -1   # 只是被建出來的
 ```
 
-`1` 表示真的有建置，而且大約一分鐘內就會出現。`0` 表示沒有。
+**兩者的最新時間應該相近。** 如果 versions 在前進而 deployments 停住，就是 production branch 的 deploy command 跑成了 `versions upload` 而不是 `wrangler deploy`——第 3.2 節第二個警告講的就是這件事。
 
-**dashboard 的畫面不是證據。** 2026-07-29 為了移除重複部署路徑而斷開它時，前兩次 dashboard 都顯示已斷開，而接下來的推送它照樣為每個 commit 建立新的 build。判準只有推送。
+第二個判準，不需要任何憑證：
+
+```bash
+curl -s https://taux.io/ | grep -o 'styles.min.css?v=[0-9]*'
+grep -o 'styles.min.css?v=[0-9]*' templates/header.html
+```
+
+兩邊不一致就是沒上線。**這比稽核可靠**——對正式站跑 contract 與 contrast 在這次失敗中是全綠的，因為它們稽核的是舊的站，而舊的站本身是正確的。一份稽核只能告訴你它看到的東西對不對，不能告訴你它看到的是不是你剛推的那一份。
 
 ### 曾經失敗一整天的原因
 
