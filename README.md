@@ -27,7 +27,7 @@ TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative E
 - **Generator**: Rust，用 minijinja 把 `templates/*.html` 算成 `dist/` 底下的靜態檔
 - **Frontend**: 靜態 HTML + TailwindCSS 3.4
 - **Infrastructure**: Cloudflare Workers（靜態資產，無 `main`，不執行任何程式碼）；標頭與快取宣告在 `_headers`，資產行為宣告在 `wrangler.jsonc`
-- **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、方角、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`
+- **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`；**規範與決策紀錄見 [DESIGN.md](DESIGN.md)，那是設計的唯一來源**
 - **Security**: CSP 與安全標頭定義在 `_headers`，隨靜態檔一起部署
 
 ### 頁面宣告於 `site.toml`
@@ -73,7 +73,7 @@ taux-dev/
 
 `.agents/` 不在版本控制內。它描述的是「怎麼在這個專案上工作」而不是「這個專案是什麼」，而它的基礎設施那一半仍在描述已經刪除的 Docker 與 nginx 部署——一份被 check in 的文件如果過時，讀它的人沒有理由懷疑它。
 
-專案本身的長期記憶與技術決策紀錄在 **[NOTES.md](NOTES.md)**。
+專案本身的長期記憶與技術決策紀錄在 **[NOTES.md](NOTES.md)**；設計規範與設計決策紀錄在 **[DESIGN.md](DESIGN.md)**。
 
 ## 安全機制
 
