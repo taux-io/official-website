@@ -54,7 +54,11 @@ module.exports = {
           "Noto Sans TC",
           "sans-serif",
         ],
+        // Self-hosted, so the dates, section numbers and measurements that use
+        // this look the same on every machine. The system stack stays behind it
+        // for the glyphs outside the Latin subset.
         mono: [
+          "Roboto Mono",
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",

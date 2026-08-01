@@ -35,15 +35,18 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="manifest" href="/static/site.webmanifest">
 
-    <!-- Fonts: D-DIN self-hosted, Latin only. CJK renders from the system
-         faces, so no Chinese webfont is downloaded and no reflow waits on one.
-         The two regular weights are preloaded because they set the first
-         paint; the bold faces load on demand. -->
+    <!-- Fonts: D-DIN and Roboto Mono, self-hosted, Latin only. CJK renders from
+         the system faces, so no Chinese webfont is downloaded and no reflow
+         waits on one. The three regular weights are preloaded because they set
+         the first paint; the bold faces load on demand. Roboto Mono is in that
+         set because the dates and section numbers it sets are above the fold on
+         the guides. -->
     <link rel="preload" href="/static/fonts/D-DIN.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/static/fonts/RobotoMono.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=9">
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=10">
 </head>
 
 <body class="bg-surface text-ink-body font-sans antialiased">
