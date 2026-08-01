@@ -82,6 +82,18 @@ jobs:
       - name: structured data is valid
         run: npm run check:jsonld
 
+      # DESIGN.md is the single source of design truth, and its own argument is
+      # that a rule nothing checks is not a rule — three previous generations of
+      # design description drifted from the code unnoticed. This reads what the
+      # author wrote rather than what Tailwind emitted, which is the check above.
+      #
+      # Two of its five rules are enforced today. The other three describe a
+      # migration still in progress and are switched on by the change that makes
+      # each one true, so this stays green commit to commit without an
+      # allowlist. The script names the ticket that turns each one on.
+      - name: templates agree with DESIGN.md
+        run: npm run check:design
+
   audit:
     runs-on: ubuntu-latest
     steps:
