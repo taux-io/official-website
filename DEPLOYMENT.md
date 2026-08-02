@@ -210,9 +210,35 @@ Workers Builds 在推送 `main` 時 clone、建置、`wrangler deploy`——**�
 
 ---
 
-## 6. 切換後驗證
+## 6. 上線後驗證
 
-**第 5 節做完一定要跑這一段。** 這裡驗的是**主機與 zone 的行為**——內容在 CI 就驗過了。
+**分成兩步，順序不能顛倒。** 先確認線上跑的是你剛推的那一份，再稽核它。
+
+### 6.1 先確認「上線了沒」
+
+**稽核回答不了這個問題。** 2026-08-01 那次失敗裡，contract 與 contrast 對正式站都是全綠的——因為它們稽核的是舊的站，而舊的站本身是正確的。**一份稽核只能告訴你它看到的東西對不對，不能告訴你它看到的是不是你剛推的那一份。**（成因與 19 次合併的紀錄見第 1 節。）
+
+兩個判準，任一個就夠，兩個都做更好：
+
+```bash
+npx wrangler deployments list | grep '^Created:' | tail -1   # 真正承載流量的
+npx wrangler versions list    | grep '^Created:' | tail -1   # 只是被建出來的
+```
+
+**兩者的最新時間應該相近。** versions 前進而 deployments 停住，就是 production branch 的 deploy command 跑成了 `versions upload` 而不是 `wrangler deploy`。
+
+不需要憑證的版本：
+
+```bash
+curl -s https://taux.io/ | grep -o 'styles.min.css?v=[0-9]*'
+grep -o 'styles.min.css?v=[0-9]*' templates/header.html
+```
+
+兩邊不一致就是沒上線。**這一項在改動沒有動到 `?v=` 時會誤報通過**，所以它是輔助而不是替代——`?v=` 是手動遞增的（見 NOTES.md）。
+
+### 6.2 確認上線了，才稽核它
+
+這裡驗的是**主機與 zone 的行為**——內容在 CI 就驗過了。
 
 ```bash
 npm ci
@@ -279,7 +305,7 @@ npx wrangler rollback <version-id> --message "為什麼"
 
 ## 9. 部署方需要知道、但不在這份文件裡的事
 
-- **CI 已經驗過的東西不需要在切換時重驗**：每個進 `main` 的 commit 都跑過對比稽核（1475 個文字元素、0 個低於 WCAG AA）與契約測試，而且契約測試還對即將上線的那個版本在真實邊緣再跑一次。第 6 節要驗的是**zone 的行為**，不是內容。
+- **CI 已經驗過的東西不需要在上線後重驗**：每個進 `main` 的 commit 都跑過對比稽核（1475 個文字元素、0 個低於 WCAG AA）與契約測試。第 6.2 節要驗的是 **zone 的行為**，不是內容——而第 6.1 節驗的是**線上跑的到底是不是那個 commit**，那件事 CI 無論多綠都答不了。
 - **建置不讀 git。** 頁面日期宣告在 `site.toml`，所以淺層 clone 不影響任何輸出。先前的版本會讓每次部署把全站每一頁的修改日期蓋成部署當天——包括改個 README 錯字觸發的那次。
 - **沒有機密，執行期或建置期都沒有。** Workers Builds 用它自己的 Git 整合憑證，這個 repo 不需要任何 secret。若 Worker 的設定裡出現任何 binding、變數或機密，那是誤加的。
 - **沒有 `*.workers.dev` 網址。** `workers_dev` 設為 `false`：整個站掛在第二個永久網域上，等於每一頁都有一份 canonical 指向別處的完整複本。per-version 的 preview URL 仍然開著，推廣之前可以用它看一眼；它們不公開列出且每個版本都不同。
