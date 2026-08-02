@@ -165,9 +165,9 @@ npx wrangler versions upload
 
 Workers Builds 在推送 `main` 時 clone、建置、`wrangler deploy`——**直接上線**。合併就是上線。
 
-**非 production 分支不會有可用的建置，所以「Builds for non-production branches」應該關閉。** Build command 只在 production branch 執行——實測過四次分支建置（含設定存檔後的 retry）都沒有出現 `Executing user build command`，而同樣設定下的 `main` 建置每次都跑滿約 140 秒的 rustup 與 cargo。分支上 `dist/` 因此永遠不會被產生，`versions upload` 必然失敗於 `assets.directory ... does not exist`。
+**非 production 分支同樣會建置，而且應該保持啟用。** 它跑的是非生產分支部署命令（`versions upload`），產出一個不承載流量的版本與一個 preview URL——**合併之後就直接上線，所以那是唯一能在改動抵達訪客之前實際打開來看的地方。**
 
-留著它只會在每個 PR 上掛一個注定失敗的紅燈，**而那正是「反正那個一直是紅的」的養成方式**——這個 repo 的 CI 註解開頭就在講這件事。位置：設定 → 建置 → Branch control。
+這一段先前寫的是相反的內容（「Build command 只在 production branch 執行，所以應該關閉」），依據是四次分支建置都失敗於 `assets.directory ... does not exist`。**那個歸納是錯的**：四次失敗全部發生在組建命令那格生效之前，成因是設定沒填好，不是分支與 production 的差別。時間上的巧合被當成了平台行為。推翻它的證據很簡單——2026-08-02 的分支建置在 `00:21:06` 成功，而一個版本在 `00:21:03` 被建立；組建命令沒跑的話 `dist/` 不存在，不可能有版本。
 
 ### 這裡沒有自動的上線關卡
 
