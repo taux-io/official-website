@@ -105,23 +105,33 @@ Workers & Pages → `taux-io` → 設定 → 建置 → **Connect**，選 `taux-
 
 接著填入這兩格。**它們是這份 runbook 的一部分，改 dashboard 就要同步改這裡**——實際生效的值活在後台，這是這個做法明確接受的代價（見 NOTES.md）。
 
-**Build command**（一整行，含 rustup 安裝）：
+**這三格的名字在三個地方不一樣**，而它們長得幾乎一樣、值也只差一個字——2026-08-02 就是因為認錯格子，讓部署靜靜地停了一整輪合併。對照表：
+
+| 編輯表單（中文介面） | 編輯表單（英文介面） | 設定摘要頁 |
+|---|---|---|
+| 組建命令 | Build command | Build command |
+| **部署命令** | **Deploy command** | **Deploy command** |
+| 非生產分支部署命令 | Non-production branch deploy command | **Version command** |
+
+**組建命令**（一整行，含 rustup 安裝）：
 
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && . "$HOME/.cargo/env" && npm run build:css && npm run build:site
 ```
 
-**Deploy command**（用於 production branch，也就是 `main`）：
+**部署命令**——**這一格決定會不會上線**。用於 production branch，也就是 `main`：
 
 ```
 npx wrangler deploy
 ```
 
-**Non-production branch deploy command**（dashboard 的摘要頁把它顯示為 `Version command`）——**留空或留著都無所謂**，因為非 production 分支的建置已經關閉：
+**非生產分支部署命令**——**留空或留著都無所謂**，因為非 production 分支的建置已經關閉：
 
 ```
 npx wrangler versions upload
 ```
+
+**兩格都填成 `versions upload` 是這份設定最容易出現的錯誤形態**，因為那是連接對話框留下的預設狀態之一，而且畫面上看起來完全正常：建置成功、Workers Builds 綠燈、版本一直在建。**唯一會顯示異常的地方是第 6.1 節的判準。**
 
 其餘欄位：Production branch `main`、Builds for non-production branches **停用**（理由見第 4 節）、Root directory `/`、Build watch paths `*`、Build cache **停用**。
 
