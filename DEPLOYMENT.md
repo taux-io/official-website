@@ -125,7 +125,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 npx wrangler deploy
 ```
 
-**非生產分支部署命令**——**留空或留著都無所謂**，因為非 production 分支的建置已經關閉：
+**非生產分支部署命令**——**必須填**，因為分支建置會跑，而且跑的就是這一格。它產出一個不承載流量的版本與一個 preview URL，那是改動抵達訪客之前唯一能實際打開來看的地方（見第 4 節）：
 
 ```
 npx wrangler versions upload
@@ -133,7 +133,7 @@ npx wrangler versions upload
 
 **兩格都填成 `versions upload` 是這份設定最容易出現的錯誤形態**，因為那是連接對話框留下的預設狀態之一，而且畫面上看起來完全正常：建置成功、Workers Builds 綠燈、版本一直在建。**唯一會顯示異常的地方是第 6.1 節的判準。**
 
-其餘欄位：Production branch `main`、Builds for non-production branches **停用**（理由見第 4 節）、Root directory `/`、Build watch paths `*`、Build cache **停用**。
+其餘欄位：Production branch `main`、Builds for non-production branches **啟用**（理由見第 4 節）、Root directory `/`、Build watch paths `*`、Build cache **停用**。
 
 四件事不能弄錯：
 
