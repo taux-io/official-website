@@ -413,6 +413,34 @@
   .footer-link:hover {
     @apply text-ink;
   }
+
+  /* Section index — the sticky rail beside a long-form page.
+
+     The resting state is a fully legible link. That is the whole safety
+     argument for this component: with the script absent, broken, or still
+     loading, ten readable anchors remain and every one of them works. The
+     script only ever moves `aria-current` from one link to another.
+
+     `aria-current` is the single source of truth for which entry is active,
+     and the styling reads it directly rather than tracking a parallel class.
+     Two representations of one state is how they drift.
+
+     Colour and border weight carry the highlight. Not opacity — the scroll
+     reveal DESIGN.md bans is exactly "text whose visibility depends on a
+     script having run", and a rail that dimmed its inactive entries would be
+     that same mechanism wearing a different name. */
+  .section-index-link {
+    @apply block border-l border-line pl-3 py-1 text-xs text-ink-body
+           transition-colors duration-200;
+  }
+
+  .section-index-link:hover {
+    @apply text-ink;
+  }
+
+  .section-index-link[aria-current] {
+    @apply text-ink border-line-strong;
+  }
 }
 
 @layer utilities {
