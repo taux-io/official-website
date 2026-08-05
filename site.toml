@@ -77,6 +77,15 @@ date_modified = "2026-07-26"
 date_published = "2026-02-17"
 
 [[page]]
+path        = "/owasp-llm-top-10"
+template    = "owasp-llm-top-10.html"
+title       = "OWASP LLM Top 10 ｜ LLM 應用十大資安風險完整解析 | TauX"
+description = "OWASP Top 10 for LLM Applications 十條風險逐項拆解：定義、實際攻擊面與防禦作法。以 2025 版為準，並記載 2026 版發布狀態。"
+canonical   = "https://taux.io/owasp-llm-top-10"
+date_modified = "2026-08-05"
+date_published = "2026-08-05"
+
+[[page]]
 path        = "/agent-prompting-guide"
 template    = "agent-prompting-guide.html"
 title       = "AI Agent 提示詞工程指南｜從新手到高手 | TauX"

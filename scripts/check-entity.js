@@ -27,9 +27,11 @@
 
 const fs = require("fs");
 const path = require("path");
+const { parse } = require("smol-toml");
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
+const SITE = path.join(ROOT, "site.toml");
 const ORIGIN = "https://taux.io";
 
 const LD = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
@@ -324,6 +326,25 @@ async function main() {
   }
 
   const files = pages();
+
+  // A half-written dist/ is the dangerous state, not an absent one. The
+  // generator writes pages one at a time and exits on the first template it
+  // cannot resolve, so a failed build leaves a partial tree behind — and every
+  // rule here would then pass, loudly and in green, having audited whatever
+  // happened to get written before it died. That is exactly what a broken
+  // include produced once: eight pages of a sixteen-page site, all three rules
+  // reporting clean.
+  const declared = parse(fs.readFileSync(SITE, "utf8"));
+  const expected = (declared.page || []).length + (declared.document || []).length;
+  if (files.length < expected) {
+    console.log(
+      `\ndist/ holds ${files.length} page(s) but site.toml declares ${expected}.` +
+        `\nThe build did not finish — rerun npm run build:site and read its error.`
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   const selected = RULES.filter((r) => Boolean(r.network) === wantsNetwork);
 
   let failed = 0;
