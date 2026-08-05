@@ -26,6 +26,14 @@ date_modified = "2026-07-26"
 date_published = "2025-08-15"
 
 [[page]]
+path        = "/geo-optimization"
+template    = "geo-optimization.html"
+title       = "GEO 生成式引擎優化服務｜讓品牌成為 AI 的答案 | TauX"
+description = "TauX 的 GEO 服務：結構化資料建置、內容分塊、llms.txt 與引用率量測，讓品牌成為 ChatGPT、Perplexity 與 Google AI 摘要的引用來源。含現況稽核、實作與 6–8 週後的成效對照。"
+canonical   = "https://taux.io/geo-optimization"
+date_modified = "2026-08-05"
+
+[[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
 title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
