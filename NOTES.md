@@ -42,14 +42,19 @@ npm run check:classes  # 找出不產生任何 CSS 的類別（CI 閘門）
 npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面（CI 閘門）
 npm run check:dates    # 日期已宣告且自洽（CI 閘門）
 npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
+npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門）
+npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
+npm run check:entity:links  # sameAs 的 URL 是否解析得到（CI 閘門，需網路）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑 `cargo fmt` / `cargo clippy` / `build:site` / `check:css` / `check:classes` / `contrast` / `contract`。後兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:entity`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `check:entity:links`。
 
-六道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
+**需要瀏覽器或網路的都在 `audit`，離線的都在 `build`。** 前兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
+
+九道閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單：
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
 - **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤
@@ -57,8 +62,21 @@ npm run diff <a> <b>         # 像素比對
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）
+- **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物
+- **check:entity** —— 讀**建置產物**的實體宣告：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 含中文。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
+- **check:entity:links** —— `sameAs` 的 URL 解析得到。只抓硬性 404；登入牆後面的軟性 404（Facebook 對不存在的頁面回 200）抓不到，那仍然是人的判斷
+
+**`check:entity` 會拒絕稽核不完整的 `dist/`。** 建置是一頁一頁寫的，遇到第一個解析不了的模板就結束，所以失敗的建置會留下半棵樹——而所有讀 `dist/` 的檢查都會對著它報綠。這實際發生過：一個壞掉的 include 讓十七頁只寫了八頁，三條規則全部「通過」。它現在會比對 `site.toml` 宣告的頁數。
 
 截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
+
+### 寫捲動斷言時，`scroll-smooth` 會讓探針說謊
+
+`<html>` 掛著 `scroll-smooth`，所以 `window.scrollTo(...)` 是動畫的。**在動畫開始之前讀位置，拿到的是捲動前的值**，而那個值看起來完全像是一個合理的失敗。
+
+同一個陷阱在一次工作裡踩了兩次：先讓人以為 `position: sticky` 失效，再讓人以為錨點連結在無 JS 時跳不動。兩次都是探針錯，不是頁面錯。
+
+任何捲動斷言必須擇一：用 `behavior: "instant"`，或等動畫跑完。而**在下結論說某個東西壞掉之前，先確認量測本身是對的**——一個符合預期的失敗最不容易被追究。
 
 ### `styles.min.css` 是進版控的建置產物
 
@@ -67,6 +85,34 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 ### `?v=` 版號是手動的
 
 `header.html` 和 `footer.html` 引用 CSS/JS 時帶著 `?v=N`。**改了那些檔案就要遞增它，沒有任何東西會提醒你。** 也因為如此，CSS/JS 的 `Cache-Control` 只給一小時而非 immutable——押注在人的記性上，代價是使用者永久卡在舊版且無法復原。
+
+---
+
+## 怎麼把一批工作切開與落地
+
+一份 spec 一支分支一個 PR。票是**落地順序**，不是各自的 PR——這個 repo 合併就是上線，PR 越少、驗證的次數就越集中。
+
+**只在有決策點的地方切票。** 判準是：這張票結束時，有沒有人要看著結果做一個決定？沒有就別切。曾經把「十條風險內容」拆成上下五條，實作時被併回同一個 commit——五要素的形狀在第一條就定死，後九條是照抄，中間沒有任何值得停下來的地方。
+
+**前置重構獨立一張，排最前面。** 一條新的檢查規則若先落地，後面寫的東西就天生受它保護；合進使用它的那張票，它就從「讓錯誤不可能發生」退化成「事後稽核」。
+
+**新檢查器帶著關閉狀態落地，由讓它成立的那張票開啟**，並在程式碼裡具名寫出票號。這樣 CI 一路綠燈而不需要豁免清單——用關掉規則換綠燈和用豁免清單換綠燈是同一件事，差別只在前者誠實。`check:design` 與 `check:entity` 都是這樣落地的。
+
+**骨架票要含一個決定，否則只是延後。** 「頁面先存在、內容之後補」本身沒有價值；有價值的是在那張票裡把**後續工作依賴的東西定死**——例如章節 id。定死了，做索引的人就不必等內容寫完。
+
+### 兩份 spec 同時進行時，多開一張整合票
+
+各自全綠不代表合併後成立。曾經有兩支分支分別通過全部閘門，合併後建置直接失敗：一支新增的頁面引用了另一支刪掉的 partial。git 兩邊都乾淨合上，因為一邊是新檔案、一邊是乾淨的刪除。
+
+**沒有任何一張票會抓到這種問題**，因為每張票的驗收條件都只看自己那支分支。所以只要同時有兩份 spec 在跑，就開一張整合票，驗收條件寫死：**在合併結果上**跑完全套閘門。合併前先做一次試合併，不要等到合併時才發現。
+
+這是範圍問題不是粒度問題——調票的大小補不起來。
+
+### 有時效的前提要用機制擋，不能只寫字
+
+曾經有一張票要求「必須在任何改動上線之前完成」，理由充分且不可逆（它是一次量測的對照組）。那個限制寫進了票的 Blocked by，也寫進了 PR 說明，然後被一句口頭指示蓋過去，對照組永久消失。
+
+**它從頭到尾只是散文，沒有任何東西會擋。** 真的不能先合併的東西，要用 draft PR、required review、或乾脆不推分支。把不可逆的前提交給文字去守，它就守不住。
 
 ---
 
@@ -106,7 +152,7 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
   中間曾用手動推廣來保留把關——版本上傳後不自動上線，由人執行 `wrangler versions deploy`。那撐了不到一天就換掉了：**一個每次改動都要人做的步驟，遲早會變成沒人做的步驟**，而它守的是一道本來就只在 CI 全綠之後才會遇到的門。現在 production branch 的 deploy command 是 `wrangler deploy`，合併即上線，把關全部落在 PR 階段。
 - **上線的產物沒有被驗過。** CI 仍然建置並跑完整檢查，但那份產物不會被部署；上線的是 Cloudflare 自己 clone 後建的。同一個 commit、同一組釘死的 toolchain 版本，理論上相同——**但沒有任何東西在比對它們**。
 
-保留 GitHub Actions 的 `build` 與 `audit` 是這個決定的另一半：PR 階段的六道閘門一個都沒少，少掉的只有 `deploy` job。
+保留 GitHub Actions 的 `build` 與 `audit` 是這個決定的另一半：PR 階段的閘門一個都沒少，少掉的只有 `deploy` job。
 
 ### 為什麼 HSTS 不在 `_headers` 裡
 

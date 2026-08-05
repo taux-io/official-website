@@ -450,7 +450,7 @@ OG 卡是唯一一種**在網站外面被看到、卻不會有人在瀏覽器裡
 
 `check:design` 讀 `templates/` 與 `site.toml`，不解析 CSS 產物——它檢查的是**作者寫下的意圖**，`check:classes` 才是檢查 Tailwind 有沒有真的產出東西的那一道。兩道都需要。
 
-現有六道閘門（`check:css`、`check:classes`、`check:llms`、`check:dates`、`check:jsonld`、`contrast`、`contract`）不因這次改版放寬。特別注意：
+現有閘門（`check:css`、`check:classes`、`check:llms`、`check:dates`、`check:jsonld`、`check:entity`、`check:entity:links`、`contrast`、`contract`）不因這次改版放寬。**不再寫成一個數字**——先前這裡寫「六道」，而閘門增加時沒有人回來改它。特別注意：
 
 - **`styles.min.css` 是進版控的建置產物。** 改完模板沒重建就會靜默失效——`.md:h-20` 曾經沒進去，七個頁面的曲線細帶少了 16px 而毫無跡象。每階段結束跑 `npm run build:css`
 - **`?v=` 版號是手動的。** 換 token 後遞增 `header.html` 裡的 `styles.min.css?v=`
