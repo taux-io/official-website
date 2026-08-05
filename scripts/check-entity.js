@@ -297,7 +297,7 @@ const RULES = [
   },
   {
     name: "chinese facing copy",
-    enabled: false,
+    enabled: true,
     network: false,
     turnedOnBy: "#105 — rewrites nine titles and descriptions to lead in Chinese",
     run: ruleFacingChinese,
