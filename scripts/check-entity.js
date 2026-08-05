@@ -151,19 +151,32 @@ function sameAsIn(doc) {
 // ---------------------------------------------------------------------------
 // Rules. Each returns a list of {file, detail}.
 
-// A reference must resolve inside the document that makes it. JSON-LD is read
-// one document at a time, so an @id declared on /about does nothing for a
-// reference made on /geo-guide — the consumer parsing the guide never sees the
-// about page.
+// A reference must resolve inside the page that makes it.
+//
+// Scope is the PAGE, not the individual script block. A consumer merges every
+// JSON-LD block in a document into one graph, so a node declared in a shared
+// block in <head> is available to a reference made in the page's own block —
+// and checking per block would report that correct arrangement as broken,
+// which would push the fix towards repeating the organisation on every page
+// instead of declaring it once.
+//
+// It is not wider than the page either. An @id declared on /about does nothing
+// for a reference made on /geo-guide: the consumer parsing the guide never
+// fetches the about page.
 function ruleIdReferencesResolve(files) {
   const found = [];
   for (const { rel, html } of files) {
-    for (const doc of graphs(html, rel)) {
-      const { declared, referenced } = idsIn(doc);
-      for (const { id, at } of referenced) {
-        if (!declared.has(id)) {
-          found.push({ file: rel, detail: `${at} references ${id}, which nothing declares here` });
-        }
+    const docs = graphs(html, rel);
+    const declared = new Set();
+    const referenced = [];
+    for (const doc of docs) {
+      const ids = idsIn(doc);
+      for (const id of ids.declared) declared.add(id);
+      referenced.push(...ids.referenced);
+    }
+    for (const { id, at } of referenced) {
+      if (!declared.has(id)) {
+        found.push({ file: rel, detail: `${at} references ${id}, which nothing on this page declares` });
       }
     }
   }
@@ -268,7 +281,7 @@ async function ruleSameAsResolves(files) {
 const RULES = [
   {
     name: "@id references resolve",
-    enabled: false,
+    enabled: true,
     network: false,
     turnedOnBy: "#104 — consolidates the Organization and adds the missing WebSite node",
     run: ruleIdReferencesResolve,
@@ -276,7 +289,7 @@ const RULES = [
   },
   {
     name: "one organisation identity",
-    enabled: false,
+    enabled: true,
     network: false,
     turnedOnBy: "#104 — consolidates the Organization and adds the missing WebSite node",
     run: ruleOneOrganisationIdentity,
@@ -292,7 +305,7 @@ const RULES = [
   },
   {
     name: "sameAs resolves",
-    enabled: false,
+    enabled: true,
     network: true,
     turnedOnBy: "#104 — replaces the declared Facebook page with the real one",
     run: ruleSameAsResolves,
@@ -349,6 +362,8 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(e);
+  // A stack trace here is noise: every error this throws is a sentence about
+  // the site, not about this file.
+  console.log(`\n${e.message}`);
   process.exitCode = 1;
 });

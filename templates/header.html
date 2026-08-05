@@ -45,8 +45,56 @@
     <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/static/fonts/RobotoMono.woff2" as="font" type="font/woff2" crossorigin>
 
+    <!-- Identity. One organisation and one website, declared here so they land
+         on every page, and referenced by @id from every page's own block.
+
+         Consumers merge all the JSON-LD in a document into one graph, so a
+         reference in a page's block resolves against this one. Declaring it
+         here rather than repeating it per page is what makes "one company, one
+         @id" true by construction instead of by fifteen people remembering.
+
+         It used to be restated instead. Four shapes of the same company
+         existed: the home page carried the address and phone but no @id and no
+         logo, the about page carried the logo and an @id but no address, and
+         the author and publisher of seven articles carried a name and a URL and
+         nothing else. A node without an @id is its own entity to a consumer, so
+         that was four companies, each holding a different subset of the facts,
+         and none of them the one the articles named as their publisher.
+
+         The WebSite node is not decoration: four templates already referenced
+         https://taux.io/#website through isPartOf, and until now nothing on the
+         site declared it. Those were four pointers at nothing.
+
+         _identity.html holds JSON and nothing else — no comment, not even an
+         explanatory one. The generator strips HTML comments but deliberately
+         steps over <script> bodies, so a comment inside that partial is emitted
+         verbatim into the JSON and breaks every page on the site. Which is
+         exactly what the first version of this did.
+
+         The anchoring fields in it are the ones checkable against the public
+         company register rather than taken on trust: 統一編號 60794471,
+         incorporated 2025-03-26, registered at 高雄市岡山區文賢路57號2樓 with
+         高雄市政府經濟發展局. The address parts concatenate back to the
+         registered string exactly — region + locality + street — which is why
+         they are split that way rather than prettified. -->
+    <script type="application/ld+json">
+    {"@context": "https://schema.org","@graph": [
+      {% include "_identity.html" %},
+      {
+        "@type": "WebSite",
+        "@id": "https://taux.io/#website",
+        "url": "https://taux.io",
+        "name": "TauX 拓思科技",
+        "alternateName": "拓思科技股份有限公司",
+        "inLanguage": "zh-Hant-TW",
+        "publisher": {% include "_org-ref.html" %}
+      }
+      ]
+    }
+    </script>
+
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=22">
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=23">
 </head>
 
 <body class="bg-surface text-ink-body font-sans antialiased">
