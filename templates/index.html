@@ -1,32 +1,21 @@
 {% include "header.html" %}
 
-<!-- Schema.org JSON-LD: Organization + WebPage + FAQPage -->
+<!-- WebPage + FAQPage. The Organization used to be declared here too, with the
+     address and phone the about page's copy lacked and without the @id the
+     about page's copy had — two companies as far as a consumer was concerned.
+     It now lives in the header and is referenced. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      "legalName": "拓思科技股份有限公司",
-      "name": "TauX 拓思科技",
-      "url": "https://taux.io",
-      "email": "hello@taux.io",
-      "telephone": "+886-7-6211033",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "高雄市岡山區文賢路 57 號 2 樓",
-        "addressLocality": "高雄市",
-        "addressRegion": "台灣",
-        "postalCode": "820"
-      },
-      "description": "TauX 是一家協助企業 AI First 落地與技術開發服務的公司。",
-      "sameAs": ["https://github.com/taux-io"]
-    },
-    {
       "@type": "WebPage",
+      "@id": "https://taux.io/#webpage",
       "name": "拓思科技股份有限公司｜TauX - AI Smart Work & GEO Solutions",
-      "description": "TauX helps enterprises land AI First strategies with technology development services.",
-      "url": "https://taux.io/"
+      "description": "TauX 協助企業落地 AI First 策略，提供 GEO 生成式引擎優化與技術開發服務。",
+      "url": "https://taux.io/",
+      "isPartOf": {"@id": "https://taux.io/#website"},
+      "about": {"@id": "https://taux.io/#organization"}
     },
     {
       "@type": "FAQPage",

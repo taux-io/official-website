@@ -9,6 +9,8 @@
     "check:llms": "node scripts/check-llms.js",
     "check:dates": "node scripts/dates.js --check",
     "check:jsonld": "node scripts/check-jsonld.js",
+    "check:entity": "node scripts/check-entity.js",
+    "check:entity:links": "node scripts/check-entity.js --links",
     "check:design": "node scripts/check-design.js",
     "dates": "node scripts/dates.js",
     "screenshot": "node scripts/visual/screenshot.js",

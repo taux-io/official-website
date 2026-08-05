@@ -10,7 +10,7 @@
                 }
             ]
         },
-        {"@type":"Article","@id":"https://taux.io/geo-guide#article","headline":"GEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？","description":"本指南將解釋 GEO（生成式引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 GEO 在 AI 搜尋中獲得優勢。","author": {% include"_org.html" %},"publisher": {% include"_org-publisher.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
+        {"@type":"Article","@id":"https://taux.io/geo-guide#article","headline":"GEO 入門指南：在 AI 時代，如何讓 AI 幫你帶流量？","description":"本指南將解釋 GEO（生成式引擎優化）的基本概念，它與傳統 SEO 的區別，以及企業如何利用 GEO 在 AI 搜尋中獲得優勢。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
                 {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
                 {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }
             ]
@@ -375,15 +375,24 @@
                 <h2 class="font-display text-3xl font-bold text-ink mb-6">準備好佈局 AI 時代了嗎？</h2>
                 <p class="text-ink-body mb-10 max-w-xl mx-auto">GEO 是一項長期投資，現在開始，您將比競爭對手早一步佔領 AI 的推薦版位。</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="mailto:hello@taux.io"
+                    <a href="/geo-optimization"
                         class="btn">
+                        看 GEO 服務內容與報價
+                    </a>
+                    <a href="mailto:hello@taux.io"
+                        class="btn-quiet">
                         預約 GEO 諮詢
                     </a>
-                    <a href="/#our-services"
-                        class="btn-quiet">
-                        了解更多服務
-                    </a>
                 </div>
+                <!-- This page keeps its informational intent and its rankings;
+                     the link is here for the reader who has finished it and
+                     concluded they would rather not do this themselves. The
+                     service page takes the buying queries, this one does not
+                     chase them. -->
+                <p class="text-ink-body mt-8 text-sm">
+                    讀完覺得自己做不來？
+                    <a href="/geo-optimization" class="text-ink underline">我們可以幫你做</a>。
+                </p>
             </div>
         </section>
     </div>

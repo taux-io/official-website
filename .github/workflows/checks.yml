@@ -94,6 +94,16 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
+      # The gates above ask whether structured data exists, parses, and avoids
+      # the duplicate key JSON.parse resolves in silence. None of them asks
+      # whether a reference points at anything: four templates named a WebSite
+      # node no template defines, which is valid JSON-LD aimed at nothing, and
+      # every gate passed it. This reads the assembled graph in dist/ rather
+      # than the templates, because an @id graph only exists once the includes
+      # have been composed.
+      - name: entity declarations hold
+        run: npm run check:entity
+
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -143,3 +153,14 @@ jobs:
       # during the redesign lived here rather than in anything a person looks at.
       - name: route contract
         run: npm run contract
+
+      # sameAs asserts "these are the same entity", so a dead profile URL is an
+      # identity claim about nothing. Lives in this job rather than the one
+      # above because it is the only entity rule that leaves the machine, and
+      # the offline checks stay offline and fast.
+      #
+      # It catches a hard 404 and nothing subtler. A profile that no longer
+      # exists behind a login wall answers 200, so deciding that a social
+      # account is genuinely the company's remains a person's job.
+      - name: sameAs targets exist
+        run: npm run check:entity:links
