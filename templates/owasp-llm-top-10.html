@@ -144,54 +144,292 @@
         <!-- The ten.
              Ids are settled here rather than with the content, so the section
              index can be built against them without waiting. -->
+        <!-- LLM01 is deliberately a summary. This is the pillar page; writing
+             prompt injection out in full here would put it in direct
+             competition with /what-is-prompt-injection for the same queries,
+             and that page is the one that should win them. -->
         <section id="llm01" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM01</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">提示詞注入 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Prompt Injection</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>使用者輸入或外部內容裡的文字改變了模型的行為，使它偏離開發者設定的指令。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>直接注入是在對話框裡寫「忽略先前所有指令」；間接注入是把指令藏在模型會讀到的網頁、郵件或文件裡，使用者自己完全不知情。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <p>沒有單一解法。核心原則是把所有外部內容當成不可信資料，並且<strong class="text-ink">在模型之外</strong>強制執行權限——模型被說服了，權限也不該跟著鬆動。</p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">深入</span>
+                    <a href="/what-is-prompt-injection" class="text-ink underline">攻擊原理、與越獄的差異與縱深防禦的實務做法</a>
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm05" class="text-ink underline">LLM05 輸出處理不當</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm06" class="text-ink underline">LLM06 過度代理權</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm02" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM02</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">敏感資訊洩漏 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Sensitive Information Disclosure</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>模型的輸出洩漏了不該給這個使用者的資訊——個資、憑證、營業秘密，或其他使用者的資料。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一套 RAG 系統把整個知識庫的權限一視同仁，於是業務部門的人問得到只有法務該看的合約條款。模型沒有出錯，是檢索層從一開始就沒有邊界。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>檢索<strong class="text-ink">之前</strong>就套用使用者權限，不要靠提示詞要求模型「不要說出來」——那是請求，不是控制。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>輸入與輸出兩端都做敏感資料偵測與遮蔽。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>用於訓練或微調的資料先去識別化，因為模型記得住的東西無法事後撤回。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm07" class="text-ink underline">LLM07 系統提示詞洩漏</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm08" class="text-ink underline">LLM08 向量與嵌入弱點</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm03" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM03</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">供應鏈 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Supply Chain</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>模型權重、資料集、套件與外掛的來源本身不可信或已被污染。傳統軟體供應鏈的問題，多了模型這一類無法用讀原始碼來稽核的資產。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>從公開模型倉庫拉下來的微調權重、來路不明的 LoRA 配接器，或 agent 工具鏈裡某個第三方套件。你看得懂前端的每一行程式，但看不懂那份權重檔案裡有什麼。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>模型與資料集比照軟體相依處理：來源查核、版本鎖定、雜湊比對。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>產出並維護 AI 物料清單，讓「我們到底裝了什麼」是一個查得到答案的問題。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>第三方模型先在隔離環境評估行為再上線，不要直接接到有權限的系統上。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm04" class="text-ink underline">LLM04 資料與模型投毒</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm04" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM04</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">資料與模型投毒 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Data and Model Poisoning</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>有人在預訓練、微調或嵌入的資料裡植入內容，藉此改變模型的行為，或埋下只在特定觸發詞出現時才啟動的後門。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一個會被爬進訓練集的公開頁面，被刻意寫入特定觸發詞與對應的錯誤答案。模型在所有一般測試上都正常，只有遇到那個詞時才會轉向——這是它難防的原因：異常不會出現在你測試的地方。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>訓練與微調資料的來源可追溯，知道每一批資料是誰放進來的。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>對照固定的基準集偵測行為漂移，而不是只看整體指標有沒有變差。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>微調後做紅隊測試，特別針對觸發詞這類只在窄條件下顯現的行為。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm03" class="text-ink underline">LLM03 供應鏈</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm09" class="text-ink underline">LLM09 錯誤資訊</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm05" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM05</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">輸出處理不當 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Improper Output Handling</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>模型的輸出未經驗證就交給下游組件執行或呈現。這一條不是模型的問題，是接住模型的那段程式的問題。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>模型回傳的字串直接進 <code class="bg-surface-raised text-ink font-mono px-1.5 py-0.5 text-sm">innerHTML</code>、直接拼進 SQL、直接餵給 shell。一次成功的注入因此從「模型講錯話」升級成「攻擊者在你的伺服器上執行指令」。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>把模型視為不可信來源，輸出比照使用者輸入處理——它本來就可能是使用者輸入變形而來的。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>依下游情境做輸出編碼：HTML、SQL、shell 各有各的跳脫規則，沒有通用的那一種。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>參數化查詢，不做字串拼接。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm01" class="text-ink underline">LLM01 提示詞注入</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm06" class="text-ink underline">LLM06 過度代理權</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm06" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM06</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">過度代理權 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Excessive Agency</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>系統給了模型過多的功能、權限或自主性，使得它的一次判斷失誤足以造成真實損害。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一個負責整理信件的 agent，被順手給了寄信與刪信的權限——因為用的是同一組憑證，分開設定太麻煩。於是一封夾帶指令的信就能讓它對外發信。權限是為了方便給的，代價是攻擊面。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>工具的權限取最小集合，不給「以防萬一會用到」的能力。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>高風險或不可逆的動作要人為確認，而且確認的介面要說清楚將要發生什麼。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>權限在工具層強制，不靠提示詞約束——提示詞說服得動，權限系統說服不動。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm01" class="text-ink underline">LLM01 提示詞注入</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm05" class="text-ink underline">LLM05 輸出處理不當</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm07" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM07</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">系統提示詞洩漏 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">System Prompt Leakage</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>系統提示詞的內容被套出來。真正的風險不在提示詞被看見，而在<strong class="text-ink">它裡面本來就不該有的東西</strong>被看見。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>使用者用重述、翻譯或角色扮演誘導模型複述自己的指令，於是寫在提示詞裡的 API 金鑰、內部折扣規則或資料庫結構一起外流。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>系統提示詞裡不放任何憑證與機密。這是根本解，其餘都是補丁。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>授權判斷與商業邏輯放在模型之外，不要用提示詞當存取控制。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>假設提示詞終將外洩來設計系統，然後問自己：那樣還安全嗎？</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm02" class="text-ink underline">LLM02 敏感資訊洩漏</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm08" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM08</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">向量與嵌入弱點 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Vector and Embedding Weaknesses</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>RAG 用的向量資料庫與嵌入本身成為攻擊面：被投毒、跨租戶洩漏，或從嵌入向量反推回原文。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>多租戶的向量庫沒有依租戶做硬性隔離，只靠檢索時附帶的過濾條件。一次相似度查詢就跨過了客戶邊界，而且沒有任何一道錯誤訊息會提到這件事。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>向量庫依租戶與權限做硬性隔離，不要把隔離寄託在查詢條件寫對。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>進庫的文件要有來源驗證與稽核軌跡，知道每一段內容是怎麼進去的。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>嵌入本身視為敏感資料保護——它可被部分還原，不是不可逆的雜湊。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm02" class="text-ink underline">LLM02 敏感資訊洩漏</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm04" class="text-ink underline">LLM04 資料與模型投毒</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm09" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM09</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">錯誤資訊 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Misinformation</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>模型產生看似可信但實際錯誤的內容，而下游把它當成事實使用。危害的大小取決於誰接住它、有沒有人核對。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>模型虛構一個不存在的套件名稱，開發者照著安裝——而攻擊者早已在套件庫註冊了那個名字。模型的錯誤在這裡不只是錯，它變成了一條可被預測、因此可被埋伏的路徑。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>有出處要求的場景一律走檢索並附上引用，讓答案可以被追回來源。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>關鍵決策保留人工複核，而且複核的人要看得到模型依據什麼。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>對使用者揭露不確定性，不要用肯定的語氣包裝推測。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm03" class="text-ink underline">LLM03 供應鏈</a>
+                    <span class="mx-2 text-ink-muted">/</span>
+                    <a href="#llm04" class="text-ink underline">LLM04 資料與模型投毒</a>
+                </p>
+            </div>
         </section>
 
         <section id="llm10" class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-mono">LLM10</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">無節制消耗 <span class="block text-base font-normal text-ink-muted mt-2 font-mono">Unbounded Consumption</span></h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>對推論的用量沒有邊界，導致成本失控、服務降級，或模型的行為被大量查詢複製出去。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一個公開的對話端點沒有速率限制，被持續呼叫以蒐集輸入與輸出配對來複製模型行為。帳單與延遲同時惡化，而流量在監控上看起來只是「使用量成長」。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防禦</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>依使用者與 API 金鑰設速率與配額上限，而不是只在整體層級設一個總量。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>限制輸入長度與輸出 token 數，兩端都要。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>監控每使用者成本並設異常告警——先看到帳單才發現，通常已經是一個月後。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相關</span>
+                    <a href="#llm06" class="text-ink underline">LLM06 過度代理權</a>
+                </p>
+            </div>
         </section>
 
         <!-- Source -->
