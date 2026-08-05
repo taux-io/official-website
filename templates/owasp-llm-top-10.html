@@ -44,7 +44,44 @@
 </article>
 
 <div class="bg-surface py-24">
-    <div class="max-w-prose mx-auto px-6 space-y-32">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index.
+
+             Ten anchors and a heading. It is a table of contents that happens
+             to know where you are, not a widget that has to run before the page
+             is navigable — with no script it still lists and still jumps.
+
+             Sits outside the space-y-32 stack rather than inside it: space-y
+             adds a top margin to every element after the first, and an absolute
+             child still counts as an element, so putting it in the stack would
+             push the whole page down by eight rem.
+
+             Hidden below xl. On a phone the overview table above is the table
+             of contents, which is why its anchors had to be real from the
+             start — this rail is the second consumer of those ids, not the
+             first. -->
+        <nav data-section-index aria-label="章節索引"
+            class="hidden xl:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目錄</p>
+                <ul>
+                    <li><a href="#overview" class="section-index-link">速覽</a></li>
+                    <li><a href="#llm01" class="section-index-link"><span class="font-mono">LLM01</span> 提示詞注入</a></li>
+                    <li><a href="#llm02" class="section-index-link"><span class="font-mono">LLM02</span> 敏感資訊洩漏</a></li>
+                    <li><a href="#llm03" class="section-index-link"><span class="font-mono">LLM03</span> 供應鏈</a></li>
+                    <li><a href="#llm04" class="section-index-link"><span class="font-mono">LLM04</span> 資料與模型投毒</a></li>
+                    <li><a href="#llm05" class="section-index-link"><span class="font-mono">LLM05</span> 輸出處理不當</a></li>
+                    <li><a href="#llm06" class="section-index-link"><span class="font-mono">LLM06</span> 過度代理權</a></li>
+                    <li><a href="#llm07" class="section-index-link"><span class="font-mono">LLM07</span> 系統提示詞洩漏</a></li>
+                    <li><a href="#llm08" class="section-index-link"><span class="font-mono">LLM08</span> 向量與嵌入弱點</a></li>
+                    <li><a href="#llm09" class="section-index-link"><span class="font-mono">LLM09</span> 錯誤資訊</a></li>
+                    <li><a href="#llm10" class="section-index-link"><span class="font-mono">LLM10</span> 無節制消耗</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
 
         <!-- Version status.
              Written as one self-contained block on purpose. When the 2026 list
@@ -455,6 +492,9 @@
             </div>
         </section>
     </div>
+    </div>
 </div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
 
 {% include "footer.html" %}
