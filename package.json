@@ -12,6 +12,8 @@
     "check:entity": "node scripts/check-entity.js",
     "check:entity:links": "node scripts/check-entity.js --links",
     "check:design": "node scripts/check-design.js",
+    "check:routes": "node scripts/check-routes.js",
+    "routes:record": "node scripts/check-routes.js --record",
     "dates": "node scripts/dates.js",
     "screenshot": "node scripts/visual/screenshot.js",
     "contrast": "node scripts/visual/contrast.js",

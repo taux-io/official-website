@@ -30,9 +30,25 @@
   const nav = document.querySelector("[data-section-index]");
   if (!nav) return;
 
+  // decodeURIComponent throws URIError on a malformed percent escape — an
+  // href like "#100%-coverage" is enough — and an exception here unwinds the
+  // whole IIFE before a single listener is attached. That is exactly the
+  // runtime crash the comment above promises this file will not have, so the
+  // raw fragment is the fallback rather than the exception being allowed out.
+  const byId = (hash) => {
+    const raw = hash.slice(1);
+    let decoded = raw;
+    try {
+      decoded = decodeURIComponent(raw);
+    } catch {
+      /* keep the raw form */
+    }
+    return document.getElementById(decoded) || document.getElementById(raw);
+  };
+
   const entries = [];
   for (const link of nav.querySelectorAll('a[href^="#"]')) {
-    const section = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+    const section = byId(link.hash);
     // A link pointing at nothing is a bug, but it is check:design's bug to
     // report at build time, not this file's to crash over at runtime.
     if (section) entries.push({ link, section });

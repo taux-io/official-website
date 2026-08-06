@@ -219,28 +219,34 @@ mono:    ["Roboto Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", 
 
 `site.toml` 的 `<title>` 已經多數是英文，所以 H1 改英文不會與 `<title>` 或 `og:title` 打架。
 
-### 領銜句草稿
+### 各頁領銜句
 
-**以下是草稿，不是定案。** 這是新寫的文案而非翻譯，語氣應該由你決定；實作時請逐條改過再用。
+**這張表描述現況，不是草稿。** 它原本是改版前的提案清單，於是在路由改名之後留著一條已退役的 `/workspace-ai-roi`，也漏掉了後來新增的四條——而它就位在被宣告為「設計唯一來源」的文件裡，照它做的人會去找一個不存在的路由。
 
-| 路由 | 領銜（拉丁，全大寫） | 副標（中文） |
+下表由 `templates/` 裡實際的 `.display-lead` 與 `.display-sub` 逐頁抓出來的，改頁面時一併更新這裡。
+
+| 路由 | 領銜（拉丁） | 副標（中文） |
 |---|---|---|
-| `/` | CODE THE FUTURE | 用科技定義未來 |
-| `/about` | BUILT IN KAOHSIUNG | 用科技創造未來 |
-| `/ai-smart-work` | FROM GENERATING TO DECIDING | 95% 的人用 AI 生成內容，5% 的人用 AI 輔助決策 |
-| `/data-governance` | GOVERN THE DATA FIRST | 數據治理指南 |
-| `/building` | BUILDING IN PUBLIC | 公開建造中 |
-| `/geo-guide` | GENERATIVE ENGINE OPTIMIZATION | GEO 入門指南 |
-| `/workspace-ai-roi` | MANUAL VERSUS AUTOMATED | 手動 vs 自動：效率革命 |
-| `/what-is-llms-txt` | WHAT IS LLMS.TXT | AI 時代網站內容保護新規範 |
-| `/what-is-prompt-injection` | WHAT IS PROMPT INJECTION | AI 時代的資安危機 |
-| `/agent-prompting-guide` | MAKE THE MACHINE UNDERSTAND | 從新手到高手的指令秘籍 |
-| `/claude-skills-guide` | CLAUDE SKILLS IN PRACTICE | Claude Skills 實戰指南 |
-| `/adk-skill-patterns` | FIVE SKILL PATTERNS | 每個 ADK 開發者都該知道的事 |
-| `/privacy-policy` | PRIVACY POLICY | 隱私權政策 |
-| `/terms-of-service` | TERMS OF SERVICE | 服務條款 |
+| `/` | Code the Future | 用科技定義未來 |
+| `/geo-guide` | Generative Engine Optimization | GEO 入門指南 |
+| `/geo-optimization` | Be the Answer | GEO 生成式引擎優化服務 |
+| `/ai-smart-work` | From Generating to Deciding | 95% 的人只用 AI 生成內容，5% 的人懂得用 AI 輔助決策 |
+| `/threat-landscape` | Threat Landscape 2026 | 全球威脅報告的數字怎麼讀 |
+| `/pqc-migration` | Post-Quantum Migration | 後量子密碼的企業落地路徑 |
+| `/data-governance` | Govern the Data First | 數據治理指南 |
+| `/google-workspace-with-ai` | Manual versus Automated | 手動 vs 自動：效率革命 |
+| `/what-is-llms-txt` | What is LLMs.txt | AI 時代網站內容保護新規範 |
+| `/what-is-prompt-injection` | What is Prompt Injection | AI 時代的資安危機 |
+| `/owasp-llm-top-10` | OWASP LLM Top 10 | LLM 應用的十大資安風險 · 2026 版 |
+| `/agent-prompting-guide` | Make the Machine Understand | 從新手到高手的指令秘籍 |
+| `/claude-skills-guide` | Claude Skills in Practice | Claude Skills 實戰指南 |
+| `/adk-skill-patterns` | Five Skill Patterns | 每個 ADK 開發者都該知道的事 |
+| `/building` | Building in Public | 公開建造中 |
+| `/about` | Built in Kaohsiung | 用科技創造未來 |
+| `/privacy-policy` | Privacy Policy | 隱私權政策 |
+| `/terms-of-service` | Terms of Service | 服務條款 |
 
-各頁的 section 首題在實作各該頁時擬定，同樣先出草稿。
+各頁的 section 首題在實作各該頁時擬定。
 
 ---
 

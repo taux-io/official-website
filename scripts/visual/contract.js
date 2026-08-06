@@ -410,6 +410,25 @@ async function main() {
         check: "retired path",
         problem: `redirects to ${location || "(no Location header)"}, expected ${redirect.to}`,
       });
+    } else {
+      // And the destination has to exist.
+      //
+      // Comparing the Location header against site.toml only proves the host
+      // emits what was declared — both sides read the same table, so they
+      // agree by construction. A one-character typo in `to` produced a
+      // perfectly conformant 301 into a 404 and this check called it a pass.
+      //
+      // The destination is not necessarily a route: a retired page takes its
+      // share card with it, and that lands on an image. So this asks for
+      // anything that is not an error rather than asserting a 200 HTML page.
+      const dest = await page.request.get(BASE_URL + redirect.to, { maxRedirects: 5 });
+      if (dest.status() >= 400) {
+        failures.push({
+          route: redirect.from,
+          check: "retired path",
+          problem: `redirects to ${redirect.to}, which answers ${dest.status()}`,
+        });
+      }
     }
   }
 
