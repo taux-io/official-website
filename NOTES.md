@@ -283,6 +283,5 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ## 已知待辦
 
-- `templates/building.html` 同時作為 Blog、Careers、API 三個連結的目的地
 - `?v=` 版號手動遞增（見上）
 - Windows 中文渲染品質低於 macOS（見上）
