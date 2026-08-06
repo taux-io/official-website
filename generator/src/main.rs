@@ -175,11 +175,16 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         // ampersand. The two URLs are not: they are ours, from site.toml, and
         // minijinja's HTML escaper turns every slash into &#x2f;, which is
         // decoded correctly by parsers but is noise no reader should be served.
+        // "They are ours" is the whole safety argument, so checked_canonical
+        // asserts it rather than assuming it.
         let html = tmpl.render(context! {
             title => &page.title,
             description => &page.description,
-            canonical => Value::from_safe_string(page.canonical.clone()),
+            canonical => Value::from_safe_string(checked_canonical(&page.canonical)?.to_string()),
             year => year,
+            // Unescaped for the same reason, and safe for a narrower one: the
+            // slug is cut out of the canonical checked on the line above, so
+            // there is nothing left in it to escape.
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
             ),
@@ -208,7 +213,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         let html = strip_comments(&tmpl.render(context! {
             title => &doc.title,
             description => &doc.description,
-            canonical => Value::from_safe_string(doc.canonical.clone()),
+            canonical => Value::from_safe_string(checked_canonical(&doc.canonical)?.to_string()),
             year => year,
             og_image => Value::from_safe_string(format!("{ORIGIN}/static/og/index.png")),
         })?);
@@ -269,6 +274,42 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     println!("\n{} pages written to dist/", written.len());
     Ok(())
+}
+
+/// Asserts that a canonical URL is one of ours before it is rendered unescaped.
+///
+/// The two URL fields skip minijinja's escaper — see the note at the render
+/// sites — which is only safe while they really are our own URLs. Nothing was
+/// checking that. A `"` in this field closes the `href` attribute it lands in
+/// and everything after it is parsed as markup, on every page, from a change to
+/// a data file that reviews as configuration rather than as code.
+///
+/// Validating beats escaping here: escaping would keep the `&#x2f;` noise the
+/// bypass exists to avoid, and there is no legitimate canonical this rejects.
+/// The build fails rather than sanitising, matching the strict undefined
+/// behaviour above — a canonical that is not ours is a mistake worth stopping
+/// for, not one worth quietly repairing.
+///
+/// The accepted set is deliberately narrower than a URL allows: ASCII letters,
+/// digits, and `/-_.`. Every path the site has ever published fits, and the
+/// characters left out are the ones that would make the value something other
+/// than a path — `"` and `<` most of all, but also `?`, `#`, `:` and `%`. A
+/// slug in Chinese would be rejected too. That is the intended answer rather
+/// than an oversight: these URLs are indexed, they are typed and pasted by
+/// people, and a percent-encoded path is a worse canonical than a
+/// transliterated one. Widen this deliberately if that changes; do not widen it
+/// to make one build pass.
+fn checked_canonical(c: &str) -> Result<&str, String> {
+    let rest = c
+        .strip_prefix(ORIGIN)
+        .ok_or_else(|| format!("canonical must start with {ORIGIN}: {c}"))?;
+    if !rest
+        .chars()
+        .all(|ch| ch.is_ascii_alphanumeric() || "/-_.".contains(ch))
+    {
+        return Err(format!("canonical has unexpected characters: {c}"));
+    }
+    Ok(c)
 }
 
 /// Removes HTML comments from the output.
@@ -388,7 +429,29 @@ fn copy_tree(from: &Path, to: &Path) -> std::io::Result<()> {
     for entry in fs::read_dir(from)? {
         let entry = entry?;
         let dest = to.join(entry.file_name());
-        if entry.file_type()?.is_dir() {
+        let file_type = entry.file_type()?;
+        // fs::copy follows a symlink and writes the *target's* bytes out as a
+        // new regular file, and everything under dist/ is uploaded and served.
+        // A link committed under static/ would therefore publish a file that
+        // exists only on the build machine, at a public URL, with the site's
+        // own headers on it. file_type() reports the link rather than its
+        // target, so this is the one place the distinction can be made.
+        //
+        // Refusing beats skipping: a symlink here is either a mistake or an
+        // attempt, and a build that silently drops a file it was asked to
+        // publish is the harder of the two failures to notice. Jekyll forbids
+        // them under --safe and Hugo confines reads to the project root, both
+        // for this reason.
+        if file_type.is_symlink() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!(
+                    "symlink under static/: {} — copying it would publish whatever it points at",
+                    entry.path().display()
+                ),
+            ));
+        }
+        if file_type.is_dir() {
             copy_tree(&entry.path(), &dest)?;
         } else {
             fs::copy(entry.path(), dest)?;
@@ -490,6 +553,53 @@ mod tests {
         assert_eq!(site.redirect[0].status, 301);
     }
 
+    // canonical and og_image are rendered unescaped, so a `"` in either closes
+    // the attribute it sits in and the rest is parsed as markup — on every page,
+    // since header.html is shared. The payload arrives in a data file that
+    // reviews as configuration, which is the part that makes it worth a check
+    // rather than a convention.
+    #[test]
+    fn a_canonical_carrying_markup_is_refused() {
+        assert!(checked_canonical("https://taux.io/404\"><script src=x></script>").is_err());
+    }
+
+    // TOML decodes " to a plain quote, so the escaped form reaches the
+    // renderer identically while showing no `">` in a diff. Checking the decoded
+    // value rather than the source text is what makes that irrelevant.
+    #[test]
+    fn the_escaped_form_of_the_same_payload_is_refused() {
+        assert!(
+            checked_canonical("https://taux.io/404\u{0022}\u{003E}\u{003C}script\u{003E}").is_err()
+        );
+    }
+
+    // Someone else's origin is not ours to point a canonical at, and a scheme
+    // -relative or off-origin value would sail through a character check alone.
+    #[test]
+    fn a_canonical_on_another_origin_is_refused() {
+        assert!(checked_canonical("https://evil.example/geo-guide").is_err());
+        assert!(checked_canonical("//evil.example/geo-guide").is_err());
+    }
+
+    // The check has to accept every shape site.toml already uses, or it stops
+    // being a check and becomes an outage.
+    #[test]
+    fn the_canonicals_the_site_actually_uses_are_accepted() {
+        for c in [
+            "https://taux.io/",
+            "https://taux.io",
+            "https://taux.io/geo-guide",
+            "https://taux.io/what-is-llms-txt",
+            "https://taux.io/owasp-llm-top-10",
+            "https://taux.io/404",
+        ] {
+            assert!(
+                checked_canonical(c).is_ok(),
+                "rejected a real canonical: {c}"
+            );
+        }
+    }
+
     #[test]
     fn comments_are_removed() {
         assert_eq!(
@@ -528,6 +638,31 @@ mod tests {
 
     // Go stripped these too, and the migration had to match it byte for byte.
     // The space matters: `a/*x*/b` is two tokens, `ab` is one.
+    // fs::copy dereferences a link and writes the target's bytes out as a
+    // regular file, so without this guard a link committed under static/ would
+    // publish something that exists only on the build machine. Unix-only
+    // because that is where the site is built; there is no Windows path to
+    // cover.
+    #[cfg(unix)]
+    #[test]
+    fn a_symlink_under_static_stops_the_build() {
+        let base = std::env::temp_dir().join("taux-copy-tree-symlink");
+        let (from, to) = (base.join("from"), base.join("to"));
+        let _ = fs::remove_dir_all(&base);
+        fs::create_dir_all(&from).unwrap();
+
+        let secret = base.join("not-in-the-repo.txt");
+        fs::write(&secret, "build machine only").unwrap();
+        std::os::unix::fs::symlink(&secret, from.join("leak.txt")).unwrap();
+
+        let err = copy_tree(&from, &to).expect_err("a symlink must not be copied");
+        assert_eq!(err.kind(), std::io::ErrorKind::InvalidInput);
+        // The target's bytes must not have reached the output tree.
+        assert!(!to.join("leak.txt").exists());
+
+        let _ = fs::remove_dir_all(&base);
+    }
+
     #[test]
     fn css_comments_are_replaced_by_a_space() {
         assert_eq!(strip_css_comments("a/*x*/b"), "a b");

@@ -14,7 +14,7 @@
 // table, so adding a page to site.toml is enough to bring it under test.
 
 const { launch } = require("../browser");
-const { ROUTES, REDIRECTS, BASE_URL, ORIGIN } = require("../routes");
+const { ROUTES, REDIRECTS, ERROR_DOCUMENTS, BASE_URL, ORIGIN } = require("../routes");
 
 const VIEWPORT = { width: 1440, height: 900 };
 
@@ -381,6 +381,70 @@ async function main() {
         check: "not found body",
         problem: `lang "${body.lang || "(empty)"}", title "${body.title || "(empty)"}" — not this site's 404 document`,
       });
+    }
+
+    // What the document declares, compared to what declared it.
+    //
+    // The error document goes through the same renderer and the same shared
+    // header as every page, so it can carry the same defects — but it is not a
+    // route, so none of the CHECKS above ever ran against it. That made it the
+    // one rendered page on the site with no assertion on its head at all, and
+    // it is served on every URL the site does not have.
+    //
+    // canonical is the field worth reading back rather than trusting: it is
+    // rendered unescaped, so the value the browser parses out of the attribute
+    // is the honest report of what actually landed in the markup. A value that
+    // broke out of its own attribute comes back truncated and will not match.
+    for (const doc of ERROR_DOCUMENTS) {
+      checked++;
+      const declared = await page.evaluate(() => {
+        const link = document.querySelector("link[rel=canonical]");
+        const og = document.querySelector('meta[property="og:url"]');
+        return {
+          canonical: link ? link.getAttribute("href") : null,
+          ogUrl: og ? og.getAttribute("content") : null,
+          scripts: [...document.querySelectorAll("script[src]")].map((s) =>
+            s.getAttribute("src"),
+          ),
+        };
+      });
+
+      if (declared.canonical !== doc.canonical) {
+        failures.push({
+          route: `(${doc.output})`,
+          check: "canonical",
+          problem: `declares "${declared.canonical || "(none)"}", site.toml says "${doc.canonical}"`,
+        });
+      } else if (declared.ogUrl !== doc.canonical) {
+        failures.push({
+          route: `(${doc.output})`,
+          check: "canonical",
+          problem: `og:url "${declared.ogUrl || "(none)"}" disagrees with the canonical`,
+        });
+      }
+
+      // The head is built from site.toml values, so a script the table put
+      // there is a script nobody wrote into a template. Same-origin or not, it
+      // does not belong in a document declared by a data file.
+      //
+      // The beacon is allowed because it is not ours to remove: Cloudflare
+      // injects it into HTML at the edge, so it appears when this runs against
+      // the origin and not when it runs against the local emulator. It is
+      // absent from production today, which means a check that simply banned
+      // everything off /static/ would pass now and start failing the day
+      // someone re-enables Web Analytics — a red gate caused by a dashboard
+      // toggle, with nothing in the diff to explain it. The allowance mirrors
+      // script-src in _headers, which is the actual statement of what may run.
+      const allowed = (s) =>
+        s.startsWith("/static/") || s.startsWith("https://static.cloudflareinsights.com/");
+      const foreign = declared.scripts.filter((s) => !allowed(s));
+      if (foreign.length) {
+        failures.push({
+          route: `(${doc.output})`,
+          check: "canonical",
+          problem: `unexpected script source: ${foreign.join(", ")}`,
+        });
+      }
     }
   }
 
