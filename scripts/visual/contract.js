@@ -426,7 +426,18 @@ async function main() {
       // The head is built from site.toml values, so a script the table put
       // there is a script nobody wrote into a template. Same-origin or not, it
       // does not belong in a document declared by a data file.
-      const foreign = declared.scripts.filter((s) => !s.startsWith("/static/"));
+      //
+      // The beacon is allowed because it is not ours to remove: Cloudflare
+      // injects it into HTML at the edge, so it appears when this runs against
+      // the origin and not when it runs against the local emulator. It is
+      // absent from production today, which means a check that simply banned
+      // everything off /static/ would pass now and start failing the day
+      // someone re-enables Web Analytics — a red gate caused by a dashboard
+      // toggle, with nothing in the diff to explain it. The allowance mirrors
+      // script-src in _headers, which is the actual statement of what may run.
+      const allowed = (s) =>
+        s.startsWith("/static/") || s.startsWith("https://static.cloudflareinsights.com/");
+      const foreign = declared.scripts.filter((s) => !allowed(s));
       if (foreign.length) {
         failures.push({
           route: `(${doc.output})`,

@@ -289,6 +289,16 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 /// The build fails rather than sanitising, matching the strict undefined
 /// behaviour above — a canonical that is not ours is a mistake worth stopping
 /// for, not one worth quietly repairing.
+///
+/// The accepted set is deliberately narrower than a URL allows: ASCII letters,
+/// digits, and `/-_.`. Every path the site has ever published fits, and the
+/// characters left out are the ones that would make the value something other
+/// than a path — `"` and `<` most of all, but also `?`, `#`, `:` and `%`. A
+/// slug in Chinese would be rejected too. That is the intended answer rather
+/// than an oversight: these URLs are indexed, they are typed and pasted by
+/// people, and a percent-encoded path is a worse canonical than a
+/// transliterated one. Widen this deliberately if that changes; do not widen it
+/// to make one build pass.
 fn checked_canonical(c: &str) -> Result<&str, String> {
     let rest = c
         .strip_prefix(ORIGIN)
