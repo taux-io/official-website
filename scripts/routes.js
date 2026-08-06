@@ -46,6 +46,24 @@ function readRoutes() {
   });
 }
 
+// Paths that used to be routes. The generator emits _redirects from this same
+// table, so what the contract test asserts and what the host serves come from
+// one declaration rather than two that agree until someone edits one.
+//
+// This is the half that makes a retired path safe. Without an assertion a
+// redirect can stop working and the only symptom is an old URL answering 404 —
+// invisible to everyone except the people following links that used to work.
+function readRedirects() {
+  const site = parse(fs.readFileSync(path.join(ROOT, "site.toml"), "utf8"));
+  return (site.redirect || []).map((r) => ({
+    from: r.from,
+    to: r.to,
+    status: r.status ?? 301,
+  }));
+}
+
+const REDIRECTS = readRedirects();
+
 const ROUTES = [...readRoutes(), ...STANDALONE];
 const VIEWPORTS = [
   { name: "mobile", width: 375, height: 812 },
@@ -54,4 +72,4 @@ const VIEWPORTS = [
 ];
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8099";
 
-module.exports = { ROUTES, VIEWPORTS, BASE_URL, ORIGIN };
+module.exports = { ROUTES, REDIRECTS, VIEWPORTS, BASE_URL, ORIGIN };

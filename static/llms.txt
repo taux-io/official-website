@@ -59,7 +59,7 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 -   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
 -   [Claude Skills 實戰指南](https://taux.io/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
 -   [ADK Agent Skill 設計模式](https://taux.io/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
--   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/workspace-ai-roi): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。
+-   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。
 
 ---
 

@@ -30,6 +30,28 @@ struct Site {
     /// audit walks them as URLs.
     #[serde(default)]
     document: Vec<Document>,
+    /// Paths that used to be routes and now answer a redirect.
+    #[serde(default)]
+    redirect: Vec<Redirect>,
+}
+
+/// A path that has been retired, and where it goes now.
+///
+/// Declared in site.toml rather than hand-written into `_redirects`, for the
+/// reason the sitemap is generated: a hand-maintained list of URLs drifts from
+/// the pages it describes, and this project has already paid for that once.
+#[derive(Debug, Deserialize)]
+struct Redirect {
+    from: String,
+    to: String,
+    #[serde(default = "permanent")]
+    status: u16,
+}
+
+/// A retired path is retired permanently. A 302 would tell search engines to
+/// keep the old URL, which is the opposite of what a rename is for.
+fn permanent() -> u16 {
+    301
 }
 
 #[derive(Debug, Deserialize)]
@@ -87,8 +109,16 @@ impl Page {
     }
 
     /// Where the file has to land for the host to serve it at `path` without a
-    /// visible .html. Every one of these URLs is already indexed, so none of
-    /// them may change.
+    /// visible .html.
+    ///
+    /// These URLs are indexed, so **none of them may change without leaving a
+    /// redirect behind**. This used to read "none of them may change" flatly,
+    /// which was the right instinct and the wrong rule: it gave no answer for
+    /// the case where a path is genuinely misnamed, so the only options it left
+    /// were to live with the name or to break every link pointing at it.
+    /// Retiring a path is allowed; retiring it silently is not. Declare the old
+    /// path under `[[redirect]]` in site.toml and the contract test will hold
+    /// you to it.
     ///
     /// Flat files, not directories. `geo-guide/index.html` is served at
     /// `/geo-guide/`, and a request for `/geo-guide` is answered with a 308 to
@@ -201,13 +231,27 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     xml.push_str("</urlset>\n");
     fs::write(out.join("sitemap.xml"), &xml)?;
 
+    // Generated from the same table as the pages, for the same reason the
+    // sitemap is: a hand-written list of URLs drifts from the thing it
+    // describes and nothing notices. Written even when empty is avoided —
+    // an empty file would be indistinguishable from a lost one.
+    if !site.redirect.is_empty() {
+        let mut redirects = String::new();
+        for r in &site.redirect {
+            redirects.push_str(&format!("{} {} {}\n", r.from, r.to, r.status));
+        }
+        fs::write(out.join("_redirects"), redirects)?;
+    }
+
     copy_tree(&root.join("static"), &out.join("static"))?;
 
-    // Host configuration travels with the output.
-    for name in ["_headers", "_redirects"] {
-        let from = root.join(name);
+    // Host configuration travels with the output. `_redirects` is not here: it
+    // is generated above rather than copied, so a stale hand-edited copy in the
+    // repository root cannot override the declared table.
+    {
+        let from = root.join("_headers");
         if from.exists() {
-            fs::copy(&from, out.join(name))?;
+            fs::copy(&from, out.join("_headers"))?;
         }
     }
 
@@ -426,6 +470,24 @@ mod tests {
     fn the_home_page_slug_is_index() {
         assert_eq!(page("/", "https://taux.io").slug(), "index");
         assert_eq!(page("/", "https://taux.io/").slug(), "index");
+    }
+
+    // A retired path defaults to 301 rather than 302. A temporary redirect
+    // tells search engines to keep indexing the old URL, which is the opposite
+    // of what retiring a path is for — and the default is what almost every
+    // entry will use, so getting it wrong would be quiet and widespread.
+    #[test]
+    fn a_redirect_is_permanent_unless_it_says_otherwise() {
+        let site: Site = toml::from_str(
+            r#"
+            page = []
+            [[redirect]]
+            from = "/old"
+            to   = "/new"
+            "#,
+        )
+        .unwrap();
+        assert_eq!(site.redirect[0].status, 301);
     }
 
     #[test]
