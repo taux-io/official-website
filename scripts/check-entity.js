@@ -39,6 +39,11 @@ const TITLE = /<title>([\s\S]*?)<\/title>/;
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;
 const CJK = /[㐀-䶿一-鿿豈-﫿]/;
 
+// How this company writes its own name, in every form it uses. Matched against
+// an Organization node's name, legalName and alternateName so that one written
+// without an @id is still recognised as ours.
+const OUR_NAMES = /TauX|拓思/i;
+
 // Organization and everything schema.org derives from it that this site would
 // plausibly use. A node is the company whichever of these names it goes by.
 const ORGANISATION_TYPES = new Set([
@@ -90,7 +95,24 @@ function idsIn(doc) {
 
     const id = node["@id"];
     if (typeof id === "string") {
-      if (node["@type"]) declared.add(id);
+      // A @type alone is not enough to make something a declaration.
+      //
+      // `{"@type":"WebSite","@id":".../#websiteTYPO"}` is the idiomatic
+      // spelling of isPartOf, and read as a declaration it satisfies its own
+      // lookup: the typo declares a brand-new empty WebSite, the real one is
+      // never associated with the page, and the check reports green. That is
+      // the exact "valid JSON-LD aimed at nothing" shape this rule exists to
+      // catch, and the first version of it was blind to the commonest way of
+      // writing it.
+      //
+      // The distinguishing mark is the fragment. Every substantive node on
+      // this site is named by one — #organization, #website, #article, #list.
+      // The bare typed stubs that are legitimate all name a whole page instead
+      // (mainEntityOfPage), and carry no fragment; there are nine of them and
+      // none would be mistaken by this test.
+      const bare = Object.keys(node).filter((k) => k !== "@context").length === 2;
+      const isDeclaration = node["@type"] && !(bare && id.includes("#"));
+      if (isDeclaration) declared.add(id);
       else referenced.push({ id, at: trail });
     }
     for (const [k, v] of Object.entries(node)) {
@@ -116,9 +138,24 @@ function idsIn(doc) {
 // learn to skip.
 function ourOrganisationsIn(doc) {
   const found = [];
-  const ours = (node) =>
-    (typeof node.url === "string" && node.url.startsWith(ORIGIN)) ||
-    (typeof node["@id"] === "string" && node["@id"].startsWith(ORIGIN));
+  // Identified by name as well as by URL.
+  //
+  // The first version tested only for an @id or a url on this origin, which
+  // skipped the single most common regression shape: a publisher written as
+  // {"@type":"Organization","name":"TauX 拓思科技","logo":{…}} with no @id and
+  // no top-level url. That node was dropped before the "declares no @id"
+  // branch could see it, so the rule was blind to precisely the defect it was
+  // added to prevent — a second, @id-less company named as an article's
+  // publisher.
+  //
+  // Names are the reliable signal here because the cited third parties —
+  // Google, Forrester, NBER, METR, ICLE — share none of them.
+  const ours = (node) => {
+    if (typeof node.url === "string" && node.url.startsWith(ORIGIN)) return true;
+    if (typeof node["@id"] === "string" && node["@id"].startsWith(ORIGIN)) return true;
+    const names = [node.name, node.legalName, ...[].concat(node.alternateName || [])];
+    return names.some((n) => typeof n === "string" && OUR_NAMES.test(n));
+  };
 
   const visit = (node) => {
     if (Array.isArray(node)) return node.forEach(visit);
@@ -251,6 +288,28 @@ function ruleFacingChinese(files) {
 // a declared Facebook page that was not real — would pass. Deciding whether a
 // social profile is the right one stays a person's job; this only catches the
 // link that is outright dead.
+// Reachability, distinguished from a verdict.
+//
+// A host that answers 404 or 410 is telling you the profile is not there, and
+// that is a real defect: sameAs asserts "these are the same entity", so
+// pointing it at nothing asserts a relationship with nothing.
+//
+// A host that answers 403 or 429, or times out, is telling you nothing at all
+// about the profile — only that it dislikes this request. Facebook does this
+// routinely to unauthenticated datacenter egress, and this rule runs in CI,
+// where treating it as a failure would let an unrelated third party's edge
+// decide whether every open PR can merge. There is no gate after merge in this
+// project, so a blocked PR is a blocked release.
+//
+// So those are reported as not asserted rather than as broken, the same shape
+// the contract test uses for the zone-level settings it cannot observe. A run
+// that could not check something says so instead of reporting success.
+//
+// The limit that was there from the start still stands: a soft 404 behind a
+// login wall answers 200 and passes. Deciding a social profile is genuinely
+// the company's remains a person's job.
+const UNVERIFIABLE = [];
+
 async function ruleSameAsResolves(files) {
   const found = [];
   const urls = new Map();
@@ -270,9 +329,14 @@ async function ruleSameAsResolves(files) {
         headers: { "user-agent": "Mozilla/5.0 (compatible; taux-entity-check)" },
         signal: AbortSignal.timeout(15000),
       });
-      if (!res.ok) found.push({ file: rel, detail: `sameAs ${url} answered ${res.status}` });
+      if (res.ok) continue;
+      if (res.status === 404 || res.status === 410) {
+        found.push({ file: rel, detail: `sameAs ${url} answered ${res.status}` });
+      } else {
+        UNVERIFIABLE.push(`${url} answered ${res.status} — the host declined the request, so this says nothing about the profile`);
+      }
     } catch (e) {
-      found.push({ file: rel, detail: `sameAs ${url} could not be reached — ${e.message}` });
+      UNVERIFIABLE.push(`${url} could not be reached — ${e.message}`);
     }
   }
   return found;
@@ -334,12 +398,27 @@ async function main() {
   // happened to get written before it died. That is exactly what a broken
   // include produced once: eight pages of a sixteen-page site, all three rules
   // reporting clean.
+  // Named files rather than a count.
+  //
+  // Counting compared pages() — which only sees *.html at the top level — with
+  // page.length + document.length, so the first [[document]] with a non-HTML
+  // output (an rss.xml, a rendered llms.txt) would have reported a finished
+  // build as truncated and sent the reader hunting for a generator error that
+  // did not exist. Asking for each declared file by name is both stricter and
+  // immune to that.
   const declared = parse(fs.readFileSync(SITE, "utf8"));
-  const expected = (declared.page || []).length + (declared.document || []).length;
-  if (files.length < expected) {
+  const wanted = [
+    ...(declared.page || []).map((p) =>
+      p.path === "/" ? "index.html" : `${p.path.replace(/^\//, "")}.html`
+    ),
+    ...(declared.document || []).map((d) => d.output),
+  ];
+  const missing = wanted.filter((f) => !fs.existsSync(path.join(DIST, f)));
+  if (missing.length) {
     console.log(
-      `\ndist/ holds ${files.length} page(s) but site.toml declares ${expected}.` +
-        `\nThe build did not finish — rerun npm run build:site and read its error.`
+      `\ndist/ is missing ${missing.length} declared file(s):\n` +
+        missing.map((f) => `      ${f}`).join("\n") +
+        `\n\nThe build did not finish — rerun npm run build:site and read its error.`
     );
     process.exitCode = 1;
     return;
@@ -368,6 +447,11 @@ async function main() {
     for (const rule of pending) {
       console.log(`  not yet enforced — ${rule.name}: ${rule.turnedOnBy}`);
     }
+  }
+
+  if (UNVERIFIABLE.length) {
+    console.log("\n  NOT ASSERTED");
+    for (const line of UNVERIFIABLE) console.log(`        ${line}`);
   }
 
   if (failed) {

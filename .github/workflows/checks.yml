@@ -94,6 +94,14 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
+      # main.rs promises that retiring a path without a redirect will be
+      # caught. Nothing enforced that: every gate reads the current site.toml
+      # and none of them remembers what used to be in it, so deleting a `path`
+      # and forgetting the [[redirect]] passed everything while an indexed URL
+      # started answering 404. published-paths.txt is the missing memory.
+      - name: no path was retired silently
+        run: npm run check:routes
+
       # The gates above ask whether structured data exists, parses, and avoids
       # the duplicate key JSON.parse resolves in silence. None of them asks
       # whether a reference points at anything: four templates named a WebSite
