@@ -42,6 +42,15 @@ canonical   = "https://taux.io/ai-smart-work"
 date_modified = "2026-07-26"
 
 [[page]]
+path        = "/pqc-migration"
+template    = "pqc-migration.html"
+title       = "後量子密碼 PQC 遷移指南｜台灣企業落地路徑與全球法規時程 | TauX"
+description = "後量子密碼遷移的五步驟執行路徑：治理、CBOM 加密資產盤點、風險評估、加密敏捷性與供應鏈。對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。"
+canonical   = "https://taux.io/pqc-migration"
+date_modified = "2026-08-06"
+date_published = "2026-08-06"
+
+[[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
 title       = "資料治理與 AI 資安｜Data Governance | TauX"
