@@ -187,3 +187,17 @@ canonical   = "https://taux.io/404"
 from   = "/workspace-ai-roi"
 to     = "/google-workspace-with-ai"
 status = 301
+
+# The share card the retired page advertised.
+#
+# Renaming the route moved this file too, and og:image is an absolute URL that
+# every scraper cached before the rename. Redirecting the page without
+# redirecting its card leaves the link working and the card broken — on exactly
+# the content the redirect was added to preserve.
+#
+# A retired route takes its assets with it. Check every absolute URL the old
+# page published, not just its own path.
+[[redirect]]
+from   = "/static/og/workspace-ai-roi.png"
+to     = "/static/og/google-workspace-with-ai.png"
+status = 301
