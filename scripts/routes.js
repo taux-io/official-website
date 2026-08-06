@@ -62,7 +62,27 @@ function readRedirects() {
   }));
 }
 
+// The error documents, which are rendered like pages but are not routes.
+//
+// They are exported separately rather than folded into ROUTES, because every
+// assertion in the contract expects a route to answer 200 at its own path and
+// this one answers 404 at every path but its own. Kept in the table all the
+// same: it goes through the same renderer and the same shared header as a page,
+// so it inherits the same defects, and it was the one rendered document nothing
+// looked at — a check that skips the only page served on every wrong URL is
+// checking the easy half.
+function readErrorDocuments() {
+  const site = parse(fs.readFileSync(path.join(ROOT, "site.toml"), "utf8"));
+  return (site.document || []).map((d) => ({
+    output: d.output,
+    title: d.title,
+    description: d.description,
+    canonical: d.canonical,
+  }));
+}
+
 const REDIRECTS = readRedirects();
+const ERROR_DOCUMENTS = readErrorDocuments();
 
 const ROUTES = [...readRoutes(), ...STANDALONE];
 const VIEWPORTS = [
@@ -72,4 +92,4 @@ const VIEWPORTS = [
 ];
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8099";
 
-module.exports = { ROUTES, REDIRECTS, VIEWPORTS, BASE_URL, ORIGIN };
+module.exports = { ROUTES, REDIRECTS, ERROR_DOCUMENTS, VIEWPORTS, BASE_URL, ORIGIN };
