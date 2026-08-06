@@ -14,7 +14,7 @@
 // table, so adding a page to site.toml is enough to bring it under test.
 
 const { launch } = require("../browser");
-const { ROUTES, BASE_URL, ORIGIN } = require("../routes");
+const { ROUTES, REDIRECTS, BASE_URL, ORIGIN } = require("../routes");
 
 const VIEWPORT = { width: 1440, height: 900 };
 
@@ -380,6 +380,35 @@ async function main() {
         route: "(unmatched path)",
         check: "not found body",
         problem: `lang "${body.lang || "(empty)"}", title "${body.title || "(empty)"}" — not this site's 404 document`,
+      });
+    }
+  }
+
+  // Retired paths.
+  //
+  // A redirect that stops working has one symptom — an old URL answering 404 —
+  // and nobody who still has that URL is in a position to report it. So it is
+  // asserted from the same table the generator emits _redirects from: one
+  // declaration, checked on both sides.
+  //
+  // Both the status and the destination are compared. A 301 to the wrong place
+  // is still a broken promise, and a 302 would tell search engines to keep the
+  // old URL indexed, which is the opposite of retiring it.
+  for (const redirect of REDIRECTS) {
+    checked++;
+    const res = await page.request.get(BASE_URL + redirect.from, { maxRedirects: 0 });
+    const location = res.headers()["location"];
+    if (res.status() !== redirect.status) {
+      failures.push({
+        route: redirect.from,
+        check: "retired path",
+        problem: `expected ${redirect.status}, got ${res.status()}`,
+      });
+    } else if (location !== redirect.to && location !== BASE_URL + redirect.to) {
+      failures.push({
+        route: redirect.from,
+        check: "retired path",
+        problem: `redirects to ${location || "(no Location header)"}, expected ${redirect.to}`,
       });
     }
   }

@@ -59,11 +59,11 @@ canonical   = "https://taux.io/data-governance"
 date_modified = "2026-07-26"
 
 [[page]]
-path        = "/workspace-ai-roi"
-template    = "workspace-ai-roi.html"
+path        = "/google-workspace-with-ai"
+template    = "google-workspace-with-ai.html"
 title       = "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX"
 description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
-canonical   = "https://taux.io/workspace-ai-roi"
+canonical   = "https://taux.io/google-workspace-with-ai"
 date_modified = "2026-07-26"
 date_published = "2026-07-26"
 
@@ -163,3 +163,18 @@ output   = "404.html"
 title    = "找不到這個頁面｜404 | TauX"
 description = "您要找的頁面不存在，可能已經移動或刪除。"
 canonical   = "https://taux.io/404"
+
+# Paths that used to be routes.
+#
+# Declared here rather than hand-written into _redirects for the same reason the
+# sitemap is generated: a hand-maintained list of URLs drifts from the pages it
+# describes, and this project has already paid for that once. The generator
+# emits _redirects from this table and the contract test asserts every entry, so
+# a retired path cannot quietly start answering 404.
+#
+# An entry here is permanent. The whole point is that a URL somebody already
+# linked to keeps working.
+[[redirect]]
+from   = "/workspace-ai-roi"
+to     = "/google-workspace-with-ai"
+status = 301
