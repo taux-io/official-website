@@ -54,7 +54,7 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 -   [Data Governance 數據治理指南](https://taux.io/data-governance): 針對傳統產業數位轉型的完整路徑，包含資料管理到數位治理的成熟度評估。
 -   [Agent Prompting Guide](https://taux.io/agent-prompting-guide): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。
 -   [Prompt Injection 安全指南](https://taux.io/what-is-prompt-injection): AI 提示詞注入攻擊的原理、案例與防禦措施。
--   [OWASP LLM Top 10](https://taux.io/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2025 版撰寫，並載明 2026 版的發布狀態。
+-   [OWASP LLM Top 10 2026](https://taux.io/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2026 版撰寫，並附 2025 到 2026 的排序變動、範圍調整與排序方法的改變。
 -   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
 -   [Claude Skills 實戰指南](https://taux.io/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
 -   [ADK Agent Skill 設計模式](https://taux.io/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
