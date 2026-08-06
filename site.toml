@@ -42,6 +42,15 @@ canonical   = "https://taux.io/ai-smart-work"
 date_modified = "2026-07-26"
 
 [[page]]
+path        = "/threat-landscape"
+template    = "threat-landscape.html"
+title       = "2026 全球威脅報告重點拆解｜CrowdStrike 數據與它的適用限制 | TauX"
+description = "CrowdStrike 2026 全球威脅報告的八組關鍵數據：27 秒 breakout、82% 無檔案偵測、AI 加持攻擊增加 89%。每一組都說明它是怎麼被量出來的，以及那對它能推論到多廣代表什麼。"
+canonical   = "https://taux.io/threat-landscape"
+date_modified = "2026-08-06"
+date_published = "2026-08-06"
+
+[[page]]
 path        = "/pqc-migration"
 template    = "pqc-migration.html"
 title       = "後量子密碼 PQC 遷移指南｜台灣企業落地路徑與全球法規時程 | TauX"

@@ -1,0 +1,321 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No ItemList: eight statistics are not a ranking, and
+     saying they were would misdescribe them to exactly the machines this page
+     is written for.
+
+     Source attribution matters more here than on any other page on this site.
+     The OWASP report is CC BY-SA 4.0 and can be restated entry by entry; this
+     one is proprietary commercial research. Headline findings are summarised
+     with attribution and a link, which is ordinary commentary. Nothing is
+     reproduced wholesale and nothing is presented as our own measurement. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/threat-landscape#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"首頁","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"全球威脅情勢判讀","item":"https://taux.io/threat-landscape" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/threat-landscape#article","headline":"2026 全球威脅報告重點拆解：CrowdStrike 的數據與它的適用限制","description":"CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組是怎麼被量出來的、那對它能推論到多廣代表什麼。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/threat-landscape" },"citation":"CrowdStrike 2026 Global Threat Report"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/threat-landscape#faq","mainEntity": [
+      {"@type":"Question","name":"CrowdStrike 2026 全球威脅報告的重點數據有哪些？","acceptedAnswer": {"@type":"Answer","text":"報告公開頁列出的關鍵數字包括：最快的 eCrime breakout time 為 27 秒；AI 加持的攻擊者發動的攻擊增加 89%；2025 年 82% 的偵測為無惡意檔案（malware-free）；超過 90 個組織的合法 AI 工具被濫用來產生惡意指令；ChatGPT 在犯罪論壇被提及的次數比其他任何模型多 550%；平均 breakout 速度年增 65%；中國系攻擊者所利用的漏洞有 40% 針對邊緣裝置；國家級行為者的雲端導向入侵增加 266%。"
+        }
+      },
+      {"@type":"Question","name":"什麼是 breakout time？27 秒代表什麼？","acceptedAnswer": {"@type":"Answer","text":"Breakout time 指攻擊者從最初入侵的那台主機橫向移動到環境中另一台主機所需的時間。它衡量的是防守方在攻擊擴散之前必須完成偵測、判讀與遏制的時間預算。27 秒是報告中記錄到的最快值，不是平均值——把最快值當成平均會嚴重誤判自己的處境。它真正的意義是：任何依賴人工判讀才能啟動的應變流程，在這個量級上都來不及。"
+        }
+      },
+      {"@type":"Question","name":"為什麼 82% 的偵測是無惡意檔案，這個數字要怎麼讀？","acceptedAnswer": {"@type":"Answer","text":"這個比例同時反映兩件事：攻擊者確實越來越少落地惡意檔案，改用合法工具與竊得的憑證；以及偵測能力本身——看得見無檔案行為正是端點偵測與回應（EDR）產品的核心賣點。這個數字來自 CrowdStrike 自家的偵測遙測，母體是安裝了它的環境。所以它可靠地描述了「在有 EDR 的環境裡看到什麼」，但不能直接外推成全世界的攻擊組成。對防守方的實務結論不變：以檔案特徵為中心的防毒無法覆蓋大部分的偵測。"
+        }
+      },
+      {"@type":"Question","name":"廠商發布的威脅報告可以信嗎？","acceptedAnswer": {"@type":"Answer","text":"可以用，但要知道它量的是什麼。這類報告的數據通常來自廠商自家的產品遙測與事件應變案件，母體是它的客戶群，不是全球所有組織。這不是說數字造假，而是說每一個數字都帶著「在什麼樣的環境裡、用什麼樣的工具、看得見什麼」這三個限制。實務上的用法是把它當成趨勢與攻擊手法的情報來源，而不是當成自己組織風險機率的統計基礎。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Security
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Threat Landscape 2026</span>
+                <span class="display-sub">全球威脅報告的數字怎麼讀</span>
+            </h1>
+            <p class="text-xl text-ink-body mb-8 font-medium max-w-2xl">
+                CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組是怎麼被量出來的——那決定了它能推論到多廣。
+            </p>
+        </header>
+
+        <div class="relative h-16 md:h-20 border-t border-line mt-4">
+            <canvas data-tau-curve="static" data-parallax="0.5"
+                class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
+        </div>
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="章節索引"
+            class="hidden xl:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目錄</p>
+                <ul>
+                    <li><a href="#how-to-read" class="section-index-link">先講怎麼讀</a></li>
+                    <li><a href="#numbers" class="section-index-link">八組數據</a></li>
+                    <li><a href="#speed" class="section-index-link">速度</a></li>
+                    <li><a href="#malware-free" class="section-index-link">無檔案攻擊</a></li>
+                    <li><a href="#ai" class="section-index-link">AI 加持的攻擊</a></li>
+                    <li><a href="#nation-state" class="section-index-link">國家級行為者</a></li>
+                    <li><a href="#what-it-means" class="section-index-link">對防守方的意義</a></li>
+                    <li><a href="#source" class="section-index-link">來源與限制</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- The framing section. This is the page's reason to exist: the numbers
+             themselves are on CrowdStrike's own site and reproduced across
+             hundreds of posts. What is almost never said is where they come
+             from and what that bounds them to. -->
+        <section id="how-to-read" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">00</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">先講怎麼讀，再看數字</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <p>
+                    這些數字值得看，但它們不是普查。<strong class="text-ink">威脅報告的資料來自廠商自家的產品遙測與事件應變案件</strong>，母體是它的客戶環境——安裝了端點偵測與回應（EDR）產品、多半是有預算做這件事的組織。
+                </p>
+                <p>
+                    這不是說數字造假。是說每一個數字都帶著三個限制：<strong class="text-ink">在什麼樣的環境裡量的、用什麼工具量的、那個工具看得見什麼</strong>。忽略這三件事，就會把「有 EDR 的環境裡看到的樣子」當成「全世界的樣子」。
+                </p>
+                <div class="border-l border-line-strong pl-6">
+                    <p class="eyebrow mb-2">實用的判準</p>
+                    <p>
+                        把這類報告當成<strong class="text-ink">攻擊手法與趨勢的情報</strong>來用——那是它真正紮實的部分，因為那來自實際處理過的案件。<strong class="text-ink">不要</strong>把它的百分比當成自己組織風險機率的統計基礎，那需要的是你自己環境的資料。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="numbers" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">01</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">八組數據</h2>
+            <p class="text-ink-body leading-relaxed mb-8">
+                以下數字均取自 CrowdStrike 2026 全球威脅報告的公開頁面。報告涵蓋的是 2025 年的觀測資料。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-ink text-sm">數字</th>
+                            <th class="py-3 font-bold text-ink text-sm">意義</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-ink-body align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">27 秒</td>
+                            <td class="py-4"><a href="#speed" class="text-ink">最快的 eCrime breakout time</a>——記錄到的最快值，不是平均</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4"><a href="#speed" class="text-ink">平均 breakout 速度年增幅</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4"><a href="#malware-free" class="text-ink">2025 年的偵測為無惡意檔案</a>（malware-free）</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4"><a href="#ai" class="text-ink">AI 加持的攻擊者所發動的攻擊增幅</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4"><a href="#ai" class="text-ink">組織的合法 AI 工具被濫用</a>來產生惡意指令</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4"><a href="#ai" class="text-ink">ChatGPT 在犯罪論壇被提及的次數</a>高於其他任何模型</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4"><a href="#nation-state" class="text-ink">中國系攻擊者利用的漏洞針對邊緣裝置</a></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-mono text-ink font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4"><a href="#nation-state" class="text-ink">國家級行為者的雲端導向入侵增幅</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="speed" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">02</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">速度：27 秒與 +65%</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">數字是什麼</p>
+                    <p>
+                        <strong class="text-ink">Breakout time</strong> 指攻擊者從最初入侵的那台主機，橫向移動到環境中另一台主機所需的時間。它衡量的是防守方的<strong class="text-ink">時間預算</strong>：在攻擊擴散出去之前，偵測、判讀與遏制必須全部完成。報告記錄到的最快值是 27 秒，平均速度年增 65%。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎麼讀</p>
+                    <p>
+                        <strong class="text-ink">27 秒是最快值，不是平均值。</strong>把它當成平均會嚴重誤判——多數攻擊沒有這麼快。但它有一個誠實的用法：它界定了<strong class="text-ink">最壞情況下你有多少時間</strong>，而任何需要人先看一眼才能啟動的應變流程，在這個量級上都來不及。
+                    </p>
+                    <p class="mt-4">
+                        「+65%」比「27 秒」有用得多，因為那是同一套量測方法在兩個年度之間的比較——<strong class="text-ink">同一支尺量兩次，尺本身的偏差會抵消掉</strong>。這是廠商報告裡最值得看的一類數字：年增率的可信度高於絕對值。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="malware-free" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">03</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">無檔案攻擊：82%</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">數字是什麼</p>
+                    <p>2025 年的偵測有 82% 屬於「malware-free」——攻擊過程中沒有落地惡意檔案，改用系統內建工具、合法軟體與竊得的憑證。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎麼讀</p>
+                    <p>
+                        這是整份報告裡<strong class="text-ink">最需要小心的一個數字</strong>，因為它同時反映兩件事：
+                    </p>
+                    <ol class="space-y-3 list-none mt-4">
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>攻擊者行為確實在改變，這一點有大量獨立證據支持。</span></li>
+                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span><strong class="text-ink">偵測能力本身。</strong>「看得見沒有檔案的攻擊」正是 EDR 產品的核心賣點。一個看不見行為只看得見檔案的工具，它的 malware-free 比例會是零——不是因為那些攻擊不存在，是因為它看不到。</span></li>
+                    </ol>
+                    <p class="mt-4">
+                        所以這個比例可靠地描述了<strong class="text-ink">「在有 EDR 的環境裡會看到什麼」</strong>，但不能直接外推成全世界的攻擊組成。
+                    </p>
+                </div>
+                <div class="border-l border-line-strong pl-6">
+                    <p class="eyebrow mb-2">但實務結論不受影響</p>
+                    <p>
+                        不管真實比例是 82% 還是別的數字，方向是明確的：<strong class="text-ink">以檔案特徵為中心的防毒，覆蓋不到大部分的偵測</strong>。這個結論不需要那個百分比精確才成立。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">04</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">AI 加持的攻擊：+89%、90+、+550%</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">數字是什麼</p>
+                    <p>
+                        AI 加持的攻擊者所發動的攻擊增加 89%；超過 90 個組織的<strong class="text-ink">合法 AI 工具</strong>被濫用來產生惡意指令；ChatGPT 在犯罪論壇被提及的次數比其他任何模型多 550%。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎麼讀</p>
+                    <p>
+                        「AI 加持」這個標籤的<strong class="text-ink">認定標準是廠商定義的</strong>，不同報告之間不可比較。所以「+89%」要當成同一份報告內部的趨勢訊號，不要拿去跟別家的數字並列。
+                    </p>
+                    <p class="mt-4">
+                        「+550%」測的是<strong class="text-ink">論壇提及次數</strong>，那是討論熱度的代理指標，不等於實際被用來發動攻擊的次數。ChatGPT 被提最多，很大程度也反映它最普及。
+                    </p>
+                    <p class="mt-4">
+                        <strong class="text-ink">「90+ 組織的合法 AI 工具被濫用」是這三個裡最紮實的一個</strong>——它是可數的事件，不是比例，也不是需要定義才能認定的分類。而它指向的正是這個站另一頁在講的東西：問題不在模型本身，在<strong class="text-ink">誰能餵它什麼、以及它被授權去做什麼</strong>。
+                    </p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">延伸</span>
+                    企業自己部署的 LLM 應用要怎麼防，見
+                    <a href="/owasp-llm-top-10" class="text-ink underline">OWASP LLM Top 10</a>——尤其是提示詞注入與過度代理權那兩條。
+                </p>
+            </div>
+        </section>
+
+        <section id="nation-state" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">05</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">國家級行為者：40% 與 +266%</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">數字是什麼</p>
+                    <p>中國系攻擊者所利用的漏洞有 40% 針對<strong class="text-ink">邊緣裝置</strong>；國家級行為者的<strong class="text-ink">雲端導向入侵</strong>增加 266%。報告點名的對手包括 OPERATOR PANDA（中國）、FAMOUS CHOLLIMA（北韓）與 PUNK SPIDER（eCrime）。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎麼讀</p>
+                    <p>
+                        歸因到特定國家的判斷<strong class="text-ink">建立在廠商自己的情報方法論上</strong>，而那套方法論不完全公開。這是威脅情報這個領域的常態，不是缺陷，但它意味著這類分類無法被外部獨立驗證。
+                    </p>
+                    <p class="mt-4">
+                        對台灣的組織來說，<strong class="text-ink">「40% 針對邊緣裝置」比歸因本身重要得多</strong>。邊緣裝置——VPN 閘道、防火牆、路由器、NAS——通常不在端點防護的涵蓋範圍內、更新週期長、而且一旦被攻破就直接位於網路邊界內側。這是一個與「是誰做的」無關、但可以立刻拿去盤點的方向。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-it-means" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">06</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">對防守方的意義</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <p>
+                    把上面的限制全部扣掉之後，剩下的方向仍然成立——因為它們不依賴任何一個百分比精確：
+                </p>
+                <ol class="space-y-3 list-none">
+                    <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span><strong class="text-ink">應變速度是設計問題，不是人力問題。</strong>需要人先看一眼才能啟動的流程，跟不上以秒計的橫向移動。</span></li>
+                    <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span><strong class="text-ink">身分與憑證是主戰場。</strong>攻擊者越少落地檔案，就越依賴看起來合法的登入。</span></li>
+                    <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span><strong class="text-ink">邊緣裝置要進盤點。</strong>它們常常不在任何一張資產清單上，而那正是它們被選中的原因。</span></li>
+                    <li class="flex gap-4"><span class="font-mono text-ink shrink-0">04</span><span><strong class="text-ink">你自己導入的 AI 工具是新的攻擊面。</strong>報告裡「合法 AI 工具被濫用」那 90 多個組織，用的是他們自己買的東西。</span></li>
+                </ol>
+                <p class="border-l border-line-strong pl-6">
+                    這四點沒有一項需要那些數字準確才成立。<strong class="text-ink">如果一份報告的價值取決於它的百分比是否精確，那它多半不值得拿來做決策。</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source and limits. Attribution is not a footnote on this page — it
+             is half the argument. -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-mono">來源與限制</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">這些數字從哪裡來</h2>
+            <div class="space-y-6 text-ink-body leading-relaxed">
+                <p>
+                    全部數據取自
+                    <a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="text-ink underline">CrowdStrike 2026 Global Threat Report</a>
+                    的公開頁面，<strong class="text-ink">查證於 2026-08-06</strong>。報告涵蓋 2025 年的觀測資料，版權屬 CrowdStrike。
+                </p>
+                <p>
+                    本頁<strong class="text-ink">摘要其公開發布的重點並附上判讀</strong>，不重製報告內容，數據與研究成果均非 TauX 所有。要看完整方法論、圖表與對手側寫，請直接閱讀原始報告。
+                </p>
+                <p>
+                    本頁的判讀、譯名與對防守方的建議由 TauX 撰寫，<strong class="text-ink">不代表 CrowdStrike 立場</strong>。指出一份報告的資料來源限制不是質疑它的誠信——那是使用任何遙測資料時都該做的事，包括我們自己產出的。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <h2 class="font-display text-3xl font-bold text-ink mb-6">想知道這些趨勢對你的環境代表什麼？</h2>
+            <p class="text-ink-body mb-10 max-w-[42ch] text-lg">
+                報告講的是全球樣態，你需要的是自己的資產清單與暴露面。那從盤點開始。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">預約諮詢</a>
+                <a href="/data-governance" class="btn-quiet">看資料治理服務</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

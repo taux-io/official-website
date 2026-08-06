@@ -3,7 +3,7 @@
 
 <footer class="relative z-10 bg-surface-deep border-t border-line pt-24 pb-10">
     <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
             <!-- Brand -->
             <div>
                 <a href="/" class="block font-display text-2xl uppercase tracking-[0.09em] text-ink mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
@@ -26,39 +26,60 @@
                 </div>
             </div>
 
+            <!-- Grouped by subject, not by content type.
+
+                 The previous split was Services / Guides / Company, which mixed
+                 two axes: "Services" is a kind of page, "Security" is a topic.
+                 Anything that was both had no home — /data-governance is a
+                 service page whose subject is security, and /pqc-migration
+                 hangs off it — and the header and footer had already drifted
+                 apart over exactly one such case.
+
+                 Subjects are mutually exclusive, so every page has one place.
+                 Each column now mixes service pages with guides, which is the
+                 right way round: a visitor arrives with a problem, not with a
+                 preference about content types. -->
             <div>
-                <h2 class="eyebrow mb-8">01 — Services</h2>
+                <h2 class="eyebrow mb-8">01 — GEO</h2>
                 <ul class="space-y-4">
                     <li><a href="/geo-optimization"
                             class="footer-link">GEO Optimization</a></li>
-                    <li><a href="/ai-smart-work"
-                            class="footer-link">Smart Work</a></li>
-                    <li><a href="/data-governance"
-                            class="footer-link">Data Governance</a></li>
-                    <li><a href="/pqc-migration"
-                            class="footer-link">PQC Migration</a></li>
-                    <li><a href="/agent-prompting-guide"
-                            class="footer-link">Prompt Guide</a></li>
+                    <li><a href="/geo-guide"
+                            class="footer-link">GEO Guide</a></li>
+                    <li><a href="/what-is-llms-txt"
+                            class="footer-link">LLMs.txt</a></li>
                 </ul>
             </div>
 
             <div>
-                <h2 class="eyebrow mb-8">02 — Guides</h2>
+                <h2 class="eyebrow mb-8">02 — AI</h2>
                 <ul class="space-y-4">
-                    <li><a href="/geo-guide"
-                            class="footer-link">GEO Guide</a></li>
+                    <li><a href="/ai-smart-work"
+                            class="footer-link">Smart Work</a></li>
                     <li><a href="/google-workspace-with-ai"
-                            class="footer-link">Workspace ROI</a></li>
-                    <li><a href="/what-is-llms-txt"
-                            class="footer-link">LLMs.txt</a></li>
-                    <li><a href="/what-is-prompt-injection"
-                            class="footer-link">Prompt Security</a></li>
-                    <li><a href="/owasp-llm-top-10"
-                            class="footer-link">OWASP LLM Top 10</a></li>
+                            class="footer-link">Google Workspace with AI</a></li>
+                    <li><a href="/agent-prompting-guide"
+                            class="footer-link">Prompt Guide</a></li>
                     <li><a href="/claude-skills-guide"
                             class="footer-link">Skills Guide</a></li>
                     <li><a href="/adk-skill-patterns"
                             class="footer-link">ADK Patterns</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h2 class="eyebrow mb-8">03 — Security</h2>
+                <ul class="space-y-4">
+                    <li><a href="/data-governance"
+                            class="footer-link">Data Governance</a></li>
+                    <li><a href="/threat-landscape"
+                            class="footer-link">Threat Landscape</a></li>
+                    <li><a href="/owasp-llm-top-10"
+                            class="footer-link">OWASP LLM Top 10</a></li>
+                    <li><a href="/what-is-prompt-injection"
+                            class="footer-link">Prompt Security</a></li>
+                    <li><a href="/pqc-migration"
+                            class="footer-link">PQC Migration</a></li>
                 </ul>
             </div>
 
@@ -72,7 +93,7 @@
                  is nothing to point them at: adding them back is a job for
                  whoever builds the pages they promised. -->
             <div>
-                <h2 class="eyebrow mb-8">03 — Company</h2>
+                <h2 class="eyebrow mb-8">04 — Company</h2>
                 <ul class="space-y-4">
                     <li><a href="/about"
                             class="footer-link">About</a></li>
