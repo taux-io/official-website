@@ -60,7 +60,21 @@ struct Document {
     output: String,
     title: String,
     description: String,
+    /// Empty suppresses both `<link rel="canonical">` and `og:url`.
+    ///
+    /// The 404 document is served for every unmatched path *and* is addressable
+    /// at `/404`, where a static host answers 200. A self-referencing canonical
+    /// on that page invites an answer engine to index "this page does not exist"
+    /// as a page. It has no canonical URL because it is not a document about
+    /// anything; the empty string says that.
     canonical: String,
+    /// Emits `<meta name="robots" content="noindex, follow">`.
+    ///
+    /// `follow` rather than `none`: the links in the header and footer are the
+    /// site's real navigation and there is no reason to stop a crawler using
+    /// them just because it should not index the page it found them on.
+    #[serde(default)]
+    noindex: bool,
 }
 
 #[derive(Debug, Deserialize)]
@@ -179,6 +193,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             title => &page.title,
             description => &page.description,
             canonical => Value::from_safe_string(page.canonical.clone()),
+            // Every routed page is indexable; only the error document opts out.
+            // Passed explicitly rather than defaulted in the template because
+            // UndefinedBehavior::Strict makes an absent variable a build error,
+            // and that is the behaviour worth keeping.
+            noindex => false,
             year => year,
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
@@ -209,6 +228,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             title => &doc.title,
             description => &doc.description,
             canonical => Value::from_safe_string(doc.canonical.clone()),
+            noindex => doc.noindex,
             year => year,
             og_image => Value::from_safe_string(format!("{ORIGIN}/static/og/index.png")),
         })?);

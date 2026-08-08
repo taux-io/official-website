@@ -3,6 +3,7 @@ Allow: /
 Disallow: /static/css/
 Disallow: /static/js/
 Disallow: /404.html
+Disallow: /404
 
 # GEO: Explicitly allow AI Crawlers and LLMs
 User-agent: GPTBot

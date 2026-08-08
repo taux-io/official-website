@@ -32,6 +32,11 @@ module.exports = {
           strong: "rgb(var(--line-rgb) / 0.35)",
         },
 
+        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes,
+        // but note that anything below /60 drops under AA on this ground — the
+        // contrast audit will catch it, which is the intended safety net rather
+        // than a reason to reach for it.
+        phosphor: "rgb(var(--phosphor-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // D-DIN carries the Latin; CJK falls through to the system faces,
@@ -55,10 +60,25 @@ module.exports = {
           "sans-serif",
         ],
         // Self-hosted, so the dates, section numbers and measurements that use
-        // this look the same on every machine. The system stack stays behind it
-        // for the glyphs outside the Latin subset.
+        // this look the same on every machine.
+        //
+        // THE CJK FACES ARE LOAD-BEARING AND MUST STAY IN FRONT OF THE GENERIC
+        // MONOSPACE. Roboto Mono's unicode-range excludes CJK, so Chinese in a
+        // mono run falls through this list. With the system faces here it lands
+        // on PingFang TC or Microsoft JhengHei — the same faces the rest of the
+        // site uses, which is correct. Remove them and it falls to generic
+        // `monospace`, which on Windows is MingLiU: a serif the site sets
+        // nowhere else, on 95 of the 186 eyebrows. That regression is invisible
+        // on a Mac.
+        //
+        // Nothing checks this. It is one line away from breaking and the failure
+        // shows up only on Windows. See DESIGN.md decision #35 for why the rule
+        // that would have caught it was not written.
         mono: [
           "Roboto Mono",
+          "PingFang TC",
+          "Microsoft JhengHei",
+          "Noto Sans TC",
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",
@@ -66,6 +86,11 @@ module.exports = {
           "Consolas",
           "monospace",
         ],
+        // Departure Mono only. No fallback chain worth writing: this stack is
+        // for blocks that are entirely pixel-set, and if the face fails to load
+        // the right outcome is the generic monospace the browser picks, not a
+        // half-pixel hybrid.
+        pixel: ["Departure Mono", "monospace"],
       },
       // Every rectangular step collapses to the radius token; `full` is kept
       // so genuine circles survive.
