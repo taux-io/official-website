@@ -88,8 +88,8 @@ SpaceX 時期訂的是「參考站與本站規則衝突時，參考站為準」�
 | Token — phosphor 強調色 | ✅ | ① |
 | 字體 — box-drawing 子集 | ✅ | ① |
 | 字體 — Departure Mono | ✅ | ① |
-| 字體 — mono 堆疊納入 CJK | ✅ | ① |
 | 版面 — 404 的 noindex 與 canonical | ✅ | ① |
+| 字體 — mono 堆疊納入 CJK | ⬜ | ② |
 | 檢查 — 三條新規則（關閉進場） | ✅ | ① |
 | 等寬字治理 — eyebrow | ⬜ | ② |
 | 等寬字治理 — 表格與數據 | ⬜ | ② |
@@ -172,7 +172,7 @@ SpaceX 時期訂的是「參考站與本站規則衝突時，參考站為準」�
 - **不得用於內文段落**。
 - 允許：數據關鍵值、當前狀態、ASCII 圖形的單一強調筆畫、`[aria-current]` 態。
 
-⚠️ `text-phosphor/60` 是 4.38:1、`/50` 是 3.35:1，**都低於 AA**。對比稽核會抓到，但不要當成可以往下探的許可。`bg-phosphor` 配繼承的墨色文字是 1.62:1，那是一條看不見的色帶。
+⚠️ 實測階梯：`/100` 10.80:1、`/70` 5.63:1、`/65` 4.98:1、`/60` **4.38:1**、`/50` **3.35:1**。**`/65` 是文字還站得住的最低一階，不是 `/60`。** 對比稽核會抓到，但不要當成可以往下探的許可。`bg-phosphor` 配繼承的墨色文字是 1.62:1，那是一條看不見的色帶。
 
 ⚠️ **token 值可以改，名稱不可以改。** 改名的波及範圍實測為 **1,525 處** utility 出現位置、**20** 個模板檔案，外加三個以 `getComputedStyle` 或正則讀取這些變數的 JS 消費者（曲線繪製、圖表、分享卡產生器），其中只有分享卡產生器會**大聲失敗**，另外兩個會靜默降級成 fallback 值。
 
@@ -194,7 +194,13 @@ SpaceX 時期訂的是「參考站與本站規則衝突時，參考站為準」�
 
 自架。承載**機器輸出**，見「等寬字治理」。
 
-⚠️ **mono 堆疊裡的 CJK 字體是承重結構。** Roboto Mono 的 `unicode-range` 排除 CJK，所以等寬文字流裡的中文會沿堆疊往下掉。堆疊中放了 `PingFang TC` / `Microsoft JhengHei` / `Noto Sans TC`，中文因此落在**與全站其餘部分相同的字體**上。把它們拿掉，中文會落到通用 `monospace`，在 Windows 上是**細明體**——一款全站他處都沒用過的襯線字，出現在 95 個 eyebrow 上。**這個退化在 Mac 上完全看不見。** 見決策 #35。
+⚠️ **mono 堆疊裡的 CJK 字體是承重結構，而放進去是一個看得見的改動，不是 no-op。**
+
+Roboto Mono 的 `unicode-range` 排除 CJK，所以等寬文字流裡的非拉丁字元會沿堆疊往下掉。階段 ② 會把 `PingFang TC` / `Microsoft JhengHei` / `Noto Sans TC` 放到 `ui-monospace` 之前，讓中文落在**與全站其餘部分相同的字體**上——這是 eyebrow 改等寬的前提。
+
+但**站上今天已經有 14 個元素**帶著 `font-mono` 且含非拉丁字元：`about.html` 那個品牌 τ（U+03C4 同樣不在 Roboto Mono 的範圍內），以及 `pqc-migration`、`threat-landscape`、`owasp-llm-top-10`、`agent-prompting-guide` 裡的十三個中文標籤。它們現在落在 SF Mono／Consolas 上，改了之後會落在 PingFang TC 上。**那是真的視覺改變**，所以它屬於階段 ②，不屬於「零改變」的階段 ①。
+
+拿掉那三個 CJK 字體，中文會落到通用 `monospace`，在 Windows 上是**細明體**——一款全站他處都沒用過的襯線字。**這個退化在 Mac 上完全看不見。** 見決策 #35。
 
 ### box-drawing 子集
 
@@ -360,7 +366,11 @@ pixel:     Departure Mono, monospace        ← 僅限 ASCII 區塊
 
 它仍然必須保留 `display-lead` 與 `display-sub`——`check:design` 的標題結構規則同樣讀 `[[document]]`。
 
-**已修正的缺陷**：`/404` 在靜態主機上回應 **HTTP 200**（`not_found_handling` 只管未匹配路徑），過去帶著自我指向的 canonical 且沒有 `noindex`，等於邀請爬蟲把「這頁不存在」當成一個頁面收錄。而唯一的 robots 規則擋的是 `/404.html`——一個只會轉址的路徑。現在 `canonical` 留空（同時抑制 `og:url`）、輸出 `noindex, follow`、`robots.txt` 補上 `/404`。
+**已修正的缺陷**：`/404` 在靜態主機上回應 **HTTP 200**（`not_found_handling` 只管未匹配路徑），過去帶著自我指向的 canonical 且沒有 `noindex`，等於邀請爬蟲把「這頁不存在」當成一個頁面收錄。而唯一的 robots 規則擋的是 `/404.html`——一個只會轉址的路徑。現在 `canonical` 留空（同時抑制 `og:url`）、輸出 `noindex, follow`，而 **`robots.txt` 刻意不擋 `/404`**——連舊有的 `Disallow: /404.html` 也一併移除。
+
+**meta 指令只有在爬蟲被允許抓取該頁時才會生效。** 擋掉抓取等於讓 `noindex` 永遠讀不到，而任何一條外部連結仍然能讓那個 URL 以「無摘要的裸連結」被列出——正是這次要消滅的結果。舊的 `Disallow: /404.html` 有同樣的缺陷，而且指向一個只會轉址的路徑。同時值得知道：`robots.txt` 裡 15 個具名爬蟲各自有自己的群組，依 RFC 9309 只服從最具體的那一組，所以 `*` 群組裡的 `Disallow` 對它們（含 Googlebot）本來就沒有作用。
+
+`noindex` 同時存在於 `[[page]]` 與 `[[document]]`，兩者行為一致。它必須放在兩處，因為 serde 會**靜默丟棄**不認識的鍵：只有 `Document` 懂它的時候，寫在 `[[page]]` 上的 `noindex = true` 會乾淨地解析、渲染不出任何東西、所有 gate 全綠，而頁面照樣被索引。兩種條目在 `site.toml` 裡只隔兩個區塊，一個吃掉旗標一個不吃，是那種讀不出來的缺陷。
 
 ⚠️ **這個修正沒有任何 gate 覆蓋。** `contrast` 與 `contract` 都只走 `[[page]]` 路由，404 是 `[[document]]`，兩者從不請求它。驗證方式是手動：`npm run serve` 之後 `curl -i localhost:8099/404`。
 

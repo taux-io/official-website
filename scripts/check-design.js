@@ -360,6 +360,96 @@ function ruleAnchorIntegrity(files) {
 
 // ---------------------------------------------------------------------------
 
+// A tag scanner that tracks nesting, so a rule can ask two questions the flat
+// `elements()` generator cannot answer: where does this element's subtree end,
+// and what is it inside?
+//
+// The first draft of the two rules below did both with string arithmetic —
+// `html.indexOf("</div>", start)` for the subtree and "does `data-specimen`
+// appear earlier in the file" for containment. Both are wrong in the direction
+// that reports success: the first stops at the *inner* close tag of any nested
+// same-tag element, so a decorative empty div in front of a heading hides the
+// heading; the second lets one specimen block near the top of a file exempt
+// everything below it.
+const VOID_TAGS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input",
+  "link", "meta", "source", "track", "wbr",
+]);
+
+function parseElements(html) {
+  const nodes = [];
+  const stack = [];
+  for (const m of html.matchAll(/<(\/?)([a-zA-Z][a-zA-Z0-9-]*)\b([^>]*?)(\/?)>/g)) {
+    const closing = m[1] === "/";
+    const tag = m[2].toLowerCase();
+    if (closing) {
+      // Tolerate stray close tags by unwinding to the nearest matching open
+      // rather than assuming the document is well formed.
+      for (let i = stack.length - 1; i >= 0; i--) {
+        if (stack[i].tag === tag) {
+          stack[i].contentEnd = m.index;
+          stack.length = i;
+          break;
+        }
+      }
+      continue;
+    }
+    const attrs = m[3] || "";
+    const cls = /class="([^"]*)"/.exec(attrs);
+    const node = {
+      tag,
+      attrs,
+      classes: cls ? cls[1].split(/\s+/).filter(Boolean) : [],
+      index: m.index,
+      contentStart: m.index + m[0].length,
+      contentEnd: null,
+      ancestors: stack.slice(),
+    };
+    nodes.push(node);
+    if (VOID_TAGS.has(tag) || m[4] === "/") node.contentEnd = node.contentStart;
+    else stack.push(node);
+  }
+  // Anything still open at EOF owns the rest of the file.
+  for (const open of stack) open.contentEnd = html.length;
+  return nodes;
+}
+
+const subtreeText = (html, node) =>
+  html
+    .slice(node.contentStart, node.contentEnd)
+    .replace(/<[^>]*>/g, "")
+    .replace(/&#x?[0-9a-fA-F]+;/g, "")
+    .trim();
+
+const hasAttr = (node, re) => re.test(node.attrs) || node.ancestors.some((a) => re.test(a.attrs));
+
+// Every template a route actually renders, resolved through its includes, with
+// the file each element really came from. Two rules need this and they used to
+// disagree about it: one walked rendered pages and the other walked raw files,
+// so a partial that only 404.html includes was judged as though it were a page.
+function renderedNodes(name, byName, seen = new Set()) {
+  const out = [];
+  if (seen.has(name)) return out;
+  seen.add(name);
+  const f = byName.get(name);
+  if (!f) return out;
+
+  for (const node of parseElements(f.html)) {
+    out.push({ node, file: f.rel, line: lineOf(f.html, node.index), html: f.html });
+  }
+  for (const inc of includesOf(f.html)) out.push(...renderedNodes(inc, byName, seen));
+  return out;
+}
+
+function routeTemplates(files) {
+  const site = parse(fs.readFileSync(SITE, "utf8"));
+  const declared = [...(site.page || []), ...(site.document || [])].map((p) => p.template);
+  const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
+  return { declared, byName };
+}
+
+// ---------------------------------------------------------------------------
+
 // Phosphor is the first non-ink colour this vocabulary has ever carried, and the
 // argument for adding it (DESIGN.md decision #27) rests entirely on it staying
 // rare: a dither texture needs one dimension to separate structure from noise,
@@ -370,39 +460,35 @@ function ruleAnchorIntegrity(files) {
 // element in the footer appears once in the source and on every page of the
 // site. That is the same reason ruleAnchorIntegrity resolves through includes.
 const PHOSPHOR_BUDGET = 5;
-const PHOSPHOR_CLASS = /^(?:text|bg|border|fill|stroke|decoration)-phosphor(?:\/\d+)?$/;
 
-function renderedPhosphor(name, byName, seen = new Set()) {
-  const hits = [];
-  if (seen.has(name)) return hits;
-  seen.add(name);
-
-  const f = byName.get(name);
-  if (!f) return hits;
-
-  for (const el of elements(f.html)) {
-    if (el.classes.map(stripVariants).some((c) => PHOSPHOR_CLASS.test(c))) {
-      hits.push({ file: f.rel, line: lineOf(f.html, el.index) });
-    }
-  }
-  for (const inc of includesOf(f.html)) hits.push(...renderedPhosphor(inc, byName, seen));
-  return hits;
-}
+// Any utility whose colour slot resolves to the token, not a hand-listed six.
+// `theme.extend.colors.phosphor` makes Tailwind emit text-, bg-, border-, ring-,
+// shadow-, outline-, divide-, accent-, caret-, placeholder-, fill-, stroke-,
+// decoration- and the gradient from-/via-/to- forms; enumerating a subset is how
+// a budget silently stops counting. The opacity tail accepts both `/50` and the
+// arbitrary `/[0.06]` a low-alpha dither panel is written with.
+const PHOSPHOR_CLASS = /(?:^|-)phosphor(?:\/(?:\d+|\[[^\]]*\]))?$/;
 
 function rulePhosphorBudget(files) {
   const found = [];
-  const site = parse(fs.readFileSync(SITE, "utf8"));
-  const declared = [...(site.page || []), ...(site.document || [])].map((p) => p.template);
-  const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
+  const { declared, byName } = routeTemplates(files);
 
   for (const template of declared) {
     if (!byName.has(template)) continue; // ruleHeadingStructure already reports this
-    const hits = renderedPhosphor(template, byName);
+    const hits = renderedNodes(template, byName).filter(({ node }) =>
+      node.classes.map(stripVariants).some((c) => PHOSPHOR_CLASS.test(c))
+    );
     if (hits.length <= PHOSPHOR_BUDGET) continue;
+
+    // Report where the offending element actually lives. Pairing the entry
+    // template's name with a line number that came from footer.html sends the
+    // reader to unrelated markup, on a rule whose only job is to point at the
+    // element to delete.
+    const over = hits[PHOSPHOR_BUDGET];
     found.push({
-      file: template,
-      line: hits[PHOSPHOR_BUDGET].line,
-      detail: `${hits.length} phosphor elements on the rendered page, budget is ${PHOSPHOR_BUDGET}`,
+      file: over.file,
+      line: over.line,
+      detail: `${hits.length} phosphor elements on ${template} once includes are resolved, budget is ${PHOSPHOR_BUDGET}`,
     });
   }
   return found;
@@ -417,27 +503,24 @@ function rulePhosphorBudget(files) {
 // Texture belongs on a sibling or in a font glyph, not on an ancestor of text.
 // This reads templates, so a background-image introduced in input.css is out of
 // its reach — that limit is real and is recorded in DESIGN.md decision #32.
+const BG_IMAGE_INLINE = /style="[^"]*background-image\s*:/i;
+// The idiomatic way to add one in this codebase is a utility, not a style
+// attribute: bg-[url(...)] and every gradient helper resolve to background-image.
+const BG_IMAGE_CLASS = /^bg-(?:\[url\(|gradient-to-|linear-|radial-|conic-)/;
+
 function ruleTextureNotBehindText(files) {
   const found = [];
   for (const { rel, html } of files) {
-    for (const m of html.matchAll(/<([a-zA-Z][a-zA-Z0-9-]*)\b([^>]*)>/g)) {
-      const attrs = m[2];
-      if (!/style="[^"]*background-image\s*:/i.test(attrs)) continue;
-      const tag = m[1].toLowerCase();
-      if (tag === "img" || tag === "br" || tag === "hr" || tag === "input") continue;
-
-      // Everything up to the matching close tag is an over-approximation of the
-      // subtree, which is the safe direction: it can only over-report, and an
-      // over-report here is a human looking at one element.
-      const close = html.indexOf(`</${tag}>`, m.index);
-      const inner = close === -1 ? "" : html.slice(m.index + m[0].length, close);
-      const text = inner.replace(/<[^>]*>/g, "").replace(/&#x?[0-9a-fA-F]+;/g, "").trim();
-      if (!text) continue;
+    for (const node of parseElements(html)) {
+      const inline = BG_IMAGE_INLINE.test(node.attrs);
+      const utility = node.classes.map(stripVariants).some((c) => BG_IMAGE_CLASS.test(c));
+      if (!inline && !utility) continue;
+      if (!subtreeText(html, node)) continue;
 
       found.push({
         file: rel,
-        line: lineOf(html, m.index),
-        detail: `background-image on an ancestor of text blinds the contrast audit`,
+        line: lineOf(html, node.index),
+        detail: "background-image on an ancestor of text blinds the contrast audit",
       });
     }
   }
@@ -452,24 +535,29 @@ function ruleTextureNotBehindText(files) {
 // It is therefore allowed in exactly two places: the 404 document, which is a
 // whole page set in it, and blocks explicitly marked as specimens.
 const PIXEL_TEMPLATES = new Set(["404.html"]);
+const SPECIMEN = /\bdata-specimen\b/;
 
 function rulePixelScope(files) {
   const found = [];
-  for (const { rel, html } of files) {
-    if (PIXEL_TEMPLATES.has(path.basename(rel))) continue;
-    for (const el of elements(html)) {
-      if (!el.classes.map(stripVariants).includes("font-pixel")) continue;
+  const { declared, byName } = routeTemplates(files);
+  const seenAt = new Set();
 
-      // A specimen marks itself, and the mark has to be on the element or on an
-      // ancestor — read here as "appears earlier in the file", which is the same
-      // over-approximation ruleTextureNotBehindText takes and in the same safe
-      // direction.
-      const before = html.slice(0, el.index);
-      if (/data-specimen\b/.test(before) || /data-specimen\b/.test(html.slice(el.index, el.index + 400))) continue;
+  for (const template of declared) {
+    if (PIXEL_TEMPLATES.has(template) || !byName.has(template)) continue;
+    for (const { node, file, line } of renderedNodes(template, byName)) {
+      if (!node.classes.map(stripVariants).includes("font-pixel")) continue;
+      // A specimen marks itself or an ancestor of itself — not merely something
+      // earlier in the same file.
+      if (hasAttr(node, SPECIMEN)) continue;
+
+      // A partial reached from several routes is one defect, not one per route.
+      const key = `${file}:${line}`;
+      if (seenAt.has(key)) continue;
+      seenAt.add(key);
 
       found.push({
-        file: rel,
-        line: lineOf(html, el.index),
+        file,
+        line,
         detail: "font-pixel outside 404.html and outside a data-specimen block",
       });
     }

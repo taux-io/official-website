@@ -103,6 +103,17 @@ struct Page {
     /// not supply it fails the build rather than borrowing another date.
     #[serde(default)]
     date_published: Option<String>,
+    /// Emits `<meta name="robots" content="noindex, follow">`, same as on a
+    /// document.
+    ///
+    /// It lives here as well as on `Document` because serde silently discards
+    /// unknown keys: written on a `[[page]]` while only `Document` understood
+    /// it, `noindex = true` parsed cleanly, rendered nothing, and left a page
+    /// indexed with every gate green. Two entry kinds two blocks apart in
+    /// site.toml, one of which honoured the flag and one of which ate it, is
+    /// exactly the shape of defect nobody finds by reading.
+    #[serde(default)]
+    noindex: bool,
 }
 
 impl Page {
@@ -193,11 +204,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             title => &page.title,
             description => &page.description,
             canonical => Value::from_safe_string(page.canonical.clone()),
-            // Every routed page is indexable; only the error document opts out.
             // Passed explicitly rather than defaulted in the template because
             // UndefinedBehavior::Strict makes an absent variable a build error,
             // and that is the behaviour worth keeping.
-            noindex => false,
+            noindex => page.noindex,
             year => year,
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
@@ -450,6 +460,7 @@ mod tests {
             canonical: canonical.to_string(),
             date_modified: "2026-01-01".to_string(),
             date_published: None,
+            noindex: false,
         }
     }
 

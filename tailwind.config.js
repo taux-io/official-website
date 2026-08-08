@@ -32,10 +32,13 @@ module.exports = {
           strong: "rgb(var(--line-rgb) / 0.35)",
         },
 
-        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes,
-        // but note that anything below /60 drops under AA on this ground — the
-        // contrast audit will catch it, which is the intended safety net rather
-        // than a reason to reach for it.
+        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes.
+        //
+        // Measured on --surface: /100 is 10.80:1, /70 is 5.63:1, /65 is 4.98:1,
+        // and /60 is 4.38:1 — under the 4.5:1 AA floor. So /65 is the lowest
+        // step that holds for text, not /60. The contrast audit catches a
+        // mistake here, which is the safety net rather than a licence to probe
+        // downwards.
         phosphor: "rgb(var(--phosphor-rgb) / <alpha-value>)",
       },
       fontFamily: {
@@ -60,25 +63,19 @@ module.exports = {
           "sans-serif",
         ],
         // Self-hosted, so the dates, section numbers and measurements that use
-        // this look the same on every machine.
+        // this look the same on every machine. The system stack stays behind it
+        // for the glyphs outside the Latin subset.
         //
-        // THE CJK FACES ARE LOAD-BEARING AND MUST STAY IN FRONT OF THE GENERIC
-        // MONOSPACE. Roboto Mono's unicode-range excludes CJK, so Chinese in a
-        // mono run falls through this list. With the system faces here it lands
-        // on PingFang TC or Microsoft JhengHei — the same faces the rest of the
-        // site uses, which is correct. Remove them and it falls to generic
-        // `monospace`, which on Windows is MingLiU: a serif the site sets
-        // nowhere else, on 95 of the 186 eyebrows. That regression is invisible
-        // on a Mac.
-        //
-        // Nothing checks this. It is one line away from breaking and the failure
-        // shows up only on Windows. See DESIGN.md decision #35 for why the rule
-        // that would have caught it was not written.
+        // STAGE 2 INSERTS THE CJK FACES AHEAD OF ui-monospace, AND THAT IS A
+        // VISIBLE CHANGE, NOT A NO-OP. Roboto Mono's unicode-range excludes CJK,
+        // so 14 elements already on the site — the branded τ on about.html and
+        // thirteen Chinese labels across pqc-migration, threat-landscape,
+        // owasp-llm-top-10 and agent-prompting-guide — resolve today to
+        // SF Mono / Consolas and would resolve to PingFang TC instead. That
+        // belongs in the stage that expects visual change, next to the eyebrow
+        // work that needs it. See DESIGN.md decision #35.
         mono: [
           "Roboto Mono",
-          "PingFang TC",
-          "Microsoft JhengHei",
-          "Noto Sans TC",
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",
