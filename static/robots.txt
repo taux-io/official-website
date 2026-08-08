@@ -2,7 +2,13 @@ User-agent: *
 Allow: /
 Disallow: /static/css/
 Disallow: /static/js/
-Disallow: /404.html
+
+# /404 is deliberately NOT disallowed. It carries <meta name="robots"
+# content="noindex, follow">, and a meta directive only works if the crawler is
+# allowed to fetch the page — disallowing it would block the fetch, leave the
+# noindex unread, and still permit a bare URL listing from any inbound link.
+# The old `Disallow: /404.html` had the same defect and pointed at a path that
+# only redirects to /404 anyway.
 
 # GEO: Explicitly allow AI Crawlers and LLMs
 User-agent: GPTBot

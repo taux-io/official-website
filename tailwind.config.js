@@ -32,6 +32,14 @@ module.exports = {
           strong: "rgb(var(--line-rgb) / 0.35)",
         },
 
+        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes.
+        //
+        // Measured on --surface: /100 is 10.80:1, /70 is 5.63:1, /65 is 4.98:1,
+        // and /60 is 4.38:1 — under the 4.5:1 AA floor. So /65 is the lowest
+        // step that holds for text, not /60. The contrast audit catches a
+        // mistake here, which is the safety net rather than a licence to probe
+        // downwards.
+        phosphor: "rgb(var(--phosphor-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // D-DIN carries the Latin; CJK falls through to the system faces,
@@ -57,6 +65,15 @@ module.exports = {
         // Self-hosted, so the dates, section numbers and measurements that use
         // this look the same on every machine. The system stack stays behind it
         // for the glyphs outside the Latin subset.
+        //
+        // STAGE 2 INSERTS THE CJK FACES AHEAD OF ui-monospace, AND THAT IS A
+        // VISIBLE CHANGE, NOT A NO-OP. Roboto Mono's unicode-range excludes CJK,
+        // so 14 elements already on the site — the branded τ on about.html and
+        // thirteen Chinese labels across pqc-migration, threat-landscape,
+        // owasp-llm-top-10 and agent-prompting-guide — resolve today to
+        // SF Mono / Consolas and would resolve to PingFang TC instead. That
+        // belongs in the stage that expects visual change, next to the eyebrow
+        // work that needs it. See DESIGN.md decision #35.
         mono: [
           "Roboto Mono",
           "ui-monospace",
@@ -66,6 +83,11 @@ module.exports = {
           "Consolas",
           "monospace",
         ],
+        // Departure Mono only. No fallback chain worth writing: this stack is
+        // for blocks that are entirely pixel-set, and if the face fails to load
+        // the right outcome is the generic monospace the browser picks, not a
+        // half-pixel hybrid.
+        pixel: ["Departure Mono", "monospace"],
       },
       // Every rectangular step collapses to the radius token; `full` is kept
       // so genuine circles survive.

@@ -169,9 +169,14 @@ date_modified = "2026-07-26"
 [[document]]
 template = "404.html"
 output   = "404.html"
+# No canonical and noindex, because a static host answers 200 at /404 and this
+# document is also the body for every unmatched path. Left as it was, the page
+# told every crawler "index https://taux.io/404 as a page", and the one robots
+# rule that existed disallowed /404.html — a path that only redirects. See #125.
 title    = "找不到這個頁面｜404 | TauX"
 description = "您要找的頁面不存在，可能已經移動或刪除。"
-canonical   = "https://taux.io/404"
+canonical   = ""
+noindex     = true
 
 # Paths that used to be routes.
 #
