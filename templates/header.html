@@ -7,8 +7,8 @@
     <title>{{ title }}</title>
     <meta name="description" content="{{ description }}">
     {% if canonical %}
-    <link rel="canonical" href="{{ canonical }}">{% endif %}
-    {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+    <link rel="canonical" href="{{ canonical }}">{% endif %}{% if noindex %}
+    <meta name="robots" content="noindex, follow">{% endif %}
 
     <!-- Open Graph. The share card is built from the same tokens, typeface and
          tau curve as the page; rerun scripts/assets/build-og.js after a
