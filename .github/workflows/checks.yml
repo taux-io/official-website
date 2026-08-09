@@ -87,10 +87,11 @@ jobs:
       # design description drifted from the code unnoticed. This reads what the
       # author wrote rather than what Tailwind emitted, which is the check above.
       #
-      # Six of its nine rules are enforced today. The other three describe the
-      # DESIGN-NEXT migration (#125) and are switched on by the change that makes
-      # each one true, so this stays green commit to commit without an
-      # allowlist. The script names the ticket that turns each one on.
+      # All fifteen of its rules are enforced today. A rule is switched on by the
+      # change that makes it true, so this stays green commit to commit without
+      # an allowlist, and the script names the ticket that turned each one on.
+      # (This comment said "six of nine" for long enough to outlive four more
+      # rules — the drift the file underneath it exists to prevent.)
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
@@ -161,6 +162,22 @@ jobs:
       # during the redesign lived here rather than in anything a person looks at.
       - name: route contract
         run: npm run contract
+
+      # Where things land, which neither of the two above can see. contrast
+      # reads colour and contract reads what a route declares; a glyph coming
+      # from the wrong face, a box whose lines disagree, or content clipped off
+      # the right edge is invisible to both.
+      #
+      # Three of its four checks are enforced. The fourth — horizontal overflow
+      # — is the only one that found anything, and what it found predates the
+      # change that added this file; it is switched on by issue 151, and the run
+      # prints its findings either way rather than staying quiet about them.
+      #
+      # Slower than its neighbours (~3 minutes) because the canvas walk has to
+      # be driven one scroll position per round trip. Batching it into the page
+      # made it fast and made it incapable of failing.
+      - name: geometry holds
+        run: npm run geometry
 
       # sameAs asserts "these are the same entity", so a dead profile URL is an
       # identity claim about nothing. Lives in this job rather than the one
