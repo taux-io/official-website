@@ -94,22 +94,26 @@ const ADVANCE_TOLERANCE = 0.2;
 // 11px Departure Mono and 17px at Roboto Mono.
 const LINE_WIDTH_TOLERANCE_PX = 3;
 
+// How long to let a suspected overflow prove it is real rather than a layout
+// still settling. See the second measurement in the route loop.
+const TRANSIENT_SETTLE_MS = 400;
+
 // A CHECK IS SWITCHED ON BY THE TICKET THAT MAKES IT SATISFIABLE — the same
 // arrangement check-design.js uses, for the same reason: landing a check
 // disabled and flipping it in the change that earns it keeps CI green commit to
 // commit without an allowlist, and an allowlist is how a check decays into a
 // warning nobody reads.
 //
-// Overflow lands off. It is correct and it works — it is the only one of the
-// four that found anything — but what it found is three routes that have
-// overflowed since before issue 132 touched them, measured identically against
-// the commit before the type scale changed. Fixing those is content work with
-// visual consequences, which is a different job from building the instrument.
+// Overflow landed off in issue 148 because it was the only one of the four that
+// found anything, and what it found predated the change that added it. Issue
+// 151 cleared all six: min-w-0 on the grid and flex items that would not shrink
+// below their content, and a correction to this check for the one finding that
+// was never a defect.
 const CHECKS = {
   advance: { enabled: true, turnedOnBy: "issue 148" },
   box: { enabled: true, turnedOnBy: "issue 148" },
   curve: { enabled: true, turnedOnBy: "issue 148" },
-  overflow: { enabled: false, turnedOnBy: "issue 151 — three routes overflow today" },
+  overflow: { enabled: true, turnedOnBy: "issue 151" },
 };
 
 // ---------------------------------------------------------------------------
@@ -246,22 +250,39 @@ function measureOverflowInPage() {
     // and buries it. The <svg> itself is checked like any other element.
     if (el.ownerSVGElement) continue;
 
-    // Wide content living in its own horizontal scroller is the correct pattern,
-    // not a defect: a table or an ASCII block that cannot reflow scrolls inside
-    // its container while the page does not. overflow-x: clip does NOT excuse
-    // anything — clipped content is silently cut off, which is the failure this
-    // check exists to find.
+    // Who contains this, and is that containment a decision or a last resort?
+    //
+    // Wide content living in its own horizontal scroller is the correct
+    // pattern: a table or an ASCII block that cannot reflow scrolls inside its
+    // container while the page does not.
+    //
+    // A clipping ancestor that is NOT the page shell is also a decision. The
+    // glow on /what-is-prompt-injection is 256px translated half its width past
+    // its section's right edge, and that section carries overflow-hidden — the
+    // author bounded it deliberately and it never reaches the viewport. An
+    // earlier version of this check reported it, having read the geometric box
+    // and ignored what clips it.
+    //
+    // <main>'s overflow-x-clip (decision #22) is the opposite: the shell's last
+    // resort, cutting whatever ran past it. That is precisely the failure this
+    // exists to find, so being clipped by <main> excuses nothing.
+    //
+    // Geometry alone cannot tell decoration from lost text — both are boxes
+    // past an edge. The structural question can: is something narrower than the
+    // page already holding it?
     let a = el.parentElement;
-    let scrollable = false;
+    let contained = false;
     while (a && a !== document.body) {
       const ox = getComputedStyle(a).overflowX;
-      if (ox === "auto" || ox === "scroll") {
-        scrollable = true;
+      const scrolls = ox === "auto" || ox === "scroll";
+      const clips = (ox === "hidden" || ox === "clip") && a.tagName !== "MAIN";
+      if (scrolls || clips) {
+        contained = true;
         break;
       }
       a = a.parentElement;
     }
-    if (scrollable) continue;
+    if (contained) continue;
 
     // Only the outermost offender in a subtree. A container that overruns drags
     // every descendant with it, and listing all of them says the same thing
@@ -355,8 +376,22 @@ async function main() {
 
       for (const width of WIDTHS) {
         await page.setViewportSize({ width, height: 900 });
-        const detail = await page.evaluate(measureOverflowInPage);
+        let detail = await page.evaluate(measureOverflowInPage);
         overflowChecks++;
+        // Measured again before it counts. Chart.js sizes its canvas from the
+        // container after load, and networkidle can fire mid-resize: the chart
+        // on /what-is-prompt-injection was caught at 376px wide in a 320px
+        // viewport and settles at 176px, so the finding appeared on some runs
+        // and not others. A gate that goes red at random teaches people to
+        // re-run until it is green, which is worse than not having it.
+        //
+        // Only when the first look found something, so a clean run pays
+        // nothing.
+        if (detail) {
+          await page.waitForTimeout(TRANSIENT_SETTLE_MS);
+          const again = await page.evaluate(measureOverflowInPage);
+          if (!again) detail = null;
+        }
         if (detail) failures.push({ where: `${path} @ ${width}px`, kind: "overflow", detail });
       }
       await page.setViewportSize({ width: widest, height: 900 });
