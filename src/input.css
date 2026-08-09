@@ -375,7 +375,16 @@
   }
 
   /* A tag is a control's near relative — it is bounded, so it takes the
-     control's radius and the divider hairline. */
+     control's radius and the divider hairline.
+
+     It keeps font-display while .eyebrow moved to font-mono, and the two now
+     render the same type token (text-eyebrow: 0.75rem / 0.09em / uppercase) in
+     two different faces. That is deliberate and it is the reason: an eyebrow
+     labels a section — it is machine output, a position in a list. A tag names
+     a service ("GEO Service", "AI Corporate Training", "Who We Are"), which is
+     brand voice, the same category as the nav and the buttons that also stay in
+     D-DIN Condensed. Nothing checks this distinction, so it is written here
+     rather than left to look like a rendering fault. See DESIGN.md #39. */
   .tag {
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
     color: var(--ink-body);
@@ -459,13 +468,20 @@
     line-height: 1.15;
   }
 
-  /* Latin eyebrow label — section numbers, column headings, kickers.
+  /* Eyebrow label — section numbers, column headings, kickers.
      text-ink-body rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
      dimming. Eyebrows and captions come out brighter than before, which is the
-     intended consequence and not a regression. */
+     intended consequence and not a regression.
+
+     font-mono rather than font-display: an eyebrow is a label, and a label is
+     machine output — the judgement DESIGN.md's 等寬字治理 turns on. 95 of the
+     186 eyebrows are Chinese, and they stay readable because the mono stack
+     carries the CJK faces ahead of the generic monospace; Roboto Mono's
+     unicode-range hands them over. That stack is the whole reason this is one
+     line rather than a Latin-only variant applied by hand. */
   .eyebrow {
-    @apply font-display text-eyebrow uppercase text-ink-body;
+    @apply font-mono text-eyebrow uppercase text-ink-body;
   }
 
   .footer-link {

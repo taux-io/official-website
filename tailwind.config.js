@@ -63,24 +63,45 @@ module.exports = {
           "sans-serif",
         ],
         // Self-hosted, so the dates, section numbers and measurements that use
-        // this look the same on every machine. The system stack stays behind it
-        // for the glyphs outside the Latin subset.
+        // this look the same on every machine.
         //
-        // STAGE 2 INSERTS THE CJK FACES AHEAD OF ui-monospace, AND THAT IS A
-        // VISIBLE CHANGE, NOT A NO-OP. Roboto Mono's unicode-range excludes CJK,
-        // so 14 elements already on the site — the branded τ on about.html and
-        // thirteen Chinese labels across pqc-migration, threat-landscape,
-        // owasp-llm-top-10 and agent-prompting-guide — resolve today to
-        // SF Mono / Consolas and would resolve to PingFang TC instead. That
-        // belongs in the stage that expects visual change, next to the eyebrow
-        // work that needs it. See DESIGN.md decision #35.
+        // THE CJK FACES ARE LOAD-BEARING AND MUST STAY AHEAD OF ui-monospace.
+        // Roboto Mono's unicode-range excludes CJK, so Chinese in a mono run
+        // falls through this list. With the system faces here it lands on
+        // PingFang TC or Microsoft JhengHei — the same faces the rest of the
+        // site uses. Remove them and it falls to generic `monospace`, which on
+        // Windows is MingLiU: a serif the site sets nowhere else, on 95 of the
+        // 186 eyebrows. That regression is invisible from a Mac.
+        //
+        // This is what makes `.eyebrow` monospace possible without a Latin-only
+        // variant applied by hand 91 times. It is the same mechanism `sans`
+        // already relies on — D-DIN carries no CJK either.
+        //
+        // Nothing checks this; DESIGN.md decision #35 records that as a known,
+        // accepted cost rather than an oversight.
         mono: [
           "Roboto Mono",
+          // The Latin monospace fallbacks come BEFORE the CJK faces, and the
+          // order is load-bearing in both directions.
+          //
+          // Roboto Mono's subset carries no arrows, no maths and no geometric
+          // shapes, so → ≥ ≈ ∞ ● ★ all fall through. Put PingFang TC ahead of
+          // these and it answers first with a FULL-WIDTH advance: → goes from
+          // 12.04px to 20.0px at 20px type, and the hand-aligned ASCII flow
+          // diagram on adk-skill-patterns.html comes apart by 5.6px a line.
+          // Behind them, SF Mono answers instead and the cell width holds.
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",
           "Monaco",
           "Consolas",
+          // None of the faces above carries CJK, so Chinese still reaches these
+          // — the same faces the rest of the site uses. Without them it lands on
+          // generic `monospace`, which on Windows is MingLiU: a serif this site
+          // sets nowhere else, on 95 of the 186 eyebrows, invisibly from a Mac.
+          "PingFang TC",
+          "Microsoft JhengHei",
+          "Noto Sans TC",
           "monospace",
         ],
         // Departure Mono only. No fallback chain worth writing: this stack is
