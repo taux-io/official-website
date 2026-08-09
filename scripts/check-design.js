@@ -645,6 +645,49 @@ function ruleCollapsibleShipsOpen(files) {
   return found;
 }
 
+// A minimum height measured in viewport units, which is what makes a block
+// occupy the screen no matter how little is in it.
+const VIEWPORT_MIN_HEIGHT = /^min-h-(?:screen|svh|lvh|dvh|\[\d+(?:\.\d+)?(?:v|sv|lv|dv)h\])$/;
+
+// Two exemptions, named rather than pattern-matched so a third cannot appear
+// without someone saying so out loud — the same device OPACITY_EXEMPT_IDS uses.
+//
+//   404 is the one page whose job IS to fill the screen: no body semantics, no
+//   reading measure, no SEO value. DESIGN.md's layout chapter already carved it
+//   out as the sole exception and #137 narrowed the chapter to exactly that.
+//
+//   <main> keeps the footer at the bottom of a short page. Now that sections
+//   are content-height, that is the shell doing its job rather than a block
+//   padding itself out — the opposite of what this rule exists to stop.
+const FULL_HEIGHT_EXEMPT_FILE = path.join("templates", "404.html");
+const FULL_HEIGHT_EXEMPT_TAGS = new Set(["main"]);
+
+// Until #137 the site had fifteen blocks pinned to 86vh across six templates.
+// A block with three lines in it and a block with thirty both took a screen,
+// so scrolling produced a train of identical pulses and the reader had no way
+// to feel which part mattered. Height now follows content.
+//
+// The rule is what stops it coming back. The next page starts life as a copy of
+// an existing one, and without a checker the pinned height rides along in that
+// copy — silently, because nothing about the result looks broken.
+function ruleFullHeightOnly404(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    if (rel === FULL_HEIGHT_EXEMPT_FILE) continue;
+    for (const el of elements(html)) {
+      if (FULL_HEIGHT_EXEMPT_TAGS.has(el.tag)) continue;
+      const hit = el.classes.find((c) => VIEWPORT_MIN_HEIGHT.test(stripVariants(c)));
+      if (!hit) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, el.index),
+        detail: `<${el.tag}> pinned to the viewport with ${hit}; height belongs to the content`,
+      });
+    }
+  }
+  return found;
+}
+
 // The desktop navigation and the hamburger are complements: one appears exactly
 // where the other disappears. That relationship lives in two class strings in
 // two different elements, and nothing but this rule ties them together.
@@ -712,6 +755,13 @@ function ruleNavBreakpointsPaired(files) {
 // ---------------------------------------------------------------------------
 
 const RULES = [
+  {
+    name: "full height only on 404",
+    enabled: true,
+    turnedOnBy: "#137 — height follows content",
+    run: ruleFullHeightOnly404,
+    summary: "a block takes the screen only when filling it is the whole point",
+  },
   {
     name: "nav breakpoints paired",
     enabled: true,
