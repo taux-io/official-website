@@ -645,6 +645,63 @@ function ruleCollapsibleShipsOpen(files) {
   return found;
 }
 
+// The body ink alpha exists twice and must not drift.
+//
+// src/input.css declares --ink-body for hand-written CSS; tailwind.config.js
+// hard-codes the same alpha for the `ink.body` colour, because <alpha-value>
+// is substituted with the opacity modifier or with 1 and so cannot express
+// "0.85 unless told otherwise". That duplication is deliberate and documented
+// in both files — what it lacks is anything holding the two numbers equal.
+//
+// Drift here is silent. Nothing throws, no contrast floor is crossed, and the
+// only symptom is that a paragraph styled through the variable and a paragraph
+// styled through the utility render at different brightness — which is
+// invisible unless the two happen to sit next to each other.
+//
+// NOTE ON SCOPE: this is the first rule in this file to read anything other
+// than the templates and site.toml. Decision #35 declined to check the mono
+// stack partly on the grounds that assertions about src/input.css and
+// tailwind.config.js had nowhere to live here. They do now. That does not
+// reopen #35 by itself — the mono-stack assertion is about a font-family order,
+// not a scalar — but the stated obstacle is gone and #46 records it.
+const INK_SOURCES = [
+  { file: path.join("src", "input.css"), re: /--ink-body:\s*rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\s*\)/ },
+  { file: path.join("tailwind.config.js"), re: /body:\s*"rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\)"/ },
+];
+
+function ruleInkBodySingleSource() {
+  const found = [];
+  const seen = [];
+
+  for (const src of INK_SOURCES) {
+    const abs = path.join(ROOT, src.file);
+    if (!fs.existsSync(abs)) {
+      found.push({ file: src.file, line: 0, detail: "not found; this rule cannot see the body ink" });
+      continue;
+    }
+    const text = fs.readFileSync(abs, "utf8");
+    const m = src.re.exec(text);
+    if (!m) {
+      found.push({
+        file: src.file,
+        line: 0,
+        detail: "no body ink alpha found; the declaration was reshaped and this rule has gone blind",
+      });
+      continue;
+    }
+    seen.push({ file: src.file, alpha: m[1], line: lineOf(text, m.index) });
+  }
+
+  if (seen.length === INK_SOURCES.length && seen[0].alpha !== seen[1].alpha) {
+    found.push({
+      file: seen[1].file,
+      line: seen[1].line,
+      detail: `body ink is ${seen[1].alpha} here but ${seen[0].alpha} in ${seen[0].file} — the variable and the utility disagree`,
+    });
+  }
+  return found;
+}
+
 // A minimum height measured in viewport units, which is what makes a block
 // occupy the screen no matter how little is in it.
 const VIEWPORT_MIN_HEIGHT = /^min-h-(?:screen|svh|lvh|dvh|\[\d+(?:\.\d+)?(?:v|sv|lv|dv)h\])$/;
@@ -755,6 +812,13 @@ function ruleNavBreakpointsPaired(files) {
 // ---------------------------------------------------------------------------
 
 const RULES = [
+  {
+    name: "ink body single source",
+    enabled: true,
+    turnedOnBy: "#139 — body ink raised to 0.85",
+    run: ruleInkBodySingleSource,
+    summary: "the body ink alpha is written twice and the two must agree",
+  },
   {
     name: "full height only on 404",
     enabled: true,

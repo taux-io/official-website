@@ -20,9 +20,13 @@ module.exports = {
         // and `line` below has always been written this way for the same
         // reason. The surfaces keep the placeholder, which is what bg-surface-
         // deep/90 in the header depends on.
+        //
+        // `body`'s alpha is the SAME NUMBER as --ink-body in src/input.css and
+        // has to stay that way — see the note there. check-design.js rule "ink
+        // body single source" fails the build if the two drift.
         ink: {
           DEFAULT: "rgb(var(--ink-rgb))",
-          body: "rgb(var(--ink-rgb) / 0.8)",
+          body: "rgb(var(--ink-rgb) / 0.85)",
           muted: "rgb(var(--ink-rgb) / 0.9)",
         },
         // Fixed at two weights on purpose — a divider and a control edge. More
