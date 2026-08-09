@@ -350,7 +350,7 @@ async function main() {
   // — tablist roles, which element holds tabindex — is deliberately not
   // asserted; that is the shape of the thing, not its behaviour, and pinning it
   // would make the test an obstacle to improving the widget.
-  {
+  try {
     const path = "/what-is-mcp";
     await page.goto(BASE_URL + path, { waitUntil: "networkidle" });
 
@@ -379,14 +379,16 @@ async function main() {
     }
 
     checked++;
-    const announced = await page.$eval('[data-scenario="tool"]', (e) =>
-      e.getAttribute("aria-selected")
+    // Every tab's state, not just the clicked one. Reading only the tab that was
+    // clicked cannot tell "one is selected" from "all of them are".
+    const announced = await page.$$eval("[data-scenario]", (els) =>
+      els.map((e) => `${e.dataset.scenario}=${e.getAttribute("aria-selected")}`).join(" ")
     );
-    if (announced !== "true") {
+    if (announced !== "resource=false tool=true prompt=false") {
       failures.push({
         route: path,
-        check: "primitives: the choice is announced",
-        problem: `aria-selected is ${announced}, expected true`,
+        check: "primitives: exactly one choice is announced",
+        problem: `aria-selected reads "${announced}"`,
       });
     }
 
@@ -402,6 +404,15 @@ async function main() {
         problem: `ArrowRight left panel=${afterKey.join() || "none"} focus=${focused}`,
       });
     }
+  } catch (err) {
+    // A missing or renamed widget is one failure to report, not a reason to
+    // lose every assertion that would have run after this block.
+    checked++;
+    failures.push({
+      route: "/what-is-mcp",
+      check: "primitives: widget present",
+      problem: String(err && err.message ? err.message : err),
+    });
   }
 
   // The classic static-host mistake: the 404 document served at a 200, which

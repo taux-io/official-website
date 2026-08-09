@@ -76,8 +76,9 @@
             </p>
 
             <figure class="mb-10">
-                <svg viewBox="0 0 720 300" class="w-full h-auto text-ink" role="img"
-                     aria-labelledby="arch-title arch-desc">
+              <div class="overflow-x-auto">
+                <svg viewBox="0 0 720 300" class="h-auto text-ink w-full min-w-[680px]" role="img"
+                     aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP 的三個角色</title>
                     <desc id="arch-desc">Host 內含三個 client，每個 client 各自連到一個 server。前兩個 server 在本機，第三個在遠端。資料庫畫在 server 外側，表示 server 是資料前面的中介。</desc>
 
@@ -122,9 +123,9 @@
                     <text x="446" y="206" class="font-mono" font-size="12" fill="currentColor">Server C</text>
 
                     <text x="434" y="72" class="font-mono" font-size="11" fill="currentColor"
-                          fill-opacity="0.55">本機（子行程）</text>
+                          fill-opacity="0.55">stdio（子行程）</text>
                     <text x="434" y="240" class="font-mono" font-size="11" fill="currentColor"
-                          fill-opacity="0.55">遠端（HTTP）</text>
+                          fill-opacity="0.55">Streamable HTTP</text>
 
                     <!-- The data sits beyond the server: a server is a broker in
                          front of the data, never the data itself. -->
@@ -140,6 +141,7 @@
                     <text x="616" y="280" class="font-mono" font-size="11" fill="currentColor"
                           fill-opacity="0.45">你的資料</text>
                 </svg>
+              </div>
                 <figcaption class="font-mono text-xs text-ink-body mt-4">
                     client 在 host <strong class="text-ink">裡面</strong>，一個伺服器配一個。箭頭一律從 client 出發。
                 </figcaption>
@@ -227,7 +229,7 @@
         <section class="mb-20">
             <h2 class="eyebrow mb-6" id="transport">05 — 它怎麼傳輸</h2>
             <p class="text-ink-body max-w-prose leading-relaxed mb-6">
-                兩種標準方式：<strong class="text-ink">stdio</strong>（伺服器是你機器上的一個子行程，透過標準輸入輸出溝通）與 <strong class="text-ink">Streamable HTTP</strong>（伺服器在遠端，每則訊息是一個 HTTP POST）。
+                兩種標準方式：<strong class="text-ink">stdio</strong>——伺服器是一個子行程，透過標準輸入輸出溝通；與 <strong class="text-ink">Streamable HTTP</strong>——每則訊息是一個 HTTP POST。<strong class="text-ink">這是「怎麼傳」的差別，不是「在哪裡」的差別</strong>：一個跑在你自己機器上的伺服器，一樣可以講 Streamable HTTP。
             </p>
             <p class="text-ink-body max-w-prose leading-relaxed">
                 值得知道的是<strong class="text-ink">兩者的安全性完全不同</strong>：stdio 直接繼承你的使用者權限、沒有驗證層；HTTP 那條需要 OAuth、需要驗證來源。另外，「本機伺服器」指的是「跑在你機器上」，跟它會不會連外網無關——本機伺服器一樣可以去打遠端 API。
@@ -252,13 +254,20 @@
                 <ul class="font-mono text-sm text-ink-body space-y-2">
                     <li>├─ <code>initialize</code> 握手</li>
                     <li>├─ <code>Mcp-Session-Id</code> 標頭、協定層的 session</li>
-                    <li>├─ 伺服器主動送請求給客戶端</li>
-                    <li>└─ <code>ping</code>、<code>logging/setLevel</code></li>
+                    <li>├─ 伺服器<strong class="text-ink">主動送出</strong>一個請求給客戶端</li>
+                    <li>└─ <code>ping</code>、<code>logging/setLevel</code> 這兩個方法</li>
                 </ul>
             </div>
 
+            <p class="text-ink-body max-w-prose leading-relaxed mb-6">
+                第三項要講清楚，因為它最容易被誤讀成「伺服器再也不能要東西了」。<strong class="text-ink">消失的是「主動送出請求」這個機制，不是伺服器提出要求的能力。</strong>以前伺服器可以直接推一個請求過來；現在它只能在回應裡說「我需要這個」然後結束，剩下的由客戶端接手。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-10">
+                所以那些「伺服器向客戶端要東西」的功能<strong class="text-ink">都還在，只是換了條路走</strong>——包括 <strong class="text-ink">Elicitation</strong>（跟使用者要一項資訊）與 <strong class="text-ink">Sampling</strong>（借用 host 的模型；方向與直覺相反，所以特別多人誤解）。
+            </p>
+
             <p class="text-ink-body max-w-prose leading-relaxed">
-                另外三樣<strong class="text-ink">正在被淘汰</strong>，還能用但別當成現行架構學：<strong class="text-ink">Roots</strong>（告訴伺服器你的工作目錄範圍）、<strong class="text-ink">Sampling</strong>（伺服器反過來借用 host 的模型，方向與直覺相反所以特別多人誤解）、<strong class="text-ink">Logging</strong>。
+                另外一件事跟上面無關：<strong class="text-ink">Roots</strong>（告訴伺服器你的工作目錄範圍）、<strong class="text-ink">Sampling</strong> 與 <strong class="text-ink">Logging</strong> 這三樣<strong class="text-ink">被標記為淘汰</strong>。它們現在還能用，但別當成現行架構學。淘汰與上面那個機制改變是兩回事：一個講「怎麼傳」，一個講「還要不要留著」。
             </p>
         </section>
 
