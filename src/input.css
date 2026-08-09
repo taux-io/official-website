@@ -18,7 +18,7 @@
    The surfaces keep Tailwind's <alpha-value> placeholder, so bg-surface-deep/90
    still compiles. The ink does not: its three steps ARE alphas, and the
    placeholder is substituted with the modifier or with 1, which leaves no way
-   to say "0.8 unless told otherwise". text-ink-body/50 therefore does not
+   to say "0.85 unless told otherwise". text-ink-body/50 therefore does not
    compose. Nothing uses it, and the hairlines have always been written this way.
    =========================================================================== */
 :root {
@@ -47,14 +47,37 @@
 
   /* The three steps.
 
-     0.8 for body and 0.9 for muted looks inverted and is not a typo. The
-     reference site puts .9 on navigation and .8 on meta; body text here sits at
-     0.8 because it composites to roughly #C0C0C8 — the same brightness step as
-     the #c8c8cc it replaces, so the halation margin that dense CJK strokes need
-     survives the change of model. 0.9 is safe for Latin navigation; it is not
-     safe for a page of Chinese body text. */
+     0.85 for body and 0.9 for muted looks inverted and is not a typo. The
+     reference site puts .9 on navigation and .8 on meta.
+
+     Body was 0.8, chosen so it composited to #C2C2CA — the same brightness
+     step as the #c8c8cc it replaced, preserving the halation margin that dense
+     CJK strokes need against a near-black ground. #139 raised it to 0.85
+     because that margin turned out to have room in it: long Chinese passages
+     read as a grey mass at 0.8 over ten minutes.
+
+     At 0.85 the ink composites to #CECED6, giving 12.59:1 on --surface,
+     13.16:1 on --surface-deep and 12.28:1 on --surface-raised — every one more
+     than twice the 4.5:1 AA floor. (At 0.8: 11.18 / 11.62 / 10.93.)
+
+     The first version of this comment said 15.28:1 and "three times the
+     floor". Both were estimated rather than computed, and both were wrong;
+     code review caught the contradiction against DESIGN.md decision #46. This
+     file's own governing document opens by arguing that a number you can see
+     still has to be counted with a tool — that applies to contrast ratios.
+
+     It stops at 0.85 rather than 0.9 on purpose. 0.9 IS --ink-muted, so going
+     there would quietly flatten three ink steps into two — a separate decision,
+     not a side effect of making body text brighter.
+
+     THIS VALUE IS WRITTEN TWICE. tailwind.config.js hard-codes the same alpha
+     for the `ink.body` colour, because <alpha-value> cannot express "0.85
+     unless told otherwise". Change one and not the other and nothing errors:
+     hand-written CSS reading the variable and utilities reading the config
+     simply disagree, visible only where the two sit side by side. The
+     check-design rule "ink body single source" holds them together. */
   --ink: rgb(var(--ink-rgb));
-  --ink-body: rgb(var(--ink-rgb) / 0.8);
+  --ink-body: rgb(var(--ink-rgb) / 0.85);
   --ink-muted: rgb(var(--ink-rgb) / 0.9);
 
   --line: rgb(var(--line-rgb) / 0.08);

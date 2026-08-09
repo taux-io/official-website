@@ -20,9 +20,13 @@ module.exports = {
         // and `line` below has always been written this way for the same
         // reason. The surfaces keep the placeholder, which is what bg-surface-
         // deep/90 in the header depends on.
+        //
+        // `body`'s alpha is the SAME NUMBER as --ink-body in src/input.css and
+        // has to stay that way — see the note there. check-design.js rule "ink
+        // body single source" fails the build if the two drift.
         ink: {
           DEFAULT: "rgb(var(--ink-rgb))",
-          body: "rgb(var(--ink-rgb) / 0.8)",
+          body: "rgb(var(--ink-rgb) / 0.85)",
           muted: "rgb(var(--ink-rgb) / 0.9)",
         },
         // Fixed at two weights on purpose — a divider and a control edge. More
@@ -158,16 +162,46 @@ module.exports = {
         ],
         // 1.6 rather than Tailwind's 1.5. CJK sets denser than Latin and reads
         // better with the extra leading over a long measure.
-        base: ["1rem", { lineHeight: "1.6", letterSpacing: "0" }],
+        //
+        // THE THREE BODY STEPS MOVE TOGETHER OR NOT AT ALL. 16px was small for
+        // a site that is dark-ground and mostly Chinese, but lifting `base`
+        // alone puts it 1px from Tailwind's stock `lg` (18px) and the ladder
+        // collapses — effort spent on size, paid for in hierarchy. Lifting `lg`
+        // to 19px then leaves it 1px from stock `xl` (20px), so the same
+        // squeeze simply moves up a rung; `xl` has to give way too. It is not a
+        // rung to sacrifice: `.display-sub` wears it at phone width, which is
+        // the one line on a phone that most needs to be readable.
+        //
+        // The alternative — scaling the root font-size — was rejected. It
+        // enlarges every rem-based gap and max-width by the same factor, and
+        // #137 had just tightened that spacing on purpose. The two moves would
+        // have cancelled.
+        base: ["1.0625rem", { lineHeight: "1.6", letterSpacing: "0" }],
+        lg: ["1.1875rem", { lineHeight: "1.6", letterSpacing: "0" }],
+        xl: ["1.375rem", { lineHeight: "1.5", letterSpacing: "0" }],
 
         // LINE-HEIGHT BELOW 1 IS FOR LATIN ONLY. A CJK glyph fills its em box
-        // and has no descender gap to give back, so 0.9 crops strokes rather
-        // than tightening the line. display-lg is therefore only safe on
-        // .display-lead; anything Chinese wearing this token needs its own
-        // leading, and until #55 replaces those headings a few still do.
-        "display-sm": ["2rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "700" }],
+        // and has no descender gap to give back, so anything under 1 crops
+        // strokes rather than tightening the line. These tokens are therefore
+        // only safe on .display-lead; anything Chinese wearing one needs its
+        // own leading, and until #55 replaces those headings a few still do.
+        //
+        // display-lg was 0.9 and is now 1. The lead line wraps since #133, and
+        // 0.9 was chosen when it never did — two lines set at 0.9 sit almost on
+        // top of each other. This does NOT license loosening .display-sub's own
+        // 1.15: that value protects CJK strokes and has nothing to do with what
+        // the Latin line above it does.
+        //
+        // display-sm carries the h2 on every inner page. At 2rem against 17px
+        // body it was only a shade over twice the size, and Chinese has no
+        // capitals to help a heading separate from the text around it, so
+        // headings did not surface when scanning. 2.25rem is the smaller of the
+        // two steps considered — this change already moves layout, size,
+        // leading and ink at once, and taking the top of every range leaves
+        // nothing to attribute a regression to.
+        "display-sm": ["2.25rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "700" }],
         "display-md": ["3rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
-        "display-lg": ["3.75rem", { lineHeight: "0.9", letterSpacing: "-0.017em", fontWeight: "700" }],
+        "display-lg": ["3.75rem", { lineHeight: "1", letterSpacing: "-0.017em", fontWeight: "700" }],
       },
       maxWidth: {
         // 68ch is the reading measure for the long-form pages; CJK runs denser

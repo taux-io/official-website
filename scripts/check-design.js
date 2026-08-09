@@ -645,6 +645,122 @@ function ruleCollapsibleShipsOpen(files) {
   return found;
 }
 
+// The body ink alpha exists twice and must not drift.
+//
+// src/input.css declares --ink-body for hand-written CSS; tailwind.config.js
+// hard-codes the same alpha for the `ink.body` colour, because <alpha-value>
+// is substituted with the opacity modifier or with 1 and so cannot express
+// "0.85 unless told otherwise". That duplication is deliberate and documented
+// in both files — what it lacks is anything holding the two numbers equal.
+//
+// Drift here is silent. Nothing throws, no contrast floor is crossed, and the
+// only symptom is that a paragraph styled through the variable and a paragraph
+// styled through the utility render at different brightness — which is
+// invisible unless the two happen to sit next to each other.
+//
+// NOTE ON SCOPE: this is the first rule in this file to read anything other
+// than the templates and site.toml. Decision #35 declined to check the mono
+// stack partly on the grounds that assertions about src/input.css and
+// tailwind.config.js had nowhere to live here. They do now. That does not
+// reopen #35 by itself — the mono-stack assertion is about a font-family order,
+// not a scalar — but the stated obstacle is gone and #46 records it.
+const INK_SOURCES = [
+  { file: path.join("src", "input.css"), re: /--ink-body:\s*rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\s*\)/ },
+  { file: path.join("tailwind.config.js"), re: /body:\s*"rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\)"/ },
+];
+
+function ruleInkBodySingleSource() {
+  const found = [];
+  const seen = [];
+
+  for (const src of INK_SOURCES) {
+    const abs = path.join(ROOT, src.file);
+    if (!fs.existsSync(abs)) {
+      found.push({ file: src.file, line: 0, detail: "not found; this rule cannot see the body ink" });
+      continue;
+    }
+    const text = fs.readFileSync(abs, "utf8");
+    const m = src.re.exec(text);
+    if (!m) {
+      found.push({
+        file: src.file,
+        line: 0,
+        detail: "no body ink alpha found; the declaration was reshaped and this rule has gone blind",
+      });
+      continue;
+    }
+    seen.push({ file: src.file, alpha: m[1], line: lineOf(text, m.index) });
+  }
+
+  // Compared against the first source rather than pairwise-first-two, so
+  // adding a third declaration to INK_SOURCES is covered by construction. The
+  // first version compared seen[0] to seen[1] and would have ignored a third
+  // entry silently — a checker that fails open is worse than no checker.
+  //
+  // Numeric rather than string comparison: 0.85, .85 and 0.850 are the same
+  // alpha, and reporting them as a violation would be a false alarm — which is
+  // how a checker teaches people to skip it.
+  const [first, ...rest] = seen;
+  for (const other of rest) {
+    if (Number(other.alpha) === Number(first.alpha)) continue;
+    found.push({
+      file: other.file,
+      line: other.line,
+      detail: `body ink is ${other.alpha} here but ${first.alpha} in ${first.file} — the variable and the utility disagree`,
+    });
+  }
+  return found;
+}
+
+// A height pinned to the viewport, which is what makes a block occupy the
+// screen no matter how little is in it.
+//
+// Matches `min-h-` and `h-` alike, the named viewport keywords, and any
+// arbitrary value mentioning a viewport unit — `min-h-[86vh]`, but also
+// `h-screen` and `min-h-[calc(100vh-4rem)]`. The first version of this only
+// caught `min-h-` with a bare vh value, which let three spellings of the same
+// thing through; code review found the gap.
+const VIEWPORT_HEIGHT = /^(?:min-)?h-(?:screen|svh|lvh|dvh|\[[^\]]*(?:v|sv|lv|dv)h[^\]]*\])$/;
+
+// Two exemptions, named rather than pattern-matched so a third cannot appear
+// without someone saying so out loud — the same device OPACITY_EXEMPT_IDS uses.
+//
+//   404 is the one page whose job IS to fill the screen: no body semantics, no
+//   reading measure, no SEO value. DESIGN.md's layout chapter already carved it
+//   out as the sole exception and #137 narrowed the chapter to exactly that.
+//
+//   <main> keeps the footer at the bottom of a short page. Now that sections
+//   are content-height, that is the shell doing its job rather than a block
+//   padding itself out — the opposite of what this rule exists to stop.
+const FULL_HEIGHT_EXEMPT_FILE = path.join("templates", "404.html");
+const FULL_HEIGHT_EXEMPT_TAGS = new Set(["main"]);
+
+// Until #137 the site had fifteen blocks pinned to 86vh across six templates.
+// A block with three lines in it and a block with thirty both took a screen,
+// so scrolling produced a train of identical pulses and the reader had no way
+// to feel which part mattered. Height now follows content.
+//
+// The rule is what stops it coming back. The next page starts life as a copy of
+// an existing one, and without a checker the pinned height rides along in that
+// copy — silently, because nothing about the result looks broken.
+function ruleFullHeightOnly404(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    if (rel === FULL_HEIGHT_EXEMPT_FILE) continue;
+    for (const el of elements(html)) {
+      if (FULL_HEIGHT_EXEMPT_TAGS.has(el.tag)) continue;
+      const hit = el.classes.find((c) => VIEWPORT_HEIGHT.test(stripVariants(c)));
+      if (!hit) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, el.index),
+        detail: `<${el.tag}> pinned to the viewport with ${hit}; height belongs to the content`,
+      });
+    }
+  }
+  return found;
+}
+
 // The desktop navigation and the hamburger are complements: one appears exactly
 // where the other disappears. That relationship lives in two class strings in
 // two different elements, and nothing but this rule ties them together.
@@ -675,7 +791,7 @@ function ruleNavBreakpointsPaired(files) {
     return hit ? hit.slice(0, hit.length - utility.length - 1) : null;
   };
 
-  let shows = null;
+  const showing = [];
   let hides = null;
   for (const el of elements(html)) {
     if (el.id === "hamburger") {
@@ -684,11 +800,23 @@ function ruleNavBreakpointsPaired(files) {
     // The desktop group is the one that starts hidden and becomes a flex row at
     // some breakpoint. Identified by that shape because it carries no id.
     if (el.classes.includes("hidden") && variantOf(el.classes, "flex")) {
-      shows = { variant: variantOf(el.classes, "flex"), line: lineOf(html, el.index) };
+      showing.push({ variant: variantOf(el.classes, "flex"), line: lineOf(html, el.index) });
     }
   }
 
   const found = [];
+  // Collected rather than overwritten. Assigning in the loop meant the LAST
+  // match won and a second group would be compared against nothing — the rule
+  // would pass while the pairing it exists to check went unexamined. Today
+  // there is exactly one, and this says so rather than relying on it.
+  if (showing.length > 1) {
+    found.push({
+      file: rel,
+      line: showing[1].line,
+      detail: `${showing.length} \`hidden <bp>:flex\` groups; this rule pairs one against #hamburger and cannot tell which you meant`,
+    });
+  }
+  const shows = showing[0] ?? null;
   if (!shows) {
     found.push({ file: rel, line: 0, detail: "no `hidden <bp>:flex` desktop nav group found" });
   }
@@ -712,6 +840,20 @@ function ruleNavBreakpointsPaired(files) {
 // ---------------------------------------------------------------------------
 
 const RULES = [
+  {
+    name: "ink body single source",
+    enabled: true,
+    turnedOnBy: "#139 — body ink raised to 0.85",
+    run: ruleInkBodySingleSource,
+    summary: "the body ink alpha is written twice and the two must agree",
+  },
+  {
+    name: "full height only on 404",
+    enabled: true,
+    turnedOnBy: "#137 — height follows content",
+    run: ruleFullHeightOnly404,
+    summary: "a block takes the screen only when filling it is the whole point",
+  },
   {
     name: "nav breakpoints paired",
     enabled: true,
