@@ -647,7 +647,7 @@ function ruleCollapsibleShipsOpen(files) {
 
 // The stylesheet's cache-busting query must be computed, never written.
 //
-// It was a literal — `?v=25` — from the Go-to-Rust migration until #145, and
+// It was a literal — `?v=25` — from the Go-to-Rust migration until PR 145, and
 // it never moved again: not for a palette change, not for the type scale, not
 // for two changes that shipped the same afternoon. `_headers` caches
 // /static/css/* for an hour, so a returning visitor got new markup styled by
@@ -880,7 +880,7 @@ const RULES = [
   {
     name: "css version is derived",
     enabled: true,
-    turnedOnBy: "#145 — the cache-buster is computed from the stylesheet",
+    turnedOnBy: "PR 145 — the cache-buster is computed from the stylesheet",
     run: ruleCssVersionIsDerived,
     summary: "the stylesheet's ?v= must be a hash of the stylesheet, not a literal",
   },

@@ -96,13 +96,14 @@
 
     <!-- Styles. The query is a hash of the stylesheet's own bytes, computed by
          the generator — see css_version() in generator/src/main.rs. It was a
-         hand-incremented literal until issue 145 and had not moved since the
+         hand-incremented literal until PR 145 and had not moved since the
          Go-to-Rust migration, through every palette and type change in
          between. A number that has to be remembered is a number that will be
          forgotten; this one cannot lag the file it busts.
 
-         Ticket numbers in template comments are written "issue 145" rather
-         than with a leading hash. Three hex digits after a hash IS a valid
+         Ticket numbers in template comments are written "PR 145" or
+         "issue 133", never with a leading hash. Three hex digits after a
+         hash IS a valid
          colour, so the zero-hex rule flags it — correctly, since it cannot
          know a three-digit number is a ticket rather than a dark blue. The
          convention bends here rather than the checker: widening the rule to
