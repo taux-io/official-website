@@ -35,6 +35,11 @@ function initMenu() {
 
     function open() {
         lastFocused = document.activeElement;
+        // Before the focus call below, and before the classes: inert blocks
+        // focus() outright, so lifting it has to come first or the close
+        // button never receives focus and a keyboard user opens the menu into
+        // nothing.
+        overlay.removeAttribute('inert');
         overlay.classList.remove('opacity-0', 'pointer-events-none');
         overlay.classList.add('opacity-100');
         document.body.classList.add('overflow-hidden');
@@ -52,6 +57,10 @@ function initMenu() {
         // Return focus to whatever opened it, so keyboard users do not land
         // back at the top of the document.
         if (lastFocused && document.contains(lastFocused)) lastFocused.focus();
+        // After the focus restore. Making an element inert while focus is
+        // inside it drops focus to the body, and the line above would then be
+        // undoing damage this line had just caused.
+        overlay.setAttribute('inert', '');
     }
 
     triggers.forEach(t => {

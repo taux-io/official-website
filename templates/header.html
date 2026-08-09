@@ -162,8 +162,22 @@
     </nav>
 
     <!-- Full-screen menu. One overlay serves both triggers: the hamburger on
-         small screens and Guides on large ones. -->
-    <div id="menuOverlay"
+         small screens and Guides on large ones.
+
+         SHIPS INERT, AND THE SCRIPT LIFTS IT. opacity-0 and pointer-events-none
+         hide it from eyes and mice and do nothing for a keyboard: the twenty
+         links inside stayed in the tab order, so tabbing past Start Building
+         walked into twenty stops on an invisible menu with no focus ring to
+         see. inert is the one attribute that fixes that without touching what
+         is in the document — the markup stays put for crawlers, which is the
+         whole reason this overlay is rendered rather than fetched.
+
+         Inert in the markup rather than applied by the script, so the failure
+         mode points the right way: if the script never runs, the menu cannot
+         open, and an unopenable menu should not be collecting focus. The
+         script removes the attribute when it opens the overlay and puts it
+         back when it closes. -->
+    <div id="menuOverlay" inert
         class="fixed inset-0 z-[60] bg-surface-deep opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto"
         role="dialog" aria-modal="true" aria-label="Site menu">
         <div class="max-w-6xl mx-auto px-6 py-6">
