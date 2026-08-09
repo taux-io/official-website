@@ -45,19 +45,22 @@
     offsets.forEach((offset, i) => {
       const { el } = items[i];
       if (offset === null) return;
-      // Whole pixels, not hundredths.
+      // Whole pixels for the canvases, sub-pixel for everything else.
       //
-      // Every element this moves is a canvas, and those canvases now draw on a
-      // 5px grid. A sub-pixel translate makes the compositor resample that grid
-      // against the screen's, and a hard-edged figure resampled a fraction of a
-      // pixel at a time shimmers as it scrolls — the artefact a continuous
-      // stroke never showed because it had no hard edges to misalign.
+      // The figures draw on a 5px grid, and a sub-pixel translate makes the
+      // compositor resample that grid against the screen's — a hard-edged
+      // figure shifted a fraction of a pixel at a time shimmers as it scrolls,
+      // an artefact the continuous strokes never had because they had no hard
+      // edges to misalign.
       //
-      // Rounding to the device pixel fixes it without changing the motion:
-      // the largest factor in use is 0.5, so the correction is under half a
-      // pixel and nothing about the parallax reads differently. Snapping to
-      // whole grid cells instead would make it visibly step.
-      el.style.transform = `translate3d(0, ${Math.round(offset)}px, 0)`;
+      // But not everything here is a canvas. index.html moves the hero copy
+      // column at factor 0.08, and that is text: rounding it to whole pixels
+      // makes a paragraph step instead of glide, for no benefit at all, since
+      // text has no grid to align to. An earlier version of this comment
+      // claimed every element was a canvas. It was wrong, and it was wrong in
+      // the direction that made the change look free.
+      const step = el.tagName === "CANVAS" ? Math.round(offset) : +offset.toFixed(2);
+      el.style.transform = `translate3d(0, ${step}px, 0)`;
     });
   }
 

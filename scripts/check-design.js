@@ -528,10 +528,16 @@ function rulePhosphorBudget(files) {
 // Texture belongs on a sibling or in a font glyph, not on an ancestor of text.
 // This reads templates, so a background-image introduced in input.css is out of
 // its reach — that limit is real and is recorded in DESIGN.md decision #32.
-const BG_IMAGE_INLINE = /style="[^"]*background-image\s*:/i;
+// Both quote styles, and the `background:` shorthand — `background: url(...)`
+// and `background: linear-gradient(...)` set background-image just as surely as
+// the longhand does.
+const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
 // The idiomatic way to add one in this codebase is a utility, not a style
 // attribute: bg-[url(...)] and every gradient helper resolve to background-image.
-const BG_IMAGE_CLASS = /^bg-(?:\[url\(|gradient-to-|linear-|radial-|conic-)/;
+// Bare bg-radial / bg-conic, every gradient direction, and the arbitrary-value
+// form bg-[linear-gradient(...)] / bg-[image:...]. Enumerating a subset is how a
+// rule that was just switched on goes quietly blind.
+const BG_IMAGE_CLASS = /^bg-(?:\[(?:url|image|linear|radial|conic)|gradient-|linear-|radial-|conic-)/;
 
 function ruleTextureNotBehindText(files) {
   const found = [];
@@ -562,15 +568,36 @@ function ruleTextureNotBehindText(files) {
 const PIXEL_TEMPLATES = new Set(["404.html"]);
 const SPECIMEN = /\bdata-specimen\b/;
 
+// Component classes in input.css that reach Departure Mono, so a .foo built on
+// @apply font-pixel is caught the same as the utility itself.
+function pixelComponentClasses() {
+  const css = path.join(ROOT, "src", "input.css");
+  if (!fs.existsSync(css)) return new Set();
+  const text = fs.readFileSync(css, "utf8");
+  const out = new Set();
+  for (const m of text.matchAll(/\.([a-zA-Z0-9_-]+)\s*\{([^}]*)\}/g)) {
+    if (/font-pixel|Departure Mono/.test(m[2])) out.add(m[1]);
+  }
+  return out;
+}
+
 function rulePixelScope(files) {
   const found = [];
+  const pixelComponents = pixelComponentClasses();
   const { declared, byName } = routeTemplates(files);
   const seenAt = new Set();
 
   for (const template of declared) {
     if (PIXEL_TEMPLATES.has(template) || !byName.has(template)) continue;
     for (const { node, file, line } of renderedNodes(template, byName)) {
-      if (!node.classes.map(stripVariants).includes("font-pixel")) continue;
+      const cls = node.classes.map(stripVariants);
+      // The literal utility, an arbitrary font value naming the face, and any
+      // component class that applies the pixel stack in input.css.
+      const pixel =
+        cls.includes("font-pixel") ||
+        cls.some((c) => /^font-\[.*[Dd]eparture/.test(c)) ||
+        cls.some((c) => pixelComponents.has(c));
+      if (!pixel) continue;
       // A specimen marks itself or an ancestor of itself — not merely something
       // earlier in the same file.
       if (hasAttr(node, SPECIMEN)) continue;

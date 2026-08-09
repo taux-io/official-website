@@ -56,79 +56,98 @@
     [15, 7, 13, 5],
   ];
 
-  function rasteriser(ctx, stroke) {
-    const cells = new Map();
+  function rasteriser(ctx, stroke, w, h, dpr) {
+    // Snap the cell to whole DEVICE pixels. CELL is authored in CSS pixels and
+    // the context is scaled by dpr, so on a 1.25x or 1.5x display — the default
+    // on a large population of Windows laptops — a 5px cell is 6.25 device
+    // pixels and every edge lands on a half pixel and is antialiased. That
+    // erases the hard edge, which is the whole point of drawing on a grid.
+    const cell = Math.max(1, Math.round(CELL * dpr)) / dpr;
+
+    // One bucket per alpha rather than one fillStyle assignment per cell.
+    // Assigning fillStyle forces a CSS colour parse; the interference figure
+    // plots tens of thousands of cells per frame and only a handful of distinct
+    // alphas, so this turns ~35k parses into ~30.
+    const byAlpha = new Map();
+    const seen = new Map();
 
     const plot = (x, y, alpha) => {
       if (alpha <= 0) return;
-      const gx = Math.round(x / CELL) * CELL;
-      const gy = Math.round(y / CELL) * CELL;
+      const gx = Math.round(x / cell) * cell;
+      const gy = Math.round(y / cell) * cell;
+      // Cull off-canvas. The continuous-stroke version handed clipping to the
+      // rasteriser in C++; plotting into a Map does not get that for free, and
+      // the interference figure generates ~9x more points than land on the
+      // surface. Without this the idle loop repaints tens of thousands of
+      // invisible rectangles thirty times a second, forever.
+      if (gx < -cell || gy < -cell || gx > w || gy > h) return;
       const key = gx + "," + gy;
-      const prev = cells.get(key);
-      if (prev === undefined || alpha > prev) cells.set(key, alpha);
+      const prev = seen.get(key);
+      if (prev !== undefined && prev >= alpha) return;
+      seen.set(key, alpha);
+      let bucket = byAlpha.get(alpha);
+      if (!bucket) byAlpha.set(alpha, (bucket = []));
+      bucket.push(gx, gy);
     };
 
-    // Walk a segment in grid steps. Sampling by distance rather than by a fixed
-    // count keeps the density even whether the segment is 4px or 400px.
     const segment = (x0, y0, x1, y1, alpha) => {
       const dist = Math.hypot(x1 - x0, y1 - y0);
-      const steps = Math.max(1, Math.ceil(dist / (CELL * 0.5)));
+      const steps = Math.max(1, Math.ceil(dist / (cell * 0.5)));
       for (let i = 0; i <= steps; i++) {
         const t = i / steps;
         plot(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, alpha);
       }
     };
 
-    const arc = (cx, cy, r, a0, a1, alpha) => {
-      if (r <= 0) return;
+    const arc = (cx, cy, radius, a0, a1, alpha) => {
+      if (radius <= 0) return;
       const sweep = Math.abs(a1 - a0);
-      const steps = Math.max(1, Math.ceil((sweep * r) / (CELL * 0.5)));
+      const steps = Math.max(1, Math.ceil((sweep * radius) / (cell * 0.5)));
       for (let i = 0; i <= steps; i++) {
         const a = a0 + (a1 - a0) * (i / steps);
-        plot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, alpha);
+        plot(cx + Math.cos(a) * radius, cy + Math.sin(a) * radius, alpha);
       }
     };
 
     // The area under a curve, as density rather than as a gradient.
     //
-    // A dot grid has no gradient to give, and faking one by fading each cell's
-    // alpha just produces a blurry grid. Dithering is the technique that exists
-    // for exactly this: hold the ink constant and vary how many cells carry it.
-    // Density falls with depth below the curve, so the fill reads as weight
-    // without ever becoming a wash.
-    const ramp = (topAt, bottom, x0, x1, alpha) => {
-      for (let x = x0; x <= x1; x += CELL) {
+    // A dot grid has no gradient to give, and fading each cell's alpha just
+    // produces a blurry grid. Dithering is the technique for exactly this: hold
+    // the ink constant and vary how many cells carry it.
+    //
+    // Depth is measured against the FIXED span the gradient used, not against
+    // each column's own curve height. Normalising per column made the flat run
+    // before the step — where the band is only 0.2h tall — come out at nearly
+    // full density while the settled region at the same y got one cell in
+    // sixteen, so the pre-step baseline read heavier than the response and the
+    // step stopped reading as a rise.
+    const ramp = (topAt, spanTop, bottom, x0, x1, alpha) => {
+      const span = bottom - spanTop || 1;
+      for (let x = x0; x <= x1; x += cell) {
         const top = topAt(x);
         if (top >= bottom) continue;
-        for (let y = top; y <= bottom; y += CELL) {
-          const depth = (y - top) / (bottom - top || 1);
-          // Full density at the curve, nothing at the bottom edge.
-          //
-          // Cubed rather than squared: the gradient this replaces ran 0.035 to
-          // 0, which is nearly invisible, and a dither ramp reads much heavier
-          // than a wash of the same alpha because every cell it does place is
-          // at full strength. A square falloff turned the area under the curve
-          // into a field competing with the trace. The point of this change was
-          // to swap the rasteriser, not to make the figure louder.
+        for (let y = top; y <= bottom; y += cell) {
+          const depth = (y - spanTop) / span;
           const want = (1 - depth) * (1 - depth) * (1 - depth);
-          const bx = Math.abs(Math.round(x / CELL)) % 4;
-          const by = Math.abs(Math.round(y / CELL)) % 4;
+          if (want <= 0) continue;
+          const bx = Math.abs(Math.round(x / cell)) % 4;
+          const by = Math.abs(Math.round(y / cell)) % 4;
           if (want * 16 > BAYER[by][bx]) plot(x, y, alpha);
         }
       }
     };
 
     const flush = () => {
-      for (const [key, alpha] of cells) {
-        const [gx, gy] = key.split(",");
+      const side = cell - Math.min(1, cell * 0.2);
+      for (const [alpha, xy] of byAlpha) {
         ctx.fillStyle = stroke(alpha);
-        // One pixel short of the cell so the grid stays visible as a grid.
-        ctx.fillRect(+gx, +gy, CELL - 1, CELL - 1);
+        for (let i = 0; i < xy.length; i += 2) ctx.fillRect(xy[i], xy[i + 1], side, side);
       }
-      cells.clear();
+      byAlpha.clear();
+      seen.clear();
     };
 
-    return { plot, segment, arc, ramp, flush, cell: CELL };
+    return { plot, segment, arc, ramp, flush, cell };
   }
 
   // ---------------------------------------------------------------------------
@@ -172,7 +191,7 @@
 
   function drawTau(ctx, g) {
     const { w, h, progress, drift, stroke, isStatic } = g;
-    const r = rasteriser(ctx, stroke);
+    const r = rasteriser(ctx, stroke, w, h, g.dpr);
 
     // The baseline sits low so the step reads as a rise. The settled level is
     // derived rather than chosen: scale the curve so its peak overshoot lands
@@ -206,7 +225,7 @@
     if (points.length < 2) return;
 
     // Area under the curve, as dither density rather than as a gradient.
-    r.ramp((x) => baseY - response(x / w) * rise, h, 0, points[points.length - 1][0], 0.035);
+    r.ramp((x) => baseY - response(x / w) * rise, targetY, h, 0, points[points.length - 1][0], 0.035);
 
     // The trace itself.
     const traceAlpha = isStatic ? 0.3 : 0.42;
@@ -237,7 +256,7 @@
 
   function drawPolar(ctx, g) {
     const { w, h, progress, drift, stroke } = g;
-    const r = rasteriser(ctx, stroke);
+    const r = rasteriser(ctx, stroke, w, h, g.dpr);
 
     // Centre sits off the right edge, so the visible figure is the left part of
     // a much larger instrument rather than a complete circle floating in a box.
@@ -283,7 +302,7 @@
 
   function drawInterference(ctx, g) {
     const { w, h, progress, drift, stroke } = g;
-    const r = rasteriser(ctx, stroke);
+    const r = rasteriser(ctx, stroke, w, h, g.dpr);
 
     const sep = w * 0.18;
     const cy = h * 0.55;
@@ -293,7 +312,13 @@
     ];
     // The wavelength breathes; the fringes slide through each other without
     // anything moving, which is what interference actually looks like.
-    const spacing = (Math.hypot(w, h) / FRINGES) * (1 + drift * 6);
+    // Quantised to whole cells. Left continuous, `spacing * i` moves the outer
+    // rings by a few pixels per frame and every cell they touch re-snaps to a
+    // different square — a measured 22-32% of the field flipping thirty times a
+    // second, which reads as boiling. Snapping the wavelength means most frames
+    // are identical and the ones that change shift the whole family by one cell.
+    const spacingRaw = (Math.hypot(w, h) / FRINGES) * (1 + drift * 6);
+    const spacing = Math.max(r.cell, Math.round(spacingRaw / r.cell) * r.cell);
 
     for (const [sx, sy] of sources) {
       for (let i = 1; i <= FRINGES; i++) {
@@ -341,6 +366,7 @@
       canvas.dataset.tauCurve === "static" || canvas.dataset.static !== undefined;
 
     let width = 0;
+    let dprUsed = 1;
     let height = 0;
     let raf = null;
     let timer = null;
@@ -362,21 +388,47 @@
       if (!rect.width || !rect.height) return false;
       // Cap the backing store at 2x; beyond that the extra pixels cost more
       // than they show on a 1px line.
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dprUsed = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = dprUsed;
       width = rect.width;
       height = rect.height;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lastKey = null; // geometry changed; the memo is stale
       return true;
     }
 
     // progress: how much of the figure has been traced, 0..1
     // drift:    slow breathing applied once it has settled
+    //
+    // Skips the redraw when the output cannot have changed.
+    //
+    // Drawing on a grid makes this possible and makes it necessary. Possible,
+    // because the output is a function of quantised geometry: once the breath
+    // has moved everything by less than one cell, the next frame paints exactly
+    // the same squares. Necessary, because a cell grid costs hundreds of
+    // thousands of fillRects a second — measured at 6x CPU throttling, the
+    // unconditional version held the main thread busy about half the time,
+    // forever, for a background. The continuous strokes it replaced were a few
+    // dozen native path calls and could afford to be lazy about this.
+    //
+    // The gate is one cell of movement at the figure's largest radius, which is
+    // the fastest-moving thing any of them draw. Decision #17's reasoning is
+    // unchanged: the timer still runs at IDLE_FPS, it just usually returns
+    // without touching the canvas.
+    let lastKey = null;
     function draw(progress, drift) {
-      ctx.clearRect(0, 0, width, height);
       if (!width || !height) return;
-      spec.draw(ctx, { w: width, h: height, progress, drift, stroke, isStatic });
+      const reach = Math.hypot(width, height);
+      const key =
+        Math.round(width) + "x" + Math.round(height) +
+        ":" + Math.round(progress * 1000) +
+        ":" + Math.round((drift * reach) / Math.max(1, CELL));
+      if (key === lastKey) return;
+      lastKey = key;
+      ctx.clearRect(0, 0, width, height);
+      spec.draw(ctx, { w: width, h: height, progress, drift, stroke, isStatic, dpr: dprUsed });
     }
 
     const drawSettled = () => draw(1, 0);
