@@ -258,6 +258,17 @@
     color: var(--ink);
   }
 
+  /* A column label is machine output — the same judgement that moved .eyebrow
+     into the mono stack. All thirty of them across the seven tables are short
+     labels (#, 維度, 關鍵日期, 出處, 2025); not one is prose, so this is a rule
+     rather than thirty hand edits that drift apart the first time someone adds
+     a table. Data cells are not covered: they take font-mono where the content
+     is genuinely a measurement, which is a per-cell judgement and is already
+     applied on the 57 that earn it. */
+  th {
+    @apply font-mono;
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -459,13 +470,20 @@
     line-height: 1.15;
   }
 
-  /* Latin eyebrow label — section numbers, column headings, kickers.
+  /* Eyebrow label — section numbers, column headings, kickers.
      text-ink-body rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
      dimming. Eyebrows and captions come out brighter than before, which is the
-     intended consequence and not a regression. */
+     intended consequence and not a regression.
+
+     font-mono rather than font-display: an eyebrow is a label, and a label is
+     machine output — the judgement DESIGN.md's 等寬字治理 turns on. 95 of the
+     186 eyebrows are Chinese, and they stay readable because the mono stack
+     carries the CJK faces ahead of the generic monospace; Roboto Mono's
+     unicode-range hands them over. That stack is the whole reason this is one
+     line rather than a Latin-only variant applied by hand. */
   .eyebrow {
-    @apply font-display text-eyebrow uppercase text-ink-body;
+    @apply font-mono text-eyebrow uppercase text-ink-body;
   }
 
   .footer-link {

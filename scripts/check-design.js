@@ -612,7 +612,7 @@ const RULES = [
   },
   {
     name: "phosphor budget",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#125 stage 2 — typography",
     run: rulePhosphorBudget,
     summary: `at most ${PHOSPHOR_BUDGET} phosphor elements on a rendered page`,

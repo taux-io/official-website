@@ -94,12 +94,8 @@
     }
     </script>
 
-    <!-- Styles.
-         v=24 also clears a backlog: the stylesheet changed in five commits
-         after v=23 was set and none of them bumped this, so returning visitors
-         have been up to an hour behind for a while. Nothing checks this number;
-         _headers says so. -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=24">
+    <!-- Styles. Nothing checks this number; _headers says so. -->
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=25">
 </head>
 
 <body class="bg-surface text-ink-body font-sans antialiased">
@@ -157,59 +153,20 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-12 md:gap-16 mt-16 md:mt-24 pb-16">
-                <div>
-                    <h2 class="eyebrow mb-8">01 — GEO</h2>
-                    <ul class="space-y-5">
-                        <li><a href="/geo-optimization" class="menu-link">GEO Optimization</a></li>
-                        <li><a href="/geo-guide" class="menu-link">GEO Guide</a></li>
-                        <li><a href="/what-is-llms-txt" class="menu-link">LLMs.txt</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="eyebrow mb-8">02 — AI</h2>
-                    <ul class="space-y-5">
-                        <li><a href="/ai-smart-work" class="menu-link">Smart Work</a></li>
-                        <li><a href="/google-workspace-with-ai" class="menu-link">Workspace AI</a></li>
-                        <li><a href="/agent-prompting-guide" class="menu-link">Prompt Guide</a></li>
-                        <li><a href="/claude-skills-guide" class="menu-link">Skills Guide</a></li>
-                        <li><a href="/adk-skill-patterns" class="menu-link">ADK Patterns</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="eyebrow mb-8">03 — Security</h2>
-                    <ul class="space-y-5">
-                        <li><a href="/data-governance" class="menu-link">Data Governance</a></li>
-                        <li><a href="/threat-landscape" class="menu-link">Threat Landscape</a></li>
-                        <li><a href="/owasp-llm-top-10" class="menu-link">OWASP LLM Top 10</a></li>
-                        <li><a href="/what-is-prompt-injection" class="menu-link">Prompt Security</a></li>
-                        <li><a href="/pqc-migration" class="menu-link">PQC Migration</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="eyebrow mb-8">04 — Open Source</h2>
-                    <ul class="space-y-5">
-                        <li>
-                            <a href="https://github.com/taux-io/twse-mcp" target="_blank" rel="noopener noreferrer"
-                                class="menu-link">TWSE MCP</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="eyebrow mb-8">05 — Company</h2>
-                    <ul class="space-y-5">
-                        <li><a href="/" class="menu-link">Home</a></li>
-                        <li><a href="/about" class="menu-link">About</a></li>
-                        <li><a href="/building" class="menu-link">Building in Public</a></li>
-                        <li>
+{% with link_class = "menu-link", list_space = "space-y-5" %}{% include "_nav-columns.html" %}{% endwith %}
+                    <div>
+                        <h2 class="eyebrow mb-8">05 — Company</h2>
+                        <ul class="space-y-5">
+                            <li><a href="/" class="menu-link">Home</a></li>
+                            <li><a href="/about" class="menu-link">About</a></li>
+                            <li><a href="/building" class="menu-link">Building in Public</a></li>
+                            <li>
                             <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
-                                class="menu-link">GitHub</a>
-                        </li>
-                    </ul>
-                </div>
+                            class="menu-link">GitHub</a>
+                            </li>
+                        </ul>
+                    </div>
+
             </div>
         </div>
     </div>
