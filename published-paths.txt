@@ -24,5 +24,6 @@
 /terms-of-service
 /threat-landscape
 /what-is-llms-txt
+/what-is-mcp
 /what-is-prompt-injection
 /workspace-ai-roi

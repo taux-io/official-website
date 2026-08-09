@@ -1,0 +1,304 @@
+{% include "header.html" %}
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/what-is-mcp#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"首頁","item":"https://taux.io"
+                },
+                {"@type":"ListItem","position": 2,"name":"MCP 是什麼","item":"https://taux.io/what-is-mcp"
+                }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/what-is-mcp#article","headline":"MCP 是什麼？模型上下文協定架構白話解說","description":"MCP（Model Context Protocol）讓 AI 應用程式接上外部資料與工具。以白話解釋 host、client、server 三個角色，以及 prompts、resources、tools 的差別在於「誰決定」，依規格修訂版 2026-07-28 撰寫。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/what-is-mcp" }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 px-6 bg-surface">
+    <article class="max-w-4xl mx-auto relative z-10">
+
+        <header class="mb-20">
+            <div class="tag mb-6">AI 技術觀點</div>
+            <h1 class="mb-8">
+                <span class="display-lead">Model Context Protocol</span>
+                <span class="display-sub">MCP 是什麼？一次搞懂它在解決什麼問題</span>
+            </h1>
+            <p class="text-lg text-ink-body max-w-prose leading-relaxed">
+                MCP 是一套<strong class="text-ink">通用接線標準</strong>，讓 AI 應用程式能接上外部的資料與工具。這頁用白話解釋它的三個角色、它提供的三種東西，以及 2026 年這次改版把什麼翻掉了。
+            </p>
+            <p class="font-mono text-eyebrow uppercase text-ink-body mt-8">
+                依規格修訂版 <span class="text-ink">2026-07-28</span> 撰寫
+            </p>
+        </header>
+
+        <!-- ① ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="what">01 — 一句話</h2>
+            <p class="text-2xl md:text-3xl font-display text-ink leading-snug mb-8 max-w-prose">
+                MCP 讓任何 AI 應用程式，用同一種方式接上任何資料來源。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed">
+                全名 Model Context Protocol，中文常譯作「模型上下文協定」。它由 Anthropic 在 2024 年提出，<strong class="text-ink">但從 2025 年 12 月起已經不屬於 Anthropic</strong>——協定捐給了 Agentic AI Foundation（Linux Foundation 旗下，與 Block、OpenAI 共同創立），現在由社群治理。
+            </p>
+        </section>
+
+        <!-- ② ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="why">02 — 為什麼需要它</h2>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-8">
+                假設有 4 個 AI 應用程式，和 5 個你想接上的東西：Google Drive、GitHub、資料庫、Slack、公司內部 API。
+            </p>
+            <div class="border border-line p-8 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <p class="eyebrow mb-4">沒有共通協定</p>
+                        <p class="font-mono text-3xl text-ink mb-3">4 × 5 = 20</p>
+                        <p class="text-sm text-ink-body leading-relaxed">每一組「應用程式 × 資料來源」都要各自寫一次。多一個應用程式就多 5 組，多一個資料來源就多 4 組。</p>
+                    </div>
+                    <div>
+                        <p class="eyebrow mb-4">有了共通協定</p>
+                        <p class="font-mono text-3xl text-phosphor mb-3">4 + 5 = 9</p>
+                        <p class="text-sm text-ink-body leading-relaxed">每個應用程式實作一次「怎麼當客戶端」，每個資料來源實作一次「怎麼當伺服器」。</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-ink-body max-w-prose leading-relaxed">
+                這叫 <strong class="text-ink">N×M 問題</strong>，而 MCP 的全部價值就在這一句：<strong class="text-ink">任何 MCP 客戶端都能接上任何 MCP 伺服器</strong>。USB 是同一個故事——在它之前，每一種週邊都有自己的接頭。
+            </p>
+        </section>
+
+        <!-- ③ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="roles">03 — 三個角色</h2>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-10">
+                MCP 裡有三個角色。<strong class="text-ink">最多人搞混的是前兩個</strong>——大家說「MCP client」的時候，心裡想的通常是 Claude Desktop，但那是 host。
+            </p>
+
+            <figure class="mb-10">
+              <div class="overflow-x-auto">
+                <svg viewBox="0 0 720 300" class="h-auto text-ink w-full min-w-[680px]" role="img"
+                     aria-labelledby="arch-title" aria-describedby="arch-desc">
+                    <title id="arch-title">MCP 的三個角色</title>
+                    <desc id="arch-desc">Host 內含三個 client，每個 client 各自連到一個 server。前兩個 server 在本機，第三個在遠端。資料庫畫在 server 外側，表示 server 是資料前面的中介。</desc>
+
+                    <!-- Host, with the clients inside it. The nesting is the
+                         whole point of the diagram: a client is not a peer of
+                         the host, it is a part of it. -->
+                    <rect x="8" y="40" width="250" height="220" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" stroke-width="1" />
+                    <text x="20" y="30" class="font-mono" font-size="13" fill="currentColor"
+                          fill-opacity="0.8" letter-spacing="1.2">HOST</text>
+                    <text x="20" y="62" class="font-mono" font-size="12" fill="currentColor"
+                          fill-opacity="0.55">AI 應用程式</text>
+
+                    <rect x="28" y="84" width="120" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="106" class="font-mono" font-size="12" fill="currentColor">Client 1</text>
+                    <rect x="28" y="134" width="120" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="156" class="font-mono" font-size="12" fill="currentColor">Client 2</text>
+                    <rect x="28" y="184" width="120" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="206" class="font-mono" font-size="12" fill="currentColor">Client 3</text>
+
+                    <!-- Arrows originate at the client. In this revision there
+                         are no server-initiated requests, so a bidirectional
+                         arrow here would be wrong. -->
+                    <line x1="148" y1="101" x2="420" y2="101" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="151" x2="420" y2="151" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="201" x2="420" y2="201" stroke="currentColor" stroke-opacity="0.35" />
+                    <polygon points="420,97 430,101 420,105" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,147 430,151 420,155" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,197 430,201 420,205" fill="currentColor" fill-opacity="0.6" />
+
+                    <rect x="434" y="84" width="150" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="106" class="font-mono" font-size="12" fill="currentColor">Server A</text>
+                    <rect x="434" y="134" width="150" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="156" class="font-mono" font-size="12" fill="currentColor">Server B</text>
+                    <rect x="434" y="184" width="150" height="34" fill="none"
+                          stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="206" class="font-mono" font-size="12" fill="currentColor">Server C</text>
+
+                    <text x="434" y="72" class="font-mono" font-size="11" fill="currentColor"
+                          fill-opacity="0.55">stdio（子行程）</text>
+                    <text x="434" y="240" class="font-mono" font-size="11" fill="currentColor"
+                          fill-opacity="0.55">Streamable HTTP</text>
+
+                    <!-- The data sits beyond the server: a server is a broker in
+                         front of the data, never the data itself. -->
+                    <ellipse cx="650" cy="101" rx="34" ry="9" fill="none"
+                             stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="151" rx="34" ry="9" fill="none"
+                             stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="201" rx="34" ry="9" fill="none"
+                             stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="101" x2="616" y2="101" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="151" x2="616" y2="151" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="201" x2="616" y2="201" stroke="currentColor" stroke-opacity="0.25" />
+                    <text x="616" y="280" class="font-mono" font-size="11" fill="currentColor"
+                          fill-opacity="0.45">你的資料</text>
+                </svg>
+              </div>
+                <figcaption class="font-mono text-xs text-ink-body mt-4">
+                    client 在 host <strong class="text-ink">裡面</strong>，一個伺服器配一個。箭頭一律從 client 出發。
+                </figcaption>
+            </figure>
+
+            <dl class="border-t border-line">
+                <div class="border-b border-line py-6">
+                    <dt class="font-mono text-ink mb-2">Host（宿主）</dt>
+                    <dd class="text-ink-body leading-relaxed max-w-prose">AI 應用程式本身。Claude Desktop、VS Code、Claude Code 都是 host。它握有模型、握有對話、決定權限。<strong class="text-ink">host 就是那個「應用程式」</strong>。</dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-mono text-ink mb-2">Client（客戶端）</dt>
+                    <dd class="text-ink-body leading-relaxed max-w-prose">host <strong class="text-ink">裡面</strong>的一個連接器，一個伺服器配一個。它不是應用程式，是應用程式內部的零件。VS Code 同時接兩個伺服器，就有兩個 client。</dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-mono text-ink mb-2">Server（伺服器）</dt>
+                    <dd class="text-ink-body leading-relaxed max-w-prose">對外提供工具與資料的程式。可以跑在你自己的機器上，也可以在遠端。它<strong class="text-ink">看不到你的對話，也看不到其他伺服器</strong>——這是刻意的設計。</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- ④ 互動 --------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="primitives">04 — 伺服器提供什麼</h2>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-4">
+                伺服器提供三種東西。它們的差別<strong class="text-ink">不是</strong>「讀 vs 寫」——那是最常見的錯誤直覺。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-10">
+                真正的差別是<strong class="text-ink">誰決定要不要用它</strong>。下面三個情境，每一個的答案都不一樣：
+            </p>
+
+            <div data-mcp-primitives class="border border-line">
+                <div data-tablist class="flex flex-col md:flex-row border-b border-line">
+                    <button type="button" data-scenario="resource"
+                            class="flex-1 text-left font-mono text-eyebrow uppercase text-ink-body px-6 py-5 border-b-2 border-transparent transition-colors duration-200 hover:text-ink aria-selected:text-ink aria-selected:border-line-strong md:border-r md:border-r-line">
+                        我想讓 AI 讀我的檔案
+                    </button>
+                    <button type="button" data-scenario="tool"
+                            class="flex-1 text-left font-mono text-eyebrow uppercase text-ink-body px-6 py-5 border-b-2 border-transparent transition-colors duration-200 hover:text-ink aria-selected:text-ink aria-selected:border-line-strong md:border-r md:border-r-line">
+                        我想讓 AI 幫我開一張票
+                    </button>
+                    <button type="button" data-scenario="prompt"
+                            class="flex-1 text-left font-mono text-eyebrow uppercase text-ink-body px-6 py-5 border-b-2 border-transparent transition-colors duration-200 hover:text-ink aria-selected:text-ink aria-selected:border-line-strong md:border-r md:border-r-line">
+                        我想用現成的審查流程
+                    </button>
+                </div>
+
+                <section data-panel="resource" class="p-8">
+                    <p class="eyebrow mb-4">答案：<span class="text-phosphor">Resource</span> — 由應用程式決定</p>
+                    <p class="text-ink-body leading-relaxed max-w-prose mb-4">
+                        你把一份文件拖進對話，或是 host 判斷「這個問題需要附上這個檔案」——決定權在<strong class="text-ink">應用程式</strong>手上，不在模型手上。模型只是收到了那份內容。
+                    </p>
+                    <p class="text-sm text-ink-body leading-relaxed max-w-prose">
+                        常見例子：檔案內容、git 歷史、資料庫 schema。
+                    </p>
+                </section>
+
+                <section data-panel="tool" class="p-8">
+                    <p class="eyebrow mb-4">答案：<span class="text-phosphor">Tool</span> — 由模型決定</p>
+                    <p class="text-ink-body leading-relaxed max-w-prose mb-4">
+                        你說「幫我把這個 bug 開成一張票」，模型自己判斷要呼叫哪個功能、帶什麼參數。決定權在<strong class="text-ink">模型</strong>手上。
+                    </p>
+                    <p class="text-sm text-ink-body leading-relaxed max-w-prose">
+                        關鍵：<strong class="text-ink">一個唯讀的查詢也可以是 tool</strong>，只要是模型自己決定要不要查。所以「讀 = resource、寫 = tool」是錯的。
+                    </p>
+                </section>
+
+                <section data-panel="prompt" class="p-8">
+                    <p class="eyebrow mb-4">答案：<span class="text-phosphor">Prompt</span> — 由使用者決定</p>
+                    <p class="text-ink-body leading-relaxed max-w-prose mb-4">
+                        你從選單挑一個「程式碼審查」，或打一個斜線指令。決定權在<strong class="text-ink">你</strong>手上——模型不會自己跑去用它。
+                    </p>
+                    <p class="text-sm text-ink-body leading-relaxed max-w-prose">
+                        常見例子：斜線指令、範本選單。
+                    </p>
+                </section>
+            </div>
+
+            <p class="font-mono text-xs text-ink-body mt-4">
+                ├─ 三個情境的差別只有一個：誰按下決定鍵。
+            </p>
+        </section>
+
+        <!-- ⑤ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="transport">05 — 它怎麼傳輸</h2>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-6">
+                兩種標準方式：<strong class="text-ink">stdio</strong>——伺服器是一個子行程，透過標準輸入輸出溝通；與 <strong class="text-ink">Streamable HTTP</strong>——每則訊息是一個 HTTP POST。<strong class="text-ink">這是「怎麼傳」的差別，不是「在哪裡」的差別</strong>：一個跑在你自己機器上的伺服器，一樣可以講 Streamable HTTP。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed">
+                值得知道的是<strong class="text-ink">兩者的安全性完全不同</strong>：stdio 直接繼承你的使用者權限、沒有驗證層；HTTP 那條需要 OAuth、需要驗證來源。另外，「本機伺服器」指的是「跑在你機器上」，跟它會不會連外網無關——本機伺服器一樣可以去打遠端 API。
+            </p>
+        </section>
+
+        <!-- ⑥ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="whats-new">06 — 這一版變了什麼</h2>
+            <p class="text-2xl font-display text-ink leading-snug mb-8 max-w-prose">
+                伺服器現在什麼都不記得。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-6">
+                <span class="font-mono text-ink">2026-07-28</span> 是 MCP 問世以來最大的一次改版，而且是破壞性的。以前客戶端要先跟伺服器「握手」建立連線，之後雙方記得彼此。<strong class="text-ink">現在沒有握手、沒有連線階段</strong>——每一個請求都自己帶著版本與身分，伺服器處理完就忘記。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-10">
+                方向也改了：<strong class="text-ink">伺服器不會回頭問你問題</strong>。它會回一個「我需要這個資訊」然後結束這次請求，由客戶端拿到答案後<strong class="text-ink">重新發一次</strong>。
+            </p>
+
+            <div class="border-l border-line-strong pl-6 mb-10">
+                <p class="eyebrow mb-4">你在別處看到這些，代表那份資料已經過期</p>
+                <ul class="font-mono text-sm text-ink-body space-y-2">
+                    <li>├─ <code>initialize</code> 握手</li>
+                    <li>├─ <code>Mcp-Session-Id</code> 標頭、協定層的 session</li>
+                    <li>├─ 伺服器<strong class="text-ink">主動送出</strong>一個請求給客戶端</li>
+                    <li>└─ <code>ping</code>、<code>logging/setLevel</code> 這兩個方法</li>
+                </ul>
+            </div>
+
+            <p class="text-ink-body max-w-prose leading-relaxed mb-6">
+                第三項要講清楚，因為它最容易被誤讀成「伺服器再也不能要東西了」。<strong class="text-ink">消失的是「主動送出請求」這個機制，不是伺服器提出要求的能力。</strong>以前伺服器可以直接推一個請求過來；現在它只能在回應裡說「我需要這個」然後結束，剩下的由客戶端接手。
+            </p>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-10">
+                所以那些「伺服器向客戶端要東西」的功能<strong class="text-ink">都還在，只是換了條路走</strong>——包括 <strong class="text-ink">Elicitation</strong>（跟使用者要一項資訊）與 <strong class="text-ink">Sampling</strong>（借用 host 的模型；方向與直覺相反，所以特別多人誤解）。
+            </p>
+
+            <p class="text-ink-body max-w-prose leading-relaxed">
+                另外一件事跟上面無關：<strong class="text-ink">Roots</strong>（告訴伺服器你的工作目錄範圍）、<strong class="text-ink">Sampling</strong> 與 <strong class="text-ink">Logging</strong> 這三樣<strong class="text-ink">被標記為淘汰</strong>。它們現在還能用，但別當成現行架構學。淘汰與上面那個機制改變是兩回事：一個講「怎麼傳」，一個講「還要不要留著」。
+            </p>
+        </section>
+
+        <!-- ⑦ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <h2 class="eyebrow mb-6" id="version">07 — 本頁對應哪一版</h2>
+            <p class="text-ink-body max-w-prose leading-relaxed mb-6">
+                MCP 的版號<strong class="text-ink">就是日期</strong>。它標示的是「最後一次做出破壞性變更的日子」，不是發布週期。所以你手上任何一份 MCP 資料，看它對應哪個日期就知道新不新——<strong class="text-ink">這是這頁最值得你帶走的一件事</strong>。
+            </p>
+            <p class="font-mono text-sm text-ink-body mb-10">
+                2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span class="text-ink">2026-07-28</span>
+            </p>
+            <div class="border border-line p-8">
+                <p class="eyebrow mb-4">有時效的說法</p>
+                <ul class="text-sm text-ink-body space-y-3 leading-relaxed">
+                    <li>上一節「這一版變了什麼」只對 <span class="font-mono">2026-07-28</span> 成立。</li>
+                    <li>三個被標記淘汰的功能，最早要到 <span class="font-mono">2027-07-28</span> 之後的某一版才會真的移除。</li>
+                    <li><strong class="text-ink">協定不再需要連線階段 ≠ 現實中的伺服器都無狀態了</strong>。大量已部署的伺服器仍在講舊版，這個落差會持續一段時間。</li>
+                </ul>
+            </div>
+        </section>
+
+        <nav class="border-t border-line pt-10">
+            <p class="eyebrow mb-6">接下來</p>
+            <ul class="space-y-4">
+                <li><a href="/claude-skills-guide" class="text-ink-body hover:text-ink transition-colors duration-200">想知道怎麼實際用它做事 → Claude Skills 實戰指南</a></li>
+                <li><a href="/what-is-llms-txt" class="text-ink-body hover:text-ink transition-colors duration-200">另一個 AI 時代的新標準 → LLMs.txt 是什麼</a></li>
+            </ul>
+        </nav>
+
+    </article>
+</div>
+
+{% include "footer.html" %}

@@ -341,6 +341,80 @@ async function main() {
     }
   }
 
+  // The control-hierarchy explainer on /what-is-mcp.
+  //
+  // Asserted here rather than in CHECKS because it is one page's behaviour, not
+  // a site-wide contract. What is worth testing is what a reader would notice:
+  // that choosing a scenario changes which answer is on screen, that the choice
+  // is announced, and that a keyboard can reach the next one. The implementation
+  // — tablist roles, which element holds tabindex — is deliberately not
+  // asserted; that is the shape of the thing, not its behaviour, and pinning it
+  // would make the test an obstacle to improving the widget.
+  try {
+    const path = "/what-is-mcp";
+    await page.goto(BASE_URL + path, { waitUntil: "networkidle" });
+
+    const visible = () =>
+      page.$$eval("[data-panel]", (els) => els.filter((e) => !e.hidden).map((e) => e.dataset.panel));
+
+    checked++;
+    const first = await visible();
+    if (first.length !== 1) {
+      failures.push({
+        route: path,
+        check: "primitives: one answer at a time",
+        problem: `${first.length} panels visible with the script running, expected 1`,
+      });
+    }
+
+    checked++;
+    await page.click('[data-scenario="tool"]');
+    const afterClick = await visible();
+    if (afterClick.join() !== "tool") {
+      failures.push({
+        route: path,
+        check: "primitives: choosing a scenario changes the answer",
+        problem: `clicked "tool", visible panel is ${afterClick.join() || "none"}`,
+      });
+    }
+
+    checked++;
+    // Every tab's state, not just the clicked one. Reading only the tab that was
+    // clicked cannot tell "one is selected" from "all of them are".
+    const announced = await page.$$eval("[data-scenario]", (els) =>
+      els.map((e) => `${e.dataset.scenario}=${e.getAttribute("aria-selected")}`).join(" ")
+    );
+    if (announced !== "resource=false tool=true prompt=false") {
+      failures.push({
+        route: path,
+        check: "primitives: exactly one choice is announced",
+        problem: `aria-selected reads "${announced}"`,
+      });
+    }
+
+    checked++;
+    await page.focus('[data-scenario="tool"]');
+    await page.keyboard.press("ArrowRight");
+    const afterKey = await visible();
+    const focused = await page.evaluate(() => document.activeElement.dataset.scenario);
+    if (afterKey.join() !== "prompt" || focused !== "prompt") {
+      failures.push({
+        route: path,
+        check: "primitives: a keyboard reaches the next scenario",
+        problem: `ArrowRight left panel=${afterKey.join() || "none"} focus=${focused}`,
+      });
+    }
+  } catch (err) {
+    // A missing or renamed widget is one failure to report, not a reason to
+    // lose every assertion that would have run after this block.
+    checked++;
+    failures.push({
+      route: "/what-is-mcp",
+      check: "primitives: widget present",
+      problem: String(err && err.message ? err.message : err),
+    });
+  }
+
   // The classic static-host mistake: the 404 document served at a 200, which
   // Google reads as a soft 404 and can cost the paths around it their place in
   // the index. It is not a route, so it is asserted here rather than in CHECKS.

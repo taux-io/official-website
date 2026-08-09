@@ -617,6 +617,34 @@ function rulePixelScope(files) {
   return found;
 }
 
+
+// Content that a script collapses must ship expanded.
+//
+// The site's interactive explainer hides panels with the `hidden` attribute and
+// the script's job is to collapse three open panels down to one. Ship them
+// hidden instead and the page becomes JS-dependent: a reader with the script
+// blocked, or whose request for it dropped, sees one of three answers and the
+// section loses the comparison it exists to make.
+//
+// This is the same failure decision #13 was written after — content whose
+// visibility depends on a script running — and ruleNoScrollReveal does not
+// catch it, because that rule looks for `opacity-0` and knows nothing about the
+// `hidden` attribute.
+function ruleCollapsibleShipsOpen(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<[a-zA-Z][a-zA-Z0-9-]*\b[^>]*\bdata-panel="[^"]*"[^>]*>/g)) {
+      if (!/\bhidden\b/.test(m[0])) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, m.index),
+        detail: "data-panel ships hidden; the script must be what collapses it, not the markup",
+      });
+    }
+  }
+  return found;
+}
+
 // ---------------------------------------------------------------------------
 
 const RULES = [
@@ -675,6 +703,13 @@ const RULES = [
     turnedOnBy: "#125 stage 3 — figures",
     run: ruleTextureNotBehindText,
     summary: "a background-image over text blinds the contrast audit rather than failing it",
+  },
+  {
+    name: "collapsible ships open",
+    enabled: true,
+    turnedOnBy: "#130 — the MCP primitives explainer",
+    run: ruleCollapsibleShipsOpen,
+    summary: "a panel a script collapses must be in the document open, not hidden",
   },
   {
     name: "pixel face scope",
