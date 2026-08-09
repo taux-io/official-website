@@ -22,6 +22,36 @@ use serde::Deserialize;
 
 const ORIGIN: &str = "https://taux.io";
 
+/// The `?v=` on the stylesheet link, derived from the stylesheet's own bytes.
+///
+/// It used to be a literal in header.html. `_headers` caches `/static/css/*`
+/// for an hour without `immutable`, and the comment there is explicit that the
+/// query "is busted by a ?v= query that nothing enforces the incrementing of"
+/// — betting on someone remembering. Nobody did: `v=25` was written during the
+/// Go-to-Rust migration and never moved again through every palette, token and
+/// type-scale change since, including two that shipped in one afternoon.
+///
+/// What that costs is bounded but real. A returning visitor holding the old
+/// stylesheet gets the new markup styled by it until their cache expires — and
+/// when the change introduced new utility classes, the elements wearing them
+/// fall back to whatever the old rules said. A nav that reads `hidden sm:flex`
+/// against a stylesheet with no `sm:flex` in it is simply hidden, at every
+/// width.
+///
+/// Deriving it removes the class of bug rather than adding a reminder: the
+/// query cannot lag the file it busts, because it is a function of that file.
+/// FNV-1a rather than a cryptographic digest, and no new dependency for it —
+/// this needs "differs when the bytes differ", not collision resistance.
+fn css_version(css: &Path) -> Result<String, std::io::Error> {
+    let bytes = fs::read(css)?;
+    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
+    for b in bytes {
+        hash ^= u64::from(b);
+        hash = hash.wrapping_mul(0x1000_0000_01b3);
+    }
+    Ok(format!("{hash:016x}"))
+}
+
 #[derive(Debug, Deserialize)]
 struct Site {
     page: Vec<Page>,
@@ -191,6 +221,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     fs::create_dir_all(&out)?;
 
     let year = current_year();
+    // Read once and handed to every render. Failing here is correct: a missing
+    // stylesheet means the build is broken, and emitting pages that link to a
+    // file that is not there would hide it until someone loaded the site.
+    let css_v = css_version(&root.join("static").join("css").join("styles.min.css"))?;
     let mut written = BTreeMap::new();
     let mut sitemap = Vec::new();
 
@@ -209,6 +243,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             // and that is the behaviour worth keeping.
             noindex => page.noindex,
             year => year,
+            css_version => &css_v,
             og_image => Value::from_safe_string(
                 format!("{ORIGIN}/static/og/{}.png", page.slug())
             ),
@@ -240,6 +275,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             canonical => Value::from_safe_string(doc.canonical.clone()),
             noindex => doc.noindex,
             year => year,
+            css_version => &css_v,
             og_image => Value::from_safe_string(format!("{ORIGIN}/static/og/index.png")),
         })?);
         fs::write(out.join(&doc.output), html)?;
