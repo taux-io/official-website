@@ -692,19 +692,35 @@ function ruleInkBodySingleSource() {
     seen.push({ file: src.file, alpha: m[1], line: lineOf(text, m.index) });
   }
 
-  if (seen.length === INK_SOURCES.length && seen[0].alpha !== seen[1].alpha) {
+  // Compared against the first source rather than pairwise-first-two, so
+  // adding a third declaration to INK_SOURCES is covered by construction. The
+  // first version compared seen[0] to seen[1] and would have ignored a third
+  // entry silently — a checker that fails open is worse than no checker.
+  //
+  // Numeric rather than string comparison: 0.85, .85 and 0.850 are the same
+  // alpha, and reporting them as a violation would be a false alarm — which is
+  // how a checker teaches people to skip it.
+  const [first, ...rest] = seen;
+  for (const other of rest) {
+    if (Number(other.alpha) === Number(first.alpha)) continue;
     found.push({
-      file: seen[1].file,
-      line: seen[1].line,
-      detail: `body ink is ${seen[1].alpha} here but ${seen[0].alpha} in ${seen[0].file} — the variable and the utility disagree`,
+      file: other.file,
+      line: other.line,
+      detail: `body ink is ${other.alpha} here but ${first.alpha} in ${first.file} — the variable and the utility disagree`,
     });
   }
   return found;
 }
 
-// A minimum height measured in viewport units, which is what makes a block
-// occupy the screen no matter how little is in it.
-const VIEWPORT_MIN_HEIGHT = /^min-h-(?:screen|svh|lvh|dvh|\[\d+(?:\.\d+)?(?:v|sv|lv|dv)h\])$/;
+// A height pinned to the viewport, which is what makes a block occupy the
+// screen no matter how little is in it.
+//
+// Matches `min-h-` and `h-` alike, the named viewport keywords, and any
+// arbitrary value mentioning a viewport unit — `min-h-[86vh]`, but also
+// `h-screen` and `min-h-[calc(100vh-4rem)]`. The first version of this only
+// caught `min-h-` with a bare vh value, which let three spellings of the same
+// thing through; code review found the gap.
+const VIEWPORT_HEIGHT = /^(?:min-)?h-(?:screen|svh|lvh|dvh|\[[^\]]*(?:v|sv|lv|dv)h[^\]]*\])$/;
 
 // Two exemptions, named rather than pattern-matched so a third cannot appear
 // without someone saying so out loud — the same device OPACITY_EXEMPT_IDS uses.
@@ -733,7 +749,7 @@ function ruleFullHeightOnly404(files) {
     if (rel === FULL_HEIGHT_EXEMPT_FILE) continue;
     for (const el of elements(html)) {
       if (FULL_HEIGHT_EXEMPT_TAGS.has(el.tag)) continue;
-      const hit = el.classes.find((c) => VIEWPORT_MIN_HEIGHT.test(stripVariants(c)));
+      const hit = el.classes.find((c) => VIEWPORT_HEIGHT.test(stripVariants(c)));
       if (!hit) continue;
       found.push({
         file: rel,
@@ -775,7 +791,7 @@ function ruleNavBreakpointsPaired(files) {
     return hit ? hit.slice(0, hit.length - utility.length - 1) : null;
   };
 
-  let shows = null;
+  const showing = [];
   let hides = null;
   for (const el of elements(html)) {
     if (el.id === "hamburger") {
@@ -784,11 +800,23 @@ function ruleNavBreakpointsPaired(files) {
     // The desktop group is the one that starts hidden and becomes a flex row at
     // some breakpoint. Identified by that shape because it carries no id.
     if (el.classes.includes("hidden") && variantOf(el.classes, "flex")) {
-      shows = { variant: variantOf(el.classes, "flex"), line: lineOf(html, el.index) };
+      showing.push({ variant: variantOf(el.classes, "flex"), line: lineOf(html, el.index) });
     }
   }
 
   const found = [];
+  // Collected rather than overwritten. Assigning in the loop meant the LAST
+  // match won and a second group would be compared against nothing — the rule
+  // would pass while the pairing it exists to check went unexamined. Today
+  // there is exactly one, and this says so rather than relying on it.
+  if (showing.length > 1) {
+    found.push({
+      file: rel,
+      line: showing[1].line,
+      detail: `${showing.length} \`hidden <bp>:flex\` groups; this rule pairs one against #hamburger and cannot tell which you meant`,
+    });
+  }
+  const shows = showing[0] ?? null;
   if (!shows) {
     found.push({ file: rel, line: 0, detail: "no `hidden <bp>:flex` desktop nav group found" });
   }
