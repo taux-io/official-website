@@ -258,17 +258,6 @@
     color: var(--ink);
   }
 
-  /* A column label is machine output — the same judgement that moved .eyebrow
-     into the mono stack. All thirty of them across the seven tables are short
-     labels (#, 維度, 關鍵日期, 出處, 2025); not one is prose, so this is a rule
-     rather than thirty hand edits that drift apart the first time someone adds
-     a table. Data cells are not covered: they take font-mono where the content
-     is genuinely a measurement, which is a per-cell judgement and is already
-     applied on the 57 that earn it. */
-  th {
-    @apply font-mono;
-  }
-
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
