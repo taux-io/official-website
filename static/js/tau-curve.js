@@ -27,6 +27,110 @@
 (() => {
   "use strict";
 
+
+  // ---------------------------------------------------------------------------
+  // The grid rasteriser.
+  //
+  // The three figures below are unchanged as mathematics: the same step
+  // response, the same ring radii, the same fringe spacing. What changed is
+  // where they land. Instead of stroking continuous paths, every figure now
+  // plots onto a fixed grid of square cells, which is what makes the family
+  // read as instrument output rather than as illustration.
+  //
+  // Cells accumulate into a map before anything is painted, keeping the highest
+  // alpha rather than compositing. Two rings crossing the same cell would
+  // otherwise darken it twice and the crossings — the part of the interference
+  // figure that carries the information — would burn out.
+  //
+  // 5px, from DESIGN.md: coarse enough to read as a grid, fine enough that a
+  // second-order step response is still recognisably one. Eight and above and
+  // the overshoot stops being legible, which would make it decoration.
+  const CELL = 5;
+
+  // Ordered dither, 4x4 Bayer. Ordered rather than random because the figure is
+  // redrawn on every breath and a stochastic fill would crawl.
+  const BAYER = [
+    [0, 8, 2, 10],
+    [12, 4, 14, 6],
+    [3, 11, 1, 9],
+    [15, 7, 13, 5],
+  ];
+
+  function rasteriser(ctx, stroke) {
+    const cells = new Map();
+
+    const plot = (x, y, alpha) => {
+      if (alpha <= 0) return;
+      const gx = Math.round(x / CELL) * CELL;
+      const gy = Math.round(y / CELL) * CELL;
+      const key = gx + "," + gy;
+      const prev = cells.get(key);
+      if (prev === undefined || alpha > prev) cells.set(key, alpha);
+    };
+
+    // Walk a segment in grid steps. Sampling by distance rather than by a fixed
+    // count keeps the density even whether the segment is 4px or 400px.
+    const segment = (x0, y0, x1, y1, alpha) => {
+      const dist = Math.hypot(x1 - x0, y1 - y0);
+      const steps = Math.max(1, Math.ceil(dist / (CELL * 0.5)));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        plot(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, alpha);
+      }
+    };
+
+    const arc = (cx, cy, r, a0, a1, alpha) => {
+      if (r <= 0) return;
+      const sweep = Math.abs(a1 - a0);
+      const steps = Math.max(1, Math.ceil((sweep * r) / (CELL * 0.5)));
+      for (let i = 0; i <= steps; i++) {
+        const a = a0 + (a1 - a0) * (i / steps);
+        plot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, alpha);
+      }
+    };
+
+    // The area under a curve, as density rather than as a gradient.
+    //
+    // A dot grid has no gradient to give, and faking one by fading each cell's
+    // alpha just produces a blurry grid. Dithering is the technique that exists
+    // for exactly this: hold the ink constant and vary how many cells carry it.
+    // Density falls with depth below the curve, so the fill reads as weight
+    // without ever becoming a wash.
+    const ramp = (topAt, bottom, x0, x1, alpha) => {
+      for (let x = x0; x <= x1; x += CELL) {
+        const top = topAt(x);
+        if (top >= bottom) continue;
+        for (let y = top; y <= bottom; y += CELL) {
+          const depth = (y - top) / (bottom - top || 1);
+          // Full density at the curve, nothing at the bottom edge.
+          //
+          // Cubed rather than squared: the gradient this replaces ran 0.035 to
+          // 0, which is nearly invisible, and a dither ramp reads much heavier
+          // than a wash of the same alpha because every cell it does place is
+          // at full strength. A square falloff turned the area under the curve
+          // into a field competing with the trace. The point of this change was
+          // to swap the rasteriser, not to make the figure louder.
+          const want = (1 - depth) * (1 - depth) * (1 - depth);
+          const bx = Math.abs(Math.round(x / CELL)) % 4;
+          const by = Math.abs(Math.round(y / CELL)) % 4;
+          if (want * 16 > BAYER[by][bx]) plot(x, y, alpha);
+        }
+      }
+    };
+
+    const flush = () => {
+      for (const [key, alpha] of cells) {
+        const [gx, gy] = key.split(",");
+        ctx.fillStyle = stroke(alpha);
+        // One pixel short of the cell so the grid stays visible as a grid.
+        ctx.fillRect(+gx, +gy, CELL - 1, CELL - 1);
+      }
+      cells.clear();
+    };
+
+    return { plot, segment, arc, ramp, flush, cell: CELL };
+  }
+
   // ---------------------------------------------------------------------------
   // The tau curve: the step response of an underdamped second-order system.
   //
@@ -68,6 +172,7 @@
 
   function drawTau(ctx, g) {
     const { w, h, progress, drift, stroke, isStatic } = g;
+    const r = rasteriser(ctx, stroke);
 
     // The baseline sits low so the step reads as a rise. The settled level is
     // derived rather than chosen: scale the curve so its peak overshoot lands
@@ -82,28 +187,13 @@
     const tauX = stepX + (w - stepX) * TAU_FRAC;
     const traced = w * progress;
 
-    // Settled level: where the system is heading.
-    ctx.save();
-    ctx.setLineDash([2, 6]);
-    ctx.strokeStyle = stroke(0.1);
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, targetY);
-    ctx.lineTo(w, targetY);
-    ctx.stroke();
-    ctx.restore();
+    // Settled level: where the system is heading. A dashed rule becomes every
+    // other cell, which is the same statement in this vocabulary.
+    for (let x = 0; x <= w; x += r.cell * 2) r.plot(x, targetY, 0.1);
 
     // One time constant — the quantity the company is named for.
     if (!isStatic && traced > tauX) {
-      ctx.save();
-      ctx.setLineDash([1, 5]);
-      ctx.strokeStyle = stroke(0.14);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(tauX, targetY);
-      ctx.lineTo(tauX, baseY);
-      ctx.stroke();
-      ctx.restore();
+      for (let y = targetY; y <= baseY; y += r.cell * 2) r.plot(tauX, y, 0.14);
     }
 
     // Sample at device resolution so the ringing stays smooth.
@@ -115,35 +205,23 @@
     }
     if (points.length < 2) return;
 
-    // Area under the curve, fading down.
-    const fill = ctx.createLinearGradient(0, targetY, 0, h);
-    fill.addColorStop(0, stroke(0.035));
-    fill.addColorStop(1, stroke(0));
-    ctx.fillStyle = fill;
-    ctx.beginPath();
-    ctx.moveTo(0, h);
-    for (const [px, py] of points) ctx.lineTo(px, py);
-    ctx.lineTo(points[points.length - 1][0], h);
-    ctx.closePath();
-    ctx.fill();
+    // Area under the curve, as dither density rather than as a gradient.
+    r.ramp((x) => baseY - response(x / w) * rise, h, 0, points[points.length - 1][0], 0.035);
 
     // The trace itself.
-    ctx.strokeStyle = stroke(isStatic ? 0.3 : 0.42);
-    ctx.lineWidth = 1;
-    ctx.lineJoin = "round";
-    ctx.beginPath();
-    ctx.moveTo(points[0][0], points[0][1]);
-    for (const [px, py] of points) ctx.lineTo(px, py);
-    ctx.stroke();
+    const traceAlpha = isStatic ? 0.3 : 0.42;
+    for (let i = 1; i < points.length; i++) {
+      r.segment(points[i - 1][0], points[i - 1][1], points[i][0], points[i][1], traceAlpha);
+    }
 
-    // Leading edge, while the trace is still being drawn.
+    // Leading edge, while the trace is still being drawn. One cell at full
+    // weight — a 1.5px dot has no meaning on a 5px grid.
     if (progress < 1) {
       const [hx, hy] = points[points.length - 1];
-      ctx.fillStyle = stroke(0.9);
-      ctx.beginPath();
-      ctx.arc(hx, hy, 1.5, 0, Math.PI * 2);
-      ctx.fill();
+      r.plot(hx, hy, 0.9);
     }
+
+    r.flush();
   }
 
   // ---------------------------------------------------------------------------
@@ -159,6 +237,7 @@
 
   function drawPolar(ctx, g) {
     const { w, h, progress, drift, stroke } = g;
+    const r = rasteriser(ctx, stroke);
 
     // Centre sits off the right edge, so the visible figure is the left part of
     // a much larger instrument rather than a complete circle floating in a box.
@@ -166,31 +245,30 @@
     const cy = h * 0.5;
     const maxR = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) * (1 + drift);
 
-    ctx.lineWidth = 1;
-
     // Spokes first, so the rings read on top of them.
     for (let i = 0; i < POLAR_SPOKES; i++) {
       const a = (i / POLAR_SPOKES) * Math.PI * 2;
       // Cardinal spokes carry a touch more weight, the way a dial marks
       // quarters — a grid of identical lines is wallpaper.
       const cardinal = i % 3 === 0;
-      ctx.strokeStyle = stroke(cardinal ? 0.1 : 0.05);
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(a) * maxR * progress, cy + Math.sin(a) * maxR * progress);
-      ctx.stroke();
+      r.segment(
+        cx,
+        cy,
+        cx + Math.cos(a) * maxR * progress,
+        cy + Math.sin(a) * maxR * progress,
+        cardinal ? 0.1 : 0.05
+      );
     }
 
     for (let i = 1; i <= POLAR_RINGS; i++) {
-      const r = (maxR * i) / POLAR_RINGS;
+      const radius = (maxR * i) / POLAR_RINGS;
       // Rings arrive from the inside out as the figure traces.
       const t = Math.min(1, Math.max(0, progress * POLAR_RINGS - (i - 1)));
       if (t <= 0) continue;
-      ctx.strokeStyle = stroke(0.09);
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * t);
-      ctx.stroke();
+      r.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * t, 0.09);
     }
+
+    r.flush();
   }
 
   // ---------------------------------------------------------------------------
@@ -205,6 +283,7 @@
 
   function drawInterference(ctx, g) {
     const { w, h, progress, drift, stroke } = g;
+    const r = rasteriser(ctx, stroke);
 
     const sep = w * 0.18;
     const cy = h * 0.55;
@@ -216,19 +295,20 @@
     // anything moving, which is what interference actually looks like.
     const spacing = (Math.hypot(w, h) / FRINGES) * (1 + drift * 6);
 
-    ctx.lineWidth = 1;
     for (const [sx, sy] of sources) {
       for (let i = 1; i <= FRINGES; i++) {
         const t = Math.min(1, Math.max(0, progress * FRINGES - (i - 1)));
         if (t <= 0) continue;
         // Outer rings fade, so the figure has a centre of gravity instead of
         // filling the frame evenly.
-        ctx.strokeStyle = stroke(0.07 * (1 - i / (FRINGES + 4)));
-        ctx.beginPath();
-        ctx.arc(sx, sy, spacing * i, 0, Math.PI * 2 * t);
-        ctx.stroke();
+        r.arc(sx, sy, spacing * i, 0, Math.PI * 2 * t, 0.07 * (1 - i / (FRINGES + 4)));
       }
     }
+
+    // Both families share one flush, so a cell where two rings cross is painted
+    // once at the stronger alpha. Flushing per source would double it and the
+    // crossings — the whole point of the figure — would blow out.
+    r.flush();
   }
 
   // ---------------------------------------------------------------------------

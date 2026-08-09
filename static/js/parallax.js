@@ -45,7 +45,19 @@
     offsets.forEach((offset, i) => {
       const { el } = items[i];
       if (offset === null) return;
-      el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
+      // Whole pixels, not hundredths.
+      //
+      // Every element this moves is a canvas, and those canvases now draw on a
+      // 5px grid. A sub-pixel translate makes the compositor resample that grid
+      // against the screen's, and a hard-edged figure resampled a fraction of a
+      // pixel at a time shimmers as it scrolls — the artefact a continuous
+      // stroke never showed because it had no hard edges to misalign.
+      //
+      // Rounding to the device pixel fixes it without changing the motion:
+      // the largest factor in use is 0.5, so the correction is under half a
+      // pixel and nothing about the parallax reads differently. Snapping to
+      // whole grid cells instead would make it visibly step.
+      el.style.transform = `translate3d(0, ${Math.round(offset)}px, 0)`;
     });
   }
 

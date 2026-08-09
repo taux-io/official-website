@@ -67,7 +67,7 @@ const CARD = (item, fontCss, tokenCss) => `
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
   .mark { font-family: "D-DIN Condensed", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
-  .kicker { font-family: "D-DIN Condensed", sans-serif; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb) / 0.8); }
+  .kicker { font-family: "Roboto Mono", "PingFang TC", monospace; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb) / 0.8); }
   h1 {
     position: relative; z-index: 1;
     font-family: "D-DIN Condensed", "PingFang TC", sans-serif;
@@ -105,6 +105,11 @@ async function main() {
     face("D-DIN", "D-DIN.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
+    // The kicker is the card's eyebrow, and eyebrows are monospace as of #125.
+    // Without this face inlined the card falls back to a generic sans and the
+    // mistake is invisible in review — it only shows up on someone else's
+    // timeline, permanently.
+    face("Roboto Mono", "RobotoMono.woff2", 400),
   ].join("\n");
 
   // The tokens are read out of src/input.css rather than restated here.
@@ -123,7 +128,9 @@ async function main() {
   };
   const tokenCss = `:root{--ink-rgb:${token("ink-rgb")};--line-rgb:${token(
     "line-rgb"
-  )};--surface-deep-rgb:${token("surface-deep-rgb")};}`;
+  )};--surface-deep-rgb:${token("surface-deep-rgb")};--phosphor-rgb:${token(
+    "phosphor-rgb"
+  )};}`;
 
   const curveJs = fs.readFileSync(path.join(ROOT, "static", "js", "tau-curve.js"), "utf8");
 

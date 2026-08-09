@@ -644,14 +644,14 @@ const RULES = [
   },
   {
     name: "texture not behind text",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#125 stage 3 — figures",
     run: ruleTextureNotBehindText,
     summary: "a background-image over text blinds the contrast audit rather than failing it",
   },
   {
     name: "pixel face scope",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#125 stage 3 — figures",
     run: rulePixelScope,
     summary: "Departure Mono belongs to 404.html and to marked specimens, nowhere else",
