@@ -645,9 +645,80 @@ function ruleCollapsibleShipsOpen(files) {
   return found;
 }
 
+// The desktop navigation and the hamburger are complements: one appears exactly
+// where the other disappears. That relationship lives in two class strings in
+// two different elements, and nothing but this rule ties them together.
+//
+// Drift is not a cosmetic defect. Widen the hamburger's hiding breakpoint past
+// the group's showing breakpoint and BOTH navigations render in the band
+// between them; narrow it and NEITHER does, leaving the site with no menu at
+// all in that band. Either way the damage is confined to a window-width range
+// the author is unlikely to be sitting at — invisible in development, obvious
+// to a visitor.
+//
+// The pair is found by shape rather than by a hard-coded breakpoint, so raising
+// or lowering the pair is a one-line change that this rule keeps honest. It
+// reads the header partial, which is the only place either element exists.
+function ruleNavBreakpointsPaired(files) {
+  const HEADER = path.join("templates", "header.html");
+  const header = files.find(({ rel }) => rel === HEADER);
+  // The partial is included by every template rather than routed to, so its
+  // absence means the file was renamed and this rule has gone blind. Say so
+  // rather than passing vacuously.
+  if (!header) {
+    return [{ file: HEADER, line: 0, detail: "not found; this rule cannot see the navigation" }];
+  }
+
+  const { rel, html } = header;
+  const variantOf = (classes, utility) => {
+    const hit = classes.find((c) => stripVariants(c) === utility && c !== utility);
+    return hit ? hit.slice(0, hit.length - utility.length - 1) : null;
+  };
+
+  let shows = null;
+  let hides = null;
+  for (const el of elements(html)) {
+    if (el.id === "hamburger") {
+      hides = { variant: variantOf(el.classes, "hidden"), line: lineOf(html, el.index) };
+    }
+    // The desktop group is the one that starts hidden and becomes a flex row at
+    // some breakpoint. Identified by that shape because it carries no id.
+    if (el.classes.includes("hidden") && variantOf(el.classes, "flex")) {
+      shows = { variant: variantOf(el.classes, "flex"), line: lineOf(html, el.index) };
+    }
+  }
+
+  const found = [];
+  if (!shows) {
+    found.push({ file: rel, line: 0, detail: "no `hidden <bp>:flex` desktop nav group found" });
+  }
+  if (!hides || !hides.variant) {
+    found.push({
+      file: rel,
+      line: hides ? hides.line : 0,
+      detail: "#hamburger carries no `<bp>:hidden`",
+    });
+  }
+  if (shows && hides && hides.variant && shows.variant !== hides.variant) {
+    found.push({
+      file: rel,
+      line: hides.line,
+      detail: `desktop nav shows at ${shows.variant}: but #hamburger hides at ${hides.variant}: — both or neither render between them`,
+    });
+  }
+  return found;
+}
+
 // ---------------------------------------------------------------------------
 
 const RULES = [
+  {
+    name: "nav breakpoints paired",
+    enabled: true,
+    turnedOnBy: "#134 — the desktop nav narrows to two items",
+    run: ruleNavBreakpointsPaired,
+    summary: "the desktop nav appears exactly where the hamburger disappears",
+  },
   {
     name: "zero hex",
     enabled: true,

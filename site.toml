@@ -11,10 +11,13 @@
 [[page]]
 path        = "/"
 template    = "index.html"
-title       = "拓思科技股份有限公司｜TauX - AI Smart Work & GEO Solutions"
-description = "拓思科技（TauX）協助企業落地 AI First 策略：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
+# The claim leads and the keyword follows. "GEO" is the highest-value term this
+# site ranks for and the new lead line does not contain it, so dropping it from
+# the title to make room would trade measured traffic for a slogan. Both fit.
+title       = "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎優化"
+description = "拓思科技（TauX）協助企業把 AI 變成能用的系統，而不是一場展示：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
 canonical   = "https://taux.io/"
-date_modified = "2026-07-26"
+date_modified = "2026-08-09"
 
 [[page]]
 path        = "/geo-guide"
