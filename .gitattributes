@@ -1,0 +1,23 @@
+# scripts/check-design.js carried two literal NUL bytes inside
+# maskNonColourHashes — the masking literal was "\0".repeat(...) rather than
+# " ".repeat(...). Functionally identical (NUL is not a hex character and the
+# length is preserved, so line numbers stayed correct), but git and GitHub both
+# classify a file containing NUL as binary, and every diff of it for five
+# commits rendered as "Bin 16615 -> 22629 bytes" instead of a patch.
+#
+# The bytes are gone as of #125. This declaration makes the classification
+# explicit rather than leaving it to heuristics, so a checker can never again
+# become unreviewable by accident — which matters most for exactly the files
+# that enforce the rules.
+*.js    text diff
+*.css   text diff
+*.html  text diff
+*.md    text diff
+*.toml  text diff
+*.json  text diff
+*.sh    text diff eol=lf
+*.rs    text diff
+
+*.woff2 binary
+*.png   binary
+*.ico   binary

@@ -7,7 +7,8 @@
     <title>{{ title }}</title>
     <meta name="description" content="{{ description }}">
     {% if canonical %}
-    <link rel="canonical" href="{{ canonical }}">{% endif %}
+    <link rel="canonical" href="{{ canonical }}">{% endif %}{% if noindex %}
+    <meta name="robots" content="noindex, follow">{% endif %}
 
     <!-- Open Graph. The share card is built from the same tokens, typeface and
          tau curve as the page; rerun scripts/assets/build-og.js after a
@@ -93,8 +94,12 @@
     }
     </script>
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/styles.min.css?v=23">
+    <!-- Styles.
+         v=24 also clears a backlog: the stylesheet changed in five commits
+         after v=23 was set and none of them bumped this, so returning visitors
+         have been up to an hour behind for a while. Nothing checks this number;
+         _headers says so. -->
+    <link rel="stylesheet" href="/static/css/styles.min.css?v=24">
 </head>
 
 <body class="bg-surface text-ink-body font-sans antialiased">
