@@ -81,14 +81,27 @@ module.exports = {
         // accepted cost rather than an oversight.
         mono: [
           "Roboto Mono",
-          "PingFang TC",
-          "Microsoft JhengHei",
-          "Noto Sans TC",
+          // The Latin monospace fallbacks come BEFORE the CJK faces, and the
+          // order is load-bearing in both directions.
+          //
+          // Roboto Mono's subset carries no arrows, no maths and no geometric
+          // shapes, so → ≥ ≈ ∞ ● ★ all fall through. Put PingFang TC ahead of
+          // these and it answers first with a FULL-WIDTH advance: → goes from
+          // 12.04px to 20.0px at 20px type, and the hand-aligned ASCII flow
+          // diagram on adk-skill-patterns.html comes apart by 5.6px a line.
+          // Behind them, SF Mono answers instead and the cell width holds.
           "ui-monospace",
           "SFMono-Regular",
           "Menlo",
           "Monaco",
           "Consolas",
+          // None of the faces above carries CJK, so Chinese still reaches these
+          // — the same faces the rest of the site uses. Without them it lands on
+          // generic `monospace`, which on Windows is MingLiU: a serif this site
+          // sets nowhere else, on 95 of the 186 eyebrows, invisibly from a Mac.
+          "PingFang TC",
+          "Microsoft JhengHei",
+          "Noto Sans TC",
           "monospace",
         ],
         // Departure Mono only. No fallback chain worth writing: this stack is

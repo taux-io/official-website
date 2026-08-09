@@ -120,7 +120,19 @@ function main() {
     for (const file of walk(dir)) {
       const html = fs.readFileSync(file, "utf8");
       const local = localClasses(html);
-      for (const attr of html.matchAll(/class="([^"]*)"/g)) {
+      // A class can also arrive as a template variable. `_nav-columns.html`
+      // takes its link class and list spacing through a with-block, so the
+      // strings live in {% with list_space = "space-y-5" %} rather than in a
+      // class attribute. Tailwind's content scanner is a regex over the raw
+      // file and still emits them, but this checker read class attributes only
+      // — so a typo there produced no CSS, no rule, and no failure. The one
+      // place a class can hide from the check that exists to find hidden
+      // classes.
+      const withStrings = [...html.matchAll(/\{%-?[^%]*?%\}/g)]
+        .flatMap((tag) => [...tag[0].matchAll(/"([^"]*)"/g)].map((m) => m[1]))
+        .filter((v) => !v.endsWith(".html")); // include targets, not classes
+
+      for (const attr of [...html.matchAll(/class="([^"]*)"/g), ...withStrings.map((v) => [null, v])]) {
         for (const raw of attr[1].split(/\s+/)) {
           if (!raw || raw.includes("{{")) continue; // template expressions
           if (local.has(raw)) continue;

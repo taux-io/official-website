@@ -197,9 +197,13 @@ SpaceX 時期訂的是「參考站與本站規則衝突時，參考站為準」�
 
 ⚠️ **mono 堆疊裡的 CJK 字體是承重結構，而放進去是一個看得見的改動，不是 no-op。**
 
-Roboto Mono 的 `unicode-range` 排除 CJK，所以等寬文字流裡的非拉丁字元會沿堆疊往下掉。階段 ② 會把 `PingFang TC` / `Microsoft JhengHei` / `Noto Sans TC` 放到 `ui-monospace` 之前，讓中文落在**與全站其餘部分相同的字體**上——這是 eyebrow 改等寬的前提。
+Roboto Mono 的 `unicode-range` 排除 CJK，所以等寬文字流裡的非拉丁字元會沿堆疊往下掉。CJK 字體放在**拉丁等寬 fallback 之後、通用 `monospace` 之前**，讓中文落在**與全站其餘部分相同的字體**上——這是 eyebrow 改等寬的前提。
 
-但**站上今天已經有 14 個元素**帶著 `font-mono` 且含非拉丁字元：`about.html` 那個品牌 τ（U+03C4 同樣不在 Roboto Mono 的範圍內），以及 `pqc-migration`、`threat-landscape`、`owasp-llm-top-10`、`agent-prompting-guide` 裡的十三個中文標籤。它們現在落在 SF Mono／Consolas 上，改了之後會落在 PingFang TC 上。**那是真的視覺改變**，所以它屬於階段 ②，不屬於「零改變」的階段 ①。
+⚠️ **順序不能反過來。** 把 CJK 排在 `ui-monospace` 之前，PingFang TC 會搶答那些不在 Roboto Mono 子集裡的符號（`→ ≥ ≈ ∞ ● ★`）並給出全形寬度，手工對齊的 ASCII 圖會散掉。見決策 #40。
+
+受影響的元素比第一次清點的多：15 個帶 `font-mono` 且含非拉丁字元（含 `index.html` 用 `&tau;` 實體寫的第二個品牌 τ，第一次用字面掃描漏掉了），再加上**繼承** `font-mono` 的 `<pre>`／`<code>` 區塊——Tailwind preflight 給的，不帶 class，任何只找 class 的清點都看不到。
+
+在正確的順序下，這些元素在 **Mac 上幾乎不變**（中文本來就落到 PingFang，符號本來就落到 SF Mono）；真正的改變在 **Windows**：中文從通用 `monospace`（細明體）變成微軟正黑體。那正是這次要修的東西。
 
 拿掉那三個 CJK 字體，中文會落到通用 `monospace`，在 Windows 上是**細明體**——一款全站他處都沒用過的襯線字。**這個退化在 Mac 上完全看不見。** 見決策 #35。
 
@@ -541,7 +545,9 @@ pixel:     Departure Mono, monospace        ← 僅限 ASCII 區塊
 | 34 | 新規則以關閉狀態進場 | 本站既有慣例。規範裡的規則若沒有對應的程式碼骨架，就會退化成沒人遵守的形容詞。**代價：repo 裡會有一段時間存在關著的規則，且必須先補上 `turnedOnBy` 這條死路** |
 | 35 | **不為「mono 堆疊必須含 CJK 字體」寫檢查規則** | 堆疊本身解決了 eyebrow 與表格的中文問題，不需要逐元素例外。但守住它的只剩 `tailwind.config.js` 的一段註解。`check:design` 明文只讀模板與 `site.toml`，斷言放不進去；放進 `check:classes`（它讀建置後的 CSS）技術上可行，本次選擇不做。**代價：這正是本文件開場反對的東西——一行 regression 就讓 95 個 eyebrow 在 Windows 上變細明體，而那在 Mac 上完全看不見。這是明知代價的選擇，不是疏漏** |
 | 37 | header 與 footer 共用一份 `_nav-columns.html`，但 **Company 欄不共用** | 四個主題欄逐字相同，抽出來就不會再分歧。Company 欄不同**是刻意的**：footer 的品牌區塊已經有一個連到 `/` 的 TauX 字標與一個 GitHub 圖示，所以它的 Company 欄故意省略 Home 與 GitHub。把兩份強行統一會讓 footer 連兩次 `github.com/taux-io`——實測確認過。**看起來像 drift 的東西其實是一個沒有人寫下來的決定**，這條就是把它寫下來。代價：Company 欄仍是兩份，仍可能分歧，而沒有東西檢查 |
-| 38 | 表格的欄位標題用 `th` 基礎規則改等寬，資料格逐格判斷 | 三十個 `th` 全部是短標籤（`#`、`維度`、`關鍵日期`、`出處`），沒有一個是散文，所以它是一條規則而不是三十次手改。資料格則相反：已經是 mono 的 57 格正是真正的量測欄，剩下的多半是中文說明，套上去只會讓表格更難讀 |
+| 38 | **表格欄位標題暫不改等寬**（`th` 基礎規則試過並退回） | 看起來是乾淨的一條規則，實測撞到兩件事：`th` 的瀏覽器預設字重是 bold，套上 `font-mono` 會渲染成 **Roboto Mono 700**，而本站自架的 Roboto Mono **只有 400**——那是合成假粗體，正是字級 token 把字重寫死要防的事；而且六個 `th` 已帶 `font-display` utility，utilities 勝過 base，三十個裡只有二十四個會生效。**代價：欄位標題與 eyebrow 現在是兩種字體**，直到規範決定標題的層級由什麼承載 |
+| 39 | `.tag` 保留 `font-display`，`.eyebrow` 改 `font-mono` | 同一個 `text-eyebrow` token 現在有兩種字面，這是刻意的：eyebrow 標示區段，是機器輸出；tag 標示服務名稱（`GEO Service`、`Who We Are`），是品牌聲音，與同樣留在 D-DIN Condensed 的導覽和按鈕同類。**代價：兩者並列時看起來像渲染錯誤，而沒有東西檢查這個區分** |
+| 40 | mono 堆疊裡 CJK 字體排在**拉丁等寬之後** | 排在前面的話 PingFang TC 會搶答 `→ ≥ ≈ ∞ ● ★`——它們不在 Roboto Mono 子集裡——並給出**全形** advance：`→` 在 20px 下從 12.04px 變成 20.0px，`adk-skill-patterns` 手工對齊的 ASCII 流程圖每行位移 5.6px。排在拉丁等寬之後，符號由 SF Mono 回答而字寬守住，中文仍然落到 PingFang（前面那些字體都沒有 CJK）。**副作用：這讓改動的實際影響縮小到 Windows**——Mac 上中文本來就會落到 PingFang |
 | 36 | 落地切成三階段、三次合併 | 合併即上線且 CI 擋不住。階段 ① 對訪客完全不可見（只新增 token、字型與關著的規則），風險為零卻讓後兩階段有東西可依靠；階段 ② 是唯一改變視覺的一次，單獨上線才能歸因。**代價：三次 PR 的流程成本** |
 
 ---

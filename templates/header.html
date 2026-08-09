@@ -146,7 +146,7 @@
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-xl uppercase tracking-[0.09em] text-ink">TauX</span>
                 <button type="button" id="menuClose"
-                    class="font-display text-eyebrow uppercase text-ink-muted hover:text-ink transition-colors duration-200"
+                    class="eyebrow text-ink-muted hover:text-ink transition-colors duration-200"
                     aria-label="Close menu">
                     Close
                 </button>
@@ -155,6 +155,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-12 md:gap-16 mt-16 md:mt-24 pb-16">
 {% with link_class = "menu-link", list_space = "space-y-5" %}{% include "_nav-columns.html" %}{% endwith %}
                     <div>
+                <!-- One destination, one label, and the label is what the page is.
+
+                /building used to be the target of three links — API, Blog and
+                Careers — and it is none of those. It is a placeholder that
+                says "Building in Public". A visitor clicking Careers got a
+                page with no jobs on it; a visitor clicking API got a page with
+                no API. Those two are gone rather than repointed, because there
+                is nothing to point them at: adding them back is a job for
+                whoever builds the pages they promised. -->
                         <h2 class="eyebrow mb-8">05 — Company</h2>
                         <ul class="space-y-5">
                             <li><a href="/" class="menu-link">Home</a></li>

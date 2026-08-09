@@ -1,4 +1,4 @@
-<!-- The five nav columns, rendered by both the header overlay and the footer.
+<!-- The four topic nav columns, rendered by both the header overlay and the footer.
      They were duplicated for a long time and had drifted: the footer's Company
      column had lost Home and GitHub, so the two halves of the same site
      disagreed about what the site contains and nothing noticed.
@@ -15,7 +15,21 @@
 
      Note for whoever edits this comment: minijinja parses its tags inside HTML
      comments too, so writing a literal with-tag here opens a block that is
-     never closed and the build fails with a bare 'could not render include'. -->
+     never closed and the build fails with a bare 'could not render include'. 
+      Grouped by subject, not by content type.
+
+     The previous split was Services / Guides / Company, which mixed
+     two axes: "Services" is a kind of page, "Security" is a topic.
+     Anything that was both had no home — /data-governance is a
+     service page whose subject is security, and /pqc-migration
+     hangs off it — and the header and footer had already drifted
+     apart over exactly one such case.
+
+     Subjects are mutually exclusive, so every page has one place.
+     Each column now mixes service pages with guides, which is the
+     right way round: a visitor arrives with a problem, not with a
+     preference about content types.
+-->
 <div>
             <h2 class="eyebrow mb-8">01 — GEO</h2>
             <ul class="{{ list_space }}">

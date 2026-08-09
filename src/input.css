@@ -375,7 +375,16 @@
   }
 
   /* A tag is a control's near relative — it is bounded, so it takes the
-     control's radius and the divider hairline. */
+     control's radius and the divider hairline.
+
+     It keeps font-display while .eyebrow moved to font-mono, and the two now
+     render the same type token (text-eyebrow: 0.75rem / 0.09em / uppercase) in
+     two different faces. That is deliberate and it is the reason: an eyebrow
+     labels a section — it is machine output, a position in a list. A tag names
+     a service ("GEO Service", "AI Corporate Training", "Who We Are"), which is
+     brand voice, the same category as the nav and the buttons that also stay in
+     D-DIN Condensed. Nothing checks this distinction, so it is written here
+     rather than left to look like a rendering fault. See DESIGN.md #39. */
   .tag {
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
     color: var(--ink-body);

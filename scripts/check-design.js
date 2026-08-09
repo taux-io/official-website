@@ -427,17 +427,22 @@ const hasAttr = (node, re) => re.test(node.attrs) || node.ancestors.some((a) => 
 // the file each element really came from. Two rules need this and they used to
 // disagree about it: one walked rendered pages and the other walked raw files,
 // so a partial that only 404.html includes was judged as though it were a page.
-function renderedNodes(name, byName, seen = new Set()) {
+function renderedNodes(name, byName, chain = []) {
   const out = [];
-  if (seen.has(name)) return out;
-  seen.add(name);
+  // Guard cycles, not repetition. A shared partial reached from both the header
+  // and the footer renders TWICE on the page, and a budget counted against the
+  // rendered page has to see both — memoising on "visited anywhere" would hide
+  // half of _nav-columns.html and let a page ship double the budget while the
+  // checker reported it inside.
+  if (chain.includes(name)) return out;
   const f = byName.get(name);
   if (!f) return out;
 
   for (const node of parseElements(f.html)) {
     out.push({ node, file: f.rel, line: lineOf(f.html, node.index), html: f.html });
   }
-  for (const inc of includesOf(f.html)) out.push(...renderedNodes(inc, byName, seen));
+  const next = [...chain, name];
+  for (const inc of includesOf(f.html)) out.push(...renderedNodes(inc, byName, next));
   return out;
 }
 
@@ -468,6 +473,25 @@ const PHOSPHOR_BUDGET = 5;
 // a budget silently stops counting. The opacity tail accepts both `/50` and the
 // arbitrary `/[0.06]` a low-alpha dither panel is written with.
 const PHOSPHOR_CLASS = /(?:^|-)phosphor(?:\/(?:\d+|\[[^\]]*\]))?$/;
+// The arbitrary-value spelling reaches the same token by another road:
+// text-[var(--phosphor)], bg-[rgb(var(--phosphor-rgb))]. Counting only the
+// named utility would leave a documented escape hatch through the budget.
+const PHOSPHOR_ARBITRARY = /-\[[^\]]*--phosphor[^\]]*\]$/;
+const isPhosphor = (c) => PHOSPHOR_CLASS.test(c) || PHOSPHOR_ARBITRARY.test(c);
+
+// Component classes that apply phosphor in src/input.css count wherever they
+// are used. Without this a single `@apply bg-phosphor` inside .some-panel makes
+// every instance of that panel invisible to the budget.
+function phosphorComponentClasses() {
+  const css = path.join(ROOT, "src", "input.css");
+  if (!fs.existsSync(css)) return new Set();
+  const text = fs.readFileSync(css, "utf8");
+  const out = new Set();
+  for (const m of text.matchAll(/\.([a-zA-Z0-9_-]+)\s*\{([^}]*)\}/g)) {
+    if (/--phosphor|@apply[^;]*\bphosphor\b/.test(m[2])) out.add(m[1]);
+  }
+  return out;
+}
 
 function rulePhosphorBudget(files) {
   const found = [];
@@ -475,8 +499,9 @@ function rulePhosphorBudget(files) {
 
   for (const template of declared) {
     if (!byName.has(template)) continue; // ruleHeadingStructure already reports this
+    const component = phosphorComponentClasses();
     const hits = renderedNodes(template, byName).filter(({ node }) =>
-      node.classes.map(stripVariants).some((c) => PHOSPHOR_CLASS.test(c))
+      node.classes.map(stripVariants).some((c) => isPhosphor(c) || component.has(c))
     );
     if (hits.length <= PHOSPHOR_BUDGET) continue;
 
