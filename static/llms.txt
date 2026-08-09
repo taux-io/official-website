@@ -58,6 +58,7 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 -   [Prompt Injection 安全指南](https://taux.io/what-is-prompt-injection): AI 提示詞注入攻擊的原理、案例與防禦措施。
 -   [OWASP LLM Top 10 2026](https://taux.io/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2026 版撰寫，並附 2025 到 2026 的排序變動、範圍調整與排序方法的改變。
 -   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
+-   [MCP 是什麼](https://taux.io/what-is-mcp): Model Context Protocol 的白話架構解說。host / client / server 三個角色，prompts / resources / tools 的差別在於「誰決定」，以及 2026-07-28 修訂版把連線階段整個移除的影響。依該修訂版撰寫。
 -   [Claude Skills 實戰指南](https://taux.io/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
 -   [ADK Agent Skill 設計模式](https://taux.io/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
 -   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。

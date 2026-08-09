@@ -341,6 +341,69 @@ async function main() {
     }
   }
 
+  // The control-hierarchy explainer on /what-is-mcp.
+  //
+  // Asserted here rather than in CHECKS because it is one page's behaviour, not
+  // a site-wide contract. What is worth testing is what a reader would notice:
+  // that choosing a scenario changes which answer is on screen, that the choice
+  // is announced, and that a keyboard can reach the next one. The implementation
+  // — tablist roles, which element holds tabindex — is deliberately not
+  // asserted; that is the shape of the thing, not its behaviour, and pinning it
+  // would make the test an obstacle to improving the widget.
+  {
+    const path = "/what-is-mcp";
+    await page.goto(BASE_URL + path, { waitUntil: "networkidle" });
+
+    const visible = () =>
+      page.$$eval("[data-panel]", (els) => els.filter((e) => !e.hidden).map((e) => e.dataset.panel));
+
+    checked++;
+    const first = await visible();
+    if (first.length !== 1) {
+      failures.push({
+        route: path,
+        check: "primitives: one answer at a time",
+        problem: `${first.length} panels visible with the script running, expected 1`,
+      });
+    }
+
+    checked++;
+    await page.click('[data-scenario="tool"]');
+    const afterClick = await visible();
+    if (afterClick.join() !== "tool") {
+      failures.push({
+        route: path,
+        check: "primitives: choosing a scenario changes the answer",
+        problem: `clicked "tool", visible panel is ${afterClick.join() || "none"}`,
+      });
+    }
+
+    checked++;
+    const announced = await page.$eval('[data-scenario="tool"]', (e) =>
+      e.getAttribute("aria-selected")
+    );
+    if (announced !== "true") {
+      failures.push({
+        route: path,
+        check: "primitives: the choice is announced",
+        problem: `aria-selected is ${announced}, expected true`,
+      });
+    }
+
+    checked++;
+    await page.focus('[data-scenario="tool"]');
+    await page.keyboard.press("ArrowRight");
+    const afterKey = await visible();
+    const focused = await page.evaluate(() => document.activeElement.dataset.scenario);
+    if (afterKey.join() !== "prompt" || focused !== "prompt") {
+      failures.push({
+        route: path,
+        check: "primitives: a keyboard reaches the next scenario",
+        problem: `ArrowRight left panel=${afterKey.join() || "none"} focus=${focused}`,
+      });
+    }
+  }
+
   // The classic static-host mistake: the 404 document served at a 200, which
   // Google reads as a soft 404 and can cost the paths around it their place in
   // the index. It is not a route, so it is asserted here rather than in CHECKS.

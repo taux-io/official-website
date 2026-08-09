@@ -86,6 +86,15 @@ date_modified = "2026-07-26"
 date_published = "2026-02-12"
 
 [[page]]
+path        = "/what-is-mcp"
+template    = "what-is-mcp.html"
+title       = "MCP 是什麼？模型上下文協定架構白話解說 | TauX"
+description = "MCP（Model Context Protocol）讓 AI 應用程式接上外部資料與工具。白話解釋 host、client、server 三個角色，以及 prompts、resources、tools 的差別在於「誰決定」而不是讀或寫。依規格修訂版 2026-07-28 撰寫。"
+canonical   = "https://taux.io/what-is-mcp"
+date_modified = "2026-08-09"
+date_published = "2026-08-09"
+
+[[page]]
 path        = "/what-is-prompt-injection"
 template    = "what-is-prompt-injection.html"
 title       = "什麼是 Prompt Injection 提示詞注入？AI 資安威脅解析 | TauX"
