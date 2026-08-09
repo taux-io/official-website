@@ -45,7 +45,22 @@
     offsets.forEach((offset, i) => {
       const { el } = items[i];
       if (offset === null) return;
-      el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
+      // Whole pixels for the canvases, sub-pixel for everything else.
+      //
+      // The figures draw on a 5px grid, and a sub-pixel translate makes the
+      // compositor resample that grid against the screen's — a hard-edged
+      // figure shifted a fraction of a pixel at a time shimmers as it scrolls,
+      // an artefact the continuous strokes never had because they had no hard
+      // edges to misalign.
+      //
+      // But not everything here is a canvas. index.html moves the hero copy
+      // column at factor 0.08, and that is text: rounding it to whole pixels
+      // makes a paragraph step instead of glide, for no benefit at all, since
+      // text has no grid to align to. An earlier version of this comment
+      // claimed every element was a canvas. It was wrong, and it was wrong in
+      // the direction that made the change look free.
+      const step = el.tagName === "CANVAS" ? Math.round(offset) : +offset.toFixed(2);
+      el.style.transform = `translate3d(0, ${step}px, 0)`;
     });
   }
 
