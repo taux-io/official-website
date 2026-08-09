@@ -106,9 +106,16 @@ async function main() {
     face("D-DIN Condensed", "D-DINCondensed.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
     // The kicker is the card's eyebrow, and eyebrows are monospace as of #125.
-    // Without this face inlined the card falls back to a generic sans and the
-    // mistake is invisible in review — it only shows up on someone else's
-    // timeline, permanently.
+    //
+    // It draws nothing today: the kicker is hardcoded to 拓思科技, so every
+    // glyph in it resolves to PingFang TC further down the stack and this face
+    // is never asked for a single outline. It is here because the stack has to
+    // be right before the content is — the moment the kicker carries a Latin
+    // character it would otherwise fall to PingFang for that too, which is a
+    // wrong that reviews badly: the card looks fine at a glance and is wrong
+    // permanently on someone else's timeline.
+    //
+    // Inlining an unused face costs build-time memory and nothing in the PNG.
     face("Roboto Mono", "RobotoMono.woff2", 400),
   ].join("\n");
 
