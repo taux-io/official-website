@@ -1,3 +1,24 @@
+# This file is the only source of the site's crawl policy, and that is a setting
+# as much as a fact.
+#
+# Cloudflare's "managed robots.txt" (Security → Settings → Bot traffic, and also
+# surfaced on the AI Crawl Control overview) PREPENDS about sixty lines to
+# whatever this file says. It was on until 2026-08-09, and what it prepended
+# contradicted the second half of this file: `Disallow: /` groups for seven of
+# the same crawlers named below with `Allow: /`, plus a `Content-Signal:
+# search=yes,ai-train=no,use=reference` line on the `*` group.
+#
+# RFC 9309 §2.2.1 requires a parser to MERGE groups sharing a product token, and
+# §2.2.2 resolves an equal-length Allow/Disallow tie in favour of Allow — so a
+# conformant crawler read the Allow. But that is a tie-break undoing a block
+# nobody asked for, and a parser that stops at the first matching group reads the
+# Disallow instead, which is why the block being prepended is the worst possible
+# position for it.
+#
+# The toggle is off. If a robots.txt ever appears in production that does not
+# match this file byte for byte, someone turned it back on; that is the first
+# thing to check, not the last.
+
 User-agent: *
 Allow: /
 Disallow: /static/css/
@@ -10,51 +31,105 @@ Disallow: /static/js/
 # The old `Disallow: /404.html` had the same defect and pointed at a path that
 # only redirects to /404 anyway.
 
-# GEO: Explicitly allow AI Crawlers and LLMs
-User-agent: GPTBot
+
+# ===========================================================================
+# AI crawlers.
+#
+# Everything below is allowed, and the two groups are separated because they buy
+# different things and could reasonably be decided differently. Listing them in
+# one undifferentiated block, as this file used to, hides that there is a choice
+# here at all.
+#
+# The distinction is what the crawler does with the page, and the user-agent
+# tokens themselves encode it — the two sets barely overlap, so a future decision
+# to allow one and refuse the other needs no new mechanism, just moving a group.
+# ===========================================================================
+
+
+# --- Retrieval: fetch a page to answer a question now ----------------------
+#
+# These produce citations. A visitor asks something, the agent fetches, and the
+# answer links back. This is the whole of GEO and there is no argument for
+# refusing any of it.
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
+User-agent: Claude-User
 Allow: /
 
-User-agent: Googlebot
-Allow: /
-
-User-agent: GoogleOther
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: ClaudeBot
+User-agent: Claude-SearchBot
 Allow: /
 
 User-agent: Claude-Web
 Allow: /
 
-User-agent: meta-externalagent
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
 Allow: /
 
 User-agent: FacebookBot
 Allow: /
 
+
+# --- Training: read a page to build or refine a model -----------------------
+#
+# These give no citation, no traffic and no attribution. Allowing them is a
+# deliberate decision rather than an omission: being in the weights means a model
+# answers about GEO, PQC or MCP with this site's framing even when nothing is
+# retrieved, which is the deepest version of the thing this company sells. A firm
+# whose content strategy is to be ingested cannot coherently refuse ingestion.
+#
+# The cost is real and worth stating: training use is uncompensated and
+# unattributed, and it is not revocable — a model trained on this content stays
+# trained on it. If that trade ever stops looking right, changing this section to
+# `Disallow: /` is the entire change, and the retrieval group above is unaffected,
+# so citations keep working.
+#
+# Note that Cloudflare's Content-Signal mechanism is NOT the way to express that
+# refusal: it is a Cloudflare proposal rather than a standard, and no crawler
+# operator has publicly committed to honouring it — Google's search relations
+# team has said publicly that it has no effect on any crawler or LLM. Disallow is
+# honoured; Content-Signal is a declaration.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: Applebot-Extended
 Allow: /
 
-User-agent: Bytespider
+User-agent: meta-externalagent
 Allow: /
 
 User-agent: CCBot
 Allow: /
 
-User-agent: PerplexityBot
+User-agent: Bytespider
 Allow: /
 
 User-agent: cohere-ai
 Allow: /
 
-# Sitemap & LLMs.txt
+
+# --- Search --------------------------------------------------------------
+
+User-agent: Googlebot
+Allow: /
+
+
+# ===========================================================================
 Sitemap: https://taux.io/sitemap.xml
