@@ -125,7 +125,10 @@
     <nav class="fixed w-full z-50 bg-surface-deep/90 backdrop-blur-md border-b border-line transition-transform duration-300"
         aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="/" class="font-display text-xl uppercase tracking-[0.09em] text-ink transition-opacity duration-200 hover:opacity-70"
+            <!-- h-full rather than the text's own 33px: the bar is 64px tall
+                 and the wordmark is a control, so its target should fill the
+                 bar rather than stop at the cap height. -->
+            <a href="/" class="wordmark"
                 aria-label="TauX Homepage">
                 TauX
             </a>
@@ -152,7 +155,12 @@
                 </a>
             </div>
 
-            <button type="button" id="hamburger" class="sm:hidden flex flex-col gap-1.5 p-2 z-50"
+            <!-- 44x44. It measured 40x31 before issue 154 — the only way into
+                 the site on a phone, and under the minimum target on both
+                 axes. The bars keep their own size; the button grows around
+                 them and centres them. -->
+            <button type="button" id="hamburger"
+                class="sm:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity duration-200 z-50"
                 aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
                 <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
                 <span class="w-6 h-px bg-ink transition-all duration-300 opacity-100"></span>
