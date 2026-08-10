@@ -343,8 +343,15 @@
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-control);
     background-color: rgb(0 0 0 / 0.5);
-    transition: background-color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    /* 200ms, not the 500ms this carried before issue 154.
+       Half a second to acknowledge a press is the thing Apple's fluid-interface
+       talks call falling off a cliff: the control answers long after the finger
+       has decided. It was also the only 500ms on the site — 22 transitions run
+       at 200ms and 17 at 300ms — and DESIGN.md records the reference site's
+       measured baseline as .15s with a single easing. */
+    transition: background-color 0.2s cubic-bezier(0.19, 1, 0.22, 1);
   }
+
 
   .btn::after {
     content: "→";
@@ -381,6 +388,27 @@
   .btn-quiet:hover {
     color: var(--ink);
     background-color: rgb(var(--ink-rgb) / 0.06);
+  }
+
+  /* The wordmark and the hamburger are controls without a component class —
+     they were styled entirely by utilities. They get one here rather than an
+     `active:opacity-[0.55]` utility, for two reasons. The press value belongs
+     in one place with the other controls; and the utility form did not work:
+     it compiled, `check:classes` passed it, and the style never applied at
+     runtime. A class that emits CSS nothing ever uses is exactly the failure
+     that checker exists to catch, and an arbitrary-value variant slipped past
+     it. Component CSS has no such ambiguity.
+
+     h-full rather than the text's own 33px: the bar is 64px tall and this is a
+     control, so its target fills the bar instead of stopping at the cap
+     height. */
+  .wordmark {
+    @apply font-display text-xl uppercase tracking-[0.09em] text-ink h-full
+           flex items-center transition-opacity duration-200;
+  }
+
+  .wordmark:hover {
+    opacity: 0.7;
   }
 
   /* Pull quote: a hairline rule rather than a coloured bar, no quotation
@@ -507,8 +535,15 @@
     @apply font-mono text-eyebrow uppercase text-ink-body;
   }
 
+  /* py-1.5 buys 12px of height on a 14px line — a 26px target rather than 14px.
+     NOT the 44px the guidance asks for, and that is a decision rather than an
+     oversight: the footer carries four columns of these, and 44px each would
+     make it roughly three times its current height on a phone, pushing the
+     contact details below another screen of links. 44px is written for primary
+     controls; a dense reference list at the very bottom of a page is the case
+     it is least about. Recorded in DESIGN.md rather than left implicit. */
   .footer-link {
-    @apply text-sm text-ink-body transition-colors duration-200;
+    @apply block text-sm text-ink-body py-1.5 transition-colors duration-200;
   }
 
   .footer-link:hover {
@@ -541,6 +576,37 @@
 
   .section-index-link[aria-current] {
     @apply text-ink border-line-strong;
+  }
+
+  /* Text controls dim on press rather than deepening a fill, because they have
+     no fill to deepen. One value for all of them, so a press feels the same
+     everywhere.
+
+     LAST IN THE LAYER, AND THAT POSITION IS THE RULE. `:hover` and `:active`
+     have identical specificity, so whichever is written later wins when both
+     apply — which is exactly the case a mouse press produces. Declared above
+     the hover rules, this block lost: the wordmark measured 0.7 held down and
+     0.7 on hover, meaning a desktop press did nothing at all. Touch was fine,
+     because touch has no hover, so the half of the audience the feedback was
+     added for would never have noticed the other half was broken. */
+  .btn:active {
+    background-color: rgb(var(--ink-rgb) / 0.2);
+    transition-duration: 0.075s;
+  }
+
+  .btn-quiet:active {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+    transition-duration: 0.075s;
+  }
+
+  .nav-link:active,
+  .menu-link:active,
+  .footer-link:active,
+  .section-index-link:active,
+  .wordmark:active,
+  #hamburger:active {
+    opacity: 0.55;
+    transition-duration: 0.075s;
   }
 }
 
@@ -608,5 +674,63 @@
       transform: scale(1.4);
       opacity: 0;
     }
+  }
+}
+/* ===========================================================================
+   User preferences. Three independent signals, none of which had a CSS
+   answer before issue 154 — reduced motion was handled in parallax.js and
+   tau-curve.js and nowhere else, so the 300ms overlay fade, the nav's
+   transform and every button transition ignored it entirely.
+
+   These sit outside @layer on purpose. A preference has to beat the component
+   that expresses the default, and layered rules lose to unlayered ones.
+   =========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Near-zero rather than `none`. A zero-length transition still fires
+     transitionend, so anything that ever waits on one keeps working; `none`
+     silently breaks that class of listener.
+
+     Visibility is deliberately untouched. DESIGN.md decision #13 exists
+     because a scroll-reveal left 19 elements on the home page permanently
+     invisible, and a reduced-motion rule that hid content would be the same
+     defect wearing an accessibility label. Nothing here sets opacity or
+     display; it only shortens time. */
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  /* The nav and the menu are the only translucent surfaces on the site. Both
+     become opaque, and the blur goes with them — a backdrop-filter with an
+     opaque background is cost with no effect. */
+  nav {
+    background-color: var(--surface-deep) !important;
+    backdrop-filter: none !important;
+  }
+
+  #menuOverlay {
+    background-color: var(--surface-deep) !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Hairlines at 8% are the first thing to disappear when someone asks for
+     more contrast, and they are what carries the structure here: this
+     vocabulary has no cards, no fills and no shadows, so a rule that cannot be
+     seen takes the layout with it. The ink is already above 12:1 and needs
+     nothing. */
+  :root {
+    --line: rgb(var(--line-rgb) / 0.3);
+    --line-strong: rgb(var(--line-rgb) / 0.6);
   }
 }
