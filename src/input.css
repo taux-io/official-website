@@ -107,6 +107,31 @@
      "phosphor budget" rule. See DESIGN.md decisions #27 and #28. */
   --phosphor-rgb: 255 176 0;
   --phosphor: rgb(var(--phosphor-rgb));
+
+  /* ---- Motion and material, added by issue 156. ----------------------------
+     These overturn three rules this file used to enforce. The reasons behind
+     those rules were not wrong and have not been deleted — see DESIGN.md
+     decisions #13, #25 and #51. They were overruled deliberately.
+
+     Two easings, and the distinction is the whole discipline. Apple's own
+     guidance is that overshoot belongs after momentum — a flick, a throw —
+     and reads wrong on something that merely appeared. This site has no
+     gestures, so `arrive` is reserved for the one thing that genuinely
+     arrives: the full-screen menu. Everything else stays critically damped. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-arrive: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* Depth, on a ground that is nearly black. A black shadow works here only
+     because --surface is 10 10 11 rather than 0 0 0 — the same hair of
+     lightness that stops CJK strokes haloing is what lets a shadow read at
+     all. Each pairs the drop with a hairline top edge: on a dark material the
+     light catching the upper edge is what says "surface", and the shadow alone
+     just says "smudge".
+
+     Three steps, sized by surface, per the rule that bigger reads thicker. */
+  --shadow-control: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-chrome: inset 0 1px 0 rgb(var(--line-rgb) / 0.05), 0 8px 24px rgb(0 0 0 / 0.55);
+  --shadow-surface: inset 0 1px 0 rgb(var(--line-rgb) / 0.07), 0 24px 64px rgb(0 0 0 / 0.7);
 }
 
 /* ===========================================================================
@@ -264,6 +289,10 @@
     background-color: var(--surface);
     color: var(--ink-body);
     @apply font-sans antialiased overflow-x-hidden;
+    /* iOS paints its own grey flash on tap. With designed :active states
+       (issue 154) that flash is a second, uninvited answer to the same press,
+       and it arrives on a different schedule. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Display headings are bold. This line used to say 400 while every template
@@ -343,6 +372,7 @@
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-control);
     background-color: rgb(0 0 0 / 0.5);
+    box-shadow: var(--shadow-control);
     /* 200ms, not the 500ms this carried before issue 154.
        Half a second to acknowledge a press is the thing Apple's fluid-interface
        talks call falling off a cliff: the control answers long after the finger
@@ -589,6 +619,71 @@
      0.7 on hover, meaning a desktop press did nothing at all. Touch was fine,
      because touch has no hover, so the half of the audience the feedback was
      added for would never have noticed the other half was broken. */
+  /* ---- Material and depth (issue 156) -------------------------------------
+     The site carried no box-shadow at all: depth was expressed by offset
+     duplicate blocks, and the Token chapter recorded "box-shadow zero times"
+     as a measured property of the reference site. That is overturned here.
+
+     Three surfaces take a shadow and nothing else does. Bigger reads thicker,
+     so the full-screen menu gets more than the bar and the bar more than a
+     button — and each pairs its drop with an inset hairline along the top
+     edge, because on a dark material it is the light caught on the upper edge
+     that reads as a surface rather than a stain. */
+  .site-nav {
+    box-shadow: var(--shadow-chrome);
+  }
+
+  /* The scroll edge that replaced the 1px rule under the bar. A hairline
+     asserts a boundary; content fading as it passes beneath a floating layer
+     says there is more above, which is what is actually true. Sits outside the
+     bar and cannot catch a pointer. */
+  .site-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--surface-deep-rgb) / 0.55),
+      rgb(var(--surface-deep-rgb) / 0)
+    );
+  }
+
+  /* Materialise rather than fade. The overlay used to be an opaque panel
+     appearing at opacity 1; it is now a translucent one that arrives — blur
+     and scale moving together, on the only easing in this file that
+     overshoots. This is the single place `--ease-arrive` is used, because it
+     is the single thing on the site that arrives.
+
+     85% rather than a lighter glass: the menu is nineteen links of body-sized
+     text over whatever the reader was looking at, and legibility outranks the
+     effect. Measured after the change rather than assumed. */
+  .menu-surface {
+    background-color: rgb(var(--surface-deep-rgb) / 0.85);
+    backdrop-filter: blur(0px);
+    transform: scale(0.98);
+    box-shadow: var(--shadow-surface);
+    transition:
+      opacity 0.3s var(--ease-standard),
+      transform 0.34s var(--ease-arrive),
+      backdrop-filter 0.34s var(--ease-standard);
+  }
+
+  .menu-surface.opacity-100 {
+    backdrop-filter: blur(24px);
+    transform: scale(1);
+  }
+
+  .btn:active,
+  .btn-quiet:active {
+    /* Flat on press. A control that sits above the surface should sit ON it
+       while held — the shadow going away is the press, as much as the fill. */
+    box-shadow: none;
+  }
+
   .btn:active {
     background-color: rgb(var(--ink-rgb) / 0.2);
     transition-duration: 0.075s;
@@ -732,5 +827,33 @@
   :root {
     --line: rgb(var(--line-rgb) / 0.3);
     --line-strong: rgb(var(--line-rgb) / 0.6);
+  }
+}
+
+/* ===========================================================================
+   Scroll reveal (issue 156).
+
+   The hidden state is behind BOTH a media query and a class the script adds
+   only once it is running. Either guard alone would be enough; both are here
+   because decision #13 exists after nineteen elements on the home page were
+   left permanently invisible by this exact feature, and the cost of one more
+   line is nothing against the cost of repeating that.
+
+   A template never writes a hidden state, which is also why check:design's
+   "no scroll reveal" rule stays enabled and stays green: it bans `opacity-0`
+   in the markup, and there is none. The rule now guards a narrower invariant
+   than its name suggests — nothing SHIPS hidden — and that was always the part
+   worth guarding.
+   =========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard);
+  }
+
+  html.js-reveal [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
   }
 }
