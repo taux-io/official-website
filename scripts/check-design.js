@@ -716,6 +716,163 @@ function ruleCssVersionIsDerived(files) {
   return found;
 }
 
+// ---------------------------------------------------------------------------
+// The motion and material vocabulary issue 156 introduced.
+//
+// That change gave the site two easings, three shadow steps and a pressed
+// state, none of which existed before and none of which anything checked. This
+// file's opening argument is that a rule nothing checks is not a rule, and a
+// vocabulary is only a vocabulary while it stays small — the reason the site
+// had one ink, two hairline weights and no shadows at all was never taste, it
+// was that an unpoliced scale grows a fourth step for a case none of the first
+// three fit.
+
+const INPUT_CSS = path.join("src", "input.css");
+
+// Comments carry examples and prose about the very things these rules match on
+// — ":active" appears in three explanations before it appears in a selector.
+// Scanning the raw file finds those and reports the documentation as a
+// violation.
+function readStylesheet() {
+  const abs = path.join(ROOT, INPUT_CSS);
+  if (!fs.existsSync(abs)) return null;
+  const raw = fs.readFileSync(abs, "utf8");
+  // Replaced with spaces of equal length so every line number still resolves.
+  return raw.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
+}
+
+// Two easings, and they are declared as tokens. A third curve written inline is
+// how a scale stops being a scale.
+function ruleEasingScale() {
+  const css = readStylesheet();
+  if (css === null) {
+    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the easings" }];
+  }
+  const declared = new Set();
+  for (const m of css.matchAll(/--ease-[a-z-]+:\s*(cubic-bezier\([^)]*\))/g)) {
+    declared.add(m[1].replace(/\s+/g, ""));
+  }
+  if (!declared.size) {
+    return [{ file: INPUT_CSS, line: 0, detail: "no --ease-* tokens declared; this rule has gone blind" }];
+  }
+  const found = [];
+  for (const m of css.matchAll(/cubic-bezier\([^)]*\)/g)) {
+    if (declared.has(m[0].replace(/\s+/g, ""))) continue;
+    found.push({
+      file: INPUT_CSS,
+      line: lineOf(css, m.index),
+      detail: `${m[0]} is not one of the declared easings (${[...declared].join(", ")}) — use the token`,
+    });
+  }
+  return found;
+}
+
+// Three shadow steps, sized by surface. Every use names one; nothing writes its
+// own. `none` is allowed because taking the shadow away is how a control reads
+// as pressed.
+function ruleShadowScale() {
+  const css = readStylesheet();
+  if (css === null) {
+    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the shadows" }];
+  }
+  const found = [];
+  for (const m of css.matchAll(/(?<!--shadow-[a-z]{0,12}:[^;]{0,200})box-shadow:\s*([^;]+);/g)) {
+    const value = m[1].trim();
+    if (/^var\(--shadow-[a-z]+\)$/.test(value) || value === "none") continue;
+    // The token declarations themselves are the definitions, not uses.
+    const lineStart = css.lastIndexOf("\n", m.index) + 1;
+    if (/^\s*--shadow-/.test(css.slice(lineStart, m.index + 1))) continue;
+    found.push({
+      file: INPUT_CSS,
+      line: lineOf(css, m.index),
+      detail: `box-shadow: ${value.slice(0, 60)} — use var(--shadow-control|chrome|surface) or none`,
+    });
+  }
+  return found;
+}
+
+// Anything that answers a hover must answer a press, and the press rule must be
+// written after the hover rule.
+//
+// Both halves are the same defect seen from two sides, and it is a defect that
+// only breaks desktop. :hover and :active have identical specificity, so the
+// later rule wins when both apply — which is exactly what a mouse press
+// produces. Written first, the whole pressed state does nothing with a mouse
+// while working perfectly under a finger, so the half of the audience the
+// feature was added for never sees it fail. That happened during issue 154 and
+// was caught by measuring, not by reading.
+const PRESS_EXEMPT = new Set(["::-webkit-scrollbar-thumb"]);
+
+function rulePressFollowsHover() {
+  const css = readStylesheet();
+  if (css === null) {
+    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the states" }];
+  }
+
+  // Selector lists sit before a `{`; a rule may group several.
+  const hover = new Map();
+  const active = new Map();
+  for (const m of css.matchAll(/([^{}]+)\{/g)) {
+    const list = m[1];
+    for (const sel of list.split(",")) {
+      const s = sel.trim();
+      if (!s) continue;
+      const base = s.replace(/:(hover|active)\b.*$/, "");
+      if (PRESS_EXEMPT.has(base)) continue;
+      if (/:hover\b/.test(s) && !hover.has(base)) hover.set(base, lineOf(css, m.index));
+      if (/:active\b/.test(s) && !active.has(base)) active.set(base, lineOf(css, m.index));
+    }
+  }
+
+  const found = [];
+  for (const [base, hoverLine] of hover) {
+    const activeLine = active.get(base);
+    if (activeLine === undefined) {
+      found.push({
+        file: INPUT_CSS,
+        line: hoverLine,
+        detail: `${base} answers :hover but not :active — a touch device never fires hover, so it would have no press feedback at all`,
+      });
+      continue;
+    }
+    if (activeLine < hoverLine) {
+      found.push({
+        file: INPUT_CSS,
+        line: activeLine,
+        detail: `${base}:active is written before :hover (line ${hoverLine}); equal specificity means hover wins and the press does nothing with a mouse`,
+      });
+    }
+  }
+  return found;
+}
+
+// A revealed block must ship visible.
+//
+// The neighbouring "no scroll reveal" rule bans opacity-0 across the templates,
+// which is what kept nineteen elements from being lost a second time. This one
+// is narrower and aimed at the feature issue 156 introduced: the elements that
+// opt into a reveal are exactly the ones a future edit is most likely to "help"
+// by giving them a starting state in the markup. The starting state belongs to
+// the script, which adds it only once it knows it can take it away again.
+const REVEAL_FORBIDDEN = /^(?:opacity-(?!100$)|invisible$|scale-(?!100$)|translate-[xy]-(?!0$)|blur-)/;
+
+function ruleRevealShipsVisible(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const el of elements(html)) {
+      if (!/\bdata-reveal\b/.test(html.slice(el.index, html.indexOf(">", el.index) + 1))) continue;
+      const hit = el.classes.find((c) => REVEAL_FORBIDDEN.test(stripVariants(c)));
+      if (!hit) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, el.index),
+        detail: `[data-reveal] ships with ${hit}; the hidden state belongs to reveal.js, which adds it only when it can also remove it`,
+      });
+    }
+  }
+  return found;
+}
+
 // The body ink alpha exists twice and must not drift.
 //
 // src/input.css declares --ink-body for hand-written CSS; tailwind.config.js
@@ -911,6 +1068,34 @@ function ruleNavBreakpointsPaired(files) {
 // ---------------------------------------------------------------------------
 
 const RULES = [
+  {
+    name: "easing scale",
+    enabled: true,
+    turnedOnBy: "issue 156 — the motion vocabulary",
+    run: ruleEasingScale,
+    summary: "every curve is one of the two declared --ease-* tokens",
+  },
+  {
+    name: "shadow scale",
+    enabled: true,
+    turnedOnBy: "issue 156 — the material vocabulary",
+    run: ruleShadowScale,
+    summary: "every shadow names one of the three steps, or none",
+  },
+  {
+    name: "press follows hover",
+    enabled: true,
+    turnedOnBy: "issue 156 — after the ordering defect in 154",
+    run: rulePressFollowsHover,
+    summary: "anything that answers hover answers a press, and later in the file",
+  },
+  {
+    name: "reveal ships visible",
+    enabled: true,
+    turnedOnBy: "issue 156 — the scroll reveal",
+    run: ruleRevealShipsVisible,
+    summary: "a [data-reveal] block carries no hidden state in the markup",
+  },
   {
     name: "invisible is inert",
     enabled: true,

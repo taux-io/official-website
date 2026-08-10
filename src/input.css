@@ -379,7 +379,7 @@
        has decided. It was also the only 500ms on the site — 22 transitions run
        at 200ms and 17 at 300ms — and DESIGN.md records the reference site's
        measured baseline as .15s with a single easing. */
-    transition: background-color 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: background-color 0.2s var(--ease-standard);
   }
 
 
@@ -407,8 +407,14 @@
     border: 1px solid var(--line);
     border-radius: var(--radius-control);
     background-color: transparent;
-    transition: background-color 0.5s cubic-bezier(0.19, 1, 0.22, 1),
-      color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    /* 200ms and the standard easing, matching .btn.
+       The audit behind issue 154 called .btn "the only 500ms on the site" and
+       issue 154's commit repeated it. There were two: this one was written
+       across two properties and the grep that found the first one counted them
+       as separate strings without anyone reading the second. Half a fix, twice
+       asserted as a whole one. */
+    transition: background-color 0.2s var(--ease-standard),
+      color 0.2s var(--ease-standard);
   }
 
   .btn-quiet::after {
