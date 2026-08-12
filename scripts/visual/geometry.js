@@ -40,15 +40,13 @@
 // Reads the same route table and starts the browser the same way as its
 // neighbours, so adding a page to site.toml brings it under all of them.
 
-const { launch } = require("../browser");
-const { ROUTES, BASE_URL } = require("../routes");
+const { walk } = require("./walk");
 
 // /404 is a [[document]] rather than a [[page]], so it is not in ROUTES and
 // neither contrast nor contract ever requests it — DESIGN.md says so of both.
 // This audit walks it anyway. It used to be here for the box-drawing frame
 // decision #41 was written about; that frame went with the monospace faces, and
 // what is left is a route with a hero band, a pill and no gate but this one.
-const PATHS = [...ROUTES.map((r) => r.path), "/404"];
 
 // THE FIVE NAMED STEPS PLUS THREE WIDTHS THAT ARE NOT STEPS.
 //
@@ -223,11 +221,8 @@ function measureCoverInPage({ tolerance }) {
     const height = el.getBoundingClientRect().height;
     if (height >= viewport - tolerance) continue;
     const heading = el.querySelector("h1, h2");
-    out.push({
-      label: heading ? heading.textContent.trim().replace(/\s+/g, " ").slice(0, 48) : "(no heading)",
-      height: Math.round(height),
-      viewport,
-    });
+    const label = heading ? heading.textContent.trim().replace(/\s+/g, " ").slice(0, 48) : "(no heading)";
+    out.push({ detail: `"${label}" is ${Math.round(height)}px in a ${viewport}px viewport` });
   }
   return out;
 }
@@ -248,10 +243,8 @@ function measureControlsInPage({ radius, minTarget }) {
     if (rect.width === 0 || rect.height === 0) continue;
     const actual = parseFloat(getComputedStyle(el).borderTopLeftRadius);
     if (Math.abs(actual - radius) > 0.5) {
-      out.push({
-        label: el.textContent.trim().replace(/\s+/g, " ").slice(0, 32),
-        detail: "border-radius " + actual + "px, expected " + radius + "px",
-      });
+      const label = el.textContent.trim().replace(/\s+/g, " ").slice(0, 32);
+      out.push({ detail: `"${label}" — border-radius ${actual}px, expected ${radius}px` });
     }
   }
   const touchable = "a.btn, .btn-quiet, button, input, select, textarea, summary";
@@ -259,9 +252,9 @@ function measureControlsInPage({ radius, minTarget }) {
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) continue;
     if (rect.width >= minTarget && rect.height >= minTarget) continue;
+    const label = el.textContent.trim().replace(/\s+/g, " ").slice(0, 32) || el.tagName.toLowerCase();
     out.push({
-      label: el.textContent.trim().replace(/\s+/g, " ").slice(0, 32) || el.tagName.toLowerCase(),
-      detail: Math.round(rect.width) + "x" + Math.round(rect.height) + "px, floor is " + minTarget,
+      detail: `"${label}" — ${Math.round(rect.width)}x${Math.round(rect.height)}px, floor is ${minTarget}`,
     });
   }
   return out;
@@ -300,103 +293,56 @@ function measureReadingInPage({ maxCh, minChars }) {
     const ch = el.getBoundingClientRect().width / zero;
     if (ch <= maxCh) continue;
     out.push({
-      ch: Math.round(ch * 10) / 10,
-      label: text.replace(/\s+/g, " ").slice(0, 40),
-      cls: el.className.slice(0, 48),
+      detail: `"${text.replace(/\s+/g, " ").slice(0, 40)}" runs ${Math.round(ch * 10) / 10}ch, limit is ${maxCh - 0.5} (${el.className.slice(0, 48)})`,
     });
   }
   return out;
 }
 
 async function main() {
-  const browser = await launch();
-  const failures = [];
-  let overflowChecks = 0;
-  let coverChecks = 0;
-  let controlChecks = 0;
-  let coverBands = 0;
-  let measureChecks = 0;
+  const viewports = WIDTHS.map((width) => ({ name: `${width}px`, width, height: 900 }));
 
-  // One load per route, then resize. Everything measured here is pure layout,
-  // so re-measuring at each width costs a reflow rather than a navigation —
-  // the difference between 20 loads and 120.
-  const widest = Math.max(...WIDTHS);
-  const context = await browser.newContext({ viewport: { width: widest, height: 900 } });
-  const page = await context.newPage();
+  const { findings, stats } = await walk({
+    viewports,
+    probes: [
+      { name: "overflow", inPage: measureOverflowInPage },
+      {
+        name: "cover",
+        inPage: measureCoverInPage,
+        args: { tolerance: COVER_TOLERANCE_PX },
+        // A band that is short is short; nothing settles into a screen.
+        settle: false,
+      },
+      {
+        name: "control",
+        inPage: measureControlsInPage,
+        args: { radius: PILL_RADIUS_PX, minTarget: TOUCH_TARGET_MIN_PX },
+        settle: false,
+      },
+      {
+        name: "measure",
+        inPage: measureReadingInPage,
+        args: { maxCh: MEASURE_MAX_CH + MEASURE_TOLERANCE_CH, minChars: MEASURE_MIN_CHARS },
+        // Container widths grow monotonically with the viewport, so the widest
+        // pass is the worst case; measuring at all eight would report the same
+        // paragraph eight times.
+        viewports: "widest",
+        settle: false,
+      },
+    ],
+  });
 
-  for (const path of PATHS) {
-    await page.goto(BASE_URL + path, { waitUntil: "networkidle" });
-    coverBands += await page.evaluate(
-      () => document.querySelectorAll('[data-cover]:not([data-cover="sr"])').length
-    );
+  const failures = findings.map((f) => ({
+    kind: f.probe,
+    where: `${f.path} @ ${f.viewport}`,
+    detail: f.detail,
+  }));
 
-    for (const width of WIDTHS) {
-      await page.setViewportSize({ width, height: 900 });
-
-      let detail = await page.evaluate(measureOverflowInPage);
-      overflowChecks++;
-      // Measured again before it counts. Chart.js sizes its canvas from the
-      // container after load, and networkidle can fire mid-resize: the chart on
-      // /what-is-prompt-injection was caught at 376px wide in a 320px viewport
-      // and settles at 176px, so the finding appeared on some runs and not
-      // others. A gate that goes red at random teaches people to re-run until
-      // it is green, which is worse than not having it.
-      //
-      // Only when the first look found something, so a clean run pays nothing.
-      if (detail) {
-        await page.waitForTimeout(TRANSIENT_SETTLE_MS);
-        const again = await page.evaluate(measureOverflowInPage);
-        if (!again) detail = null;
-      }
-      if (detail) failures.push({ where: `${path} @ ${width}px`, kind: "overflow", detail });
-
-      const short = await page.evaluate(measureCoverInPage, { tolerance: COVER_TOLERANCE_PX });
-      coverChecks++;
-      for (const c of short) {
-        failures.push({
-          where: `${path} @ ${width}px`,
-          kind: "cover",
-          detail: `"${c.label}" is ${c.height}px in a ${c.viewport}px viewport`,
-        });
-      }
-
-      const controls = await page.evaluate(measureControlsInPage, {
-        radius: PILL_RADIUS_PX,
-        minTarget: TOUCH_TARGET_MIN_PX,
-      });
-      controlChecks++;
-      for (const c of controls) {
-        failures.push({
-          where: `${path} @ ${width}px`,
-          kind: "control",
-          detail: `"${c.label}" — ${c.detail}`,
-        });
-      }
-    }
-    // The measure, once, at the widest viewport — the worst case for line
-    // length, and the only pass where reporting it is not eight copies.
-    await page.setViewportSize({ width: widest, height: 900 });
-    const overlong = await page.evaluate(measureReadingInPage, {
-      maxCh: MEASURE_MAX_CH + MEASURE_TOLERANCE_CH,
-      minChars: MEASURE_MIN_CHARS,
-    });
-    measureChecks++;
-    for (const m of overlong) {
-      failures.push({
-        where: `${path} @ ${widest}px`,
-        kind: "measure",
-        detail: `"${m.label}" runs ${m.ch}ch, limit is ${MEASURE_MAX_CH} (${m.cls})`,
-      });
-    }
-  }
-  await context.close();
-  await browser.close();
-
-  const combos = `${PATHS.length} paths x ${WIDTHS.length} widths: ${WIDTHS.join(", ")}`;
-  console.log(`\n${overflowChecks} route/width combinations checked for horizontal overflow (${combos})`);
-  console.log(`${coverChecks} checked for cover bands filling the screen (${coverBands} bands on the widest pass)`);
-  console.log(`${controlChecks} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
-  console.log(`${measureChecks} routes checked for a ${MEASURE_MAX_CH}ch reading measure (widest viewport only)`);
+  const combos = `${stats.paths} paths x ${stats.viewports} widths: ${WIDTHS.join(", ")}`;
+  console.log(`\n${stats.paths * stats.viewports} route/width combinations checked for horizontal overflow (${combos})`);
+  console.log(`${stats.paths * stats.viewports} checked for cover bands filling the screen`);
+  console.log(`${stats.paths * stats.viewports} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
+  console.log(`${stats.paths} routes checked for a ${MEASURE_MAX_CH}ch reading measure (widest viewport only)`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
   // scope would report green on ground it never covered.
