@@ -30,6 +30,7 @@
 const fs = require("fs");
 const path = require("path");
 const { parse } = require("smol-toml");
+const stylesheet = require("./stylesheet");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -47,6 +48,15 @@ const TRACKING_SCALE = new Set(["0", "0em", "0.09em", "0.02em"]);
 // square. `rounded-full` is exempt everywhere because a true circle (gauge,
 // orbit, avatar) belongs to this vocabulary in a way a rounded rectangle does
 // not.
+// Properties whose value carries a timing function.
+const TIMED_PROPS = new Set([
+  "transition", "transition-timing-function", "animation", "animation-timing-function",
+]);
+// The named curves. `steps()` and `cubic-bezier()` are handled separately.
+const KEYWORD_EASINGS = new Set([
+  "ease", "ease-in", "ease-out", "ease-in-out", "linear", "step-start", "step-end",
+]);
+
 const CONTROL_TAGS = new Set(["button", "input", "select", "textarea"]);
 const CONTROL_CLASSES = ["btn", "tag"];
 
@@ -565,40 +575,43 @@ function ruleCssVersionIsDerived(files) {
 
 const INPUT_CSS = path.join("src", "input.css");
 
-// Comments carry examples and prose about the very things these rules match on
-// — ":active" appears in three explanations before it appears in a selector.
-// Scanning the raw file finds those and reports the documentation as a
-// violation.
-function readStylesheet() {
-  const abs = path.join(ROOT, INPUT_CSS);
-  if (!fs.existsSync(abs)) return null;
-  const raw = fs.readFileSync(abs, "utf8");
-  // Replaced with spaces of equal length so every line number still resolves.
-  return raw.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
-}
 
 // Two easings, and they are declared as tokens. A third curve written inline is
 // how a scale stops being a scale.
 function ruleEasingScale() {
-  const css = readStylesheet();
-  if (css === null) {
-    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the easings" }];
-  }
+  const sheet = stylesheet.read();
   const declared = new Set();
-  for (const m of css.matchAll(/--ease-[a-z-]+:\s*(cubic-bezier\([^)]*\))/g)) {
-    declared.add(m[1].replace(/\s+/g, ""));
+  for (const [name, value] of sheet.tokens) {
+    if (!name.startsWith("--ease-")) continue;
+    declared.add(value.replace(/\s+/g, ""));
   }
   if (!declared.size) {
-    return [{ file: INPUT_CSS, line: 0, detail: "no --ease-* tokens declared; this rule has gone blind" }];
+    return [{ file: stylesheet.INPUT_CSS, line: 0, detail: "no --ease-* tokens declared; this rule has gone blind" }];
   }
+
   const found = [];
-  for (const m of css.matchAll(/cubic-bezier\([^)]*\)/g)) {
-    if (declared.has(m[0].replace(/\s+/g, ""))) continue;
-    found.push({
-      file: INPUT_CSS,
-      line: lineOf(css, m.index),
-      detail: `${m[0]} is not one of the declared easings (${[...declared].join(", ")}) — use the token`,
-    });
+  for (const d of sheet.declarations) {
+    if (!TIMED_PROPS.has(d.prop)) continue;
+    for (const m of d.value.matchAll(/cubic-bezier\([^)]*\)/g)) {
+      if (declared.has(m[0].replace(/\s+/g, ""))) continue;
+      found.push({
+        file: d.file,
+        line: d.line,
+        detail: `${d.prop}: ${d.raw} — ${m[0]} is not one of the declared easings (${[...declared].join(", ")})`,
+      });
+    }
+    // KEYWORD EASINGS COUNT. `ease` is a curve like any other — it is
+    // cubic-bezier(.25,.1,.25,1) wearing a name — and an earlier version of this
+    // rule matched only the parenthesised form, so a second easing sat in a
+    // template's own <style> block for as long as nothing read that block.
+    for (const kw of d.value.split(/[\s,]+/)) {
+      if (!KEYWORD_EASINGS.has(kw)) continue;
+      found.push({
+        file: d.file,
+        line: d.line,
+        detail: `${d.prop}: ${d.raw} — \`${kw}\` is a second easing; this vocabulary has one, and it is a token`,
+      });
+    }
   }
   return found;
 }
@@ -606,77 +619,43 @@ function ruleEasingScale() {
 const PRESS_EXEMPT = new Set(["::-webkit-scrollbar-thumb"]);
 
 function rulePressFollowsHover() {
-  const css = readStylesheet();
-  if (css === null) {
-    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the states" }];
-  }
+  const sheet = stylesheet.read();
 
-  // Selector lists sit before a `{`; a rule may group several.
+  // Ordering is by source index, not line number. Line numbers only order
+  // within one file, and the cascade now spans input.css and every template's
+  // own <style> block.
   const hover = new Map();
   const active = new Map();
-  for (const m of css.matchAll(/([^{}]+)\{/g)) {
-    const list = m[1];
-    for (const sel of list.split(",")) {
-      const s = sel.trim();
-      if (!s) continue;
-      const base = s.replace(/:(hover|active)\b.*$/, "");
+  for (const rule of sheet.rules) {
+    for (const sel of rule.selectors) {
+      const base = sel.replace(/:(hover|active)\b.*$/, "");
       if (PRESS_EXEMPT.has(base)) continue;
-      if (/:hover\b/.test(s) && !hover.has(base)) hover.set(base, lineOf(css, m.index));
-      if (/:active\b/.test(s) && !active.has(base)) active.set(base, lineOf(css, m.index));
+      if (/:hover\b/.test(sel) && !hover.has(base)) hover.set(base, rule);
+      if (/:active\b/.test(sel) && !active.has(base)) active.set(base, rule);
     }
   }
 
   const found = [];
-  for (const [base, hoverLine] of hover) {
-    const activeLine = active.get(base);
-    if (activeLine === undefined) {
+  for (const [base, hoverRule] of hover) {
+    const activeRule = active.get(base);
+    if (activeRule === undefined) {
       found.push({
-        file: INPUT_CSS,
-        line: hoverLine,
+        file: hoverRule.file,
+        line: hoverRule.line,
         detail: `${base} answers :hover but not :active — a touch device never fires hover, so it would have no press feedback at all`,
       });
       continue;
     }
-    if (activeLine < hoverLine) {
+    if (activeRule.index < hoverRule.index) {
       found.push({
-        file: INPUT_CSS,
-        line: activeLine,
-        detail: `${base}:active is written before :hover (line ${hoverLine}); equal specificity means hover wins and the press does nothing with a mouse`,
+        file: activeRule.file,
+        line: activeRule.line,
+        detail: `${base}:active is written before :hover (${hoverRule.file}:${hoverRule.line}); equal specificity means hover wins and the press does nothing with a mouse`,
       });
     }
   }
   return found;
 }
-
-// A revealed block must ship visible.
-//
-// The neighbouring "no scroll reveal" rule bans opacity-0 across the templates,
-// which is what kept nineteen elements from being lost a second time. This one
-// is narrower and aimed at the feature issue 156 introduced: the elements that
-// opt into a reveal are exactly the ones a future edit is most likely to "help"
-// by giving them a starting state in the markup. The starting state belongs to
-// the script, which adds it only once it knows it can take it away again.
-const REVEAL_FORBIDDEN = /^(?:opacity-(?!100$)|invisible$|scale-(?!100$)|translate-[xy]-(?!0$)|blur-)/;
-
-const INK_SOURCES = [
-  { file: path.join("src", "input.css"), re: /--ink-body:\s*rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\s*\)/ },
-  { file: path.join("tailwind.config.js"), re: /body:\s*"rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\)"/ },
-];
-
-const VIEWPORT_HEIGHT = /^(?:min-)?h-(?:screen|svh|lvh|dvh|\[[^\]]*(?:v|sv|lv|dv)h[^\]]*\])$/;
-
-// Two exemptions, named rather than pattern-matched so a third cannot appear
-// without someone saying so out loud — the same device OPACITY_EXEMPT_IDS uses.
-//
-//   404 is the one page whose job IS to fill the screen: no body semantics, no
-//   reading measure, no SEO value. DESIGN.md's layout chapter already carved it
-//   out as the sole exception and #137 narrowed the chapter to exactly that.
-//
-//   <main> keeps the footer at the bottom of a short page. Now that sections
-//   are content-height, that is the shell doing its job rather than a block
-//   padding itself out — the opposite of what this rule exists to stop.
-const FULL_HEIGHT_EXEMPT_FILE = path.join("templates", "404.html");
-const FULL_HEIGHT_EXEMPT_TAGS = new Set(["main"]);
 
 function ruleNavBreakpointsPaired(files) {
   const HEADER = path.join("templates", "header.html");
@@ -793,15 +772,36 @@ function ruleZeroMono(files) {
   // road, and it is the road this site actually used: `.eyebrow` carried
   // `@apply font-mono` for 202 elements while no template said so. Reading only
   // the templates would have called that clean.
-  const css = readStylesheet();
-  if (css !== null) {
-    for (const m of css.matchAll(/@apply[^;]*\bfont-(mono|pixel)\b/g)) {
-      found.push({
-        file: INPUT_CSS,
-        line: css.slice(0, m.index).split("\n").length,
-        detail: `@apply font-${m[1]} — a component class reaches the removed family too`,
-      });
-    }
+  const sheet = stylesheet.read();
+  for (const a of sheet.applied) {
+    const m = /^font-(mono|pixel)$/.exec(a.utility);
+    if (!m) continue;
+    found.push({
+      file: a.file,
+      line: a.line,
+      detail: `${a.selector} applies font-${m[1]} — a component class reaches the removed family too`,
+    });
+  }
+
+  // THE OTHER ROAD TO A MONOSPACE FACE, and the one this rule was blind to by
+  // design rather than by accident: a raw `font-family` declaration. It never
+  // looked at declarations at all — only class strings, the Tailwind config and
+  // @apply — so two `font-family: monospace` rules in a template's own <style>
+  // block survived the removal of the monospace vocabulary and kept DESIGN.md
+  // decision #40's MingLiU trap open on the route with the most code content.
+  //
+  // The generic family is what is banned, not the word. A stack ending in
+  // `monospace` puts CJK on whatever the platform calls generic monospace, which
+  // on Windows is MingLiU — a serif this site sets nowhere else, and invisible
+  // from a Mac.
+  for (const d of sheet.declarations) {
+    if (d.prop !== "font-family") continue;
+    if (!/(^|,)\s*monospace\s*$/.test(d.value)) continue;
+    found.push({
+      file: d.file,
+      line: d.line,
+      detail: `${d.selector} falls through to generic monospace — no CJK face answers it, so Chinese lands on MingLiU on Windows`,
+    });
   }
   return found;
 }
@@ -874,35 +874,46 @@ function ruleSectionCoverScreens(files) {
 // template argues with it.
 function ruleUppercaseDisplay(files) {
   const found = [];
-  const css = readStylesheet();
-  if (css === null) {
-    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the display classes" }];
-  }
-  const declaration = (sel) => {
-    const m = new RegExp(`\\.${sel}\\s*\\{([^}]*)\\}`).exec(css);
-    return m ? { body: m[1], line: css.slice(0, m.index).split("\n").length } : null;
+  const sheet = stylesheet.read();
+
+  // Asked of both fields, because the transform can be written either way and
+  // this site writes it as a utility. @apply is not normalised into a
+  // declaration — that would need a copy of Tailwind's utility table in the
+  // stylesheet module — so the rule asks twice instead.
+  const rendersUpper = (selector) => {
+    const rules = sheet.rulesFor(selector);
+    if (!rules.length) return null;
+    for (const r of rules) {
+      if (r.applied.some((a) => a.utility === "uppercase")) return { yes: true, rule: r };
+      if (r.declarations.some((d) => d.prop === "text-transform" && d.value.trim() === "uppercase")) {
+        return { yes: true, rule: r };
+      }
+    }
+    return { yes: false, rule: rules[0] };
   };
-  const upper = /\buppercase\b/;
-  const lead = declaration("display-lead");
+
+  const lead = rendersUpper("display-lead") ?? rendersUpper(".display-lead");
   if (!lead) {
-    found.push({ file: INPUT_CSS, line: 0, detail: ".display-lead is not defined" });
-  } else if (!upper.test(lead.body)) {
+    found.push({ file: stylesheet.INPUT_CSS, line: 0, detail: ".display-lead is not defined" });
+  } else if (!lead.yes) {
     found.push({
-      file: INPUT_CSS,
-      line: lead.line,
+      file: lead.rule.file,
+      line: lead.rule.line,
       detail: ".display-lead must render upper case — it is the only line carrying the display signature",
     });
   }
-  const sub = declaration("display-sub");
+
+  const sub = rendersUpper(".display-sub");
   if (!sub) {
-    found.push({ file: INPUT_CSS, line: 0, detail: ".display-sub is not defined" });
-  } else if (upper.test(sub.body) && !/normal-case/.test(sub.body)) {
+    found.push({ file: stylesheet.INPUT_CSS, line: 0, detail: ".display-sub is not defined" });
+  } else if (sub.yes && !sub.rule.applied.some((a) => a.utility === "normal-case")) {
     found.push({
-      file: INPUT_CSS,
-      line: sub.line,
+      file: sub.rule.file,
+      line: sub.rule.line,
       detail: ".display-sub must not render upper case — Chinese has none, so the transform only looks satisfied",
     });
   }
+
   for (const { rel, html } of files) {
     for (const node of parseElements(html)) {
       if (!node.classes.includes("display-sub")) continue;
@@ -918,13 +929,40 @@ function ruleUppercaseDisplay(files) {
   return found;
 }
 
+
+// The one hole the stylesheet module cannot close for itself.
+//
+// It reads every template, so a new <style> block or style="" attribute comes
+// under the check the moment it is written. A new stylesheet FILE does not:
+// <link rel="stylesheet" href="/static/css/deck.css"> would ship CSS that no
+// rule sees and nothing would go red, which is exactly the shape of the blind
+// spot this whole module exists to remove.
+//
+// One link, and it is the built one.
+function ruleSingleStylesheet(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)) {
+      const href = /href="([^"]*)"/.exec(m[0]);
+      const target = href ? href[1] : "(no href)";
+      if (/^\/static\/css\/styles\.min\.css(\?|$)/.test(target)) continue;
+      found.push({
+        file: rel,
+        line: html.slice(0, m.index).split("\n").length,
+        detail: `${target} — the only stylesheet is the built one; CSS in a second file is outside every rule's view`,
+      });
+    }
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
     enabled: true,
     turnedOnBy: "issue 156 — the motion vocabulary",
     run: ruleEasingScale,
-    summary: "every curve is one of the two declared --ease-* tokens",
+    summary: "every curve is the one declared --ease-* token, in every source",
   },
   {
     name: "press follows hover",
@@ -1004,11 +1042,18 @@ const RULES = [
     summary: "a panel a script collapses must be in the document open, not hidden",
   },
   {
+    name: "single stylesheet",
+    enabled: true,
+    turnedOnBy: "#189 — the stylesheet module's own coverage",
+    run: ruleSingleStylesheet,
+    summary: "the only stylesheet link is the built one; a second file would be unread",
+  },
+  {
     name: "zero mono",
     enabled: true,
     turnedOnBy: "#171 — the monospace faces come out with the vocabulary",
     run: ruleZeroMono,
-    summary: "no template writes font-mono or font-pixel, and no family answers them",
+    summary: "nothing writes font-mono or font-pixel, and nothing reaches generic monospace",
   },
   {
     name: "zero canvas",
