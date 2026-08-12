@@ -60,19 +60,19 @@ const CARD = (item, fontCss, tokenCss) => `
   body {
     background: rgb(var(--surface-rgb));
     color: rgb(var(--ink-rgb));
-    font-family: "D-DIN", "PingFang TC", sans-serif;
+    font-family: "SF Pro Text", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 72px 80px;
     position: relative; overflow: hidden;
   }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
-  .mark { font-family: "D-DIN Condensed", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
-  .kicker { font-family: "D-DIN Condensed", "PingFang TC", sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
+  .mark { font-family: "SF Pro Display", system-ui, -apple-system, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
+  .kicker { font-family: "SF Pro Display", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
   h1 {
     position: relative; z-index: 1;
-    font-family: "D-DIN Condensed", "PingFang TC", sans-serif;
+    font-family: "SF Pro Display", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
     font-size: ${item.title.length > 34 ? 62 : 80}px;
-    font-weight: 700; line-height: 1.1; letter-spacing: 0.02em;
+    font-weight: 600; line-height: 1.07; letter-spacing: -0.005em;
     max-width: 940px;
     /* Balanced rather than greedy. The home card set its title in three lines
        with a two-character last line — issue #144. Greedy wrapping fills each
@@ -101,17 +101,19 @@ async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const items = routes();
 
-  // The cards are rendered offline, so the fonts are inlined as data URIs
-  // rather than fetched — nothing here should depend on a running server.
-  const face = (family, file, weight) =>
-    `@font-face{font-family:"${family}";font-weight:${weight};src:url(data:font/woff2;base64,${fs
-      .readFileSync(path.join(ROOT, "static", "fonts", file))
-      .toString("base64")}) format("woff2");}`;
-  const fontCss = [
-    face("D-DIN", "D-DIN.woff2", 400),
-    face("D-DIN Condensed", "D-DINCondensed.woff2", 400),
-    face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
-  ].join("\n");
+  // NOTHING IS INLINED ANY MORE, and that has a cost worth naming.
+  //
+  // The four D-DIN faces used to be embedded as data URIs so a card rendered
+  // identically on any machine. Decision #54 dropped self-hosted fonts for SF
+  // Pro, which exists on Apple platforms and nowhere else — so THE CARD'S FACE
+  // NOW DEPENDS ON THE MACHINE THAT BUILT IT. These PNGs are committed bytes:
+  // built on macOS they are SF Pro, built on a Linux runner they are whatever
+  // fontconfig picks.
+  //
+  // Nothing checks this. It is the same class of failure build-og's own header
+  // warns about — a share card is the one asset seen away from the site and
+  // never noticed to be wrong in a browser.
+  const fontCss = "";
 
   // The tokens come from the stylesheet module rather than a second reader.
   //

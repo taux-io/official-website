@@ -1,67 +1,74 @@
 ---
 version: alpha
 name: TauX-design-system
-description: 拓思科技官網的設計語彙。純黑單一表面、純白墨色、D-DIN Condensed 全大寫領銜句配中文副標，每個區塊佔滿一屏，章節之間以只放標題的封面屏分隔。UI 極簡：一個 32px ghost pill CTA、全大寫小型標籤、疊在內容上的固定導覽。沒有攝影、沒有插畫、沒有強調色——黑、白與字就是全部。
+description: 拓思科技官網的設計語彙。單一純白表面、三階近黑墨色、一個 Action Blue 承載所有互動，SF Pro 句首大寫標題配中文副標。章節以只放標題的區塊分隔，正文連續。沒有攝影、沒有暗磚、沒有第二個強調色。
 
 colors:
-  canvas-night: "#000000"
-  on-primary: "#ffffff"
-  hairline-on-dark: "#3a3a3f"
+  canvas: "#ffffff"
+  ink: "#1d1d1f"
+  ink-muted-80: "#333333"
+  ink-muted-48: "#707070"
+  primary: "#0066cc"
+  primary-focus: "#0071e3"
+  hairline: "#e0e0e0"
 
 typography:
-  display-lead:
-    fontFamily: "D-DIN Condensed, D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
-    fontSize: 60px
-    fontWeight: 700
-    lineHeight: 1.0
-    letterSpacing: 0.02em
+  hero-display:
+    fontFamily: "SF Pro Display, system-ui, -apple-system, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
+    fontSize: 56px
+    fontWeight: 600
+    lineHeight: 1.07
+    letterSpacing: -0.005em
+  display-lg:
+    fontSize: 40px
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: 0
   display-md:
-    fontFamily: "D-DIN Condensed, D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
-    fontSize: 48px
-    fontWeight: 700
-    lineHeight: 1.0
-    letterSpacing: 0.02em
-  display-sm:
-    fontFamily: "D-DIN Condensed, D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
-    fontSize: 36px
-    fontWeight: 700
-    lineHeight: 1.0
-    letterSpacing: 0
+    fontSize: 34px
+    fontWeight: 600
+    lineHeight: 1.18
+    letterSpacing: -0.011em
   display-sub:
-    fontFamily: "D-DIN Condensed, D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
-    fontSize: 22px
-    fontWeight: 700
-    lineHeight: 1.5
-    letterSpacing: 0
-  body-lead:
-    fontFamily: "D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, system-ui, sans-serif"
-    fontSize: 16px
+    fontSize: 24px
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.4
     letterSpacing: 0
+  lead:
+    fontSize: 21px
+    fontWeight: 400
+    lineHeight: 1.48
+    letterSpacing: 0.011em
   body:
-    fontFamily: "D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, system-ui, sans-serif"
-    fontSize: 16px
+    fontFamily: "SF Pro Text, system-ui, -apple-system, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
+    fontSize: 17px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.47
+    letterSpacing: -0.022em
+  body-strong:
+    fontSize: 17px
+    fontWeight: 600
+    lineHeight: 1.47
+    letterSpacing: -0.022em
+  caption:
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.43
     letterSpacing: 0
-  button-cap:
-    fontFamily: "D-DIN Condensed, D-DIN, sans-serif"
-    fontSize: 13px
-    fontWeight: 700
-    lineHeight: 1.0
-    letterSpacing: 0.09em
   eyebrow:
-    fontFamily: "D-DIN, PingFang TC, Microsoft JhengHei, Noto Sans TC, sans-serif"
     fontSize: 12px
-    fontWeight: 400
+    fontWeight: 600
     lineHeight: 2.0
     letterSpacing: 0.09em
 
 rounded:
   none: 0px
-  control: 32px
-  full: 9999px
+  xs: 5px
+  sm: 8px
+  md: 11px
+  lg: 18px
+  pill: 9999px
+  full: 50%
 
 spacing:
   xxs: 4px
@@ -87,321 +94,225 @@ breakpoints:
 
 **規則寫了沒有東西檢查，就等於沒有規則**，所以這份文件的每一條都盡量寫成 `npm run check:design` 檢查得到的形狀。
 
-> **這份文件自己也犯過同一個毛病。** 初稿宣稱 `adk-skill-patterns.html` 有 20 個 hex 值，那是把 `&#123;` / `&#125;`（為了 minijinja 而轉義的大括號）誤讀成顏色。實際數字是 **0**，全站皆然。目視得出來的數字也要用工具數過——這正是這份文件存在的理由。
+> **這份文件自己也犯過同一個毛病。** 初稿宣稱 `adk-skill-patterns.html` 有 20 個 hex 值，那是把 `&#123;` / `&#125;`（為了 minijinja 而轉義的大括號）誤讀成顏色。實際數字是 **0**，全站皆然。目視得出來的數字也要用工具數過。
 >
-> **v3 也犯了一次。** 本次品牌重置的分票初稿把封面屏數量寫成 **106**，那是全站 `<h2>` 的總數；其中 **6 個在 partial**（導覽欄 4、header 1、footer 1）。實際的封面屏數量是 **100**，而照 106 寫出來的 `section cover screens` 規則會要求 footer 的導覽欄長出 6 個滿版屏。分票前的逐檔清點抓到了它。
+> **v3 也犯了一次。** 品牌重置的分票初稿把封面屏數量寫成 **106**，那是全站 `<h2>` 的總數；其中 **6 個在 partial**。實際是 **100**，而照 106 寫出來的規則會要求 footer 的導覽欄長出 6 個滿版屏。
+>
+> **v4 的教訓不是數字，是來源。** 這一版採用的參考站把 `ink-muted-48` 訂成 `#7a7a7a`。那個值在白底是 **4.29:1**，**低於 AA 的 4.5**——照抄會讓 `contrast` 閘門第一次執行就紅。本站取 `#707070`（白底 4.95、parchment 4.55，是唯一兩者都過的值）。**參考站的實測值不等於本站可以用的值**，而分辨兩者的方法是算，不是信。
 
 ---
 
 ## 這套語彙的來源
 
-參考站換成一份**航太品牌行銷站的設計分析**，取代先前的 `jules.google`。
+參考站換成一份 **Apple 網站的設計分析**，取代先前的航太行銷站。
 
-### 裁決規則——反轉回「參考站為準」
+### 裁決規則——維持「參考站為準」
 
-決策 #23 訂的是「衝突時本站現行規則為準，參考站只在本站尚無規則之處補位」。**這次反轉回去：衝突時參考站為準。**
-
-反轉的理由與導入 SpaceX 那次（決策 #2）同一個形狀：這不是補上某種性格，**是換一套設計語言**。使用者在被逐條告知代價後選擇全做，授權紀錄見決策 #53。
-
-**新檔沒有涵蓋的地方，才由本站推導補位。** 參考站沒有中文、沒有長文頁、沒有程式碼區塊，也沒有商店以外的第二種頁型——這四件事本站各自有一章，見「本站推導」。
+決策 #53 把裁決規則從「本站現行規則為準」反轉回「參考站為準」，本次維持。新檔沒有涵蓋的地方，才由本站推導補位。
 
 ### 這次換掉了什麼
 
-| 項目 | 換前 | 換後 |
+**這是同一天的第二次品牌重置**，而兩次的參考站互相矛盾。授權紀錄見決策 #54。
+
+| 項目 | 上一版（航太） | 這一版（Apple） |
 |---|---|---|
-| 表面 | 三階，預設刻意離黑 | 單一 `#000000` |
-| 墨色 | 單一墨色配三階 alpha | 純白，無 alpha 階 |
-| 內文型階 | 17 / 19 / 22px | 16px 兩階（1.5 與 1.7 行高） |
-| 字距刻度 | `0 / 0.09em / 0.02em / -0.017em` | `0 / 0.02em / 0.09em` |
-| 控制項圓角 | 4px | **32px**（ghost pill） |
-| 強調色 | phosphor `#FFB000`，上限五個元素 | **無** |
-| 等寬字 | Roboto Mono ＋ box-drawing 子集 ＋ Departure Mono | **無** |
-| 裝飾深度 | 25 個 τ 曲線 canvas | **無**（不放圖，純型錄排版） |
-| 陰影 | 三階 | **無** |
-| easing | 兩種 | 一種 |
-| 捲動揭示 | 有 | **無** |
-| 區塊高度 | 滿版只留 404 | **每個 band 佔滿一屏** |
-| 斷點 | Tailwind 預設 | 六階 |
+| 表面 | 單一純黑 `#000000` | 單一純白 `#ffffff` |
+| 墨色 | 純白，一階 | `#1d1d1f` / `#333333` / `#707070`，三階 |
+| 強調色 | 無 | **Action Blue `#0066cc`** |
+| 字體 | 自架 D-DIN Condensed | **SF Pro Display / Text → system-ui** |
+| 大小寫 | 領銜行全大寫 | **句首大寫** |
+| 內文 | 16px / 1.5 | **17px / 1.47（下限）** |
+| 字距 | `{0, 0.02em, 0.09em}` | 含**負字距**（−0.005 / −0.011 / −0.022em） |
+| 圓角 | 只給控制項，32px | **六階**（5 / 8 / 11 / 18 / pill / full） |
+| 章節封面屏 | 100 個，各佔一屏 | 100 個保留，**改內容高度** |
 
 ### 本站不採用的項目，以及理由
 
 | 參考站做法 | 本站決定 | 理由 |
 |---|---|---|
-| 滿版攝影／自動播放影片 | **不採用** | 沒有素材（實測 0 張照片、0 支影片），CSP `img-src 'self' data:`，且滿版影像會成為新的 LCP 元素。本次選擇「不放圖，純型錄排版」 |
-| shop 站（商品卡、加入購物車、text-input、4-up 商品格） | **不採用** | 本站沒有商店、沒有表單頁，也沒有淺色表面（`bg-white` 實測 0 處） |
-| 淺色表面 `canvas-light` / `canvas-cool` | **不採用** | 同上。純黑表面保留 |
-| 80px display 階 | **不採用** | 本站最大階維持 60px。代價：放棄新檔稱為「品牌最可辨識的字體時刻」的那一階 |
-| 圓形播放鈕覆蓋層 | **不採用** | 沒有影片 |
-| `npx @google/design.md lint` | **不採用** | 它 lint 的是 frontmatter 結構，不是本站規則。本站的檢查是 `npm run check:design` |
+| 攝影優先、產品渲染圖躺在有色表面上 | **不採用** | 照片實測 **0** 張。本次選擇「不放圖、純型錄排版」——與上一版同一個決定，代價也相同：參考站最核心的主張從第一天就是空的 |
+| 明暗磚交替 | **不採用** | 全站單一淺色。代價：失去參考站的節奏（light hero → dark tile → light → dark → parchment footer），而那是它取代分隔線的方式 |
+| 那唯一一道 drop-shadow | **不採用** | 它明文只給產品影像，而本站沒有影像。**沒有影像就沒有陰影**——引進一個沒有對象的陰影會立刻長出第二個用途 |
+| shop 與 configurator（商品卡、accessories grid、選項 chip、sub-nav） | **不採用** | 本站沒有商店、沒有設定器、沒有第二層導覽 |
+| Pearl Button（`{rounded.md}` 11px 白色膠囊） | 引進刻度，**不引進元件** | 圓角六階全數引進（見決策 #54 的代價欄），但這個元件沒有對應物 |
+| `primary-on-dark` Sky Link Blue `#2997ff` | **不採用** | 它是暗磚專用，而本站沒有暗磚。新檔明文禁止兩者互換，所以只取淺底那一個 |
 
 ---
 
 ## 遷移狀態
 
-這份文件描述的是**目標**，不是全部的現況。落地分四階段。
+這份文件描述的是**目標**，不是全部的現況。落地分三階段。
 
 | 章節 | 狀態 | 階段 |
 |---|---|---|
-| 本文件（四章本站推導、決策 #53、規則表） | ✅ | ⓪ |
-| 元件 — 404 改標準 band | ✅ | ① |
-| 視覺 — canvas 移除 | ✅ | ① |
-| 動態 — 陰影、easing、捲動揭示移除 | ✅ | ① |
-| Token — 表面與墨色收斂 | ✅ | ① |
-| Token — phosphor 移除 | ✅ | ① |
-| 字體 — 等寬與點陣字移除 | ✅ | ① |
-| 檢查 — 刪 7 加 4（4 條關閉進場） | ✅ | ① |
-| 字級與字距刻度 | ✅ | ② |
-| 元件 — ghost pill | ✅ | ② |
-| 版面 — 間距八階、區塊內距歸零 | ✅ | ② |
-| 版面 — 六階斷點 | ✅ | ② |
-| 版面 — hero band | ✅ | ② |
-| 版面 — 章節封面屏 | ✅ | ② |
+| 本文件（本站推導、決策 #54、規則表） | ✅ | ⓪ |
+| Token — 表面與三階墨色 | ✅ | ① |
+| Token — Action Blue | ✅ | ① |
+| 字體 — SF Pro，移除自架 D-DIN | ✅ | ① |
+| 字級與字距刻度 | ✅ | ① |
+| 版面 — 封面屏改內容高度 | ✅ | ② |
+| 元件 — 藍色 pill CTA 與 utility rect | ✅ | ② |
+| 圓角 — 六階 | ✅ | ② |
+| 檢查 — 三條規則反轉、cover 探針刪除 | ✅ | ② |
 | 衍生資產 — 19 張分享卡重生 | ✅ | ② |
-| 檢查 — 兩條規則開啟 | ✅ | ② |
-| 檢查 — geometry 的 cover 與 control 探針 | ✅ | ③ |
-| 檢查 — overflow 擴充六階、curve 刪除 | ✅ | ③ |
-
-每完成一個章節就把該列改成 ✅，並在同一個 commit 裡更新。**不要讓這張表落後於程式碼**；在四階段全部完成之前，也不要讓它假裝程式碼已經跟上。
 
 ---
 
 ## Token
 
-全部定義在 `src/input.css` 的 `:root`。`tailwind.config.js` 只暴露語意名稱，不放值。**模板裡不得出現任何 hex 值**（`check:design` 規則 `zero hex`）。
+全部定義在 `src/input.css` 的 `:root`。**模板裡不得出現任何 hex 值**（`zero hex` 規則）。
 
 ### 表面
 
-**單一表面**：`{colors.canvas-night}` `#000000`。沒有第二階、沒有 raised、沒有 deep。
-
-先前的三階（`#000000` / `rgb(10 10 11)` / `rgb(15 15 17)`）之中，預設那一階是刻意離黑的，理由是密集 CJK 字形在純黑上會暈。**這次收成純黑推翻了那個理由**，代價寫在決策 #53。
+**單一表面**：`{colors.canvas}` `#ffffff`。不做暗磚、不做 parchment 次階。
 
 ### 墨色
 
-**單一墨色**：`{colors.on-primary}` `#ffffff`，無 alpha 階。純白 on `#000000` 的對比是 **21.00:1**（算出來的，不是估的）。
+三階，全部算過對比：
 
-先前是單一墨色 `#F0F0FA` 配三階 alpha（內文 0.85 → 12.25–13.17:1）。三階收成一階之後，層級**只能靠字級、字重與大小寫承載**，不能靠亮度。
+| Token | 值 | on `#ffffff` | 用途 |
+|---|---|---|---|
+| `{colors.ink}` | `#1d1d1f` | **16.83:1** | 標題與內文 |
+| `{colors.ink-muted-80}` | `#333333` | **12.63:1** | 次要文字 |
+| `{colors.ink-muted-48}` | `#707070` | **4.95:1** | 圖說、meta |
 
-### 狀態靠什麼承載
+⚠️ 最後一階**不是參考站的值**。新檔訂 `#7a7a7a`，實測 4.29:1，低於 AA。`#707070` 是唯一在白底（4.95）與 parchment（4.55）兩者都過的值。
 
-**一個墨色之下，hover 與 active 不能靠亮度。** 收成單一墨色之後，站上每一條「base 是 muted、hover 變亮」的規則都變成 no-op——導覽、選單十九條連結、頁尾四欄、章節索引，全部宣告了回饋卻不產生回饋，而 `press follows hover` 規則只檢查順序，不檢查兩個狀態有沒有差別。
+### Action Blue
 
-分工寫死在這裡：
+`{colors.primary}` `#0066cc`（**5.57:1**）承載**所有**互動：連結、CTA、focus ring 的根。`{colors.primary-focus}` `#0071e3` 只給鍵盤 focus ring。
 
-| 狀態 | 承載方式 |
-|---|---|
-| 文字連結 hover | **底線**（`underline underline-offset-4`）——這是本語彙自己的連結記號 |
-| 導覽項 hover | 既有的 `::after` 底線展開 |
-| 章節索引的 current | **白色左邊**（`border-ink`）對比其他項的髮絲線。這不是第二個髮絲線權重，是把單一墨色當邊用 |
-| 行內程式碼與 code chip | `bg-ink/5` ＋ 內距。等寬字消失後，行內 `<code>` 失去唯一的區別；`pre` 裡的 `code` 排除在外，一個區塊本來就靠自己是區塊來宣告 |
-| 表格列 hover | `bg-ink/5`，單一墨色的薄層。5% 白在純黑上算出來是 `rgb(13,13,13)`，而它取代的 `--surface-raised` 是 `rgb(15,15,17)`——差 2/255，等於原封不動接回原本的回饋強度，不是憑感覺挑的數字 |
-| 按下 | `opacity: 0.55` |
-
-**捲軸的 hover 要比靜止更亮，不是更暗**——`--line` 變成實色之後，對它套 0.35 alpha 會得到比靜止更暗的結果。
+**沒有第二個強調色。** 這是本站第三次面對這個問題（phosphor 進來又出去），而這次的分別是：藍色不是裝飾，它是互動的唯一記號——拿掉它，互動元素沒有任何標記。
 
 ### 髮絲線
 
-`{colors.hairline-on-dark}` `#3a3a3f`，1px。這是唯一的分隔與邊框權重。**第二個權重是髮絲線退化成裝飾的方式**，不新增。
+`{colors.hairline}` `#e0e0e0`，1px。唯一的分隔與邊框權重。
 
 ### 圓角
 
-| Token | 值 | 用途 |
-|---|---|---|
-| `{rounded.none}` | 0px | 一切版面。版面是方的 |
-| `{rounded.control}` | **32px** | 控制項——按鈕、輸入、選單。ghost pill 是這套語彙的簽名形狀 |
-| `{rounded.full}` | 9999px | 真正的圓（頭像、圓點） |
+六階全數引進：`none` 0 · `xs` 5px · `sm` 8px · `md` 11px · `lg` 18px · `pill` 9999px · `full` 50%。
 
-`check:design` 的 `radius on controls only` 規則守著「誰可以有圓角」，不守「幾 px」；後者由 `geometry` 的 `control` 探針量。
+**其中三階在本站今天沒有使用者**（`xs`、`md`、`full`）。這是明知的代價：決策 #52 的論點是「沒人管的刻度會為了某個前三階都不合的情況長出第四階」，而這裡反過來——先有刻度、後有使用者。守著它的是 `radius scale` 規則：圓角必須是這六個值之一，不得出現第七個。
 
 ---
 
 ## 字體
 
-### D-DIN Condensed — display 與按鈕
+### SF Pro，且接受平台差異
 
-領銜句、章節標題、按鈕標籤走 **D-DIN Condensed**（自架）。新檔字面寫的是 D-DIN Bold，但它的 fallback 第一順位是 **Arial Narrow**，描述也寫「condensed industrial cut is non-negotiable」——本站已自架 `D-DINCondensed-Bold`，取它。
+display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架——它們只存在於 Apple 平台，其餘落到 `system-ui`（Windows 的 Segoe UI、Android 的 Roboto）。
 
-### D-DIN — 內文
+**這推翻決策 #11。** 那條決策自架 Roboto Mono 的理由是「三台機器三種面貌，那樣不算設計的一部分」。本次接受平台差異，理由是參考站自己就是這樣做的——它不為非 Apple 平台自架字體，而那份克制正是這套語彙的一部分。**代價：品牌字面在 Windows 上不是 SF Pro。**
 
-內文、eyebrow 與程式碼區塊走 **D-DIN**（自架）。
+四個自架的 D-DIN woff2 與 OFL 授權檔移除。
 
 ### 系統中文
 
-中文一律落到系統字（PingFang TC / Microsoft JhengHei / Noto Sans TC）。**不引入 CJK webfont**（決策 #4）。D-DIN 與 D-DIN Condensed 都不含 CJK，所以兩條堆疊都要掛著系統中文面。
+中文一律落到系統字（PingFang TC / Microsoft JhengHei / Noto Sans TC）。**不引入 CJK webfont**（決策 #4）。SF Pro 不含 CJK，所以兩條堆疊都要掛著系統中文面。
 
-### 沒有等寬字擋在三條路上
+### 字重階梯
 
-`zero mono` 守三件事，而它們是三條不同的路：模板寫的 class、Tailwind 設定裡的 family、以及 `@apply` 與**原始 `font-family` 宣告**。最後一條是後補的——這條規則原本完全不看宣告，所以兩條 `font-family: monospace` 在模板自己的 `<style>` 裡活過了整場品牌重置。**禁的是落到 generic family**，不是那個字：以 `monospace` 結尾的堆疊會把中文交給平台的通用等寬字，Windows 上是 MingLiU。
-
-
-
-新檔明文「No mono」。本站的 Roboto Mono、box-drawing 子集與 Departure Mono 三個 `@font-face` 全部移除，`font-mono` 與 `font-pixel` 兩條 family 不再存在（`check:design` 規則 `zero mono`）。程式碼區塊改吃 `sans`——見「本站推導 · 程式碼與機器輸出」。
+**300 / 400 / 600 / 700，刻意沒有 500。** 內文永遠 400，行內強調 600，display 600。
 
 ---
 
 ## 字級與字距刻度
 
-### 換算
-
-新檔的字距寫成 px，本站的刻度寫成 em。換算之後**大部分不衝突**：
-
-| 新檔 | 換算 | 本站刻度 |
-|---|---|---|
-| 1.6px / 80px | 0.02em | ✅ 已在刻度內 |
-| 1.2px / 60px | 0.02em | ✅ |
-| 0.96px / 48px | 0.02em | ✅ |
-| 0.32px / 16px | 0.02em | ✅ |
-| 1.17px / 13.008px | 0.0899em | ✅ 取 0.09em |
-| 0.96px / 12px | 0.08em | ⚠️ 取 **0.09em**，不取 0.08em |
-
-micro-cap 取 0.09em 而非新檔字面的 0.08em：差 **0.12px**，肉眼不可見，換來 202 個 eyebrow 與 `tracking scale` 規則都不用動。**這段換算必須留在文件裡**——不寫的話，下一個人看到 px 與 em 兩套數字會以為它們衝突。
-
-### 刻度
-
-| Token | 字級 | 行高 | 字距 | 用途 |
+| Token | 字級 | 字重 | 行高 | 字距 |
 |---|---|---|---|---|
-| `display-lead` | 60px | 1.0 | 0.02em | H1 的拉丁領銜行（全大寫） |
-| `display-md` | 48px | 1.0 | 0.02em | 章節封面屏的標題 |
-| `display-sm` | 36px | 1.0 | 0 | 內頁 h2 |
-| `display-sub` | 22px | 1.5 | 0 | H1 的中文副標；也是手機階的副標尺寸 |
-| `body-lead` | 16px | 1.7 | 0 | 行銷段落 |
-| `body` | 16px | 1.5 | 0 | 預設內文 |
-| `button-cap` | 13px | 1.0 | 0.09em | 全大寫按鈕標籤 |
-| `eyebrow` | 12px | 2.0 | 0.09em | 全大寫小型標籤 |
+| `hero-display` | 56px | 600 | 1.07 | −0.005em |
+| `display-lg` | 40px | 600 | 1.1 | 0 |
+| `display-md` | 34px | 600 | 1.18 | −0.011em |
+| `display-sub` | 24px | 400 | 1.4 | 0 |
+| `lead` | 21px | 400 | 1.48 | 0.011em |
+| `body` | 17px | 400 | **1.47** | −0.022em |
+| `body-strong` | 17px | 600 | 1.47 | −0.022em |
+| `caption` | 14px | 400 | 1.43 | 0 |
+| `eyebrow` | 12px | 600 | 2.0 | 0.09em |
 
-**字距刻度只有三個值**：`0`、`0.02em`、`0.09em`。負字距刪除——它是上一個參考站的簽名，留著就是兩套簽名並存。`check:design` 規則 `tracking scale` 守著這三個值。
+**內文行高不得低於 1.47。** 編輯性的行距是這套語彙的一部分。
 
-### 內文只有兩階，而 `display-sub` 不算內文
-
-新檔的內文章節只有 16px 兩階。先前的 17 / 19 / 22px 三階（決策 #45）收成 16px 兩階，但 **22px 那一階不刪，改歸 display 系列**：決策 #45 指出它是副標在手機寬度穿的尺寸，也是手機上最需要讀清楚的一行。把它留在 display 而不是內文，是讓它繼續存在又不違反「內文兩階」的唯一方式。
+**負字距回來了**，而它三小時前才被刪除（決策 #53 把負 0.017em 從刻度移除，理由是「它是上一個參考站的簽名」）。這一版的負字距是另一個參考站的簽名，值也不同。`tracking scale` 規則的放行集合換成上表的值。
 
 ---
 
 ## 版面
 
-### 每個 band 佔滿一屏
+### 章節區塊
 
-行銷區塊與章節封面屏都是**滿版一屏**（100vh）。這推翻了決策 #44——當時把全站 15 個 `86vh` 區塊拿掉，理由是「三行字的區塊與三十行字的區塊各佔一屏，捲動出來是一串等長的脈衝」。這次的解法不同：**等長的是封面屏，而封面屏本來就該等長**；有長有短的正文不切屏。
+每個 `<h2>` 包在一個 `[data-cover]` 區塊裡，只有 eyebrow 與標題，**不放 CTA**。
 
-### 章節封面屏
-
-每個頁面模板的 `<h2>` 之前插入一屏封面 band：
-
-- 滿版純黑，垂直置中。
-- 內容**只有** eyebrow 與標題。**不放 CTA。**
-- eyebrow 沿用該章節既有的；沒有 eyebrow 的章節只放標題，**不編造文案**。
-- 標題必須是真的 `<h2>`，不是視覺替身——文件大綱、`heading structure` 規則與錨點都依賴它。
-- **`sr-only` 的 h2 不給一屏。** 只給螢幕閱讀器的標題配一整屏空白畫面是荒謬的。它仍然要有 `data-cover`（規則要的是那個），但標成 `data-cover="sr"` 且不套 `.band`，`geometry` 的 `cover` 探針據此跳過。全站目前有 1 個。
-
-**新檔「每個 band 一個 ghost pill CTA」的規則適用於行銷 band，不適用於章節封面屏。** 本站有 100 個封面屏，配 100 個 CTA 的話它們全都沒有去處。這是本站推導，寫下來是因為不寫的話，下一個讀規範的人會把它們「補回去」。
-
-**掃描範圍排除 partial。** 全站 `<h2>` 共 106 個，其中 6 個在 partial（導覽欄 4、header 1、footer 1）——那些不該長出封面屏。`section cover screens` 規則只讀頁面模板。
+**高度是內容高度，不是一屏。** 上一版讓它們各佔一屏，那在黑底上讀成「壓暈」；白底、無圖、只有一行標題的滿屏只讀成「掉了東西」。`section cover screens` 規則保留（它檢查的是結構），`geometry` 的 `cover` 探針刪除（它斷言的是高度）。
 
 ### 正文連續
 
-封面屏之後的正文**正常流動，不切屏**。全站 39,456 字可見文字，切屏會同時毀掉連續閱讀與 `Ctrl+F`（決策 #16）。
+封面區塊之後的正文正常流動，不切屏。全站 39,456 字。
 
-### 閱讀欄與間距
+### 閱讀欄與行長
 
-- 文字落在置中的 1200px 閱讀欄內。
-- **一行的字元數上限是 68ch**，而 1200px 是欄寬不是行長——兩者不可互相代替。68 而不是拉丁常見的 75，理由是中文排得比拉丁密。**這條在內文從 17px 降到 16px 之後變得更重要而不是更不重要**：同樣的像素寬度裝進更多字，`/pqc-migration` 與 `/threat-landscape` 的導言因此從 70.8ch 變成 85.2ch（issue #147），而全站有 12 條路由的 `<p>` 與 3 條的 `<li>` 越線（issue #188）。
-- **「內文」的範圍是 `main` 底下的 `<p>` 與 `<li>`。** 導覽、頁尾與全螢幕選單是 chrome，行長由它們自己的版面決定。**表格儲存格明文排除**：一格的寬度是整欄跨每一列做的決定，把單一格收到 68ch 會弄壞欄而不是幫到讀者——排除前量過，全站最寬的儲存格是 46.8ch，本來就在限內。
-- **measure 寫成零特異性的 `:where(main p, main li)`**，所以既有的 `max-w-*` utility 仍然贏，這條只接住原本完全沒有 measure 的元素。**但像素 measure 本身就是問題的一部分**：`max-w-2xl` 是 42rem，在 16px 下等於 85ch——24 個 `<p>` 上的像素 measure 因此換成字元 measure。
-- 由 `geometry` 的 `measure` 探針執行，只在最寬的那一輪量（容器寬度隨視窗單調成長，最寬就是最壞情況）。
-- 區塊**垂直內距歸零**，高度由滿版撐開。水平留白由閱讀欄承擔，所以文字不貼邊。
-- 元件內距走 `{spacing}` 的八階：4 / 8 / 12 / 16 / 18 / 24 / 32 / 48。Tailwind 的 `1 / 2 / 3 / 4 / 4.5 / 6 / 8 / 12` 恰好就是這八個值，所以刻度不需要新的設定。
-- **這八階是命名刻度，不是硬限制，而且沒有東西檢查它。** 實測模板裡有 1,477 個間距 utility 落在刻度內、**389 個落在刻度外**（`p-5`、`mb-10`、`gap-10` 之類）。把那 389 個一次吸附到刻度上會在沒有任何規則背書的情況下改動全站版面，所以本次不做；這一條記在「沒有東西檢查的事」，不假裝它已經成立。
-- **導覽淨空不是節奏內距。** 57 個區塊帶著 `pt-16`，那是固定導覽的高度，不是留白——它們留著。歸零的是 44 個節奏用的 `py` / `pt` / `pb`。
+文字落在置中的 1200px 閱讀欄內。**一行的字元數上限是 68ch**，由 `geometry` 的 `measure` 探針執行。
 
 ### 斷點
 
-| 名稱 | 起始寬度 | 主要變化 |
-|---|---|---|
-| （預設） | < 600px | display 最小階；導覽收成漢堡 |
-| `mobile` | 600px | display 上一階 |
-| `tablet` | 768px | 導覽展開 |
-| `laptop` | 961px | 閱讀欄放寬 |
-| `desktop` | 1280px | 預設桌機版面 |
-| `wide` | 1500px | 閱讀欄達 1200px 上限 |
-
-`nav breakpoints paired` 規則守著導覽在每一個階都有明確的一種形態。
+六階：`< 600` / `mobile 600` / `tablet 768` / `laptop 961` / `desktop 1280` / `wide 1500`。
 
 ---
 
 ## 元件
 
-### `button-ghost` — 唯一的 CTA
+### `button-primary` — 藍色 pill CTA
 
-背景透明、1px `{colors.on-primary}` 白框、文字 `{colors.on-primary}`、字體 `{typography.button-cap}`（全大寫、13px、700、0.09em）、內距 `{spacing.lg} {spacing.xl}`、圓角 `{rounded.control}` **32px**。
+背景 `{colors.primary}`、文字白、圓角 `{rounded.pill}`、字體 `body-strong`。**主要 CTA 只有這一種。**
 
-**一個 band 一個 CTA**，永不並排兩個。**不做填色按鈕**——填色按鈕在新檔裡專屬於 shop，而 shop 不採用。
+### `button-utility` — 緊湊矩形
 
-觸控命中區不小於 44px（`geometry` 的 `control` 探針量）。
+背景透明、1px `{colors.hairline}` 邊框、文字 `{colors.ink}`、圓角 `{rounded.sm}` 8px。次要動作用。
 
-### `nav` — 疊在內容上的固定導覽
+### `nav`
 
-透明背景、白字、`{typography.button-cap}` 全大寫、內距 `{spacing.xl} {spacing.xxl}`。捲動時保持疊加，底部以 1px `{colors.hairline-on-dark}` 髮絲線收邊——**不是漸層**，新檔明文禁止漸層。
+單層，貼齊頂端，白底、1px 髮絲線收邊。**不做雙層、不做 frosted `backdrop-filter`**——模糊在上一版移除，這一版沒有理由把它加回來（新檔自己把那個模糊值列在 Known Gaps 裡，說它沒有被形式化成 token）。
 
 ### `footer`
 
-純黑背景、白字、`{typography.eyebrow}` 的導覽欄與一列法務文字。
+白底、`{colors.ink-muted-80}` 文字、髮絲線分隔。
 
 ### 404
 
-滿版 band：純黑、拉丁領銜句、中文副標、一個回首頁的 ghost pill。**不做點陣 ASCII 框**——那需要等寬字，而等寬字已經移除。
+單一區塊：句首大寫的拉丁領銜句、中文副標、一個回首頁的藍色 pill。
 
 ---
 
 ## 動態
 
-- **easing 只有一種。** `check:design` 規則 `easing scale` 守著。
-- **沒有陰影、沒有漸層、沒有模糊、沒有光暈。** 新檔明文禁止。
-- **沒有捲動揭示。** 文字的可見性不得取決於腳本執行成功（決策 #13 的前科：IntersectionObserver 版本讓首頁 19 個元素永久隱形）。`no scroll reveal` 規則守著。
-- **按下回饋保留。** 每個有 `:hover` 的元件也要有 `:active`，且 `:active` 寫在所有 `:hover` 之後（`press follows hover` 規則）。
-- **`prefers-reduced-motion` 只縮短時間、不碰可見性。** 用無障礙當名義讓元素消失，會重演決策 #13 的事故。
+- **easing 只有一種**（`easing scale` 規則）。
+- **沒有陰影、沒有漸層、沒有模糊。** 新檔的唯一一道陰影只給產品影像，而本站沒有影像。
+- **沒有捲動揭示。**
+- **按下回饋保留**：每個有 `:hover` 的元件也要有 `:active`，且寫在其後（`press follows hover`）。
+- **一個狀態的宣告必須與它覆蓋的值不同**（`states differ`）。
 
 ---
 
 ## 本站推導
 
-新檔的參考站沒有中文、沒有長文頁、沒有程式碼區塊，也沒有第二種頁型。以下四章是本站補位的地方——**它們不是與新檔衝突，是新檔沒有涵蓋**。
+參考站沒有中文、沒有長文頁、沒有程式碼區塊，也沒有第二種頁型。
 
 ### 中文標題
 
-新檔要求 display 層一律全大寫。**中文沒有大寫。**
+H1 兩行：**領銜句**（拉丁、**句首大寫**、`hero-display`）與**副標**（中文、`display-sub`）。
 
-H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em 字距——承載品牌簽名）與**副標**（中文、`display-sub`、不套 uppercase、不套 1.0 行高）。中文字身滿框，沒有 descender 空隙，1.0 行高會裁到筆劃（決策 #5）。
-
-中文 display 行的字距取 **0.02em**，與拉丁領銜行同值，不為中文另立一階。
-
-`uppercase display` 規則守著這個分工：領銜句必須帶 uppercase、副標不得帶。
+上一版的 `uppercase display` 規則強制領銜行全大寫，**這一版反轉**：Apple 從不全大寫。兩行結構保留——它解的是「中文沒有大寫」以外的問題：拉丁標題配中文副標在 GEO 上同時覆蓋兩種查詢。
 
 ### 長文頁
 
-新檔只寫了行銷 band 與 shop。本站 19 條路由裡 **14 頁是長文指南**，合計 39,456 字。
-
-解法是**章節封面屏 ＋ 正文連續**（見版面章）。這同時滿足「全面切屏」與「39,456 字要有地方放」，而且不需要推翻決策 #44 的實測結論。
-
-`privacy-policy`、`terms-of-service`、`building`、`404` 四頁沒有 `<h2>`，因此沒有封面屏。
+19 條路由裡 14 頁是長文指南。章節區塊 ＋ 正文連續，見版面章。
 
 ### 程式碼與機器輸出
 
-新檔明文「No mono，程式碼區塊不屬於這套字體系統」。本站有 **5 個 `<pre>` 與 31 個 `<code>`** 是真的要顯示程式碼的。
+沒有等寬字（`zero mono`）。`<pre>` 與 `<code>` 走內文堆疊，行內 `code` 配 `bg-ink/5` 薄層作為唯一區別。**`<pre>` 的內容不得依賴欄位對齊**，靠縮排可以。
 
-它們改吃 `sans`（D-DIN ＋ 系統中文），並保留 `overflow-x-auto` 與 `min-w-0`——後者是決策 #49 的結論：grid／flex 子項的 `min-width` 預設是 `auto`，裡面放不能換行的東西時子項不會縮，會撐破容器。
+### shop、configurator 與暗磚不採用
 
-**放棄的東西要寫明**：手工對齊的 ASCII 流程圖失去逐行等寬（決策 #41 的斷言隨之刪除），404 的點陣框不重畫。這是換語彙的代價，不是疏漏。
-
-**但「不再等寬」與「看起來壞掉」是兩回事。** 逐塊看過三個 `<pre>`：兩個靠縮排排版，比例字體下仍然對齊得好好的；壞掉的是第三個裡的 markdown 表格分隔列（`|------|--------|----------|`），它承諾了一個比例字體給不出的欄位對齊。改成 `|---|---|---|` ——仍然是合法的 markdown 原始碼，而且不再承諾對齊。**`<pre>` 的內容從此不得依賴欄位對齊**，靠縮排可以。
-
-**模板自己的 `<style>` 也算。** `claude-skills-guide` 的 `.code-window` 與 `.highlight` 用 inline CSS 宣告 `font-family: monospace`，`zero mono` 讀 class 與 `@apply`，看不到原始的 `font-family`——那條路由的中文程式碼區塊在 Windows 上仍會落到 MingLiU。兩處都改成 sans 堆疊。
-
-**資料圖表也屬於這一章，而它是 `zero canvas` 唯一的具名豁免。** `what-is-prompt-injection` 的 `#jailbreakChart` 是 Chart.js 畫的實測資料，與程式碼區塊同一類——**不是裝飾**，不是這條規則要擋的 τ 曲線。品牌重置獲得授權時的說法是「25 個 τ 曲線 canvas」，逐檔清點後實際是 **24 個裝飾 canvas 加這 1 張圖表**；照原說法拿掉它，等於在一個已經證實有誤的前提上刪掉內容。豁免具名寫在 `CANVAS_EXEMPT_IDS` 而不是用樣式比對，理由與 `OPACITY_EXEMPT_IDS` 相同：第二個豁免不可能在沒人開口的情況下被加進去。
-
-### shop 不採用
-
-`card-shop-product`、`button-filled-cool`、`text-input`、4-up 商品格與 `canvas-light` / `canvas-cool` 兩個淺色表面**整組不採用**。理由見「本站不採用的項目」。
-
-**寫下來而不是刪掉**：刪掉的話，下一個讀新檔的人會以為那是待辦。
+見「本站不採用的項目」。**寫下來而不是刪掉**，否則下一個讀新檔的人會以為那是待辦。
 
 ---
 
@@ -411,8 +322,8 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 |---|---|---|---|
 | 1 | zero hex | ✅ | #50 |
 | 2 | no scroll reveal | ✅ | #50 |
-| 3 | tracking scale | ✅ | #53 |
-| 4 | radius on controls only | ✅ | #66 |
+| 3 | tracking scale | ✅ | #53（本版換值） |
+| 4 | radius scale | ✅ | #66（本版由 radius on controls only 改寫） |
 | 5 | heading structure | ✅ | #55 |
 | 6 | anchor integrity | ✅ | #66 |
 | 7 | collapsible ships open | ✅ | #130 |
@@ -424,40 +335,25 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | 13 | zero mono | ✅ | #171 |
 | 14 | zero canvas | ✅ | #166 |
 | 15 | section cover screens | ✅ | #182 |
-| 16 | uppercase display | ✅ | #182 |
+| 16 | sentence case display | ✅ | #193（本版由 uppercase display 反轉） |
 | 17 | single stylesheet | ✅ | #189 |
 | 18 | single walker | ✅ | #190 |
 | 19 | single route table | ✅ | #191 |
 | 20 | states differ | ✅ | #192 |
 
-**20 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
+**20 條，全部啟用。** 三條在本版改變行為：`tracking scale` 換值、`radius on controls only` 改寫成 `radius scale`、`uppercase display` 反轉成 `sentence case display`。**四個架構模組與守著它們的三條規則（17–19）完全不動**——它們問的是 CSS 寫在哪、頁怎麼走訪、路由表誰讀，與設計語言無關。這是兩次品牌重置之間唯一沒有動過的東西。
 
-**尚不成立的規則以關閉狀態進場，並具名寫出負責開啟它的票號**（決策 #34）。
-
-### 其他 gate
-
-| Gate | 行為 |
-|---|---|
-| `check:css` | 模板加了 class 卻沒重建 CSS 就會紅。最早、最吵、最有用 |
-| `check:classes` | 讀建置後的 CSS。六階斷點會產生大量新的 responsive utility，這支確認 Tailwind 真的為它們產出了規則 |
-| `contrast` | 走訪的預設路徑含 `/404`，所以它**不再看不到 404**（19 → 20 條路由、2,842 → 2,903 個元素）。仍然看不到邊框顏色、偽元素與 SVG fill/stroke |
-| `contract` | 走建置後 CSS 裡每一個 `url()` 並斷言 200——字型檔必須與 `@font-face` 同一個 commit |
-| `geometry` | 執行期幾何，掛在走訪上。四項：`overflow`（八個寬度）、`cover`、`control`、`measure`。`advance` 與 `curve` 在品牌重置中刪除——等寬字與 canvas 都不存在了，一個沒有東西可量的檢查會永遠是綠的，並且讓「被看著的東西」的數字虛胖 |
+`geometry` 的探針從四支變三支：`cover` 刪除（封面屏不再滿一屏），`overflow`、`control`、`measure` 保留。
 
 ### 沒有東西檢查的事
 
-- **語域規則**。沒有檢查器，首頁領銜句的具名例外（決策 #43）靠它撐著。
-- **封面屏的 eyebrow 是否沿用既有而非編造。** 規則看得到有沒有 eyebrow，看不到那句話是不是掰的。
-- **19 張分享卡的視覺是否與站上一致。** 刻意不加檢查器：`build-og.js` 從 `input.css` 讀 token，刪掉 token 它會直接建置失敗——照決策 #47 的做法，讓失敗不可能發生，而不是再加一支沒人跑的檢查。
-- **中文字體堆疊的順序。** 決策 #35 的舊理由（斷言放不進去）已於決策 #46 過期，但斷言仍未寫。
-- **密集中文在純黑上的暈光。** 這是本次改版真正承擔的風險，而 `contrast` 看不到它——21.00:1 不是對比不足而是過量，沒有任何探針量得出「讀十分鐘會不會糊」。要靠人看。
-- ~~**模板自己的 `<style>` 區塊。**~~ **已由樣式表模組涵蓋**（#189）。`src/input.css`、模板的 `<style>` 與 `style=""` 屬性現在是同一份宣告清單，帶檔名與行號；`var()` 解析後的值與作者寫的原文都在。
-- **模板裡的資源連結。** `header.html` 曾有一條指向已刪除字體的 `<link rel="preload">`，19 條路由都在要一個 404 的檔案。`zero mono` 讀 class 與設定檔，看不到 `href`；抓到它的是 `contract`。沒有原始碼層的規則守這件事。
-- ~~**一個狀態宣告有沒有真的改變任何東西。**~~ **原始碼層已由 `states differ` 涵蓋**（#192）：CSS 狀態規則裡與基底相同的宣告、以及同一個元素上同時寫著 `X` 與 `hover:X`。**渲染層那一類仍然沒有東西檢查**——一個狀態的值等於元素本來就從祖先算出來的值（`hover:bg-surface` 掛在頁面自己的底色上就是這樣）。`:hover` 無法從頁內強制、要走 CDP，而一個在某個斷點刻意相同的狀態會誤報；一支會亂叫的 gate 正是本文件開場反對的東西。留給人看。
-- **`<canvas>` 裡畫了什麼。** `zero canvas` 擋新的 canvas，`contrast` 與 `geometry` 都看不進 canvas。圖表的格線曾因為 `--line-rgb` 從「要乘 alpha 的近白墨色」變成「實色髮絲線」而整組消失，而三支腳本沒有一支會紅。
-- **Tailwind 內建預設的殘留。** `fontFamily.mono` 是從 `theme.extend` 刪掉的，而 extend 只做加法——Tailwind 自己的 `mono` 仍在底下，`font-mono` 依然解析得出東西。擋住等寬字的是模板掃描與 `@apply` 掃描，不是設定檔那一半。
-- **間距的八階刻度。** 389 個 utility 落在刻度外，見版面章。沒有規則守著，因為「哪一個值該吸附到哪一階」需要看它在版面裡的角色，讀 class 字串判斷不了。
-- ~~**68ch 的行長上限。**~~ **已由 `geometry` 的 `measure` 探針涵蓋**（issue #188）。讀 class 字串判斷不了一個段落最後有多寬——它取決於祖先容器、字級與字體，所以這條只能量渲染結果。
+- **語域規則。** 沒有檢查器，首頁領銜句的具名例外（決策 #43）靠它撐著。
+- **封面區塊的 eyebrow 是否沿用既有而非編造。**
+- **密集中文在純白上的可讀性。** 上一版的風險是暈光，這一版反過來是眩光——`#1d1d1f` on `#ffffff` 是 16.83:1，沒有探針量得出「讀十分鐘會不會刺眼」。要靠人看。
+- **渲染層的 no-op 狀態**（狀態值等於元素本來就從祖先算出來的值）。`states differ` 只做原始碼層。
+- **平台字體差異。** SF Pro 在 Windows 上不存在，而沒有東西量得出「這台機器看到的是不是 SF Pro」。這是決策 #54 明知接受的代價。
+- **間距的八階刻度。** 389 個 utility 落在刻度外。
+- **分享卡的字面。** 19 張 PNG 是 commit 進 repo 的位元組，而字體不再自架之後，卡片的字面取決於**建置它的機器**——macOS 上是 SF Pro，Linux runner 上是 fontconfig 挑到的任何東西。沒有東西檢查這件事，而它正是 `build-og.js` 檔頭警告的那一類失敗。
 
 ---
 
@@ -465,20 +361,19 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 
 | 詞 | 定義 |
 |---|---|
-| **表面 / surface** | 單一背景色，純黑 |
-| **墨色 / ink** | 單一前景色，純白。層級靠字級、字重與大小寫，不靠亮度 |
+| **表面 / surface** | 單一背景色，純白 |
+| **墨色 / ink** | 三階近黑，全部算過對比 |
+| **Action Blue** | 唯一的強調色，承載所有互動。不是裝飾 |
 | **髮絲線 / hairline** | 唯一的分隔與邊框權重，1px |
 | **eyebrow** | 標題上方的小型全大寫標籤 |
-| **領銜句 / display-lead** | H1 的拉丁大寫首行，承載品牌簽名 |
+| **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |
-| **band** | 佔滿一屏的區塊 |
-| **封面屏 / cover screen** | 章節標題專用的 band，只有 eyebrow 與標題，沒有 CTA |
-| **樣式表 / stylesheet** | 本站出貨的**所有作者寫的 CSS**，不論來自 `src/input.css`、模板的 `<style>` 或 `style=""` 屬性。由 `scripts/stylesheet.js` 統一回答，規則不自己開檔 |
-| **作者寫的 CSS ／ 建置後的 CSS** | 兩個不同的問題，不可互換。前者是「作者寫了什麼」，由樣式表模組回答；後者是「Tailwind 有沒有真的產出」，由 `check:classes` 讀 `styles.min.css` 回答 |
-| **路由表 / route table** | `site.toml` 的唯一 JS 讀者是 `routes.js`。它匯出三種視圖：`PAGES`（未加工的 `[[page]]`，每個欄位都在）、`DOCUMENTS`（`[[document]]`，並從 `output` 導出服務路徑）、`ROUTES`（稽核視圖，只有頁、帶 `expectedStatus`）|
-| **狀態 / state** | `:hover`、`:active`、`:focus-visible`、`[aria-*]` 與它們的 Tailwind variant。**一個狀態的宣告必須與它覆蓋的那個值不同**，否則它宣告了回饋卻不產生回饋（`states differ` 規則，逐條宣告檢查而不是整條規則） |
-| **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗。探針掛在它上面，不自己開瀏覽器；載入一次、改尺寸；暫態重量的紀律由它擁有。由 `scripts/visual/walk.js` 提供 |
-| **探針 / probe** | 掛在走訪上的一筆資料，不是一支程式：`inPage`（頁內 evaluate，回傳 findings）或 `onPage`（拿到 page handle，用於截圖這類側效） |
+| **封面區塊 / cover block** | 章節標題專用的區塊，只有 eyebrow 與標題，沒有 CTA。內容高度，不是一屏 |
+| **樣式表 / stylesheet** | 本站出貨的所有作者寫的 CSS，不論來自 `input.css`、模板的 `<style>` 或 `style=""` |
+| **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗 |
+| **探針 / probe** | 掛在走訪上的一筆資料：`inPage` 或 `onPage` |
+| **路由表 / route table** | `site.toml` 的唯一 JS 讀者是 `routes.js`，匯出 PAGES / DOCUMENTS / ROUTES |
+| **狀態 / state** | `:hover`、`:active`、`:focus-visible`、`[aria-*]`。宣告必須與它覆蓋的值不同 |
 | **語域** | 形式與語氣可以分開取用 |
 
 ---
@@ -545,10 +440,13 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 
 ---
 
+| 54 | **同一天的第二次品牌重置：參考站換成 Apple 網站的設計分析** | 使用者在被逐條告知代價後選擇全做。**兩次重置的參考站互相矛盾**——上一版是純黑無強調色、全大寫、負字距剛被刪除；這一版是純白、Action Blue、句首大寫、負字距回來。被推翻的決策：**#11**（自架字體以消除平台差異 → 採 SF Pro 並接受 Windows 上不是 SF Pro）、**#53** 的多數具體值（表面、墨色、字距、大小寫、圓角、封面屏高度）。⚠️ **參考站的實測值不等於本站可以用的值**：新檔的 `ink-muted-48` `#7a7a7a` 在白底是 4.29:1，**低於 AA**，照抄會讓 `contrast` 第一次執行就紅；本站取 `#707070`（4.95 / 4.55，唯一兩者都過的值）。這一條是本版最重要的教訓，寫在開場的自白裡。**明知的代價**：三個圓角階（`xs`、`md`、`full`）在本站沒有使用者，而決策 #52 的論點是沒人管的刻度會長出第四階——這裡反過來先有刻度後有使用者，守著它的是 `radius scale`。**三小時前才寫的東西這一版就刪掉**：`geometry` 的 `cover` 探針（封面屏不再滿一屏）。**沒有被推翻的**：四個架構模組（`stylesheet`、`walk`、`routes`、`states differ`）與守著它們的三條規則——它們問的是東西寫在哪、怎麼走訪、誰讀，與設計語言無關，而這是兩次重置之間唯一沒有動過的東西 |
+
+---
+
 ## 附註：這一版尚未涵蓋
 
-- **攝影**：規範已納入（參考站的核心），但本站沒有素材，本次選擇不放圖、純型錄排版。滿版 band 就是純黑加字。素材到位後才有這一章的實作。
-- **80px display 階**：明確不加。
-- 明暗模式切換：**不引入**。純黑表面保留。
+- **攝影**：參考站的核心主張，而本站沒有素材，本次選擇不放圖。
+- **明暗磚交替**：不採用，全站單一淺色。
+- **shop 與 configurator**：不採用。
 - CJK webfont：**不引入**（決策 #4）。
-- 點陣圖示：整組隨點陣語彙移除，不再是待辦。

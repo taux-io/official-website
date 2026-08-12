@@ -40,7 +40,13 @@ const TEMPLATES = path.join(ROOT, "templates");
 // value outside this set is a one-off, which is the thing the table exists to
 // prevent: the reference site's tracking changes sign with size, so it is one
 // scale rather than a handful of independently chosen numbers.
-const TRACKING_SCALE = new Set(["0", "0em", "0.09em", "0.02em"]);
+// The Apple ladder's tracking, and it is signed: display closes up, lead opens
+// out, eyebrow stays wide. Decision #53 deleted negative tracking three hours
+// before this for being the previous reference site's signature; it is this
+// one's signature too, at its own values.
+const TRACKING_SCALE = new Set([
+  "0", "0em", "0.09em", "0.011em", "-0.005em", "-0.011em", "-0.022em",
+]);
 
 // Controls are the only thing that takes a corner radius or an outline —
 // buttons, inputs, selects, tags. Everything else is layout, and layout is
@@ -216,34 +222,34 @@ function ruleTrackingScale(files) {
   return found;
 }
 
-function ruleRadiusOnControlsOnly(files) {
+// A radius must be one of the six declared steps.
+//
+// THIS REPLACES "radius on controls only", and the replacement is a widening,
+// not a relaxation. The previous vocabulary was square except for controls; this
+// one has a six-step grammar and forbids mixing — utility rects at 8px, cards at
+// 18px, pills at 9999. Three of the six have no user on this site today, which
+// is the reverse of decision #52's argument and is named as a cost in #54.
+//
+// What still cannot happen is a seventh value. Tailwind's own rounded-* steps
+// are mapped onto the declared ones in the config, so an arbitrary
+// rounded-[7px] is the shape this catches.
+const RADIUS_ALLOWED = new Set([
+  "rounded-none", "rounded-xs", "rounded-sm", "rounded-md", "rounded-lg",
+  "rounded-control", "rounded-full",
+]);
+
+function ruleRadiusScale(files) {
   const found = [];
   for (const { rel, html } of files) {
     for (const el of elements(html)) {
-      const radii = el.classes.filter((c) => /^rounded(-|$)/.test(stripVariants(c)));
-      if (!radii.length) continue;
-
-      const isControl =
-        CONTROL_TAGS.has(el.tag) ||
-        el.classes.some((c) => CONTROL_CLASSES.includes(stripVariants(c)));
-
-      // rounded-full is the exemption for genuine circles — gauges, orbits,
-      // avatars, the dot in a list. A pill-shaped button abuses it: it is a
-      // rounded rectangle wearing the circle's exemption, and three of them
-      // passed this rule before it was tightened. A circle has equal width and
-      // height, and says so in its own classes.
-      const square = squareSized(el.classes);
-
-      for (const r of radii) {
-        if (stripVariants(r) === "rounded-full" && (square || isControl)) continue;
-        if (stripVariants(r) !== "rounded-full" && isControl) continue;
+      for (const c of el.classes) {
+        const bare = stripVariants(c);
+        if (!/^rounded(-|$)/.test(bare)) continue;
+        if (RADIUS_ALLOWED.has(bare)) continue;
         found.push({
           file: rel,
           line: lineOf(html, el.index),
-          detail:
-            stripVariants(r) === "rounded-full"
-              ? `${r} on <${el.tag}> without equal width and height — a pill, not a circle`
-              : `${r} on <${el.tag}>`,
+          detail: `${c} is not one of the six declared radius steps — the grammar is none / xs / sm / md / lg / control / full`,
         });
       }
     }
@@ -858,14 +864,14 @@ function ruleSectionCoverScreens(files) {
 // The transform belongs to the component classes rather than to utilities on the
 // elements, so this reads the stylesheet for both halves and then checks that no
 // template argues with it.
-function ruleUppercaseDisplay(files) {
+function ruleSentenceCaseDisplay(files) {
   const found = [];
   const sheet = stylesheet.read();
 
-  // Asked of both fields, because the transform can be written either way and
-  // this site writes it as a utility. @apply is not normalised into a
-  // declaration — that would need a copy of Tailwind's utility table in the
-  // stylesheet module — so the rule asks twice instead.
+  // REVERSED, NOT DELETED. The previous vocabulary set the Latin lead in all
+  // caps and this rule enforced it; this one never shouts. The rule stays so
+  // that the transform coming back is a red gate rather than a quiet drift, and
+  // it is asked of both fields because the transform can be written either way.
   const rendersUpper = (selector) => {
     const rules = sheet.rulesFor(selector);
     if (!rules.length) return null;
@@ -878,37 +884,29 @@ function ruleUppercaseDisplay(files) {
     return { yes: false, rule: rules[0] };
   };
 
-  const lead = rendersUpper("display-lead") ?? rendersUpper(".display-lead");
-  if (!lead) {
-    found.push({ file: stylesheet.INPUT_CSS, line: 0, detail: ".display-lead is not defined" });
-  } else if (!lead.yes) {
+  for (const selector of [".display-lead", ".display-sub"]) {
+    const hit = rendersUpper(selector);
+    if (!hit) {
+      found.push({ file: stylesheet.INPUT_CSS, line: 0, detail: `${selector} is not defined` });
+      continue;
+    }
+    if (!hit.yes) continue;
     found.push({
-      file: lead.rule.file,
-      line: lead.rule.line,
-      detail: ".display-lead must render upper case — it is the only line carrying the display signature",
-    });
-  }
-
-  const sub = rendersUpper(".display-sub");
-  if (!sub) {
-    found.push({ file: stylesheet.INPUT_CSS, line: 0, detail: ".display-sub is not defined" });
-  } else if (sub.yes && !sub.rule.applied.some((a) => a.utility === "normal-case")) {
-    found.push({
-      file: sub.rule.file,
-      line: sub.rule.line,
-      detail: ".display-sub must not render upper case — Chinese has none, so the transform only looks satisfied",
+      file: hit.rule.file,
+      line: hit.rule.line,
+      detail: `${selector} renders upper case — this vocabulary is sentence case and never shouts`,
     });
   }
 
   for (const { rel, html } of files) {
     for (const node of parseElements(html)) {
-      if (!node.classes.includes("display-sub")) continue;
+      if (!node.classes.some((c) => c === "display-lead" || c === "display-sub")) continue;
       const bad = node.classes.find((c) => /^(?:[a-z]+:)*uppercase$/.test(c));
       if (!bad) continue;
       found.push({
         file: rel,
         line: html.slice(0, node.index).split("\n").length,
-        detail: `.display-sub carries ${bad}; the Chinese sub line is never upper case`,
+        detail: `display line carries ${bad}; this vocabulary is sentence case`,
       });
     }
   }
@@ -1159,11 +1157,11 @@ const RULES = [
     summary: "arbitrary tracking must come from the scale in DESIGN.md",
   },
   {
-    name: "radius on controls only",
+    name: "radius scale",
     enabled: true,
     turnedOnBy: "#66",
-    run: ruleRadiusOnControlsOnly,
-    summary: "corners are for things you can touch; layout is square",
+    run: ruleRadiusScale,
+    summary: "every radius is one of the six declared steps; no seventh value",
   },
   {
     name: "heading structure",
@@ -1236,11 +1234,11 @@ const RULES = [
     summary: "every section heading opens a full-screen band, partials excluded",
   },
   {
-    name: "uppercase display",
+    name: "sentence case display",
     enabled: true,
-    turnedOnBy: "#182 — after the type scale lands",
-    run: ruleUppercaseDisplay,
-    summary: "the Latin lead is upper case and the Chinese sub never is",
+    turnedOnBy: "#193 — reversed from uppercase display",
+    run: ruleSentenceCaseDisplay,
+    summary: "no display line renders upper case; this vocabulary is sentence case",
   },
 ];
 

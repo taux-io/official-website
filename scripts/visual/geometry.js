@@ -15,24 +15,20 @@
 //      whether a given child needs `min-w-0` depends on its content rather than
 //      its classes. No source rule can decide that; this measures it.
 //
-//   2. Cover bands that are not one screen. check:design can see that an h2
-//      sits inside a [data-cover] element. It cannot see whether that element
-//      ends up a screen tall — and that is the half the reader experiences.
-//      Measured at every breakpoint, because a band that holds at 1500 and
-//      collapses at 600 is the failure worth catching.
-//
-//   3. The ghost pill's radius and the floor under every touch target. The
+//   2. Each button grammar's radius and the floor under every touch target. The
 //      radius is a token, but what a control renders after every utility, media
 //      query and inherited rule has had its turn is not something a token can
 //      promise. 32px is the signature shape of this vocabulary; 44px is the
 //      floor issue 154 established after the hamburger measured 40x31.
 //
-// TWO CHECKS WERE REMOVED HERE RATHER THAN LEFT PASSING. `advance` measured
-// symbol widths inside monospace blocks and `curve` measured parallax canvases
-// exposing an edge; the brand reset deleted both the monospace faces and the
-// canvases (DESIGN.md decision #53). A check with nothing left to measure
-// reports green forever and inflates the count of things being watched, which
-// is worse than no check: it says the ground is covered when nobody is on it.
+// THREE CHECKS HAVE BEEN REMOVED HERE RATHER THAN LEFT PASSING. `advance`
+// measured symbol widths inside monospace blocks, `curve` measured parallax
+// canvases exposing an edge, and `cover` asserted that a section band filled the
+// screen. The first two went with the faces and canvases the brand reset deleted
+// (decision #53); `cover` went three hours after it was written, when decision
+// #54 made cover blocks content-height. A check with nothing left to measure
+// reports green forever and inflates the count of things being watched, which is
+// worse than no check: it says the ground is covered when nobody is on it.
 //
 // THE WIDTHS ARE THE SIX BREAKPOINTS PLUS 320 AND 720 — see the constant for
 // why those two are not breakpoints and still have to be measured.
@@ -92,20 +88,22 @@ const TRANSIENT_SETTLE_MS = 400;
 const CHECKS = {
   overflow: { enabled: true, turnedOnBy: "issue 151" },
   measure: { enabled: true, turnedOnBy: "#188 — the reading measure" },
-  cover: { enabled: true, turnedOnBy: "#184 — the 100 bands" },
   control: { enabled: true, turnedOnBy: "#185 — the ghost pill" },
 };
 
 // The pill's declared radius and the floor for a touch target, both measured on
-// the rendered control rather than read from a token. check:design can see that
+// the rendered control rather than read from a token.
+//
+// 9999px, not the 32px it was: decision #54 moved --radius-control to the pill
+// step. A browser clamps the painted corner to half the box, but the computed
+// value is the declared one, which is what this compares. check:design can see that
 // a template wrote `rounded-control`; only the browser knows what it resolved
 // to after every utility, media query and inherited rule had its turn.
-const PILL_RADIUS_PX = 32;
+// Two button grammars, two radii. The primary CTA is the pill; the secondary
+// utility rect takes the 8px step. One expectation for both was right only
+// while there was one grammar.
+const BUTTON_RADIUS_PX = { btn: 9999, "btn-quiet": 8 };
 const TOUCH_TARGET_MIN_PX = 44;
-// Sub-pixel layout and zoom put a rendered band a hair under the viewport. Three
-// pixels is the same tolerance the overflow probe already uses.
-const COVER_TOLERANCE_PX = 3;
-
 // The reading measure, in characters. DESIGN.md sets 68 rather than the 75
 // usually quoted for Latin because Chinese sets denser.
 //
@@ -203,30 +201,6 @@ function measureOverflowInPage() {
 }
 // ---------------------------------------------------------------------------
 
-// Every cover band is exactly one screen.
-//
-// check:design can see that an h2 sits inside a [data-cover] element. It cannot
-// see whether that element ends up a screen tall, and that is the half the
-// reader experiences. Measured at every breakpoint because a band that holds at
-// 1500 and collapses at 600 is the failure worth catching.
-//
-// data-cover="sr" is skipped by name. A screen-reader-only heading gets a cover
-// element so the source rule stays satisfied, but giving it a blank full screen
-// would be absurd — the site has one of these.
-function measureCoverInPage({ tolerance }) {
-  const out = [];
-  const viewport = window.innerHeight;
-  for (const el of document.querySelectorAll("[data-cover]")) {
-    if (el.getAttribute("data-cover") === "sr") continue;
-    const height = el.getBoundingClientRect().height;
-    if (height >= viewport - tolerance) continue;
-    const heading = el.querySelector("h1, h2");
-    const label = heading ? heading.textContent.trim().replace(/\s+/g, " ").slice(0, 48) : "(no heading)";
-    out.push({ detail: `"${label}" is ${Math.round(height)}px in a ${viewport}px viewport` });
-  }
-  return out;
-}
-
 // The pill's radius and the floor under every touch target, both read off the
 // rendered control.
 //
@@ -238,13 +212,14 @@ function measureCoverInPage({ tolerance }) {
 // holds nineteen links at zero size, and they are inert while it is closed.
 function measureControlsInPage({ radius, minTarget }) {
   const out = [];
-  for (const el of document.querySelectorAll(".btn, .btn-quiet")) {
-    const rect = el.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) continue;
-    const actual = parseFloat(getComputedStyle(el).borderTopLeftRadius);
-    if (Math.abs(actual - radius) > 0.5) {
+  for (const [cls, expected] of Object.entries(radius)) {
+    for (const el of document.querySelectorAll("." + cls)) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      const actual = parseFloat(getComputedStyle(el).borderTopLeftRadius);
+      if (Math.abs(actual - expected) <= 0.5) continue;
       const label = el.textContent.trim().replace(/\s+/g, " ").slice(0, 32);
-      out.push({ detail: `"${label}" — border-radius ${actual}px, expected ${radius}px` });
+      out.push({ detail: `"${label}" (.${cls}) — border-radius ${actual}px, expected ${expected}px` });
     }
   }
   const touchable = "a.btn, .btn-quiet, button, input, select, textarea, summary";
@@ -282,11 +257,22 @@ function measureReadingInPage({ maxCh, minChars }) {
   for (const el of document.querySelectorAll("main p, main li")) {
     const text = el.textContent.trim();
     if (text.length < minChars) continue;
+    // THE BROWSER IS ASKED FOR ch DIRECTLY rather than measured with a glyph.
+    //
+    // Two earlier versions got this wrong in two different ways. The first
+    // copied `getComputedStyle(el).font` onto a span parked on <body>; the
+    // shorthand drops the family list, so the span fell back to another face.
+    // The second appended the span inside the element to inherit the font
+    // correctly — and then measured a single "0" that carried the element's
+    // `letter-spacing: -0.022em`, which the ch unit does not include. It
+    // reported 70.4ch for a paragraph CSS had capped at exactly 68ch.
+    //
+    // `width: 1ch` has no such gap: it is the unit itself, resolved by the same
+    // engine that resolves the max-width being checked.
     const probe = document.createElement("span");
     probe.style.cssText =
-      "position:absolute;visibility:hidden;white-space:nowrap;font:" + getComputedStyle(el).font;
-    probe.textContent = "0";
-    document.body.appendChild(probe);
+      "position:absolute;visibility:hidden;display:block;width:1ch;height:0";
+    el.appendChild(probe);
     const zero = probe.getBoundingClientRect().width;
     probe.remove();
     if (!zero) continue;
@@ -307,16 +293,9 @@ async function main() {
     probes: [
       { name: "overflow", inPage: measureOverflowInPage },
       {
-        name: "cover",
-        inPage: measureCoverInPage,
-        args: { tolerance: COVER_TOLERANCE_PX },
-        // A band that is short is short; nothing settles into a screen.
-        settle: false,
-      },
-      {
         name: "control",
         inPage: measureControlsInPage,
-        args: { radius: PILL_RADIUS_PX, minTarget: TOUCH_TARGET_MIN_PX },
+        args: { radius: BUTTON_RADIUS_PX, minTarget: TOUCH_TARGET_MIN_PX },
         settle: false,
       },
       {
@@ -340,7 +319,6 @@ async function main() {
 
   const combos = `${stats.paths} paths x ${stats.viewports} widths: ${WIDTHS.join(", ")}`;
   console.log(`\n${stats.paths * stats.viewports} route/width combinations checked for horizontal overflow (${combos})`);
-  console.log(`${stats.paths * stats.viewports} checked for cover bands filling the screen`);
   console.log(`${stats.paths * stats.viewports} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
   console.log(`${stats.paths} routes checked for a ${MEASURE_MAX_CH}ch reading measure (widest viewport only)`);
 
