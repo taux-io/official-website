@@ -15,16 +15,15 @@
    for hand-written CSS, including the inline <style> block in
    claude-skills-guide.html.
 
-   The surfaces keep Tailwind's <alpha-value> placeholder, so bg-surface/90
-   still compiles. The ink does not: its three steps ARE alphas, and the
-   placeholder is substituted with the modifier or with 1, which leaves no way
-   to say "0.85 unless told otherwise". text-ink/50 therefore does not
-   compose. Nothing uses it, and the hairlines have always been written this way.
+   EVERY colour keeps Tailwind's <alpha-value> placeholder, and the ink's is now
+   load-bearing. It used not to be: the ink carried three alpha steps of its own,
+   the placeholder resolves to the modifier or to 1, and there was no way to say
+   "0.85 unless told otherwise", so text-ink/50 did not compose and nothing used
+   it. With a single opaque ink it composes, and bg-ink/5 is what sixteen table
+   rows and eleven code chips are painted with. Deleting the placeholder as dead
+   would take all of them with it.
    =========================================================================== */
 :root {
-  /* Surfaces. Deep is reserved for full-bleed hero sections; the base surface
-     is a hair off black, which keeps dense CJK glyphs from haloing the way
-     they do against #000. */
   /* ONE SURFACE. Pure black, no second step and no raised step.
 
      The default surface used to be 10 10 11 rather than 0 0 0 — a hair off
@@ -160,6 +159,18 @@
   kbd,
   samp {
     @apply font-sans;
+  }
+
+  /* Inline code had exactly one thing telling it apart from the prose around
+     it — the monospace face — and pinning it to the sans stack took that away.
+     A thin wash of the single ink replaces it, the same fill the table rows and
+     the code chips now use, so there is one answer to "this is machine text"
+     rather than three.
+
+     `pre code` is excluded: a block already declares itself by being a block,
+     and a fill inside one would paint a second rectangle inside the first. */
+  code:not(pre code) {
+    @apply bg-ink/5 rounded-none px-1 py-0.5;
   }
 
   html {
@@ -413,13 +424,12 @@
     @apply scale-x-100 origin-left;
   }
 
-  /* The colour half of this rule is gone. With one ink, `text-ink` on hover
-     over a base that is already `text-ink` changes nothing — it read as
-     feedback while doing none. What answers the pointer here is the ::after
-     underline above, which is real. */
-  .nav-link[aria-expanded="true"] {
-    @apply text-ink;
-  }
+  /* The colour half of this rule is gone entirely, open state included. With
+     one ink, `text-ink` over a base that is already `text-ink` changes nothing
+     — it read as feedback while doing none, and deleting only the `:hover`
+     selector left the `[aria-expanded]` half behind doing the same nothing.
+     What marks both states is the ::after underline above, which is real: it
+     scales to full width on hover AND while the menu is open. */
 
   /* The navigation CTA is just .btn — DESIGN.md gives the site one button, and
      a second definition that only differed by a few pixels is how two buttons

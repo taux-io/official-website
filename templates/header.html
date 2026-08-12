@@ -131,7 +131,7 @@
          replaced the 1px rule under it (issue 156). A hairline says "here is a
          boundary"; a floating layer with content passing beneath it says
          "there is more up there", which is the true statement. -->
-    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform duration-300"
+    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform"
         aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- h-full rather than the text's own 33px: the bar is 64px tall
@@ -175,11 +175,11 @@
                  axes. The bars keep their own size; the button grows around
                  them and centres them. -->
             <button type="button" id="hamburger"
-                class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity duration-200 z-50"
+                class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50"
                 aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
-                <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
-                <span class="w-6 h-px bg-ink transition-all duration-300 opacity-100"></span>
-                <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
+                <span class="w-6 h-px bg-ink origin-center"></span>
+                <span class="w-6 h-px bg-ink opacity-100"></span>
+                <span class="w-6 h-px bg-ink origin-center"></span>
             </button>
         </div>
     </nav>
@@ -207,7 +207,7 @@
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-lg uppercase tracking-[0.09em] text-ink">TauX</span>
                 <button type="button" id="menuClose"
-                    class="eyebrow text-ink hover:text-ink transition-colors duration-200 min-h-11 min-w-11 inline-flex items-center justify-end"
+                    class="eyebrow text-ink min-h-11 min-w-11 inline-flex items-center justify-end"
                     aria-label="Close menu">
                     Close
                 </button>

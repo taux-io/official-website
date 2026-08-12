@@ -50,19 +50,25 @@ const { ROUTES, BASE_URL } = require("../routes");
 // what is left is a route with a hero band, a pill and no gate but this one.
 const PATHS = [...ROUTES.map((r) => r.path), "/404"];
 
-// THE SIX BREAKPOINTS PLUS THE TWO WIDTHS THAT ARE NOT BREAKPOINTS.
+// THE FIVE NAMED STEPS PLUS THREE WIDTHS THAT ARE NOT STEPS.
 //
-// 600 / 768 / 961 / 1280 / 1500 are the first pixel of each named step, which
-// is where a responsive rule changes hands and therefore where layout breaks.
+// 600 / 768 / 961 / 1280 / 1500 are the first pixel of each named step in
+// tailwind.config.js — where a responsive rule changes hands, and therefore
+// where layout breaks. There are five of them; the design vocabulary calls
+// itself six-tier because the sub-600 default counts as a tier, and it has no
+// first pixel to sample. 375 stands in for it.
 //
-// 320 and 720 are here for a different reason and were briefly dropped when
-// this list was rewritten around the new steps. 320 is the narrowest phone
-// still worth serving — narrower than any breakpoint, so no step covers it.
-// 720 is the accessibility case: a 1440px window at 200% browser zoom, which
-// lands between `tablet` and `laptop` and is the width most likely to overflow.
-// Losing them would have narrowed the audit while the file's own comment still
-// claimed them, which is the exact shape of drift DESIGN.md opens against.
-const DEFAULT_WIDTHS = [320, 600, 720, 768, 961, 1280, 1500];
+// 320, 375 and 720 are not steps and each is here for its own reason. 320 is
+// the narrowest phone still worth serving. 375 is the common phone and the
+// sub-600 tier's representative. 720 is the accessibility case: a 1440px window
+// at 200% browser zoom, which lands between `tablet` and `laptop`.
+//
+// TWO OF THESE HAVE ALREADY BEEN LOST ONCE. Rewriting this list around the new
+// steps silently dropped 320 and 720 while the comment above it still explained
+// why they were measured; restoring them dropped 375 the same way. A list whose
+// own documentation disagrees with it is the drift DESIGN.md opens against, and
+// it has now happened twice in one branch.
+const DEFAULT_WIDTHS = [320, 375, 600, 720, 768, 961, 1280, 1500];
 const WIDTHS = process.env.GEOMETRY_WIDTHS
   ? process.env.GEOMETRY_WIDTHS.split(",").map((w) => Number(w.trim()))
   : DEFAULT_WIDTHS;

@@ -35,7 +35,7 @@
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
                 <h3 class="text-lg font-bold text-ink mb-2">為什麼需要設計模式？</h3>
                 <p class="text-ink leading-relaxed">
-                    很多人以為寫好 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
+                    很多人以為寫好 <code class="bg-ink/5 text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
                     真正的挑戰在於<strong class="text-ink">內容設計</strong>：如何讓 Agent 不跳步、不瞎猜、不產出一堆格式不一的東西？
                     這五個模式就是答案。
                 </p>
@@ -139,8 +139,8 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        在 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
-                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
+                        在 <code class="bg-ink/5 text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
+                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-ink/5 text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
                     </p>
                     <!-- Code Example -->
                     <div class="bg-surface p-5 text-sm overflow-x-auto">
@@ -194,7 +194,7 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        預先建立模板（放在 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
+                        預先建立模板（放在 <code class="bg-ink/5 text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
                     </p>
                     <div class="bg-surface p-5 text-sm overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
@@ -213,7 +213,7 @@
 
 <span class="text-ink font-semibold">## Risk Assessment</span>
 | 風險 | 嚴重度 | 建議行動 |
-|------|--------|----------|
+|---|---|---|
 <span class="text-ink">&#123;&#123;risks: 填入表格&#125;&#125;</span>
 
 <span class="text-ink font-semibold">## Next Steps</span>
@@ -255,7 +255,7 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        建立一個獨立的 Reviewer Skill，從 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
+                        建立一個獨立的 Reviewer Skill，從 <code class="bg-ink/5 text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
                         讓 Agent 依據清單逐項驗證，並按嚴重度分組回報。
                     </p>
                     <div class="grid grid-cols-1 tablet:grid-cols-3 gap-3">
@@ -442,7 +442,7 @@
                     </span>
                     <div>
                         <h4 class="font-bold text-ink mb-1">格式與內容分離</h4>
-                        <p class="text-ink text-sm"><code class="bg-surface text-ink font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
+                        <p class="text-ink text-sm"><code class="bg-ink/5 text-ink font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
                     </div>
                 </div>
                 <div class="flex items-start p-4">
@@ -463,15 +463,15 @@
             <h3 class="text-ink font-bold mb-6 font-display text-xl">延伸閱讀</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/agent-prompting-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:underline hover:underline-offset-4 transition-all">
                     指令秘籍 (Prompt Guide) <span class="ml-2">→</span>
                 </a>
                 <a href="/claude-skills-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:underline hover:underline-offset-4 transition-all">
                     Claude Skills 實戰指南 <span class="ml-2">→</span>
                 </a>
                 <a href="/geo-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:underline hover:underline-offset-4 transition-all">
                     GEO 入門指南 <span class="ml-2">→</span>
                 </a>
             </div>

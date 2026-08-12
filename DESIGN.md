@@ -192,6 +192,7 @@ breakpoints:
 | 文字連結 hover | **底線**（`underline underline-offset-4`）——這是本語彙自己的連結記號 |
 | 導覽項 hover | 既有的 `::after` 底線展開 |
 | 章節索引的 current | **白色左邊**（`border-ink`）對比其他項的髮絲線。這不是第二個髮絲線權重，是把單一墨色當邊用 |
+| 行內程式碼與 code chip | `bg-ink/5` ＋ 內距。等寬字消失後，行內 `<code>` 失去唯一的區別；`pre` 裡的 `code` 排除在外，一個區塊本來就靠自己是區塊來宣告 |
 | 表格列 hover | `bg-ink/5`，單一墨色的薄層。5% 白在純黑上算出來是 `rgb(13,13,13)`，而它取代的 `--surface-raised` 是 `rgb(15,15,17)`——差 2/255，等於原封不動接回原本的回饋強度，不是憑感覺挑的數字 |
 | 按下 | `opacity: 0.55` |
 
@@ -381,6 +382,10 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 它們改吃 `sans`（D-DIN ＋ 系統中文），並保留 `overflow-x-auto` 與 `min-w-0`——後者是決策 #49 的結論：grid／flex 子項的 `min-width` 預設是 `auto`，裡面放不能換行的東西時子項不會縮，會撐破容器。
 
 **放棄的東西要寫明**：手工對齊的 ASCII 流程圖失去逐行等寬（決策 #41 的斷言隨之刪除），404 的點陣框不重畫。這是換語彙的代價，不是疏漏。
+
+**但「不再等寬」與「看起來壞掉」是兩回事。** 逐塊看過三個 `<pre>`：兩個靠縮排排版，比例字體下仍然對齊得好好的；壞掉的是第三個裡的 markdown 表格分隔列（`|------|--------|----------|`），它承諾了一個比例字體給不出的欄位對齊。改成 `|---|---|---|` ——仍然是合法的 markdown 原始碼，而且不再承諾對齊。**`<pre>` 的內容從此不得依賴欄位對齊**，靠縮排可以。
+
+**模板自己的 `<style>` 也算。** `claude-skills-guide` 的 `.code-window` 與 `.highlight` 用 inline CSS 宣告 `font-family: monospace`，`zero mono` 讀 class 與 `@apply`，看不到原始的 `font-family`——那條路由的中文程式碼區塊在 Windows 上仍會落到 MingLiU。兩處都改成 sans 堆疊。
 
 **資料圖表也屬於這一章，而它是 `zero canvas` 唯一的具名豁免。** `what-is-prompt-injection` 的 `#jailbreakChart` 是 Chart.js 畫的實測資料，與程式碼區塊同一類——**不是裝飾**，不是這條規則要擋的 τ 曲線。品牌重置獲得授權時的說法是「25 個 τ 曲線 canvas」，逐檔清點後實際是 **24 個裝飾 canvas 加這 1 張圖表**；照原說法拿掉它，等於在一個已經證實有誤的前提上刪掉內容。豁免具名寫在 `CANVAS_EXEMPT_IDS` 而不是用樣式比對，理由與 `OPACITY_EXEMPT_IDS` 相同：第二個豁免不可能在沒人開口的情況下被加進去。
 

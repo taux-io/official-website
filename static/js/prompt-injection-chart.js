@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // hand-picked rgba values. They are all tokens now.
         const token = (name, fallback) =>
             getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-        const INK_RGB = token('--ink-rgb', '240 240 250');
+        const INK_RGB = token('--ink-rgb', '255 255 255');
         // Muted is no longer its own colour — it is the same ink at 0.9, which
         // is why this reads the one token and applies the step itself.
         const MUTED_RGB = INK_RGB;
@@ -89,10 +89,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     tooltip: {
                         mode: 'index',
                         intersect: false,
-                        backgroundColor: `rgb(${SURFACE_RGB} / 0.95)`,
+                        // The tooltip floats OVER the plot area, so it cannot be the plot
+                        // area's own colour. --surface-raised used to give it a step;
+                        // with one surface there is no step to take, so the separation
+                        // comes from a thin ink wash plus an ink border — the same two
+                        // devices every other floating thing on the site now uses.
+                        backgroundColor: `rgb(${INK_RGB} / 0.12)`,
                         titleColor: INK,
                         bodyColor: ink(0.7),
-                        borderColor: line(),
+                        borderColor: `rgb(${INK_RGB})`,
                         borderWidth: 1,
                         padding: 12,
                         boxPadding: 6,

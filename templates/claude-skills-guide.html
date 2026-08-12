@@ -61,8 +61,16 @@
        not one. Written here rather than by raising .band, because the deck's
        own floor is correct for every other slide. */
     .skills-guide-body .slide-container.band {
-        min-height: 100vh;
-        min-height: 100svh;
+        /* One screen means one screen ON THIS PAGE, not one viewport measured
+           from nowhere. The deck sits inside .skills-guide-body, which pads 30px
+           at the top, and the site nav is `fixed` so it takes no flow space
+           while covering the first 64px. A plain 100vh here put the slide's
+           bottom border about 94px past the fold — a hero with a scrollbar,
+           which is the defect this override was added to close.
+
+           94 = 30 (container padding) + 64 (nav). Both are subtracted. */
+        min-height: calc(100vh - 94px);
+        min-height: calc(100svh - 94px);
     }
 
     .skills-guide-body .slide-container.dark-theme {
@@ -595,7 +603,12 @@
         color:var(--ink);
         padding: 2px 8px;
         border-radius: var(--radius);
-        font-family: monospace;
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
         font-weight: 600;
         word-break: break-all;
     }
@@ -604,7 +617,12 @@
         background-color:var(--surface);
         border-radius: var(--radius);
         padding: 25px;
-        font-family: monospace;
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
         font-size: 16px;
         line-height: 1.6;
         color:var(--ink);
