@@ -10,7 +10,7 @@
 const fs = require("fs");
 const path = require("path");
 const { walk } = require("./walk");
-const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
+const { ROUTES, VIEWPORTS } = require("../routes");
 
 const label = process.argv[2];
 if (!label) {

@@ -11,26 +11,32 @@
 // compares each text element's computed colour against its *effective*
 // background, compositing alpha up the ancestor chain.
 //
-// THE PALETTE IS NOW PURE WHITE ON PURE BLACK — 21.00:1, computed rather than
-// estimated. Everything on the site clears AA by more than four times, so this
-// audit will pass on colour alone for as long as those two values hold, and a
-// green run here says less than it did when the ink ran three alpha steps at
-// 12.25–13.17:1. What it still catches is the failure it was built for: a
-// surface flipped without its text, or a text colour left behind by a token
-// rename.
+// THE PALETTE IS NEAR-BLACK INK ON A WHITE SURFACE — #1d1d1f on #ffffff,
+// 16.83:1, computed rather than estimated. Two more steps sit under it at
+// 12.63:1 and 4.95:1, and the last of those is NOT the reference site's value:
+// that one measured 4.29:1, under the AA floor, so copying it would have turned
+// this audit red on its first run (DESIGN.md decision #54).
 //
-// The risk this audit CANNOT see is the one the brand reset actually took on.
-// 21:1 is not too little contrast, it is too much: dense Chinese at 16px on
-// pure black haloes over a long read, which is why the surface used to be
-// 10 10 11 and the body ink 0.85. DESIGN.md decision #53 records that, and
-// records that the value to move if it shows up is the ink — not the type
-// scale. No probe measures halation; a person has to look.
+// This header said "pure white on pure black, 21.00:1" until a review caught it.
+// That was true for about three hours, between two brand resets, and the second
+// reset never reached this file. A comment that states a measurement is making a
+// claim, and a stale claim in the audit that exists to catch stale colours is
+// the joke writing itself.
+//
+// A green run here says less than it looks like. Everything clears AA by more
+// than three times, so this passes on colour alone for as long as those values
+// hold. What it still catches is the failure it was built for: a surface flipped
+// without its text, or a colour left behind by a token rename.
+//
+// The risk this audit CANNOT see has inverted with the palette. On black the
+// danger was halation; on white it is glare — 16.83:1 with 17px Chinese over a
+// long read. No probe measures that. A person has to look.
 //
 // WHAT IT STILL CANNOT SEE: /404 (not a [[page]]), border colours, pseudo
 // elements, and SVG fill/stroke.
 
 const { walk } = require("./walk");
-const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
+const { VIEWPORTS } = require("../routes");
 
 const SHOW_ALL = process.argv.includes("--all");
 

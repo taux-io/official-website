@@ -82,7 +82,6 @@ module.exports = {
         xl: "var(--radius-lg)",
         "2xl": "var(--radius-lg)",
         "3xl": "var(--radius-lg)",
-        control: "var(--radius-control)",
         full: "9999px",
       },
       // One scale, and the tracking changes sign along it: positive on small

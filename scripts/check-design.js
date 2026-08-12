@@ -23,9 +23,11 @@
 // green commit to commit without an allowlist. A rule that is off says so, and
 // says which ticket turns it on.
 //
-// The first six hold today and have since #66. Three more land disabled with
-// the DESIGN-NEXT migration (#125) and are turned on by the stage that makes
-// each satisfiable.
+// Twenty-one rules hold today, and none of them is disabled. Decision #34's
+// convention — a rule that is not yet satisfiable lands disabled and names the
+// ticket that will turn it on — still stands and is still used; it simply has
+// no current subject, because every rule added since was satisfiable in the
+// change that added it.
 
 const fs = require("fs");
 const path = require("path");
@@ -48,11 +50,6 @@ const TRACKING_SCALE = new Set([
   "0", "0em", "0.09em", "0.011em", "-0.005em", "-0.011em", "-0.022em",
 ]);
 
-// Controls are the only thing that takes a corner radius or an outline —
-// buttons, inputs, selects, tags. Everything else is layout, and layout is
-// square. `rounded-full` is exempt everywhere because a true circle (gauge,
-// orbit, avatar) belongs to this vocabulary in a way a rounded rectangle does
-// not.
 // Properties whose value carries a timing function.
 const TIMED_PROPS = new Set([
   "transition", "transition-timing-function", "animation", "animation-timing-function",
@@ -233,9 +230,18 @@ function ruleTrackingScale(files) {
 // What still cannot happen is a seventh value. Tailwind's own rounded-* steps
 // are mapped onto the declared ones in the config, so an arbitrary
 // rounded-[7px] is the shape this catches.
+// SIX STEPS, AND THE WORD "SIX" HAS TO SURVIVE CONTACT WITH THE LIST.
+//
+// An earlier version of this set held seven names while the message said six and
+// DESIGN.md's prose said six over a list of seven — the same defect class that
+// document confesses to three times (20 hex values, 106 cover screens, 4.29:1).
+// `rounded-control` was the seventh: it resolves to the same 9999px as
+// `rounded-full` and had zero users in the templates, because the pill radius
+// reaches .btn through CSS rather than through a class. The token stays;
+// the duplicate class name does not.
 const RADIUS_ALLOWED = new Set([
   "rounded-none", "rounded-xs", "rounded-sm", "rounded-md", "rounded-lg",
-  "rounded-control", "rounded-full",
+  "rounded-full",
 ]);
 
 function ruleRadiusScale(files) {
@@ -249,7 +255,7 @@ function ruleRadiusScale(files) {
         found.push({
           file: rel,
           line: lineOf(html, el.index),
-          detail: `${c} is not one of the six declared radius steps — the grammar is none / xs / sm / md / lg / control / full`,
+          detail: `${c} is not one of the six declared radius steps — the grammar is none / xs / sm / md / lg / full`,
         });
       }
     }
@@ -846,6 +852,10 @@ function ruleSectionCoverScreens(files) {
     if (base.startsWith("_") || base === "header.html" || base === "footer.html") continue;
     for (const node of parseElements(html)) {
       if (node.tag !== "h2") continue;
+      // data-cover="sr" is the one variant: a screen-reader-only heading gets a
+      // cover element so this rule stays satisfied, without the visible block.
+      // Named here and in the glossary rather than left as an undocumented
+      // attribute value that any future writer could invent a second one beside.
       if (hasAttr(node, /\bdata-cover\b/)) continue;
       found.push({
         file: rel,
@@ -1290,7 +1300,7 @@ const RULES = [
     enabled: true,
     turnedOnBy: "#182 — after the 100 bands land",
     run: ruleSectionCoverScreens,
-    summary: "every section heading opens a full-screen band, partials excluded",
+    summary: "every section heading opens a cover block, partials excluded",
   },
   {
     name: "sentence case display",
