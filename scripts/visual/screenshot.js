@@ -9,7 +9,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { launch } = require("../browser");
+const { walk } = require("./walk");
 const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
 
 const label = process.argv[2];
@@ -22,49 +22,35 @@ const outDir = path.join(__dirname, "..", "..", ".visual", label);
 
 async function main() {
   fs.mkdirSync(outDir, { recursive: true });
-  const browser = await launch();
-  let count = 0;
 
-  for (const viewport of VIEWPORTS) {
-    const context = await browser.newContext({
-      viewport: { width: viewport.width, height: viewport.height },
-      deviceScaleFactor: 1,
-      // Freeze the tau curve and every entrance animation so repeat runs are
-      // byte-comparable; motion is verified by eye, not by diff.
-      reducedMotion: "reduce",
-    });
-    const page = await context.newPage();
+  // The walk yields a path; the filename wants the route's name.
+  const nameOf = new Map(ROUTES.map((r) => [r.path, r.name]));
+  const fileName = (routePath, viewport) => {
+    const slug = nameOf.get(routePath) || routePath.replace(/^\//, "") || "index";
+    return slug + "-" + viewport.name + ".png";
+  };
 
-    for (const route of ROUTES) {
-      const url = BASE_URL + route.path;
-      const response = await page.goto(url, { waitUntil: "networkidle" });
-      const status = response ? response.status() : 0;
-      if (status >= 400 && route.name !== "404") {
-        console.warn(`  ! ${route.path} returned ${status}`);
-      }
-      // Several templates reveal content on scroll via IntersectionObserver.
-      // A full-page screenshot does not trip the observer, so anything below
-      // the fold would be captured at opacity 0 and read as missing text.
-      await page.evaluate(async () => {
-        for (let y = 0; y < document.body.scrollHeight; y += 400) {
-          window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 50));
-        }
-        window.scrollTo(0, 0);
-      });
-      await page.waitForTimeout(600);
-      await page.screenshot({
-        path: path.join(outDir, `${route.name}-${viewport.name}.png`),
-        fullPage: true,
-      });
-      count++;
-    }
+  const { stats } = await walk({
+    viewports: VIEWPORTS,
+    // Every deferred paint has to have happened before a full-page capture.
+    scroll: true,
+    probes: [
+      {
+        // An onPage probe rather than an inPage one: this writes files and
+        // produces no findings, and taking a screenshot needs the page handle.
+        name: "capture",
+        onPage: async (page, { path: routePath, viewport }) => {
+          await page.screenshot({
+            path: path.join(outDir, fileName(routePath, viewport)),
+            fullPage: true,
+          });
+          return [];
+        },
+      },
+    ],
+  });
 
-    await context.close();
-  }
-
-  await browser.close();
-  console.log(`${count} screenshots written to .visual/${label}/`);
+  console.log(`${stats.measurements} screenshots written to .visual/${label}/`);
 }
 
 main().catch((err) => {

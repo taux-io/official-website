@@ -29,7 +29,7 @@
 // WHAT IT STILL CANNOT SEE: /404 (not a [[page]]), border colours, pseudo
 // elements, and SVG fill/stroke.
 
-const { launch } = require("../browser");
+const { walk } = require("./walk");
 const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");
 
 const SHOW_ALL = process.argv.includes("--all");
@@ -172,37 +172,36 @@ const AUDIT = () => {
 };
 
 async function main() {
-  const browser = await launch();
-  const context = await browser.newContext({
-    viewport: { width: VIEWPORT.width, height: VIEWPORT.height },
-    reducedMotion: "reduce",
+  // One viewport. Contrast is a colour property, not a layout one, and the same
+  // elements render at every breakpoint.
+  const { findings, stats } = await walk({
+    viewports: [{ name: VIEWPORT.name, width: VIEWPORT.width, height: VIEWPORT.height }],
+    // Everything below the fold has to have painted before the audit reads it.
+    scroll: true,
+    probes: [
+      {
+        name: "contrast",
+        inPage: AUDIT,
+        // A contrast ratio is not transient; nothing settles into a different
+        // colour, so the re-measure would be paid for nothing.
+        settle: false,
+      },
+    ],
   });
-  const page = await context.newPage();
 
   let totalFail = 0;
-  let totalChecked = 0;
   let invisible = 0;
+  const byRoute = new Map();
+  for (const f of findings) {
+    if (!byRoute.has(f.path)) byRoute.set(f.path, []);
+    byRoute.get(f.path).push(f);
+  }
 
-  for (const route of ROUTES) {
-    await page.goto(BASE_URL + route.path, { waitUntil: "networkidle" });
-    // Content revealed on scroll starts at opacity 0, and the audit skips
-    // transparent elements — without scrolling first, everything below the
-    // fold would silently go unchecked.
-    await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 400) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 50));
-      }
-      window.scrollTo(0, 0);
-    });
-    await page.waitForTimeout(600);
-    const findings = await page.evaluate(AUDIT);
-    totalChecked += findings.length;
-
-    const shown = SHOW_ALL ? findings : findings.filter((f) => !f.pass);
+  for (const [routePath, rows] of byRoute) {
+    const shown = SHOW_ALL ? rows : rows.filter((f) => !f.pass);
     if (!shown.length) continue;
 
-    console.log(`\n${route.path}  (${findings.length} text elements)`);
+    console.log(`\n${routePath}  (${rows.length} text elements)`);
     for (const f of shown) {
       // Below 1.5:1 the text is effectively invisible, not merely low-contrast.
       const severity = f.ratio < 1.5 ? "INVISIBLE" : f.pass ? "ok" : "LOW";
@@ -216,14 +215,12 @@ async function main() {
     }
   }
 
-  await browser.close();
-
   console.log(
-    `\n${totalChecked} text elements checked across ${ROUTES.length} routes` +
+    `\n${findings.length} text elements checked across ${stats.paths} routes` +
       `\n${totalFail} below WCAG AA` +
       `\n${invisible} effectively invisible (< 1.5:1)`
   );
-  process.exitCode = totalFail > 0 ? 1 : 0;
+  if (totalFail) process.exitCode = 1;
 }
 
 main().catch((err) => {
