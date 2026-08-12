@@ -112,7 +112,7 @@
     <link rel="stylesheet" href="/static/css/styles.min.css?v={{ css_version }}">
 </head>
 
-<body class="bg-surface text-ink-body font-sans antialiased">
+<body class="bg-surface text-ink font-sans antialiased">
 
     <!-- Navigation.
 
@@ -126,7 +126,7 @@
          replaced the 1px rule under it (issue 156). A hairline says "here is a
          boundary"; a floating layer with content passing beneath it says
          "there is more up there", which is the true statement. -->
-    <nav class="site-nav fixed w-full z-50 bg-surface-deep/90 backdrop-blur-md transition-transform duration-300"
+    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform duration-300"
         aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- h-full rather than the text's own 33px: the bar is 64px tall
@@ -196,7 +196,7 @@
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-xl uppercase tracking-[0.09em] text-ink">TauX</span>
                 <button type="button" id="menuClose"
-                    class="eyebrow text-ink-muted hover:text-ink transition-colors duration-200"
+                    class="eyebrow text-ink hover:text-ink transition-colors duration-200"
                     aria-label="Close menu">
                     Close
                 </button>

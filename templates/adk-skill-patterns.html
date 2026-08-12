@@ -28,14 +28,14 @@
             <span class="display-lead">Five Skill Patterns</span>
             <span class="display-sub">每個 ADK 開發者都該知道的事</span>
         </h1>
-            <p class="text-xl text-ink-body mb-8 font-medium max-w-2xl mx-auto">
+            <p class="text-xl text-ink mb-8 font-medium max-w-2xl mx-auto">
                 整理自 Google Cloud 分享的《5 Agent Skill Design Patterns Every ADK Developer Should Know》
             </p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
                 <h3 class="text-lg font-bold text-ink mb-2">為什麼需要設計模式？</h3>
-                <p class="text-ink-body leading-relaxed">
-                    很多人以為寫好 <code class="bg-surface-raised text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
+                <p class="text-ink leading-relaxed">
+                    很多人以為寫好 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
                     真正的挑戰在於<strong class="text-ink">內容設計</strong>：如何讓 Agent 不跳步、不瞎猜、不產出一堆格式不一的東西？
                     這五個模式就是答案。
                 </p>
@@ -73,38 +73,38 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 px-4 font-bold text-ink-muted text-sm">#</th>
+                            <th class="py-3 px-4 font-bold text-ink text-sm">#</th>
                             <th class="py-3 px-4 font-bold text-ink text-sm">模式</th>
                             <th class="py-3 px-4 font-bold text-ink text-sm">一句話解釋</th>
                             <th class="py-3 px-4 font-bold text-ink text-sm hidden md:table-cell">適用場景</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm text-ink-body">
-                        <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                    <tbody class="text-sm text-ink">
+                        <tr class="border-b border-line hover:bg-surface transition-colors">
                             <td class="py-4 px-4 font-mono text-ink font-semibold">01</td>
                             <td class="py-4 px-4 font-bold text-ink">Tool Wrapper</td>
                             <td class="py-4 px-4">用到時才載入專家知識</td>
                             <td class="py-4 px-4 hidden md:table-cell">整合特定框架 / 函式庫</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                        <tr class="border-b border-line hover:bg-surface transition-colors">
                             <td class="py-4 px-4 font-mono text-ink font-semibold">02</td>
                             <td class="py-4 px-4 font-bold text-ink">Generator</td>
                             <td class="py-4 px-4">用模板保證輸出一致</td>
                             <td class="py-4 px-4 hidden md:table-cell">報告 / 文件 / API 文件生成</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                        <tr class="border-b border-line hover:bg-surface transition-colors">
                             <td class="py-4 px-4 font-mono text-ink font-semibold">03</td>
                             <td class="py-4 px-4 font-bold text-ink">Reviewer</td>
                             <td class="py-4 px-4">用檢查清單做品質把關</td>
                             <td class="py-4 px-4 hidden md:table-cell">Code Review / 安全稽核</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                        <tr class="border-b border-line hover:bg-surface transition-colors">
                             <td class="py-4 px-4 font-mono text-ink font-semibold">04</td>
                             <td class="py-4 px-4 font-bold text-ink">Inversion</td>
                             <td class="py-4 px-4">先問夠再動手</td>
                             <td class="py-4 px-4 hidden md:table-cell">需求模糊的任務</td>
                         </tr>
-                        <tr class="hover:bg-surface-raised transition-colors">
+                        <tr class="hover:bg-surface transition-colors">
                             <td class="py-4 px-4 font-mono text-ink font-semibold">05</td>
                             <td class="py-4 px-4 font-bold text-ink">Pipeline</td>
                             <td class="py-4 px-4">嚴格的多步驟流水線</td>
@@ -128,7 +128,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">問題</h3>
-                    <p class="text-ink-body">
+                    <p class="text-ink">
                         如果你把所有框架文件（FastAPI 慣例、React 規範、SQL 風格指南…）全塞進 System Prompt，Token 會爆炸、AI 也會分心。
                     </p>
                 </div>
@@ -136,25 +136,25 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
-                    <p class="text-ink-body mb-4">
-                        在 <code class="bg-surface-raised text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
-                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-surface-raised text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
+                    <p class="text-ink mb-4">
+                        在 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
+                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
                     </p>
                     <!-- Code Example -->
-                    <div class="bg-surface-deep p-5 text-sm overflow-x-auto">
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="ml-2 text-ink-muted text-xs">SKILL.md → Tool Wrapper pattern</span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-ink text-xs">SKILL.md → Tool Wrapper pattern</span>
                         </div>
-                        <pre class="leading-relaxed"><code class="text-ink-body"><span class="text-ink-muted"># 觸發條件</span>
+                        <pre class="leading-relaxed"><code class="text-ink"><span class="text-ink"># 觸發條件</span>
 <span class="text-ink font-semibold">when</span>: 使用者提到"FastAPI" 或"API endpoint"
 <span class="text-ink font-semibold">load</span>: references/fastapi-conventions.md
 
-<span class="text-ink-muted"># Agent 行為</span>
+<span class="text-ink"># Agent 行為</span>
 <span class="text-ink font-semibold">then</span>: 依照載入的規範進行開發
-       <span class="text-ink-muted">只在需要時消耗 Token</span></code></pre>
+       <span class="text-ink">只在需要時消耗 Token</span></code></pre>
                     </div>
                 </div>
 
@@ -163,7 +163,7 @@
                         <svg class="w-5 h-5 text-ink font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         核心價值
                     </p>
-                    <p class="text-ink-body text-sm">保持 Context Window 乾淨。只在相關時才注入專業知識，避免 AI 被不相關的資訊干擾。</p>
+                    <p class="text-ink text-sm">保持 Context Window 乾淨。只在相關時才注入專業知識，避免 AI 被不相關的資訊干擾。</p>
                 </div>
             </div>
         </section>
@@ -181,7 +181,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">問題</h3>
-                    <p class="text-ink-body">
+                    <p class="text-ink">
                         讓 AI 自由發揮寫報告，每次格式都不一樣——有時有目錄、有時沒有；有時寫三段、有時寫三十段。
                     </p>
                 </div>
@@ -189,31 +189,31 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
-                    <p class="text-ink-body mb-4">
-                        預先建立模板（放在 <code class="bg-surface-raised text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
+                    <p class="text-ink mb-4">
+                        預先建立模板（放在 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
                     </p>
-                    <div class="bg-surface-deep p-5 text-sm overflow-x-auto">
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="ml-2 text-ink-muted text-xs">assets/report-template.md</span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-ink text-xs">assets/report-template.md</span>
                         </div>
-                        <pre class="leading-relaxed"><code class="text-ink-body"><span class="text-ink font-semibold"># &#123;&#123;title&#125;&#125;</span>
+                        <pre class="leading-relaxed"><code class="text-ink"><span class="text-ink font-semibold"># &#123;&#123;title&#125;&#125;</span>
 
 <span class="text-ink font-semibold">## Executive Summary</span>
-<span class="text-ink-muted">&#123;&#123;summary: 2-3 句重點摘要&#125;&#125;</span>
+<span class="text-ink">&#123;&#123;summary: 2-3 句重點摘要&#125;&#125;</span>
 
 <span class="text-ink font-semibold">## Key Findings</span>
-<span class="text-ink-muted">&#123;&#123;findings: 條列式，3-5 項&#125;&#125;</span>
+<span class="text-ink">&#123;&#123;findings: 條列式，3-5 項&#125;&#125;</span>
 
 <span class="text-ink font-semibold">## Risk Assessment</span>
 | 風險 | 嚴重度 | 建議行動 |
 |------|--------|----------|
-<span class="text-ink-muted">&#123;&#123;risks: 填入表格&#125;&#125;</span>
+<span class="text-ink">&#123;&#123;risks: 填入表格&#125;&#125;</span>
 
 <span class="text-ink font-semibold">## Next Steps</span>
-<span class="text-ink-muted">&#123;&#123;actions: 按優先順序排列&#125;&#125;</span></code></pre>
+<span class="text-ink">&#123;&#123;actions: 按優先順序排列&#125;&#125;</span></code></pre>
                     </div>
                 </div>
 
@@ -222,7 +222,7 @@
                         <svg class="w-5 h-5 text-ink font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         核心價值
                     </p>
-                    <p class="text-ink-body text-sm">把「格式」和「內容」解耦。AI 專注生成有價值的內容，模板確保每次輸出結構一致。</p>
+                    <p class="text-ink text-sm">把「格式」和「內容」解耦。AI 專注生成有價值的內容，模板確保每次輸出結構一致。</p>
                 </div>
             </div>
         </section>
@@ -240,7 +240,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">問題</h3>
-                    <p class="text-ink-body">
+                    <p class="text-ink">
                         AI 生成的東西「看起來對」但其實有漏洞——可能忘了處理 edge case、安全性檢查或團隊慣例。
                     </p>
                 </div>
@@ -248,22 +248,22 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
-                    <p class="text-ink-body mb-4">
-                        建立一個獨立的 Reviewer Skill，從 <code class="bg-surface-raised text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
+                    <p class="text-ink mb-4">
+                        建立一個獨立的 Reviewer Skill，從 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
                         讓 Agent 依據清單逐項驗證，並按嚴重度分組回報。
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="border-l border-ink pl-4 py-1">
                             <p class="eyebrow mb-2">Critical</p>
-                            <p class="text-ink-body text-xs">安全漏洞、資料洩露</p>
+                            <p class="text-ink text-xs">安全漏洞、資料洩露</p>
                         </div>
-                        <div class="border-l border-line-strong pl-4 py-1">
+                        <div class="border-l border-line pl-4 py-1">
                             <p class="eyebrow mb-2">Warning</p>
-                            <p class="text-ink-body text-xs">效能問題、可維護性</p>
+                            <p class="text-ink text-xs">效能問題、可維護性</p>
                         </div>
                         <div class="border-l border-line pl-4 py-1">
                             <p class="eyebrow mb-2">Info</p>
-                            <p class="text-ink-body text-xs">風格建議、最佳實作</p>
+                            <p class="text-ink text-xs">風格建議、最佳實作</p>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
                         <svg class="w-5 h-5 text-ink font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         核心價值
                     </p>
-                    <p class="text-ink-body text-sm">把「檢查邏輯」和「生成邏輯」分離。一個 Agent 做事，另一個 Agent 質檢——就像程式碼的 PR Review。</p>
+                    <p class="text-ink text-sm">把「檢查邏輯」和「生成邏輯」分離。一個 Agent 做事，另一個 Agent 質檢——就像程式碼的 PR Review。</p>
                 </div>
             </div>
         </section>
@@ -291,7 +291,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">問題</h3>
-                    <p class="text-ink-body">
+                    <p class="text-ink">
                         使用者丟一句「幫我做個網站」，Agent 就開始狂寫程式碼——結果做出來的東西跟需求天差地遠。因為 AI 天生傾向「立即行動」，而不是先搞清楚問題。
                     </p>
                 </div>
@@ -299,18 +299,18 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
-                    <p class="text-ink-body mb-4">
+                    <p class="text-ink mb-4">
                         <strong class="text-ink">反轉 Agent 的行為</strong>：強迫它先當「訪談者」而不是「執行者」。
                         設定不可跳過的閘門指令 (Non-negotiable gates)，讓 Agent 必須蒐集到所有必要參數後才能開始工作。
                     </p>
-                    <div class="bg-surface-deep p-5 text-sm overflow-x-auto">
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="ml-2 text-ink-muted text-xs">Inversion 行為流程</span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-ink text-xs">Inversion 行為流程</span>
                         </div>
-                        <pre class="leading-relaxed"><code class="text-ink-body"><span class="text-ink-muted">✕ 傳統 Agent：</span>
+                        <pre class="leading-relaxed"><code class="text-ink"><span class="text-ink">✕ 傳統 Agent：</span>
   使用者：「幫我做一個網站」
   Agent  → 直接開始寫 React 專案...
 
@@ -332,7 +332,7 @@
                         <svg class="w-5 h-5 text-ink font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         核心價值
                     </p>
-                    <p class="text-ink-body text-sm">用「先問再做」的方式避免 Hallucination。Context 越完整，AI 的輸出品質越高。</p>
+                    <p class="text-ink text-sm">用「先問再做」的方式避免 Hallucination。Context 越完整，AI 的輸出品質越高。</p>
                 </div>
             </div>
         </section>
@@ -350,7 +350,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">問題</h3>
-                    <p class="text-ink-body">
+                    <p class="text-ink">
                         複雜任務有多個步驟，但 AI 會跳步、合併步驟或忘記中間的關鍵步驟——尤其當 Context 很長的時候。
                     </p>
                 </div>
@@ -358,7 +358,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
-                    <p class="text-ink-body mb-4">
+                    <p class="text-ink mb-4">
                         把 Skill 設計成一條<strong class="text-ink">嚴格的流水線</strong>：定義明確的階段 (Phase)，
                         在每一步之間設置「閘門 (Gate)」。Agent 必須完成當前步驟並獲得人工確認，才能進入下一步。
                     </p>
@@ -370,7 +370,7 @@
                             <div class="text-ink text-xs mt-1">Research</div>
                         </div>
                         <div class="text-ink text-xl md:px-2 rotate-90 md:rotate-0 min-w-0">→</div>
-                        <div class="bg-surface-raised border border-line px-3 py-2">
+                        <div class="bg-surface border border-line px-3 py-2">
                             <p class="eyebrow">Gate</p>
                         </div>
                         <div class="text-ink text-xl md:px-2 rotate-90 md:rotate-0 min-w-0">→</div>
@@ -379,7 +379,7 @@
                             <div class="text-ink text-xs mt-1">Plan</div>
                         </div>
                         <div class="text-ink text-xl md:px-2 rotate-90 md:rotate-0 min-w-0">→</div>
-                        <div class="bg-surface-raised border border-line px-3 py-2">
+                        <div class="bg-surface border border-line px-3 py-2">
                             <p class="eyebrow">Gate</p>
                         </div>
                         <div class="text-ink text-xl md:px-2 rotate-90 md:rotate-0 min-w-0">→</div>
@@ -400,7 +400,7 @@
                         <svg class="w-5 h-5 text-ink font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         核心價值
                     </p>
-                    <p class="text-ink-body text-sm">把不可預測的文字生成，變成可控、可重複、可稽核的狀態機 (State Machine)。</p>
+                    <p class="text-ink text-sm">把不可預測的文字生成，變成可控、可重複、可稽核的狀態機 (State Machine)。</p>
                 </div>
             </div>
         </section>
@@ -421,7 +421,7 @@
                     </span>
                     <div>
                         <h4 class="font-bold text-ink mb-1">Progressive Disclosure（漸進式揭露）</h4>
-                        <p class="text-ink-body text-sm">ADK 的 SkillToolset 讓 Agent 在需要時才載入指令與 Context，節省 Token 並保持焦點。</p>
+                        <p class="text-ink text-sm">ADK 的 SkillToolset 讓 Agent 在需要時才載入指令與 Context，節省 Token 並保持焦點。</p>
                     </div>
                 </div>
                 <div class="flex items-start p-4">
@@ -430,7 +430,7 @@
                     </span>
                     <div>
                         <h4 class="font-bold text-ink mb-1">格式與內容分離</h4>
-                        <p class="text-ink-body text-sm"><code class="bg-surface-raised text-ink font-semibold font-mono px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
+                        <p class="text-ink text-sm"><code class="bg-surface text-ink font-semibold font-mono px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
                     </div>
                 </div>
                 <div class="flex items-start p-4">
@@ -439,7 +439,7 @@
                     </span>
                     <div>
                         <h4 class="font-bold text-ink mb-1">組合使用</h4>
-                        <p class="text-ink-body text-sm">這些模式可以混搭！例如：Pipeline 的最後一步放 Reviewer；Generator 前面接 Inversion 來蒐集參數。</p>
+                        <p class="text-ink text-sm">這些模式可以混搭！例如：Pipeline 的最後一步放 Reviewer；Generator 前面接 Inversion 來蒐集參數。</p>
                     </div>
                 </div>
             </div>
@@ -451,15 +451,15 @@
             <h3 class="text-ink font-bold mb-6 font-display text-xl">延伸閱讀</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/agent-prompting-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink-body hover:text-ink hover:border-line-strong transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
                     指令秘籍 (Prompt Guide) <span class="ml-2">→</span>
                 </a>
                 <a href="/claude-skills-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink-body hover:text-ink hover:border-line-strong transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
                     Claude Skills 實戰指南 <span class="ml-2">→</span>
                 </a>
                 <a href="/geo-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink-body hover:text-ink hover:border-line-strong transition-all">
+                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:text-ink hover:border-line transition-all">
                     GEO 入門指南 <span class="ml-2">→</span>
                 </a>
             </div>

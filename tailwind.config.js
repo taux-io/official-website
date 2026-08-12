@@ -8,42 +8,13 @@ module.exports = {
       // through seventeen templates. The <alpha-value> placeholder keeps
       // Tailwind's opacity modifiers working: bg-surface/50, text-ink/70.
       colors: {
-        surface: {
-          DEFAULT: "rgb(var(--surface-rgb) / <alpha-value>)",
-          deep: "rgb(var(--surface-deep-rgb) / <alpha-value>)",
-          raised: "rgb(var(--surface-raised-rgb) / <alpha-value>)",
-        },
-        // One ink; the steps are alpha. The <alpha-value> placeholder cannot
-        // survive that: it is substituted with the opacity modifier or with 1,
-        // so there is no way to express "0.8 unless told otherwise". Baking the
-        // alpha means `text-ink-body/50` no longer composes — nothing uses it,
-        // and `line` below has always been written this way for the same
-        // reason. The surfaces keep the placeholder, which is what bg-surface-
-        // deep/90 in the header depends on.
-        //
-        // `body`'s alpha is the SAME NUMBER as --ink-body in src/input.css and
-        // has to stay that way — see the note there. check-design.js rule "ink
-        // body single source" fails the build if the two drift.
-        ink: {
-          DEFAULT: "rgb(var(--ink-rgb))",
-          body: "rgb(var(--ink-rgb) / 0.85)",
-          muted: "rgb(var(--ink-rgb) / 0.9)",
-        },
-        // Fixed at two weights on purpose — a divider and a control edge. More
-        // steps than that is how hairlines drift back into decoration.
-        line: {
-          DEFAULT: "rgb(var(--line-rgb) / 0.08)",
-          strong: "rgb(var(--line-rgb) / 0.35)",
-        },
-
-        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes.
-        //
-        // Measured on --surface: /100 is 10.80:1, /70 is 5.63:1, /65 is 4.98:1,
-        // and /60 is 4.38:1 — under the 4.5:1 AA floor. So /65 is the lowest
-        // step that holds for text, not /60. The contrast audit catches a
-        // mistake here, which is the safety net rather than a licence to probe
-        // downwards.
-        phosphor: "rgb(var(--phosphor-rgb) / <alpha-value>)",
+        // One surface, one ink, one hairline. The three-step surface, the three
+        // alpha steps of ink and the two hairline weights all collapsed with the
+        // brand reset — see DESIGN.md decision #53. Names are semantic and the
+        // values live in src/input.css; nothing here carries a literal.
+        surface: "rgb(var(--surface-rgb) / <alpha-value>)",
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
+        line: "rgb(var(--line-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // D-DIN carries the Latin; CJK falls through to the system faces,

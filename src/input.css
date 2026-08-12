@@ -8,82 +8,55 @@
    Every previous restyle rewrote hex values across the templates, which is why
    four generations of palette now sit side by side in them. These variables
    are the single place a palette is chosen; the templates reference semantic
-   names (bg-surface, text-ink-body, border-line) that resolve here.
+   names (bg-surface, text-ink, border-line) that resolve here.
 
    Colours are stored as space-separated channels so a value can be composed
    with an alpha — rgb(var(--ink-rgb) / 0.8) — with a plain alias alongside it
    for hand-written CSS, including the inline <style> block in
    claude-skills-guide.html.
 
-   The surfaces keep Tailwind's <alpha-value> placeholder, so bg-surface-deep/90
+   The surfaces keep Tailwind's <alpha-value> placeholder, so bg-surface/90
    still compiles. The ink does not: its three steps ARE alphas, and the
    placeholder is substituted with the modifier or with 1, which leaves no way
-   to say "0.85 unless told otherwise". text-ink-body/50 therefore does not
+   to say "0.85 unless told otherwise". text-ink/50 therefore does not
    compose. Nothing uses it, and the hairlines have always been written this way.
    =========================================================================== */
 :root {
   /* Surfaces. Deep is reserved for full-bleed hero sections; the base surface
      is a hair off black, which keeps dense CJK glyphs from haloing the way
      they do against #000. */
-  --surface-deep-rgb: 0 0 0;
-  --surface-rgb: 10 10 11;
-  --surface-raised-rgb: 15 15 17;
+  /* ONE SURFACE. Pure black, no second step and no raised step.
 
-  /* One ink. Levels are alpha, not separate greys.
+     The default surface used to be 10 10 11 rather than 0 0 0 — a hair off
+     black, chosen because dense CJK glyphs halo against pure black over a long
+     read. The brand reset overrules that (DESIGN.md decision #53). The reason
+     was not wrong and is not deleted: if long Chinese passages start to smear,
+     the value to move is the ink, NOT the type scale. Moving the scale back
+     would flatten the hierarchy a second time, which is the trap decision #45
+     documents. */
+  --surface-rgb: 0 0 0;
 
-     This replaces three independent values (#ffffff / #c8c8cc / #8a8a91). The
-     reference site carries a single ink and builds hierarchy from type — size,
-     case and tracking — rather than from brightness, and three greys are how a
-     fourth one eventually gets invented for a case none of them fit. */
-  --ink-rgb: 240 240 250;
+  /* ONE INK. Pure white, no alpha steps.
 
-  /* Hairlines, same source as the ink. Two weights only: a divider and a
-     control edge. A third weight is how hairlines drift back into decoration. */
-  --line-rgb: 240 240 250;
+     Levels used to be alpha — 0.85 body over 0.9 muted over full ink. With a
+     single value, hierarchy is carried entirely by size, weight and case, which
+     is what the reference vocabulary does. Pure white on pure black is 21.00:1,
+     computed rather than estimated; the earlier three-step arrangement ran
+     12.25–13.17:1. The risk here is not contrast, it is the opposite. */
+  --ink-rgb: 255 255 255;
 
-  --surface-deep: rgb(var(--surface-deep-rgb));
+  /* ONE HAIRLINE WEIGHT. #3a3a3f solid, not an alpha of the ink.
+
+     There used to be two weights, a divider and a control edge, both derived
+     from the ink. A third weight is how hairlines drift back into decoration —
+     and with the ink now pure white, an alpha of it reads as grey text rather
+     than as an edge. The reference vocabulary names one hairline colour, so
+     that is what this is. */
+  --line-rgb: 58 58 63;
+
   --surface: rgb(var(--surface-rgb));
-  --surface-raised: rgb(var(--surface-raised-rgb));
-
-  /* The three steps.
-
-     0.85 for body and 0.9 for muted looks inverted and is not a typo. The
-     reference site puts .9 on navigation and .8 on meta.
-
-     Body was 0.8, chosen so it composited to #C2C2CA — the same brightness
-     step as the #c8c8cc it replaced, preserving the halation margin that dense
-     CJK strokes need against a near-black ground. #139 raised it to 0.85
-     because that margin turned out to have room in it: long Chinese passages
-     read as a grey mass at 0.8 over ten minutes.
-
-     At 0.85 the ink composites to #CECED6, giving 12.59:1 on --surface,
-     13.16:1 on --surface-deep and 12.28:1 on --surface-raised — every one more
-     than twice the 4.5:1 AA floor. (At 0.8: 11.18 / 11.62 / 10.93.)
-
-     The first version of this comment said 15.28:1 and "three times the
-     floor". Both were estimated rather than computed, and both were wrong;
-     code review caught the contradiction against DESIGN.md decision #46. This
-     file's own governing document opens by arguing that a number you can see
-     still has to be counted with a tool — that applies to contrast ratios.
-
-     It stops at 0.85 rather than 0.9 on purpose. 0.9 IS --ink-muted, so going
-     there would quietly flatten three ink steps into two — a separate decision,
-     not a side effect of making body text brighter.
-
-     THIS VALUE IS WRITTEN TWICE. tailwind.config.js hard-codes the same alpha
-     for the `ink.body` colour, because <alpha-value> cannot express "0.85
-     unless told otherwise". Change one and not the other and nothing errors:
-     hand-written CSS reading the variable and utilities reading the config
-     simply disagree, visible only where the two sit side by side. The
-     check-design rule "ink body single source" holds them together. */
   --ink: rgb(var(--ink-rgb));
-  --ink-body: rgb(var(--ink-rgb) / 0.85);
-  --ink-muted: rgb(var(--ink-rgb) / 0.9);
-
-  --line: rgb(var(--line-rgb) / 0.08);
-  /* 0.35 rather than 0.2 — the measured value of the reference site's button
-     border. */
-  --line-strong: rgb(var(--line-rgb) / 0.35);
+  --line: rgb(var(--line-rgb));
 
   /* Square by default. Rounded rectangles read as consumer software; circles
      are left alone, since gauges, orbits and dials belong to this vocabulary.
@@ -94,19 +67,6 @@
      square. */
   --radius-control: 4px;
 
-  /* The first non-ink colour this vocabulary has carried. Named for the CRT
-     phosphor rather than for the hue, because the name has to say what it is
-     for: a glowing state indicator, not a second body colour.
-
-     #FFB000 is P3 amber. It was chosen over P1 green (14.6:1) and cyan (11:1)
-     because it is the only one of the three whose colour temperature is
-     complementary to the cool white ink — two cool colours side by side read as
-     dirty. 10.8:1 on --surface, against a 4.5:1 AA floor.
-
-     Its budget is five elements per rendered page, enforced by check:design's
-     "phosphor budget" rule. See DESIGN.md decisions #27 and #28. */
-  --phosphor-rgb: 255 176 0;
-  --phosphor: rgb(var(--phosphor-rgb));
 
   /* ---- Motion and material, added by issue 156. ----------------------------
      These overturn three rules this file used to enforce. The reasons behind
@@ -274,7 +234,7 @@
 
   body {
     background-color: var(--surface);
-    color: var(--ink-body);
+    color: var(--ink);
     @apply font-sans antialiased overflow-x-hidden;
     /* iOS paints its own grey flash on tap. With designed :active states
        (issue 154) that flash is a second, uninvited answer to the same press,
@@ -307,7 +267,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--line-strong);
+    background: var(--line);
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -356,7 +316,7 @@
     padding: 0 20px;
     gap: 0.5rem;
     color: var(--ink);
-    border: 1px solid var(--line-strong);
+    border: 1px solid var(--line);
     border-radius: var(--radius-control);
     background-color: rgb(0 0 0 / 0.5);
     /* 200ms, not the 500ms this carried before issue 154.
@@ -389,7 +349,7 @@
     height: 48px;
     padding: 0 20px;
     gap: 0.5rem;
-    color: var(--ink-muted);
+    color: var(--ink);
     border: 1px solid var(--line);
     border-radius: var(--radius-control);
     background-color: transparent;
@@ -438,7 +398,7 @@
      browser shearing an upright glyph. */
   .quote {
     @apply relative pl-6 my-8;
-    border-left: 1px solid var(--line-strong);
+    border-left: 1px solid var(--line);
   }
 
   .quote p {
@@ -460,7 +420,7 @@
      rather than left to look like a rendering fault. See DESIGN.md #39. */
   .tag {
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
-    color: var(--ink-body);
+    color: var(--ink);
     border: 1px solid var(--line);
     border-radius: var(--radius-control);
   }
@@ -474,7 +434,7 @@
      are. Condensed also buys back the width the tracking costs: the same items
      set in the regular face would overrun the container. */
   .nav-link {
-    @apply font-display text-nav uppercase text-ink-muted relative
+    @apply font-display text-nav uppercase text-ink relative
            transition-colors duration-200 bg-transparent cursor-pointer;
   }
 
@@ -501,7 +461,7 @@
 
   /* Overlay menu links: larger, still uppercase, still tracked. */
   .menu-link {
-    @apply font-display text-lg md:text-xl uppercase tracking-[0.09em] text-ink-body
+    @apply font-display text-lg md:text-xl uppercase tracking-[0.09em] text-ink
            transition-colors duration-200;
   }
 
@@ -535,14 +495,14 @@
   }
 
   .display-sub {
-    @apply block font-sans normal-case text-xl md:text-[1.75rem] mt-3 text-ink-muted;
+    @apply block font-sans normal-case text-xl md:text-[1.75rem] mt-3 text-ink;
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.15;
   }
 
   /* Eyebrow label — section numbers, column headings, kickers.
-     text-ink-body rather than muted: with one ink and no --text-muted role
+     text-ink rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
      dimming. Eyebrows and captions come out brighter than before, which is the
      intended consequence and not a regression.
@@ -554,7 +514,7 @@
      unicode-range hands them over. That stack is the whole reason this is one
      line rather than a Latin-only variant applied by hand. */
   .eyebrow {
-    @apply font-mono text-eyebrow uppercase text-ink-body;
+    @apply font-mono text-eyebrow uppercase text-ink;
   }
 
   /* py-1.5 buys 12px of height on a 14px line — a 26px target rather than 14px.
@@ -565,7 +525,7 @@
      controls; a dense reference list at the very bottom of a page is the case
      it is least about. Recorded in DESIGN.md rather than left implicit. */
   .footer-link {
-    @apply block text-sm text-ink-body py-1.5 transition-colors duration-200;
+    @apply block text-sm text-ink py-1.5 transition-colors duration-200;
   }
 
   .footer-link:hover {
@@ -588,7 +548,7 @@
      script having run", and a rail that dimmed its inactive entries would be
      that same mechanism wearing a different name. */
   .section-index-link {
-    @apply block border-l border-line pl-3 py-1 text-xs text-ink-body
+    @apply block border-l border-line pl-3 py-1 text-xs text-ink
            transition-colors duration-200;
   }
 
@@ -597,7 +557,7 @@
   }
 
   .section-index-link[aria-current] {
-    @apply text-ink border-line-strong;
+    @apply text-ink border-line;
   }
 
   /* Text controls dim on press rather than deepening a fill, because they have
@@ -634,7 +594,7 @@
      the reader was looking at. Legibility outranks the effect, which was the
      same argument that set 85% in the first place. */
   .menu-surface {
-    background-color: var(--surface-deep);
+    background-color: var(--surface);
     transition: opacity 0.3s var(--ease-standard);
   }
 
@@ -731,24 +691,24 @@
      become opaque, and the blur goes with them — a backdrop-filter with an
      opaque background is cost with no effect. */
   nav {
-    background-color: var(--surface-deep) !important;
+    background-color: var(--surface) !important;
     backdrop-filter: none !important;
   }
 
   #menuOverlay {
-    background-color: var(--surface-deep) !important;
+    background-color: var(--surface) !important;
   }
 }
 
 @media (prefers-contrast: more) {
-  /* Hairlines at 8% are the first thing to disappear when someone asks for
-     more contrast, and they are what carries the structure here: this
-     vocabulary has no cards, no fills and no shadows, so a rule that cannot be
-     seen takes the layout with it. The ink is already above 12:1 and needs
-     nothing. */
+  /* The hairline is the first thing to disappear when someone asks for more
+     contrast, and it is what carries the structure here: this vocabulary has no
+     cards, no fills and no shadows, so a rule that cannot be seen takes the
+     layout with it. Lifted rather than made opaque — there is only one weight
+     now, so there is only one value to move. The ink is pure white at 21:1 and
+     needs nothing. */
   :root {
-    --line: rgb(var(--line-rgb) / 0.3);
-    --line-strong: rgb(var(--line-rgb) / 0.6);
+    --line-rgb: 122 122 132;
   }
 }
 
