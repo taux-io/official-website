@@ -161,6 +161,38 @@
     @apply font-sans;
   }
 
+  /* THE READING MEASURE. 68 characters, not 68 of anything else.
+     
+     DESIGN.md sets it and states why it is 68 rather than the 75 usually quoted
+     for Latin: Chinese sets denser. `ch` is the width of "0" in the element's
+     OWN font, so this is a character count at every type size — which is the
+     point, because the unit that broke last time was pixels. Collapsing body
+     from 17px to 16px (decision #53) left every container the same width and
+     put more characters on each line; /pqc-migration went from 70.8ch to
+     85.2ch without a single template changing (issue #147).
+     
+     Written as `:where()` so it carries ZERO specificity: every existing
+     `max-w-*` utility still wins, and this only catches the elements that had
+     no measure at all — which was twelve of twenty routes.
+     
+     Scoped to <main>: the nav, the footer and the full-screen menu are chrome,
+     not prose, and their line lengths are set by their own layouts.
+     
+     TABLE CELLS ARE EXCLUDED and that is a decision, not an oversight. A cell's
+     width is a column decision made across every row; capping one cell at 68ch
+     would break the column rather than help the reader. Measured before
+     excluding them — the widest cell on the site is 46.8ch, comfortably inside
+     the limit anyway. */
+  :where(main p, main li) {
+    max-width: 68ch;
+  }
+
+  /* A centred paragraph that gains a max-width without auto margins anchors
+     itself to the left while its text stays centred, which reads as a bug. */
+  :where(main .text-center p, main .text-center li, main p.text-center, main li.text-center) {
+    margin-inline: auto;
+  }
+
   /* Inline code had exactly one thing telling it apart from the prose around
      it — the monospace face — and pinning it to the sans stack took that away.
      A thin wash of the single ink replaces it, the same fill the table rows and
