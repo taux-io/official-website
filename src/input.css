@@ -230,6 +230,31 @@
      The arrow is the character, not an icon font and not an SVG. As a
      pseudo-element it cannot be forgotten on a new button, and it removed two
      hand-rolled SVGs that were doing the same job differently. */
+  /* A BAND IS ONE SCREEN.
+
+     Two things take one: the hero at the top of every route, and the cover
+     screen that opens every section. Running prose does not — it flows, and
+     slicing it would destroy both continuous reading and Ctrl+F (DESIGN.md
+     decision #16, kept).
+
+     This is what overturns decision #44, and the shape of the overturn matters.
+     #44 removed fifteen 86vh blocks because "a three-line block and a
+     thirty-line block each take a screen, and scrolling produces a string of
+     equal-length pulses the reader cannot rank". The answer here is that the
+     equal-length things are the covers, which are SUPPOSED to be equal, and the
+     unequal thing is the prose, which is not sliced at all.
+
+     svh before vh: on mobile browsers the toolbar makes 100vh taller than the
+     visible area, so a band that is exactly one screen scrolls by the height of
+     the chrome. Declared in that order so a browser without svh keeps vh. */
+  .band {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .btn {
     @apply inline-flex items-center justify-center font-display text-button uppercase;
     height: 48px;
