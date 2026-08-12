@@ -149,7 +149,7 @@
                  in the gap between them — a defect visible only at particular
                  window widths, which is to say invisible during development.
                  check-design.js rule "nav breakpoints paired" holds them. -->
-            <div class="hidden sm:flex items-center gap-10">
+            <div class="hidden mobile:flex items-center gap-10">
                 <button type="button" id="menuTrigger" class="nav-link" aria-expanded="false"
                     aria-controls="menuOverlay">
                     Explore
@@ -164,7 +164,7 @@
                  axes. The bars keep their own size; the button grows around
                  them and centres them. -->
             <button type="button" id="hamburger"
-                class="sm:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity duration-200 z-50"
+                class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity duration-200 z-50"
                 aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
                 <span class="w-6 h-px bg-ink transition-all duration-300 origin-center"></span>
                 <span class="w-6 h-px bg-ink transition-all duration-300 opacity-100"></span>
@@ -202,7 +202,7 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-12 md:gap-16 mt-16 md:mt-24 pb-16">
+            <div class="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-5 gap-12 tablet:gap-16 mt-16 tablet:mt-24 pb-16">
 {% with link_class = "menu-link", list_space = "space-y-5" %}{% include "_nav-columns.html" %}{% endwith %}
                     <div>
                 <!-- One destination, one label, and the label is what the page is.

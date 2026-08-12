@@ -383,7 +383,7 @@
 
   /* Overlay menu links: larger, still uppercase, still tracked. */
   .menu-link {
-    @apply font-display text-lg md:text-xl uppercase tracking-[0.09em] text-ink
+    @apply font-display text-lg tablet:text-xl uppercase tracking-[0.09em] text-ink
            transition-colors duration-200;
   }
 
@@ -412,12 +412,12 @@
      utility on the element — and it is set after the @apply so it wins inside
      the rule rather than depending on layer order. */
   .display-lead {
-    @apply block font-display uppercase text-4xl md:text-display-lg;
+    @apply block font-display uppercase text-4xl tablet:text-display-lg;
     color: var(--ink);
   }
 
   .display-sub {
-    @apply block font-sans normal-case text-xl md:text-[1.75rem] mt-3 text-ink;
+    @apply block font-sans normal-case text-xl tablet:text-[1.75rem] mt-3 text-ink;
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.15;

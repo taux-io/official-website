@@ -30,7 +30,7 @@
                 </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
+        <div class="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-5 gap-12 mb-20">
 {% with link_class = "footer-link", list_space = "space-y-4" %}{% include "_nav-columns.html" %}{% endwith %}
                 <div>
                 <!-- One destination, one label, and the label is what the page is.
@@ -53,7 +53,7 @@
 
         </div>
 
-        <div class="border-t border-line pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="border-t border-line pt-8 flex flex-col tablet:flex-row justify-between items-center gap-4">
             <p class="eyebrow">&copy; {{ year }} 拓思科技股份有限公司 版權所有</p>
             <div class="flex gap-8">
                 <a href="/privacy-policy" class="eyebrow hover:text-ink transition-colors duration-200">Privacy Policy</a>

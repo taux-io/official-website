@@ -73,7 +73,7 @@
         <!-- The same step response as the homepage, drawn once and left still.
              A reader spends minutes on this page, so it carries the mark
              without carrying the animation's cost. -->
-        <div class="relative h-16 md:h-20 border-t border-line mt-4">
+        <div class="relative h-16 tablet:h-20 border-t border-line mt-4">
         </div>
     </div>
 </article>
@@ -97,7 +97,7 @@
              start — this rail is the second consumer of those ids, not the
              first. -->
         <nav data-section-index aria-label="章節索引"
-            class="hidden xl:block absolute top-0 -left-56 w-48 h-full">
+            class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
             <div class="sticky top-24">
                 <p class="eyebrow mb-5">目錄</p>
                 <ul>
@@ -197,59 +197,59 @@
                         <tr class="border-b border-line">
                             <th class="py-3 pr-4 font-bold text-ink text-sm">#</th>
                             <th class="py-3 pr-4 font-bold text-ink text-sm">風險</th>
-                            <th class="py-3 font-bold text-ink text-sm hidden md:table-cell">英文原名</th>
+                            <th class="py-3 font-bold text-ink text-sm hidden tablet:table-cell">英文原名</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm text-ink">
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM01</td>
                             <td class="py-4 pr-4"><a href="#prompt-injection" class="text-ink font-bold">提示詞注入</a></td>
-                            <td class="py-4 hidden md:table-cell">Prompt Injection</td>
+                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM02</td>
                             <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="text-ink font-bold">敏感資訊洩漏</a></td>
-                            <td class="py-4 hidden md:table-cell">Sensitive Information Disclosure</td>
+                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM03</td>
                             <td class="py-4 pr-4"><a href="#excessive-agency" class="text-ink font-bold">過度代理權</a></td>
-                            <td class="py-4 hidden md:table-cell">Excessive Agency</td>
+                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM04</td>
                             <td class="py-4 pr-4"><a href="#supply-chain" class="text-ink font-bold">供應鏈</a></td>
-                            <td class="py-4 hidden md:table-cell">Supply Chain</td>
+                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM05</td>
                             <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="text-ink font-bold">資料與模型投毒</a></td>
-                            <td class="py-4 hidden md:table-cell">Data and Model Poisoning</td>
+                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM06</td>
                             <td class="py-4 pr-4"><a href="#unbounded-consumption" class="text-ink font-bold">無節制消耗</a></td>
-                            <td class="py-4 hidden md:table-cell">Unbounded Consumption</td>
+                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM07</td>
                             <td class="py-4 pr-4"><a href="#misinformation" class="text-ink font-bold">錯誤資訊</a></td>
-                            <td class="py-4 hidden md:table-cell">Misinformation</td>
+                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM08</td>
                             <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="text-ink font-bold">隱藏脈絡外洩</a></td>
-                            <td class="py-4 hidden md:table-cell">Hidden Context Exposure</td>
+                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM09</td>
                             <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="text-ink font-bold">向量與嵌入弱點</a></td>
-                            <td class="py-4 hidden md:table-cell">Vector and Embedding Weaknesses</td>
+                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
                         </tr>
                         <tr>
                             <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM10</td>
                             <td class="py-4 pr-4"><a href="#improper-output-handling" class="text-ink font-bold">輸出處理不當</a></td>
-                            <td class="py-4 hidden md:table-cell">Improper Output Handling</td>
+                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
                         </tr>
                     </tbody>
                 </table>
@@ -586,7 +586,7 @@
             <p class="text-ink mb-10 max-w-[42ch] text-lg">
                 TauX Security Lab 提供 LLM 安全檢測與紅隊演練，依這十條逐項盤點您的系統。
             </p>
-            <div class="flex flex-col sm:flex-row gap-4">
+            <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">預約安全諮詢</a>
                 <a href="/#our-services" class="btn-quiet">了解服務詳情</a>
             </div>
