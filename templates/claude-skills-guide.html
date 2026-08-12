@@ -53,6 +53,18 @@
         color:var(--ink);
     }
 
+    /* The title slide is a band, and a band is one screen.
+       `.skills-guide-body .slide-container` is specificity 0,2,0 and .band is
+       0,1,0, so adding the class to #slide1 lost silently: the route kept
+       opening with a 720px title slide while check:design and the cover probe
+       both passed — the probe only measures [data-cover] bands and a hero is
+       not one. Written here rather than by raising .band, because the deck's
+       own floor is correct for every other slide. */
+    .skills-guide-body .slide-container.band {
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
     .skills-guide-body .slide-container.dark-theme {
         background-color:var(--surface);
         color:var(--ink);

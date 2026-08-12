@@ -778,9 +778,16 @@ function ruleZeroMono(files) {
       found.push({
         file: "tailwind.config.js",
         line: text.slice(0, m.index).split("\n").length,
-        detail: `fontFamily.${family} is still defined; nothing should resolve to it`,
+        detail: `this project defines fontFamily.${family}; the vocabulary has no monospace`,
       });
     }
+    // WHAT THIS HALF CANNOT SAY. The families were removed from `theme.extend`,
+    // and extend only adds — Tailwind's own default `mono` survives underneath,
+    // so `font-mono` still resolves to a real stack. Deleting the project's
+    // definition does not delete the utility, and an earlier version of this
+    // rule claimed it did. What actually keeps monospace off the site is the
+    // template half above plus the @apply scan below; this half only stops the
+    // project from declaring a family of its own again.
   }
   // A component class applying the utility reaches the same face by another
   // road, and it is the road this site actually used: `.eyebrow` carried

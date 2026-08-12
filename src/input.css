@@ -148,6 +148,20 @@
 }
 
 @layer base {
+  /* Preflight sets pre, code, kbd and samp to its own monospace stack, and this
+     branch deleted the mono family without touching that. The stack Tailwind
+     ships carries no CJK face, so Chinese inside a <pre> falls through to
+     generic `monospace` — on Windows that is MingLiU, a serif this site sets
+     nowhere else, invisible from a Mac. That is precisely the regression
+     DESIGN.md decision #40 was written to prevent; the vocabulary that made it
+     impossible is gone, so it is stated here instead. */
+  pre,
+  code,
+  kbd,
+  samp {
+    @apply font-sans;
+  }
+
   html {
     @apply scroll-smooth font-sans;
   }
@@ -190,8 +204,12 @@
     background: var(--line);
   }
 
+  /* Brighter on hover, not dimmer. The resting thumb moved to the solid
+     hairline with the token collapse while this rule kept applying 0.35 to the
+     same token — over a black track that composites to rgb(20,20,22), darker
+     than rest, so the thumb faded exactly when the pointer reached it. */
   ::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--line-rgb) / 0.35);
+    background: rgb(var(--ink-rgb) / 0.35);
   }
 
   a {
@@ -395,7 +413,10 @@
     @apply scale-x-100 origin-left;
   }
 
-  .nav-link:hover,
+  /* The colour half of this rule is gone. With one ink, `text-ink` on hover
+     over a base that is already `text-ink` changes nothing — it read as
+     feedback while doing none. What answers the pointer here is the ::after
+     underline above, which is real. */
   .nav-link[aria-expanded="true"] {
     @apply text-ink;
   }
@@ -412,8 +433,13 @@
            transition-colors duration-200;
   }
 
+  /* Underline, not a brightness step. The ink used to run three alpha levels
+     and hover climbed one of them; collapsing to a single ink turned every one
+     of those rules into a no-op that still carried a transition. An underline
+     is the vocabulary's own device for "this is a link" and it is the only
+     differentiation left that does not reintroduce a second ink. */
   .menu-link:hover {
-    @apply text-ink;
+    @apply underline underline-offset-4;
   }
 
   /* The two-line heading.
@@ -476,7 +502,7 @@
   }
 
   .footer-link:hover {
-    @apply text-ink;
+    @apply underline underline-offset-4;
   }
 
   /* Section index — the sticky rail beside a long-form page.
@@ -500,11 +526,18 @@
   }
 
   .section-index-link:hover {
-    @apply text-ink;
+    @apply underline underline-offset-4;
   }
 
+  /* The current section is marked by a WHITE left edge against the hairline
+     every other entry carries. It used to be border-line-strong against
+     border-line — two hairline weights — and the collapse to one weight left
+     the active state identical to the resting one, which killed the only thing
+     section-index.js does. Ink on an edge is not a second hairline weight: it
+     is the single ink used as an edge, which is what the rail needs to say
+     "you are here" without a second grey. */
   .section-index-link[aria-current] {
-    @apply text-ink border-line;
+    @apply text-ink border-ink;
   }
 
   /* Text controls dim on press rather than deepening a fill, because they have

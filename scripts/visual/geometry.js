@@ -34,8 +34,8 @@
 // reports green forever and inflates the count of things being watched, which
 // is worse than no check: it says the ground is covered when nobody is on it.
 //
-// THE WIDTHS ARE THE SIX BREAKPOINTS, not a sample of devices. 375 stands for
-// everything below `mobile`; the rest are the first pixel of each named step.
+// THE WIDTHS ARE THE SIX BREAKPOINTS PLUS 320 AND 720 — see the constant for
+// why those two are not breakpoints and still have to be measured.
 //
 // Reads the same route table and starts the browser the same way as its
 // neighbours, so adding a page to site.toml brings it under all of them.
@@ -45,17 +45,24 @@ const { ROUTES, BASE_URL } = require("../routes");
 
 // /404 is a [[document]] rather than a [[page]], so it is not in ROUTES and
 // neither contrast nor contract ever requests it — DESIGN.md says so of both.
-// This audit walks it anyway, because the box-drawing frame that decision #41
-// is entirely about lives there: it shipped with a 26-character border around
-// 28-character content, and that defect is invisible until the lines are
-// measured. Leaving the one page the rule was written for outside the check
-// that enforces it would be its own kind of joke.
+// This audit walks it anyway. It used to be here for the box-drawing frame
+// decision #41 was written about; that frame went with the monospace faces, and
+// what is left is a route with a hero band, a pill and no gate but this one.
 const PATHS = [...ROUTES.map((r) => r.path), "/404"];
 
-// 320 is the narrowest phone still worth serving, 768 the tablet, 1440 the
-// desktop. 720 is the accessibility case: a 1440px window at 200% browser zoom,
-// and the width most likely to overflow.
-const DEFAULT_WIDTHS = [375, 600, 768, 961, 1280, 1500];
+// THE SIX BREAKPOINTS PLUS THE TWO WIDTHS THAT ARE NOT BREAKPOINTS.
+//
+// 600 / 768 / 961 / 1280 / 1500 are the first pixel of each named step, which
+// is where a responsive rule changes hands and therefore where layout breaks.
+//
+// 320 and 720 are here for a different reason and were briefly dropped when
+// this list was rewritten around the new steps. 320 is the narrowest phone
+// still worth serving — narrower than any breakpoint, so no step covers it.
+// 720 is the accessibility case: a 1440px window at 200% browser zoom, which
+// lands between `tablet` and `laptop` and is the width most likely to overflow.
+// Losing them would have narrowed the audit while the file's own comment still
+// claimed them, which is the exact shape of drift DESIGN.md opens against.
+const DEFAULT_WIDTHS = [320, 600, 720, 768, 961, 1280, 1500];
 const WIDTHS = process.env.GEOMETRY_WIDTHS
   ? process.env.GEOMETRY_WIDTHS.split(",").map((w) => Number(w.trim()))
   : DEFAULT_WIDTHS;
