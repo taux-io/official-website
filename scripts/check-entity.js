@@ -27,11 +27,10 @@
 
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("smol-toml");
+const { PAGES, DOCUMENTS } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
-const SITE = path.join(ROOT, "site.toml");
 const ORIGIN = "https://taux.io";
 
 const LD = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
@@ -406,12 +405,11 @@ async function main() {
   // build as truncated and sent the reader hunting for a generator error that
   // did not exist. Asking for each declared file by name is both stricter and
   // immune to that.
-  const declared = parse(fs.readFileSync(SITE, "utf8"));
   const wanted = [
-    ...(declared.page || []).map((p) =>
+    ...PAGES.map((p) =>
       p.path === "/" ? "index.html" : `${p.path.replace(/^\//, "")}.html`
     ),
-    ...(declared.document || []).map((d) => d.output),
+    ...DOCUMENTS.map((d) => d.output),
   ];
   const missing = wanted.filter((f) => !fs.existsSync(path.join(DIST, f)));
   if (missing.length) {

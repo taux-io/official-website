@@ -34,10 +34,13 @@
 // launching its own browser goes red rather than appearing quietly.
 
 const { launch } = require("../browser");
-const { ROUTES, BASE_URL } = require("../routes");
+const { ROUTES, DOCUMENTS, BASE_URL } = require("../routes");
 
-// /404 is a [[document]] rather than a [[page]], so it is not in ROUTES.
-const DEFAULT_PATHS = [...ROUTES.map((r) => r.path), "/404"];
+// Documents are not routes — they have no `path` — but they are served, and a
+// walk that skipped them would leave the error page unmeasured by everything.
+// The served path is derived in routes.js so that "where does 404 live" has one
+// definition rather than a literal here and two more spelled 404.html.
+const DEFAULT_PATHS = [...ROUTES.map((r) => r.path), ...DOCUMENTS.map((d) => d.servedPath)];
 
 // Chart.js sizes its canvas from the container after load, and networkidle can
 // fire mid-resize: the chart on /what-is-prompt-injection has been caught at

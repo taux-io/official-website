@@ -427,8 +427,9 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | 16 | uppercase display | ✅ | #182 |
 | 17 | single stylesheet | ✅ | #189 |
 | 18 | single walker | ✅ | #190 |
+| 19 | single route table | ✅ | #191 |
 
-**18 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
+**19 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
 
 **尚不成立的規則以關閉狀態進場，並具名寫出負責開啟它的票號**（決策 #34）。
 
@@ -473,6 +474,7 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | **封面屏 / cover screen** | 章節標題專用的 band，只有 eyebrow 與標題，沒有 CTA |
 | **樣式表 / stylesheet** | 本站出貨的**所有作者寫的 CSS**，不論來自 `src/input.css`、模板的 `<style>` 或 `style=""` 屬性。由 `scripts/stylesheet.js` 統一回答，規則不自己開檔 |
 | **作者寫的 CSS ／ 建置後的 CSS** | 兩個不同的問題，不可互換。前者是「作者寫了什麼」，由樣式表模組回答；後者是「Tailwind 有沒有真的產出」，由 `check:classes` 讀 `styles.min.css` 回答 |
+| **路由表 / route table** | `site.toml` 的唯一 JS 讀者是 `routes.js`。它匯出三種視圖：`PAGES`（未加工的 `[[page]]`，每個欄位都在）、`DOCUMENTS`（`[[document]]`，並從 `output` 導出服務路徑）、`ROUTES`（稽核視圖，只有頁、帶 `expectedStatus`）|
 | **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗。探針掛在它上面，不自己開瀏覽器；載入一次、改尺寸；暫態重量的紀律由它擁有。由 `scripts/visual/walk.js` 提供 |
 | **探針 / probe** | 掛在走訪上的一筆資料，不是一支程式：`inPage`（頁內 evaluate，回傳 findings）或 `onPage`（拿到 page handle，用於截圖這類側效） |
 | **語域** | 形式與語氣可以分開取用 |

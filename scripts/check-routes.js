@@ -34,10 +34,9 @@
 
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("smol-toml");
+const { PAGES, REDIRECTS } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
-const SITE = path.join(ROOT, "site.toml");
 const LEDGER = path.join(ROOT, "published-paths.txt");
 
 const HEADER = `# Every path this site has ever published, one per line.
@@ -52,10 +51,9 @@ const HEADER = `# Every path this site has ever published, one per line.
 `;
 
 function readSite() {
-  const site = parse(fs.readFileSync(SITE, "utf8"));
   return {
-    paths: (site.page || []).map((p) => p.path),
-    redirects: new Set((site.redirect || []).map((r) => r.from)),
+    paths: PAGES.map((p) => p.path),
+    redirects: new Set(REDIRECTS.map((r) => r.from)),
   };
 }
 
