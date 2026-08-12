@@ -73,6 +73,13 @@ const CARD = (item, fontCss, tokenCss) => `
     font-size: ${item.title.length > 34 ? 62 : 80}px;
     font-weight: 700; line-height: 1.1; letter-spacing: 0.02em;
     max-width: 940px;
+    /* Balanced rather than greedy. The home card set its title in three lines
+       with a two-character last line — issue #144. Greedy wrapping fills each
+       line to the edge and leaves whatever is left over on the last one, which
+       on a 34-character Chinese title is reliably an orphan. Balance gives
+       the lines equal length instead, so the last one is never the remainder.
+       Chromium renders these cards, so support is not in question here. */
+    text-wrap: balance;
   }
   p {
     position: relative; z-index: 1;

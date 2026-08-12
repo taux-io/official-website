@@ -1012,14 +1012,14 @@ const RULES = [
   },
   {
     name: "section cover screens",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#182 — after the 100 bands land",
     run: ruleSectionCoverScreens,
     summary: "every section heading opens a full-screen band, partials excluded",
   },
   {
     name: "uppercase display",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#182 — after the type scale lands",
     run: ruleUppercaseDisplay,
     summary: "the Latin lead is upper case and the Chinese sub never is",
