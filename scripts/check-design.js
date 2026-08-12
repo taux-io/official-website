@@ -782,6 +782,20 @@ function ruleZeroMono(files) {
       });
     }
   }
+  // A component class applying the utility reaches the same face by another
+  // road, and it is the road this site actually used: `.eyebrow` carried
+  // `@apply font-mono` for 202 elements while no template said so. Reading only
+  // the templates would have called that clean.
+  const css = readStylesheet();
+  if (css !== null) {
+    for (const m of css.matchAll(/@apply[^;]*\bfont-(mono|pixel)\b/g)) {
+      found.push({
+        file: INPUT_CSS,
+        line: css.slice(0, m.index).split("\n").length,
+        detail: `@apply font-${m[1]} — a component class reaches the removed family too`,
+      });
+    }
+  }
   return found;
 }
 
@@ -984,7 +998,7 @@ const RULES = [
   },
   {
     name: "zero mono",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#171 — the monospace faces come out with the vocabulary",
     run: ruleZeroMono,
     summary: "no template writes font-mono or font-pixel, and no family answers them",
