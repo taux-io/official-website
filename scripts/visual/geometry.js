@@ -15,18 +15,32 @@
 //      whether a given child needs `min-w-0` depends on its content rather than
 //      its classes. No source rule can decide that; this measures it.
 //
-//   2. Each button grammar's radius and the floor under every touch target. The
+//   2. Each button grammar's radius and the floor under every touch target.
+//      The radius is a token, but what a control renders after every utility,
+//      media query and inherited rule has had its turn is not something a token
+//      can promise. 44px is the floor issue 154 established.
+//
+//   3. The reading measure. 68 characters, and the unit is the point: every
+//      container here is sized in pixels, so a type-scale change moves the line
+//      length without moving a single template (issue #147). The
 //      radius is a token, but what a control renders after every utility, media
 //      query and inherited rule has had its turn is not something a token can
 //      promise. 32px is the signature shape of this vocabulary; 44px is the
 //      floor issue 154 established after the hamburger measured 40x31.
 //
-// THREE CHECKS HAVE BEEN REMOVED HERE RATHER THAN LEFT PASSING. `advance`
-// measured symbol widths inside monospace blocks, `curve` measured parallax
-// canvases exposing an edge, and `cover` asserted that a section band filled the
-// screen. The first two went with the faces and canvases the brand reset deleted
-// (decision #53); `cover` went three hours after it was written, when decision
-// #54 made cover blocks content-height. A check with nothing left to measure
+// FOUR CHECKS HAVE BEEN REMOVED HERE RATHER THAN LEFT PASSING. `advance`
+// measured symbol advances inside monospace blocks and `box` measured whether
+// the box-drawing lines in a <pre> agreed on width (decision #41); both went
+// with the monospace faces. `curve` measured parallax canvases exposing an edge
+// and went with the canvases. All three of those left with the brand reset
+// (decision #53). `cover` asserted that a section band filled the screen and
+// went three hours after it was written, when decision #54 made cover blocks
+// content-height.
+//
+// `box` WAS NOT NAMED HERE UNTIL A SPEC REVIEW ASKED WHERE IT WENT. Spec #162
+// listed it as "保留 — 與本次改動正交" and #187 counted four probes including
+// it; the count that replaced it quietly substituted `measure`, so the drop read
+// as a rename. The deletion was right; the silence was not. A check with nothing left to measure
 // reports green forever and inflates the count of things being watched, which is
 // worse than no check: it says the ground is covered when nobody is on it.
 //
@@ -70,9 +84,6 @@ const WIDTHS = process.env.GEOMETRY_WIDTHS
 
 
 
-// How long to let a suspected overflow prove it is real rather than a layout
-// still settling. See the second measurement in the route loop.
-const TRANSIENT_SETTLE_MS = 400;
 
 // A CHECK IS SWITCHED ON BY THE TICKET THAT MAKES IT SATISFIABLE — the same
 // arrangement check-design.js uses, for the same reason: landing a check
