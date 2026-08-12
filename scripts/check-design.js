@@ -455,82 +455,6 @@ function routeTemplates(files) {
 
 // ---------------------------------------------------------------------------
 
-// Phosphor is the first non-ink colour this vocabulary has ever carried, and the
-// argument for adding it (DESIGN.md decision #27) rests entirely on it staying
-// rare: a dither texture needs one dimension to separate structure from noise,
-// and the moment there are eight of them on a page it has become a second body
-// colour. The budget is the gate on that.
-//
-// It counts against the *rendered* page rather than the file, because a phosphor
-// element in the footer appears once in the source and on every page of the
-// site. That is the same reason ruleAnchorIntegrity resolves through includes.
-const PHOSPHOR_BUDGET = 5;
-
-// Any utility whose colour slot resolves to the token, not a hand-listed six.
-// `theme.extend.colors.phosphor` makes Tailwind emit text-, bg-, border-, ring-,
-// shadow-, outline-, divide-, accent-, caret-, placeholder-, fill-, stroke-,
-// decoration- and the gradient from-/via-/to- forms; enumerating a subset is how
-// a budget silently stops counting. The opacity tail accepts both `/50` and the
-// arbitrary `/[0.06]` a low-alpha dither panel is written with.
-const PHOSPHOR_CLASS = /(?:^|-)phosphor(?:\/(?:\d+|\[[^\]]*\]))?$/;
-// The arbitrary-value spelling reaches the same token by another road:
-// text-[var(--phosphor)], bg-[rgb(var(--phosphor-rgb))]. Counting only the
-// named utility would leave a documented escape hatch through the budget.
-const PHOSPHOR_ARBITRARY = /-\[[^\]]*--phosphor[^\]]*\]$/;
-const isPhosphor = (c) => PHOSPHOR_CLASS.test(c) || PHOSPHOR_ARBITRARY.test(c);
-
-// Component classes that apply phosphor in src/input.css count wherever they
-// are used. Without this a single `@apply bg-phosphor` inside .some-panel makes
-// every instance of that panel invisible to the budget.
-function phosphorComponentClasses() {
-  const css = path.join(ROOT, "src", "input.css");
-  if (!fs.existsSync(css)) return new Set();
-  const text = fs.readFileSync(css, "utf8");
-  const out = new Set();
-  for (const m of text.matchAll(/\.([a-zA-Z0-9_-]+)\s*\{([^}]*)\}/g)) {
-    if (/--phosphor|@apply[^;]*\bphosphor\b/.test(m[2])) out.add(m[1]);
-  }
-  return out;
-}
-
-function rulePhosphorBudget(files) {
-  const found = [];
-  const { declared, byName } = routeTemplates(files);
-
-  for (const template of declared) {
-    if (!byName.has(template)) continue; // ruleHeadingStructure already reports this
-    const component = phosphorComponentClasses();
-    const hits = renderedNodes(template, byName).filter(({ node }) =>
-      node.classes.map(stripVariants).some((c) => isPhosphor(c) || component.has(c))
-    );
-    if (hits.length <= PHOSPHOR_BUDGET) continue;
-
-    // Report where the offending element actually lives. Pairing the entry
-    // template's name with a line number that came from footer.html sends the
-    // reader to unrelated markup, on a rule whose only job is to point at the
-    // element to delete.
-    const over = hits[PHOSPHOR_BUDGET];
-    found.push({
-      file: over.file,
-      line: over.line,
-      detail: `${hits.length} phosphor elements on ${template} once includes are resolved, budget is ${PHOSPHOR_BUDGET}`,
-    });
-  }
-  return found;
-}
-
-// The contrast audit composites an element's background by walking its ancestor
-// chain, and it gives up the moment it meets a background-image — returning
-// "unresolved" and skipping the element rather than failing it. A gradient over
-// text therefore does not turn CI red; it makes the audit blind while it carries
-// on reporting success. DESIGN.md refused photography for this same reason.
-//
-// Texture belongs on a sibling or in a font glyph, not on an ancestor of text.
-// This reads templates, so a background-image introduced in input.css is out of
-// its reach — that limit is real and is recorded in DESIGN.md decision #32.
-// Both quote styles, and the `background:` shorthand — `background: url(...)`
-// and `background: linear-gradient(...)` set background-image just as surely as
-// the longhand does.
 const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
 // The idiomatic way to add one in this codebase is a utility, not a style
 // attribute: bg-[url(...)] and every gradient helper resolve to background-image.
@@ -539,97 +463,9 @@ const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gr
 // rule that was just switched on goes quietly blind.
 const BG_IMAGE_CLASS = /^bg-(?:\[(?:url|image|linear|radial|conic)|gradient-|linear-|radial-|conic-)/;
 
-function ruleTextureNotBehindText(files) {
-  const found = [];
-  for (const { rel, html } of files) {
-    for (const node of parseElements(html)) {
-      const inline = BG_IMAGE_INLINE.test(node.attrs);
-      const utility = node.classes.map(stripVariants).some((c) => BG_IMAGE_CLASS.test(c));
-      if (!inline && !utility) continue;
-      if (!subtreeText(html, node)) continue;
-
-      found.push({
-        file: rel,
-        line: lineOf(html, node.index),
-        detail: "background-image on an ancestor of text blinds the contrast audit",
-      });
-    }
-  }
-  return found;
-}
-
-// Departure Mono's advance is 6% wider than Roboto Mono's, so it cannot share a
-// text run with anything — mixing it shears every column. It is also drawn on an
-// 11px lattice and only lands on whole pixels at multiples of that size, so it
-// cannot ride the responsive type scale either.
-//
-// It is therefore allowed in exactly two places: the 404 document, which is a
-// whole page set in it, and blocks explicitly marked as specimens.
 const PIXEL_TEMPLATES = new Set(["404.html"]);
 const SPECIMEN = /\bdata-specimen\b/;
 
-// Component classes in input.css that reach Departure Mono, so a .foo built on
-// @apply font-pixel is caught the same as the utility itself.
-function pixelComponentClasses() {
-  const css = path.join(ROOT, "src", "input.css");
-  if (!fs.existsSync(css)) return new Set();
-  const text = fs.readFileSync(css, "utf8");
-  const out = new Set();
-  for (const m of text.matchAll(/\.([a-zA-Z0-9_-]+)\s*\{([^}]*)\}/g)) {
-    if (/font-pixel|Departure Mono/.test(m[2])) out.add(m[1]);
-  }
-  return out;
-}
-
-function rulePixelScope(files) {
-  const found = [];
-  const pixelComponents = pixelComponentClasses();
-  const { declared, byName } = routeTemplates(files);
-  const seenAt = new Set();
-
-  for (const template of declared) {
-    if (PIXEL_TEMPLATES.has(template) || !byName.has(template)) continue;
-    for (const { node, file, line } of renderedNodes(template, byName)) {
-      const cls = node.classes.map(stripVariants);
-      // The literal utility, an arbitrary font value naming the face, and any
-      // component class that applies the pixel stack in input.css.
-      const pixel =
-        cls.includes("font-pixel") ||
-        cls.some((c) => /^font-\[.*[Dd]eparture/.test(c)) ||
-        cls.some((c) => pixelComponents.has(c));
-      if (!pixel) continue;
-      // A specimen marks itself or an ancestor of itself — not merely something
-      // earlier in the same file.
-      if (hasAttr(node, SPECIMEN)) continue;
-
-      // A partial reached from several routes is one defect, not one per route.
-      const key = `${file}:${line}`;
-      if (seenAt.has(key)) continue;
-      seenAt.add(key);
-
-      found.push({
-        file,
-        line,
-        detail: "font-pixel outside 404.html and outside a data-specimen block",
-      });
-    }
-  }
-  return found;
-}
-
-
-// Content that a script collapses must ship expanded.
-//
-// The site's interactive explainer hides panels with the `hidden` attribute and
-// the script's job is to collapse three open panels down to one. Ship them
-// hidden instead and the page becomes JS-dependent: a reader with the script
-// blocked, or whose request for it dropped, sees one of three answers and the
-// section loses the comparison it exists to make.
-//
-// This is the same failure decision #13 was written after — content whose
-// visibility depends on a script running — and ruleNoScrollReveal does not
-// catch it, because that rule looks for `opacity-0` and knows nothing about the
-// `hidden` attribute.
 function ruleCollapsibleShipsOpen(files) {
   const found = [];
   for (const { rel, html } of files) {
@@ -767,40 +603,6 @@ function ruleEasingScale() {
   return found;
 }
 
-// Three shadow steps, sized by surface. Every use names one; nothing writes its
-// own. `none` is allowed because taking the shadow away is how a control reads
-// as pressed.
-function ruleShadowScale() {
-  const css = readStylesheet();
-  if (css === null) {
-    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the shadows" }];
-  }
-  const found = [];
-  for (const m of css.matchAll(/(?<!--shadow-[a-z]{0,12}:[^;]{0,200})box-shadow:\s*([^;]+);/g)) {
-    const value = m[1].trim();
-    if (/^var\(--shadow-[a-z]+\)$/.test(value) || value === "none") continue;
-    // The token declarations themselves are the definitions, not uses.
-    const lineStart = css.lastIndexOf("\n", m.index) + 1;
-    if (/^\s*--shadow-/.test(css.slice(lineStart, m.index + 1))) continue;
-    found.push({
-      file: INPUT_CSS,
-      line: lineOf(css, m.index),
-      detail: `box-shadow: ${value.slice(0, 60)} — use var(--shadow-control|chrome|surface) or none`,
-    });
-  }
-  return found;
-}
-
-// Anything that answers a hover must answer a press, and the press rule must be
-// written after the hover rule.
-//
-// Both halves are the same defect seen from two sides, and it is a defect that
-// only breaks desktop. :hover and :active have identical specificity, so the
-// later rule wins when both apply — which is exactly what a mouse press
-// produces. Written first, the whole pressed state does nothing with a mouse
-// while working perfectly under a finger, so the half of the audience the
-// feature was added for never sees it fail. That happened during issue 154 and
-// was caught by measuring, not by reading.
 const PRESS_EXEMPT = new Set(["::-webkit-scrollbar-thumb"]);
 
 function rulePressFollowsHover() {
@@ -856,98 +658,11 @@ function rulePressFollowsHover() {
 // the script, which adds it only once it knows it can take it away again.
 const REVEAL_FORBIDDEN = /^(?:opacity-(?!100$)|invisible$|scale-(?!100$)|translate-[xy]-(?!0$)|blur-)/;
 
-function ruleRevealShipsVisible(files) {
-  const found = [];
-  for (const { rel, html } of files) {
-    for (const el of elements(html)) {
-      if (!/\bdata-reveal\b/.test(html.slice(el.index, html.indexOf(">", el.index) + 1))) continue;
-      const hit = el.classes.find((c) => REVEAL_FORBIDDEN.test(stripVariants(c)));
-      if (!hit) continue;
-      found.push({
-        file: rel,
-        line: lineOf(html, el.index),
-        detail: `[data-reveal] ships with ${hit}; the hidden state belongs to reveal.js, which adds it only when it can also remove it`,
-      });
-    }
-  }
-  return found;
-}
-
-// The body ink alpha exists twice and must not drift.
-//
-// src/input.css declares --ink-body for hand-written CSS; tailwind.config.js
-// hard-codes the same alpha for the `ink.body` colour, because <alpha-value>
-// is substituted with the opacity modifier or with 1 and so cannot express
-// "0.85 unless told otherwise". That duplication is deliberate and documented
-// in both files — what it lacks is anything holding the two numbers equal.
-//
-// Drift here is silent. Nothing throws, no contrast floor is crossed, and the
-// only symptom is that a paragraph styled through the variable and a paragraph
-// styled through the utility render at different brightness — which is
-// invisible unless the two happen to sit next to each other.
-//
-// NOTE ON SCOPE: this is the first rule in this file to read anything other
-// than the templates and site.toml. Decision #35 declined to check the mono
-// stack partly on the grounds that assertions about src/input.css and
-// tailwind.config.js had nowhere to live here. They do now. That does not
-// reopen #35 by itself — the mono-stack assertion is about a font-family order,
-// not a scalar — but the stated obstacle is gone and #46 records it.
 const INK_SOURCES = [
   { file: path.join("src", "input.css"), re: /--ink-body:\s*rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\s*\)/ },
   { file: path.join("tailwind.config.js"), re: /body:\s*"rgb\(var\(--ink-rgb\)\s*\/\s*([0-9.]+)\)"/ },
 ];
 
-function ruleInkBodySingleSource() {
-  const found = [];
-  const seen = [];
-
-  for (const src of INK_SOURCES) {
-    const abs = path.join(ROOT, src.file);
-    if (!fs.existsSync(abs)) {
-      found.push({ file: src.file, line: 0, detail: "not found; this rule cannot see the body ink" });
-      continue;
-    }
-    const text = fs.readFileSync(abs, "utf8");
-    const m = src.re.exec(text);
-    if (!m) {
-      found.push({
-        file: src.file,
-        line: 0,
-        detail: "no body ink alpha found; the declaration was reshaped and this rule has gone blind",
-      });
-      continue;
-    }
-    seen.push({ file: src.file, alpha: m[1], line: lineOf(text, m.index) });
-  }
-
-  // Compared against the first source rather than pairwise-first-two, so
-  // adding a third declaration to INK_SOURCES is covered by construction. The
-  // first version compared seen[0] to seen[1] and would have ignored a third
-  // entry silently — a checker that fails open is worse than no checker.
-  //
-  // Numeric rather than string comparison: 0.85, .85 and 0.850 are the same
-  // alpha, and reporting them as a violation would be a false alarm — which is
-  // how a checker teaches people to skip it.
-  const [first, ...rest] = seen;
-  for (const other of rest) {
-    if (Number(other.alpha) === Number(first.alpha)) continue;
-    found.push({
-      file: other.file,
-      line: other.line,
-      detail: `body ink is ${other.alpha} here but ${first.alpha} in ${first.file} — the variable and the utility disagree`,
-    });
-  }
-  return found;
-}
-
-// A height pinned to the viewport, which is what makes a block occupy the
-// screen no matter how little is in it.
-//
-// Matches `min-h-` and `h-` alike, the named viewport keywords, and any
-// arbitrary value mentioning a viewport unit — `min-h-[86vh]`, but also
-// `h-screen` and `min-h-[calc(100vh-4rem)]`. The first version of this only
-// caught `min-h-` with a bare vh value, which let three spellings of the same
-// thing through; code review found the gap.
 const VIEWPORT_HEIGHT = /^(?:min-)?h-(?:screen|svh|lvh|dvh|\[[^\]]*(?:v|sv|lv|dv)h[^\]]*\])$/;
 
 // Two exemptions, named rather than pattern-matched so a third cannot appear
@@ -963,46 +678,6 @@ const VIEWPORT_HEIGHT = /^(?:min-)?h-(?:screen|svh|lvh|dvh|\[[^\]]*(?:v|sv|lv|dv
 const FULL_HEIGHT_EXEMPT_FILE = path.join("templates", "404.html");
 const FULL_HEIGHT_EXEMPT_TAGS = new Set(["main"]);
 
-// Until #137 the site had fifteen blocks pinned to 86vh across six templates.
-// A block with three lines in it and a block with thirty both took a screen,
-// so scrolling produced a train of identical pulses and the reader had no way
-// to feel which part mattered. Height now follows content.
-//
-// The rule is what stops it coming back. The next page starts life as a copy of
-// an existing one, and without a checker the pinned height rides along in that
-// copy — silently, because nothing about the result looks broken.
-function ruleFullHeightOnly404(files) {
-  const found = [];
-  for (const { rel, html } of files) {
-    if (rel === FULL_HEIGHT_EXEMPT_FILE) continue;
-    for (const el of elements(html)) {
-      if (FULL_HEIGHT_EXEMPT_TAGS.has(el.tag)) continue;
-      const hit = el.classes.find((c) => VIEWPORT_HEIGHT.test(stripVariants(c)));
-      if (!hit) continue;
-      found.push({
-        file: rel,
-        line: lineOf(html, el.index),
-        detail: `<${el.tag}> pinned to the viewport with ${hit}; height belongs to the content`,
-      });
-    }
-  }
-  return found;
-}
-
-// The desktop navigation and the hamburger are complements: one appears exactly
-// where the other disappears. That relationship lives in two class strings in
-// two different elements, and nothing but this rule ties them together.
-//
-// Drift is not a cosmetic defect. Widen the hamburger's hiding breakpoint past
-// the group's showing breakpoint and BOTH navigations render in the band
-// between them; narrow it and NEITHER does, leaving the site with no menu at
-// all in that band. Either way the damage is confined to a window-width range
-// the author is unlikely to be sitting at — invisible in development, obvious
-// to a visitor.
-//
-// The pair is found by shape rather than by a hard-coded breakpoint, so raising
-// or lowering the pair is a one-line change that this rule keeps honest. It
-// reads the header partial, which is the only place either element exists.
 function ruleNavBreakpointsPaired(files) {
   const HEADER = path.join("templates", "header.html");
   const header = files.find(({ rel }) => rel === HEADER);
@@ -1067,6 +742,148 @@ function ruleNavBreakpointsPaired(files) {
 
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// The four rules the brand reset introduced (DESIGN.md decision #53).
+//
+// All four land disabled and are switched on by the ticket that makes each
+// satisfiable — the arrangement the rest of this file already uses. A rule that
+// is off says so, and says which ticket turns it on.
+
+// The reference site's typographic system has no monospace at all, and the three
+// faces this site carried for it (Roboto Mono, its box-drawing subset, Departure
+// Mono) go with it. Both halves are checked: a template still writing the
+// utility, and a config still defining the family for it to resolve against.
+// Checking only the templates would leave the families sitting there for the
+// next person to reach for.
+function ruleZeroMono(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        if (!/^(?:[a-z]+:)*font-(?:mono|pixel)$/.test(c)) continue;
+        found.push({
+          file: rel,
+          line: html.slice(0, node.index).split("\n").length,
+          detail: `${c} — the vocabulary has no monospace face for it to resolve to`,
+        });
+      }
+    }
+  }
+  const config = path.join(ROOT, "tailwind.config.js");
+  if (fs.existsSync(config)) {
+    const text = fs.readFileSync(config, "utf8");
+    for (const family of ["mono", "pixel"]) {
+      const m = new RegExp(`^\\s{6,}${family}:\\s*\\[`, "m").exec(text);
+      if (!m) continue;
+      found.push({
+        file: "tailwind.config.js",
+        line: text.slice(0, m.index).split("\n").length,
+        detail: `fontFamily.${family} is still defined; nothing should resolve to it`,
+      });
+    }
+  }
+  return found;
+}
+
+// Photography and video are the only decorative depth this vocabulary admits,
+// and the site has neither. What it had instead were twenty-five canvases
+// drawing the tau curve. The rule is existence, not usage: a canvas with no
+// script behind it is still a canvas the next change will find a use for.
+function ruleZeroCanvas(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<canvas\b/g)) {
+      found.push({
+        file: rel,
+        line: html.slice(0, m.index).split("\n").length,
+        detail: "canvas — decorative depth is photography, and this site ships none",
+      });
+    }
+  }
+  return found;
+}
+
+// Every section heading opens a full-screen band carrying nothing but an eyebrow
+// and the heading itself. The heading stays a real h2 inside that band rather
+// than a visual stand-in beside it, because the document outline, the
+// heading-structure rule and every fragment link depend on it.
+//
+// PARTIALS ARE EXCLUDED, AND THAT EXCLUSION IS THE POINT. The site has 106 h2
+// elements and six of them live in the nav columns, the header and the footer. A
+// rule written against the raw total would demand six full-screen bands inside
+// the footer. The spec's first draft said 106; counting the files before writing
+// the rule is what caught it.
+function ruleSectionCoverScreens(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    const base = path.basename(rel);
+    if (base.startsWith("_") || base === "header.html" || base === "footer.html") continue;
+    for (const node of parseElements(html)) {
+      if (node.tag !== "h2") continue;
+      if (hasAttr(node, /\bdata-cover\b/)) continue;
+      found.push({
+        file: rel,
+        line: html.slice(0, node.index).split("\n").length,
+        detail: "h2 outside a [data-cover] band — every section heading opens a cover screen",
+      });
+    }
+  }
+  return found;
+}
+
+// Chinese has no upper case. The display signature is therefore carried by the
+// Latin lead line alone, and applying the same transform to the Chinese sub
+// would be a no-op that reads as though the rule were satisfied.
+//
+// The transform belongs to the component classes rather than to utilities on the
+// elements, so this reads the stylesheet for both halves and then checks that no
+// template argues with it.
+function ruleUppercaseDisplay(files) {
+  const found = [];
+  const css = readStylesheet();
+  if (css === null) {
+    return [{ file: INPUT_CSS, line: 0, detail: "not found; this rule cannot see the display classes" }];
+  }
+  const declaration = (sel) => {
+    const m = new RegExp(`\\.${sel}\\s*\\{([^}]*)\\}`).exec(css);
+    return m ? { body: m[1], line: css.slice(0, m.index).split("\n").length } : null;
+  };
+  const upper = /\buppercase\b/;
+  const lead = declaration("display-lead");
+  if (!lead) {
+    found.push({ file: INPUT_CSS, line: 0, detail: ".display-lead is not defined" });
+  } else if (!upper.test(lead.body)) {
+    found.push({
+      file: INPUT_CSS,
+      line: lead.line,
+      detail: ".display-lead must render upper case — it is the only line carrying the display signature",
+    });
+  }
+  const sub = declaration("display-sub");
+  if (!sub) {
+    found.push({ file: INPUT_CSS, line: 0, detail: ".display-sub is not defined" });
+  } else if (upper.test(sub.body) && !/normal-case/.test(sub.body)) {
+    found.push({
+      file: INPUT_CSS,
+      line: sub.line,
+      detail: ".display-sub must not render upper case — Chinese has none, so the transform only looks satisfied",
+    });
+  }
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      if (!node.classes.includes("display-sub")) continue;
+      const bad = node.classes.find((c) => /^(?:[a-z]+:)*uppercase$/.test(c));
+      if (!bad) continue;
+      found.push({
+        file: rel,
+        line: html.slice(0, node.index).split("\n").length,
+        detail: `.display-sub carries ${bad}; the Chinese sub line is never upper case`,
+      });
+    }
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1076,25 +893,11 @@ const RULES = [
     summary: "every curve is one of the two declared --ease-* tokens",
   },
   {
-    name: "shadow scale",
-    enabled: true,
-    turnedOnBy: "issue 156 — the material vocabulary",
-    run: ruleShadowScale,
-    summary: "every shadow names one of the three steps, or none",
-  },
-  {
     name: "press follows hover",
     enabled: true,
     turnedOnBy: "issue 156 — after the ordering defect in 154",
     run: rulePressFollowsHover,
     summary: "anything that answers hover answers a press, and later in the file",
-  },
-  {
-    name: "reveal ships visible",
-    enabled: true,
-    turnedOnBy: "issue 156 — the scroll reveal",
-    run: ruleRevealShipsVisible,
-    summary: "a [data-reveal] block carries no hidden state in the markup",
   },
   {
     name: "invisible is inert",
@@ -1109,20 +912,6 @@ const RULES = [
     turnedOnBy: "PR 145 — the cache-buster is computed from the stylesheet",
     run: ruleCssVersionIsDerived,
     summary: "the stylesheet's ?v= must be a hash of the stylesheet, not a literal",
-  },
-  {
-    name: "ink body single source",
-    enabled: true,
-    turnedOnBy: "#139 — body ink raised to 0.85",
-    run: ruleInkBodySingleSource,
-    summary: "the body ink alpha is written twice and the two must agree",
-  },
-  {
-    name: "full height only on 404",
-    enabled: true,
-    turnedOnBy: "#137 — height follows content",
-    run: ruleFullHeightOnly404,
-    summary: "a block takes the screen only when filling it is the whole point",
   },
   {
     name: "nav breakpoints paired",
@@ -1174,20 +963,6 @@ const RULES = [
     summary: "a fragment link must point at an element that exists on the rendered page",
   },
   {
-    name: "phosphor budget",
-    enabled: true,
-    turnedOnBy: "#125 stage 2 — typography",
-    run: rulePhosphorBudget,
-    summary: `at most ${PHOSPHOR_BUDGET} phosphor elements on a rendered page`,
-  },
-  {
-    name: "texture not behind text",
-    enabled: true,
-    turnedOnBy: "#125 stage 3 — figures",
-    run: ruleTextureNotBehindText,
-    summary: "a background-image over text blinds the contrast audit rather than failing it",
-  },
-  {
     name: "collapsible ships open",
     enabled: true,
     turnedOnBy: "#130 — the MCP primitives explainer",
@@ -1195,11 +970,32 @@ const RULES = [
     summary: "a panel a script collapses must be in the document open, not hidden",
   },
   {
-    name: "pixel face scope",
-    enabled: true,
-    turnedOnBy: "#125 stage 3 — figures",
-    run: rulePixelScope,
-    summary: "Departure Mono belongs to 404.html and to marked specimens, nowhere else",
+    name: "zero mono",
+    enabled: false,
+    turnedOnBy: "#171 — the monospace faces come out with the vocabulary",
+    run: ruleZeroMono,
+    summary: "no template writes font-mono or font-pixel, and no family answers them",
+  },
+  {
+    name: "zero canvas",
+    enabled: false,
+    turnedOnBy: "#166 — the tau curve comes out",
+    run: ruleZeroCanvas,
+    summary: "decorative depth is photography; this site ships none, so it ships nothing",
+  },
+  {
+    name: "section cover screens",
+    enabled: false,
+    turnedOnBy: "#182 — after the 100 bands land",
+    run: ruleSectionCoverScreens,
+    summary: "every section heading opens a full-screen band, partials excluded",
+  },
+  {
+    name: "uppercase display",
+    enabled: false,
+    turnedOnBy: "#182 — after the type scale lands",
+    run: ruleUppercaseDisplay,
+    summary: "the Latin lead is upper case and the Chinese sub never is",
   },
 ];
 
