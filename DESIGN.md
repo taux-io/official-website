@@ -212,7 +212,7 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 
 ### 字重階梯
 
-**300 / 400 / 600 / 700，刻意沒有 500。** 內文永遠 400，行內強調 600，display 600。
+**300 / 400 / 600 / 700，刻意沒有 500。** 內文永遠 400，行內強調 600，display 600。由 `weight ladder` 規則守著——`font-medium` 是 500，寫這條規則時它有 19 個使用者，全部是強調，因此改成 600。
 
 ---
 
@@ -340,8 +340,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`hero-display`）與**�
 | 18 | single walker | ✅ | #190 |
 | 19 | single route table | ✅ | #191 |
 | 20 | states differ | ✅ | #192 |
+| 21 | weight ladder | ✅ | #194 |
 
-**20 條，全部啟用。** 三條在本版改變行為：`tracking scale` 換值、`radius on controls only` 改寫成 `radius scale`、`uppercase display` 反轉成 `sentence case display`。**四個架構模組與守著它們的三條規則（17–19）完全不動**——它們問的是 CSS 寫在哪、頁怎麼走訪、路由表誰讀，與設計語言無關。這是兩次品牌重置之間唯一沒有動過的東西。
+**21 條，全部啟用。** 三條在本版改變行為：`tracking scale` 換值、`radius on controls only` 改寫成 `radius scale`、`uppercase display` 反轉成 `sentence case display`。**四個架構模組與守著它們的三條規則（17–19）完全不動**——它們問的是 CSS 寫在哪、頁怎麼走訪、路由表誰讀，與設計語言無關。這是兩次品牌重置之間唯一沒有動過的東西。
 
 `geometry` 的探針從四支變三支：`cover` 刪除（封面屏不再滿一屏），`overflow`、`control`、`measure` 保留。
 
@@ -353,7 +354,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`hero-display`）與**�
 - **渲染層的 no-op 狀態**（狀態值等於元素本來就從祖先算出來的值）。`states differ` 只做原始碼層。
 - **平台字體差異。** SF Pro 在 Windows 上不存在，而沒有東西量得出「這台機器看到的是不是 SF Pro」。這是決策 #54 明知接受的代價。
 - **間距的八階刻度。** 389 個 utility 落在刻度外。
-- **分享卡的字面。** 19 張 PNG 是 commit 進 repo 的位元組，而字體不再自架之後，卡片的字面取決於**建置它的機器**——macOS 上是 SF Pro，Linux runner 上是 fontconfig 挑到的任何東西。沒有東西檢查這件事，而它正是 `build-og.js` 檔頭警告的那一類失敗。
+- **分享卡在不同機器上會不會長得一樣。** 建置現在會讀回每張卡實際渲染到的字族，並在它不是堆疊裡任何一個具名項目時（靜默替換）失敗——但**這不保證兩台機器產出相同的字面**：堆疊的第二項是 `system-ui`，而它在本機是 SF Pro、Windows 是 Segoe UI、Linux runner 是 fontconfig 挑到的東西，那正是 `system-ui` 的用意。機器依賴沒有被關掉，它被**記錄**了：建置會印出解析到的字族。要真的關掉得為卡片單獨自架一支字體，而那是決策 #54 選擇不做的事。
 
 ---
 

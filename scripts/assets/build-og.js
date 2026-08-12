@@ -101,18 +101,27 @@ async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const items = routes();
 
-  // NOTHING IS INLINED ANY MORE, and that has a cost worth naming.
+  // THE CARD'S FACE MUST NOT DEPEND ON THE MACHINE THAT BUILT IT.
   //
-  // The four D-DIN faces used to be embedded as data URIs so a card rendered
-  // identically on any machine. Decision #54 dropped self-hosted fonts for SF
-  // Pro, which exists on Apple platforms and nowhere else — so THE CARD'S FACE
-  // NOW DEPENDS ON THE MACHINE THAT BUILT IT. These PNGs are committed bytes:
-  // built on macOS they are SF Pro, built on a Linux runner they are whatever
-  // fontconfig picks.
+  // These PNGs are committed bytes. The site dropped self-hosted faces for SF
+  // Pro (decision #54), which exists on Apple platforms and nowhere else — so a
+  // card built on macOS was SF Pro and the same card built on a Linux runner was
+  // whatever fontconfig picked. Nothing went red either way, which is the exact
+  // failure this file's header warns about: a share card is the one asset seen
+  // away from the site and never noticed to be wrong in a browser.
   //
-  // Nothing checks this. It is the same class of failure build-og's own header
-  // warns about — a share card is the one asset seen away from the site and
-  // never noticed to be wrong in a browser.
+  // WHAT THIS ACTUALLY GUARANTEES, stated narrowly on purpose.
+  //
+  // The build now reads back the family each card rendered in and fails if it is
+  // one the stack never named — a silent substitution. It does NOT guarantee two
+  // machines produce the same face: the stack's second entry is `system-ui`,
+  // which resolves to SF Pro here, Segoe UI on Windows and whatever fontconfig
+  // picks on a Linux runner, and that is the point of `system-ui`.
+  //
+  // So the machine dependency is not closed, it is RECORDED — the build prints
+  // the family it resolved, so a card set regenerated somewhere else says so in
+  // the log instead of only in the pixels. Closing it would mean self-hosting a
+  // face for the cards alone, which is the thing decision #54 chose against.
   const fontCss = "";
 
   // The tokens come from the stylesheet module rather than a second reader.
@@ -144,16 +153,41 @@ async function main() {
   });
   const page = await context.newPage();
 
+  const families = new Set();
   for (const item of items) {
     await page.setContent(CARD(item, fontCss, tokenCss), { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(120);
+    // What the renderer actually resolved, per card. A card that came back in a
+    // family the stack never named means the build machine substituted
+    // something — the failure mode this whole comment block exists for.
+    const resolved = await page.evaluate(() => {
+      const el = document.querySelector("h1");
+      const declared = getComputedStyle(el).fontFamily
+        .split(",")
+        .map((f) => f.trim().replace(/^["']|["']$/g, "").toLowerCase());
+      const canvas = document.createElement("canvas").getContext("2d");
+      const width = (family) => {
+        canvas.font = `600 80px ${family}`;
+        return canvas.measureText("TauX Empower").width;
+      };
+      const fallback = width("monospace");
+      const named = declared.find((f) => f && width(`"${f}", monospace`) !== fallback);
+      return named ?? null;
+    });
+    if (!resolved) {
+      throw new Error(
+        `build-og: ${item.name} rendered in a family the stack does not name — ` +
+          "this machine substituted a face, and these PNGs are committed bytes"
+      );
+    }
+    families.add(resolved);
     await page.screenshot({ path: path.join(OUT_DIR, `${item.name}.png`) });
     console.log(`  ${item.name}.png  ${item.title}`);
   }
 
   await browser.close();
-  console.log(`\n${items.length} cards written to static/og/`);
+  console.log(`\n${items.length} cards written to static/og/ in ${[...families].join(", ")}`);
 }
 
 main().catch((err) => {
