@@ -98,6 +98,49 @@ const LINE_WIDTH_TOLERANCE_PX = 3;
 // still settling. See the second measurement in the route loop.
 const TRANSIENT_SETTLE_MS = 400;
 
+// The reveal's failure paths, each a different way for the script to not do
+// its job. Every one must end with the text painted.
+//
+// Issue 156 overturned the ban on scroll reveal. It did not overturn the reason
+// for it: an IntersectionObserver once left nineteen elements on the home page
+// permanently invisible, because the visibility of text depended on a script
+// succeeding. The safe form inverts that — nothing ships hidden, the hidden
+// state is added by the script only once it is running, and a timer removes it
+// regardless of the observer.
+//
+// check:design cannot see any of this. It reads what the author wrote, and the
+// whole question here is what the browser ends up painting when something goes
+// wrong. Issue 156 measured these by hand, and by-hand is a plan that works
+// exactly once.
+const REVEAL_SCENARIOS = [
+  {
+    name: "reveal.js blocked (404 / CSP / network)",
+    context: {},
+    block: true,
+  },
+  {
+    name: "JavaScript disabled",
+    context: { javaScriptEnabled: false },
+  },
+  {
+    name: "prefers-reduced-motion: reduce",
+    context: { reducedMotion: "reduce" },
+  },
+  {
+    name: "loaded and never scrolled, past the failsafe",
+    context: {},
+    settleMs: 1800,
+  },
+  {
+    name: "IntersectionObserver absent",
+    context: {},
+    // Removed before any of the page's own script runs, so reveal.js sees a
+    // browser without it and must decline to hide anything.
+    init: "delete window.IntersectionObserver;",
+    settleMs: 1800,
+  },
+];
+
 // A CHECK IS SWITCHED ON BY THE TICKET THAT MAKES IT SATISFIABLE — the same
 // arrangement check-design.js uses, for the same reason: landing a check
 // disabled and flipping it in the change that earns it keeps CI green commit to
@@ -114,6 +157,7 @@ const CHECKS = {
   box: { enabled: true, turnedOnBy: "issue 148" },
   curve: { enabled: true, turnedOnBy: "issue 148" },
   overflow: { enabled: true, turnedOnBy: "issue 151" },
+  reveal: { enabled: true, turnedOnBy: "issue 156 — the reveal that must not hide" },
 };
 
 // ---------------------------------------------------------------------------
@@ -227,6 +271,23 @@ function measureMonoInPage({ advanceTolerance, lineTolerance }) {
 // the right edge of the viewport, whether or not that makes the page scroll.
 // The scroll check stays as well, because anything escaping <main> — a fixed
 // header, an overlay — would scroll rather than clip.
+// Every [data-reveal] block that is not currently readable. Opacity rather
+// than a class name, because what matters is what the reader can see, not what
+// the markup believes.
+function measureHiddenRevealsInPage() {
+  const out = [];
+  for (const el of document.querySelectorAll("[data-reveal]")) {
+    const cs = getComputedStyle(el);
+    const opacity = parseFloat(cs.opacity);
+    if (opacity >= 0.99) continue;
+    out.push({
+      opacity: +opacity.toFixed(2),
+      text: (el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40),
+    });
+  }
+  return out;
+}
+
 function measureOverflowInPage() {
   const de = document.documentElement;
   const limit = de.clientWidth;
@@ -348,9 +409,11 @@ async function main() {
   const browser = await launch();
   const failures = [];
   const curveRoutes = [];
+  const revealRoutes = [];
   let monoBlocks = 0;
   let overflowChecks = 0;
   let curveChecks = 0;
+  let revealChecks = 0;
 
   // One load per route. Overflow is pure layout, so resizing the viewport
   // re-measures it without paying for a navigation each time — the difference
@@ -372,6 +435,9 @@ async function main() {
 
       if (await page.evaluate(() => !!document.querySelector("canvas[data-parallax]"))) {
         curveRoutes.push(path);
+      }
+      if (await page.evaluate(() => !!document.querySelector("[data-reveal]"))) {
+        revealRoutes.push(path);
       }
 
       for (const width of WIDTHS) {
@@ -427,6 +493,34 @@ async function main() {
     await context.close();
   }
 
+  // The reveal, once per failure path. Only the routes that carry one — the
+  // other fifteen have nothing to hide and nothing to prove.
+  for (const scenario of REVEAL_SCENARIOS) {
+    if (!revealRoutes.length) break;
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      ...scenario.context,
+    });
+    if (scenario.init) await context.addInitScript(scenario.init);
+    const page = await context.newPage();
+    if (scenario.block) await page.route("**/reveal.js*", (r) => r.abort());
+
+    for (const path of revealRoutes) {
+      await page.goto(BASE_URL + path, { waitUntil: "networkidle" });
+      if (scenario.settleMs) await page.waitForTimeout(scenario.settleMs);
+      const hidden = await page.evaluate(measureHiddenRevealsInPage);
+      revealChecks++;
+      for (const h of hidden) {
+        failures.push({
+          where: `${path} — ${scenario.name}`,
+          kind: "reveal",
+          detail: `[data-reveal] left at opacity ${h.opacity}: "${h.text}". Decision #13: nineteen elements were lost this way once`,
+        });
+      }
+    }
+    await context.close();
+  }
+
   await browser.close();
 
   console.log(`\n${monoBlocks} monospace blocks checked for symbol advance and box-line agreement`);
@@ -441,6 +535,10 @@ async function main() {
   if (narrowed) {
     console.log(`  NARROWED by GEOMETRY_WIDTHS — the default set is ${DEFAULT_WIDTHS.join(", ")}`);
   }
+  console.log(
+    `${revealChecks} reveal checks (${revealRoutes.length} of ${PATHS.length} paths carry a [data-reveal] block ` +
+      `x ${REVEAL_SCENARIOS.length} failure paths: ${REVEAL_SCENARIOS.map((s) => s.name).join("; ")})`
+  );
   console.log(
     `${curveChecks} scroll positions checked for canvas edges ` +
       `(${curveRoutes.length} of ${PATHS.length} paths carry a parallax canvas, ` +
