@@ -64,8 +64,12 @@
   --radius: 0px;
   /* Corners are for things you can touch. Buttons, inputs, selects, tags — the
      things that would lose their edge entirely without one. Layout stays
-     square. */
-  --radius-control: 4px;
+     square.
+
+     32px, not the 4px it was: the ghost pill is the signature shape of the
+     vocabulary this site now follows, and with the 80px display step declined
+     it is the most visible thing the reset actually adds rather than removes. */
+  --radius-control: 32px;
 
 
   /* ---- Motion and material, added by issue 156. ----------------------------
@@ -232,9 +236,11 @@
     padding: 0 20px;
     gap: 0.5rem;
     color: var(--ink);
-    border: 1px solid var(--line);
+    /* White, not the hairline. A ghost pill is an outline of the ink it
+       carries; a hairline border would read as a disabled control. */
+    border: 1px solid var(--ink);
     border-radius: var(--radius-control);
-    background-color: rgb(0 0 0 / 0.5);
+    background-color: transparent;
     /* 200ms, not the 500ms this carried before issue 154.
        Half a second to acknowledge a press is the thing Apple's fluid-interface
        talks call falling off a cliff: the control answers long after the finger

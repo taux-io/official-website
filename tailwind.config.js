@@ -81,8 +81,8 @@ module.exports = {
           { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "400" },
         ],
         button: [
-          "0.75rem",
-          { lineHeight: "1", letterSpacing: "0", fontWeight: "400" },
+          "0.8125rem",
+          { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "700" },
         ],
         // 1.6 rather than Tailwind's 1.5. CJK sets denser than Latin and reads
         // better with the extra leading over a long measure.
@@ -100,8 +100,16 @@ module.exports = {
         // enlarges every rem-based gap and max-width by the same factor, and
         // #137 had just tightened that spacing on purpose. The two moves would
         // have cancelled.
-        base: ["1.0625rem", { lineHeight: "1.6", letterSpacing: "0" }],
-        lg: ["1.1875rem", { lineHeight: "1.6", letterSpacing: "0" }],
+        // Body is two steps and both are 16px: 1.5 for running text,
+        // 1.7 for a marketing lead. The 17/19/22 ladder decision #45 raised
+        // for dense Chinese came back down with the brand reset — the cost,
+        // and which value to move if long passages smear, is in decision #53.
+        base: ["1rem", { lineHeight: "1.5", letterSpacing: "0" }],
+        lg: ["1rem", { lineHeight: "1.7", letterSpacing: "0" }],
+        // NOT body. 22px is the display-sub step — the Chinese sub line and
+        // the h3s and chrome that sit at that weight. It kept its Tailwind
+        // name because 84 elements wear it; what changed is which family it
+        // belongs to, and prose moved off it in the same commit.
         xl: ["1.375rem", { lineHeight: "1.5", letterSpacing: "0" }],
 
         // LINE-HEIGHT BELOW 1 IS FOR LATIN ONLY. A CJK glyph fills its em box
@@ -125,7 +133,7 @@ module.exports = {
         // nothing to attribute a regression to.
         "display-sm": ["2.25rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "700" }],
         "display-md": ["3rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
-        "display-lg": ["3.75rem", { lineHeight: "1", letterSpacing: "-0.017em", fontWeight: "700" }],
+        "display-lg": ["3.75rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
       },
       maxWidth: {
         // 68ch is the reading measure for the long-form pages; CJK runs denser

@@ -40,7 +40,7 @@ const SITE = path.join(ROOT, "site.toml");
 // value outside this set is a one-off, which is the thing the table exists to
 // prevent: the reference site's tracking changes sign with size, so it is one
 // scale rather than a handful of independently chosen numbers.
-const TRACKING_SCALE = new Set(["0", "0em", "0.09em", "0.02em", "-0.017em"]);
+const TRACKING_SCALE = new Set(["0", "0em", "0.09em", "0.02em"]);
 
 // Controls are the only thing that takes a corner radius or an outline —
 // buttons, inputs, selects, tags. Everything else is layout, and layout is
