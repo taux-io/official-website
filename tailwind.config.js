@@ -7,6 +7,23 @@ module.exports = {
       // palette change is one file and seven variables rather than a sweep
       // through seventeen templates. The <alpha-value> placeholder keeps
       // Tailwind's opacity modifiers working: bg-surface/50, text-ink/70.
+      // Six named steps, added ALONGSIDE Tailwind's defaults rather than
+      // replacing them. Redefining `screens` changes what `md:` means at 221
+      // call sites at once, and no slice of that can land green on its own — so
+      // this is the expand half of an expand/migrate/contract: both vocabularies
+      // answer, templates move over in batches, and the defaults come out last.
+      //
+      // The mapping is close to exact where it matters: md 768 → tablet 768 and
+      // xl 1280 → desktop 1280 are the same pixel, sm 640 → mobile 600 and
+      // lg 1024 → laptop 961 move by less than the gap to the next step.
+      screens: {
+        mobile: "600px",
+        tablet: "768px",
+        laptop: "961px",
+        desktop: "1280px",
+        wide: "1500px",
+      },
+
       colors: {
         // One surface, one ink, one hairline. The three-step surface, the three
         // alpha steps of ink and the two hairline weights all collapsed with the
