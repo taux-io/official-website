@@ -428,8 +428,9 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | 17 | single stylesheet | ✅ | #189 |
 | 18 | single walker | ✅ | #190 |
 | 19 | single route table | ✅ | #191 |
+| 20 | states differ | ✅ | #192 |
 
-**19 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
+**20 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
 
 **尚不成立的規則以關閉狀態進場，並具名寫出負責開啟它的票號**（決策 #34）。
 
@@ -452,7 +453,7 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 - **密集中文在純黑上的暈光。** 這是本次改版真正承擔的風險，而 `contrast` 看不到它——21.00:1 不是對比不足而是過量，沒有任何探針量得出「讀十分鐘會不會糊」。要靠人看。
 - ~~**模板自己的 `<style>` 區塊。**~~ **已由樣式表模組涵蓋**（#189）。`src/input.css`、模板的 `<style>` 與 `style=""` 屬性現在是同一份宣告清單，帶檔名與行號；`var()` 解析後的值與作者寫的原文都在。
 - **模板裡的資源連結。** `header.html` 曾有一條指向已刪除字體的 `<link rel="preload">`，19 條路由都在要一個 404 的檔案。`zero mono` 讀 class 與設定檔，看不到 `href`；抓到它的是 `contract`。沒有原始碼層的規則守這件事。
-- **一個狀態宣告有沒有真的改變任何東西。** `press follows hover` 檢查 `:active` 有沒有寫在 `:hover` 之後，不檢查兩者是否不同；`check:classes` 檢查 class 有沒有對應的規則，不檢查那條規則有沒有效果。品牌重置一次做出六處這種 no-op（四類連結 hover、章節索引的 current、16 個表格列 hover），全部由程式碼審查抓到而不是閘門。
+- ~~**一個狀態宣告有沒有真的改變任何東西。**~~ **原始碼層已由 `states differ` 涵蓋**（#192）：CSS 狀態規則裡與基底相同的宣告、以及同一個元素上同時寫著 `X` 與 `hover:X`。**渲染層那一類仍然沒有東西檢查**——一個狀態的值等於元素本來就從祖先算出來的值（`hover:bg-surface` 掛在頁面自己的底色上就是這樣）。`:hover` 無法從頁內強制、要走 CDP，而一個在某個斷點刻意相同的狀態會誤報；一支會亂叫的 gate 正是本文件開場反對的東西。留給人看。
 - **`<canvas>` 裡畫了什麼。** `zero canvas` 擋新的 canvas，`contrast` 與 `geometry` 都看不進 canvas。圖表的格線曾因為 `--line-rgb` 從「要乘 alpha 的近白墨色」變成「實色髮絲線」而整組消失，而三支腳本沒有一支會紅。
 - **Tailwind 內建預設的殘留。** `fontFamily.mono` 是從 `theme.extend` 刪掉的，而 extend 只做加法——Tailwind 自己的 `mono` 仍在底下，`font-mono` 依然解析得出東西。擋住等寬字的是模板掃描與 `@apply` 掃描，不是設定檔那一半。
 - **間距的八階刻度。** 389 個 utility 落在刻度外，見版面章。沒有規則守著，因為「哪一個值該吸附到哪一階」需要看它在版面裡的角色，讀 class 字串判斷不了。
@@ -475,6 +476,7 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | **樣式表 / stylesheet** | 本站出貨的**所有作者寫的 CSS**，不論來自 `src/input.css`、模板的 `<style>` 或 `style=""` 屬性。由 `scripts/stylesheet.js` 統一回答，規則不自己開檔 |
 | **作者寫的 CSS ／ 建置後的 CSS** | 兩個不同的問題，不可互換。前者是「作者寫了什麼」，由樣式表模組回答；後者是「Tailwind 有沒有真的產出」，由 `check:classes` 讀 `styles.min.css` 回答 |
 | **路由表 / route table** | `site.toml` 的唯一 JS 讀者是 `routes.js`。它匯出三種視圖：`PAGES`（未加工的 `[[page]]`，每個欄位都在）、`DOCUMENTS`（`[[document]]`，並從 `output` 導出服務路徑）、`ROUTES`（稽核視圖，只有頁、帶 `expectedStatus`）|
+| **狀態 / state** | `:hover`、`:active`、`:focus-visible`、`[aria-*]` 與它們的 Tailwind variant。**一個狀態的宣告必須與它覆蓋的那個值不同**，否則它宣告了回饋卻不產生回饋（`states differ` 規則，逐條宣告檢查而不是整條規則） |
 | **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗。探針掛在它上面，不自己開瀏覽器；載入一次、改尺寸；暫態重量的紀律由它擁有。由 `scripts/visual/walk.js` 提供 |
 | **探針 / probe** | 掛在走訪上的一筆資料，不是一支程式：`inPage`（頁內 evaluate，回傳 findings）或 `onPage`（拿到 page handle，用於截圖這類側效） |
 | **語域** | 形式與語氣可以分開取用 |
