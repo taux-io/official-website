@@ -789,10 +789,23 @@ function ruleZeroMono(files) {
 // and the site has neither. What it had instead were twenty-five canvases
 // drawing the tau curve. The rule is existence, not usage: a canvas with no
 // script behind it is still a canvas the next change will find a use for.
+//
+// ONE NAMED EXEMPTION, AND IT IS NOT DECORATION. The jailbreak chart on
+// what-is-prompt-injection is measured data drawn by Chart.js — the same family
+// as the code blocks DESIGN.md's machine-output chapter covers, not the tau
+// curve this rule exists to keep out. The brand reset was authorised against a
+// count of "25 tau-curve canvases"; the inventory found 24 decorative canvases
+// and this one chart, so removing it would have deleted content on a premise
+// that turned out to be wrong. Named here rather than pattern-matched, for the
+// reason OPACITY_EXEMPT_IDS is: a second exemption cannot be added quietly.
+const CANVAS_EXEMPT_IDS = new Set(["jailbreakChart"]);
+
 function ruleZeroCanvas(files) {
   const found = [];
   for (const { rel, html } of files) {
-    for (const m of html.matchAll(/<canvas\b/g)) {
+    for (const m of html.matchAll(/<canvas\b([^>]*)>/g)) {
+      const id = /id="([^"]*)"/.exec(m[1] || "");
+      if (id && CANVAS_EXEMPT_IDS.has(id[1])) continue;
       found.push({
         file: rel,
         line: html.slice(0, m.index).split("\n").length,
@@ -978,7 +991,7 @@ const RULES = [
   },
   {
     name: "zero canvas",
-    enabled: false,
+    enabled: true,
     turnedOnBy: "#166 — the tau curve comes out",
     run: ruleZeroCanvas,
     summary: "decorative depth is photography; this site ships none, so it ships nothing",

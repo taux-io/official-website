@@ -712,38 +712,6 @@
 }
 
 @layer utilities {
-  /* The hero curve is full-bleed and sits behind the copy — verified, not
-     assumed: the copy column carries z-10 and a paint-order probe puts the
-     canvas below the heading at every sample point, so no glyph is ever
-     covered. What it does do is cross the headline's box at every viewport
-     width, and Chinese glyphs are thin strokes with wide gaps, so a hairline
-     passing between them reads as though it were on top of them.
-
-     Fading the curve out across the copy column answers that without adding a
-     panel or a scrim behind the text, which the design system does not have —
-     cards here are hairline outlines, never fills. The curve keeps its full
-     weight on the right, which is where its sweep actually reads.
-
-     The stops are horizontal because the copy is a left-aligned column inside a
-     centred max-w-6xl container, so the region to protect is a vertical band on
-     the left rather than a box. */
-  .curve-behind-copy {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.25) 42%,
-      rgba(0, 0, 0, 0.7) 62%,
-      #000 78%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.25) 42%,
-      rgba(0, 0, 0, 0.7) 62%,
-      #000 78%
-    );
-  }
-
   /* Disclosure rows sit directly on the surface; the hairline above each one
      is the only separator. */
   .faq-details {
