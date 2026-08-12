@@ -9,8 +9,7 @@
 // this file loads, if this file fails to load, and if this file throws: ten
 // links that scroll to ten sections. All that is lost is knowing which one you
 // are in, and knowing is the decoration here — the navigating is the content.
-// With this script absent the page is simply unmarked, the same bargain
-// parallax.js makes when it says the page is simply still.
+// With this script absent the page is simply unmarked.
 //
 // This only ever moves an `aria-current` attribute. It never writes `opacity`,
 // never adds or removes a node, and never touches the sections themselves.
@@ -21,8 +20,7 @@
 //
 // Reads are batched ahead of writes and the pass runs inside one
 // requestAnimationFrame, so scrolling never interleaves getBoundingClientRect
-// with a style change and forces synchronous layout — the same discipline
-// parallax.js follows, for the same reason.
+// with a style change and forces synchronous layout.
 
 (() => {
   "use strict";

@@ -57,32 +57,37 @@ const CARD = (item, fontCss, tokenCss) => `
   * { margin: 0; box-sizing: border-box; }
   html, body { width: ${WIDTH}px; height: ${HEIGHT}px; }
   body {
-    background: rgb(var(--surface-deep-rgb));
+    background: rgb(var(--surface-rgb));
     color: rgb(var(--ink-rgb));
     font-family: "D-DIN", "PingFang TC", sans-serif;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 72px 80px;
     position: relative; overflow: hidden;
   }
-  canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
   .mark { font-family: "D-DIN Condensed", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
-  .kicker { font-family: "Roboto Mono", "PingFang TC", monospace; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb) / 0.8); }
+  .kicker { font-family: "D-DIN Condensed", "PingFang TC", sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
   h1 {
     position: relative; z-index: 1;
     font-family: "D-DIN Condensed", "PingFang TC", sans-serif;
     font-size: ${item.title.length > 34 ? 62 : 80}px;
-    font-weight: 700; line-height: 1.1; letter-spacing: -0.017em;
+    font-weight: 700; line-height: 1.1; letter-spacing: 0.02em;
     max-width: 940px;
+    /* Balanced rather than greedy. The home card set its title in three lines
+       with a two-character last line — issue #144. Greedy wrapping fills each
+       line to the edge and leaves whatever is left over on the last one, which
+       on a 34-character Chinese title is reliably an orphan. Balance gives
+       the lines equal length instead, so the last one is never the remainder.
+       Chromium renders these cards, so support is not in question here. */
+    text-wrap: balance;
   }
   p {
     position: relative; z-index: 1;
-    color: rgb(var(--ink-rgb) / 0.8); font-size: 23px; line-height: 1.55; max-width: 820px;
+    color: rgb(var(--ink-rgb)); font-size: 23px; line-height: 1.55; max-width: 820px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .rule { position: relative; z-index: 1; height: 1px; background: rgb(var(--line-rgb) / 0.35); margin-bottom: 28px; }
+  .rule { position: relative; z-index: 1; height: 1px; background: rgb(var(--line-rgb)); margin-bottom: 28px; }
 </style>
-<canvas data-tau-curve="static"></canvas>
 <div class="row"><span class="mark">TauX</span><span class="kicker">拓思科技</span></div>
 <div>
   <div class="rule"></div>
@@ -105,18 +110,6 @@ async function main() {
     face("D-DIN", "D-DIN.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed.woff2", 400),
     face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
-    // The kicker is the card's eyebrow, and eyebrows are monospace as of #125.
-    //
-    // It draws nothing today: the kicker is hardcoded to 拓思科技, so every
-    // glyph in it resolves to PingFang TC further down the stack and this face
-    // is never asked for a single outline. It is here because the stack has to
-    // be right before the content is — the moment the kicker carries a Latin
-    // character it would otherwise fall to PingFang for that too, which is a
-    // wrong that reviews badly: the card looks fine at a glance and is wrong
-    // permanently on someone else's timeline.
-    //
-    // Inlining an unused face costs build-time memory and nothing in the PNG.
-    face("Roboto Mono", "RobotoMono.woff2", 400),
   ].join("\n");
 
   // The tokens are read out of src/input.css rather than restated here.
@@ -135,11 +128,7 @@ async function main() {
   };
   const tokenCss = `:root{--ink-rgb:${token("ink-rgb")};--line-rgb:${token(
     "line-rgb"
-  )};--surface-deep-rgb:${token("surface-deep-rgb")};--phosphor-rgb:${token(
-    "phosphor-rgb"
-  )};}`;
-
-  const curveJs = fs.readFileSync(path.join(ROOT, "static", "js", "tau-curve.js"), "utf8");
+  )};--surface-rgb:${token("surface-rgb")};}`;
 
   const browser = await chromium.launch();
   const context = await browser.newContext({
@@ -151,7 +140,6 @@ async function main() {
 
   for (const item of items) {
     await page.setContent(CARD(item, fontCss, tokenCss), { waitUntil: "load" });
-    await page.addScriptTag({ content: curveJs });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(120);
     await page.screenshot({ path: path.join(OUT_DIR, `${item.name}.png`) });

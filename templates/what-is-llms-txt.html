@@ -23,7 +23,7 @@
     </div>
 
     <article class="max-w-4xl mx-auto relative z-10">
-        <header class="mb-16">
+        <header class="band mb-16">
             <div
                 class="tag mb-6">
                 GEO 技術觀點
@@ -55,10 +55,6 @@
                  large factor to read as anything: at 0.25 it moved 20px over a
                  full pass, which is nothing. Overscaled to 200% so the bound —
                  half the travel, 24px — stays inside the overhang. -->
-            <div class="relative h-16 md:h-20 border-t border-line mt-4">
-                <canvas data-tau-curve="static" data-parallax="0.5"
-                    class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
-            </div>
     </article>
 </div>
 
@@ -66,14 +62,16 @@
     <div class="max-w-prose mx-auto px-6 space-y-32">
         <!-- Section 1 -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">01</p>
-            <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
+            <div class="band" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
                     class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
                 LLMs.txt 是什麼？
             </h2>
-            <div class="p-8 md:p-10 space-y-8">
-                <p class="text-lg leading-relaxed text-ink-body">
+            </div>
+            <div class="p-8 tablet:p-10 space-y-8">
+                <p class="text-lg leading-relaxed text-ink">
                     它的核心目的在於讓網站管理者可以明確表達內容存取與使用意圖，如<strong
                         class="text-ink font-bold">允許或限制訓練、摘要、改寫與引用</strong>等行為。雖然目前尚未成為正式業界標準，但已反映出網站對 AI
                     內容利用權限與智慧財產權控管的迫切需求。
@@ -87,22 +85,22 @@
                             <thead>
                                 <tr class="border-b border-line">
                                     <th class="py-4 px-6 font-bold text-ink">特徵</th>
-                                    <th class="py-4 px-6 font-bold text-ink-body">robots.txt</th>
+                                    <th class="py-4 px-6 font-bold text-ink">robots.txt</th>
                                     <th class="py-4 px-6 font-bold text-ink font-semibold">LLMs.txt</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-sm md:text-base text-ink-body">
-                                <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                            <tbody class="text-sm tablet:text-base text-ink">
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
                                     <td class="py-4 px-6 font-medium text-ink">目標對象</td>
                                     <td class="py-4 px-6">搜尋引擎爬蟲 (Googlebot)</td>
                                     <td class="py-4 px-6 font-medium text-ink">大型語言模型 (AI 訓練、問答)</td>
                                 </tr>
-                                <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
                                     <td class="py-4 px-6 font-medium text-ink">行為範圍</td>
                                     <td class="py-4 px-6">抓取控制 (Allow/Disallow)</td>
                                     <td class="py-4 px-6 font-medium text-ink">複雜行為 (訓練、改寫、引用)</td>
                                 </tr>
-                                <tr class="border-b border-line hover:bg-surface-raised transition-colors">
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
                                     <td class="py-4 px-6 font-medium text-ink">主要目的</td>
                                     <td class="py-4 px-6">索引管理</td>
                                     <td class="py-4 px-6 font-medium text-ink">智慧財產權、AI 利用權限</td>
@@ -116,13 +114,15 @@
 
         <!-- Section 2 -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">02</p>
-            <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
+            <div class="band" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
                     class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
                 功能與指令範例
             </h2>
-            <div class="grid md:grid-cols-2 gap-8">
+            </div>
+            <div class="grid tablet:grid-cols-2 gap-8">
                 <div class="p-8 min-w-0">
                     <h3 class="text-xl font-bold mb-6 text-ink flex items-center">
                         <span class="mr-3 text-ink font-semibold"><svg class="w-6 h-6" fill="none" stroke="currentColor"
@@ -133,11 +133,11 @@
                             </svg></span> 簡易結構範例
                     </h3>
                     <div
-                        class="bg-surface-deep p-5 text-sm text-ink-body font-mono overflow-x-auto">
+                        class="bg-surface p-5 text-sm text-ink font-sans overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
-                            <span class="w-3 h-3 rounded-full bg-ink-muted"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
                         </div>
                         <pre class="leading-relaxed"><code># Title
 > Optional description goes here
@@ -152,7 +152,7 @@
 
                 <div class="p-8 min-w-0">
                     <h3 class="text-xl font-bold mb-6 text-ink flex items-center">
-                        <span class="mr-3 text-ink-muted"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                        <span class="mr-3 text-ink"><svg class="w-6 h-6" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -165,7 +165,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg></span>
-                            <span class="text-ink-body"><strong
+                            <span class="text-ink"><strong
                                     class="text-ink block mb-1">品牌與定位</strong>說明核心服務，例如「企業 SEO 數位行銷公司」。</span>
                         </li>
                         <li class="flex items-start border-t border-line pt-6 p-4">
@@ -174,7 +174,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg></span>
-                            <span class="text-ink-body"><strong class="text-ink block mb-1">給 AI
+                            <span class="text-ink"><strong class="text-ink block mb-1">給 AI
                                     的提醒</strong>說明內容適用場景、工具版本與保留出處要求。</span>
                         </li>
                         <li class="flex items-start border-t border-line pt-6 p-4">
@@ -183,7 +183,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg></span>
-                            <span class="text-ink-body"><strong
+                            <span class="text-ink"><strong
                                     class="text-ink block mb-1">區塊化導覽</strong>將頁面分為「教學」、「服務」等，引導 AI 理解結構。</span>
                         </li>
                     </ul>
@@ -193,13 +193,15 @@
 
         <!-- Section 3 -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">03</p>
-            <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
+            <div class="band" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="text-3xl font-display font-bold text-ink mb-8 flex items-center">
                 <span
                     class="w-12 h-12 rounded-full text-ink font-semibold flex items-center justify-center mr-4 text-2xl">3</span>
                 為何需要 LLMs.txt？
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </div>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
                 <div class="p-8 min-w-0">
                     <div
                         class="w-12 h-12 rounded-full flex items-center justify-center text-ink font-semibold mb-6">
@@ -210,7 +212,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-ink mb-3">智慧財產權保護</h3>
-                    <p class="text-ink-body text-sm leading-relaxed">避免原創內容被無限制用於訓練與生成，導致被大量複製或稀釋。</p>
+                    <p class="text-ink text-sm leading-relaxed">避免原創內容被無限制用於訓練與生成，導致被大量複製或稀釋。</p>
                 </div>
                 <div class="p-8 min-w-0">
                     <div
@@ -222,7 +224,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-ink mb-3">數據隱私與安全</h3>
-                    <p class="text-ink-body text-sm leading-relaxed">宣示不希望 AI 存取特定區域（如 UGC 或敏感資訊）。</p>
+                    <p class="text-ink text-sm leading-relaxed">宣示不希望 AI 存取特定區域（如 UGC 或敏感資訊）。</p>
                 </div>
                 <div class="p-8 min-w-0">
                     <div
@@ -234,7 +236,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-ink mb-3">品牌與內容品質</h3>
-                    <p class="text-ink-body text-sm leading-relaxed">透過提供清楚的使用指南，降低 AI 錯誤引用或脫線解讀。</p>
+                    <p class="text-ink text-sm leading-relaxed">透過提供清楚的使用指南，降低 AI 錯誤引用或脫線解讀。</p>
                 </div>
                 <div class="p-8 min-w-0">
                     <div
@@ -248,15 +250,17 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-ink mb-3">伺服器資源管理</h3>
-                    <p class="text-ink-body text-sm leading-relaxed">LLMs.txt 可作為一種調節與限制大規模 AI 爬取的方式。</p>
+                    <p class="text-ink text-sm leading-relaxed">LLMs.txt 可作為一種調節與限制大規模 AI 爬取的方式。</p>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Section -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">04</p>
-            <h2 class="text-3xl font-display font-bold text-ink mb-12">常見問題 (FAQ)</h2>
+            <div class="band" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="text-3xl font-display font-bold text-ink mb-12">常見問題 (FAQ)</h2>
+            </div>
             <div class="space-y-4">
                 <details class="group p-8 p-6 cursor-pointer">
                     <summary class="font-bold text-lg text-ink list-none flex justify-between items-center">
@@ -264,7 +268,7 @@
                         <span class="transition-transform group-open:rotate-180 text-ink font-semibold">▼</span>
                     </summary>
                     <div
-                        class="mt-4 text-ink-body border-t border-line pt-4 leading-relaxed">
+                        class="mt-4 text-ink border-t border-line pt-4 leading-relaxed">
                         尚未，現階段多屬概念與實驗階段；多數 AI 仍主要依 robots.txt 控管存取。
                     </div>
                 </details>
@@ -275,7 +279,7 @@
                         <span class="transition-transform group-open:rotate-180 text-ink font-semibold">▼</span>
                     </summary>
                     <div
-                        class="mt-4 text-ink-body border-t border-line pt-4 leading-relaxed">
+                        class="mt-4 text-ink border-t border-line pt-4 leading-relaxed">
                         短期不會有直接負面影響，但網站內容可能持續被 LLM 自由存取並用於訓練與生成。
                     </div>
                 </details>
@@ -286,7 +290,7 @@
                         <span class="transition-transform group-open:rotate-180 text-ink font-semibold">▼</span>
                     </summary>
                     <div
-                        class="mt-4 text-ink-body border-t border-line pt-4 leading-relaxed">
+                        class="mt-4 text-ink border-t border-line pt-4 leading-relaxed">
                         取決於各家 AI 公司是否採用。目前較明確的是對 robots.txt 中 AI 爬蟲相關 user-agent 的遵守承諾。
                     </div>
                 </details>
@@ -294,13 +298,14 @@
         </section>
 
         <!-- CTA -->
-        <section
-            class="mt-20 p-8 p-12 relative overflow-hidden">
+        <section class="mt-20 p-8 p-12 relative overflow-hidden">
             <div class="relative z-10">
-                <h2 class="font-display text-3xl font-bold text-ink mb-6">想要保護您的網站內容？</h2>
-                <p class="text-ink-body mb-10 max-w-[42ch] text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
+                <div class="band" data-cover>
+                    <h2 class="font-display text-3xl font-bold text-ink mb-6">想要保護您的網站內容？</h2>
+                </div>
+                <p class="text-ink mb-10 max-w-[42ch] text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
 
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <div class="flex flex-col mobile:flex-row justify-center gap-4">
                     <a href="mailto:hello@taux.io"
                         class="btn">
                         聯絡我們

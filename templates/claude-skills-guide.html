@@ -37,9 +37,8 @@
 
     .skills-guide-body .slide-container {
         align-items: center;
-        background-color:var(--surface-raised);
+        background-color:var(--surface);
         border-radius: var(--radius);
-        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         border:1px solid var(--line);
         display: flex;
         flex-direction: column;
@@ -51,12 +50,32 @@
         overflow: hidden;
         padding: 60px;
         position: relative;
-        color:var(--ink-body);
+        color:var(--ink);
+    }
+
+    /* The title slide is a band, and a band is one screen.
+       `.skills-guide-body .slide-container` is specificity 0,2,0 and .band is
+       0,1,0, so adding the class to #slide1 lost silently: the route kept
+       opening with a 720px title slide while check:design and the cover probe
+       both passed — the probe only measures [data-cover] bands and a hero is
+       not one. Written here rather than by raising .band, because the deck's
+       own floor is correct for every other slide. */
+    .skills-guide-body .slide-container.band {
+        /* One screen means one screen ON THIS PAGE, not one viewport measured
+           from nowhere. The deck sits inside .skills-guide-body, which pads 30px
+           at the top, and the site nav is `fixed` so it takes no flow space
+           while covering the first 64px. A plain 100vh here put the slide's
+           bottom border about 94px past the fold — a hero with a scrollbar,
+           which is the defect this override was added to close.
+
+           94 = 30 (container padding) + 64 (nav). Both are subtracted. */
+        min-height: calc(100vh - 94px);
+        min-height: calc(100svh - 94px);
     }
 
     .skills-guide-body .slide-container.dark-theme {
         background-color:var(--surface);
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .slide-container::before {
@@ -119,13 +138,13 @@
         text-align: left;
         width: 100%;
         color:var(--ink);
-        border-left:3px solid var(--line-strong);
+        border-left:3px solid var(--line);
         padding-left: 15px;
     }
 
     .skills-guide-body .dark-theme .slide-title {
         color:var(--ink);
-        border-left-color:var(--line-strong);
+        border-left-color:var(--line);
     }
 
     .skills-guide-body h3 {
@@ -146,7 +165,7 @@
     .skills-guide-body .number-label {
         font-size: 20px;
         line-height: 1.6;
-        color:var(--ink-body);
+        color:var(--ink);
         margin: 0;
         margin-bottom: 15px;
     }
@@ -164,17 +183,17 @@
     .skills-guide-body .dark-theme td,
     .skills-guide-body .dark-theme .subtitle,
     .skills-guide-body .dark-theme .number-label {
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .subtitle {
         font-size: 26px;
         font-weight: 400;
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .dark-theme .subtitle {
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .content-area {
@@ -219,12 +238,12 @@
     .skills-guide-body .section-title-layout p {
         font-size: 28px;
         max-width: 800px;
-        color:var(--ink-body);
+        color:var(--ink);
         font-weight: 500;
     }
 
     .skills-guide-body .section-title-layout hr {
-        background:var(--line-strong);
+        background:var(--line);
         border: none;
         height: 2px;
         margin: 40px auto;
@@ -248,7 +267,7 @@
 
     .skills-guide-body .image-wrapper {
         border-radius: var(--radius);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        
         height: 400px;
         width: 100%;
         overflow: hidden;
@@ -271,15 +290,15 @@
         background-color:var(--surface);
         border-radius: var(--radius);
         padding: 40px;
-        border-top:2px solid var(--line-strong);
+        border-top:2px solid var(--line);
         border:1px solid var(--line);
-        border-top:2px solid var(--line-strong);
+        border-top:2px solid var(--line);
         height: 100%;
     }
 
     .skills-guide-body .dark-theme .two-column.tiled>div {
         background-color:var(--surface);
-        border-top-color:var(--line-strong);
+        border-top-color:var(--line);
     }
 
     .skills-guide-body .timeline-layout {
@@ -312,7 +331,7 @@
     .skills-guide-body .timeline-item::after {
         background-color:var(--surface);
         border-radius: var(--radius);
-        border:3px solid var(--line-strong);
+        border:3px solid var(--line);
         content: '';
         height: 24px;
         left: 50%;
@@ -355,7 +374,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background:var(--surface-raised);
+        background:var(--surface);
         padding: 40px;
         border-radius: var(--radius);
         border:1px solid var(--line);
@@ -385,7 +404,7 @@
 
     .skills-guide-body .image-tile {
         flex: 1;
-        background:var(--surface-raised);
+        background:var(--surface);
         border-radius: var(--radius);
         border:1px solid var(--line);
         padding: 20px;
@@ -443,10 +462,10 @@
     .skills-guide-body .bullet-list {
         max-width: 1000px;
         width: 100%;
-        background:var(--surface-raised);
+        background:var(--surface);
         padding: 40px 50px;
         border-radius: var(--radius);
-        border-left:4px solid var(--line-strong);
+        border-left:4px solid var(--line);
         margin: 0 auto;
     }
 
@@ -482,7 +501,7 @@
 
     .skills-guide-body .table-layout {
         width: 100%;
-        background:var(--surface-raised);
+        background:var(--surface);
         border-radius: var(--radius);
         overflow: hidden;
         border:1px solid var(--line);
@@ -565,7 +584,7 @@
 
     .skills-guide-body .qa-layout p {
         font-size: 28px;
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .qa-layout .contact-info {
@@ -584,7 +603,12 @@
         color:var(--ink);
         padding: 2px 8px;
         border-radius: var(--radius);
-        font-family: monospace;
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
         font-weight: 600;
         word-break: break-all;
     }
@@ -593,7 +617,12 @@
         background-color:var(--surface);
         border-radius: var(--radius);
         padding: 25px;
-        font-family: monospace;
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
         font-size: 16px;
         line-height: 1.6;
         color:var(--ink);
@@ -610,7 +639,7 @@
     }
 
     .skills-guide-body .code-window .yaml-val {
-        color:var(--ink-muted);
+        color:var(--ink);
     }
 
     .skills-guide-body .code-window .md-h {
@@ -619,7 +648,7 @@
     }
 
     .skills-guide-body .code-window .md-list {
-        color:var(--ink-body);
+        color:var(--ink);
     }
 
     .skills-guide-body .code-window .md-text {
@@ -800,7 +829,7 @@
 <div class="skills-guide-body">
 
     <!-- Slide 1: Title_Slide -->
-    <div class="slide-container dark-theme" id="slide1">
+    <div class="band slide-container dark-theme" id="slide1">
         <div class="title-layout">
             <h1>
             <span class="display-lead">Claude Skills in Practice</span>
@@ -813,7 +842,9 @@
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
-        <h2 class="slide-title">核心概念：什麼是 Skill？</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">核心概念：什麼是 Skill？</h2>
+        </div>
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -832,22 +863,22 @@
                             <defs>
                                 <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:var(--ink-body);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
                                 </linearGradient>
                                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
                                 </filter>
                             </defs>
                             <rect width="400" height="400" fill="var(--surface)" />
-                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="var(--surface-raised)"
+                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="var(--surface)"
                                 opacity="0.4" />
-                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="var(--surface-raised)"
+                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="var(--surface)"
                                 opacity="0.5" />
                             <path d="M 120 160 L 180 160 L 200 190 L 360 190 L 360 320 L 120 320 Z"
                                 fill="url(#folderGrad)" filter="url(#shadow)" />
-                            <rect x="150" y="215" width="120" height="12" rx="6" fill="var(--surface-deep)" opacity="0.8" />
-                            <rect x="150" y="245" width="80" height="12" rx="6" fill="var(--surface-deep)" opacity="0.8" />
-                            <circle cx="280" cy="251" r="18" fill="var(--surface-deep)" opacity="0.9" />
+                            <rect x="150" y="215" width="120" height="12" rx="6" fill="var(--surface)" opacity="0.8" />
+                            <rect x="150" y="245" width="80" height="12" rx="6" fill="var(--surface)" opacity="0.8" />
+                            <circle cx="280" cy="251" r="18" fill="var(--surface)" opacity="0.9" />
                             <polygon points="275,243 288,251 275,259" fill="var(--ink)" />
                         </svg>
                     </div>
@@ -858,7 +889,9 @@
 
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
-        <h2 class="slide-title">階梯式開發路徑 (The Staircase)</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">階梯式開發路徑 (The Staircase)</h2>
+        </div>
         <div class="content-area">
             <div class="timeline-layout">
                 <div class="timeline-line"></div>
@@ -896,15 +929,17 @@
 
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
-        <h2 class="slide-title">MCP 與 Skills 的強大組合</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">MCP 與 Skills 的強大組合</h2>
+        </div>
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
-                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink-muted);">The
+                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
                         Connectivity</div>
                     <div class="number">MCP</div>
                     <div class="number-label">提供外部連線能力<br><span
-                            style="font-size: 18px; font-weight:normal; color:var(--ink-muted); margin-top:10px; display:block;">(What
+                            style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
@@ -920,7 +955,9 @@
 
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
-        <h2 class="slide-title">三大核心應用場景 (Use Cases)</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">三大核心應用場景 (Use Cases)</h2>
+        </div>
         <div class="content-area">
             <div class="tiled-content">
                 <div class="image-tile">
@@ -928,17 +965,17 @@
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                             <rect width="200" height="200" fill="var(--surface)" />
                             <!-- Document -->
-                            <rect x="60" y="40" width="80" height="110" rx="8" fill="var(--surface-raised)" stroke="var(--ink)"
+                            <rect x="60" y="40" width="80" height="110" rx="8" fill="var(--surface)" stroke="var(--ink)"
                                 stroke-width="4" />
-                            <line x1="75" y1="65" x2="125" y2="65" stroke="var(--line-strong)" stroke-width="4"
+                            <line x1="75" y1="65" x2="125" y2="65" stroke="var(--line)" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="85" x2="125" y2="85" stroke="var(--line-strong)" stroke-width="4"
+                            <line x1="75" y1="85" x2="125" y2="85" stroke="var(--line)" stroke-width="4"
                                 stroke-linecap="round" />
-                            <line x1="75" y1="105" x2="105" y2="105" stroke="var(--line-strong)" stroke-width="4"
+                            <line x1="75" y1="105" x2="105" y2="105" stroke="var(--line)" stroke-width="4"
                                 stroke-linecap="round" />
                             <!-- Pencil / Wand -->
-                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="var(--ink-muted)" />
-                            <polygon points="110,140 115,135 125,145" fill="var(--ink-body)" />
+                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="var(--ink)" />
+                            <polygon points="110,140 115,135 125,145" fill="var(--ink)" />
                         </svg>
                     </div>
                     <h3>1. 文件與資產生成</h3>
@@ -950,10 +987,10 @@
                             <rect width="200" height="200" fill="var(--surface)" />
                             <path
                                 d="M 95 40 L 105 40 L 110 55 C 115 57 120 60 125 64 L 140 58 L 148 66 L 142 80 C 146 85 149 90 151 95 L 165 100 L 165 110 L 151 115 C 149 120 146 125 142 130 L 148 144 L 140 152 L 125 146 C 120 150 115 153 110 155 L 105 170 L 95 170 L 90 155 C 85 153 80 150 75 146 L 60 152 L 52 144 L 58 130 C 54 125 51 120 49 115 L 35 110 L 35 100 L 49 95 C 51 90 54 85 58 80 L 52 66 L 60 58 L 75 64 C 80 60 85 57 90 55 Z"
-                                fill="var(--ink-muted)" opacity="0.2" />
-                            <circle cx="100" cy="105" r="40" fill="none" stroke="var(--ink-muted)" stroke-width="8"
+                                fill="var(--ink)" opacity="0.2" />
+                            <circle cx="100" cy="105" r="40" fill="none" stroke="var(--ink)" stroke-width="8"
                                 stroke-dasharray="15 8" />
-                            <circle cx="100" cy="105" r="18" fill="var(--ink-muted)" />
+                            <circle cx="100" cy="105" r="18" fill="var(--ink)" />
                             <circle cx="145" cy="145" r="25" fill="none" stroke="var(--ink)" stroke-width="6"
                                 stroke-dasharray="10 5" />
                             <circle cx="145" cy="145" r="10" fill="var(--ink)" />
@@ -966,14 +1003,14 @@
                     <div class="image-wrapper">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                             <rect width="200" height="200" fill="var(--surface)" />
-                            <line x1="60" y1="70" x2="140" y2="100" stroke="var(--line-strong)" stroke-width="4" />
-                            <line x1="140" y1="100" x2="80" y2="150" stroke="var(--line-strong)" stroke-width="4" />
-                            <line x1="60" y1="70" x2="80" y2="150" stroke="var(--line-strong)" stroke-width="4" />
+                            <line x1="60" y1="70" x2="140" y2="100" stroke="var(--line)" stroke-width="4" />
+                            <line x1="140" y1="100" x2="80" y2="150" stroke="var(--line)" stroke-width="4" />
+                            <line x1="60" y1="70" x2="80" y2="150" stroke="var(--line)" stroke-width="4" />
                             <circle cx="60" cy="70" r="14" fill="var(--ink)" />
                             <circle cx="80" cy="150" r="14" fill="var(--ink)" />
-                            <circle cx="140" cy="100" r="22" fill="var(--ink-muted)" />
+                            <circle cx="140" cy="100" r="22" fill="var(--ink)" />
                             <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z"
-                                fill="var(--surface-deep)" />
+                                fill="var(--surface)" />
                         </svg>
                     </div>
                     <h3>3. MCP 增強防護</h3>
@@ -985,7 +1022,9 @@
 
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
-        <h2 class="slide-title">YAML 撰寫準則：決定生死的第一線</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">YAML 撰寫準則：決定生死的第一線</h2>
+        </div>
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
@@ -1013,7 +1052,9 @@
 
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
-        <h2 class="slide-title">指令設計的最佳實踐 (Best Practices)</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">指令設計的最佳實踐 (Best Practices)</h2>
+        </div>
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
@@ -1040,7 +1081,9 @@
 
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
-        <h2 class="slide-title">實戰案例一：Code Review 助手</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">實戰案例一：Code Review 助手</h2>
+        </div>
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -1081,7 +1124,9 @@
 
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
-        <h2 class="slide-title">實戰案例二：串接 MCP 的自動化</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">實戰案例二：串接 MCP 的自動化</h2>
+        </div>
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -1124,14 +1169,18 @@
     <div class="slide-container dark-theme" id="slide10">
         <div class="section-title-layout">
             <hr>
-            <h2>測試與驗證階段</h2>
+            <div class="band" data-cover>
+                <h2>測試與驗證階段</h2>
+            </div>
             <p>「先在單一任務上確保 Claude 能完美執行，再將該成功模式提取並封裝為 Skill。」</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
-        <h2 class="slide-title">全面測試指南：三個關鍵維度</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">全面測試指南：三個關鍵維度</h2>
+        </div>
         <div class="content-area">
             <div class="table-layout">
                 <table>
@@ -1166,7 +1215,9 @@
 
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
-        <h2 class="slide-title">進階設計：五大常見專家模式</h2>
+        <div class="band" data-cover>
+            <h2 class="slide-title">進階設計：五大常見專家模式</h2>
+        </div>
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
@@ -1188,7 +1239,9 @@
     <!-- Slide 13: Bleed_Image_Right -->
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
-            <h2 class="slide-title">最終步：封裝與發布</h2>
+            <div class="band" data-cover>
+                <h2 class="slide-title">最終步：封裝與發布</h2>
+            </div>
             <div class="content-area">
                 <div class="bleed-text-side">
                     <p><strong>打包與安裝：</strong>完成測試後，將資料夾壓縮為 <code>.zip</code>。個人用戶可透過 Claude.ai 上傳；企業團隊管理員則可將其佈署至整個
@@ -1204,46 +1257,46 @@
                 xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--surface-raised);stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:var(--surface);stop-opacity:1" />
                         <stop offset="100%" style="stop-color:var(--surface);stop-opacity:1" />
                     </linearGradient>
                     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--ink-body);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
                     </linearGradient>
                 </defs>
                 <rect width="600" height="800" fill="url(#bgGrad)" />
-                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="var(--line-strong)" stroke-width="1"
+                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="var(--line)" stroke-width="1"
                     opacity="0.3" />
-                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="var(--line-strong)" stroke-width="1" opacity="0.3" />
+                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="var(--line)" stroke-width="1" opacity="0.3" />
                 <path d="M 150 250 C 250 250, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
-                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="var(--ink-muted)" stroke-width="3"
+                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
                 <path d="M 200 550 C 250 450, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
-                <path d="M 420 520 C 360 460, 300 400, 300 400" fill="none" stroke="var(--ink-body)" stroke-width="3"
+                <path d="M 420 520 C 360 460, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3"
                     stroke-dasharray="10 6" opacity="0.6" />
-                <circle cx="300" cy="400" r="90" fill="var(--surface-raised)" stroke="url(#accentGrad)" stroke-width="8" />
+                <circle cx="300" cy="400" r="90" fill="var(--surface)" stroke="url(#accentGrad)" stroke-width="8" />
                 <rect x="250" y="375" width="100" height="50" rx="8" fill="var(--ink)" opacity="0.9" />
-                <circle cx="275" cy="400" r="8" fill="var(--surface-deep)" />
-                <rect x="295" y="396" width="40" height="8" rx="4" fill="var(--surface-deep)" />
+                <circle cx="275" cy="400" r="8" fill="var(--surface)" />
+                <rect x="295" y="396" width="40" height="8" rx="4" fill="var(--surface)" />
                 <circle cx="150" cy="250" r="40" fill="var(--ink)" opacity="0.9" />
-                <circle cx="150" cy="235" r="12" fill="var(--surface-deep)" />
-                <path d="M 130 265 Q 150 245 170 265 L 170 275 C 170 280 130 280 130 275 Z" fill="var(--surface-deep)" />
-                <circle cx="450" cy="280" r="45" fill="var(--ink-muted)" opacity="0.9" />
-                <circle cx="450" cy="265" r="14" fill="var(--surface-deep)" />
-                <path d="M 425 298 Q 450 275 475 298 L 475 308 C 475 313 425 313 425 308 Z" fill="var(--surface-deep)" />
-                <circle cx="200" cy="550" r="35" fill="var(--ink-muted)" opacity="0.9" />
-                <circle cx="200" cy="538" r="10" fill="var(--surface-deep)" />
-                <path d="M 182 563 Q 200 545 218 563 L 218 570 C 218 575 182 575 182 570 Z" fill="var(--surface-deep)" />
-                <circle cx="420" cy="520" r="30" fill="var(--ink-muted)" opacity="0.9" />
-                <circle cx="420" cy="510" r="9" fill="var(--surface-deep)" />
-                <path d="M 405 532 Q 420 518 435 532 L 435 538 C 435 542 405 542 405 538 Z" fill="var(--surface-deep)" />
-                <circle cx="210" cy="330" r="4" fill="var(--surface-deep)" opacity="0.8" />
-                <circle cx="390" cy="330" r="4" fill="var(--surface-deep)" opacity="0.8" />
-                <circle cx="260" cy="460" r="4" fill="var(--surface-deep)" opacity="0.8" />
-                <circle cx="350" cy="450" r="4" fill="var(--surface-deep)" opacity="0.8" />
+                <circle cx="150" cy="235" r="12" fill="var(--surface)" />
+                <path d="M 130 265 Q 150 245 170 265 L 170 275 C 170 280 130 280 130 275 Z" fill="var(--surface)" />
+                <circle cx="450" cy="280" r="45" fill="var(--ink)" opacity="0.9" />
+                <circle cx="450" cy="265" r="14" fill="var(--surface)" />
+                <path d="M 425 298 Q 450 275 475 298 L 475 308 C 475 313 425 313 425 308 Z" fill="var(--surface)" />
+                <circle cx="200" cy="550" r="35" fill="var(--ink)" opacity="0.9" />
+                <circle cx="200" cy="538" r="10" fill="var(--surface)" />
+                <path d="M 182 563 Q 200 545 218 563 L 218 570 C 218 575 182 575 182 570 Z" fill="var(--surface)" />
+                <circle cx="420" cy="520" r="30" fill="var(--ink)" opacity="0.9" />
+                <circle cx="420" cy="510" r="9" fill="var(--surface)" />
+                <path d="M 405 532 Q 420 518 435 532 L 435 538 C 435 542 405 542 405 538 Z" fill="var(--surface)" />
+                <circle cx="210" cy="330" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="390" cy="330" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="260" cy="460" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="350" cy="450" r="4" fill="var(--surface)" opacity="0.8" />
             </svg>
         </div>
     </div>
@@ -1251,7 +1304,9 @@
     <!-- Slide 14: Q&A -->
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
-            <h2>準備好打造專屬 Skill 了嗎？</h2>
+            <div class="band" data-cover>
+                <h2>準備好打造專屬 Skill 了嗎？</h2>
+            </div>
             <p>「用知識驅動工具，讓自動化成為團隊標準」</p>
             <div class="contact-info">
                 <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> 善用內建的 skill-creator 快速起步！

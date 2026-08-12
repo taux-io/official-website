@@ -59,64 +59,58 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 md:pb-32 px-6 overflow-hidden bg-surface">
-    <canvas data-figure="polar-grid" data-parallax="0.35"
-        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
 
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="mb-20">
+        <header class="band mb-20">
             <span class="tag mb-6">GEO Service</span>
             <h1 class="mb-6">
                 <span class="display-lead">Be the Answer</span>
                 <span class="display-sub">GEO 生成式引擎優化服務</span>
             </h1>
-            <p class="text-xl text-ink-body max-w-[42ch] font-medium leading-relaxed">
+            <p class="text-lg text-ink max-w-[42ch] font-medium leading-relaxed">
                 搜尋正在從「給你十條連結」變成「直接給你答案」。這門生意是讓那個答案裡有你。
             </p>
         </header>
 
-        <div class="relative h-16 md:h-20 border-t border-line mt-4">
-            <canvas data-tau-curve="static" data-parallax="0.5"
-                class="absolute left-0 w-full top-[-30%] h-[160%] pointer-events-none"></canvas>
-        </div>
     </div>
 </div>
 
 <!-- What the work is -->
-<div data-reveal class="relative overflow-hidden bg-surface py-24 md:py-32 px-6 border-t border-line">
-    <canvas data-figure="interference" data-parallax="0.35"
-        class="absolute left-0 w-full top-[-20%] h-[140%] pointer-events-none curve-behind-copy"></canvas>
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
     <div class="max-w-4xl mx-auto relative z-10 w-full">
         <section class="mb-16 relative">
-            <h2 class="mb-6 relative z-10">
-                <span class="display-lead md:text-display-sm">What We Do</span>
+            <div class="band" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">What We Do</span>
                 <span class="display-sub">方案內容</span>
             </h2>
-            <p class="text-ink-body text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
+            </div>
+            <p class="text-ink text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
                 GEO 不是把 SEO 的做法換個名字。它問的是另一個問題：當語言模型要回答使用者的問題時，你的內容是否可被檢索、可被理解、可被安全引用。
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 relative z-10">
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
                 <div class="border-t border-line pt-6">
                     <h3 class="text-ink text-xl mb-3 font-bold">結構化資料建置</h3>
-                    <p class="text-sm text-ink-body leading-relaxed">
+                    <p class="text-sm text-ink leading-relaxed">
                         Schema 標記、實體識別與知識圖譜關聯。讓機器不必從版面猜你是誰、賣什麼、誰寫的。
                     </p>
                 </div>
                 <div class="border-t border-line pt-6">
                     <h3 class="text-ink text-xl mb-3 font-bold">內容分塊與可引用性</h3>
-                    <p class="text-sm text-ink-body leading-relaxed">
+                    <p class="text-sm text-ink leading-relaxed">
                         把內容整理成模型擷取得動的區塊：固定結構、明確定義、每段都能單獨成立地被引用。
                     </p>
                 </div>
                 <div class="border-t border-line pt-6">
                     <h3 class="text-ink text-xl mb-3 font-bold">爬蟲存取與 llms.txt</h3>
-                    <p class="text-sm text-ink-body leading-relaxed">
+                    <p class="text-sm text-ink leading-relaxed">
                         AI 爬蟲的存取政策盤點與 llms.txt 建置，決定哪些內容開放給模型、以什麼形式開放。
                     </p>
                 </div>
                 <div class="border-t border-line pt-6">
                     <h3 class="text-ink text-xl mb-3 font-bold">引用率量測</h3>
-                    <p class="text-sm text-ink-body leading-relaxed">
+                    <p class="text-sm text-ink leading-relaxed">
                         建立基準線並持續追蹤：在主要生成式引擎上，你的品牌被提及與被引用的變化。
                     </p>
                 </div>
@@ -126,42 +120,44 @@
 </div>
 
 <!-- How it runs -->
-<div data-reveal class="relative overflow-hidden bg-surface py-24 md:py-32 px-6 border-t border-line">
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
     <div class="max-w-4xl mx-auto relative z-10 w-full">
         <section class="space-y-6">
-            <h2 class="mb-8">
-                <span class="display-lead md:text-display-sm">How the Work Runs</span>
+            <div class="band" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
                 <span class="display-sub">執行流程</span>
             </h2>
+            </div>
 
-            <div class="border-line p-8 border-l border-line-strong flex items-start">
-                <div class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                     1</div>
                 <div>
                     <h3 class="text-2xl font-bold text-ink mb-3">現況稽核</h3>
-                    <p class="text-ink-body leading-relaxed">
+                    <p class="text-ink leading-relaxed">
                         盤點結構化資料、內容結構、爬蟲存取與實體宣告，並在動工前記錄可被引用性的基準線。沒有基準線就無法判斷之後的改動有沒有用。
                     </p>
                 </div>
             </div>
 
-            <div class="border-line p-8 border-l border-line-strong flex items-start">
-                <div class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                     2</div>
                 <div>
                     <h3 class="text-2xl font-bold text-ink mb-3">修正與建置</h3>
-                    <p class="text-ink-body leading-relaxed">
+                    <p class="text-ink leading-relaxed">
                         依稽核結果修正實體宣告與結構化資料、重整內容分塊、建立 llms.txt。改動一次上線，讓效果歸因得出來。
                     </p>
                 </div>
             </div>
 
-            <div class="border-line p-8 border-l border-line-strong flex items-start">
-                <div class="w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-ink text-xl font-bold flex-shrink-0 mr-6">
                     3</div>
                 <div>
                     <h3 class="text-2xl font-bold text-ink mb-3">量測與交付</h3>
-                    <p class="text-ink-body leading-relaxed">
+                    <p class="text-ink leading-relaxed">
                         6–8 週後對照基準線，交出實際的變化而不是宣稱。含自動化檢查，讓修好的東西不會在下一次改版時悄悄退化。
                     </p>
                 </div>
@@ -171,33 +167,37 @@
 </div>
 
 <!-- Deliverables and price -->
-<div data-reveal class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
+<div class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
     <div class="max-w-4xl mx-auto relative z-10 w-full">
         <section class="mb-16">
-            <h2 class="mb-8">
-                <span class="display-lead md:text-display-sm">What You Get</span>
+            <div class="band" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What You Get</span>
                 <span class="display-sub">交付物</span>
             </h2>
-            <ul class="space-y-4 text-ink-body max-w-[46ch]">
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-mono text-ink shrink-0">01</span><span>現況稽核報告，含具體問題清單與優先順序</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-mono text-ink shrink-0">02</span><span>結構化資料與實體宣告的實作（我們動手，不只給建議）</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-mono text-ink shrink-0">03</span><span>llms.txt 與 AI 爬蟲存取政策</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-mono text-ink shrink-0">04</span><span>可持續執行的自動化檢查，接進你的 CI</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-mono text-ink shrink-0">05</span><span>基準線與 6–8 週後的對照報告</span></li>
+            </div>
+            <ul class="space-y-4 text-ink max-w-[46ch]">
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans text-ink shrink-0">01</span><span>現況稽核報告，含具體問題清單與優先順序</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans text-ink shrink-0">02</span><span>結構化資料與實體宣告的實作（我們動手，不只給建議）</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans text-ink shrink-0">03</span><span>llms.txt 與 AI 爬蟲存取政策</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans text-ink shrink-0">04</span><span>可持續執行的自動化檢查，接進你的 CI</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans text-ink shrink-0">05</span><span>基準線與 6–8 週後的對照報告</span></li>
             </ul>
         </section>
 
         <section class="mb-16">
-            <h2 class="mb-8">
-                <span class="display-lead md:text-display-sm">What It Costs</span>
+            <div class="band" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What It Costs</span>
                 <span class="display-sub">報價區間</span>
             </h2>
+            </div>
             <div class="border-t border-line pt-6 max-w-[46ch]">
-                <p class="font-mono text-2xl text-ink mb-4">NT$ 80,000 – 600,000</p>
-                <p class="text-ink-body leading-relaxed">
+                <p class="font-sans text-2xl text-ink mb-4">NT$ 80,000 – 600,000</p>
+                <p class="text-ink leading-relaxed">
                     區間取決於網站規模、內容量與既有結構的狀況。單次稽核在下緣，含實作與量測的完整導入在中段以上，長期維運另計。
                 </p>
-                <p class="text-ink-body leading-relaxed mt-4">
+                <p class="text-ink leading-relaxed mt-4">
                     先聊一次，我們會給你一個依實際範圍算出來的數字，而不是先報價再湊範圍。
                 </p>
             </div>
@@ -205,18 +205,20 @@
 
         <!-- CTA -->
         <section class="border-t border-line pt-12">
-            <h2 class="mb-6">
-                <span class="display-lead md:text-display-sm">Ready to Start</span>
+            <div class="band" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Ready to Start</span>
                 <span class="display-sub">想知道現在的網站站在哪裡？</span>
             </h2>
-            <p class="text-ink-body mb-10 max-w-[42ch] text-lg">
+            </div>
+            <p class="text-ink mb-10 max-w-[42ch] text-lg">
                 告訴我們你的網址，我們先做一次免費的初步檢視，說明最值得先修的三件事。
             </p>
             <a href="mailto:hello@taux.io" class="btn">預約 GEO 諮詢</a>
         </section>
 
         <section class="border-t border-line pt-12 mt-16">
-            <p class="text-ink-body">
+            <p class="text-ink">
                 還在了解 GEO 是什麼？先讀
                 <a href="/geo-guide" class="text-ink underline">GEO 入門指南</a>，
                 那篇教你怎麼自己做。

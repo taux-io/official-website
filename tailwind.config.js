@@ -2,48 +2,33 @@
 module.exports = {
   content: ["./templates/**/*.html", "./static/js/**/*.js"],
   theme: {
+    // Six steps, and they REPLACE Tailwind's defaults rather than sitting
+    // beside them. This is the contract half of the expand/migrate/contract
+    // that moved 204 call sites: with every template on the named steps, the
+    // defaults are dead vocabulary, and dead vocabulary is what the next person
+    // reaches for by habit.
+    //
+    // Outside `extend` on purpose — inside it, sm/md/lg/xl/2xl survive.
+    screens: {
+      mobile: "600px",
+      tablet: "768px",
+      laptop: "961px",
+      desktop: "1280px",
+      wide: "1500px",
+    },
     extend: {
       // Semantic names only. The values live in :root in src/input.css, so a
       // palette change is one file and seven variables rather than a sweep
       // through seventeen templates. The <alpha-value> placeholder keeps
       // Tailwind's opacity modifiers working: bg-surface/50, text-ink/70.
       colors: {
-        surface: {
-          DEFAULT: "rgb(var(--surface-rgb) / <alpha-value>)",
-          deep: "rgb(var(--surface-deep-rgb) / <alpha-value>)",
-          raised: "rgb(var(--surface-raised-rgb) / <alpha-value>)",
-        },
-        // One ink; the steps are alpha. The <alpha-value> placeholder cannot
-        // survive that: it is substituted with the opacity modifier or with 1,
-        // so there is no way to express "0.8 unless told otherwise". Baking the
-        // alpha means `text-ink-body/50` no longer composes — nothing uses it,
-        // and `line` below has always been written this way for the same
-        // reason. The surfaces keep the placeholder, which is what bg-surface-
-        // deep/90 in the header depends on.
-        //
-        // `body`'s alpha is the SAME NUMBER as --ink-body in src/input.css and
-        // has to stay that way — see the note there. check-design.js rule "ink
-        // body single source" fails the build if the two drift.
-        ink: {
-          DEFAULT: "rgb(var(--ink-rgb))",
-          body: "rgb(var(--ink-rgb) / 0.85)",
-          muted: "rgb(var(--ink-rgb) / 0.9)",
-        },
-        // Fixed at two weights on purpose — a divider and a control edge. More
-        // steps than that is how hairlines drift back into decoration.
-        line: {
-          DEFAULT: "rgb(var(--line-rgb) / 0.08)",
-          strong: "rgb(var(--line-rgb) / 0.35)",
-        },
-
-        // The one accent. Keeps <alpha-value> so `text-phosphor/80` composes.
-        //
-        // Measured on --surface: /100 is 10.80:1, /70 is 5.63:1, /65 is 4.98:1,
-        // and /60 is 4.38:1 — under the 4.5:1 AA floor. So /65 is the lowest
-        // step that holds for text, not /60. The contrast audit catches a
-        // mistake here, which is the safety net rather than a licence to probe
-        // downwards.
-        phosphor: "rgb(var(--phosphor-rgb) / <alpha-value>)",
+        // One surface, one ink, one hairline. The three-step surface, the three
+        // alpha steps of ink and the two hairline weights all collapsed with the
+        // brand reset — see DESIGN.md decision #53. Names are semantic and the
+        // values live in src/input.css; nothing here carries a literal.
+        surface: "rgb(var(--surface-rgb) / <alpha-value>)",
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
+        line: "rgb(var(--line-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // D-DIN carries the Latin; CJK falls through to the system faces,
@@ -66,53 +51,6 @@ module.exports = {
           "Noto Sans TC",
           "sans-serif",
         ],
-        // Self-hosted, so the dates, section numbers and measurements that use
-        // this look the same on every machine.
-        //
-        // THE CJK FACES ARE LOAD-BEARING AND MUST STAY AHEAD OF ui-monospace.
-        // Roboto Mono's unicode-range excludes CJK, so Chinese in a mono run
-        // falls through this list. With the system faces here it lands on
-        // PingFang TC or Microsoft JhengHei — the same faces the rest of the
-        // site uses. Remove them and it falls to generic `monospace`, which on
-        // Windows is MingLiU: a serif the site sets nowhere else, on 95 of the
-        // 186 eyebrows. That regression is invisible from a Mac.
-        //
-        // This is what makes `.eyebrow` monospace possible without a Latin-only
-        // variant applied by hand 91 times. It is the same mechanism `sans`
-        // already relies on — D-DIN carries no CJK either.
-        //
-        // Nothing checks this; DESIGN.md decision #35 records that as a known,
-        // accepted cost rather than an oversight.
-        mono: [
-          "Roboto Mono",
-          // The Latin monospace fallbacks come BEFORE the CJK faces, and the
-          // order is load-bearing in both directions.
-          //
-          // Roboto Mono's subset carries no arrows, no maths and no geometric
-          // shapes, so → ≥ ≈ ∞ ● ★ all fall through. Put PingFang TC ahead of
-          // these and it answers first with a FULL-WIDTH advance: → goes from
-          // 12.04px to 20.0px at 20px type, and the hand-aligned ASCII flow
-          // diagram on adk-skill-patterns.html comes apart by 5.6px a line.
-          // Behind them, SF Mono answers instead and the cell width holds.
-          "ui-monospace",
-          "SFMono-Regular",
-          "Menlo",
-          "Monaco",
-          "Consolas",
-          // None of the faces above carries CJK, so Chinese still reaches these
-          // — the same faces the rest of the site uses. Without them it lands on
-          // generic `monospace`, which on Windows is MingLiU: a serif this site
-          // sets nowhere else, on 95 of the 186 eyebrows, invisibly from a Mac.
-          "PingFang TC",
-          "Microsoft JhengHei",
-          "Noto Sans TC",
-          "monospace",
-        ],
-        // Departure Mono only. No fallback chain worth writing: this stack is
-        // for blocks that are entirely pixel-set, and if the face fails to load
-        // the right outcome is the generic monospace the browser picks, not a
-        // half-pixel hybrid.
-        pixel: ["Departure Mono", "monospace"],
       },
       // Every rectangular step collapses to the radius token; `full` is kept
       // so genuine circles survive.
@@ -157,8 +95,8 @@ module.exports = {
           { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "400" },
         ],
         button: [
-          "0.75rem",
-          { lineHeight: "1", letterSpacing: "0", fontWeight: "400" },
+          "0.8125rem",
+          { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "700" },
         ],
         // 1.6 rather than Tailwind's 1.5. CJK sets denser than Latin and reads
         // better with the extra leading over a long measure.
@@ -176,8 +114,16 @@ module.exports = {
         // enlarges every rem-based gap and max-width by the same factor, and
         // #137 had just tightened that spacing on purpose. The two moves would
         // have cancelled.
-        base: ["1.0625rem", { lineHeight: "1.6", letterSpacing: "0" }],
-        lg: ["1.1875rem", { lineHeight: "1.6", letterSpacing: "0" }],
+        // Body is two steps and both are 16px: 1.5 for running text,
+        // 1.7 for a marketing lead. The 17/19/22 ladder decision #45 raised
+        // for dense Chinese came back down with the brand reset — the cost,
+        // and which value to move if long passages smear, is in decision #53.
+        base: ["1rem", { lineHeight: "1.5", letterSpacing: "0" }],
+        lg: ["1rem", { lineHeight: "1.7", letterSpacing: "0" }],
+        // NOT body. 22px is the display-sub step — the Chinese sub line and
+        // the h3s and chrome that sit at that weight. It kept its Tailwind
+        // name because 84 elements wear it; what changed is which family it
+        // belongs to, and prose moved off it in the same commit.
         xl: ["1.375rem", { lineHeight: "1.5", letterSpacing: "0" }],
 
         // LINE-HEIGHT BELOW 1 IS FOR LATIN ONLY. A CJK glyph fills its em box
@@ -201,7 +147,7 @@ module.exports = {
         // nothing to attribute a regression to.
         "display-sm": ["2.25rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "700" }],
         "display-md": ["3rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
-        "display-lg": ["3.75rem", { lineHeight: "1", letterSpacing: "-0.017em", fontWeight: "700" }],
+        "display-lg": ["3.75rem", { lineHeight: "1", letterSpacing: "0.02em", fontWeight: "700" }],
       },
       maxWidth: {
         // 68ch is the reading measure for the long-form pages; CJK runs denser
