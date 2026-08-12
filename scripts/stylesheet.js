@@ -62,11 +62,33 @@ function resolveValue(value, tokens) {
   });
 }
 
+// CONDITIONAL DECLARATIONS DO NOT DEFINE A TOKEN.
+//
+// An earlier version took the last --line-rgb it walked past, and the last one
+// in input.css is inside `@media (prefers-contrast: more)`. So token("line-rgb")
+// answered 122 122 132 — the lifted value — and build-og.js drew the rule on
+// nineteen share cards in a hairline the site never uses. Nothing went red:
+// the cards are the one asset seen away from the site and never noticed to be
+// wrong in a browser, which is the failure mode build-og's own comment warns
+// about.
+//
+// @layer is not a condition and stays. @media, @supports and @container are.
+const CONDITIONAL_AT_RULES = new Set(["media", "supports", "container"]);
+
+function isConditional(node) {
+  for (let p = node.parent; p; p = p.parent) {
+    if (p.type === "atrule" && CONDITIONAL_AT_RULES.has(p.name)) return true;
+  }
+  return false;
+}
+
 function collectTokens(roots) {
   const tokens = new Map();
   for (const { root } of roots) {
     root.walkDecls((decl) => {
-      if (decl.prop.startsWith("--")) tokens.set(decl.prop, decl.value.trim());
+      if (!decl.prop.startsWith("--")) return;
+      if (isConditional(decl)) return;
+      tokens.set(decl.prop, decl.value.trim());
     });
   }
   return tokens;
