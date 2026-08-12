@@ -63,15 +63,10 @@
     </div>
 </footer>
 
-<!-- Scripts. tau-curve returns immediately on pages with no [data-tau-curve]
-     canvas, so it costs nothing where it is not used. -->
+<!-- Scripts. Every one of these is optional: the page is complete and
+     readable with all of them absent. -->
 <script src="/static/js/mcp-primitives.js?v=1" defer></script>
 <script src="/static/js/script.js?v=7"></script>
-<!-- Reveal is deliberately last and deliberately not deferred-critical: if it
-     never loads, the page is the page, fully readable. See the file header —
-     nothing ships hidden, the hidden state is added by the script only after
-     it has proven it can run. -->
-<script src="/static/js/reveal.js?v=1"></script>
 </body>
 
 </html>
