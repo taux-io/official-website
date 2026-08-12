@@ -56,6 +56,7 @@
      a texture-legibility device — a dimension to separate structure from noise.
      Blue is not decoration: it is the only mark an interactive element gets.
      Remove it and links, CTAs and the focus ring have no signal at all. */
+  --on-primary-rgb: 255 255 255;
   --primary-rgb: 0 102 204;
   --primary-focus-rgb: 0 113 227;
 
@@ -67,6 +68,7 @@
   --ink: rgb(var(--ink-rgb));
   --ink-muted-80: rgb(var(--ink-muted-80-rgb));
   --ink-muted-48: rgb(var(--ink-muted-48-rgb));
+  --on-primary: rgb(var(--on-primary-rgb));
   --primary: rgb(var(--primary-rgb));
   --line: rgb(var(--line-rgb));
 
@@ -74,14 +76,18 @@
      are left alone, since gauges, orbits and dials belong to this vocabulary.
      Tailwind's `full` step is preserved in the config for exactly that. */
   --radius: 0px;
-  /* Corners are for things you can touch. Buttons, inputs, selects, tags — the
-     things that would lose their edge entirely without one. Layout stays
-     square.
-
-     32px, not the 4px it was: the ghost pill is the signature shape of the
-     vocabulary this site now follows, and with the 80px display step declined
-     it is the most visible thing the reset actually adds rather than removes. */
-  --radius-control: 32px;
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  /* SIX STEPS, and three of them have no user on this site today.
+     
+     That is the reverse of decision #52's argument, which is that an unpoliced
+     scale grows a fourth step for a case none of the first three fit. Here the
+     scale arrives before the users do, deliberately (decision #54), and what
+     keeps it from growing a seventh is the `radius scale` rule: a radius must be
+     one of these values. */
+  --radius-control: 9999px;
 
 
   /* ---- Motion and material, added by issue 156. ----------------------------
@@ -172,7 +178,10 @@
   }
 
   html {
-    @apply scroll-smooth font-sans;
+    /* 17px, not the browser's 16. The body step is a design token and the
+       document has to actually wear it — an earlier version left this to the
+       default and the reading measure probe caught the gap. */
+    @apply scroll-smooth font-sans text-base;
   }
 
   body {
@@ -274,6 +283,20 @@
      svh before vh: on mobile browsers the toolbar makes 100vh taller than the
      visible area, so a band that is exactly one screen scrolls by the height of
      the chrome. Declared in that order so a browser without svh keeps vh. */
+  /* A COVER BLOCK IS NOT A SCREEN.
+     
+     It was one three hours ago, and on a black ground a screen holding a single
+     heading read as compression — the pause before the section. On white, with
+     no imagery, the same screen reads as something missing. Content height, with
+     the rhythm carried by space rather than by the fold.
+     
+     The `section cover screens` rule still holds — it checks that every h2 opens
+     one of these. What went with the change is geometry's `cover` probe, which
+     asserted the height. */
+  .cover {
+    padding-block: 6rem;
+  }
+
   .band {
     min-height: 100vh;
     min-height: 100svh;
@@ -283,16 +306,17 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center font-display text-button uppercase;
+    @apply inline-flex items-center justify-center font-sans text-button;
     height: 48px;
     padding: 0 20px;
     gap: 0.5rem;
-    color: var(--ink);
-    /* White, not the hairline. A ghost pill is an outline of the ink it
-       carries; a hairline border would read as a disabled control. */
-    border: 1px solid var(--ink);
+    /* The blue pill. Filled, not outlined: in this vocabulary the accent IS the
+       interactive signal, and an outline would put the signal on the edge of the
+       control rather than in it. */
+    color: var(--on-primary);
+    border: 1px solid transparent;
     border-radius: var(--radius-control);
-    background-color: transparent;
+    background-color: var(--primary);
     /* 200ms, not the 500ms this carried before issue 154.
        Half a second to acknowledge a press is the thing Apple's fluid-interface
        talks call falling off a cliff: the control answers long after the finger
@@ -318,14 +342,16 @@
      the divider hairline instead of the control edge, muted label. It should
      disappear as the layout tickets land; if it has not, that is a sign the
      one-button rule did not actually hold. */
+  /* The utility rect. Secondary actions: transparent, hairline edge, 8px
+     corner — the compact grammar, not the pill. */
   .btn-quiet {
-    @apply inline-flex items-center justify-center font-display text-button uppercase;
+    @apply inline-flex items-center justify-center font-sans text-button;
     height: 48px;
     padding: 0 20px;
     gap: 0.5rem;
     color: var(--ink);
     border: 1px solid var(--line);
-    border-radius: var(--radius-control);
+    border-radius: var(--radius-sm);
     background-color: transparent;
     /* 200ms and the standard easing, matching .btn.
        The audit behind issue 154 called .btn "the only 500ms on the site" and
@@ -472,8 +498,11 @@
      to destroy by tidying up, so the value is set here rather than left to a
      utility on the element — and it is set after the @apply so it wins inside
      the rule rather than depending on layer order. */
+  /* SENTENCE CASE. The previous vocabulary set this in all caps and had a rule
+     enforcing it; this one never shouts, and the rule is reversed rather than
+     deleted — `sentence case display` now fails if the transform comes back. */
   .display-lead {
-    @apply block font-display uppercase text-4xl tablet:text-display-lg;
+    @apply block font-display text-4xl tablet:text-display-lg;
     color: var(--ink);
   }
 

@@ -70,18 +70,19 @@ module.exports = {
       // 0.375rem, so the square-corner decision breaks silently, with no error
       // and nothing in the diff to explain it.
       borderRadius: {
-        none: "0px",
-        // The only step that is not square. Named for what may use it rather
-        // than for a size, so `rounded-control` reads as a claim about the
-        // element — and check-design.js can hold you to it.
+        // The six declared steps, and every Tailwind alias points at one of them
+        // so that `rounded-2xl` cannot quietly introduce a seventh value. The
+        // `radius scale` rule holds the class names; this holds the values.
+        none: "var(--radius)",
+        xs: "var(--radius-xs)",
+        sm: "var(--radius-sm)",
+        DEFAULT: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-lg)",
+        "2xl": "var(--radius-lg)",
+        "3xl": "var(--radius-lg)",
         control: "var(--radius-control)",
-        sm: "var(--radius)",
-        DEFAULT: "var(--radius)",
-        md: "var(--radius)",
-        lg: "var(--radius)",
-        xl: "var(--radius)",
-        "2xl": "var(--radius)",
-        "3xl": "var(--radius)",
         full: "9999px",
       },
       // One scale, and the tracking changes sign along it: positive on small
