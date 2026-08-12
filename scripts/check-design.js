@@ -29,12 +29,11 @@
 
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("smol-toml");
 const stylesheet = require("./stylesheet");
+const { PAGES, DOCUMENTS } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
-const SITE = path.join(ROOT, "site.toml");
 
 // ---------------------------------------------------------------------------
 // The scale, from DESIGN.md's "字級與字距刻度" table. Any arbitrary tracking
@@ -259,8 +258,7 @@ function ruleRadiusOnControlsOnly(files) {
 // to the site cannot quietly skip this.
 function ruleHeadingStructure(files) {
   const found = [];
-  const site = parse(fs.readFileSync(SITE, "utf8"));
-  const declared = [...(site.page || []), ...(site.document || [])].map((p) => p.template);
+  const declared = [...PAGES, ...DOCUMENTS].map((p) => p.template);
   const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
 
   for (const template of declared) {
@@ -308,10 +306,9 @@ function ruleHeadingStructure(files) {
 // a reference to an element.
 function ruleAnchorIntegrity(files) {
   const found = [];
-  const site = parse(fs.readFileSync(SITE, "utf8"));
   const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
 
-  const templateFor = new Map((site.page || []).map((p) => [p.path, p.template]));
+  const templateFor = new Map(PAGES.map((p) => [p.path, p.template]));
 
   const idCache = new Map();
   const idsOf = (template) => {
@@ -322,8 +319,8 @@ function ruleAnchorIntegrity(files) {
   // Rendered documents (the error page) carry the same header and footer, so
   // they are walked too — but they are not routes, so nothing can link to them.
   const rendered = [
-    ...(site.page || []).map((p) => ({ template: p.template, where: p.path })),
-    ...(site.document || []).map((d) => ({ template: d.template, where: `(${d.output})` })),
+    ...PAGES.map((p) => ({ template: p.template, where: p.path })),
+    ...DOCUMENTS.map((d) => ({ template: d.template, where: d.servedPath })),
   ];
 
   const crossPage = new Map();
@@ -457,8 +454,7 @@ function renderedNodes(name, byName, chain = []) {
 }
 
 function routeTemplates(files) {
-  const site = parse(fs.readFileSync(SITE, "utf8"));
-  const declared = [...(site.page || []), ...(site.document || [])].map((p) => p.template);
+  const declared = [...PAGES, ...DOCUMENTS].map((p) => p.template);
   const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
   return { declared, byName };
 }
@@ -466,16 +462,6 @@ function routeTemplates(files) {
 // ---------------------------------------------------------------------------
 
 const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
-// The idiomatic way to add one in this codebase is a utility, not a style
-// attribute: bg-[url(...)] and every gradient helper resolve to background-image.
-// Bare bg-radial / bg-conic, every gradient direction, and the arbitrary-value
-// form bg-[linear-gradient(...)] / bg-[image:...]. Enumerating a subset is how a
-// rule that was just switched on goes quietly blind.
-const BG_IMAGE_CLASS = /^bg-(?:\[(?:url|image|linear|radial|conic)|gradient-|linear-|radial-|conic-)/;
-
-const PIXEL_TEMPLATES = new Set(["404.html"]);
-const SPECIMEN = /\bdata-specimen\b/;
-
 function ruleCollapsibleShipsOpen(files) {
   const found = [];
   for (const { rel, html } of files) {
@@ -992,6 +978,45 @@ function ruleSingleWalker() {
   return found;
 }
 
+
+// One reader for the route table.
+//
+// routes.js has been the seam since the Go migration, and four scripts still
+// parsed site.toml for themselves — check-design.js three times in three
+// separate rules. They were not going around it out of habit: the module
+// DROPPED the fields they needed. `template`, both date fields and `noindex`
+// never reached a caller, and [[document]] was excluded outright, so "what is a
+// page" had five definitions. Widening the module removed the reason to go
+// around; this removes the option.
+//
+// SCOPED TO scripts/. generator/ reads site.toml too, in Rust, and cannot use a
+// JavaScript module — that is a language boundary, not a discipline problem, and
+// it is the reason the file is a data file in the first place.
+function ruleSingleRouteTable() {
+  const dir = path.join(ROOT, "scripts");
+  const found = [];
+  const walkDir = (abs, rel) => {
+    for (const name of fs.readdirSync(abs).sort()) {
+      const child = path.join(abs, name);
+      if (fs.statSync(child).isDirectory()) {
+        walkDir(child, path.join(rel, name));
+        continue;
+      }
+      if (!name.endsWith(".js") || (rel === "scripts" && name === "routes.js")) continue;
+      const text = fs.readFileSync(child, "utf8");
+      const m = /require\(["'][^"']*smol-toml["']\)/.exec(text);
+      if (!m) continue;
+      found.push({
+        file: path.join(rel, name),
+        line: text.slice(0, m.index).split("\n").length,
+        detail: "parses site.toml itself — routes.js is the one reader, and it carries every field now",
+      });
+    }
+  };
+  walkDir(dir, "scripts");
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1076,6 +1101,13 @@ const RULES = [
     turnedOnBy: "#130 — the MCP primitives explainer",
     run: ruleCollapsibleShipsOpen,
     summary: "a panel a script collapses must be in the document open, not hidden",
+  },
+  {
+    name: "single route table",
+    enabled: true,
+    turnedOnBy: "#191 — routes.js widened enough to be adoptable",
+    run: ruleSingleRouteTable,
+    summary: "only routes.js parses site.toml; every other script asks it",
   },
   {
     name: "single walker",

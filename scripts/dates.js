@@ -21,7 +21,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const { parse } = require("smol-toml");
+const { PAGES } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const CHECK = process.argv.includes("--check");
@@ -56,8 +56,7 @@ function isShallow() {
 }
 
 function main() {
-  const site = parse(fs.readFileSync(path.join(ROOT, "site.toml"), "utf8"));
-  const pages = site.page || [];
+  const pages = PAGES;
   const today = new Date().toISOString().slice(0, 10);
   const problems = [];
 
