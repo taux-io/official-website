@@ -573,6 +573,15 @@
     @apply transition-colors duration-300;
   }
 
+  /* A disclosure row is a touch target. These measured 424x27 — wide enough to
+     hit with a mouse and under the 44px floor on the axis a thumb actually has
+     to land on. Issue 154 set that floor for buttons and links; summary
+     elements were never in the sweep, and geometry's control probe found them
+     the first time it ran. */
+  summary {
+    min-height: 44px;
+  }
+
   .faq-details summary::-webkit-details-marker {
     display: none;
   }

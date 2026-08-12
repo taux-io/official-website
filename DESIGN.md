@@ -158,8 +158,8 @@ breakpoints:
 | 版面 — 章節封面屏 | ✅ | ② |
 | 衍生資產 — 19 張分享卡重生 | ✅ | ② |
 | 檢查 — 兩條規則開啟 | ✅ | ② |
-| 檢查 — geometry 的 cover 與 control 探針 | ⬜ | ③ |
-| 檢查 — overflow 擴充六階、curve 刪除 | ⬜ | ③ |
+| 檢查 — geometry 的 cover 與 control 探針 | ✅ | ③ |
+| 檢查 — overflow 擴充六階、curve 刪除 | ✅ | ③ |
 
 每完成一個章節就把該列改成 ✅，並在同一個 commit 裡更新。**不要讓這張表落後於程式碼**；在四階段全部完成之前，也不要讓它假裝程式碼已經跟上。
 
@@ -392,12 +392,12 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | 10 | invisible is inert | ✅ | issue 143 |
 | 11 | easing scale | ✅ | issue 156 |
 | 12 | press follows hover | ✅ | issue 156 |
-| 13 | zero mono | ⬜ | 階段 ①（#171） |
-| 14 | zero canvas | ⬜ | 階段 ①（#166） |
-| 15 | section cover screens | ⬜ | 階段 ②（#182） |
-| 16 | uppercase display | ⬜ | 階段 ②（#182） |
+| 13 | zero mono | ✅ | #171 |
+| 14 | zero canvas | ✅ | #166 |
+| 15 | section cover screens | ✅ | #182 |
+| 16 | uppercase display | ✅ | #182 |
 
-**目標 16 條。** 本文件合併時程式碼裡仍是 **19 條**——七條（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`）要到階段 ① 才刪除，四條新規則也要到階段 ① 才進場。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
+**16 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
 
 **尚不成立的規則以關閉狀態進場，並具名寫出負責開啟它的票號**（決策 #34）。
 
@@ -409,7 +409,7 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | `check:classes` | 讀建置後的 CSS。六階斷點會產生大量新的 responsive utility，這支確認 Tailwind 真的為它們產出了規則 |
 | `contrast` | 只走 `[[page]]`。**看不到 404、邊框顏色、偽元素與 SVG fill/stroke** |
 | `contract` | 走建置後 CSS 裡每一個 `url()` 並斷言 200——字型檔必須與 `@font-face` 同一個 commit |
-| `geometry` | 執行期幾何。四項：`box`、`overflow`、`cover`、`control` |
+| `geometry` | 執行期幾何。三項：`overflow`（六階斷點）、`cover`、`control`。`advance` 與 `curve` 在品牌重置中刪除——等寬字與 canvas 都不存在了，一個沒有東西可量的檢查會永遠是綠的，並且讓「被看著的東西」的數字虛胖 |
 
 ### 沒有東西檢查的事
 
@@ -417,6 +417,8 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 - **封面屏的 eyebrow 是否沿用既有而非編造。** 規則看得到有沒有 eyebrow，看不到那句話是不是掰的。
 - **19 張分享卡的視覺是否與站上一致。** 刻意不加檢查器：`build-og.js` 從 `input.css` 讀 token，刪掉 token 它會直接建置失敗——照決策 #47 的做法，讓失敗不可能發生，而不是再加一支沒人跑的檢查。
 - **中文字體堆疊的順序。** 決策 #35 的舊理由（斷言放不進去）已於決策 #46 過期，但斷言仍未寫。
+- **密集中文在純黑上的暈光。** 這是本次改版真正承擔的風險，而 `contrast` 看不到它——21.00:1 不是對比不足而是過量，沒有任何探針量得出「讀十分鐘會不會糊」。要靠人看。
+- **模板裡的資源連結。** `header.html` 曾有一條指向已刪除字體的 `<link rel="preload">`，19 條路由都在要一個 404 的檔案。`zero mono` 讀 class 與設定檔，看不到 `href`；抓到它的是 `contract`。沒有原始碼層的規則守這件事。
 - **間距的八階刻度。** 389 個 utility 落在刻度外，見版面章。沒有規則守著，因為「哪一個值該吸附到哪一階」需要看它在版面裡的角色，讀 class 字串判斷不了。
 
 ---

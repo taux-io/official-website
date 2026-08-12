@@ -10,6 +10,24 @@
 // broken — the region just reads as empty. This walks the rendered page and
 // compares each text element's computed colour against its *effective*
 // background, compositing alpha up the ancestor chain.
+//
+// THE PALETTE IS NOW PURE WHITE ON PURE BLACK — 21.00:1, computed rather than
+// estimated. Everything on the site clears AA by more than four times, so this
+// audit will pass on colour alone for as long as those two values hold, and a
+// green run here says less than it did when the ink ran three alpha steps at
+// 12.25–13.17:1. What it still catches is the failure it was built for: a
+// surface flipped without its text, or a text colour left behind by a token
+// rename.
+//
+// The risk this audit CANNOT see is the one the brand reset actually took on.
+// 21:1 is not too little contrast, it is too much: dense Chinese at 16px on
+// pure black haloes over a long read, which is why the surface used to be
+// 10 10 11 and the body ink 0.85. DESIGN.md decision #53 records that, and
+// records that the value to move if it shows up is the ink — not the type
+// scale. No probe measures halation; a person has to look.
+//
+// WHAT IT STILL CANNOT SEE: /404 (not a [[page]]), border colours, pseudo
+// elements, and SVG fill/stroke.
 
 const { launch } = require("../browser");
 const { ROUTES, VIEWPORTS, BASE_URL } = require("../routes");

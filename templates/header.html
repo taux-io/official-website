@@ -38,13 +38,18 @@
 
     <!-- Fonts: D-DIN and Roboto Mono, self-hosted, Latin only. CJK renders from
          the system faces, so no Chinese webfont is downloaded and no reflow
-         waits on one. The three regular weights are preloaded because they set
-         the first paint; the bold faces load on demand. Roboto Mono is in that
-         set because the dates and section numbers it sets are above the fold on
-         the guides. -->
+         waits on one. The two regular weights are preloaded because they set
+         the first paint; the bold faces load on demand.
+
+         Roboto Mono used to be preloaded here too. It went with the monospace
+         faces, and this line is why `contract` exists: check:design's zero-mono
+         rule reads class attributes and the Tailwind config, so a preload href
+         is outside its field of view entirely. The stylesheet had already
+         stopped mentioning the file; only a probe that walks every URL a
+         rendered page requests could see that nineteen routes were still asking
+         for it and getting a 404. -->
     <link rel="preload" href="/static/fonts/D-DIN.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/static/fonts/RobotoMono.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Identity. One organisation and one website, declared here so they land
          on every page, and referenced by @id from every page's own block.
@@ -150,8 +155,14 @@
                  window widths, which is to say invisible during development.
                  check-design.js rule "nav breakpoints paired" holds them. -->
             <div class="hidden mobile:flex items-center gap-10">
-                <button type="button" id="menuTrigger" class="nav-link" aria-expanded="false"
-                    aria-controls="menuOverlay">
+                <!-- min-h-11 for the same reason the hamburger carries it: the
+                     text sets a 13px line box and the button was 47x13, under
+                     the 44px floor on the short axis. Issue 154 raised that
+                     floor and fixed the hamburger; these two were never
+                     measured, and geometry's control probe found them on its
+                     first run. -->
+                <button type="button" id="menuTrigger" class="nav-link min-h-11 inline-flex items-center"
+                    aria-expanded="false" aria-controls="menuOverlay">
                     Explore
                 </button>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="btn">
@@ -196,7 +207,7 @@
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-lg uppercase tracking-[0.09em] text-ink">TauX</span>
                 <button type="button" id="menuClose"
-                    class="eyebrow text-ink hover:text-ink transition-colors duration-200"
+                    class="eyebrow text-ink hover:text-ink transition-colors duration-200 min-h-11 min-w-11 inline-flex items-center justify-end"
                     aria-label="Close menu">
                     Close
                 </button>
