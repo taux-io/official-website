@@ -93,6 +93,7 @@ const TRANSIENT_SETTLE_MS = 400;
 // was never a defect.
 const CHECKS = {
   overflow: { enabled: true, turnedOnBy: "issue 151" },
+  measure: { enabled: true, turnedOnBy: "#188 — the reading measure" },
   cover: { enabled: true, turnedOnBy: "#184 — the 100 bands" },
   control: { enabled: true, turnedOnBy: "#185 — the ghost pill" },
 };
@@ -106,6 +107,23 @@ const TOUCH_TARGET_MIN_PX = 44;
 // Sub-pixel layout and zoom put a rendered band a hair under the viewport. Three
 // pixels is the same tolerance the overflow probe already uses.
 const COVER_TOLERANCE_PX = 3;
+
+// The reading measure, in characters. DESIGN.md sets 68 rather than the 75
+// usually quoted for Latin because Chinese sets denser.
+//
+// THE UNIT IS THE WHOLE POINT. Every container on this site is sized in pixels,
+// and issue #147 is what happens when the two are confused: collapsing body from
+// 17px to 16px left every container exactly as wide and put more characters on
+// each line, so /pqc-migration drifted from 70.8ch to 85.2ch without one
+// template changing. Nothing caught it, because no source rule can — how wide a
+// paragraph ends up depends on its ancestors, its type size and its face.
+//
+// Half a character of slack for sub-pixel rounding.
+const MEASURE_MAX_CH = 68;
+const MEASURE_TOLERANCE_CH = 0.5;
+// Short runs are labels, captions and table cells that happen to be in a <p>.
+// A measure is about sustained reading; forty characters is where that starts.
+const MEASURE_MIN_CHARS = 40;
 
 // ---------------------------------------------------------------------------
 function measureOverflowInPage() {
@@ -249,6 +267,47 @@ function measureControlsInPage({ radius, minTarget }) {
   return out;
 }
 
+// The reading measure, taken at the widest viewport only.
+//
+// Container widths grow monotonically with the viewport, so the widest pass is
+// the worst case — measuring at all eight would report the same paragraph eight
+// times and hide how many distinct ones are actually over.
+//
+// `ch` is the advance of "0" in the element's OWN computed font, which is what
+// makes this a character count at every type size rather than a pixel width
+// wearing one. That distinction is the whole reason this check exists: issue
+// #147 happened because collapsing body from 17px to 16px left every container
+// exactly as wide and put more characters on each line, and /pqc-migration
+// drifted from 70.8ch to 85.2ch without a single template changing.
+//
+// TABLE CELLS ARE EXCLUDED BY SELECTOR, deliberately. A cell's width is a column
+// decision taken across every row, and capping one cell would break the column
+// rather than help anyone. Measured before excluding them — the widest cell on
+// the site is 46.8ch, inside the limit anyway.
+function measureReadingInPage({ maxCh, minChars }) {
+  const out = [];
+  for (const el of document.querySelectorAll("main p, main li")) {
+    const text = el.textContent.trim();
+    if (text.length < minChars) continue;
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "position:absolute;visibility:hidden;white-space:nowrap;font:" + getComputedStyle(el).font;
+    probe.textContent = "0";
+    document.body.appendChild(probe);
+    const zero = probe.getBoundingClientRect().width;
+    probe.remove();
+    if (!zero) continue;
+    const ch = el.getBoundingClientRect().width / zero;
+    if (ch <= maxCh) continue;
+    out.push({
+      ch: Math.round(ch * 10) / 10,
+      label: text.replace(/\s+/g, " ").slice(0, 40),
+      cls: el.className.slice(0, 48),
+    });
+  }
+  return out;
+}
+
 async function main() {
   const browser = await launch();
   const failures = [];
@@ -256,6 +315,7 @@ async function main() {
   let coverChecks = 0;
   let controlChecks = 0;
   let coverBands = 0;
+  let measureChecks = 0;
 
   // One load per route, then resize. Everything measured here is pure layout,
   // so re-measuring at each width costs a reflow rather than a navigation —
@@ -313,7 +373,21 @@ async function main() {
         });
       }
     }
+    // The measure, once, at the widest viewport — the worst case for line
+    // length, and the only pass where reporting it is not eight copies.
     await page.setViewportSize({ width: widest, height: 900 });
+    const overlong = await page.evaluate(measureReadingInPage, {
+      maxCh: MEASURE_MAX_CH + MEASURE_TOLERANCE_CH,
+      minChars: MEASURE_MIN_CHARS,
+    });
+    measureChecks++;
+    for (const m of overlong) {
+      failures.push({
+        where: `${path} @ ${widest}px`,
+        kind: "measure",
+        detail: `"${m.label}" runs ${m.ch}ch, limit is ${MEASURE_MAX_CH} (${m.cls})`,
+      });
+    }
   }
   await context.close();
   await browser.close();
@@ -322,6 +396,7 @@ async function main() {
   console.log(`\n${overflowChecks} route/width combinations checked for horizontal overflow (${combos})`);
   console.log(`${coverChecks} checked for cover bands filling the screen (${coverBands} bands on the widest pass)`);
   console.log(`${controlChecks} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
+  console.log(`${measureChecks} routes checked for a ${MEASURE_MAX_CH}ch reading measure (widest viewport only)`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
   // scope would report green on ground it never covered.
