@@ -24,37 +24,50 @@
    would take all of them with it.
    =========================================================================== */
 :root {
-  /* ONE SURFACE. Pure black, no second step and no raised step.
+  /* ONE SURFACE. Pure white.
+     
+     It was pure black three hours ago, and near-black before that. What has not
+     changed across all three is that there is exactly one — the alternating
+     light/dark tile system this vocabulary is built on is NOT adopted (see
+     DESIGN.md decision #54), so there is no second surface to alternate with. */
+  --surface-rgb: 255 255 255;
 
-     The default surface used to be 10 10 11 rather than 0 0 0 — a hair off
-     black, chosen because dense CJK glyphs halo against pure black over a long
-     read. The brand reset overrules that (DESIGN.md decision #53). The reason
-     was not wrong and is not deleted: if long Chinese passages start to smear,
-     the value to move is the ink, NOT the type scale. Moving the scale back
-     would flatten the hierarchy a second time, which is the trap decision #45
-     documents. */
-  --surface-rgb: 0 0 0;
+  /* THREE INKS, and every one of them was computed against the surface rather
+     than copied from the reference.
+     
+     #1d1d1f  16.83:1  headings and body
+     #333333  12.63:1  secondary
+     #707070   4.95:1  captions and meta
+     
+     THE THIRD ONE IS NOT THE REFERENCE'S VALUE. The analysis specifies #7a7a7a,
+     which measures 4.29:1 on white — under the 4.5 AA floor, so the contrast
+     audit would have gone red on its first run. #707070 is the only value that
+     clears AA on both white (4.95) and the parchment tint (4.55). A reference
+     site's measured value is not automatically a value this site can use, and
+     the way to tell them apart is to compute it. */
+  --ink-rgb: 29 29 31;
+  --ink-muted-80-rgb: 51 51 51;
+  --ink-muted-48-rgb: 112 112 112;
 
-  /* ONE INK. Pure white, no alpha steps.
+  /* ACTION BLUE. The single accent, and the only one.
+     
+     This site has now had this argument three times: phosphor arrived, phosphor
+     left, and now blue arrives. The difference is what it carries. phosphor was
+     a texture-legibility device — a dimension to separate structure from noise.
+     Blue is not decoration: it is the only mark an interactive element gets.
+     Remove it and links, CTAs and the focus ring have no signal at all. */
+  --primary-rgb: 0 102 204;
+  --primary-focus-rgb: 0 113 227;
 
-     Levels used to be alpha — 0.85 body over 0.9 muted over full ink. With a
-     single value, hierarchy is carried entirely by size, weight and case, which
-     is what the reference vocabulary does. Pure white on pure black is 21.00:1,
-     computed rather than estimated; the earlier three-step arrangement ran
-     12.25–13.17:1. The risk here is not contrast, it is the opposite. */
-  --ink-rgb: 255 255 255;
-
-  /* ONE HAIRLINE WEIGHT. #3a3a3f solid, not an alpha of the ink.
-
-     There used to be two weights, a divider and a control edge, both derived
-     from the ink. A third weight is how hairlines drift back into decoration —
-     and with the ink now pure white, an alpha of it reads as grey text rather
-     than as an edge. The reference vocabulary names one hairline colour, so
-     that is what this is. */
-  --line-rgb: 58 58 63;
+  /* ONE HAIRLINE WEIGHT. #e0e0e0 on white, the same role the dark hairline had
+     on black: dividers and edges, never decoration. */
+  --line-rgb: 224 224 224;
 
   --surface: rgb(var(--surface-rgb));
   --ink: rgb(var(--ink-rgb));
+  --ink-muted-80: rgb(var(--ink-muted-80-rgb));
+  --ink-muted-48: rgb(var(--ink-muted-48-rgb));
+  --primary: rgb(var(--primary-rgb));
   --line: rgb(var(--line-rgb));
 
   /* Square by default. Rounded rectangles read as consumer software; circles
@@ -85,66 +98,19 @@
 }
 
 /* ===========================================================================
-   D-DIN, self-hosted. Copyright (C) 2017 Datto Inc, SIL Open Font License 1.1;
-   the licence ships alongside the files at static/fonts/OFL-1.1.txt.
-
-   A DIN 1451 derivative — the German industrial standard used for road signs,
-   machine plates and instrument panels. It carries the Latin only; the font
-   covers Basic Latin and Latin-1 and nothing else, and CJK is left to the
-   system faces deliberately. A Traditional Chinese webfont runs to hundreds of
-   kilobytes even with unicode-range subsetting, and its swap visibly reflows
-   the page, which is not a trade worth making on the guide pages whose search
-   performance is the point of them.
-
-   unicode-range keeps that separation strict: with CJK outside the declared
-   range the browser never blocks a Chinese glyph on this download, so the
-   text of a guide paints from PingFang or Microsoft JhengHei immediately and
-   only the Latin swaps in behind it.
-
-   Self-hosted rather than served from a CDN: one less DNS lookup and TLS
-   handshake, the files ride the same HTTP/2 connection as the stylesheet, and
-   nothing breaks on networks where Google Fonts is unreachable.
+   NO SELF-HOSTED FACE.
+   
+   Four D-DIN files used to be served from static/fonts/, and decision #11's
+   reason for self-hosting was that a system stack means three machines see
+   three faces, which cannot be part of a design because nobody knows what the
+   reader saw.
+   
+   DECISION #54 OVERRULES THAT, and the reason is that the reference site does
+   the same thing: SF Pro exists on Apple platforms and nowhere else, and Apple
+   does not self-host a substitute for Windows. That restraint is part of the
+   vocabulary. The cost is real and named — on Windows the brand face is Segoe
+   UI, and nothing measures that.
    =========================================================================== */
-
-@font-face {
-  font-family: "D-DIN";
-  src: url("/static/fonts/D-DIN.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
-    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
-}
-
-@font-face {
-  font-family: "D-DIN";
-  src: url("/static/fonts/D-DIN-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
-    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
-}
-
-@font-face {
-  font-family: "D-DIN Condensed";
-  src: url("/static/fonts/D-DINCondensed.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
-    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
-}
-
-@font-face {
-  font-family: "D-DIN Condensed";
-  src: url("/static/fonts/D-DINCondensed-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+0160-0161, U+0178,
-    U+017D-017E, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
-}
 
 @layer base {
   /* Preflight sets pre, code, kbd and samp to its own monospace stack, and this
@@ -746,7 +712,7 @@
      now, so there is only one value to move. The ink is pure white at 21:1 and
      needs nothing. */
   :root {
-    --line-rgb: 122 122 132;
+    --line-rgb: 138 138 138;
   }
 }
 

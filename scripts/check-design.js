@@ -40,7 +40,13 @@ const TEMPLATES = path.join(ROOT, "templates");
 // value outside this set is a one-off, which is the thing the table exists to
 // prevent: the reference site's tracking changes sign with size, so it is one
 // scale rather than a handful of independently chosen numbers.
-const TRACKING_SCALE = new Set(["0", "0em", "0.09em", "0.02em"]);
+// The Apple ladder's tracking, and it is signed: display closes up, lead opens
+// out, eyebrow stays wide. Decision #53 deleted negative tracking three hours
+// before this for being the previous reference site's signature; it is this
+// one's signature too, at its own values.
+const TRACKING_SCALE = new Set([
+  "0", "0em", "0.09em", "0.011em", "-0.005em", "-0.011em", "-0.022em",
+]);
 
 // Controls are the only thing that takes a corner radius or an outline —
 // buttons, inputs, selects, tags. Everything else is layout, and layout is

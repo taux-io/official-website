@@ -37,9 +37,10 @@
     <link rel="manifest" href="/static/site.webmanifest">
 
     <!-- Fonts: D-DIN and Roboto Mono, self-hosted, Latin only. CJK renders from
-         the system faces, so no Chinese webfont is downloaded and no reflow
-         waits on one. The two regular weights are preloaded because they set
-         the first paint; the bold faces load on demand.
+         NOTHING IS PRELOADED because nothing is downloaded. The face is SF Pro
+         where it exists and the platform's own UI face everywhere else, so the
+         first paint waits on no font at all — see DESIGN.md decision #54 for
+         what that costs on Windows.
 
          Roboto Mono used to be preloaded here too. It went with the monospace
          faces, and this line is why `contract` exists: check:design's zero-mono
@@ -48,8 +49,6 @@
          stopped mentioning the file; only a probe that walks every URL a
          rendered page requests could see that nineteen routes were still asking
          for it and getting a 404. -->
-    <link rel="preload" href="/static/fonts/D-DIN.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/static/fonts/D-DINCondensed.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Identity. One organisation and one website, declared here so they land
          on every page, and referenced by @id from every page's own block.
