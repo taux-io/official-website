@@ -376,7 +376,6 @@
   }
 
   .btn-quiet:hover {
-    color: var(--ink);
     background-color: rgb(var(--ink-rgb) / 0.06);
   }
 
@@ -584,7 +583,10 @@
      is the single ink used as an edge, which is what the rail needs to say
      "you are here" without a second grey. */
   .section-index-link[aria-current] {
-    @apply text-ink border-ink;
+    /* Only the edge. `text-ink` was here too and changed nothing — the base
+       rule already sets it, and it was the declaration that made this state look
+       alive while the border half was still a no-op. */
+    @apply border-ink;
   }
 
   /* Text controls dim on press rather than deepening a fill, because they have
