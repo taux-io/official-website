@@ -242,7 +242,10 @@
         font-size: 28px;
         max-width: 800px;
         color:var(--ink);
-        font-weight: 500;
+        /* 400. The ladder omits 500 by name, and this is a paragraph — body
+           weight, not emphasis. It survived the class-level sweep because the
+           rule read class attributes only; it reads the stylesheet now. */
+        font-weight: 400;
     }
 
     .skills-guide-body .section-title-layout hr {

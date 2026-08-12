@@ -152,13 +152,12 @@
                  window widths, which is to say invisible during development.
                  check-design.js rule "nav breakpoints paired" holds them. -->
             <div class="hidden mobile:flex items-center gap-10">
-                <!-- min-h-11 for the same reason the hamburger carries it: the
-                     text sets a 13px line box and the button was 47x13, under
-                     the 44px floor on the short axis. Issue 154 raised that
-                     floor and fixed the hamburger; these two were never
-                     measured, and geometry's control probe found them on its
-                     first run. -->
-                <button type="button" id="menuTrigger" class="nav-link min-h-11 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
+                <!-- min-h-12, not min-h-11. The 11 step is 2.75rem, which was
+                     46.75px while the root font-size was inflated to 17px and
+                     became exactly 44px when that was fixed — sitting on the
+                     probe's floor with no margin at all. 12 is 48px and matches
+                     .btn's height, so the floor has somewhere to be. -->
+                <button type="button" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
                     Explore
                 </button>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="btn">
@@ -198,7 +197,7 @@
         <div class="max-w-6xl mx-auto px-6 py-6">
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-lg uppercase tracking-[0.09em]">TauX</span>
-                <button type="button" id="menuClose" class="eyebrow min-h-11 min-w-11 inline-flex items-center justify-end" aria-label="Close menu">
+                <button type="button" id="menuClose" class="eyebrow min-h-12 min-w-12 inline-flex items-center justify-end" aria-label="Close menu">
                     Close
                 </button>
             </div>
