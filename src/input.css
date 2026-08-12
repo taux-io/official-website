@@ -428,9 +428,12 @@
      Its 48px height sits inside the 64px bar with 8px to spare. */
 
   /* Overlay menu links: larger, still uppercase, still tracked. */
+  /* No transition. The colour these used to fade between is gone, and
+     text-decoration is not a colour — `transition-colors` here would declare a
+     hand-off that never happens, which is the same defect as the no-op hover it
+     replaced, one layer down. */
   .menu-link {
-    @apply font-display text-lg tablet:text-xl uppercase tracking-[0.09em] text-ink
-           transition-colors duration-200;
+    @apply font-display text-lg tablet:text-xl uppercase tracking-[0.09em] text-ink;
   }
 
   /* Underline, not a brightness step. The ink used to run three alpha levels
@@ -498,7 +501,7 @@
      controls; a dense reference list at the very bottom of a page is the case
      it is least about. Recorded in DESIGN.md rather than left implicit. */
   .footer-link {
-    @apply block text-sm text-ink py-1.5 transition-colors duration-200;
+    @apply block text-sm text-ink py-1.5;
   }
 
   .footer-link:hover {
@@ -520,6 +523,8 @@
      reveal DESIGN.md bans is exactly "text whose visibility depends on a
      script having run", and a rail that dimmed its inactive entries would be
      that same mechanism wearing a different name. */
+  /* The border colour DOES still change — hairline to ink when the section
+     becomes current — so this one keeps its transition. */
   .section-index-link {
     @apply block border-l border-line pl-3 py-1 text-xs text-ink
            transition-colors duration-200;
