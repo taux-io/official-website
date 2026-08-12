@@ -228,7 +228,11 @@ breakpoints:
 
 中文一律落到系統字（PingFang TC / Microsoft JhengHei / Noto Sans TC）。**不引入 CJK webfont**（決策 #4）。D-DIN 與 D-DIN Condensed 都不含 CJK，所以兩條堆疊都要掛著系統中文面。
 
-### 沒有等寬字
+### 沒有等寬字擋在三條路上
+
+`zero mono` 守三件事，而它們是三條不同的路：模板寫的 class、Tailwind 設定裡的 family、以及 `@apply` 與**原始 `font-family` 宣告**。最後一條是後補的——這條規則原本完全不看宣告，所以兩條 `font-family: monospace` 在模板自己的 `<style>` 裡活過了整場品牌重置。**禁的是落到 generic family**，不是那個字：以 `monospace` 結尾的堆疊會把中文交給平台的通用等寬字，Windows 上是 MingLiU。
+
+
 
 新檔明文「No mono」。本站的 Roboto Mono、box-drawing 子集與 Departure Mono 三個 `@font-face` 全部移除，`font-mono` 與 `font-pixel` 兩條 family 不再存在（`check:design` 規則 `zero mono`）。程式碼區塊改吃 `sans`——見「本站推導 · 程式碼與機器輸出」。
 
@@ -421,8 +425,9 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | 14 | zero canvas | ✅ | #166 |
 | 15 | section cover screens | ✅ | #182 |
 | 16 | uppercase display | ✅ | #182 |
+| 17 | single stylesheet | ✅ | #189 |
 
-**16 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
+**17 條，全部啟用。** 從 19 條而來：刪 7（`phosphor budget`、`pixel face scope`、`texture not behind text`、`shadow scale`、`reveal ships visible`、`full height only on 404`、`ink body single source`——它們守的東西在品牌重置後不存在），加 4。四條新規則各自刻意弄紅過一次，命中數與落地前逐檔清點的數字對得上：`zero mono` 263、`zero canvas` 25、`section cover screens` 100。核對方式是跑 `npm run check:design` 讀它自己印出的「N of N rules enforced」，**不是數這張表**。
 
 **尚不成立的規則以關閉狀態進場，並具名寫出負責開啟它的票號**（決策 #34）。
 
@@ -443,6 +448,7 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 - **19 張分享卡的視覺是否與站上一致。** 刻意不加檢查器：`build-og.js` 從 `input.css` 讀 token，刪掉 token 它會直接建置失敗——照決策 #47 的做法，讓失敗不可能發生，而不是再加一支沒人跑的檢查。
 - **中文字體堆疊的順序。** 決策 #35 的舊理由（斷言放不進去）已於決策 #46 過期，但斷言仍未寫。
 - **密集中文在純黑上的暈光。** 這是本次改版真正承擔的風險，而 `contrast` 看不到它——21.00:1 不是對比不足而是過量，沒有任何探針量得出「讀十分鐘會不會糊」。要靠人看。
+- ~~**模板自己的 `<style>` 區塊。**~~ **已由樣式表模組涵蓋**（#189）。`src/input.css`、模板的 `<style>` 與 `style=""` 屬性現在是同一份宣告清單，帶檔名與行號；`var()` 解析後的值與作者寫的原文都在。
 - **模板裡的資源連結。** `header.html` 曾有一條指向已刪除字體的 `<link rel="preload">`，19 條路由都在要一個 404 的檔案。`zero mono` 讀 class 與設定檔，看不到 `href`；抓到它的是 `contract`。沒有原始碼層的規則守這件事。
 - **一個狀態宣告有沒有真的改變任何東西。** `press follows hover` 檢查 `:active` 有沒有寫在 `:hover` 之後，不檢查兩者是否不同；`check:classes` 檢查 class 有沒有對應的規則，不檢查那條規則有沒有效果。品牌重置一次做出六處這種 no-op（四類連結 hover、章節索引的 current、16 個表格列 hover），全部由程式碼審查抓到而不是閘門。
 - **`<canvas>` 裡畫了什麼。** `zero canvas` 擋新的 canvas，`contrast` 與 `geometry` 都看不進 canvas。圖表的格線曾因為 `--line-rgb` 從「要乘 alpha 的近白墨色」變成「實色髮絲線」而整組消失，而三支腳本沒有一支會紅。
@@ -464,6 +470,8 @@ H1 拆成兩行：**領銜句**（拉丁、全大寫、`display-lead`、0.02em �
 | **副標 / display-sub** | H1 的中文次行 |
 | **band** | 佔滿一屏的區塊 |
 | **封面屏 / cover screen** | 章節標題專用的 band，只有 eyebrow 與標題，沒有 CTA |
+| **樣式表 / stylesheet** | 本站出貨的**所有作者寫的 CSS**，不論來自 `src/input.css`、模板的 `<style>` 或 `style=""` 屬性。由 `scripts/stylesheet.js` 統一回答，規則不自己開檔 |
+| **作者寫的 CSS ／ 建置後的 CSS** | 兩個不同的問題，不可互換。前者是「作者寫了什麼」，由樣式表模組回答；後者是「Tailwind 有沒有真的產出」，由 `check:classes` 讀 `styles.min.css` 回答 |
 | **語域** | 形式與語氣可以分開取用 |
 
 ---

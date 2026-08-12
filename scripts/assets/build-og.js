@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
+const stylesheet = require("../stylesheet");
 const { ROUTES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
@@ -112,19 +113,22 @@ async function main() {
     face("D-DIN Condensed", "D-DINCondensed-Bold.woff2", 700),
   ].join("\n");
 
-  // The tokens are read out of src/input.css rather than restated here.
+  // The tokens come from the stylesheet module rather than a second reader.
   //
   // This file used to hardcode #fff, #c8c8cc, #8a8a91 and 0.25em, which meant a
   // palette change updated the site and quietly left fifteen share cards on the
-  // previous one. A share card is the only asset that is seen away from the
-  // site and never noticed to be wrong in a browser, so it is the one most
-  // easily missed — the answer is not to remember, it is to not have a second
-  // copy of the values.
-  const rootCss = fs.readFileSync(path.join(ROOT, "src", "input.css"), "utf8");
+  // previous one. A share card is the only asset that is seen away from the site
+  // and never noticed to be wrong in a browser, so it is the one most easily
+  // missed — the answer is not to remember, it is to not have a second copy of
+  // the values. That fix left a second READER instead, which this removes.
+  //
+  // Still throws on a missing token. A card built from a palette that no longer
+  // exists is worse than a build that stops.
+  const sheet = stylesheet.read();
   const token = (name) => {
-    const m = new RegExp(`--${name}:\\s*([^;]+);`).exec(rootCss);
-    if (!m) throw new Error(`build-og: --${name} not found in src/input.css`);
-    return m[1].trim();
+    const value = sheet.token(name);
+    if (value === null) throw new Error(`build-og: --${name} not found in the authored CSS`);
+    return value;
   };
   const tokenCss = `:root{--ink-rgb:${token("ink-rgb")};--line-rgb:${token(
     "line-rgb"

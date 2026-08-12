@@ -122,7 +122,10 @@
 
     .skills-guide-body h1 {
         font-size: 72px;
-        letter-spacing: -1px;
+        /* 0.02em, not -1px. Negative tracking is the previous reference
+           site's signature and the brand reset deleted it from the scale;
+           this one survived because no rule read this block. */
+        letter-spacing: 0.02em;
         line-height: 1.2;
         margin-bottom: 20px;
     }
@@ -439,7 +442,9 @@
         flex: 1;
         padding: 40px 30px;
         text-align: left;
-        transition: transform 0.2s ease;
+        /* The token, not the keyword. `ease` is cubic-bezier(.25,.1,.25,1)
+           wearing a name — a second easing on a site that has one. */
+        transition: transform 0.2s var(--ease-standard);
     }
 
     .skills-guide-body .tile .icon {
