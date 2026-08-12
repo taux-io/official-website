@@ -1099,6 +1099,37 @@ function ruleStatesDiffer(files) {
   return found;
 }
 
+
+// The weight ladder has a hole in it, on purpose.
+//
+// 300 / 400 / 600 / 700, with 500 deliberately absent — the reference site's own
+// "Don't" list says so by name. Body is 400, inline strong is 600, display is
+// 600. `font-medium` is 500 and had nineteen users when this rule was written;
+// they were emphasis, so they became 600.
+//
+// Read from the templates rather than the stylesheet because that is where they
+// were written, and checked as a class rather than a computed weight because a
+// weight that lands on 500 through a font's own synthesis is a different
+// problem this rule does not claim to catch.
+const WEIGHT_FORBIDDEN = new Set(["font-medium"]);
+
+function ruleWeightLadder(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        if (!WEIGHT_FORBIDDEN.has(c.replace(/^(?:[a-z-]+:)*/, ""))) continue;
+        found.push({
+          file: rel,
+          line: html.slice(0, node.index).split("\n").length,
+          detail: `${c} is weight 500, which this ladder omits — inline emphasis is 600`,
+        });
+      }
+    }
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1183,6 +1214,13 @@ const RULES = [
     turnedOnBy: "#130 — the MCP primitives explainer",
     run: ruleCollapsibleShipsOpen,
     summary: "a panel a script collapses must be in the document open, not hidden",
+  },
+  {
+    name: "weight ladder",
+    enabled: true,
+    turnedOnBy: "#194 — 500 is absent from the ladder by name",
+    run: ruleWeightLadder,
+    summary: "no weight 500; the ladder is 300 / 400 / 600 / 700",
   },
   {
     name: "states differ",

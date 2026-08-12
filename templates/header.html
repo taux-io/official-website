@@ -116,7 +116,7 @@
     <link rel="stylesheet" href="/static/css/styles.min.css?v={{ css_version }}">
 </head>
 
-<body class="bg-surface text-ink font-sans antialiased">
+<body class="bg-surface font-sans antialiased">
 
     <!-- Navigation.
 
@@ -130,14 +130,12 @@
          replaced the 1px rule under it (issue 156). A hairline says "here is a
          boundary"; a floating layer with content passing beneath it says
          "there is more up there", which is the true statement. -->
-    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform"
-        aria-label="Main Navigation">
+    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform" aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- h-full rather than the text's own 33px: the bar is 64px tall
                  and the wordmark is a control, so its target should fill the
                  bar rather than stop at the cap height. -->
-            <a href="/" class="wordmark"
-                aria-label="TauX Homepage">
+            <a href="/" class="wordmark" aria-label="TauX Homepage">
                 TauX
             </a>
 
@@ -160,8 +158,7 @@
                      floor and fixed the hamburger; these two were never
                      measured, and geometry's control probe found them on its
                      first run. -->
-                <button type="button" id="menuTrigger" class="nav-link min-h-11 inline-flex items-center"
-                    aria-expanded="false" aria-controls="menuOverlay">
+                <button type="button" id="menuTrigger" class="nav-link min-h-11 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
                     Explore
                 </button>
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="btn">
@@ -173,9 +170,7 @@
                  the site on a phone, and under the minimum target on both
                  axes. The bars keep their own size; the button grows around
                  them and centres them. -->
-            <button type="button" id="hamburger"
-                class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50"
-                aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
+            <button type="button" id="hamburger" class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
                 <span class="w-6 h-px bg-ink origin-center"></span>
                 <span class="w-6 h-px bg-ink opacity-100"></span>
                 <span class="w-6 h-px bg-ink origin-center"></span>
@@ -199,15 +194,11 @@
          open, and an unopenable menu should not be collecting focus. The
          script removes the attribute when it opens the overlay and puts it
          back when it closes. -->
-    <div id="menuOverlay" inert
-        class="menu-surface fixed inset-0 z-[60] opacity-0 pointer-events-none overflow-y-auto"
-        role="dialog" aria-modal="true" aria-label="Site menu">
+    <div id="menuOverlay" inert class="menu-surface fixed inset-0 z-[60] opacity-0 pointer-events-none overflow-y-auto" role="dialog" aria-modal="true" aria-label="Site menu">
         <div class="max-w-6xl mx-auto px-6 py-6">
             <div class="flex items-center justify-between h-10">
-                <span class="font-display text-lg uppercase tracking-[0.09em] text-ink">TauX</span>
-                <button type="button" id="menuClose"
-                    class="eyebrow text-ink min-h-11 min-w-11 inline-flex items-center justify-end"
-                    aria-label="Close menu">
+                <span class="font-display text-lg uppercase tracking-[0.09em]">TauX</span>
+                <button type="button" id="menuClose" class="eyebrow min-h-11 min-w-11 inline-flex items-center justify-end" aria-label="Close menu">
                     Close
                 </button>
             </div>
@@ -230,8 +221,7 @@
                             <li><a href="/about" class="menu-link">About</a></li>
                             <li><a href="/building" class="menu-link">Building in Public</a></li>
                             <li>
-                            <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer"
-                            class="menu-link">GitHub</a>
+                            <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="menu-link">GitHub</a>
                             </li>
                         </ul>
                     </div>

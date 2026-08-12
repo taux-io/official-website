@@ -23,15 +23,15 @@
             <span class="display-lead">Make the Machine Understand</span>
             <span class="display-sub">從新手到高手的指令秘籍</span>
         </h1>
-            <p class="text-lg text-ink mb-8 font-medium max-w-prose">Prompt Engineering 實戰指南</p>
+            <p class="text-lg mb-8 font-semibold max-w-prose">Prompt Engineering 實戰指南</p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
-                <h3 class="text-lg font-bold text-ink mb-2">導言：為什麼你的 AI 總是不懂你？</h3>
-                <p class="text-ink mb-4">
+                <h3 class="text-lg font-bold mb-2">導言：為什麼你的 AI 總是不懂你？</h3>
+                <p class="mb-4">
                     其實不是 AI 笨，是我們「交辦工作」的方式不夠清楚。Prompt Engineering（提示工程）就像是在用白話文寫程式。
                     核心在於給出清晰的指令、必要的背景，並告訴 AI 該怎麼排列組合這些資訊。
                 </p>
-                <p class="text-ink">
+                <p>
                     想像一下，Prompting 就像是在寫一份給「超級實習生」的工作指南。這個實習生很聰明，但如果你沒說清楚，他就會亂猜。
                 </p>
             </div>
@@ -55,69 +55,68 @@
         <section id="prompting-101" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; Prompting 101</p>
-                <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span
-                    class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
                 第一部分：基礎篇 (Prompting 101)
             </h2>
             </div>
-            <p class="text-ink mb-8 ml-16 font-medium">適合場景：寫作、分析文件、單次問答、資料擷取。</p>
+            <p class="mb-8 ml-16 font-semibold">適合場景：寫作、分析文件、單次問答、資料擷取。</p>
 
             <div class="space-y-10 ml-4 tablet:ml-16">
                 <!-- Point 1 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">1. 給它一個「身分」與「任務」 (Context & Role)</h3>
-                    <p class="text-ink mb-3">不要只丟一句話給 AI，你要像導演一樣設定角色。</p>
+                    <h3 class="text-xl font-bold mb-2">1. 給它一個「身分」與「任務」 (Context & Role)</h3>
+                    <p class="mb-3">不要只丟一句話給 AI，你要像導演一樣設定角色。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
-                        <span class="text-ink font-bold block mb-2 flex items-center gap-1">
+                        <span class="font-bold block mb-2 flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg> 錯誤示範：「這是什麼？」
                         </span>
-                        <span class="text-ink font-bold block flex items-center gap-1">
+                        <span class="font-bold block flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg> 正確示範：「你是一間瑞典保險公司的理賠專員。你的任務是閱讀車禍報告並判斷誰有過失。」
                         </span>
                     </div>
-                    <p class="text-sm text-ink flex items-start">
-                        <span class="mr-2 text-ink font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 如果不說這是車禍報告，AI 可能會以為是滑雪意外。明確定義身分，AI 就不會瞎猜。
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 如果不說這是車禍報告，AI 可能會以為是滑雪意外。明確定義身分，AI 就不會瞎猜。
                     </p>
                 </div>
 
                 <!-- Point 2 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">2. 提供「參考書」 (Background Data)</h3>
-                    <p class="text-ink mb-3">如果是固定不變的資訊（如標準表格、法規），請放在最前面 (System Prompt)。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm text-ink">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">為什麼？</strong> 讓 AI 專注填寫內容，不用重新學習格式。就像給實習生「員工手冊」。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">小技巧：</strong> 善用 XML 標籤（如 <code class="bg-ink/5 text-ink font-semibold font-sans px-1 py-0.5">&lt;form&gt;內容&lt;/form&gt;</code>）。AI 喜歡結構化資料。</li>
+                    <h3 class="text-xl font-bold mb-2">2. 提供「參考書」 (Background Data)</h3>
+                    <p class="mb-3">如果是固定不變的資訊（如標準表格、法規），請放在最前面 (System Prompt)。</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>為什麼？</strong> 讓 AI 專注填寫內容，不用重新學習格式。就像給實習生「員工手冊」。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>小技巧：</strong> 善用 XML 標籤（如 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;內容&lt;/form&gt;</code>）。AI 喜歡結構化資料。</li>
                     </ul>
                 </div>
 
                 <!-- Point 3 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">3. 下達「步驟指令」 (Step-by-Step Instructions)</h3>
-                    <p class="text-ink mb-3">不要只求結果，要規定過程。人類怎麼思考，就叫 AI 照著做。</p>
+                    <h3 class="text-xl font-bold mb-2">3. 下達「步驟指令」 (Step-by-Step Instructions)</h3>
+                    <p class="mb-3">不要只求結果，要規定過程。人類怎麼思考，就叫 AI 照著做。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
-                        <strong class="text-ink font-semibold mb-1 block">指令寫法：</strong>
-                        <span class="text-ink">「第一步：檢查表格勾選框。第二步：解讀現場圖。第三步：做出結論。」</span>
+                        <strong class="font-semibold mb-1 block">指令寫法：</strong>
+                        <span>「第一步：檢查表格勾選框。第二步：解讀現場圖。第三步：做出結論。」</span>
                     </div>
-                    <p class="text-sm text-ink flex items-start">
-                        <span class="mr-2 text-ink font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 強迫 AI 把思考過程寫出來 (Show its work)，準確率會大幅提升。
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 強迫 AI 把思考過程寫出來 (Show its work)，準確率會大幅提升。
                     </p>
                 </div>
 
                 <!-- Point 4 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">4. 規定「輸出格式」 (Output Formatting)</h3>
-                    <p class="text-ink mb-3">告訴 AI：「請用 JSON 格式輸出」或「請把結論包在 <code class="bg-ink/5 text-ink font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 標籤裡」。</p>
-                    <p class="text-sm text-ink flex items-start">
-                        <span class="mr-2 text-ink font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 這樣你可以直接拿程式去抓取結果，不用人工複製貼上。
+                    <h3 class="text-xl font-bold mb-2">4. 規定「輸出格式」 (Output Formatting)</h3>
+                    <p class="mb-3">告訴 AI：「請用 JSON 格式輸出」或「請把結論包在 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 標籤裡」。</p>
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 這樣你可以直接拿程式去抓取結果，不用人工複製貼上。
                     </p>
                 </div>
             </div>
@@ -127,63 +126,63 @@
         <section id="agent-prompting" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent Prompting</p>
-                <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
                 第二部分：進階篇 (Prompting for Agents)
             </h2>
             </div>
-            <p class="text-ink mb-8 ml-16 font-medium">適合場景：使用工具、上網搜尋、寫程式、多步驟複雜任務。</p>
+            <p class="mb-8 ml-16 font-semibold">適合場景：使用工具、上網搜尋、寫程式、多步驟複雜任務。</p>
 
             <div class="space-y-10 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">1. 什麼是代理人 (Agent)？</h3>
-                    <p class="text-ink">基礎篇 AI 像「問答機」。代理人則像「獨立員工」，在迴圈 (Loop) 裡工作：<br>
-                        <span class="inline-block mt-2 text-ink font-semibold px-3 py-1 text-sm border border-line">使用工具 → 觀察結果 → 思考下一步 → 再使用工具</span><br>
-                        <span class="inline-block mt-2 text-ink text-sm">直到完成任務。</span>
+                    <h3 class="text-xl font-bold mb-2">1. 什麼是代理人 (Agent)？</h3>
+                    <p>基礎篇 AI 像「問答機」。代理人則像「獨立員工」，在迴圈 (Loop) 裡工作：<br>
+                        <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">使用工具 → 觀察結果 → 思考下一步 → 再使用工具</span><br>
+                        <span class="inline-block mt-2 text-sm">直到完成任務。</span>
                     </p>
                 </div>
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">2. 何時該用代理人？</h3>
-                    <p class="text-ink mb-3">殺雞焉用牛刀。適合任務複雜、路徑不固定的場景。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm text-ink">
+                    <h3 class="text-xl font-bold mb-2">2. 何時該用代理人？</h3>
+                    <p class="mb-3">殺雞焉用牛刀。適合任務複雜、路徑不固定的場景。</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start">
-                            <span class="text-ink mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
-                            <strong class="text-ink">適用：</strong>做市場調查（不知道要搜尋幾次才能找到答案）。
+                            <span class="mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
+                            <strong>適用：</strong>做市場調查（不知道要搜尋幾次才能找到答案）。
                         </li>
                         <li class="flex items-start">
-                            <span class="text-ink mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
-                            <strong class="text-ink">不適用：</strong>已有確切 SOP 的固定流程，或簡單任務。
+                            <span class="mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
+                            <strong>不適用：</strong>已有確切 SOP 的固定流程，或簡單任務。
                         </li>
                     </ul>
                 </div>
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">3. 關鍵心法：像代理人一樣思考</h3>
-                    <p class="text-ink mb-3">問自己：「如果我是剛畢業的實習生，給我這些工具，我會不會不知所措？」</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm text-ink">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">工具設計要清楚：</strong>名稱簡單準確，不要重疊。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">給原則，不要給腳本：</strong>範例：「簡單問題搜 5 次，複雜搜 10 次」或「找到答案就停止」。</li>
+                    <h3 class="text-xl font-bold mb-2">3. 關鍵心法：像代理人一樣思考</h3>
+                    <p class="mb-3">問自己：「如果我是剛畢業的實習生，給我這些工具，我會不會不知所措？」</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>工具設計要清楚：</strong>名稱簡單準確，不要重疊。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>給原則，不要給腳本：</strong>範例：「簡單問題搜 5 次，複雜搜 10 次」或「找到答案就停止」。</li>
                     </ul>
                 </div>
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">4. 讓它「先想再做」 (Plan & Guide Thinking)</h3>
-                    <p class="text-ink mb-3">現在的模型可以邊做邊想。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm text-ink">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">指令技巧：</strong>要求呼叫工具前先規劃：「我要搜什麼關鍵字？找什麼來源？」</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong class="text-ink">檢查機制：</strong>拿到結果後評估：「資料可信嗎？需要驗證嗎？」</li>
+                    <h3 class="text-xl font-bold mb-2">4. 讓它「先想再做」 (Plan & Guide Thinking)</h3>
+                    <p class="mb-3">現在的模型可以邊做邊想。</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>指令技巧：</strong>要求呼叫工具前先規劃：「我要搜什麼關鍵字？找什麼來源？」</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>檢查機制：</strong>拿到結果後評估：「資料可信嗎？需要驗證嗎？」</li>
                     </ul>
                 </div>
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold text-ink mb-2">5. 如何測試？ (Evaluation)</h3>
-                    <p class="text-ink">從小開始。手動測試幾個案例，觀察日誌 (Logs)。<br>
+                    <h3 class="text-xl font-bold mb-2">5. 如何測試？ (Evaluation)</h3>
+                    <p>從小開始。手動測試幾個案例，觀察日誌 (Logs)。<br>
                         看看它調用了什麼工具？有沒有鬼打牆？這比只看最終答案更能優化指令。</p>
                 </div>
             </div>
@@ -191,14 +190,12 @@
 
         <!-- Related Links -->
         <section class="mt-16 pt-8 border-t border-line">
-            <h3 class="text-ink font-bold mb-6 font-display text-xl">延伸閱讀</h3>
+            <h3 class="font-bold mb-6 font-display text-xl">延伸閱讀</h3>
             <div class="flex flex-wrap gap-3">
-                <a href="/geo-guide"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:underline hover:underline-offset-4 transition-all">
+                <a href="/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
                     GEO 入門指南 <span class="ml-2">→</span>
                 </a>
-                <a href="/what-is-llms-txt"
-                    class="inline-flex items-center px-4 py-2 border border-line text-sm text-ink hover:underline hover:underline-offset-4 transition-all">
+                <a href="/what-is-llms-txt" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
                     什麼是 LLMs.txt？ <span class="ml-2">→</span>
                 </a>
             </div>

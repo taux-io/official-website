@@ -178,16 +178,20 @@
   }
 
   html {
-    /* 17px, not the browser's 16. The body step is a design token and the
-       document has to actually wear it — an earlier version left this to the
-       default and the reading measure probe caught the gap. */
-    @apply scroll-smooth font-sans text-base;
+    @apply scroll-smooth font-sans;
   }
 
   body {
     background-color: var(--surface);
     color: var(--ink);
-    @apply font-sans antialiased overflow-x-hidden;
+    /* THE BODY STEP LIVES HERE, NOT ON <html>, and the difference is not
+       cosmetic. text-base is 1.0625rem; on the root element that makes 1rem
+       itself 17px, so every rem-sized token compounds — a child's text-base
+       becomes 18.06px and display-lg's 3.5rem becomes 59.5px instead of 56.
+       Decision #45 rejected scaling the root font-size for exactly this reason
+       and this reintroduced it. On <body> the root stays 16px and every token
+       resolves to the value the scale declares. */
+    @apply font-sans text-base antialiased overflow-x-hidden;
     /* iOS paints its own grey flash on tap. With designed :active states
        (issue 154) that flash is a second, uninvited answer to the same press,
        and it arrives on a different schedule. */
