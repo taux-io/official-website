@@ -410,7 +410,7 @@
   /* A tag is a control's near relative — it is bounded, so it takes the
      control's radius and the divider hairline.
 
-     It keeps font-display while .eyebrow moved to font-mono, and the two now
+     It keeps font-display while .eyebrow uses font-sans, and the two now
      render the same type token (text-eyebrow: 0.75rem / 0.09em / uppercase) in
      two different faces. That is deliberate and it is the reason: an eyebrow
      labels a section — it is machine output, a position in a list. A tag names
@@ -507,14 +507,14 @@
      dimming. Eyebrows and captions come out brighter than before, which is the
      intended consequence and not a regression.
 
-     font-mono rather than font-display: an eyebrow is a label, and a label is
+     font-sans rather than font-display: an eyebrow is a label, and a label is
      machine output — the judgement DESIGN.md's 等寬字治理 turns on. 95 of the
      186 eyebrows are Chinese, and they stay readable because the mono stack
      carries the CJK faces ahead of the generic monospace; Roboto Mono's
      unicode-range hands them over. That stack is the whole reason this is one
      line rather than a Latin-only variant applied by hand. */
   .eyebrow {
-    @apply font-mono text-eyebrow uppercase text-ink;
+    @apply font-sans text-eyebrow uppercase text-ink;
   }
 
   /* py-1.5 buys 12px of height on a 14px line — a 26px target rather than 14px.

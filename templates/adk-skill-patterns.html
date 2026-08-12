@@ -35,7 +35,7 @@
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
                 <h3 class="text-lg font-bold text-ink mb-2">為什麼需要設計模式？</h3>
                 <p class="text-ink leading-relaxed">
-                    很多人以為寫好 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
+                    很多人以為寫好 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 的 YAML 格式就行了——其實那只是「殼」。
                     真正的挑戰在於<strong class="text-ink">內容設計</strong>：如何讓 Agent 不跳步、不瞎猜、不產出一堆格式不一的東西？
                     這五個模式就是答案。
                 </p>
@@ -62,7 +62,7 @@
 
         <!-- Pattern Overview -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">01</p>
+            <p class="eyebrow mb-8 font-sans">01</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6 flex items-center">
                 <span class="w-10 h-10 text-ink font-semibold flex items-center justify-center mr-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
@@ -81,31 +81,31 @@
                     </thead>
                     <tbody class="text-sm text-ink">
                         <tr class="border-b border-line hover:bg-surface transition-colors">
-                            <td class="py-4 px-4 font-mono text-ink font-semibold">01</td>
+                            <td class="py-4 px-4 font-sans text-ink font-semibold">01</td>
                             <td class="py-4 px-4 font-bold text-ink">Tool Wrapper</td>
                             <td class="py-4 px-4">用到時才載入專家知識</td>
                             <td class="py-4 px-4 hidden md:table-cell">整合特定框架 / 函式庫</td>
                         </tr>
                         <tr class="border-b border-line hover:bg-surface transition-colors">
-                            <td class="py-4 px-4 font-mono text-ink font-semibold">02</td>
+                            <td class="py-4 px-4 font-sans text-ink font-semibold">02</td>
                             <td class="py-4 px-4 font-bold text-ink">Generator</td>
                             <td class="py-4 px-4">用模板保證輸出一致</td>
                             <td class="py-4 px-4 hidden md:table-cell">報告 / 文件 / API 文件生成</td>
                         </tr>
                         <tr class="border-b border-line hover:bg-surface transition-colors">
-                            <td class="py-4 px-4 font-mono text-ink font-semibold">03</td>
+                            <td class="py-4 px-4 font-sans text-ink font-semibold">03</td>
                             <td class="py-4 px-4 font-bold text-ink">Reviewer</td>
                             <td class="py-4 px-4">用檢查清單做品質把關</td>
                             <td class="py-4 px-4 hidden md:table-cell">Code Review / 安全稽核</td>
                         </tr>
                         <tr class="border-b border-line hover:bg-surface transition-colors">
-                            <td class="py-4 px-4 font-mono text-ink font-semibold">04</td>
+                            <td class="py-4 px-4 font-sans text-ink font-semibold">04</td>
                             <td class="py-4 px-4 font-bold text-ink">Inversion</td>
                             <td class="py-4 px-4">先問夠再動手</td>
                             <td class="py-4 px-4 hidden md:table-cell">需求模糊的任務</td>
                         </tr>
                         <tr class="hover:bg-surface transition-colors">
-                            <td class="py-4 px-4 font-mono text-ink font-semibold">05</td>
+                            <td class="py-4 px-4 font-sans text-ink font-semibold">05</td>
                             <td class="py-4 px-4 font-bold text-ink">Pipeline</td>
                             <td class="py-4 px-4">嚴格的多步驟流水線</td>
                             <td class="py-4 px-4 hidden md:table-cell">部署 / 審批 / 複雜工作流</td>
@@ -117,9 +117,9 @@
 
         <!-- Pattern 1: Tool Wrapper -->
         <section id="tool-wrapper" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8"><span class="font-mono">02</span> &mdash; Tool Wrapper</p>
+            <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool Wrapper</p>
             <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-mono text-lg">01</span>
+                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-sans text-lg">01</span>
                 Tool Wrapper
             </h2>
             <p class="text-ink font-semibold mb-6 ml-16">快速領域專精化</p>
@@ -137,8 +137,8 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        在 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
-                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
+                        在 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> 裡設定「關鍵字觸發」。
+                        當 Agent 偵測到使用者提到某個框架時，才從 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 目錄動態載入對應的 conventions。
                     </p>
                     <!-- Code Example -->
                     <div class="bg-surface p-5 text-sm overflow-x-auto">
@@ -170,9 +170,9 @@
 
         <!-- Pattern 2: Generator -->
         <section id="generator" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8"><span class="font-mono">03</span> &mdash; Generator</p>
+            <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Generator</p>
             <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-mono text-lg">02</span>
+                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-sans text-lg">02</span>
                 Generator
             </h2>
             <p class="text-ink font-semibold mb-6 ml-16">用模板確保結構化輸出</p>
@@ -190,7 +190,7 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        預先建立模板（放在 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
+                        預先建立模板（放在 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code> 目錄），讓 Agent 像「填空」一樣把內容填進去，而不是從零開始建構。
                     </p>
                     <div class="bg-surface p-5 text-sm overflow-x-auto">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
@@ -229,9 +229,9 @@
 
         <!-- Pattern 3: Reviewer -->
         <section id="reviewer" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8"><span class="font-mono">04</span> &mdash; Reviewer</p>
+            <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Reviewer</p>
             <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-mono text-lg">03</span>
+                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-sans text-lg">03</span>
                 Reviewer
             </h2>
             <p class="text-ink font-semibold mb-6 ml-16">用檢查清單做品質把關</p>
@@ -249,7 +249,7 @@
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold text-ink mb-2">解法</h3>
                     <p class="text-ink mb-4">
-                        建立一個獨立的 Reviewer Skill，從 <code class="bg-surface text-ink font-semibold font-mono px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
+                        建立一個獨立的 Reviewer Skill，從 <code class="bg-surface text-ink font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> 載入專屬的檢查清單，
                         讓 Agent 依據清單逐項驗證，並按嚴重度分組回報。
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -280,9 +280,9 @@
 
         <!-- Pattern 4: Inversion -->
         <section id="inversion" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8"><span class="font-mono">05</span> &mdash; Inversion</p>
+            <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Inversion</p>
             <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-mono text-lg">04</span>
+                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-sans text-lg">04</span>
                 Inversion
             </h2>
             <p class="text-ink font-semibold mb-6 ml-16">先問夠，再動手</p>
@@ -339,9 +339,9 @@
 
         <!-- Pattern 5: Pipeline -->
         <section id="pipeline" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8"><span class="font-mono">06</span> &mdash; Pipeline</p>
+            <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Pipeline</p>
             <h2 class="font-display text-3xl font-bold text-ink mb-2 flex items-center">
-                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-mono text-lg">05</span>
+                <span class="w-12 h-12 text-ink font-semibold flex items-center justify-center mr-4 font-sans text-lg">05</span>
                 Pipeline
             </h2>
             <p class="text-ink font-semibold mb-6 ml-16">嚴格的多步驟流水線</p>
@@ -407,7 +407,7 @@
 
         <!-- Key Concepts -->
         <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">07</p>
+            <p class="eyebrow mb-8 font-sans">07</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6 flex items-center">
                 <span class="w-10 h-10 text-ink font-semibold flex items-center justify-center mr-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
@@ -430,7 +430,7 @@
                     </span>
                     <div>
                         <h4 class="font-bold text-ink mb-1">格式與內容分離</h4>
-                        <p class="text-ink text-sm"><code class="bg-surface text-ink font-semibold font-mono px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
+                        <p class="text-ink text-sm"><code class="bg-surface text-ink font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code> 提供標準化的殼，這些模式則定義「Agent 如何思考與行動」的內在邏輯。</p>
                     </div>
                 </div>
                 <div class="flex items-start p-4">
@@ -447,7 +447,7 @@
 
         <!-- Related Links -->
         <section class="pt-8 border-t border-line border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">08</p>
+            <p class="eyebrow mb-8 font-sans">08</p>
             <h3 class="text-ink font-bold mb-6 font-display text-xl">延伸閱讀</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/agent-prompting-guide"

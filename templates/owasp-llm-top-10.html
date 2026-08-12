@@ -102,16 +102,16 @@
                 <p class="eyebrow mb-5">目錄</p>
                 <ul>
                     <li><a href="#overview" class="section-index-link">速覽</a></li>
-                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-mono">LLM01</span> 提示詞注入</a></li>
-                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-mono">LLM02</span> 敏感資訊洩漏</a></li>
-                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-mono">LLM03</span> 過度代理權</a></li>
-                    <li><a href="#supply-chain" class="section-index-link"><span class="font-mono">LLM04</span> 供應鏈</a></li>
-                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-mono">LLM05</span> 資料與模型投毒</a></li>
-                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-mono">LLM06</span> 無節制消耗</a></li>
-                    <li><a href="#misinformation" class="section-index-link"><span class="font-mono">LLM07</span> 錯誤資訊</a></li>
-                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-mono">LLM08</span> 隱藏脈絡外洩</a></li>
-                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-mono">LLM09</span> 向量與嵌入弱點</a></li>
-                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-mono">LLM10</span> 輸出處理不當</a></li>
+                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-sans">LLM01</span> 提示詞注入</a></li>
+                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-sans">LLM02</span> 敏感資訊洩漏</a></li>
+                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-sans">LLM03</span> 過度代理權</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">LLM04</span> 供應鏈</a></li>
+                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-sans">LLM05</span> 資料與模型投毒</a></li>
+                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-sans">LLM06</span> 無節制消耗</a></li>
+                    <li><a href="#misinformation" class="section-index-link"><span class="font-sans">LLM07</span> 錯誤資訊</a></li>
+                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> 隱藏脈絡外洩</a></li>
+                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> 向量與嵌入弱點</a></li>
+                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> 輸出處理不當</a></li>
                 </ul>
             </div>
         </nav>
@@ -126,7 +126,7 @@
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
         <section id="version-status" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">00</p>
+            <p class="eyebrow mb-8 font-sans">00</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">2025 → 2026 改了什麼</h2>
             <div class="border-l border-line pl-6 text-ink leading-relaxed">
                 <p>
@@ -144,16 +144,16 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm text-ink">
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">01</td><td class="py-3 pr-4 font-mono text-ink">01</td><td class="py-3">提示詞注入 <span class="text-ink">— 不變</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">02</td><td class="py-3 pr-4 font-mono text-ink">02</td><td class="py-3">敏感資訊洩漏 <span class="text-ink">— 不變</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">06</td><td class="py-3 pr-4 font-mono text-ink">03</td><td class="py-3">過度代理權 <strong class="text-ink">— 升三名，本次最重要的移動</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">03</td><td class="py-3 pr-4 font-mono text-ink">04</td><td class="py-3">供應鏈 <span class="text-ink">— 降一名</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">04</td><td class="py-3 pr-4 font-mono text-ink">05</td><td class="py-3">資料與模型投毒 <span class="text-ink">— 降一名</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">10</td><td class="py-3 pr-4 font-mono text-ink">06</td><td class="py-3">無節制消耗 <strong class="text-ink">— 升四名</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">09</td><td class="py-3 pr-4 font-mono text-ink">07</td><td class="py-3">錯誤資訊 <span class="text-ink">— 升兩名</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">07</td><td class="py-3 pr-4 font-mono text-ink">08</td><td class="py-3">隱藏脈絡外洩 <strong class="text-ink">— 更名並擴大範圍</strong><span class="text-ink">（原「系統提示詞洩漏」）</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-mono">08</td><td class="py-3 pr-4 font-mono text-ink">09</td><td class="py-3">向量與嵌入弱點 <span class="text-ink">— 降一名</span></td></tr>
-                        <tr><td class="py-3 pr-4 font-mono">05</td><td class="py-3 pr-4 font-mono text-ink">10</td><td class="py-3">輸出處理不當 <strong class="text-ink">— 降五名，本次跌幅最大</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">01</td><td class="py-3 pr-4 font-sans text-ink">01</td><td class="py-3">提示詞注入 <span class="text-ink">— 不變</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">02</td><td class="py-3 pr-4 font-sans text-ink">02</td><td class="py-3">敏感資訊洩漏 <span class="text-ink">— 不變</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">06</td><td class="py-3 pr-4 font-sans text-ink">03</td><td class="py-3">過度代理權 <strong class="text-ink">— 升三名，本次最重要的移動</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">03</td><td class="py-3 pr-4 font-sans text-ink">04</td><td class="py-3">供應鏈 <span class="text-ink">— 降一名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans text-ink">05</td><td class="py-3">資料與模型投毒 <span class="text-ink">— 降一名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans text-ink">06</td><td class="py-3">無節制消耗 <strong class="text-ink">— 升四名</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans text-ink">07</td><td class="py-3">錯誤資訊 <span class="text-ink">— 升兩名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans text-ink">08</td><td class="py-3">隱藏脈絡外洩 <strong class="text-ink">— 更名並擴大範圍</strong><span class="text-ink">（原「系統提示詞洩漏」）</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans text-ink">09</td><td class="py-3">向量與嵌入弱點 <span class="text-ink">— 降一名</span></td></tr>
+                        <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans text-ink">10</td><td class="py-3">輸出處理不當 <strong class="text-ink">— 降五名，本次跌幅最大</strong></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -189,7 +189,7 @@
              number changes between editions; the topic does not. Same reason
              the URL carries no year. -->
         <section id="overview" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">01</p>
+            <p class="eyebrow mb-8 font-sans">01</p>
             <h2 class="font-display text-2xl font-bold text-ink mb-6">十條速覽</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -202,52 +202,52 @@
                     </thead>
                     <tbody class="text-sm text-ink">
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM01</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM01</td>
                             <td class="py-4 pr-4"><a href="#prompt-injection" class="text-ink font-bold">提示詞注入</a></td>
                             <td class="py-4 hidden md:table-cell">Prompt Injection</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM02</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM02</td>
                             <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="text-ink font-bold">敏感資訊洩漏</a></td>
                             <td class="py-4 hidden md:table-cell">Sensitive Information Disclosure</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM03</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM03</td>
                             <td class="py-4 pr-4"><a href="#excessive-agency" class="text-ink font-bold">過度代理權</a></td>
                             <td class="py-4 hidden md:table-cell">Excessive Agency</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM04</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM04</td>
                             <td class="py-4 pr-4"><a href="#supply-chain" class="text-ink font-bold">供應鏈</a></td>
                             <td class="py-4 hidden md:table-cell">Supply Chain</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM05</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM05</td>
                             <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="text-ink font-bold">資料與模型投毒</a></td>
                             <td class="py-4 hidden md:table-cell">Data and Model Poisoning</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM06</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM06</td>
                             <td class="py-4 pr-4"><a href="#unbounded-consumption" class="text-ink font-bold">無節制消耗</a></td>
                             <td class="py-4 hidden md:table-cell">Unbounded Consumption</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM07</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM07</td>
                             <td class="py-4 pr-4"><a href="#misinformation" class="text-ink font-bold">錯誤資訊</a></td>
                             <td class="py-4 hidden md:table-cell">Misinformation</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM08</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM08</td>
                             <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="text-ink font-bold">隱藏脈絡外洩</a></td>
                             <td class="py-4 hidden md:table-cell">Hidden Context Exposure</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM09</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM09</td>
                             <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="text-ink font-bold">向量與嵌入弱點</a></td>
                             <td class="py-4 hidden md:table-cell">Vector and Embedding Weaknesses</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pr-4 font-mono text-ink font-semibold">LLM10</td>
+                            <td class="py-4 pr-4 font-sans text-ink font-semibold">LLM10</td>
                             <td class="py-4 pr-4"><a href="#improper-output-handling" class="text-ink font-bold">輸出處理不當</a></td>
                             <td class="py-4 hidden md:table-cell">Improper Output Handling</td>
                         </tr>
@@ -261,8 +261,8 @@
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
         <section id="prompt-injection" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM01</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">提示詞注入 <span class="block text-base font-normal text-ink mt-2 font-mono">Prompt Injection</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM01</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">提示詞注入 <span class="block text-base font-normal text-ink mt-2 font-sans">Prompt Injection</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -294,8 +294,8 @@
         </section>
 
         <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM02</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">敏感資訊洩漏 <span class="block text-base font-normal text-ink mt-2 font-mono">Sensitive Information Disclosure</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM02</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">敏感資訊洩漏 <span class="block text-base font-normal text-ink mt-2 font-sans">Sensitive Information Disclosure</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -308,9 +308,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>檢索<strong class="text-ink">之前</strong>就套用使用者權限，不要靠提示詞要求模型「不要說出來」——那是請求，不是控制。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>輸入與輸出兩端都做敏感資料偵測與遮蔽。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>用於訓練或微調的資料先去識別化，因為模型記得住的東西無法事後撤回。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>檢索<strong class="text-ink">之前</strong>就套用使用者權限，不要靠提示詞要求模型「不要說出來」——那是請求，不是控制。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>輸入與輸出兩端都做敏感資料偵測與遮蔽。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>用於訓練或微調的資料先去識別化，因為模型記得住的東西無法事後撤回。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -323,8 +323,8 @@
         </section>
 
         <section id="excessive-agency" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM03</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">過度代理權 <span class="block text-base font-normal text-ink mt-2 font-mono">Excessive Agency</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM03</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">過度代理權 <span class="block text-base font-normal text-ink mt-2 font-sans">Excessive Agency</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -337,9 +337,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>工具的權限取最小集合，不給「以防萬一會用到」的能力。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>高風險或不可逆的動作要人為確認，而且確認的介面要說清楚將要發生什麼。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>權限在工具層強制，不靠提示詞約束——提示詞說服得動，權限系統說服不動。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>工具的權限取最小集合，不給「以防萬一會用到」的能力。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>高風險或不可逆的動作要人為確認，而且確認的介面要說清楚將要發生什麼。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>權限在工具層強制，不靠提示詞約束——提示詞說服得動，權限系統說服不動。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -356,8 +356,8 @@
         </section>
 
         <section id="supply-chain" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM04</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">供應鏈 <span class="block text-base font-normal text-ink mt-2 font-mono">Supply Chain</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM04</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">供應鏈 <span class="block text-base font-normal text-ink mt-2 font-sans">Supply Chain</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -370,9 +370,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>模型與資料集比照軟體相依處理：來源查核、版本鎖定、雜湊比對。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>產出並維護 AI 物料清單，讓「我們到底裝了什麼」是一個查得到答案的問題。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>第三方模型先在隔離環境評估行為再上線，不要直接接到有權限的系統上。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>模型與資料集比照軟體相依處理：來源查核、版本鎖定、雜湊比對。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>產出並維護 AI 物料清單，讓「我們到底裝了什麼」是一個查得到答案的問題。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>第三方模型先在隔離環境評估行為再上線，不要直接接到有權限的系統上。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -383,8 +383,8 @@
         </section>
 
         <section id="data-and-model-poisoning" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM05</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">資料與模型投毒 <span class="block text-base font-normal text-ink mt-2 font-mono">Data and Model Poisoning</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM05</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">資料與模型投毒 <span class="block text-base font-normal text-ink mt-2 font-sans">Data and Model Poisoning</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -397,9 +397,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>訓練與微調資料的來源可追溯，知道每一批資料是誰放進來的。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>對照固定的基準集偵測行為漂移，而不是只看整體指標有沒有變差。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>微調後做紅隊測試，特別針對觸發詞這類只在窄條件下顯現的行為。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>訓練與微調資料的來源可追溯，知道每一批資料是誰放進來的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>對照固定的基準集偵測行為漂移，而不是只看整體指標有沒有變差。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>微調後做紅隊測試，特別針對觸發詞這類只在窄條件下顯現的行為。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -412,8 +412,8 @@
         </section>
 
         <section id="unbounded-consumption" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM06</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">無節制消耗 <span class="block text-base font-normal text-ink mt-2 font-mono">Unbounded Consumption</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM06</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">無節制消耗 <span class="block text-base font-normal text-ink mt-2 font-sans">Unbounded Consumption</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -426,9 +426,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>依使用者與 API 金鑰設速率與配額上限，而不是只在整體層級設一個總量。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>限制輸入長度與輸出 token 數，兩端都要。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>監控每使用者成本並設異常告警——先看到帳單才發現，通常已經是一個月後。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>依使用者與 API 金鑰設速率與配額上限，而不是只在整體層級設一個總量。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>限制輸入長度與輸出 token 數，兩端都要。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>監控每使用者成本並設異常告警——先看到帳單才發現，通常已經是一個月後。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -443,8 +443,8 @@
         </section>
 
         <section id="misinformation" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM07</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">錯誤資訊 <span class="block text-base font-normal text-ink mt-2 font-mono">Misinformation</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM07</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">錯誤資訊 <span class="block text-base font-normal text-ink mt-2 font-sans">Misinformation</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -457,9 +457,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>有出處要求的場景一律走檢索並附上引用，讓答案可以被追回來源。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>關鍵決策保留人工複核，而且複核的人要看得到模型依據什麼。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>對使用者揭露不確定性，不要用肯定的語氣包裝推測。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>有出處要求的場景一律走檢索並附上引用，讓答案可以被追回來源。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>關鍵決策保留人工複核，而且複核的人要看得到模型依據什麼。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>對使用者揭露不確定性，不要用肯定的語氣包裝推測。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -474,8 +474,8 @@
         </section>
 
         <section id="hidden-context-exposure" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM08</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">隱藏脈絡外洩 <span class="block text-base font-normal text-ink mt-2 font-mono">Hidden Context Exposure</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM08</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">隱藏脈絡外洩 <span class="block text-base font-normal text-ink mt-2 font-sans">Hidden Context Exposure</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -488,9 +488,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span><strong class="text-ink">假設隱藏脈絡終將被看見來設計</strong>，把脈絡裡的任何內容都當成不是秘密。這是根本解，其餘都是補丁。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>憑證、連線字串與 token 一律不放進脈絡。真正的風險不是它被看見，是它一開始就被放進去。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>不要把隱藏脈絡當成授權、權限隔離、政策執行或內容過濾的<strong class="text-ink">唯一</strong>邊界——那些要在模型之外成立。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span><strong class="text-ink">假設隱藏脈絡終將被看見來設計</strong>，把脈絡裡的任何內容都當成不是秘密。這是根本解，其餘都是補丁。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>憑證、連線字串與 token 一律不放進脈絡。真正的風險不是它被看見，是它一開始就被放進去。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>不要把隱藏脈絡當成授權、權限隔離、政策執行或內容過濾的<strong class="text-ink">唯一</strong>邊界——那些要在模型之外成立。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -507,8 +507,8 @@
         </section>
 
         <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM09</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">向量與嵌入弱點 <span class="block text-base font-normal text-ink mt-2 font-mono">Vector and Embedding Weaknesses</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM09</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">向量與嵌入弱點 <span class="block text-base font-normal text-ink mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -521,9 +521,9 @@
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>向量庫依租戶與權限做硬性隔離，不要把隔離寄託在查詢條件寫對。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>進庫的文件要有來源驗證與稽核軌跡，知道每一段內容是怎麼進去的。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>嵌入本身視為敏感資料保護——它可被部分還原，不是不可逆的雜湊。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>向量庫依租戶與權限做硬性隔離，不要把隔離寄託在查詢條件寫對。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>進庫的文件要有來源驗證與稽核軌跡，知道每一段內容是怎麼進去的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>嵌入本身視為敏感資料保護——它可被部分還原，不是不可逆的雜湊。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -536,8 +536,8 @@
         </section>
 
         <section id="improper-output-handling" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">LLM10</p>
-            <h2 class="font-display text-2xl font-bold text-ink mb-6">輸出處理不當 <span class="block text-base font-normal text-ink mt-2 font-mono">Improper Output Handling</span></h2>
+            <p class="eyebrow mb-8 font-sans">LLM10</p>
+            <h2 class="font-display text-2xl font-bold text-ink mb-6">輸出處理不當 <span class="block text-base font-normal text-ink mt-2 font-sans">Improper Output Handling</span></h2>
             <div class="space-y-6 text-ink leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -545,14 +545,14 @@
                 </div>
                 <div>
                     <p class="eyebrow mb-2">情境</p>
-                    <p>模型回傳的字串直接進 <code class="bg-surface text-ink font-mono px-1.5 py-0.5 text-sm">innerHTML</code>、直接拼進 SQL、直接餵給 shell。一次成功的注入因此從「模型講錯話」升級成「攻擊者在你的伺服器上執行指令」。</p>
+                    <p>模型回傳的字串直接進 <code class="bg-surface text-ink font-sans px-1.5 py-0.5 text-sm">innerHTML</code>、直接拼進 SQL、直接餵給 shell。一次成功的注入因此從「模型講錯話」升級成「攻擊者在你的伺服器上執行指令」。</p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">防禦</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">01</span><span>把模型視為不可信來源，輸出比照使用者輸入處理——它本來就可能是使用者輸入變形而來的。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">02</span><span>依下游情境做輸出編碼：HTML、SQL、shell 各有各的跳脫規則，沒有通用的那一種。</span></li>
-                        <li class="flex gap-4"><span class="font-mono text-ink shrink-0">03</span><span>參數化查詢，不做字串拼接。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">01</span><span>把模型視為不可信來源，輸出比照使用者輸入處理——它本來就可能是使用者輸入變形而來的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">02</span><span>依下游情境做輸出編碼：HTML、SQL、shell 各有各的跳脫規則，沒有通用的那一種。</span></li>
+                        <li class="flex gap-4"><span class="font-sans text-ink shrink-0">03</span><span>參數化查詢，不做字串拼接。</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4">
@@ -570,7 +570,7 @@
 
         <!-- Source -->
         <section id="source" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-mono">來源</p>
+            <p class="eyebrow mb-8 font-sans">來源</p>
             <p class="text-ink leading-relaxed">
                 十條的名稱、順序與範圍取自 OWASP GenAI Security Project 發布的
                 <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer"
