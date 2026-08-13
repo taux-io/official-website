@@ -551,6 +551,18 @@ date_published = "2026-04-06"
   description = "Google Cloud 五种 ADK Agent Skill 设计模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
   canonical   = "https://taux.io/zh-Hans-CN/adk-skill-patterns"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/adk-skill-patterns.html"
+  title       = "Agent Skill の五つの設計パターン（ADK）| TauX"
+  description = "Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。Google Cloud Tech が示した五つのパターンと、それぞれが実際に解いている問題。"
+  canonical   = "https://taux.io/ja-JP/adk-skill-patterns"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/adk-skill-patterns.html"
+  title       = "Agent Skill 설계 패턴 다섯 가지(ADK) | TauX"
+  description = "Tool Wrapper, Generator, Reviewer, Inversion, Pipeline. Google Cloud Tech가 제시한 다섯 패턴과 각각이 실제로 푸는 문제."
+  canonical   = "https://taux.io/ko-KR/adk-skill-patterns"
+
   [page.locale.en-US]
   template    = "en-US/adk-skill-patterns.html"
   title       = "Five Agent Skill Design Patterns for ADK | TauX"

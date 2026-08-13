@@ -1,0 +1,479 @@
+{% include"header.html" %}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/adk-skill-patterns#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP" },
+                {"@type":"ListItem","position": 2,"name":"ADK Skill Patterns","item":"https://taux.io/ja-JP/adk-skill-patterns" }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/ja-JP/adk-skill-patterns#article","headline":"Agent Skill の五つの設計パターン。ADK を使うなら押さえておきたいこと","description":"Google Cloud Tech が示した五つの Agent Skill 設計パターン——Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。それぞれが実際に解いている問題を整理します。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/adk-skill-patterns" }
+        }
+    ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="absolute inset-0 pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2 animate-pulse"></span>
+                Google Cloud Tech の整理
+            </div>
+            <h1 class="mb-6">
+            <span class="display-lead">Five Skill Patterns</span>
+            <span class="display-sub">ADK を使うなら押さえておきたいこと</span>
+        </h1>
+            <p class="text-lg mb-8 max-w-prose mx-auto">
+                Google Cloud の《5 Agent Skill Design Patterns Every ADK Developer Should Know》をもとに整理
+            </p>
+
+            <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
+                <h3 class="text-lg font-bold mb-2">なぜ設計パターンが要るのか</h3>
+                <p class="leading-relaxed">
+                    <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> の YAML さえ書ければよい、と思われがちですが、あれは器にすぎません。
+                    難しいのは<strong>中身の設計</strong>です。手順を飛ばさせない、当て推量をさせない、毎回ばらばらの形で出させない——どうするか。
+                    その答えが、この五つのパターンです。
+                </p>
+            </div>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</article>
+
+<!-- Content -->
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
+
+        <!-- Pattern Overview -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </span>
+                五つのパターン、ひと目で
+            </h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 px-4 font-bold text-sm">#</th>
+                            <th class="py-3 px-4 font-bold text-sm">パターン</th>
+                            <th class="py-3 px-4 font-bold text-sm">ひとことで</th>
+                            <th class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">向いている場面</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                            <td class="py-4 px-4 font-sans font-semibold">01</td>
+                            <td class="py-4 px-4 font-bold">Tool Wrapper</td>
+                            <td class="py-4 px-4">必要になったときだけ専門知識を読み込む</td>
+                            <td class="py-4 px-4 hidden tablet:table-cell">特定のフレームワークやライブラリへの対応</td>
+                        </tr>
+                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                            <td class="py-4 px-4 font-sans font-semibold">02</td>
+                            <td class="py-4 px-4 font-bold">Generator</td>
+                            <td class="py-4 px-4">テンプレートで出力の形をそろえる</td>
+                            <td class="py-4 px-4 hidden tablet:table-cell">レポート、ドキュメント、API 仕様の生成</td>
+                        </tr>
+                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                            <td class="py-4 px-4 font-sans font-semibold">03</td>
+                            <td class="py-4 px-4 font-bold">Reviewer</td>
+                            <td class="py-4 px-4">チェックリストで品質を見る</td>
+                            <td class="py-4 px-4 hidden tablet:table-cell">コードレビュー、セキュリティ監査</td>
+                        </tr>
+                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                            <td class="py-4 px-4 font-sans font-semibold">04</td>
+                            <td class="py-4 px-4 font-bold">Inversion</td>
+                            <td class="py-4 px-4">十分に聞いてから手を動かす</td>
+                            <td class="py-4 px-4 hidden tablet:table-cell">要件がはっきりしない仕事</td>
+                        </tr>
+                        <tr class="hover:bg-ink/5 transition-colors">
+                            <td class="py-4 px-4 font-sans font-semibold">05</td>
+                            <td class="py-4 px-4 font-bold">Pipeline</td>
+                            <td class="py-4 px-4">段階を崩さないパイプライン</td>
+                            <td class="py-4 px-4 hidden tablet:table-cell">デプロイ、承認、込み入った業務フロー</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Pattern 1: Tool Wrapper -->
+        <section id="tool-wrapper" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool Wrapper</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">01</span>
+                Tool Wrapper
+            </h2>
+            </div>
+            <p class="font-semibold mb-6 ml-16">その場で専門家になる</p>
+
+            <div class="space-y-6 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">困りごと</h3>
+                    <p>
+                        フレームワークの資料（FastAPI の作法、React の規約、SQL のスタイル指針…）をぜんぶシステムプロンプトに詰め込むと、トークンは膨れ上がり、注意も散ります。
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">やり方</h3>
+                    <p class="mb-4">
+                        <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> に「この語が出たら」という引き金を書いておきます。
+                        利用者がそのフレームワークに触れたときだけ、<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> から対応する作法を読み込みます。
+                    </p>
+                    <!-- Code Example -->
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
+                        <div class="flex gap-2 mb-3 border-b border-line pb-3">
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-xs">SKILL.md → Tool Wrapper pattern</span>
+                        </div>
+                        <pre class="leading-relaxed"><code><span># 引き金</span>
+<span class="font-semibold">when</span>: 利用者が "FastAPI" または "API endpoint" に触れたとき
+<span class="font-semibold">load</span>: references/fastapi-conventions.md
+
+<span># エージェントの動き</span>
+<span class="font-semibold">then</span>: 読み込んだ作法にしたがって開発する
+       <span>トークンを使うのは、必要になったときだけ</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="border-t border-line pt-6 p-5">
+                    <p class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        効くところ
+                    </p>
+                    <p class="text-sm">コンテキストを散らかさずに済みます。関係のあるときだけ専門知識を入れるので、無関係な情報に引っぱられません。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern 2: Generator -->
+        <section id="generator" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Generator</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">02</span>
+                Generator
+            </h2>
+            </div>
+            <p class="font-semibold mb-6 ml-16">テンプレートで形をそろえる</p>
+
+            <div class="space-y-6 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">困りごと</h3>
+                    <p>
+                        自由に書かせると、レポートの形が毎回変わります。目次があったりなかったり、三段落だったり三十段落だったり。
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">やり方</h3>
+                    <p class="mb-4">
+                        あらかじめテンプレートを用意し（<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code> に置きます）、ゼロから組み立てさせるのではなく、空欄を埋めさせます。
+                    </p>
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
+                        <div class="flex gap-2 mb-3 border-b border-line pb-3">
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-xs">assets/report-template.md</span>
+                        </div>
+                        <pre class="leading-relaxed"><code><span class="font-semibold"># &#123;&#123;title&#125;&#125;</span>
+
+<span class="font-semibold">## Executive Summary</span>
+<span>&#123;&#123;summary: 要点を 2〜3 文で&#125;&#125;</span>
+
+<span class="font-semibold">## Key Findings</span>
+<span>&#123;&#123;findings: 箇条書きで 3〜5 項目&#125;&#125;</span>
+
+<span class="font-semibold">## Risk Assessment</span>
+| リスク | 深刻度 | 打つ手 |
+|---|---|---|
+<span>&#123;&#123;risks: 表に入れる&#125;&#125;</span>
+
+<span class="font-semibold">## Next Steps</span>
+<span>&#123;&#123;actions: 優先順に並べる&#125;&#125;</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="border-t border-line pt-6 p-5">
+                    <p class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        効くところ
+                    </p>
+                    <p class="text-sm">形と中身を切り離します。モデルは中身に集中し、形はテンプレートが保ちます。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern 3: Reviewer -->
+        <section id="reviewer" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Reviewer</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">03</span>
+                Reviewer
+            </h2>
+            </div>
+            <p class="font-semibold mb-6 ml-16">チェックリストで見る</p>
+
+            <div class="space-y-6 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">困りごと</h3>
+                    <p>
+                        出てきたものは「合っているように見える」のに、穴があることがあります。端の条件、セキュリティの確認、チームの取り決めが抜けている。
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">やり方</h3>
+                    <p class="mb-4">
+                        別立てのレビュー用スキルを用意し、<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> から専用のチェックリストを読み込みます。
+                        一項目ずつ確かめさせ、深刻度で分けて報告させます。
+                    </p>
+                    <div class="grid grid-cols-1 tablet:grid-cols-3 gap-3">
+                        <div class="border-l border-ink pl-4 py-1">
+                            <p class="eyebrow mb-2">Critical</p>
+                            <p class="text-xs">セキュリティの穴、情報の漏れ</p>
+                        </div>
+                        <div class="border-l border-line pl-4 py-1">
+                            <p class="eyebrow mb-2">Warning</p>
+                            <p class="text-xs">性能、手入れのしやすさ</p>
+                        </div>
+                        <div class="border-l border-line pl-4 py-1">
+                            <p class="eyebrow mb-2">Info</p>
+                            <p class="text-xs">書き方の提案、定石</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-line pt-6 p-5">
+                    <p class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        効くところ
+                    </p>
+                    <p class="text-sm">つくる筋道と、見る筋道を分けます。一方が手を動かし、もう一方が検める——コードの PR レビューと同じ形です。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern 4: Inversion -->
+        <section id="inversion" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Inversion</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">04</span>
+                Inversion
+            </h2>
+            </div>
+            <p class="font-semibold mb-6 ml-16">十分に聞いてから、動く</p>
+
+            <div class="space-y-6 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">困りごと</h3>
+                    <p>
+                        「サイトをつくって」の一言で、いきなりコードを書き始める。出てきたものは求めていたものとかけ離れている。モデルはもともと、まず動こうとするからです。
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">やり方</h3>
+                    <p class="mb-4">
+                        <strong>ふるまいを反転させます。</strong>実行役ではなく、まず聞き手をやらせます。
+                        飛ばせない関門（non-negotiable gates）を置き、必要な条件がそろうまで着手させません。
+                    </p>
+                    <div class="bg-surface p-5 text-sm overflow-x-auto">
+                        <div class="flex gap-2 mb-3 border-b border-line pb-3">
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="ml-2 text-xs">Inversion の流れ</span>
+                        </div>
+                        <pre class="leading-relaxed"><code><span>✕ ふつうのエージェント</span>
+  利用者：「サイトをつくって」
+  Agent  → いきなり React の作業を始める…
+
+<span>✓ Inversion の場合</span>
+  利用者：「サイトをつくって」
+  Agent  → <span class="font-semibold">Phase 1：聞き取り</span>
+           「どういう種類のサイトですか」
+           「誰に向けたものですか」
+           「参考にしたい見た目はありますか」
+         → <span class="font-semibold">Phase 2：すり合わせ</span>
+           「整理するとこうなります。これで合っていますか」
+         → <span class="font-semibold">Phase 3：着手</span>
+           開発を始める</code></pre>
+                    </div>
+                </div>
+
+                <div class="border-t border-line pt-6 p-5">
+                    <p class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        効くところ
+                    </p>
+                    <p class="text-sm">先に聞くことで、埋め合わせの作り話を減らせます。手元の情報がそろっているほど、出てくるものはよくなります。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern 5: Pipeline -->
+        <section id="pipeline" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Pipeline</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">05</span>
+                Pipeline
+            </h2>
+            </div>
+            <p class="font-semibold mb-6 ml-16">段階を崩さないパイプライン</p>
+
+            <div class="space-y-6 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">困りごと</h3>
+                    <p>
+                        手数の多い仕事では、段階を飛ばす、まとめてしまう、途中の肝心なところを忘れる——とくに扱う情報が長くなるとそうなります。
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">やり方</h3>
+                    <p class="mb-4">
+                        スキルを<strong>崩せないパイプライン</strong>として設計します。段階（phase）をはっきり決め、
+                        その間に関門（gate）を置きます。いまの段階を終え、人の確認を得るまで次へ進めません。
+                    </p>
+
+                    <!-- Pipeline Visual -->
+                    <div class="flex flex-col tablet:flex-row items-center gap-3 tablet:gap-0 my-6">
+                        <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
+                            <div class="font-bold text-sm">Phase 1</div>
+                            <div class="text-xs mt-1">Research</div>
+                        </div>
+                        <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
+                        <div class="bg-surface border border-line px-3 py-2">
+                            <p class="eyebrow">Gate</p>
+                        </div>
+                        <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
+                        <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
+                            <div class="font-bold text-sm">Phase 2</div>
+                            <div class="text-xs mt-1">Plan</div>
+                        </div>
+                        <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
+                        <div class="bg-surface border border-line px-3 py-2">
+                            <p class="eyebrow">Gate</p>
+                        </div>
+                        <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
+                        <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
+                            <div class="font-bold text-sm">Phase 3</div>
+                            <div class="text-xs mt-1">Execute</div>
+                        </div>
+                        <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
+                        <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
+                            <div class="font-bold text-sm">Done</div>
+                            <div class="text-xs mt-1">Verify</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-line pt-6 p-5">
+                    <p class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        効くところ
+                    </p>
+                    <p class="text-sm">読めない文章生成を、制御でき、繰り返せ、あとから追える状態機械に変えます。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Concepts -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">07</p>
+                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                </span>
+                押さえどころ
+            </h2>
+            </div>
+            <div class="space-y-4 ml-4 tablet:ml-14">
+                <div class="flex items-start p-4">
+                    <span class="font-semibold mr-4 mt-0.5">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                    <div>
+                        <h4 class="font-bold mb-1">Progressive Disclosure（段階的に開く）</h4>
+                        <p class="text-sm">ADK の SkillToolset は、必要になったときだけ指示と文脈を読み込ませます。トークンを節約し、焦点も保てます。</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-4">
+                    <span class="font-semibold mr-4 mt-0.5">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                    <div>
+                        <h4 class="font-bold mb-1">形と中身を分ける</h4>
+                        <p class="text-sm"><code class="bg-ink/5 font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code> は決まった器を用意し、これらのパターンが決めるのは「どう考え、どう動くか」という内側の筋道です。</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-4">
+                    <span class="font-semibold mr-4 mt-0.5">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                    <div>
+                        <h4 class="font-bold mb-1">組み合わせて使う</h4>
+                        <p class="text-sm">混ぜて使えます。パイプラインの最後にレビューを置く。ジェネレータの前に Inversion を挟んで条件を集める。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Links -->
+        <section class="pt-8 border-t border-line border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">08</p>
+            <h3 class="font-bold mb-6 font-display text-xl">あわせて読む</h3>
+            <div class="flex flex-wrap gap-3">
+                <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                    プロンプト設計ガイド <span class="ml-2">→</span>
+                </a>
+                <a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                    Claude Skills 実践ガイド <span class="ml-2">→</span>
+                </a>
+                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                    GEO 入門ガイド <span class="ml-2">→</span>
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% include"footer.html" %}
