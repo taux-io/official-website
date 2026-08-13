@@ -85,6 +85,9 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 公司介紹、使命與聯絡方式。
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。
 -   [Building in Public — English](https://taux.io/en-US/building): TauX 的公開開發日誌，英文版。This page is the English edition; the site is being translated route by route.
+-   [About TauX | Kaohsiung-based GEO and AI engineering](https://taux.io/en-US/about): TauX builds Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we actually ship.
+-   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
+-   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。
 -   [服務條款](https://taux.io/zh-Hant-TW/terms-of-service): 使用 TauX 服務之條款與條件。
 

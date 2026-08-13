@@ -270,6 +270,12 @@ date_modified = "2026-07-26"
   description = "認識 TauX 拓思科技團隊。我們位於高雄，專注於 GEO 生成式引擎優化與 AI 技術落地，致力於銜接人的需求與 AI 的能力。"
   canonical   = "https://taux.io/zh-Hant-TW/about"
 
+  [page.locale.en-US]
+  template    = "en-US/about.html"
+  title       = "About TauX | Kaohsiung-based GEO and AI engineering"
+  description = "TauX builds Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we actually ship."
+  canonical   = "https://taux.io/en-US/about"
+
 [[page]]
 path        = "/privacy-policy"
 template    = "privacy-policy.html"
@@ -280,6 +286,12 @@ date_modified = "2026-07-26"
   description = "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。了解您的資料權利與我們的安全承諾。"
   canonical   = "https://taux.io/zh-Hant-TW/privacy-policy"
 
+  [page.locale.en-US]
+  template    = "en-US/privacy-policy.html"
+  title       = "Privacy Policy | TauX"
+  description = "How TauX collects, uses and protects your personal data, and the rights you hold over it."
+  canonical   = "https://taux.io/en-US/privacy-policy"
+
 [[page]]
 path        = "/terms-of-service"
 template    = "terms-of-service.html"
@@ -289,6 +301,12 @@ date_modified = "2026-07-26"
   title       = "服務條款｜Terms of Service | TauX"
   description = "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務，以及我們的服務範圍。"
   canonical   = "https://taux.io/zh-Hant-TW/terms-of-service"
+
+  [page.locale.en-US]
+  template    = "en-US/terms-of-service.html"
+  title       = "Terms of Service | TauX"
+  description = "The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide."
+  canonical   = "https://taux.io/en-US/terms-of-service"
 
 # Generated as documents rather than declared as visitable routes. Cloudflare
 # answers any unmatched path with 404.html at a 404 status — the Go server had
