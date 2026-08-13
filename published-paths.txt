@@ -19,6 +19,7 @@
 /en-US
 /en-US/about
 /en-US/adk-skill-patterns
+/en-US/agent-dev-workflow
 /en-US/agent-prompting-guide
 /en-US/ai-smart-work
 /en-US/building

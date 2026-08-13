@@ -334,6 +334,12 @@ date_published = "2026-08-13"
   description = "把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：grill、spec、tickets、implement、code-review 主幹七步，四個完整劇本，31 個已知坑與 14 天練習計畫。"
   canonical   = "https://taux.io/zh-Hant-TW/agent-dev-workflow"
 
+  [page.locale.en-US]
+  template    = "en-US/agent-dev-workflow.html"
+  title       = "The Agent Development Workflow | 25 Skills, Seven Steps | TauX"
+  description = "Chain the 25 skills in mattpocock/skills into one repeatable development flow: grill, spec, tickets, implement, code-review. Four worked scenarios, 31 known pitfalls, and a 14-day plan."
+  canonical   = "https://taux.io/en-US/agent-dev-workflow"
+
 [[page]]
 path        = "/building"
 template    = "building.html"
