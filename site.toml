@@ -187,6 +187,12 @@ date_published = "2026-07-26"
   description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
   canonical   = "https://taux.io/zh-Hant-TW/google-workspace-with-ai"
 
+  [page.locale.en-US]
+  template    = "en-US/google-workspace-with-ai.html"
+  title       = "Reading the Workspace AI numbers: what each one measured | TauX"
+  description = "The method, sample size and vintage behind four widely quoted Workspace AI figures, set against independent research, and why self-reported time savings need objective verification."
+  canonical   = "https://taux.io/en-US/google-workspace-with-ai"
+
 [[page]]
 path        = "/what-is-llms-txt"
 template    = "what-is-llms-txt.html"
