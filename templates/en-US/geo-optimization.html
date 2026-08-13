@@ -1,0 +1,228 @@
+{% include "header.html" %}
+
+<!-- Service schema. This page answers a buying intent, so what it declares is a
+     Service with a provider — not an Article. /geo-guide keeps the Article and
+     the informational intent; the two pages take different queries on purpose
+     and are linked to each other rather than competing.
+
+     provider references the organisation declared in the header instead of
+     restating it. -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/en-US/geo-optimization#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://taux.io/en-US"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Generative Engine Optimization",
+                    "item": "https://taux.io/en-US/geo-optimization"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/en-US/geo-optimization#service",
+            "serviceType": "Generative Engine Optimization",
+            "name": "Generative Engine Optimization",
+            "description": "Optimising a site for how generative engines retrieve and cite: structured data, content chunking, entity declarations, and an audit of whether your pages can be quoted at all.",
+            "provider": {% include "_org-ref.html" %},
+            "areaServed": "TW",
+            "availableChannel": {
+                "@type": "ServiceChannel",
+                "serviceUrl": "https://taux.io/en-US/geo-optimization",
+                "servicePhone": "+886-7-6211033"
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock",
+                "priceCurrency": "TWD",
+                "priceSpecification": {
+                    "@type": "PriceSpecification",
+                    "priceCurrency": "TWD",
+                    "minPrice": 80000,
+                    "maxPrice": 600000,
+                    "description": "Depends on site size and content volume. The range covers a one-off audit through to a full implementation; ongoing maintenance is quoted separately."
+                }
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+            <span class="tag mb-6">GEO Service</span>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+                <span class="display-lead">Be the Answer</span>
+            </h1>
+            <p class="text-lg max-w-[42ch] leading-relaxed">
+                Search is moving from ten blue links to one answer. This is the work of being in that answer.
+            </p>
+        </header>
+
+    </div>
+</div>
+
+<!-- What the work is -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">What We Do</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
+                GEO is not SEO under a new name. It asks a different question: when a language model goes to answer someone, can your content be retrieved, understood, and quoted without the model having to guess?
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">Structured data</h3>
+                    <p class="text-sm leading-relaxed">
+                        Schema markup, entity identification, knowledge-graph relationships. So a machine does not have to infer who you are, what you sell and who wrote it from the layout.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">Chunking and quotability</h3>
+                    <p class="text-sm leading-relaxed">
+                        Content restructured into pieces a model can lift: consistent shape, explicit definitions, each passage able to stand on its own when quoted out of context.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">Crawler access and llms.txt</h3>
+                    <p class="text-sm leading-relaxed">
+                        An audit of what AI crawlers can reach, and an llms.txt that states which content is open to models and on what terms.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">Measuring citations</h3>
+                    <p class="text-sm leading-relaxed">
+                        A baseline and then tracking against it: how often the major engines mention and cite you, and whether that is moving.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- How it runs -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+            </h2>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    1</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">Audit</h3>
+                    <p class="leading-relaxed">
+                        Structured data, content structure, crawler access and entity declarations — plus a quotability baseline recorded before anything is touched. Without a baseline there is no way to tell afterwards whether the work did anything.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    2</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">Implementation</h3>
+                    <p class="leading-relaxed">
+                        Entity declarations and structured data corrected, content re-chunked, llms.txt written. Shipped as one change, so the effect can be attributed to it.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    3</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">Measurement</h3>
+                    <p class="leading-relaxed">
+                        After six to eight weeks, measured against the baseline — the actual change, not a claim about it. With automated checks so what was fixed does not quietly rot at the next redesign.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Deliverables and price -->
+<div class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What You Get</span>
+            </h2>
+            </div>
+            <ul class="space-y-4 max-w-[46ch]">
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>Audit report, with a concrete list of problems in priority order</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>Structured data and entity declarations, implemented — we do the work, not just advise on it</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt and an AI crawler access policy</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>Automated checks wired into your CI so they keep running</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>The baseline, and the comparison report six to eight weeks on</span></li>
+            </ul>
+        </section>
+
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What It Costs</span>
+            </h2>
+            </div>
+            <div class="border-t border-line pt-6 max-w-[46ch]">
+                <p class="font-sans text-2xl mb-4">NT$ 80,000 – 600,000</p>
+                <p class="leading-relaxed">
+                    The range depends on site size, content volume and the state of what is already there. A one-off audit sits at the bottom; a full engagement with implementation and measurement sits above the middle. Ongoing maintenance is quoted separately.
+                </p>
+                <p class="leading-relaxed mt-4">
+                    Talk to us first and you get a number derived from actual scope, rather than a number with the scope bent to fit it.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-12">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+            </h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                Send us your URL. We will do a free first pass and tell you the three things most worth fixing.
+            </p>
+            <a href="mailto:hello@taux.io" class="btn">Book a GEO consultation</a>
+        </section>
+
+        <section class="border-t border-line pt-12 mt-16">
+            <p>
+                Still working out what GEO is? Start with the
+                <a href="/{{ locale }}/geo-guide" class="underline">GEO guide</a>，
+                — it walks through doing this yourself.
+            </p>
+        </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

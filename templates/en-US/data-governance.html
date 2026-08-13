@@ -1,0 +1,175 @@
+{% include "header.html" %}
+
+<!-- Service Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/en-US/data-governance#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://taux.io/en-US"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Data Governance",
+                    "item": "https://taux.io/en-US/data-governance"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/en-US/data-governance#service",
+            "serviceType": "Data Governance Strategy",
+            "provider": {% include "_org-ref.html" %},
+            "name": "Data Governance for Enterprises",
+            "description": "Data inventory, standardisation and quality monitoring — the groundwork that decides whether your AI projects have anything trustworthy to run on.",
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+<span class="tag mb-6">Data Strategy</span>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+            <span class="display-lead">Govern the Data First</span>
+        </h1>
+            <p class="text-lg max-w-prose mx-auto">From scattered to usable: building data your organisation can actually act on</p>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</div>
+
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">Why Governance First</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 relative z-10 max-w-prose">
+                Data is only an asset once someone can trust it. Data governance is the framework that makes it trustworthy: who owns which data, what the words mean, and how you find out when it goes wrong.
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-3 gap-6 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> Accuracy
+                    </div>
+                    <p class="text-sm leading-relaxed">Decisions rest on facts rather than noise.</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </span> Compliance
+                    </div>
+                    <p class="text-sm leading-relaxed">GDPR and Taiwan's Personal Data Protection Act.</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> Availability
+                    </div>
+                    <p class="text-sm leading-relaxed">No more silos — the business side takes what it needs, when it needs it.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+            </h2>
+            </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            Data inventory</h3>
+                        <p class="leading-relaxed">Like taking stock of a warehouse: what data you hold, where it lives, and who is responsible for it. We build the catalogue (Data
+                            Catalog)。</p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            Standardisation</h3>
+                        <p class="leading-relaxed">One vocabulary across the company. Does "revenue" include tax? Does "customer" mean someone who ordered, or someone who might? Two departments answering differently is not a reporting problem, it is a definition problem.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            Data quality monitoring</h3>
+                        <p class="leading-relaxed">Automated checks that catch nulls, outliers and duplicates at the source — before they reach a report someone makes a decision from.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mt-20 border-t border-line pt-12 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="cover" data-cover>
+                        <h2 class="mb-6">
+                        <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                    </h2>
+                    </div>
+                    <p class="mb-10 max-w-prose mx-auto text-lg">Get the data foundation right, and every AI project after it gets cheaper. Get it wrong, and none of them work.</p>
+
+                    <a href="mailto:hello@taux.io" class="btn">
+                        Book a consultation
+                    </a>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

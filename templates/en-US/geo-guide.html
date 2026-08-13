@@ -1,0 +1,387 @@
+{% include"header.html" %}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/geo-guide#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io"
+                },
+                {"@type":"ListItem","position": 2,"name":"GEO Guide","item":"https://taux.io/en-US/geo-guide"
+                }
+            ]
+        },
+        {"@type":"Article","@id":"https://taux.io/en-US/geo-guide#article","headline":"A guide to Generative Engine Optimization: getting AI to send you traffic","description":"What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
+                {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
+                {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }
+            ]
+        }
+    ]
+}
+</script>
+
+<article class="relative pt-32 pb-24 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
+    </div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <!-- Header -->
+        <header class="band mb-16">
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-8">
+            <span class="display-lead">Generative Engine Optimization</span>
+        </h1>
+            <p class="text-lg tablet:text-2xl mb-8 max-w-prose">Turning AI into a channel that sends you readers</p>
+
+            <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
+                <blockquote class="text-lg">"We used to optimise for a search engine to rank. Now we optimise for an answer engine to understand."
+                </blockquote>
+            </div>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
+        <!-- What is GEO -->
+        <section id="what-is-geo" class="p-8 border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; What Is Geo</p>
+                <h2 class="font-display text-3xl font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </span>
+                What is GEO?
+            </h2>
+            </div>
+
+            <p class="mb-8 text-lg leading-relaxed max-w-prose">
+                <strong>GEO — Generative Engine Optimization</strong> is the practice of structuring content so it shows up, and gets cited, in what generative engines (ChatGPT, Perplexity,
+                Gemini) actually say.
+            </p>
+
+            <div class="space-y-6 bg-surface p-8">
+                <div class="flex gap-4">
+                    <span class="font-semibold"><svg class="w-8 h-8" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg></span>
+                    <div>
+                        <strong class="block mb-1">The goal</strong>
+                        <p>To be the <span class="font-semibold">cited source
+                                </span> inside an AI answer, and the one it recommends.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span><svg class="w-8 h-8" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
+                            </path>
+                        </svg></span>
+                    <div>
+                        <strong class="block mb-1">The difference</strong>
+                        <p>SEO targets keyword rankings. <span class="font-semibold">GEO targets how a model
+                                understands meaning and relates entities</span>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Matters -->
+        <section id="why-geo-matters" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Why Geo Matters</p>
+                <h2 class="font-display text-3xl font-bold mb-8">Why it matters now</h2>
+            </div>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+                <div class="p-8">
+                    <h3 class="text-xl font-display font-bold mb-3 flex items-center">
+                        <span class="mr-3 font-semibold"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg></span> Search habits changed
+                    </h3>
+                    <p>More people ask a question outright than type keywords.</p>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-display font-bold mb-3 flex items-center">
+                        <span class="mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg></span> Better-qualified traffic
+                    </h3>
+                    <p>Someone asking a specific question is usually closer to a decision.</p>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-display font-bold mb-3 flex items-center">
+                        <span class="mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg></span> Authority, demonstrated
+                    </h3>
+                    <p>When an AI quotes your position as the answer, that is the claim being made for you.</p>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-display font-bold mb-3 flex items-center">
+                        <span class="mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                </path>
+                            </svg></span> Reusable by construction
+                    </h3>
+                    <p>Content structured well for models turns out to be good social material too.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section id="geo-vs-seo" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Geo Vs Seo</p>
+                <h2 class="font-display text-3xl font-bold mb-8">GEO against SEO, side by side</h2>
+            </div>
+            <div class="p-8 overflow-hidden p-0">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface border-b border-line">
+                            <tr>
+                                <th class="p-6 font-display font-bold">Dimension</th>
+                                <th class="p-6 font-display font-bold">SEO</th>
+                                <th class="p-6 font-display font-bold font-semibold">GEO</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-line">
+                            <tr>
+                                <td class="p-6 font-bold">Goal</td>
+                                <td class="p-6">Rank</td>
+                                <td class="p-6">Be the answer</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold">Audience</td>
+                                <td class="p-6">Google's algorithm</td>
+                                <td class="p-6">Large language models</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold">Method</td>
+                                <td class="p-6">Keywords, backlinks</td>
+                                <td class="p-6">Structured data, semantic relationships</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold">Output</td>
+                                <td class="p-6">A list of blue links</td>
+                                <td class="p-6">An answer, with citations</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-center gap-4">
+                <div class="border-line p-8 px-8 py-4 border-t items-center justify-center flex flex-col">
+                    <strong class="block text-sm uppercase tracking-wider mb-1">SEO Goal</strong>
+                    <span class="font-bold">Competing for the click</span>
+                </div>
+                <div class="border-line p-8 px-8 py-4 border-t items-center justify-center flex flex-col">
+                    <strong class="font-semibold block text-sm uppercase tracking-wider mb-1">GEO Goal</strong>
+                    <span class="font-bold">Competing for the citation</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Princeton GEO Research Section -->
+        <section id="princeton-geo-research" class="space-y-8 border-t border-line pt-16">
+            <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Princeton Geo Research</p>
+            <div class="text-left mb-10">
+                <div class="cover" data-cover>
+                    <h2 class="font-display text-3xl font-bold mb-4">Nine methods, measured: the Princeton study</h2>
+                </div>
+                <p class="text-lg leading-relaxed max-w-prose">
+                    A paper from Princeton, Georgia Tech, the Allen Institute for AI and IIT Delhi <strong>《Generative Engine Optimization》</strong>，tested nine concrete tactics and measured how much each raised the odds of being cited by engines such as ChatGPT and Perplexity:
+                </p>
+            </div>
+
+            <div class="p-8 overflow-hidden p-0">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-surface border-b border-line">
+                            <tr>
+                                <th class="p-5 font-display font-bold w-1/4">Method</th>
+                                <th class="p-5 font-display font-bold w-1/4">Visibility gain</th>
+                                <th class="p-5 font-display font-bold w-2/4">What it means in practice</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-line">
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Cite authoritative sources
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+40%</td>
+                                <td class="p-5">Add credible outbound links and references so a claim has third-party backing.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Use concrete numbers
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+37%</td>
+                                <td class="p-5">Replace vague wording with percentages, counts and measured quantities.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Quote named experts
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+30%</td>
+                                <td class="p-5">Direct quotations from people in the field, attributed by name.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Write with authority
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+25%</td>
+                                <td class="p-5">A confident, objective register — the way someone who knows the field writes.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Say it plainly
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+20%</td>
+                                <td class="p-5">Restate hard ideas in clear, well-structured language so less is inferred.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Use the field's terms
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+18%</td>
+                                <td class="p-5">The accepted technical vocabulary, used precisely — those words are the entities a model matches on.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Vary the wording
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+15%</td>
+                                <td class="p-5">A wider vocabulary and varied sentence shapes help a model pick out what matters.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Read well
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">+15% ~ +30%</td>
+                                <td class="p-5">Coherent structure and flow — the same properties a model is predicting against.</td>
+                            </tr>
+                            <tr class="hover:bg-ink/5 transition-colors">
+                                <td class="p-5 font-bold flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                                    Keyword stuffing
+                                </td>
+                                <td class="p-5 font-bold font-sans text-lg">-10%</td>
+                                <td class="p-5">(Avoid.) Deliberate repetition reads as content-farm output and lowers your citation rate.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <blockquote class="quote my-8 border-l border-line border-t border-line pt-6 p-6">
+                <p class="text-lg leading-relaxed max-w-prose">"AI search is a contest over credibility and entity relationships. A model does not invent a brand that is not there — it cites what is well-backed, well-evidenced and clearly structured."
+                </p>
+                <cite class="block mt-3 text-sm">— TauX engineering</cite>
+            </blockquote>
+        </section>
+
+        <!-- How it works -->
+        <section id="how-geo-works" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; How Geo Works</p>
+                <h2 class="font-display text-3xl font-bold mb-8">How we run a GEO engagement</h2>
+            </div>
+            <div class="space-y-6">
+                <div class="p-8 group">
+                    <h3 class="text-2xl font-display font-bold mb-4">
+                        Step 1. Build the answer container
+                    </h3>
+                    <p class="mb-4">Not a website so much as a library laid out for machines.</p>
+                    <ul class="list-none space-y-3">
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Clean Schema.org markup</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Question-and-answer content structure</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Fast enough that nothing times out</li>
+                    </ul>
+                </div>
+
+                <div class="p-8 group">
+                    <h3 class="text-2xl font-display font-bold mb-4">
+                        Step 2. Fill it with something worth citing
+                    </h3>
+                    <p class="mb-4">Models reward a distinct position and discard filler.</p>
+                    <ul class="list-none space-y-3">
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Answers to problems people actually have</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Expert judgement with evidence attached</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Kept current, with the dates to show it</li>
+                    </ul>
+                </div>
+
+                <div class="p-8 group">
+                    <h3 class="text-2xl font-display font-bold mb-4">
+                        Step 3. Build the trust graph
+                    </h3>
+                    <p class="mb-4">Get authoritative sources standing behind your answer.</p>
+                    <ul class="list-none space-y-3">
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Relevant outbound links</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-surface rounded-full mr-3"></span>Social signals and brand mentions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-24 p-8 p-12 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="cover" data-cover>
+                    <h2 class="font-display text-3xl font-bold mb-6">Ready to start?</h2>
+                </div>
+                <p class="mb-10 max-w-prose mx-auto">GEO compounds. Starting now means being the cited source while your competitors are still arguing about whether this matters.</p>
+                <div class="flex flex-col mobile:flex-row justify-center gap-4">
+                    <a href="/{{ locale }}/geo-optimization" class="btn">
+                        See the GEO service and pricing
+                    </a>
+                    <a href="mailto:hello@taux.io" class="btn-quiet">
+                        Book a GEO consultation
+                    </a>
+                </div>
+                <!-- This page keeps its informational intent and its rankings;
+                     the link is here for the reader who has finished it and
+                     concluded they would rather not do this themselves. The
+                     service page takes the buying queries, this one does not
+                     chase them. -->
+                <p class="mt-8 text-sm max-w-prose">
+                    Read it and would rather not do it yourself?
+                    <a href="/{{ locale }}/geo-optimization" class="underline">We can do it for you</a>。
+                </p>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% include"footer.html" %}

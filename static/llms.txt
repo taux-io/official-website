@@ -79,6 +79,19 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 ---
 
+## English edition
+
+The site is being translated route by route. These are live today; the rest remain Traditional Chinese only.
+
+-   [TauX — Empower Your Business with AI | Generative Engine Optimization](https://taux.io/en-US): TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, software platforms, short-form video and AI automation, from Kaohsiung, Taiwan.
+-   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.
+-   [Generative Engine Optimization Service | TauX](https://taux.io/en-US/geo-optimization): Structured data, content chunking, entity declarations and citation measurement — with a baseline recorded before the work starts, so the result can be checked.
+-   [AI Training for Teams | TauX](https://taux.io/en-US/ai-smart-work): In-house AI training: build assistants that hold a role and follow a structure, and learn the prompt patterns that make them reliable rather than impressive.
+-   [Data Governance for Enterprises | TauX](https://taux.io/en-US/data-governance): Data inventory, standardisation and quality monitoring — the groundwork that decides whether your AI projects have anything trustworthy to run on.
+-   [What is llms.txt? | TauX](https://taux.io/en-US/what-is-llms-txt): What llms.txt is, what it expresses that robots.txt cannot, and an honest account of its status: a proposal in use, not a ratified standard.
+-   [What is Prompt Injection? The security flaw every LLM app inherits | TauX](https://taux.io/en-US/what-is-prompt-injection): How prompt injection works, how it differs from jailbreaking, and the layered defences that actually reduce the risk.
+-   [AI Prompting Guide: from first prompt to agents | TauX](https://taux.io/en-US/agent-prompting-guide): What to specify, what to leave open, and how to tell whether it worked. Covers role and task framing, step instructions, output formats, and designing agents.
+
 ## 其他頁面
 
 -   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。
