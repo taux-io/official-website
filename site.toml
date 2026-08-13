@@ -261,6 +261,12 @@ date_published = "2026-08-05"
   description = "OWASP Top 10 for LLM Applications 2026 十條風險逐項拆解：定義、攻擊面與防禦作法，並附 2025 到 2026 的完整排序變動與範圍調整。"
   canonical   = "https://taux.io/zh-Hant-TW/owasp-llm-top-10"
 
+  [page.locale.en-US]
+  template    = "en-US/owasp-llm-top-10.html"
+  title       = "OWASP LLM Top 10 2026: ten risks, broken down | TauX"
+  description = "Each of the ten risks with its definition, real attack surface and defences — plus the 2025-to-2026 reordering, the four entries that widened, and how the ranking method changed."
+  canonical   = "https://taux.io/en-US/owasp-llm-top-10"
+
 [[page]]
 path        = "/agent-prompting-guide"
 template    = "agent-prompting-guide.html"
