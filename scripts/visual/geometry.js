@@ -203,12 +203,26 @@ function measureOverflowInPage() {
   }
 
   const scrolls = de.scrollWidth > limit + 1;
-  if (!culprits.length && !scrolls) return null;
 
-  const parts = [];
-  if (culprits.length) parts.push(`renders past the viewport: ${culprits.join(" | ")}`);
-  if (scrolls) parts.push(`document scrolls sideways: scrollWidth ${de.scrollWidth} > clientWidth ${limit}`);
-  return parts.join(". ");
+  // ONE FINDING PER THING FOUND, IN AN ARRAY, LIKE EVERY OTHER PROBE.
+  //
+  // This used to return a joined string, and walk.js iterated it character by
+  // character: 98 findings, every `detail` undefined, the culprit never named.
+  // See the contract note on `record` in walk.js for what that cost.
+  //
+  // The two halves are separate findings rather than one sentence because they
+  // are separate observations. An element past the edge names a box; a document
+  // that scrolls sideways says the page as a whole is wider than its viewport
+  // and can be true with no single element over — which is exactly the case
+  // that reported nothing readable.
+  const out = [];
+  for (const c of culprits) out.push({ detail: `renders past the viewport: ${c}` });
+  if (scrolls) {
+    out.push({
+      detail: `document scrolls sideways: scrollWidth ${de.scrollWidth} > clientWidth ${limit}`,
+    });
+  }
+  return out;
 }
 // ---------------------------------------------------------------------------
 
