@@ -309,6 +309,53 @@
     justify-content: center;
   }
 
+  /* A BAND IS A FLEX CONTAINER, AND THE CROSS AXIS DOES NOT SHRINK.
+
+     Decision #49 records that grid and flex children default to `min-width:
+     auto` and burst their parent when the content cannot shrink; it was written
+     about main-axis items and fixed one page at a time with `min-w-0`. A column
+     flex container has the same problem on the cross axis for a different
+     reason: there is no shrinking there at all, so a child whose min-content
+     width exceeds the band simply overflows, and <main>'s overflow-x-clip
+     (decision #22) cuts it without a scrollbar to admit it happened.
+
+     /terms-of-service at 320px is what that looks like. Measured: forcing a
+     wider face takes the band's only child from 320px to 332.5px, and the
+     widest thing in it is the h3 "3. User Representations" — 221px of
+     min-content at 24px inside 112px of padding. /privacy-policy has the same
+     structure and clears the line by 38px, which is luck rather than safety.
+
+     Fixed on the component rather than on the two pages, because a per-page
+     patch is the after-the-fact audit this repo argues against: the next long
+     word lands on whichever page happens to grow one. */
+  .band > * {
+    min-width: 0;
+  }
+
+  /* AND THE WORD STILL HAS TO BREAK, OR THE GATE GOES GREEN OVER CLIPPED TEXT.
+
+     `min-width: 0` alone stops the band from being burst and moves the overflow
+     inside: the h3's border box is now 208px, its text still needs 221px, and
+     the text spills past a box that measures correctly. getBoundingClientRect
+     reports 208, geometry sees nothing, and the reader still loses the end of
+     the word. That is strictly worse than the bug — a silent pass wearing a
+     fix.
+
+     `anywhere` rather than `break-word`, and the difference is the whole point:
+     both break a word at render time, but ONLY `anywhere` counts those break
+     opportunities when the browser computes min-content. `break-word` would
+     leave the intrinsic width at 221px and the band would still be burst.
+     Tailwind's `break-words` utility is `break-word`, so it is the wrong tool
+     here and looks like the right one.
+
+     Table cells are excluded for decision #49's reason: a cell's width is a
+     column decision taken across every row, and wide tables already live in
+     their own `overflow-x-auto` scroller, which is the documented correct
+     pattern rather than a failure. */
+  :where(main h1, main h2, main h3, main h4, main p, main li) {
+    overflow-wrap: anywhere;
+  }
+
   .btn {
     @apply inline-flex items-center justify-center font-sans text-button;
     height: 48px;
