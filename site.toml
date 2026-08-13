@@ -143,6 +143,12 @@ date_published = "2026-08-06"
   description = "CrowdStrike 2026 全球威脅報告的八組關鍵數據：27 秒 breakout、82% 無檔案偵測、AI 加持攻擊增加 89%。每一組都說明它是怎麼被量出來的，以及那對它能推論到多廣代表什麼。"
   canonical   = "https://taux.io/zh-Hant-TW/threat-landscape"
 
+  [page.locale.en-US]
+  template    = "en-US/threat-landscape.html"
+  title       = "The 2026 Global Threat Report: what eight numbers can support | TauX"
+  description = "Eight headline figures from the CrowdStrike 2026 Global Threat Report, how each was measured, and what that means for how far it generalises."
+  canonical   = "https://taux.io/en-US/threat-landscape"
+
 [[page]]
 path        = "/pqc-migration"
 template    = "pqc-migration.html"
@@ -208,6 +214,12 @@ date_published = "2026-08-09"
   title       = "MCP 是什麼？模型上下文協定架構白話解說 | TauX"
   description = "MCP（Model Context Protocol）讓 AI 應用程式接上外部資料與工具。白話解釋 host、client、server 三個角色，以及 prompts、resources、tools 的差別在於「誰決定」而不是讀或寫。依規格修訂版 2026-07-28 撰寫。"
   canonical   = "https://taux.io/zh-Hant-TW/what-is-mcp"
+
+  [page.locale.en-US]
+  template    = "en-US/what-is-mcp.html"
+  title       = "What is MCP? The Model Context Protocol explained | TauX"
+  description = "Host, client and server; why prompts, resources and tools differ by who decides rather than read versus write; and what the 2026-07-28 revision removed."
+  canonical   = "https://taux.io/en-US/what-is-mcp"
 
 [[page]]
 path        = "/what-is-prompt-injection"
@@ -275,6 +287,12 @@ date_published = "2026-04-06"
   title       = "5 種 Agent Skill 設計模式 | TauX ADK Guide"
   description = "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
   canonical   = "https://taux.io/zh-Hant-TW/adk-skill-patterns"
+
+  [page.locale.en-US]
+  template    = "en-US/adk-skill-patterns.html"
+  title       = "Five Agent Skill Design Patterns for ADK | TauX"
+  description = "Tool Wrapper, Generator, Reviewer, Inversion and Pipeline — the five patterns from Google Cloud Tech, and what problem each one is actually solving."
+  canonical   = "https://taux.io/en-US/adk-skill-patterns"
 
 [[page]]
 path        = "/agent-dev-workflow"

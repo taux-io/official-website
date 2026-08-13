@@ -1,0 +1,337 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No ItemList: eight statistics are not a ranking, and
+     saying they were would misdescribe them to exactly the machines this page
+     is written for.
+
+     Source attribution matters more here than on any other page on this site.
+     The OWASP report is CC BY-SA 4.0 and can be restated entry by entry; this
+     one is proprietary commercial research. Headline findings are summarised
+     with attribution and a link, which is ordinary commentary. Nothing is
+     reproduced wholesale and nothing is presented as our own measurement. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/threat-landscape#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"Reading the Threat Landscape","item":"https://taux.io/en-US/threat-landscape" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/en-US/threat-landscape#article","headline":"The 2026 Global Threat Report: eight numbers, and what each one can actually support","description":"CrowdStrike 2026 Global Threat Report: eight headline figures, how each was measured, and what that means for how far it generalises.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/threat-landscape" },"citation":"CrowdStrike 2026 Global Threat Report"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/en-US/threat-landscape#faq","mainEntity": [
+      {"@type":"Question","name":"CrowdStrike 2026 Global Threat Report — what are the headline numbers?","acceptedAnswer": {"@type":"Answer","text":"From the report's public pages: fastest eCrime breakout time of 27 seconds; attacks by AI-assisted adversaries up 89%; 82% of 2025 detections malware-free; more than 90 organisations with legitimate AI tools abused to generate malicious instructions; ChatGPT mentioned on criminal forums 550% more than any other model; average breakout speed up 65% year on year; 40% of vulnerabilities exploited by China-nexus actors aimed at edge devices; cloud-directed intrusions by nation-state actors up 266%."
+        }
+      },
+      {"@type":"Question","name":"What is breakout time, and what does 27 seconds mean?","acceptedAnswer": {"@type":"Answer","text":"Breakout time is how long an attacker takes to move from the first host they compromise to a second one. It measures the defender's budget: detection, triage and containment must all fit inside it. 27 seconds is the fastest recorded, not an average — reading it as an average badly misstates your position. What it honestly bounds is the worst case, and any response process that waits for a human to look first does not fit inside that."
+        }
+      },
+      {"@type":"Question","name":"Why were 82% of detections malware-free, and how should that be read?","acceptedAnswer": {"@type":"Answer","text":"It reflects two things at once. Attackers genuinely write fewer malicious files, relying on legitimate tooling and stolen credentials instead. And detection capability itself: seeing fileless behaviour is exactly what EDR is sold on. The figure comes from CrowdStrike's own detection telemetry, so the population is environments that run it. It reliably describes what you see in an EDR-equipped environment, and does not extrapolate to the global composition of attacks. The practical conclusion is unchanged: signature-based antivirus does not cover most of what gets detected."
+        }
+      },
+      {"@type":"Question","name":"Can vendor threat reports be trusted?","acceptedAnswer": {"@type":"Answer","text":"Yes, provided you know what they measure. The data usually comes from the vendor's own product telemetry and incident response caseload, so the population is its customers rather than all organisations. That is not an accusation of dishonesty; it means every figure carries three conditions — the environment it was measured in, the tool that measured it, and what that tool can see. Use them as intelligence on trend and technique, not as the statistical basis for your own risk."
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Security
+            </div>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+                <span class="display-lead">Threat Landscape 2026</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                Eight headline numbers from the CrowdStrike 2026 Global Threat Report, and how each was measured — which is what decides how far it generalises.
+            </p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="Section index" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">Contents</p>
+                <ul>
+                    <li><a href="#how-to-read" class="section-index-link">Read it right first</a></li>
+                    <li><a href="#numbers" class="section-index-link">The eight numbers</a></li>
+                    <li><a href="#speed" class="section-index-link">Speed</a></li>
+                    <li><a href="#malware-free" class="section-index-link">Malware-free</a></li>
+                    <li><a href="#ai" class="section-index-link">AI-assisted attacks</a></li>
+                    <li><a href="#nation-state" class="section-index-link">Nation-state actors</a></li>
+                    <li><a href="#what-it-means" class="section-index-link">What it means for defenders</a></li>
+                    <li><a href="#source" class="section-index-link">Source and limits</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- The framing section. This is the page's reason to exist: the numbers
+             themselves are on CrowdStrike's own site and reproduced across
+             hundreds of posts. What is almost never said is where they come
+             from and what that bounds them to. -->
+        <section id="how-to-read" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Read it right, then look at the numbers</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    The numbers are worth reading and they are not a census. <strong>A vendor threat report is built from that vendor's own product telemetry and incident response caseload</strong>, so the population is its customer base — organisations running EDR, which mostly means organisations with the budget to.
+                </p>
+                <p>
+                    That is not an accusation. It is that every figure carries three conditions: <strong>the environment it was measured in, the tool that measured it, and what that tool can see</strong>. Ignore those and you read "what EDR-equipped environments look like" as "what the world looks like".
+                </p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">A usable rule</p>
+                    <p>
+                        Use these reports as <strong>intelligence on technique and trend</strong> — that part is solid, because it comes from cases actually worked. <strong>Do not</strong> use the percentages as the statistical basis for your own risk. That needs data from your environment.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="numbers" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">The eight numbers</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                All figures are from the public pages of the CrowdStrike 2026 Global Threat Report, covering observations from 2025.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Figure</th>
+                            <th class="py-3 font-bold text-sm">What it is</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">27 seconds</td>
+                            <td class="py-4"><a href="#speed" >Fastest eCrime breakout time</a> — the fastest recorded, not an average</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4"><a href="#speed" >Year-on-year increase in average breakout speed</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4"><a href="#malware-free" >of 2025 detections were malware-free</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4"><a href="#ai" >Increase in attacks by AI-assisted adversaries</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4"><a href="#ai" >organisations had legitimate AI tools abused</a> to generate malicious instructions</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4"><a href="#ai" >more mentions of ChatGPT on criminal forums</a> than any other model</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4"><a href="#nation-state" >of vulnerabilities exploited by China-nexus actors targeted edge devices</a></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4"><a href="#nation-state" >Increase in cloud-directed intrusions by nation-state actors</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="speed" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Speed: 27 seconds and +65%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">What it measures</p>
+                    <p>
+                        <strong>Breakout time</strong> is how long an attacker takes to move laterally from the first host they compromise to a second one. It measures the defender's <strong>time budget</strong>: detection, triage and containment all have to happen inside it. The fastest recorded was 27 seconds, with average speed up 65% year on year.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How to read it</p>
+                    <p>
+                        <strong>27 seconds is the fastest, not the average.</strong> Reading it as an average badly misstates your position — most intrusions are nothing like that quick. But it has an honest use: it bounds <strong>the worst case</strong>, and any response process that waits for a human to look first does not fit inside it.
+                    </p>
+                    <p class="mt-4">
+                        "+65%" is far more useful than "27 seconds", because it compares the same measurement method across two years — <strong>the same ruler used twice, so the ruler's own bias cancels</strong>. Year-on-year change is the most trustworthy category of figure in any vendor report.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="malware-free" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Malware-free: 82%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">What it measures</p>
+                    <p>82% of 2025 detections were malware-free: no malicious file written to disk. The attacker used built-in tooling, legitimate software and stolen credentials instead.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How to read it</p>
+                    <p>
+                        This is <strong>the figure to be most careful with</strong>, because it reflects two things at once:
+                    </p>
+                    <ol class="space-y-3 list-none mt-4">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Attacker behaviour genuinely is changing — there is plenty of independent evidence for that.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>Detection capability itself.</strong> Seeing fileless activity is precisely what EDR is sold on. A product that sees files and not behaviour would report a malware-free rate of zero — not because those attacks are absent, but because it cannot see them.</span></li>
+                    </ol>
+                    <p class="mt-4">
+                        So the proportion reliably describes <strong>what you see in an EDR-equipped environment</strong>, and does not extrapolate to the global composition of attacks.
+                    </p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">The practical conclusion holds anyway</p>
+                    <p>
+                        Whether the true share is 82% or something else, the direction is clear: <strong>signature-based antivirus does not cover most of what gets detected</strong>. That conclusion does not need the percentage to be exact.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">AI-assisted attacks: +89%, 90+, +550%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">What it measures</p>
+                    <p>
+                        Attacks by AI-assisted adversaries up 89%. More than 90 organisations had <strong>legitimate AI tools</strong> abused to generate malicious instructions. ChatGPT mentioned on criminal forums 550% more than any other model.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How to read it</p>
+                    <p>
+                        What counts as "AI-assisted" is <strong>the vendor's own definition</strong>, and it is not comparable across reports. Treat "+89%" as a trend signal within this report, not a number to line up beside somebody else's.
+                    </p>
+                    <p class="mt-4">
+                        "+550%" counts <strong>forum mentions</strong> — a proxy for how much something is talked about, not how often it is used in an attack. ChatGPT leading that count largely reflects that it is the most widely used.
+                    </p>
+                    <p class="mt-4">
+                        <strong>"90+ organisations had legitimate AI tools abused" is the sturdiest of the three</strong> — it counts events rather than proportions, and needs no definitional judgement to establish. It also points at what another page here is about: the problem is not the model, it is <strong>who can feed it what, and what it is authorised to do</strong>。
+                    </p>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">Related</span>
+                    For defending LLM applications you deploy yourself, see
+                    <a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a> — particularly prompt injection and excessive agency.
+                </p>
+            </div>
+        </section>
+
+        <section id="nation-state" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Nation-state actors: 40% and +266%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">What it measures</p>
+                    <p>40% of vulnerabilities exploited by China-nexus actors targeted <strong>edge devices</strong>. <strong>Cloud-directed intrusions</strong> by nation-state actors rose 266%. Named adversaries include OPERATOR PANDA (China), FAMOUS CHOLLIMA (North Korea) and PUNK SPIDER（eCrime）。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How to read it</p>
+                    <p>
+                        Attribution to a particular country rests on <strong>the vendor's own intelligence methodology</strong>, which is not fully published. That is normal in this field rather than a flaw — but it does mean the classification cannot be independently checked from outside.
+                    </p>
+                    <p class="mt-4">
+                        For most organisations, <strong>"40% targeted edge devices" matters far more than the attribution does</strong>. Edge devices — VPN gateways, firewalls, routers, NAS — usually sit outside endpoint protection, patch slowly, and once compromised are already inside the perimeter. That is actionable without knowing who did it, and it can be acted on immediately.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-it-means" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">What it means for defenders</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Discount every caveat above and the direction still holds, because none of it depends on a percentage being exact:
+                </p>
+                <ol class="space-y-3 list-none">
+                    <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>Response speed is a design problem, not a staffing one.</strong> A process that waits for someone to look first cannot keep pace with lateral movement measured in seconds.</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>Identity and credentials are where this is fought.</strong> The less an attacker writes to disk, the more they rely on a login that looks legitimate.</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>Edge devices belong in the inventory.</strong> They are frequently on no asset list at all, which is exactly why they get picked.</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>The AI tools you adopted are a new attack surface.</strong> Those ninety-odd organisations with legitimate AI tools abused were using software they had bought themselves.</span></li>
+                </ol>
+                <p class="border-l border-line pl-6">
+                    None of the four needs the figures to be accurate. <strong>If a report's value depends on its percentages being precise, it is probably not something to make decisions from.</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source and limits. Attribution is not a footnote on this page — it
+             is half the argument. -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Source and limits</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Where these numbers come from</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    All figures are taken from the public pages of the
+                    <a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="underline">CrowdStrike 2026 Global Threat Report</a>
+                    , <strong>checked on 2026-08-06</strong>. The report covers observations from 2025 and is copyright CrowdStrike.
+                </p>
+                <p>
+                    This page <strong>summarises publicly released findings and adds commentary</strong>. It reproduces nothing, and neither the data nor the research is ours. For the full methodology, charts and adversary profiles, read the original.
+                </p>
+                <p>
+                    The reading, the terminology and the recommendations are TauX's and <strong>do not represent CrowdStrike's position</strong>. Noting the limits of a data source is not questioning its integrity — it is what you do with any telemetry, including our own.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">Want to know what this means for your environment?</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                The report describes a global picture. What you need is your own asset list and exposure — which starts with an inventory.
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">Book a consultation</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">See data governance</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}
