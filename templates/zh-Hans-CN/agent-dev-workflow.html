@@ -1,0 +1,1434 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No HowTo: the seven steps are a flow with branches and
+     human checkpoints, not a recipe with a guaranteed outcome, and marking them
+     up as HowTo would promise machines a determinism the page spends most of its
+     length denying.
+
+     Attribution matters here the way it does on /threat-landscape, for the
+     opposite reason. That page summarises proprietary research; this one
+     describes an MIT-licensed open-source pack. The pack is not ours, the
+     tutorial is. author/publisher is TauX because TauX wrote the teaching; the
+     upstream is named in the first section rather than in a footer, and it is
+     linked as an ordinary citation rather than through sameAs — sameAs states
+     identity, and this is not our identity. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/agent-dev-workflow#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"AI Agent 开发流程实战","item":"https://taux.io/zh-Hans-CN/agent-dev-workflow" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/agent-dev-workflow#article","headline":"AI Agent 开发流程实战：25 支 skill 串成的主干七步","description":"把 mattpocock/skills 的 25 支 skill 串成一条可重复的开发流程：主干七步、四个完整剧本、31 个已知坑与 14 天练习计划。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"{{ locale }}","citation":"mattpocock/skills v1.2.3 (MIT)"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hans-CN/agent-dev-workflow#faq","mainEntity": [
+      {"@type":"Question","name":"user-invoked 与 model-invoked 的 skill 差在哪里？","acceptedAnswer": {"@type":"Answer","text":"这是整套 skill 唯一的分类轴线。user-invoked 只有人类打得出来，其他 skill 也不能调用它，它的 description 是写给人看的，定位是编排者——决定流程怎么走。model-invoked 你可以打，agent 也会自己判断后抓来用，description 写给模型看，定位是纪律库。规则是 user-invoked 可以调用 model-invoked，但永远不能调用另一个 user-invoked。一个常见的副作用是：harness 不把 user-invoked skill 放进注入模型的清单，所以 agent 常常回报这些 skill 没安装——它们有装，照打就是。"
+        }
+      },
+      {"@type":"Question","name":"什么是 tracer bullet？为什么水平切票是错的？","acceptedAnswer": {"@type":"Answer","text":"Tracer bullet 是穿过所有层（schema、API、UI、测试）的一条细但完整的路，落地当下就能单独 demo。水平切片是一次交付一层——全部 schema 一张票、全部 API 一张票——它的问题是每层都到位之前什么都不能动，而且验收条件必须伸手到别张票拥有的工作。实测代价：某团队用 26 张按层切的票，平均每张票关闭要跑 20 次 agent，其中约四分之三是重工，他们自己的检讨把每一类失败都追回到水平切片而不是实作质量。判准只有一句：这张票做完我能 demo 什么？答不出行为的就是水平切片。"
+        }
+      },
+      {"@type":"Question","name":"为什么 code review 要跑在另一个 session？","acceptedAnswer": {"@type":"Answer","text":"同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff <fixed-point>...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文档验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。"
+        }
+      },
+      {"@type":"Question","name":"这套 skill 最常被用坏的方式是什么？","acceptedAnswer": {"@type":"Answer","text":"七种：被动 grilling（连答四十个同意，出来一份你点头过但什么都没真正决定的计划）；在 to-spec 与 to-tickets 之间 clear 或 compact（你烤出来的东西绝大部分只在那个 context window 里）；对自己产生的票跑 triage；范围良好的功能抓 wayfinder（判准是 session 数不是项目大小）；把词汇层当驱动器；把 review 跑在写程序的同一个 session；以及改 SKILL.md 来客制（更新会覆盖、plugin 唯读，长期行为要写进自己的 CLAUDE.md）。还有一个元反模式：把它当成有了流程就不用想——产出的质量追踪的是你答案的质量，不是问题的数量。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Engineering
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Ship with skills, not vibes</span>
+                <span class="display-sub">把 25 支 skill 串成一条开发流程</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                这不是工具箱清单，是<strong>一条主干流程加几条匝道</strong>。从一个模糊的想法走到 commit，中间每一步该打什么、该在哪里停下来、以及哪些地方会安静地坏掉。
+            </p>
+        </header>
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="章节索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目录</p>
+                <ul>
+                    <li><a href="#concepts" class="section-index-link"><span class="font-sans">01</span> 三个底层观念</a></li>
+                    <li><a href="#install" class="section-index-link"><span class="font-sans">02</span> 安装</a></li>
+                    <li><a href="#setup" class="section-index-link"><span class="font-sans">03</span> 前置设置</a></li>
+                    <li><a href="#map" class="section-index-link"><span class="font-sans">04</span> 全套地图</a></li>
+                    <li><a href="#main-flow" class="section-index-link"><span class="font-sans">05</span> 主干七步</a></li>
+                    <li><a href="#situations" class="section-index-link"><span class="font-sans">06</span> 情境索引</a></li>
+                    <li><a href="#scenarios" class="section-index-link"><span class="font-sans">07</span> 四个剧本</a></li>
+                    <li><a href="#pitfalls" class="section-index-link"><span class="font-sans">08</span> 已知坑总表</a></li>
+                    <li><a href="#claude-md" class="section-index-link"><span class="font-sans">09</span> 你的 CLAUDE.md</a></li>
+                    <li><a href="#vocabulary" class="section-index-link"><span class="font-sans">10</span> 核心词汇</a></li>
+                    <li><a href="#antipatterns" class="section-index-link"><span class="font-sans">11</span> 七种反模式</a></li>
+                    <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> 14 天计划</a></li>
+                    <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> 一页速查</a></li>
+                    <li><a href="#source" class="section-index-link">出处</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- ==================================================================
+             01 · Concepts.
+
+             The source material colour-coded four roles (blue / crimson /
+             graphite / olive) and carried the coding through every section. The
+             classification is information, so it survives; the colour does not.
+             This site has one accent and colour was never allowed to be the only
+             carrier of meaning anyway. Every role below is a word.
+             ================================================================== -->
+        <section id="concepts" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">先建立三个底层观念</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    本页描述的是 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT 授权）第 <strong>1.2.3</strong> 版，25 支已发布的 skill。<strong>这套 skill 不是 TauX 的作品</strong>；这篇教学是。下面所有的判准、坑与剧本都是我们读完官方文档与 issue 之后重新编写的中文教材，不是翻译，也不是转载。
+                </p>
+                <p>
+                    不先懂这三件事，后面每一支 skill 都会用错。
+                </p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">一、谁能叫它</h3>
+            <p class="leading-relaxed mb-6">这是整个 pack <strong>唯一的分类轴线</strong>。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">谁能触发</td>
+                            <td class="py-4 pr-4">只有人类打出名字。其他 skill 也不能叫它</td>
+                            <td class="py-4">你可以打，agent 也会自己判断后抓来用</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">设置</td>
+                            <td class="py-4 pr-4"><code>disable-model-invocation: true</code></td>
+                            <td class="py-4">两者都不设</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">description 写给谁</td>
+                            <td class="py-4 pr-4">人类（slash command 清单）</td>
+                            <td class="py-4">模型（含大量触发语句）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">定位</td>
+                            <td class="py-4 pr-4"><strong>编排者</strong>：决定流程怎么走</td>
+                            <td class="py-4"><strong>纪律库</strong>：可重复使用的方法论</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">三个实务后果</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li>文档写「接着跑 <code>/implement</code>」，那是叫<strong>你</strong>去打。agent 不会自己接下去。</li>
+                    <li>harness 不把 user-invoked skill 注入模型的清单，所以 agent 常常「以为」这些 skill 没安装。<strong>它们在，照打就是。</strong></li>
+                    <li>想确认到底装了什么，看 <code>.claude-plugin/plugin.json</code>，那才是权威。</li>
+                </ul>
+            </div>
+            <p class="leading-relaxed mt-6">
+                规则本身：user-invoked 可以调用 model-invoked，但<strong>永远不能调用另一个 user-invoked</strong>。
+            </p>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">二、四种角色</h3>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">主干</p>
+                    <p>从想法到 ship 的固定路径：<code>grill-with-docs</code> → <code>to-spec</code> → <code>to-tickets</code> → <code>implement</code> → <code>code-review</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">匝道</p>
+                    <p>产生工作、然后并入主干：<code>triage</code>（别人丢进来的）、<code>wayfinder</code>（一个 session 装不下）、<code>improve-codebase-architecture</code>（定期体检产生题目）。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">独立</p>
+                    <p>随时抓来、用完就走：<code>prototype</code>、<code>research</code>、<code>diagnosing-bugs</code>、<code>resolving-merge-conflicts</code>、<code>wizard</code>、<code>handoff</code>、<code>teach</code>、<code>to-questionnaire</code>、<code>wait-what</code>、<code>grill-me</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">词汇层</p>
+                    <p>没有流程，只提供精确用词，被别人借用：<code>codebase-design</code>（模块形状）、<code>domain-modeling</code>（领域语言）、<code>writing-for-agents</code>（给 agent 读的文档）、<code>grilling</code>（访谈原语）。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">词汇层最容易误用</p>
+                    <p>它们<strong>没有流程</strong>。你对着 <code>codebase-design</code> 说「开始吧」，agent 会自己发明一套流程，然后烧掉 100k token 重构你没问的东西（已登记的 issue 449）。词汇层要用「<strong>driver skill 在上、词汇层在下</strong>」的方式跑。</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">三、Phase boundary</h3>
+            <p class="leading-relaxed mb-6">
+                一个 session 里的一块工作叫 <strong>phase</strong>（访谈、实作、QA…）。「我的 context 该怎么办」这个问题<strong>只在两个 phase 之间才成立</strong>。phase 中间没得选，只有继续，或把剩下的丢给 subagent。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">顺位</th>
+                            <th class="py-3 pr-4 font-bold text-sm">选项</th>
+                            <th class="py-3 font-bold text-sm">什么时候选</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">1</td>
+                            <td class="py-4 pr-4 font-semibold">继续</td>
+                            <td class="py-4">下一个 phase 需要这个 phase 的原话，或你的 smart zone 还有余裕。这是唯一保住一手数据的选项，所以<strong>先排除它</strong>再考虑别的</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">2</td>
+                            <td class="py-4 pr-4 font-semibold">clear</td>
+                            <td class="py-4">后面的东西全部可丢。最便宜，但判断错了就是单向</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">3</td>
+                            <td class="py-4 pr-4 font-semibold">handoff</td>
+                            <td class="py-4">有东西要<strong>搬家</strong>：换 harness、换目录、给同事、把中途发现的支线分出去</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">4</td>
+                            <td class="py-4 pr-4 font-semibold">subagent</td>
+                            <td class="py-4">任务范围够紧，可以你人不在也跑得完</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">5</td>
+                            <td class="py-4 pr-4 font-semibold">compact</td>
+                            <td class="py-4">以上都不是。它是保底而不是首选，但实务上落点最多</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                最常被搞错的两个：<code>handoff</code> 不是「跨窗口的通用桥梁」，它买的只有<strong>可携性</strong>；<code>compact</code> 是树的底部而不是第一反应。三者保住的东西不同——compact 保住你的<strong>意图</strong>，clear 什么都不保，handoff 保住工作的<strong>移动能力</strong>。而这三个都会把对话（一手数据）变成摘要（二手数据）。
+            </p>
+        </section>
+
+        <!-- ==================================================================
+             02 · Install
+             ================================================================== -->
+        <section id="install" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">安装：两条路，选一条</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                两种安装方式代表两种哲学。<strong>装两次会让你每个 skill 都有两份。</strong>
+            </p>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-2">路线 A — 订阅</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <p class="leading-relaxed">或在 session 内打 <code>/plugin install mattpocock-skills</code>。已在官方 marketplace，不用先加来源，更新自动到。<strong>代价：唯读，你不能改。</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">路线 B — 可改版</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <p class="leading-relaxed">会问你要装哪些 skill、装到哪些 agent 上。<strong>一定要勾 <code>setup-matt-pocock-skills</code>。</strong>文档以「你拥有的普通文档」写进 repo，可随便改；要更新时自己跑 <code>npx skills update</code>。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">路线 B 的陷阱</p>
+                    <p class="leading-relaxed">你手改的 <code>SKILL.md</code> <strong>会被 <code>npx skills update</code> 覆盖</strong>。任何想长期生效的行为，写在你自己的 <code>CLAUDE.md</code> / <code>AGENTS.md</code>（见 <a href="#claude-md" class="underline">第 09 节</a>），或每次调用时讲出来——不要改 skill 档。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">想玩 beta</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <p class="leading-relaxed">plugin 不会给你这些。撰稿时的 in-progress bucket 有 <code>loop-me</code>、<code>writing-beats</code>、<code>writing-fragments</code>、<code>writing-shape</code>、<code>claude-handoff</code>、<code>setup-ts-deep-modules</code>——没有文档页、随时可能改掉或消失。另有一个不在 plugin 内的 misc bucket：<code>git-guardrails-claude-code</code>（用 hook 挡危险 git 指令）、<code>setup-pre-commit</code>、<code>migrate-to-shoehorn</code>、<code>scaffold-exercises</code>。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             03 · Setup
+             ================================================================== -->
+        <section id="setup" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">前置设置，每个 repo 跑一次</h2>
+            </div>
+            <p class="leading-relaxed mb-6">
+                <code>/setup-matt-pocock-skills</code> 是所有 engineering skill 的<strong>前置条件，不是流程的一步</strong>。
+            </p>
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">决策</th>
+                            <th class="py-3 pr-4 font-bold text-sm">它会先提议</th>
+                            <th class="py-3 font-bold text-sm">什么时候才真的问你</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Issue tracker</td>
+                            <td class="py-4 pr-4">依你的 git remote 猜</td>
+                            <td class="py-4">每次都问——这是唯一真正的选择</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Triage 标签</td>
+                            <td class="py-4 pr-4">沿用五个标准名</td>
+                            <td class="py-4">只有装了 triage 才问</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">Domain 文档配置</td>
+                            <td class="py-4 pr-4">单一 context：root 一份 <code>CONTEXT.md</code> 加 <code>docs/adr/</code></td>
+                            <td class="py-4">只有侦测到 monorepo 信号才问</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Tracker 四个选项：<strong>GitHub</strong>（需 <code>gh</code>）、<strong>GitLab</strong>（需 <code>glab</code>）、<strong>Local markdown</strong>（<code>.scratch/&lt;feature&gt;/</code>，连 remote 都不用）、<strong>Other</strong>（你写一段描述工作流程的话）。
+                </p>
+                <p>
+                    Local markdown 是<strong>一等公民不是备案</strong>：单人项目、没有 remote，完全支持。但不要在用 GitHub 的项目同时用 local markdown，它们是替代品不是叠加。
+                </p>
+                <p>
+                    「Other」也不是占位符——Jira、Linear、Azure DevOps 能跑就是靠它：你描述工作流程，它把你的话写进 <code>docs/agents/issue-tracker.md</code>，下游 skill 照那段话做。这也是为什么<strong>这整套没有绑 GitHub</strong>，而且你永远不用改 skill 档来换 tracker。
+                </p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">三个一定要知道的坑</h3>
+            <div class="space-y-8 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">一、它不会帮你建 label</p>
+                    <p class="mb-3"><code>triage-labels.md</code> 只是「对照表」。全新的 GitHub repo 上那些 label 根本不存在，贴标签就会失败。自己先建一次：</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+gh label create needs-info
+gh label create ready-for-agent
+gh label create ready-for-human
+gh label create wontfix
+gh label create bug
+gh label create enhancement</pre>
+                    <p class="mt-3">要用 <code>wayfinder</code> 的话，另外五个也要先建（<code>gh</code> 遇到不存在的 label 是直接失败）：<code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">二、它看文档存不存在，不是看你用哪个 harness</p>
+                    <p>你在 Codex 但 repo 有残留的 <code>CLAUDE.md</code>，那段 <code>## Agent skills</code> 就会写到 Codex 永远读不到的地方。解法：手动搬到 <code>AGENTS.md</code>，或让 <code>AGENTS.md</code> 当本尊、<code>CLAUDE.md</code> 只放一行指向它。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">三、更新 skills 之后可以再跑一次</p>
+                    <p>种子模板会改版，旧的 <code>issue-tracker.md</code> 可能对不上新的 skill。下游行为变怪时，重跑是最便宜的修法。</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">判断它成功了</h3>
+            <ul class="space-y-3 leading-relaxed">
+                <li><code>docs/agents/issue-tracker.md</code> 与 <code>domain.md</code> 存在（装了 triage 还有 <code>triage-labels.md</code>）</li>
+                <li>你的 harness <strong>真的会读的那个</strong>指令档里出现 <code>## Agent skills</code></li>
+                <li>之后 <code>/to-tickets</code> 不再问你 issue 放哪；<code>/triage</code> 是「贴」标签而不是「发明」标签</li>
+                <li><strong>skill 档本身一个字都没动。</strong>如果 setup 改了某个 <code>SKILL.md</code>，那就是出事了</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             04 · The map. The source shipped this as a filterable table with the
+             role column carried by colour; the role is a word here and the filter
+             is gone. A filter that hides rows is a scroll-reveal by another name,
+             and the whole table is 25 rows.
+             ================================================================== -->
+        <section id="map" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">全套 25 支地图</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                「硬依赖」那一栏是实战重点——<strong>依赖没装，skill 会安静地退化成一场即兴表演。</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">调用权</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">角色</th>
+                            <th class="py-3 pr-4 font-bold text-sm">一句话</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">硬依赖</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">setup-matt-pocock-skills</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">前置</td><td class="py-4 pr-4">每 repo 跑一次，设置 tracker、label 与文档配置</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">ask-matt</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">路由器</td><td class="py-4 pr-4">描述你的处境，它告诉你该打哪一串</td><td class="py-4 hidden tablet:table-cell">只认得本 pack 的 skill</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">原语</td><td class="py-4 pr-4">一轮一轮的访谈引擎，其他 grilling 全建在它上面</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-me</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">无状态访谈，不需 repo、主题不必是程序</td><td class="py-4 hidden tablet:table-cell">grilling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">主干头</td><td class="py-4 pr-4">同样的访谈，加上读 codebase、写 <code>CONTEXT.md</code> 与 ADR</td><td class="py-4 hidden tablet:table-cell">grilling、domain-modeling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">匝道</td><td class="py-4 pr-4">一个 session 装不下的大工程，画成 decision ticket 地图</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-spec</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">主干</td><td class="py-4 pr-4">把对话收敛成一份 spec 并发到 tracker，不再访谈</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">主干</td><td class="py-4 pr-4">把 spec 或对话切成 tracer-bullet ticket 并声明阻塞边</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">implement</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">主干</td><td class="py-4 pr-4">照 ticket 做，内部驱动 tdd，收尾跑 code-review，commit</td><td class="py-4 hidden tablet:table-cell">tracker（若来自 ticket）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">tdd</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">引擎</td><td class="py-4 pr-4">red-green，只在<strong>事先同意的 seam</strong> 上写测试</td><td class="py-4 hidden tablet:table-cell">codebase-design</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">code-review</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">主干尾</td><td class="py-4 pr-4">对某个固定点的 diff 做 Standards 与 Spec 双轴审查</td><td class="py-4 hidden tablet:table-cell">tracker（Spec 轴）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">triage</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">匝道</td><td class="py-4 pr-4"><strong>别人</strong>丢进来的 issue 走状态机</td><td class="py-4 hidden tablet:table-cell">tracker、label</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">匝道</td><td class="py-4 pr-4">扫 codebase 找「加深模块」的机会，出 HTML 报告</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">用丢弃式代码回答<strong>一个</strong>设计问题</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">难 bug 与性能回归的六阶段诊断，先有 red loop 才能猜</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">背景 agent 读一手来源，留下一份带引用的 markdown</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">resolving-merge-conflicts</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">逐 hunk 依「意图」解冲突，跑检查，完成 merge，绝不放弃</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wizard</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">产生一支交互 bash script，带人类走只有人能做的步骤</td><td class="py-4 hidden tablet:table-cell">跑时用 <code>gh</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">codebase-design</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">词汇层</td><td class="py-4 pr-4">模块、界面、depth、seam 的精确用词与四条原则</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">词汇层</td><td class="py-4 pr-4">主动建立与磨利领域语言，实时写进 <code>CONTEXT.md</code> 与 ADR</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">handoff</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">把当前对话压成一份可携的交接文档</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">teach</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">把当前目录变成跨 session 的教学工作区</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-questionnaire</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">把「只有别人知道」的决策变成一份问卷</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wait-what</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">独立</td><td class="py-4 pr-4">刚刚那段话没听懂时打它，agent 重讲一次</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">writing-for-agents</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">词汇层</td><td class="py-4 pr-4">写给 agent 看的文档（skill、指令档、spec、prompt）的准则</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">两个分岔要记住</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>prototype 岔路</strong>：访谈中遇到「讲不出来、要看到东西才知道」的问题，停下来做 prototype，看完回来一行回答。</li>
+                    <li><strong>spec 与 tickets 只在跨 session 才划算</strong>。单一 context window 做得完的改动，直接 <code>grill-with-docs</code> 接 <code>implement</code>，跳过中间两步。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             05 · The main flow, seven steps.
+             ================================================================== -->
+        <section id="main-flow" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">主干七步，逐步实作</h2>
+            </div>
+            <div class="border-l border-line pl-6 mb-10">
+                <p class="eyebrow mb-2">贯穿案例</p>
+                <p class="leading-relaxed">内部工具 repo（Next.js 加 Postgres），要加「合约到期提醒」——列出 30 天内到期的合约、寄信给负责人、后台显示红点。跨 schema、API、UI 与寄信，够广，值得走完整流程。</p>
+            </div>
+
+            <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — 把模糊的想法烤成决策</h3>
+            <div class="space-y-6 leading-relaxed">
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs 我想加一个合约到期提醒功能</pre>
+                <p>开一个干净的对话，<strong>关掉 plan mode</strong>。plan mode 会催 agent 赶快产出计划，那正好和「保持在提问状态」相反。</p>
+                <div>
+                    <p class="eyebrow mb-2">会发生什么</p>
+                    <p>它会读你的 codebase，然后<strong>一轮一轮</strong>问你问题。每一轮是当前 <strong>frontier</strong>——所有前置条件都已解决的问题一次问完，所以你不会被问到还悬在半空的问题。格式固定：编号标题、内文、一行建议答案。13 题通常落在 3 轮；46 题分 4 轮是很正常的一场。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">你该怎么回</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 是
+2 选第二个
+3 不要，理由是我们的合约没有部分终止
+4 我不知道</pre>
+                    <p class="mt-3"><strong>最大的失败模式是被动。</strong>连答四十个「同意」，出来一份 agent 写的、你点头过的计划——感觉很有生产力，因为它很长。但什么都没被真正决定，而结果带着它没赚到的确定性。主动的意思是：问得比你需要的精度还浅时<strong>推回去</strong>；范围在漂时<strong>讲出来</strong>；真的不知道就答「我不知道」，这是真的答案。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">grillable vs ungrillable</p>
+                    <p>「一张长表单还是三页？」「这个交互应该是什么感觉？」——这种问题<strong>谈不出来</strong>，需要有东西可以反应。碰到就停下来去做 prototype，看完回来一行回答。在 ungrillable 的问题上硬谈，是 session 爆炸的主因：agent 一直换句话问，你一直猜，范围膨胀来填补不确定性。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">解决了什么</th>
+                            <th class="py-3 font-bold text-sm">落在哪</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一个<strong>术语</strong>——这项目自己的用词</td><td class="py-4"><code>CONTEXT.md</code>，<strong>当场写入</strong>，不是最后批量产出</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一个<strong>难以逆转、没有 context 会觉得意外、真的有取舍</strong>的决定</td><td class="py-4"><code>docs/adr/</code> 下的一份 ADR</td></tr>
+                        <tr><td class="py-4 pr-4">其他所有你决定的事</td><td class="py-4">只在对话里，别的地方没有</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">第三列的意思</p>
+                <p class="leading-relaxed">你谈出来的<strong>绝大部分东西只存在于这个 context window</strong>。所以不要 clear、不要 compact，直接在同一个对话里接 <code>/to-spec</code>。</p>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <code>CONTEXT.md</code> 是<strong>词汇表，而且只是词汇表</strong>——不放实作细节、不放 spec、不放草稿。ADR 三个条件要同时成立，所以<strong>大部分 session 产出 0 份 ADR，这是设计如此</strong>。
+            </p>
+            <p class="leading-relaxed mt-6">
+                这一步用<strong>你最好的模型</strong>。grilling 吃的是模型自己对「系统会怎么坏」的直觉；实作阶段反而比较吃 context，可以用便宜一点的。
+            </p>
+
+            <h3 id="step-2" class="font-display text-xl font-bold mt-14 mb-4">Step 2 — 把已决定的事变成一份可存活的文档</h3>
+            <div class="space-y-6 leading-relaxed">
+                <p><code>/to-spec</code>，<strong>在同一个对话里，不要开新的</strong>。</p>
+                <p>它<strong>不访谈你</strong>。你走到这一步该决定的都决定完了，所以它是「综合」——从对话、codebase、<code>CONTEXT.md</code> 与 ADR 里整理。</p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">spec 是决策纪录，不是决策现场</p>
+                    <p>它存在的理由是 context window 会结束：你刚烤出来的一切，都在一个即将被清掉的对话里。spec 就是那场对话的幸存者。所以它不验证任何事、不决定任何事。<strong>spec 里任何一句你没说过的话，都是缺陷。</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">它会先跟你确认 seam</p>
+                    <p>写任何一个字之前，它会先草拟这个功能要在哪些 <strong>seam</strong>（测试观察行为的公开边界）上被测，然后拿来问你。它偏好已存在的 seam 而不是新开一个，并取它能取到的<strong>最高</strong>的 seam——理想的数字是整个改动只有一个。这个「事先同意的 seam」会一路往下传：<code>tdd</code> 只在事先同意的 seam 上写测试，<code>code-review</code> 会检查有没有用了没同意过的 seam。<strong>所以这段对话要认真回，不要拖到实作阶段。</strong></p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">你在哪</th>
+                            <th class="py-3 font-bold text-sm">跑什么</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">什么都还没决定</td><td class="py-4">先 <code>grill-with-docs</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">决定了，而且<strong>一个 context window 做得完</strong></td><td class="py-4">直接 <code>implement</code>，<strong>跳过 spec</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">决定了，工作要跨好几个 session</td><td class="py-4"><code>/to-spec</code>，然后 <code>/to-tickets</code></td></tr>
+                        <tr><td class="py-4 pr-4">刚清空一张 wayfinder 地图</td><td class="py-4"><code>/to-spec #&lt;map_issue&gt;</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">常见坑</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong><code>ready-for-agent</code> 标签的误会</strong>：spec 会被粘贴它，意思是「不需要再 triage 了」，是<strong>输入资格而不是工单</strong>。但如果你有无人看管的 agent 在轮询这个标签，它分不出差别，会一口气想把整份 spec 做完。解法：在那个 agent 的 prompt 里明确排除 parent spec，或 <code>/to-tickets</code> 跑完就把标签拔掉。</li>
+                    <li><strong>重构型工作不合模板</strong>：模板重压 user story，架构工作套上去会变成「没人要求过的故事」。改靠 implementation-decisions 与 testing-decisions 两节，耐久的架构决定让它以 ADR 形式从 <code>grill-with-docs</code> 落地。</li>
+                    <li><strong>它不会查重</strong>：不会搜 tracker 看有没有人开过同样的 issue，也不会把它遵守的 ADR 连进来。热区自己先搜一下。</li>
+                    <li><strong>spec 太大会被截断</strong>：巨大的 spec 超过 tracker issue 能干净返回的量，而且没有本地副本可退。<code>/to-spec</code> 和 <code>/to-tickets</code> 之间不要 clear 也不要 compact。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — 切成 tracer bullet</h3>
+            <p class="leading-relaxed mb-6"><code>/to-tickets</code>，同一个窗口，或 <code>/to-tickets #&lt;spec_issue&gt;</code>。计划只在对话里、没写成 spec 也行，它直接读对话。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">水平切片（错）</th>
+                            <th class="py-3 font-bold text-sm">垂直切片（对）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">一张票交付</td><td class="py-4 pr-4">改动的<strong>一层</strong>（全部 schema 一张、全部 API 一张）</td><td class="py-4">穿过<strong>所有层</strong>的一条细路</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">落地后</td><td class="py-4 pr-4">每层都到位前什么都不能动</td><td class="py-4">自己就能 demo</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">验收条件</td><td class="py-4 pr-4">必须伸手到别张票拥有的工作</td><td class="py-4">只评自己拥有的东西</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>
+                    这是最常被违反的规则，<strong>代价有实测</strong>：某团队用 26 张按层切的票（corpus、producer、aggregator、selector），平均<strong>每张票关闭要跑 20 次 agent</strong>，其中约四分之三是重工。他们自己的检讨把每一类失败都追回到水平切片，而不是实作质量。
+                </p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">你要做的检查</p>
+                    <p>对每一张票问一句——<strong>「这张做完我能 demo 什么？」</strong>答不出<strong>行为</strong>的，就是水平切片。有人会在每张票加一行 demo path，据报能把模型推向垂直分解。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">发布前</p>
+                    <p><strong>Prefactoring</strong>：它会先找「先让改动变容易，再做那个容易的改动」的工作，排在最前面。然后给你<strong>编号清单并质询你</strong>：粒度对不对、阻塞边是不是真的、有没有该合并或拆开的。<strong>在你核准之前不会有任何东西进 tracker</strong>——这个质询步骤就是你推回去的地方。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">宽重构是唯一的例外</p>
+                    <p>有一种形状打破 tracer-bullet 规则：<strong>单一机械式改动，但爆炸半径遍及全 codebase</strong>（改一个字段名、换一个共用类型）。一次编辑打烂上千个调用点，没有任何垂直切片能绿灯落地。走 expand–migrate–contract：<strong>Expand</strong>——新形式加在旧形式旁边，什么都不坏；<strong>Migrate</strong>——依爆炸半径分批搬调用点，一批一张票，都被 expand 阻塞，CI 保持绿灯因为旧形式还在；<strong>Contract</strong>——没有调用者了才删掉旧形式，被所有 migrate 批量阻塞。</p>
+                </div>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">常见坑</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>三行的改动切出 12 张票</strong>：过度分解是最常见的摩擦。在质询步骤叫它合并。更根本的答案是：整个改动塞得进一个 context window，<strong>你根本不需要这支 skill</strong>。</li>
+                    <li><strong>GitHub 上没建成 sub-issue</strong>：已知未修（issue 554），Codex 更严重。<code>gh</code> 自 v2.94 原生支持 <code>gh issue create --parent</code> 与 <code>gh issue edit --add-sub-issue</code>。</li>
+                    <li><strong>「Blocked by」只写在内文</strong>：同类问题（issue 513）。GitHub 有原生的 <code>gh issue create --blocked-by</code>。因为阻塞者先发布，号码在建立时一定拿得到。</li>
+                    <li><strong>验收条件什么都没评到</strong>：对每一条，指出「什么观察会证明它为假」，并确认它在起始 commit 上是红的。</li>
+                    <li><strong>票发完了，然后呢？</strong>没有自动派工。看板面、数没有未完成阻塞者的票有几张，就开几个 agent session。<strong>一票一个全新 context，中间 clear。</strong></li>
+                </ul>
+            </div>
+
+            <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — 一票一个 session</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <div class="border-l border-line pl-6 mb-8">
+                <p class="eyebrow mb-2">为什么要写完整 reference</p>
+                <p class="leading-relaxed"><code>/implement #2</code> 的 <code>#2</code> 是对<strong>「agent 看得到的任何编号清单」</strong>解析的——在新 session 里那可能是一个 todo 档或 checklist，而不是你设置的 tracker。而且它解析得很自信、<strong>不会 fail-closed</strong>，所以错了你不会马上发现。传完整 URL 或 <code>owner/repo#2</code>，并要它把标题念回来确认再开始。</p>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">一次 run 的五拍</p>
+                    <ol class="space-y-2 mt-2">
+                        <li>读 ticket 或 spec，推出 seam</li>
+                        <li>在事先同意的 seam 上驱动 <code>tdd</code>，一次一个 red-green 切片</li>
+                        <li>频繁 typecheck，过程中跑单一测试文档</li>
+                        <li>最后跑一次完整测试套件</li>
+                        <li>跑 <code>code-review</code>，然后 commit 到<strong>当前 branch</strong></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">它绝不做的事</p>
+                    <p><strong>它从不重开计划。</strong>没有访谈、没有澄清回合、不会提议另一种做法。上游决定的东西就是输入，它的工作就是把它变成一个 commit。这正是它和「对一个新 agent 打『做这个』」的差别——后者会边做边重新设计。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th class="py-3 font-bold text-sm">说明</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">跑完了，但票还开着、验收条件还没打勾</td><td class="py-4"><strong>正确且预期。</strong>implement 没有收尾步骤，它停在 commit。<strong>票要你自己关</strong>——这在依赖链上咬最凶：frontier 的定义是「阻塞者全关」，没人关就永远没有票变成可做</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">能不能一次做完所有票、平行跑？</td><td class="py-4"><strong>不行。</strong>同一 checkout 并行跑多个 implement 比「不支持」更糟：有实地回报一个下午内出现 amend 打到另一个 session 的 commit、stash 消失、commit 落到错的 branch。社区 workaround 是 worktree，但 stash 仍共用</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">能不能开 PR？</td><td class="py-4">没有内置。它 commit 到当前 branch，也不会帮你开 branch。有人在调用时覆写</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review 说看不到我的改动</td><td class="py-4">它审 <code>diff &lt;fixed-point&gt;...HEAD</code>，<strong>排除 staged 与 working tree</strong>。implement 在 commit 前跑 review，所以除非已有中途 commit，那个 diff 里没东西。<strong>先 commit 再 review</strong></td></tr>
+                        <tr><td class="py-4 pr-4">一张票烧掉 150k token</td><td class="py-4">通常是票太大而不是用错。一个 run 含探索 codebase、每个 seam 的 red-green、完整套件、review，超过 100k token 是正常的。<strong>杠杆在上游</strong>：把票调到一个新窗口装得下。单张票一直爆就拆它，不要调高 effort</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                有些人<strong>刻意不要</strong>内置的那道 review——写程序的 agent 审自己写的程序会偏袒自己的解法。在干净的 session 里对固定点另跑 <code>code-review</code> 是合理的替代做法。
+            </p>
+
+            <h3 id="step-5" class="font-display text-xl font-bold mt-14 mb-4">Step 5 — red-green 引擎</h3>
+            <p class="leading-relaxed mb-6">
+                <code>tdd</code> 是<strong>参考数据，不是驱动器</strong>：它握着循环的规则，跑 session 的是别人（你，或 <code>implement</code>）。
+            </p>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Red-green</p>
+                    <p>写失败的测试，然后只写刚好让它通过的程序。不预先写下一个测试。<strong>没有 refactor 阶段</strong>——2026 年 6 月移除，因为 agent 几乎从不执行它，而且 review 与 implementation 分开 session 效果更好。重构归 code-review。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Vertical slice</p>
+                    <p>一个 seam、一个测试、一个最小实作，然后重复；第一个 cycle 是 tracer bullet，证明一条路端到端走得通。反面是先写所有测试再写所有程序——那是在验证<strong>想像的</strong>行为，检查东西的形状而不是用户做的事，并且在你理解实作之前就把你绑进一个测试结构。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Pre-agreed seam</p>
+                    <p>规则是绝对的：<strong>没有确认过的 seam，不写测试。</strong>完整链路里 seam 在 <code>to-spec</code> 就谈好；单独调用时它直接问你。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">反模式</th>
+                            <th class="py-3 font-bold text-sm">征兆</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Implementation-coupled</td><td class="py-4">你改一个内部函数名字、行为没变，测试却坏了。mock 自己的内部协作者、断言调用次数、用数据库查询验证而不是用界面</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tautological</td><td class="py-4">期望值是「照程序的算法」算出来的，所以测试必然通过。<strong>期望值必须来自别的地方</strong>：已知良好的字面值、手算的范例、spec</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Horizontal slicing</td><td class="py-4">一批测试在任何实作之前就落地了</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <strong>Mock 只用在系统边界</strong>：外部 API、时间、随机。有时是文档系统或数据库。<strong>不要 mock 你自己的模块。</strong>
+            </p>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">常见坑</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>「它问我选哪个 test seam，我根本不知道选哪个」</strong>：最常见的摩擦（issue 607）。提示只列出候选 seam 的名字，没说各自抓到什么、漏掉什么。<strong>回问 agent 取舍</strong>：component 层的 seam 漏掉什么是 integration seam 抓得到的、慢多少。这也正是完整链路要在 <code>to-spec</code> 就谈 seam 的理由。</li>
+                    <li><strong>它先写实作才写测试</strong>：会发生。skill 是「带着这件事一起活」的写法，没有任何指令能让 agent 100% 遵守。某个切片真的需要严格遵守，就盯着它跑。</li>
+                    <li><strong>它先写浏览器测试然后鬼打墙</strong>：有人回报 agent 先写 Playwright、然后在一个还不存在的功能上反复跑、最后结论是「测试坏了」。在 repo 的指令档声明：browser 测试在行为可运作之后才写。</li>
+                    <li><strong>它不知道你其他张票</strong>：对着一张票跑，它会很开心地提议属于兄弟票的工作（issue 129）。把 spec 和 ticket 一起给它有帮助；一开始就把票切对更有帮助。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — 双轴审查</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <p class="leading-relaxed mb-6">
+                <strong>固定点你必须提供</strong>；不给它会问你，不会乱猜，而且会先验证 ref 解得出来、diff 非空，才生 sub-agent。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th class="py-3 font-bold text-sm">Spec</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">问题</td><td class="py-4 pr-4">做得对不对？</td><td class="py-4">做的是对的东西吗？</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">读什么</td><td class="py-4 pr-4">repo 自己记载的规范，加内置 smell 基准</td><td class="py-4">源头的 issue 或 spec</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">报什么</td><td class="py-4 pr-4">明文违规（可以是硬性的）加 smell（永远是判断题）</td><td class="py-4">缺漏或部分实作的需求、范围蔓延、实作错的需求</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">每个发现必须引用</td><td class="py-4 pr-4">规范档加条目，或 smell 名称加 hunk</td><td class="py-4">spec 的那一行</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>
+                    两个轴<strong>各跑在自己的 sub-agent 里</strong>，互相看不到对方的推理。报告结尾给「每个轴各自最糟的问题」，并<strong>拒绝跨轴选一个总冠军</strong>——因为一个改动可以一轴过一轴挂：遵守所有惯例但做错东西的程序 Standards 过、Spec 挂；完全照票做但破坏 repo 惯例的反之。<strong>混合的裁决会让过关的那轴掩护挂掉的那轴。</strong>
+                </p>
+                <p>
+                    Smell 基准是 Standards 底下的地板：Fowler《Refactoring》第 3 章的 12 个 code smell。每个都是「可能是…」的启发式标签、永不是硬性违规，而且都以「它是什么，怎么修」陈述，所以发现送到你面前时<strong>自带一个动作</strong>。你的 linter 已经在管的东西，两个轴都跳过。
+                </p>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">常见坑</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>和内置的同名指令撞名</strong>：最常被回报，未修。内置那个是「在 diff 里找 bug」，这个是规范与 spec 合规。装了就有一个会赢，谁赢取决于安装方式。</li>
+                    <li><strong>sub-agent 又去调用自己，生出更多 agent</strong>：多人多 harness 重现过，有一次到 50 个以上。fork 上的修法是在两个 sub-agent brief 各加一行「不要调用 code-review 或生成额外 agent，直接执行这次审查」。<strong>无人看管跑这支时，盯着 agent 数量。</strong></li>
+                    <li><strong>该在写程序的同一个 session 跑吗？</strong>偏好用新的。有人讲得很好：<strong>同一个 context 审自己，等于带着 slash command 的确认偏误。</strong></li>
+                    <li><strong>发现可以信吗？</strong>不查证不能信。sub-agent 的输出是<strong>假设不是证据</strong>。它汇总两份报告但不逐条回文档验证，所以引用可能指错位置或夸大影响。看每个发现的引用再行动。</li>
+                    <li><strong>为什么每次跑都找到新问题？</strong>修改会创造新表面，而判断题那半不是决定性的。<strong>没有收敛保证。</strong>把一次 pass 当成线索清单，处理有明文规则背书的，然后停手——不要跑到它「干净」为止，它不会。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-7" class="font-display text-xl font-bold mt-14 mb-4">Step 7 — 收尾与循环</h3>
+            <p class="leading-relaxed mb-4">一票的循环：</p>
+            <ol class="space-y-2 leading-relaxed mb-8">
+                <li>clear context</li>
+                <li><code>/implement &lt;ticket&gt;</code>（<code>tdd</code> 在里面跑）</li>
+                <li>commit</li>
+                <li><code>/code-review &lt;fixed-point&gt;</code>，干净 session</li>
+                <li>手动关票、对验收条件——<strong>implement 不会做这件事</strong></li>
+                <li>回到 frontier 抓下一票，回到第 1 步</li>
+            </ol>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">节奏</p>
+                    <ul class="space-y-2 mt-2">
+                        <li><strong>每天</strong>：主干。一票一 session，中间 clear。</li>
+                        <li><strong>每几天</strong>：<code>/improve-codebase-architecture</code>，把结构债变成新的题目喂回主干。</li>
+                        <li><strong>有 inbound 工作时</strong>：<code>/triage</code>。没有外部回报的项目，你会很少开它。</li>
+                        <li><strong>需要补技能时</strong>：<code>/teach</code>，开一个专属目录。</li>
+                    </ul>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">别忘了</p>
+                    <p>整条链唯一<strong>没有人帮你做</strong>的事，是<strong>关票与对验收条件</strong>。implement 停在 commit。依赖链要往前走，就得靠你把票关掉——不然 frontier 永远不会出现新的可做项目。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             06 · Situation index. The source used a colour chip per role; the
+             role is the eyebrow here.
+             ================================================================== -->
+        <section id="situations" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">情境索引，什么时候抓哪一支</h2>
+            </div>
+            <p class="leading-relaxed mb-10">
+                主干以外的 skill 都是「特定情况才岔出去」。这里按<strong>你的处境</strong>排列。
+            </p>
+
+            <div class="space-y-12">
+                <div>
+                    <p class="eyebrow mb-2">独立 — prototype</p>
+                    <h3 class="font-display text-lg font-bold mb-3">这个问题我谈不出来</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它写的是<strong>回答一个问题的丢弃式代码</strong>。问题先来，而且决定后面所有东西的形状；回答错问题的 prototype 是纯浪费，不管它多好看。「丢弃式」是对<strong>怎么写</strong>的约束，不是「一定要销毁」的承诺：没有测试、除了跑得起来以外没有错误处理、没有抽象、没有持久化。</p>
+                        <p>两条分支的产出物差很多。「这个逻辑或状态模型感觉对吗？」得到<strong>一个可分享的单一 HTML 档</strong>——自带 state panel、free-play 按钮、分页式导览，全部用领域语言标示，可以直接丢给设计师或领域专家自己感觉；背后逻辑是一个干净的纯模块，不碰 DOM，验证过就能抬进正式代码。「这个看起来该长怎样？」得到<strong>同一 route 上几个差异剧烈的 UI 变体</strong>，用浮动底列切换；变体必须在<strong>结构</strong>上不同意，不是颜色——三个微调过的 card grid 是壁纸不是 prototype。</p>
+                        <p><strong>发现自己在「加固」它的那一刻，你就不是在做 prototype 了</strong>——加测试、接真数据库、为了「以后可能要」而泛化。</p>
+                        <p><strong>产出物怎么处置</strong>：答案（裁决加它解决的问题）落在耐久的地方——commit message、ADR、实作 issue；prototype 本身不删，但也不进 main，commit 到 <code>prototype/&lt;name&gt;</code> branch、<strong>永不 merge</strong>，在实作 issue 上留一个指标。</p>
+                        <p><strong>坑</strong>：agent 会在你其实该实作的时候叫你 prototype——命名问题，它对不熟流程的 agent 读起来像「有票之后的显然下一步」。另外<strong>不要 prototype 整个 app</strong>：没有自然停止点，会靠惯性变成正式产品，而「没测试没错误处理」的程序就这样上线见用户。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — research</p>
+                    <h3 class="font-display text-lg font-bold mb-3">有个外部事实卡住决策</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它只从<strong>一手来源</strong>工作（官方文档、源代码、规格、第一方 API），每个主张都追回拥有答案的那个来源。<strong>它不在对话里回答你</strong>——输出是一份文档，每个主张带链接。决定性的动作是：读的部分跑在<strong>背景 agent</strong>。</p>
+                        <p><strong>research 是你委派的跑腿，不是你外包的思考。</strong></p>
+                        <p><strong>坑</strong>：它会生出第二个自己（issue 530）——skill 叫调用者开背景 agent 但没限制 agent 类型，于是生出的是通用 agent、握着同样的工具和指令、再开一次。有人量到<strong>单一 research 任务跨三次重叠执行烧掉约 450k token</strong>，重复那个在半小时后、完全在视线外完成。<strong>调用后看一下背景任务列表，把重复的停掉。</strong></p>
+                        <p>另外三件：反向失败是你的全域指令禁止再委派时，背景 agent 会礼貌拒绝、skill 静静什么都没做；「高信任来源」由模型自己判断、没有 allowlist，你实际的缓解手段是<strong>随机追两三个引用</strong>，落在「那个东西的摘要」而不是那个东西本身就是失败；<strong>没有停止准则</strong>，范围是你的责任——一个 API、一个行为、一个版本主张，比「research X」回来得好太多。</p>
+                        <p><strong>research 文档不是 ADR</strong>：ADR 留、research 档用完归档或删掉。过期的 research 档比没有更糟，它会污染未来的 repo 读取。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — diagnosing-bugs</p>
+                    <h3 class="font-display text-lg font-bold mb-3">有东西坏了、我不知道为什么</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>六阶段：建 repro、最小化、排序假设、埋探针、带回归测试修好、清干净。</p>
+                        <p><strong>它不让 agent 在有「紧」的反馈循环之前形成理论。</strong>一个具名指令、<strong>已经跑过一次</strong>、在这个 bug 上是红的、修好之后会变绿。coding agent 拿到 bug 报告的默认行为是读代码然后猜——这支 skill 挡掉它。<strong>没有能变红的指令，就没有 Phase 2。</strong>那道 gate 就是这支 skill 的全部价值。</p>
+                        <p><strong>「有一个」循环不是目标，「紧」才是</strong>：快（秒级）、决定性（每次同样裁决）、锐利（断言你确切的症状，不是「没 crash」）、agent 能无人看管地跑。30 秒又会 flaky 的循环，比没有好不了多少。对偶发性 bug，目标不是干净的 repro 而是<strong>提高重现率</strong>——循环触发、平行化、加压、注入 sleep。</p>
+                    </div>
+                    <p class="eyebrow mt-6 mb-3">建循环的阶梯，按偏好排序</p>
+                    <ol class="space-y-2 leading-relaxed text-sm">
+                        <li>在能碰到 bug 的 seam 上的失败测试</li>
+                        <li>对着 dev server 的 curl 或 HTTP script</li>
+                        <li>带 fixture 输入的 CLI 调用，加对已知良好快照 diff</li>
+                        <li>headless browser script，断言 DOM、console 或 network</li>
+                        <li>重播捕获（存下来的 request、payload、event log）</li>
+                        <li>丢弃式 harness（系统的最小子集、一次函数调用）</li>
+                        <li>property 或 fuzz 循环，处理「有时候输出错」</li>
+                        <li>能交给 <code>git bisect run</code> 的 bisect harness</li>
+                        <li>differential loop（同输入，旧版对新版）</li>
+                        <li>human-in-the-loop 的 bash script，最后手段</li>
+                    </ol>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th class="py-3 font-bold text-sm">必须为真</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">进 Phase 2</td><td class="py-4">一个具名指令，<strong>已经跑过</strong>，输出也贴出来（已屏蔽敏感值），能在这个 bug 上变红</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">进 Phase 3</td><td class="py-4">repro 已重现<strong>且</strong>已最小化——剩下的每个元素都是承重的</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">进 Phase 4</td><td class="py-4">3 到 5 个排序过、可否证的假设，各自陈述预测，在测试任何一个之前先给你看</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">进 Phase 5</td><td class="py-4">探针对应到特定预测，一次一个变量，每条 debug log 带可 grep 的标签</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">完成</td><td class="py-4">原始 repro 不再重现、仪器全部移除、<strong>猜对的那个假设写进 commit message</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><strong>坑</strong>：它会在你只想要一个直接答案的轻量问题上触发——最常被回报的问题（issue 578，四人回报同一形状）。讲清楚「直接回答，不要诊断」，或关掉它的 model invocation。<strong>不能拿它扫「性能问题在哪」</strong>，它诊断一个你已经能讲出名字的失败。它<strong>不会在写修正之前停下来问你</strong>，只有 Phase 3 有人类检查点。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — resolving-merge-conflicts</p>
+                    <h3 class="font-display text-lg font-bold mb-3">我卡在 merge 或 rebase 冲突里</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它<strong>拒绝把冲突当成文字问题</strong>。动一个 hunk 之前，先把两边追回<strong>一手来源</strong>——commit message、PR、原始 issue——所以它是在<strong>两个意图</strong>之间选，不是在两块文字之间选，并且在兼容的地方两边都保留。真的不兼容时，选符合这次 merge 已陈述目标的那边，并讲出取舍。它不会为了粉饰冲突而发明新行为，而且<strong>它不放弃</strong>：merge 一定被带到一个完成的 commit。</p>
+                        <p>它还会找出 repo 自己的自动化检查并在 commit 前跑——因为 merge 是 git 里最容易产生「同时满足两个 branch、但两边测试都不过」的地方。</p>
+                        <p><strong>额外的实务知识</strong>：不要为了避免冲突而在平行任务之间「划分文档」，那成本比收益高。唯一值得保留的纪律是<strong>大重构先做</strong>。worktree 平行开发时，<strong>merge 回去最好由写那个改动的 session 做</strong>，因为只有它知道意图。把大家的冲突 batch 给最后一个 agent，正好丢掉这支 skill 要辛苦重建的东西。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">匝道 — improve-codebase-architecture</p>
+                    <h3 class="font-display text-lg font-bold mb-3">codebase 在腐烂</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它扫 codebase 找<strong>加深机会</strong>——浅模块（界面几乎和它藏的东西一样复杂）可以变成深模块的地方——写成一份 HTML 报告，然后对你选的候选做 grilling。</p>
+                        <p><strong>它从不改代码。</strong>整个 run 产出「一个 HTML 档加一场对话」。重构本身之后在另一个 session、走正常搭建流程。这就是它是<strong>巡检而不是重构工具</strong>的意思，也是为什么值得对「你还没准备要动」的 codebase 跑它。</p>
+                        <p><strong>两道过滤器</strong>：<em>deletion test</em>——想像删掉这个模块，复杂度会<strong>集中</strong>到一个更小的界面后面，还是<strong>散开</strong>到各个调用者身上？只有「集中」的案例拿到卡片。另外除非你指定区域，它先读最近的 commit 历史，把扫描偏向<strong>正在变动</strong>的路径——没人碰的代码里的加深，是你永远不会兑现的重构。</p>
+                        <p>强度标章三阶：<strong>Strong</strong>（deletion test 清楚通过、摩擦真实，认真看）、<strong>Worth exploring</strong>（说得通，但报酬取决于代码接下来要去哪）、<strong>Speculative</strong>（为完整性列出，大部分可以安心忽略）。</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">情境</th>
+                                    <th class="py-3 font-bold text-sm">怎么用</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">例行保养</td><td class="py-4">每几天、或有空档就跑，防止功能之间结构腐烂</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">大工程之前</td><td class="py-4">把它指向 spec：「我们怎么让这个改动变容易？」<strong>这是最有效的 prompt</strong></td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Brownfield 审计</td><td class="py-4">对大型、无结构、vibe-coded 的 repo 跑，看清它实际是什么形状</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Legacy 测试工作</td><td class="py-4">先用它找出缺少的 seam，再去对难测的程序写测试</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-4 leading-relaxed mt-6">
+                        <p><strong>坑</strong>：「它为了一个想法烤我一小时」是最大声的抱怨——调用时就讲「<strong>不要烤我，直接给报告</strong>」。报告开起来没样式没图，是因为它从 CDN 载外部资源、被挡时静默失败而 agent 看不到（它从不渲染那个页面），<strong>要它用 inline CSS 与手写 SVG</strong>。一个 session 一个候选。<strong>它几乎不会说「你的 codebase 没问题」</strong>——整份都是 Speculative 的报告，就是它用唯一会的方式告诉你它什么都没找到。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">匝道 — triage</p>
+                    <h3 class="font-display text-lg font-bold mb-3">别人丢了一堆 issue 进来</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>只用于你没有建立的 issue。</strong>原始 bug 报告、外来 feature request、突然出现的外部 PR。<code>to-tickets</code> 产出的票依构造就已经 agent-ready，对它们跑 triage 最好的情况是白做工。它<strong>建议然后等待</strong>：告诉你分类与状态的判断加理由，在你指示之前不套用任何东西。</p>
+                        <p>每个被 triage 的项目最后带<strong>恰好一个分类角色加一个状态角色</strong>。分类两个：bug、enhancement。状态五个：<code>needs-triage</code>（你需要评估它）、<code>needs-info</code>（等回报者，回复后回到 needs-triage）、<code>ready-for-agent</code>（完整规格化、附 agent brief）、<code>ready-for-human</code>（同样的 brief 加上「为什么不能委派」）、<code>wontfix</code>（关闭，理由已记录）。</p>
+                        <p><code>wontfix</code> 分三种，差别重要，因为<strong>只有一种会写进知识库</strong>：已实作的留个指向它已存在位置的留言、<strong>不写</strong>进 out-of-scope（那是已建功能不是被拒功能，写进去会污染去重检查）；拒绝的 bug 礼貌解释后关闭；拒绝的 enhancement 在 out-of-scope 目录写一份文档、从关闭留言连过去。那个目录是<strong>一个被拒概念一份 markdown</strong>（不是一个 issue 一份），而 triage 在评估任何东西之前先读整个目录，<strong>按概念比对而非关键字</strong>。</p>
+                        <p><strong>先验证再写 brief</strong>：对 bug 照回报者的步骤重现，对 PR checkout 并跑相关测试，然后报告三种结果之一——已确认（附代码路径）、无法重现、细节不足以尝试（这本身就是最强的 needs-info 信号）。这一切都是为了让 <strong>agent brief</strong> 变好，而它被写成<strong>耐久而非精确</strong>：写类型、签章、行为契约，<strong>永不写文档路径与行号</strong>，因为 issue 可能躺好几周而底下代码在动。</p>
+                        <p><strong>坑</strong>：label 不会自动建立；五个状态<strong>不够用</strong>是最常被提的缺口（blocked、deferred、implemented 都有人要，都没 ship）；<strong>不要一次对整个 backlog 放它跑</strong>——「显示需要注意的东西」那一 pass 是给挑选用的便宜列表，一次跑二十个 issue 时 agent 会悄悄把它当成证据基础，而它<strong>只回 issue 内文、不回留言</strong>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">匝道 — wayfinder</p>
+                    <h3 class="font-display text-lg font-bold mb-3">这个工程一个 session 装不下</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它接手一个<strong>大到一个 agent session 装不下</strong>的工程——你能讲出<strong>目的地</strong>、但还看不见路线——把它画成 tracker 上一张共享的<strong>地图</strong>，由 decision ticket 组成，然后一次解一张直到路清楚。</p>
+                        <p><strong>它规划、不执行。</strong>每张票握着一个「解决后产出决定」的问题，而不是一块要执行的搭建切片。地图完成的定义是：<strong>在有人去建这个东西之前，没有东西还需要被决定。</strong>这条规则是 agent 最常打破的。</p>
+                        <p>与 <code>grill-with-docs</code> 的分界是 <strong>session 数，不是项目大小</strong>：一个对话装得下就用 grilling（更便宜也更好）；装不下才用 wayfinder。<strong>对一个范围良好的功能抓 wayfinder 是常见错误。</strong></p>
+                        <p><strong>地图上的四样东西</strong>：<em>Destination</em>——走到尽头是什么样子，<strong>在任何票存在之前先命名</strong>；<em>Decisions so far</em>——每张关闭的票一行，各自连到细节真正住的地方；<em>Not yet specified</em>，也就是<strong>战争迷雾</strong>——你看得出要来、但还无法精确表述的决定，判准是<strong>你现在能不能精确说出那个问题</strong>，不是你能不能回答它；<em>Out of scope</em>——判定在目的地之外的工作，关掉、永不毕业。地图是<strong>索引不是保存</strong>，决定只活在它自己的票里。</p>
+                        <p><strong>Frontier</strong> 是「开着、没被阻塞、没被认领」的票。session 在做任何工作之前先把票 assign 给自己来认领，所以 assignee 就是认领。票<strong>全程用名字称呼，不用裸的编号</strong>——一墙的 issue 编号在叙述里没法读。</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">类型</th>
+                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">模式</th>
+                                    <th class="py-3 font-bold text-sm">什么时候用</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">默认。问题可以靠谈清楚</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">「这该长怎样」——谈不出来的问题，产物从票上连出去当 asset</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">AFK</td><td class="py-4">工作目录之外的事实卡住决策。画地图时就发射、并行烧完</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">task</td><td class="py-4 pr-4 whitespace-nowrap">两者皆可</td><td class="py-4">没有东西要决定，但<strong>手动工作</strong>卡住一个决定——开权限、注册服务、搬数据让形状看得见</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><code>task</code> 是唯一「做」而不是「决定」的类型，它的存在理由是<strong>解除一个决定的阻塞</strong>，<strong>永不是交付目的地的一块</strong>。这是实务上最常出错的类型：agent 把它当实作步骤，开始在地图里写产品代码。<code>research</code> 是「一 session 一票」的唯一例外。</p>
+                        <p><strong>三个致命坑。</strong>一、<strong>agent 在 wayfinder session 中间开始写正式代码</strong>——最常回报的失败。「规划不执行」默认可以在地图的 Notes 里被覆写，但 <strong>Notes 是 agent 写的</strong>，所以约束和它的豁免住在同一个由「被约束方」拥有的文档里。有用户看着 agent 把「这张地图带执行」写进自己的 Notes，然后在后续 session 读回来当自己的许可，在正式服务器上动工。二、<strong>地图清空之后还是要 <code>/to-spec</code> 和 <code>/to-tickets</code></strong>——decision ticket 在地图关闭时全都关了，剩下的是「一张塞满链接决定的地图」，那不是搭建计划。三、<strong>不要平行跑 grilling 票</strong>，两个 session 不共享 context，你会在一边被问到刚在另一边答过的问题。</p>
+                        <p>还有一个实测：<strong>「我画了 27 张票，做到第 13 张时后面全部不合理了」</strong>。两个反制：把地图范围缩到<strong>一个有界的目的地</strong>（一个定义好的 epic 比笼统的「实作 V1」表现好太多），以及<strong>积极 prototype</strong>。作者的说法是 wayfinder 是「prototypemaxxing」而不是「planmaxxing」。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — handoff</p>
+                    <h3 class="font-display text-lg font-bold mb-3">有东西要搬家</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它把当前对话压成一份<strong>交接文档</strong>——一个 markdown 档，写到 OS 暂存目录（不是工作区），让一个全新 agent 读了就能接手。</p>
+                        <p><strong>它买的是可携性，不是压缩。</strong>这让它比听起来窄得多：只有工作要<strong>移动</strong>时你才需要文档。四个触发情境：换 harness、搬到不同目录或 repo、把工作送给同事、把 phase 中途发现的支线分叉出去。</p>
+                        <p><strong>最常被跳过的用法是分叉。</strong>你留在自己的 session，把累积的 context 复制一份交给第二个 agent 平行工作。prototype 岔路就是这样用的：你正在一场很深的设计对话里、撞到一个只有跑起来才能解的问题、又不想把辛苦建起来的 thread 花在查这件事上——handoff 到一个 prototype session、拿到答案、把答案交回来、在原 thread 引用它。<strong>两次跨越、一场活着的对话、什么都不用重讲。</strong></p>
+                        <p>什么会旅行：文档带着活的 thread（在飞什么、为什么、下一步），加上一段建议的 skill。秘密会在写入前被屏蔽。它刻意<strong>不</strong>带任何已经写下来的东西——spec、计划、ADR、issue、commit、diff 一律用路径或 URL 引用、绝不复制。</p>
+                        <p><strong>坑</strong>：文档在暂存目录，路径长、每个 OS 不同，<strong>问它路径并记下来再往下走</strong>；有些环境会在 session 之间清掉 temp，下一个 session 不会很快开始就自己复制到耐久的地方；交给下一个 agent 的方式是<strong>指向路径</strong>，不要把摘要贴进 shell 指令——含特殊字符的摘要会被搞烂，而典型失败是<strong>静默截断</strong>；「它抓到 what、没抓到 why」是公允的批评，<strong>把「下一个 session 要做什么」当参数传进去</strong>，并留意它把没验证过的信念写成事实。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — to-questionnaire</p>
+                    <h3 class="font-display text-lg font-bold mb-3">答案在别人脑子里</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它把一个你无法自己拍板的决策，变成一份<strong>问卷</strong>，交给那个握有你缺的东西的人。</p>
+                        <p><strong>它烤的是「这次寄送」，不是主题。</strong>针对主题访谈你在这里毫无意义——不懂主题正是你要写给别人的原因。所以它只问你永远答得出的两件事：<strong>要给谁</strong>（他们的角色、专业、跟你的关系，这固定了语气与文档要自带多少 context）与<strong>你需要拿回什么</strong>（你无法自己解决的具体决定或事实，这变成成品被衡量的检查表）。之后全是起草。</p>
+                        <p>文档的形状：一行 purpose 加一小段给「从没在你脑子里待过的人」的 context；问题<strong>最重要的先来</strong>、依主题分组；<strong>一题一个想法、绝不复合</strong>；<strong>明确允许回答「我不知道」</strong>——被标记的不确定有用，读起来像事实的自信猜测没用；结尾一个 catch-all。</p>
+                        <p>它刻意<strong>不</strong>分支、<strong>不</strong>多收件人。三个人握着三块答案，就跑三次。最常见的用法是一场 grilling 卡住了：<strong>在同一个对话里</strong>跑它——它没有 ingest 阶段，能在 grilling 之后 work 纯粹因为那场 session 已经在 context 里。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — wait-what</p>
+                    <h3 class="font-display text-lg font-bold mb-3">这段话我没听懂</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>agent 会把刚讲的东西<strong>重新推销一次</strong>：补上你缺的 context、用白话写、并使用你项目 <code>CONTEXT.md</code> 里的词汇。</p>
+                        <p><strong>这支 skill 只有三行，那是设计不是未完成稿。</strong>打冗长的 skill 会靠变长而失败：一份四百行的「简洁 skill」还是会让模型冗长，因为模型读到的是体积而不是恳求。</p>
+                        <p><strong>名字就是机制。</strong>带头的词是 <em>wait</em>。「讲精简一点」是关于 <strong>agent 输出</strong>的指令，模型会用「剪字」来服从，于是你更迷路。<em>wait</em> 是关于<strong>你的状态</strong>：它说「理解在这里失败了」。听到「讲短一点」的 agent 写电报；听到「等等，你把我弄丢了」的 agent 会<strong>退回去重讲</strong>。每个流行的解法都在命名输出，模型于是过度修正成一种更短但没更清楚的语体；<strong>命名听者同时要到两半</strong>：更少的字，<strong>而且</strong>你缺的那个前提。</p>
+                        <p>它也刻意说「重讲<strong>那个</strong>」而不是「上一则消息」——把你弄丢的通常比一段大，多远要退回去由 agent 决定。真正的解药是事先建立共享语言；wait-what 修的是已经发生的那一则。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — teach</p>
+                    <h3 class="font-display text-lg font-bold mb-3">我想学一个东西，跨很多天</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它把你执行它的那个目录变成常设教学工作区，用一系列<strong>自带样式的短 HTML 课程</strong>跨多个 session 教你一个主题。</p>
+                        <p><strong>它不从模型已知的东西教。</strong>parametric knowledge 被当成不可信：教之前它先去找高信任资源、记进资源档、并在每一课里引用。它是<strong>有状态的</strong>——mission、资源、课程、学习纪录全部以文档形式住在目录里：</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-line">
+                                        <th class="py-3 pr-4 font-bold text-sm">路径</th>
+                                        <th class="py-3 font-bold text-sm">放什么</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm align-top">
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">MISSION.md</td><td class="py-4">你为什么学这个。其他一切挂在它上面；缺它，它第一件事就是访谈你到它存在</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">RESOURCES.md</td><td class="py-4">经过挑选的来源，分 Knowledge 与 Wisdom（社区）</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">lessons/</td><td class="py-4">编号课程——教学的主要单位</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">reference/</td><td class="py-4">压缩的小抄、算法、词汇表：你<strong>真的会回来翻</strong>的文档</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">learning-records/</td><td class="py-4">ADR 风格的「你已明确学会什么」，用来决定接下来教什么</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">assets/</td><td class="py-4">可重用组件——第一个是共用 stylesheet——让课程看起来像同一门课</td></tr>
+                                    <tr><td class="py-4 pr-4 font-semibold">NOTES.md</td><td class="py-4">你陈述的教学偏好</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>核心观念是 <strong>storage strength</strong>（长期保留）而不是 <strong>fluency</strong>（当下的回想感，读的时候像精通、一周后就没了）。它用<strong>期望难度</strong>建前者。知识先来（此时难度是敌人，会吃掉你理解所需的工作记忆），技能再靠紧的反馈循环操练（此时难度是工具）。<strong>课程很少被重读，参考文档会</strong>——所以一课的压缩精华属于参考目录，不是埋在引入它的那一课里。</p>
+                        <p><strong>坑</strong>：文档可能被写到错的地方（issue 377，有人的课程被写进全域 skill 目录），<strong>开始时明确讲出目录名</strong>；<strong>小考正确答案永远是第一个选项</strong>（多模型确认、未修，有贡献者测到 9 课 33 次全部落在 A）；<strong>没有能力评估步骤</strong>，第一则消息就把你的既有知识与缺口讲出来；<strong>没有间隔重复调度</strong>，要复习就自己要。</p>
+                        <p>不只给程序用——纪录里非程序的用途占更大部分。在程序里，最强的用途不是从零学一门语言，而是<strong>在陌生的 codebase 或新团队的技术栈里找方向</strong>。作者提过一个漂亮的组合：被烤到一个你不懂的东西时，<strong>不要停下 grilling 去学</strong>——handoff 到一个教学工作区、在那里学会、再回来接续。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — wizard</p>
+                    <h3 class="font-display text-lg font-bold mb-3">有段人类才能做的手动流程</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它产生一支<strong>交互 bash script</strong>，一步一步带人类走过手动程序——串第三方服务、跑一次性迁移、把项目从状态 A 搬到状态 B。</p>
+                        <p><strong>agent 写 script，但从不执行它。</strong>你在自己机器上跑。所以 wizard 不是一份你照着做的说明——它是一个<strong>驱动流程并持有状态的程序</strong>，你的部分是点、贴、按 Enter。Stage 是「一个画面上的一件聚焦任务」，script 在 stage 之间清空终端。</p>
+                        <p><strong>写 script 之前先 scoping</strong>：它读你的 repo 而不是冷问——环境档、compose 档、framework config、以及 CI 设置里每一个 secret 与变量引用；每一个都是 wizard 必须产出的值。然后把排序过的 stage 清单给你确认，之后才把每个 stage 对应到人类走的确切路径。不知道现在的 UI 长怎样时，它问你或查文档，<strong>而不是发明点击</strong>。</p>
+                        <p>template 已经解决了 UX：进度、确认门、跨平台开 URL、secret 隐藏输入、环境档幂等写入、CI secret 写入、以及「它必须跳过什么」的收尾摘要。<strong>固定函数库那半每支 wizard 都一样、永不手改，一致性就是重点。</strong>写 wizard 的 agent 不会端到端跑它，改用静态验证，<strong>第一次跑是你，而那次就是测试</strong>。</p>
+                        <p><strong>坑</strong>：<strong>不能中途回上一步</strong>，第 3 站打错就中断重跑（重跑很便宜，已写进环境档的值会当默认反馈）；提示里<strong>方向键有 bug</strong>（issue 741），backspace 有效；它不会去查第三方服务的状态；<strong>API key 不会进模型 context</strong>——但你在 scoping 时把 key 贴进聊天，那就跟任何粘贴的文字一样在 context 里了。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">词汇层 — codebase-design</p>
+                    <h3 class="font-display text-lg font-bold mb-3">模块该长什么形状</h3>
+                    <p class="leading-relaxed mb-6">它固定你设计模块时用的字，精确定义每一个、<strong>禁掉松散替代品</strong>，并陈述由它们推出的几条原则。</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">词</th>
+                                    <th class="py-3 pr-4 font-bold text-sm">意思</th>
+                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">别说</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Module</td><td class="py-4 pr-4">任何有界面与实作的东西。<strong>刻意与规模无关</strong>——一个函数、一个 class、一个 package、跨层的一个切片</td><td class="py-4 hidden tablet:table-cell">unit、component、service</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Interface</td><td class="py-4 pr-4">调用者为了正确使用它必须知道的<strong>一切</strong>：类型签章，加上不变式、顺序约束、错误模式、必需设置、性能特性</td><td class="py-4 hidden tablet:table-cell">API、signature</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Depth</td><td class="py-4 pr-4">界面上的杠杆。<strong>深</strong>：小界面后面大量行为。<strong>浅</strong>：界面几乎和实作一样复杂</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4 pr-4">一个你可以改变行为却不需在那里编辑的地方。它是界面的<strong>位置</strong></td><td class="py-4 hidden tablet:table-cell">boundary</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Adapter</td><td class="py-4 pr-4">在某个 seam 上满足某界面的具体东西。命名的是<strong>角色不是材质</strong></td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leverage</td><td class="py-4 pr-4">调用者从 depth 拿到的：每学一单位界面得到更多能力</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Locality</td><td class="py-4 pr-4">维护者从 depth 拿到的：改动、bug、验证集中在一处</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p>Depth <strong>刻意不</strong>定义成「实作行数除以界面行数」——那个指标会奖励把实作写得更臃肿。这里用的是 depth-as-leverage。</p>
+                        <p><strong>四条原则</strong>：depth 是界面的性质、不是实作的性质；<strong>deletion test</strong>——删掉这个模块，复杂度消失代表它是 pass-through，复杂度在 N 个调用者身上重新出现代表它有在赚钱；<strong>界面就是测试面</strong>，你想测到界面之外，就是模块形状错了；<strong>一个 adapter 代表假设性的 seam，两个 adapter 才代表真的 seam</strong>。</p>
+                        <p><strong>坑</strong>：<strong>不要拿它当驱动器</strong>（issue 449）。被叫去「继续并推进未决事项」时，agent 会抓它找得到最像动作的东西，重新探索前一个 session 已经画过的代码，跑很久才问你任何事。<strong>点名一个 driver skill，让这支坐在下面。</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">词汇层 — domain-modeling</p>
+                    <h3 class="font-display text-lg font-bold mb-3">词在打架</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它在你设计的同时建立与磨利项目的 <strong>ubiquitous language</strong>——挑战和词汇表冲突的用词、在你用了模糊字时逼出精确的字、用具体情境压力测试一段关系直到边界精确。</p>
+                        <p><strong>它是主动纪律、不是被动的。</strong>读 <code>CONTEXT.md</code> 借用词汇是任何 skill 都能做的一行习惯；这支是给你<strong>在改变模型</strong>的时候用的。这就是它会<strong>打断你</strong>的原因：它在术语被解决的那一刻、对话中间就写进 <code>CONTEXT.md</code>——因为批量版是一场 session 的<strong>摘要</strong>，实时版是那场 session 的<strong>实际产出</strong>。</p>
+                        <p>两个产物、两套标准。<code>CONTEXT.md</code> 装<strong>术语</strong>（一个东西是什么，一两句话），写入门槛是「一个模糊的词变成正式术语」，时机是实时，<strong>永不装</strong>实作细节、spec、草稿纸、一般程序概念。ADR 装<strong>一个决定</strong>（一到三句：context、选择、理由），写入门槛是<strong>三个全中</strong>——难以逆转、没有 context 会觉得意外、真实取舍的结果——而且是提议，不默认。</p>
+                        <p><strong>要真正记住的是 <code>CONTEXT.md</code> 那条规则</strong>，因为它是实战中会坏的那条：<strong>它是词汇表，而且只是词汇表。</strong>不管的话，模型会把「写进 CONTEXT.md」当成「把你给的每个答案都持久化」的许可，文档就变成一份跑动的 spec——<strong>这是本 skill 最常被回报的问题，跨多个模型。</strong></p>
+                        <p><strong>让这支有感的动作</strong>：你陈述某件事怎么运作时，它去查代码并把矛盾摊出来——「你的代码取消整张 Order，但你刚说可以部分取消，哪个对？」语言和代码被迫<strong>出声对齐</strong>，在任何一边被改之前。<strong>限制</strong>：它只交叉参照代码与已 commit 的文档，<strong>不搜你的 issue tracker</strong>，所以几个月前在一张已关闭 issue 里吵完并刻意定案的命名冲突，会被当成新的摊出来。</p>
+                        <p><strong>坑</strong>：<code>CONTEXT.md</code> 长到 500 行以上——<strong>大小是症状不是病</strong>，直接下令它精简并移除实作细节；只有在文档真的精瘦、却仍涵盖两个读者不会想同时装进脑里的领域时，才考虑切分——<strong>切一个臃肿的文档只会得到好几个臃肿的文档</strong>。<strong>自动触发是它最弱的地方</strong>：一场 grilling 跑完 <code>CONTEXT.md</code> 一动也没动，就是这件事发生了，点名叫它。<strong>没有经人审阅、由 agent 撰写的词汇表比没有更糟</strong>：它会变成听起来很自信的传说，被后续 session 当成真理。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">词汇层 — writing-for-agents</p>
+                    <h3 class="font-display text-lg font-bold mb-3">我要写给 agent 看的文档</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>skill、指令档、spec、runtime prompt、README——任何 agent 会读的文档。包装不同，写法一样。</p>
+                        <p><strong>它的默认动作是删除，不是解释。</strong>叫 agent 写给另一个 agent 的指令，它大部分字会花在解释模型已经知道的东西，<strong>每一行都是 no-op</strong>：付了 context 却没改变任何行为。这份参考就是找出它们的镜片，所以它在<strong>你已经有的文档</strong>上赚到的价值，至少和在空白文档上一样多。</p>
+                        <p><strong>两种负担。</strong><em>Context load</em> 是永远加载的材料在 agent 窗口上的成本：指令档的一行、skill description、任何每个 turn 都在 context 里的东西，不管它有没有被触发。<em>Cognitive load</em> 是在<strong>你</strong>身上的成本：有哪些文档存在、什么时候该抓哪一个，你就是那个索引。<strong>这不是要最小化的成本，它是人类主导权的价格。</strong>想通这两种之后，大部分写作决定都变成同一个取舍在不同地方做。</p>
+                        <p><strong>五个杠杆</strong>：<em>Context pointer</em>（在 context 里、指名 context 外材料、并编码「何时去拿它」的引用；决定 agent 多可靠地伸手穿过它的是 pointer 的<strong>用字</strong>，不是它的目标）、<em>Information hierarchy</em>（从「档内步骤」到「档内参考」到「pointer 后的插件参考」的梯子）、<em>Completion criteria</em>（对抗<strong>过早完成</strong>的防线）、<em>Leading words</em>（模型预训练里已有的压缩概念，锚定两次：body 里锚定执行、pointer 里锚定触发）、<em>Pruning</em>（单一真实来源、相关性、逐句套用 no-op test）。</p>
+                        <p><strong>no-op test 是行为性的、不是美学性的</strong>：删掉那一行，问 agent 的行为有没有改变。一个句子不通过，<strong>删整句</strong>而不是修字。对它有歧见时，<strong>跑那份文档</strong>来解决，不要争论。判准：文档变好的同时变短，而且你会惊讶剩下这么少；<strong>没有任何东西被说两次</strong>（重复是「这份文档从未被测过」最可靠的征兆）。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">独立 — grill-me</p>
+                    <h3 class="font-display text-lg font-bold mb-3">我有个想法，还没成形</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它拿一个<strong>松散的想法</strong>访谈你，直到你能对它做出承诺。你不需要一份想好的计划才能开始——<strong>产出那份计划正是这场 session 的用途</strong>。它是<strong>无状态</strong>的：不写文档、不留工作区，留下的只有你脑子里那个更锐利的版本。主题不必是程序，也不需要 repo。</p>
+                        <p><strong>关掉 plan mode。</strong>它会催 agent 赶快产出计划，那正好和「保持在提问状态」相反。</p>
+                        <p><strong>它在正常工作的样子</strong>：你不同意某件事——<strong>一场你完全没推回去的 session，是一场你不需要的 session</strong>；问题以「少数几轮」而不是一长串点滴到达，而且后面的轮次明显建立在你前面说的话上；你走到一个没预期的地方，因为某个问题翻出了你一直在隐性做的决定；结束时，每个选择你都能对一个当时不在场的人辩护。</p>
+                        <p><strong>数轮不要数题。</strong>46 题分 4 轮是普通的一场。200 题代表范围太大，而且超长 session 会漂进 <strong>dumb zone</strong>——context window 满到问题质量下降。烤完之后如果确定要做，<strong>不要开新 session</strong>，那场对话的 context 就是价值所在。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">路由器 — ask-matt</p>
+                    <h3 class="font-display text-lg font-bold mb-3">我不知道该用哪支</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>它<strong>建议然后停下</strong>。不会 grill、不会写 spec、不会开文档、不会帮你发射它刚点名的 skill——你拿到的是「下一步该打什么」，然后你去打。它给你的思考单位是 <strong>flow</strong>：一条<strong>穿过</strong> skill 的路径，而不是单一个 skill。</p>
+                        <p><strong>必须知道的诚实限制。</strong>它是<strong>手写</strong>的地图、会落后 repo，而且只认得这个 pack 的 skill。它<strong>会告诉你「一半的 skill 没安装」</strong>——已知未修：大部分被它路由的 skill 是 user-invoked，harness 就不把它们放进注入 agent 的清单，agent 把那份清单当成完整的，于是报告它们不存在。<strong>它们有装。</strong></p>
+                        <p>它也<strong>可能描述错别的 skill 的行为</strong>：它从自己那份一行摘要回答，而不是从 skill 本身。有一份详细回报在单一 session 里追到三次，包括凭「把 thread 变成 spec」这个粗略印象建议跳过 <code>to-spec</code>——那份 <code>SKILL.md</code> 从未被打开，代价是少了一次真正的 seam 检查，切出来的票低估了工作量。<strong>当它对别的 skill 做出承重的断言时，要它先去打开那份 <code>SKILL.md</code>。</strong></p>
+                        <p><strong>定位</strong>：ask-matt 是这整套之上的 <strong>secondary source</strong>。router 和 <code>SKILL.md</code> 打架时，<code>SKILL.md</code> 是对的。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             07 · Scenarios
+             ================================================================== -->
+        <section id="scenarios" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">四个完整剧本</h2>
+            </div>
+            <p class="leading-relaxed mb-10">主干案例在 <a href="#main-flow" class="underline">第 05 节</a>。这里是另外四个最常见的处境。</p>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 B — 生产环境偶发 500</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>处境</strong>：客户回报「有时候按送出会喷 500」，你自己重现不出来。</p>
+                        <ol class="space-y-2">
+                            <li>这是别人回报的，先走匝道：<code>/triage</code>。能不能照回报者步骤重现？重现不出来就 <code>needs-info</code>，或决定现在就追。</li>
+                            <li>决定现在追，<strong>开新 session</strong>：<code>/diagnosing-bugs</code>，并明讲「先帮我建一个会变红的循环」。</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">Phase 1 是唯一难的一关，也是你唯一要盯的</p>
+                            <p>它必须先给你一个<strong>已经跑过、输出贴出来、在这个 bug 上是红的</strong>指令。偶发性的 bug，目标不是干净重现，是<strong>提高重现率</strong>。<strong>没有红的指令，就不要让它进 Phase 2。</strong>它想开始猜就把它拉回来。</p>
+                        </div>
+                        <p>后面是机械性的：最小化（剩下的每个元素都要能说出为什么是承重的）、3 到 5 个排序过可否证的假设（<strong>唯一的人类检查点</strong>）、埋带标签的探针、<strong>先写回归测试再修</strong>、清干净、猜对的假设写进 commit message。</p>
+                        <p><strong>一个分岔要知道</strong>：没有正确的 seam 可以放那个回归测试时，它应该直说，而不是写一个给你假安全感的浅测试——<strong>「没有 seam」本身就是发现</strong>，交给 <code>improve-codebase-architecture</code>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 C — 接手一个没人整理过的 legacy repo</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>处境</strong>：你刚加入一个八年的项目，或接手一个 vibe-coded 的 repo。没有 ADR、没有领域语言、没有设计原则。</p>
+                        <ol class="space-y-2">
+                            <li><strong>第一天</strong>：<code>/setup-matt-pocock-skills</code> 设置 tracker 与文档配置。</li>
+                            <li><strong>第一天</strong>：<code>/grill-with-docs</code>，请它帮你把这个既有 repo 用 <code>CONTEXT.md</code> 建立起来。预期一场<strong>很长</strong>的访问（有人回报 50 题以上才把文档弄成形），而且要主动导引——它会读代码、问你它找到什么，而<strong>「代码里现有的哪些词才是对的词」是你决定的</strong>。</li>
+                            <li><strong>第二天</strong>：<code>/improve-codebase-architecture</code>，开口就说「不要烤我，先给我报告」。<strong>全部都是 Speculative 等于它其实什么都没找到</strong>；挑一个 Strong 的候选。</li>
+                            <li><strong>第二天</strong>：一次一个候选，让它对那个候选 grilling，产出是「决定」不是 diff。然后接 <code>to-spec</code>、<code>to-tickets</code>、<code>implement</code>。</li>
+                            <li><strong>之后</strong>：每几天再跑一次架构巡检当保养。</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">为什么顺序是这样</p>
+                            <p>先建立共用词汇，架构巡检的输出会好非常多——候选会用「Order intake 模块」这种<strong>你们的名词</strong>，而不是「FooBarHandler」。</p>
+                        </div>
+                        <p><strong>诚实的期望值</strong>：真正失控的项目，有人回报它「帮了一点但还是不够」；一个八年的 legacy codebase 上有人看到模型在原地绕圈，而同一支 skill 在整齐的 repo 上会产出干净的图。<strong>目前没有专门处理这种案例的 skill。</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 D — 绿地大项目</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>处境</strong>：要从零做一个新产品模块，路线完全不清楚，明显不是一场对话能谈完的。</p>
+                        <ol class="space-y-2">
+                            <li>先确定五个 <code>wayfinder:</code> label 存在（不存在的 label 会让 <code>gh</code> 直接失败）。</li>
+                            <li><code>/wayfinder</code>。第一件事是<strong>命名 destination</strong>。它问的是「整张地图的目的地」，不是这场 session 的目的地；<strong>把范围缩到一个有界的 epic</strong>，不要「实作 V1」。</li>
+                            <li>它做一次广度优先的 grilling，画出 Destination、Decisions so far、迷雾与 Out of scope。迷雾与票的判准是<strong>你「现在」能不能精确说出那个问题</strong>。开场的 grill 找不到任何迷雾，它应该停下来说「这件事小到不用地图」。</li>
+                            <li>research 票在画地图时就被发射并行烧；其他票<strong>一次做一张</strong>，用 assign 给自己来认领。</li>
+                            <li>每解一张：贴 resolution 留言、关票、在地图留一行，然后<strong>停下</strong>。清掉前方的迷雾，把现在可表述的毕业成新票。</li>
+                            <li>地图清空后：<code>/to-spec #&lt;map_issue&gt;</code>（传<strong>主地图</strong>，不是个别 decision ticket），然后 <code>/to-tickets</code>、<code>/implement</code>。</li>
+                        </ol>
+                        <p><strong>三个致命坑</strong>已在 <a href="#situations" class="underline">第 06 节</a> 的 wayfinder 条目列出：agent 会开始写正式代码、不要跳过 <code>to-spec</code>、不要平行跑 grilling 票。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 E — 完全不是程序的决策</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>处境</strong>：你在想一个商业决定——要不要做一条新产品线、一份提案怎么定价、一篇文章的论证骨架。</p>
+                        <ol class="space-y-2">
+                            <li>开一个干净对话（<strong>不需要在任何 repo 里</strong>），关掉 plan mode，跑 <code>/grill-me</code>。</li>
+                            <li>一轮一轮回答，用编号整批回。推回问得太浅的问题；范围在漂就讲；<strong>「我不知道」是真的答案</strong>。</li>
+                            <li>遇到「看到东西才能答」的问题，它是 ungrillable。非程序情境下通常是：先做一页草稿、先算一张表、先问一个客户。</li>
+                            <li>遇到「答案在别人脑子里」的问题，<strong>在同一个对话里</strong>跑 <code>/to-questionnaire</code>，寄给那个人，答案回来再开下一轮。</li>
+                            <li>它是无状态的：不写文档、不留工作区。留下的只有你脑子里那个更锐利的版本。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             08 · Pitfalls. The source used a red "高" chip; severity is a word
+             in its own column here.
+             ================================================================== -->
+        <section id="pitfalls" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">已知坑总表</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                依「你会先看到的症状」排列。<strong>严重</strong>代表会浪费你钱或时间。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">哪一支</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">严重</th>
+                            <th class="py-3 font-bold text-sm">解法</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">agent 说某些 skill 没安装</td><td class="py-4 pr-4 hidden tablet:table-cell">ask-matt 等</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">user-invoked skill 不进模型的清单。<strong>它们有装，照打</strong>。权威是 <code>.claude-plugin/plugin.json</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>gh</code> 说 label 不存在</td><td class="py-4 pr-4 hidden tablet:table-cell">triage、wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">setup <strong>不会</strong>建 label，自己 <code>gh label create</code> 一次</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">访谈一次丢出全部问题、没有建议答案</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">grilling 或 domain-modeling 没加载。<strong>问 agent「你载了哪些 skill」</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">访谈很好但 <code>CONTEXT.md</code> 没变</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">domain-modeling 没载。点名叫它</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>CONTEXT.md</code> 膨胀成 500 行以上</td><td class="py-4 pr-4 hidden tablet:table-cell">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">它吸收了实作细节。直接下令精简并移除实作细节</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">读 spec 一直被截断</td><td class="py-4 pr-4 hidden tablet:table-cell">to-spec → to-tickets</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">两步之间<strong>不要 clear 或 compact</strong>，同一个窗口跑完</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">三行的改动切出 12 张票</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">质询步骤叫它合并。真的很小就直接 implement，别用这支</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">切出来一层一张票</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">逐票问「做完能 demo 什么」，答不出行为的就是水平切片</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">没建成 sub-issue、blocked-by 只写在内文</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">已知未修。事后自己用 <code>gh issue create --parent</code>、<code>--add-sub-issue</code>、<code>--blocked-by</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">验收条件在动工前就通过</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">对每条问「什么观察会证明它为假」，并确认它在起始 commit 是红的</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>/implement #2</code> 做了完全无关的事</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4"><code>#2</code> 是对「任何看得到的编号清单」解析。<strong>传完整 URL，并要它念回标题</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">跑完票还开着、验收条件没打勾</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">预期行为，它没有收尾步骤。<strong>手动关票</strong>，依赖链才会往前走</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review 说看不到我的改动</td><td class="py-4 pr-4 hidden tablet:table-cell">implement、code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">它 diff 到 HEAD，排除未 commit 的。<strong>先 commit 再 review</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">平行跑好几个 implement 出现诡异 git 状况</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">同一 checkout 不支持。用 worktree，但 stash 仍共用</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">和内置的 code-review 撞名</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">移除内置的那个，或 fork 成新名字</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">review 的 sub-agent 又生出更多 agent</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">已知未修，有一次到 50 个以上。<strong>无人看管跑时盯 agent 数</strong>；fork 上加一行禁止再生成</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">review 每次跑都找到新问题</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">没有收敛保证。当成线索清单，处理有明文规则背书的，然后<strong>停手</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">research 烧掉 450k token</td><td class="py-4 pr-4 hidden tablet:table-cell">research</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">nesting bug（issue 530），它会生出第二个自己。<strong>调用后检查背景任务列表</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">只想要一句答案，它跑去建重现情境</td><td class="py-4 pr-4 hidden tablet:table-cell">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">讲「直接回答，不要诊断」，或关掉它的 model invocation</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">它先写实作才写测试</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">会发生，skill 带着这件事一起活。某个切片要严格就盯着跑</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">它先写浏览器测试然后鬼打墙</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">在 repo 的指令档声明：browser 测试在行为可运作之后才写</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">架构报告开起来没样式没图</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">外部 CDN 被挡。要它用 inline CSS 加手写 SVG</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">它烤我一小时而不给我选项</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">调用时讲「不要烤我，直接给报告」</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">对词汇层说「开始」烧掉 100k token</td><td class="py-4 pr-4 hidden tablet:table-cell">codebase-design</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">它没有流程。<strong>点名一个 driver skill，让它坐在下面</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">wayfinder 的 agent 开始写正式代码</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">Notes 可覆写「规划不执行」，而 Notes 是 agent 写的。<strong>先读 Notes</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">27 张票做到第 13 张全部不合理</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">范围缩到一个有界 epic，并积极 prototype</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">grilling 每个问题三段落、很累</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">降 reasoning effort 加全域指令档一句白话指示。<strong>未解决</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">handoff 文档不见了</td><td class="py-4 pr-4 hidden tablet:table-cell">handoff</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">暂存目录会被清。<strong>问它路径，需要就自己复制到耐久位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">课程被写到全域 skill 目录</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">issue 377。<strong>明确讲出目录名，第一课落在哪先确认</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">小考正确答案永远是 A</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">已知未修（33 次全中）。把位置当无意义，或要一个 render 时洗牌的组件</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">wizard 打错字想回上一步</td><td class="py-4 pr-4 hidden tablet:table-cell">wizard</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">没有回上一步。中断重跑（已存的值会当默认）；方向键有 bug，用 backspace</td></tr>
+                        <tr><td class="py-4 pr-4">我改了 <code>SKILL.md</code>，更新后不见了</td><td class="py-4 pr-4 hidden tablet:table-cell">全部</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">严重</td><td class="py-4"><code>npx skills update</code> 会覆盖、plugin 唯读。<strong>长期行为写进你自己的指令档</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             09 · CLAUDE.md
+             ================================================================== -->
+        <section id="claude-md" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">建议放进你自己的指令档</h2>
+            </div>
+            <p class="leading-relaxed mb-6">
+                这是「用官方管道客制」的方式——<strong>改 skill 档会被覆盖，这里不会</strong>。整段可以直接复制进你的 <code>CLAUDE.md</code> 或 <code>AGENTS.md</code>。
+            </p>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+
+- When grilling, ask one question at a time.
+- Do not start implementing without my explicit permission.
+- Browser and end-to-end tests are written after the behaviour works,
+  never as the first red test.
+- Keep questions and recommendations short. One paragraph maximum
+  per question.
+- When a skill asserts something about another skill's behaviour,
+  open that skill's SKILL.md before acting on it.
+- code-review sub-agents must not invoke /code-review or spawn
+  additional agents; perform the review directly.</pre>
+            <p class="eyebrow mt-8 mb-3">每一行挡的是什么</p>
+            <ul class="space-y-3 leading-relaxed">
+                <li><strong>一次一题</strong>：换回单题节奏。读得慢、用第二语言、或需要专注鹰架的人都推荐。</li>
+                <li><strong>不要未经允许就开始实作</strong>：防 grilling 在 frontier 清空后自己开始做，弱模型或低 effort 时会发生。</li>
+                <li><strong>浏览器测试最后写</strong>：防 tdd 先写 Playwright 然后鬼打墙。</li>
+                <li><strong>问题与建议要短</strong>：缓解 wayfinder 与 grilling 的冗长。</li>
+                <li><strong>先打开被断言的那份 <code>SKILL.md</code></strong>：防 ask-matt 用自己的摘要误述别的 skill。</li>
+                <li><strong>review 的 sub-agent 不得再生成 agent</strong>：防失控 fan-out，这是 fork 用户实测有效的那一行。</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             10 · Vocabulary
+             ================================================================== -->
+        <section id="vocabulary" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">核心词汇</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                这些词是整套 skill 的共用语言。<strong>看不懂它们，skill 的输出你就读不懂。</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">词</th>
+                            <th class="py-3 font-bold text-sm">定义</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4">你可以改变行为却不需要在那里编辑的地方。测试住在 seam 上。它是界面的<strong>位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Pre-agreed seam</td><td class="py-4">在写任何程序之前就谈好的 seam。这是测试耐久的原因——底下的实作可以重写而测试不动</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tracer bullet</td><td class="py-4">穿过所有层的一条细但完整的路，落地当下就能单独 demo</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Vertical / horizontal slice</td><td class="py-4">垂直是一条路穿所有层（对）；水平是一次一层（错，最常见的失败）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deep / shallow module</td><td class="py-4">深是小界面后面大量行为；浅是界面几乎和实作一样复杂</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deletion test</td><td class="py-4">想像删掉这个模块：复杂度<strong>集中</strong>到更小的界面后（值得留）还是<strong>散开</strong>到调用者（那是 pass-through）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Locality / Leverage</td><td class="py-4">Locality 是维护者得到的（改动集中在一处）；Leverage 是调用者得到的（每学一单位界面得到更多能力）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Design tree / Frontier / Round</td><td class="py-4">设计树是决定挂着决定；frontier 是前置条件都已解决的决定集合；一 round 是把整个 frontier 一次问完</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Grillable / ungrillable</td><td class="py-4">谈得出来的问题，相对于需要有东西可反应的问题（后者去 prototype）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Fog of war</td><td class="py-4">wayfinder 地图上「看得出要来、但还无法精确表述」的决定</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Decision ticket</td><td class="py-4">wayfinder 的单位：握着一个问题（解决后产出决定），<strong>不是</strong>一块要执行的搭建切片</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Destination</td><td class="py-4">一整张 wayfinder 地图的终点样貌。画地图的第一个动作就是命名它</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Spec / Ticket</td><td class="py-4">spec 是目的地与固定它的决策（保留）；ticket 是抵达的执行步骤（用完即丢）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Primary / secondary source</td><td class="py-4">一手是对话本身、commit、官方文档、源代码；二手是任何摘要。<strong>冲突时一手为准</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context pointer</td><td class="py-4">在 context 里、指名 context 外材料、并编码「何时去拿」的引用</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Progressive disclosure</td><td class="py-4">把只有某条分支需要的参考移到 pointer 后面，让主档保持可读</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context load / Cognitive load</td><td class="py-4">前者是永远加载的材料在模型窗口上的成本；后者是「有哪些文档、何时该用」在<strong>你</strong>身上的成本</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">No-op</td><td class="py-4">删掉之后 agent 行为不变的那一行文字。付了 context 却没改变任何行为</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leading word</td><td class="py-4">模型预训练里已有的压缩概念（tight、red、tracer bullet），agent 拿它来思考</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Storage strength / fluency</td><td class="py-4">长期保留，相对于当下的回想感（后者读的时候像精通、一周后就没了）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Smart zone / dumb zone</td><td class="py-4">context window 还有余裕，相对于已经满到质量下降</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">HITL / AFK</td><td class="py-4">人类在循环里（必须靠活的交换解决），相对于你人不在也跑得完</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase boundary</td><td class="py-4">两块工作之间；唯一该问「我的 context 怎么办」的地方</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Expand–migrate–contract</td><td class="py-4">宽重构的三段式：新形式加在旧的旁边、分批搬调用点、没有调用者才删旧的</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             11 · Antipatterns
+             ================================================================== -->
+        <section id="antipatterns" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">11</p>
+                <h2 class="font-display text-2xl font-bold mb-6">七种反模式</h2>
+            </div>
+            <p class="leading-relaxed mb-8">这套东西最常被用坏的方式。</p>
+            <ol class="space-y-6 leading-relaxed">
+                <li><strong>被动 grilling。</strong>连答四十个「同意」，出来一份 agent 写的、你点头过的计划。<strong>一场你完全没推回去的 session，是一场你不需要的 session。</strong></li>
+                <li><strong>在 to-spec 和 to-tickets 之间 clear 或 compact。</strong>你烤出来的东西绝大部分只在那个 context window 里。这一刀下去，spec 会安静地漏掉你真正决定的东西。</li>
+                <li><strong>对自己产生的票跑 triage。</strong><code>to-tickets</code> 的票依构造已经 agent-ready。triage 是<strong>别人</strong>丢进来的工作的匝道。</li>
+                <li><strong>范围良好的功能抓 wayfinder。</strong>判准是 <strong>session 数</strong>：一场对话装得下就用 <code>grill-with-docs</code>，它更便宜也更好。</li>
+                <li><strong>把词汇层当驱动器。</strong>对 <code>codebase-design</code> 或 <code>domain-modeling</code> 说「开始吧」，agent 会自己发明流程并烧掉大量 token。点名一个 driver。</li>
+                <li><strong>把 review 跑在写程序的同一个 session。</strong>同一个 context 审自己不是 review，是带着 slash command 的确认偏误。</li>
+                <li><strong>改 <code>SKILL.md</code> 来客制。</strong>会被更新覆盖，plugin 安装根本唯读。长期行为写进你自己的指令档。</li>
+            </ol>
+            <div class="border-l border-line pl-6 mt-10">
+                <p class="eyebrow mb-2">还有一个元反模式</p>
+                <p class="leading-relaxed">把它当成「有了流程就不用想」。作者在 README 里的立场是相反的——那类<strong>接管流程</strong>的做法帮你的代价是拿走你的控制权、并让流程本身的 bug 难以解决。这套 skill 刻意做得小、好改、可组合。<strong>产出的质量追踪的是你答案的质量，而不是问题的数量。</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             12 · 14-day plan
+             ================================================================== -->
+        <section id="plan" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">12</p>
+                <h2 class="font-display text-2xl font-bold mb-6">14 天学习计划</h2>
+            </div>
+            <p class="leading-relaxed mb-8">每天约 30 到 60 分钟，<strong>用你自己真实的项目</strong>。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">天</th>
+                            <th class="py-3 pr-4 font-bold text-sm">做什么</th>
+                            <th class="py-3 font-bold text-sm">怎么算过关</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">01</td><td class="py-4 pr-4">读 <a href="#concepts" class="underline">三个底层观念</a>；装 plugin 或 skills.sh（<strong>选一</strong>）；在一个 repo 跑 setup；建好 label</td><td class="py-4"><code>docs/agents/</code> 三个文档存在，指令档有 <code>## Agent skills</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">02</td><td class="py-4 pr-4"><code>/grill-me</code> 烤一个<strong>非程序</strong>的决定。刻意练习「推回去」</td><td class="py-4">至少推回三次；能对一个不在场的人辩护每个选择</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">03</td><td class="py-4 pr-4"><code>/grill-with-docs</code> 对你现有 repo 做一次小功能的访谈</td><td class="py-4"><code>CONTEXT.md</code> 在过程中逐条长出来；ADR 0 到 1 份</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">04</td><td class="py-4 pr-4">同一对话接 <code>/to-spec</code>。认真看 seam 与 out-of-scope 两节</td><td class="py-4">spec 里每个决定你都记得自己做过</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">05</td><td class="py-4 pr-4">同一窗口接 <code>/to-tickets</code>。在质询步骤逐票问「能 demo 什么」</td><td class="py-4">每票能 demo 行为；最上面那张没有阻塞者</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">06</td><td class="py-4 pr-4"><code>/implement</code> 做第一张票（<strong>完整 URL</strong>），全程看 trace</td><td class="py-4">trace 里看得到 <code>tdd</code> 调用；走到 commit</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">07</td><td class="py-4 pr-4">新 session 跑 <code>/code-review main</code>。逐条追引用</td><td class="py-4">两块分开的报告；<strong>你至少驳掉一个发现</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">08</td><td class="py-4 pr-4">读 <code>codebase-design</code> 的词汇表，把它当字典而不是流程</td><td class="py-4">你的设计对话里不再出现 component、service、boundary</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">09</td><td class="py-4 pr-4">遇到一个「谈不出来」的问题，跑 <code>/prototype</code></td><td class="py-4">一个可分享的 HTML 档或几个结构上不同意的变体；答案一行</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">10</td><td class="py-4 pr-4">对一个真的 bug 跑 <code>/diagnosing-bugs</code>。盯紧 Phase 1 的 gate</td><td class="py-4"><strong>先看到红的指令输出，才看到第一个理论</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">11</td><td class="py-4 pr-4"><code>/improve-codebase-architecture</code>（记得说「先给报告」），挑一个 Strong 候选</td><td class="py-4">HTML 报告；一个候选被烤成一个决定</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">12</td><td class="py-4 pr-4"><code>/handoff</code> 练一次「分叉」：主对话留着，开一个平行 session</td><td class="py-4">原 session 还在原地；新 agent 直接开工不用你重讲</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">13</td><td class="py-4 pr-4">练 <code>/wait-what</code> 与 <code>/to-questionnaire</code>；把 <a href="#claude-md" class="underline">第 09 节</a> 写进指令档</td><td class="py-4">重讲是「更短且更清楚」；问卷可以直接寄出去</td></tr>
+                        <tr><td class="py-4 pr-4 font-sans font-semibold">14</td><td class="py-4 pr-4">挑一件真的太大的工作跑 <code>/wayfinder</code>，范围缩到一个有界 epic</td><td class="py-4">destination 在任何票之前就写下来；每张开着的票读起来都是一个问题</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">
+                之后的节奏：主干每天跑，架构巡检每几天跑一次，<code>/teach</code> 在需要补技能时开一个专属目录。
+            </p>
+        </section>
+
+        <!-- ==================================================================
+             13 · Cheat sheet. The source shipped this as an ASCII block whose
+             meaning depended on column alignment. DESIGN.md forbids that — <pre>
+             content may lean on indentation but never on columns — so the
+             grouping is carried by headings and the comments moved out of the
+             block into the line beside each command.
+             ================================================================== -->
+        <section id="cheatsheet" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">13</p>
+                <h2 class="font-display text-2xl font-bold mb-6">一页速查</h2>
+            </div>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-3">每个 repo 一次</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/setup-matt-pocock-skills</code> — tracker、label 与文档配置</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">主干（想法到 ship）</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-with-docs</code> — 有 repo、单一 session 谈得完</li>
+                        <li><code>/to-spec</code> — 只在跨 session 才需要。同窗口，别 clear</li>
+                        <li><code>/to-tickets</code> — 切 tracer bullet，声明阻塞边。同窗口</li>
+                        <li><code>/implement &lt;完整 ticket URL&gt;</code> — 一票一 session，中间 clear</li>
+                        <li><code>/code-review &lt;fixed-point&gt;</code> — 干净 session 跑，先 commit</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">匝道</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/triage</code> — 别人丢进来的 issue</li>
+                        <li><code>/wayfinder</code> — 一个 session 装不下。清空后回 <code>/to-spec</code></li>
+                        <li><code>/improve-codebase-architecture</code> — 每几天一次的结构体检</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">随时</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-me</code> — 无 repo、无文档，主题不必是程序</li>
+                        <li><code>/prototype</code> — 谈不出来的设计问题，一次一个问题</li>
+                        <li><code>/research</code> — 外部事实。背景跑，检查有没有生两个</li>
+                        <li><code>/diagnosing-bugs</code> — 难 bug。先有红的循环才准猜</li>
+                        <li><code>/resolving-merge-conflicts</code> — 已经卡在冲突里</li>
+                        <li><code>/wizard</code> — 只有人类能做的手动流程</li>
+                        <li><code>/handoff</code> — 有东西要搬家，或分叉支线</li>
+                        <li><code>/to-questionnaire</code> — 答案在别人脑子里</li>
+                        <li><code>/wait-what</code> — 刚刚那段没听懂</li>
+                        <li><code>/teach</code> — 跨很多天要学一个主题</li>
+                        <li><code>/ask-matt</code> — 不知道用哪支。它建议然后停</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">词汇层，不要当驱动器用</p>
+                    <p class="leading-relaxed"><code>codebase-design</code>、<code>domain-modeling</code>、<code>grilling</code>、<code>writing-for-agents</code></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">Phase boundary 五选一，依序判断</p>
+                    <p class="leading-relaxed">继续 → clear → handoff → subagent → compact</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             Source. Named in section 01 as well; repeated here because this is
+             where a reader who skipped to the end will look for it.
+             ================================================================== -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">出处</p>
+                <h2 class="font-display text-2xl font-bold mb-6">这篇教学依据什么写成</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    依据 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>1.2.3 版</strong>（25 个已发布的 skill），读该 repo 的 <code>README.md</code>、<code>CONTEXT.md</code>、25 篇官方 skill 文档、<code>.claude-plugin/plugin.json</code> 与 <code>CHANGELOG.md</code> 之后整理与重写。该 repo 以 <strong>MIT</strong> 授权发布。
+                </p>
+                <p>
+                    <strong>本页为 TauX 独立编写的中文教学，不是官方文档的翻译或转载。</strong>skill 本身、它的名称与它的行为属于原作者；本页的编排、判准、译名与所有评论由 TauX 撰写，<strong>不代表原作者立场</strong>。
+                </p>
+                <p>
+                    文中所有 issue 编号皆为该 repo 的 issue，<strong>撰稿时多数仍开启</strong>。这代表两件事：这些坑是真的，而且它们可能已经被修好。<strong>跑起来遇到怪事，先去该 repo 搜一下症状</strong>——一份写死的坑表最好的下场，就是有一天全部过期。
+                </p>
+                <p>
+                    版本标记在这里不是装饰。这套 skill 改得很快（<code>to-prd</code> 在 v1.1 改名成 <code>to-spec</code>、<code>tdd</code> 的 refactor 阶段在 2026 年 6 月被移除），<strong>没有版本号的教学读者无从判断哪一段还有效</strong>。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">想把这条流程接进你自己的团队？</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                工具是公开的，难的是接到你既有的 tracker、规范与交付节奏上。那部分我们做过。
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">预约咨询</a>
+                <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">看企业 AI 导入与内训</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

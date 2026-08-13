@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "opencc-js": "^1.4.1",
     "playwright": "^1.57.0",
     "postcss": "^8.4.47",
     "smol-toml": "^1.7.1",

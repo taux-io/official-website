@@ -81,7 +81,7 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 ## English edition
 
-The site is being translated route by route. These are live today; the rest remain Traditional Chinese only.
+Every route on the site has an English edition. These are all of them.
 
 -   [TauX — Empower Your Business with AI | Generative Engine Optimization](https://taux.io/en-US): TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, software platforms, short-form video and AI automation, from Kaohsiung, Taiwan.
 -   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.
@@ -111,6 +111,31 @@ The site is being translated route by route. These are live today; the rest rema
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。
 -   [服務條款](https://taux.io/zh-Hant-TW/terms-of-service): 使用 TauX 服務之條款與條件。
+
+## 简体中文版
+
+以下为全站二十条路由的简体中文版本，内容与繁体版一致，词汇按大陆用法改写。
+
+-   [GEO 生成式引擎优化服务](https://taux.io/zh-Hans-CN/geo-optimization): TauX 的 GEO 服务内容、执行流程、交付物与报价区间。想找厂商做 GEO 的人看这页。
+-   [GEO 入门指南](https://taux.io/zh-Hans-CN/geo-guide): 深入了解 GEO 与 SEO 的差异及执行细节。
+-   [AI for Smart Work](https://taux.io/zh-Hans-CN/ai-smart-work): 企业 AI 内训服务，教授 PTCF 提示词架构、CoT 深度推理与专属 Agent 打造。
+-   [2026 全球威胁报告重点拆解](https://taux.io/zh-Hans-CN/threat-landscape): CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组的量测方法与适用限制。重点不只是数字本身，是厂商遥测数据能推论到多广。
+-   [后量子密码 PQC 迁移指南](https://taux.io/zh-Hans-CN/pqc-migration): 企业导入 PQC 的五步骤落地路径（治理、CBOM 盘点、风险评估、加密敏捷性、供应链），对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。法规状态查证日期标于页面上。
+-   [Data Governance 数据治理指南](https://taux.io/zh-Hans-CN/data-governance): 针对传统产业数字转型的完整路径，包含数据管理到数字治理的成熟度评估。
+-   [Agent Prompting Guide](https://taux.io/zh-Hans-CN/agent-prompting-guide): 从新手到高手的 AI 指令秘籍，包含提示词工程与 Agent 设计模式。
+-   [Prompt Injection 安全指南](https://taux.io/zh-Hans-CN/what-is-prompt-injection): AI 提示词注入攻击的原理、案例与防御措施。
+-   [OWASP LLM Top 10 2026](https://taux.io/zh-Hans-CN/owasp-llm-top-10): LLM 应用十大网络安全风险逐条拆解，含定义、攻击面与防御作法。依 OWASP 2026 版撰写，并附 2025 到 2026 的排序变动、范围调整与排序方法的改变。
+-   [LLMs.txt 是什么](https://taux.io/zh-Hans-CN/what-is-llms-txt): 解释 llms.txt 的概念、用途与对 SEO/GEO 的影响。
+-   [MCP 是什么](https://taux.io/zh-Hans-CN/what-is-mcp): Model Context Protocol 的白话架构解说。host / client / server 三个角色，prompts / resources / tools 的差别在于「谁决定」，以及 2026-07-28 修订版把连接阶段整个移除的影响。依该修订版撰写。
+-   [Claude Skills 实战指南](https://taux.io/zh-Hans-CN/claude-skills-guide): 专为开发者打造的阶梯式教育手册，教您如何将 SOP 与专家知识转化为自动化工作流。
+-   [ADK Agent Skill 设计模式](https://taux.io/zh-Hans-CN/adk-skill-patterns): Google Cloud 五种 ADK Agent Skill 设计模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
+-   [Google Workspace AI 导入效益与 ROI 怎么判读](https://taux.io/zh-Hans-CN/google-workspace-with-ai): 拆解 Workspace AI 导入的效益宣称，说明哪些数字站得住脚、该用什么基准判读。
+-   [AI Agent 开发流程实战](https://taux.io/zh-Hans-CN/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一条可重复的开发流程。主干七步（grill、spec、tickets、implement、code-review）、四个完整剧本、31 个已知坑与 14 天练习计划。依该 pack 1.2.3 版撰写，为独立编写的中文教学而非官方文档翻译。
+-   [首页](https://taux.io/zh-Hans-CN): TauX 拓思科技股份有限公司官方网站。
+-   [关于我们](https://taux.io/zh-Hans-CN/about): TauX 公司介绍、使命与联系方式。
+-   [Building in Public](https://taux.io/zh-Hans-CN/building): TauX 的公开开发日志，透明度至上。
+-   [隐私权政策](https://taux.io/zh-Hans-CN/privacy-policy): 数据保护与隐私权承诺。
+-   [服务条款](https://taux.io/zh-Hans-CN/terms-of-service): 使用 TauX 服务之条款与条件。
 
 ## 聯絡資訊
 

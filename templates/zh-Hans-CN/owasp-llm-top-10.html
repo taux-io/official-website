@@ -1,0 +1,622 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     The ItemList is the point of this page as far as a retrieval system is
+     concerned. A ranked list rendered as headings can only be guessed at from
+     document structure — order and completeness are both inferred, and both can
+     be inferred wrong. ItemList states them: ten items, positions one to ten,
+     each with the name a reader would search for.
+
+     The FAQ now carries the version question it could not answer before. The
+     2026 edition is in hand, so "what changed" has a first-hand answer instead
+     of the fabricated one that would otherwise have sat inside structured data,
+     invisible on the page and taken verbatim by the machines reading it. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/zh-Hans-CN/owasp-llm-top-10" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM 应用的十大网络安全风险","description":"OWASP Top 10 for LLM Applications 2026 十条风险逐项拆解，含 2025 到 2026 的排序变动与范围调整。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#list" }
+  },
+  {"@type":"ItemList","@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM 应用的十大网络安全风险，依 OWASP 2026 版的顺序。","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"LLM01 提示词注入 Prompt Injection","description":"进入模型脉络的任何输入改变了它的行为，包含藏在图像或音频里的跨模态载体。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#prompt-injection" },
+      {"@type":"ListItem","position": 2,"name":"LLM02 敏感信息泄漏 Sensitive Information Disclosure","description":"模型的输出泄漏了不该给这个用户的信息——个资、证书、营业秘密，或其他用户的数据。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#sensitive-information-disclosure" },
+      {"@type":"ListItem","position": 3,"name":"LLM03 过度代理权 Excessive Agency","description":"系统给了模型过多的功能、权限或自主性，使它的一次判断失误足以造成真实损害。2026 版从第六升到第三。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#excessive-agency" },
+      {"@type":"ListItem","position": 4,"name":"LLM04 供应链 Supply Chain","description":"模型权重、数据集、套件与插件的来源不可信或已被污染，含模型对象名实不符。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#supply-chain" },
+      {"@type":"ListItem","position": 5,"name":"LLM05 数据与模型投毒 Data and Model Poisoning","description":"有人在预训练、微调或嵌入的数据里植入内容，改变模型行为或埋下触发式后门。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#data-and-model-poisoning" },
+      {"@type":"ListItem","position": 6,"name":"LLM06 无节制消耗 Unbounded Consumption","description":"对推论的用量没有边界，导致成本失控、服务降级，或模型行为被大量查询复制。2026 版上升四名。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#unbounded-consumption" },
+      {"@type":"ListItem","position": 7,"name":"LLM07 错误信息 Misinformation","description":"模型产生看似可信但实际错误的内容，而下游把它当成事实使用。事故数据显示其实际危害高于从业者的直觉排序。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#misinformation" },
+      {"@type":"ListItem","position": 8,"name":"LLM08 隐藏脉络外泄 Hidden Context Exposure","description":"放进模型脉络、但不打算让用户看到的指令与运作信息被抽取、推断或还原。2026 版取代并扩大了 2025 版的系统提示词泄漏。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#hidden-context-exposure" },
+      {"@type":"ListItem","position": 9,"name":"LLM09 向量与嵌入弱点 Vector and Embedding Weaknesses","description":"RAG 用的向量数据库与嵌入成为攻击面：投毒、跨租户泄漏，或从嵌入反推原文。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#vector-and-embedding-weaknesses" },
+      {"@type":"ListItem","position": 10,"name":"LLM10 输出处理不当 Improper Output Handling","description":"模型的输出未经验证就交给下游组件执行或呈现，含助理大量产生的不安全代码。2026 版从第五落到第十。","url":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#improper-output-handling" }
+    ]
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hans-CN/owasp-llm-top-10#faq","mainEntity": [
+      {"@type":"Question","name":"什么是 OWASP Top 10 for LLM Applications？","acceptedAnswer": {"@type":"Answer","text":"这是 OWASP GenAI Security Project 维护的一份清单，列出大型语言模型应用最关键的十类网络安全风险。它是企业做 AI 风险盘点时最常被当成起点的对照表，涵盖从提示词注入、过度代理权到输出处理不当等十个项目。"
+        }
+      },
+      {"@type":"Question","name":"OWASP LLM Top 10 2026 有哪十条？","acceptedAnswer": {"@type":"Answer","text":"依 2026 版依序为：LLM01 提示词注入、LLM02 敏感信息泄漏、LLM03 过度代理权、LLM04 供应链、LLM05 数据与模型投毒、LLM06 无节制消耗、LLM07 错误信息、LLM08 隐藏脉络外泄、LLM09 向量与嵌入弱点、LLM10 输出处理不当。"
+        }
+      },
+      {"@type":"Question","name":"2026 版和 2025 版差在哪里？","acceptedAnswer": {"@type":"Answer","text":"排序变动很大。过度代理权从第六升到第三，无节制消耗从第十升到第六，错误信息从第九升到第七；供应链从第三降到第四，数据与模型投毒从第四降到第五，向量与嵌入弱点从第八降到第九，输出处理不当从第五降到第十。提示词注入与敏感信息泄漏维持第一与第二。2025 版的系统提示词泄漏被更名并扩大为隐藏脉络外泄，涵盖整个不对用户显示的脉络而不只是系统提示词。另有四条的范围扩大：提示词注入纳入跨模态攻击，供应链纳入模型对象名实不符，数据与模型投毒纳入微调阶段的颠覆，输出处理不当纳入助理大量产生的不安全代码。"
+        }
+      },
+      {"@type":"Question","name":"OWASP 是怎么决定 2026 版排序的？","acceptedAnswer": {"@type":"Answer","text":"2026 版首次在社区投票之外加入事故数据。OWASP 搜集了 7,714 笔来自公开漏洞数据库与 AI 危害数据库的真实事故，其中 6,639 笔细节足以分类，用来与从业者的投票结果对照。最终权重是投票占四分之三、事故数据占四分之一，刻意让投票为主，理由是一年的数据不足以推翻实务工作者的判断。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Security Lab
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">OWASP LLM Top 10</span>
+                <span class="display-sub">LLM 应用的十大网络安全风险 · 2026 版</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                十条风险逐项拆解：定义、实际攻击面与防御作法。这是企业做 AI 风险盘点时的第一份对照表。
+            </p>
+        </header>
+
+        <!-- The same step response as the homepage, drawn once and left still.
+             A reader spends minutes on this page, so it carries the mark
+             without carrying the animation's cost. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index.
+
+             Ten anchors and a heading. It is a table of contents that happens
+             to know where you are, not a widget that has to run before the page
+             is navigable — with no script it still lists and still jumps.
+
+             Sits outside the space-y-32 stack rather than inside it: space-y
+             adds a top margin to every element after the first, and an absolute
+             child still counts as an element, so putting it in the stack would
+             push the whole page down by eight rem.
+
+             Hidden below xl. On a phone the overview table below is the table
+             of contents, which is why its anchors had to be real from the
+             start — this rail is the second consumer of those ids, not the
+             first. -->
+        <nav data-section-index aria-label="章节索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目录</p>
+                <ul>
+                    <li><a href="#overview" class="section-index-link">速览</a></li>
+                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-sans">LLM01</span> 提示词注入</a></li>
+                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-sans">LLM02</span> 敏感信息泄漏</a></li>
+                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-sans">LLM03</span> 过度代理权</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">LLM04</span> 供应链</a></li>
+                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-sans">LLM05</span> 数据与模型投毒</a></li>
+                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-sans">LLM06</span> 无节制消耗</a></li>
+                    <li><a href="#misinformation" class="section-index-link"><span class="font-sans">LLM07</span> 错误信息</a></li>
+                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> 隐藏脉络外泄</a></li>
+                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> 向量与嵌入弱点</a></li>
+                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> 输出处理不当</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Version status.
+
+             This block was written as one self-contained section precisely so
+             the 2026 upgrade would be a replacement rather than a rewrite. This
+             is that replacement: what it used to say — "2026 exists, we have
+             not confirmed it, we will not copy a list nobody checked" — is now
+             a diff against the real thing. -->
+        <section id="version-status" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">2025 → 2026 改了什么</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed">
+                <p>
+                    本页十条依 <strong>2026 版</strong>撰写。<strong>排序变动比往年都大</strong>，所以照旧版盘点过的清单值得重看一次。
+                </p>
+            </div>
+
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">2025</th>
+                            <th class="py-3 pr-4 font-bold text-sm">2026</th>
+                            <th class="py-3 font-bold text-sm">风险</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">01</td><td class="py-3 pr-4 font-sans">01</td><td class="py-3">提示词注入 <span>— 不变</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">02</td><td class="py-3 pr-4 font-sans">02</td><td class="py-3">敏感信息泄漏 <span>— 不变</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">06</td><td class="py-3 pr-4 font-sans">03</td><td class="py-3">过度代理权 <strong>— 升三名，本次最重要的移动</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">03</td><td class="py-3 pr-4 font-sans">04</td><td class="py-3">供应链 <span>— 降一名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans">05</td><td class="py-3">数据与模型投毒 <span>— 降一名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans">06</td><td class="py-3">无节制消耗 <strong>— 升四名</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans">07</td><td class="py-3">错误信息 <span>— 升两名</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">隐藏脉络外泄 <strong>— 更名并扩大范围</strong><span>（原「系统提示词泄漏」）</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans">09</td><td class="py-3">向量与嵌入弱点 <span>— 降一名</span></td></tr>
+                        <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans">10</td><td class="py-3">输出处理不当 <strong>— 降五名，本次跌幅最大</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-l border-line pl-6 space-y-4 leading-relaxed mt-8">
+                <p>
+                    <strong>四条的范围扩大了，而不是添加条目。</strong>
+                    OWASP 的作法是把新出现的风险折进已经拥有它们的条目，避免把清单切碎：提示词注入纳入<strong>跨模态</strong>攻击（指令藏在图像或音频里）、供应链纳入<strong>模型对象名实不符</strong>、数据与模型投毒纳入<strong>微调阶段的颠覆</strong>、输出处理不当纳入<strong>助理大量产生的不安全代码</strong>。
+                </p>
+                <p>
+                    <strong>排序方法变了，这是 2026 版最值得知道的一件事。</strong>
+                    在此之前排序完全来自社区投票。2026 版首次加入事故数据：7,714 笔来自公开漏洞数据库与 AI 危害数据库的真实事故，其中 6,639 笔细节足以分类。最终权重是<strong>投票四分之三、数据四分之一</strong>——刻意让投票为主，理由是一年的数据不足以推翻实务工作者的判断。
+                </p>
+                <p>
+                    两者分歧的地方比一致的地方更有信息量。提示词注入是最清楚的例子：<strong>若只看事故数据，它会掉出前十</strong>——但 OWASP 判定那是<strong>防御效果</strong>而非风险下降，因为团队在这条上投入最多，干净的成功案例反而较少进入公开数据库。它维持第一。错误信息则相反：投票排得低、事故数据排得高，是分歧最大且方向最伤人的一条。
+                </p>
+                <p>
+                    还有一条边界值得记住：<strong>这份清单管的是「模型作为应用里的一个组件」。</strong>
+                    一旦模型变成能调用工具、跨工作阶段保留记忆、并在下游造成后果的<strong>行动者</strong>，风险就移到 OWASP 的 Agentic Top 10，两份清单要一起看。
+                </p>
+            </div>
+        </section>
+
+        <!-- Overview table.
+             Also the table of contents on small screens, where the section
+             index is not shown. Its anchors are real links to real ids, which
+             check:design enforces.
+
+             The ids are named after the risk rather than its number. LLM05 was
+             Improper Output Handling in 2025 and is Data and Model Poisoning in
+             2026 — numeric ids would have made every existing link land
+             silently on different content the moment the ranking moved. The
+             number changes between editions; the topic does not. Same reason
+             the URL carries no year. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">十条速览</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">风险</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">英文原名</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-4 pr-4"><a href="#prompt-injection" class="font-bold">提示词注入</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="font-bold">敏感信息泄漏</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-4 pr-4"><a href="#excessive-agency" class="font-bold">过度代理权</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">供应链</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="font-bold">数据与模型投毒</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-4 pr-4"><a href="#unbounded-consumption" class="font-bold">无节制消耗</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-4 pr-4"><a href="#misinformation" class="font-bold">错误信息</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="font-bold">隐藏脉络外泄</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="font-bold">向量与嵌入弱点</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-4 pr-4"><a href="#improper-output-handling" class="font-bold">输出处理不当</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- LLM01 is deliberately a summary. This is the pillar page; writing
+             prompt injection out in full here would put it in direct
+             competition with /what-is-prompt-injection for the same queries,
+             and that page is the one that should win them. -->
+        <section id="prompt-injection" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">提示词注入 <span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>进入模型脉络的任何输入改变了它的行为，使它偏离开发者的意图。模型在架构上分不出「指令」与「数据」——两者是同一条 token 流上的 token，所以没有等同于参数化查询的干净解法。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>直接注入是在对话框里写「忽略先前所有指令」；间接注入是把指令藏在模型会读到的网页、邮件或文档里。<strong>2026 版把跨模态攻击纳入这一条</strong>——指令藏在图像或音频里，人在画面上看不到，模型读得到。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <p>没有单一解法。核心原则是把所有外部内容当成不可信数据，并且<strong>在模型之外</strong>强制执行权限——模型被说服了，权限也不该跟着松动。</p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">为什么还是第一</span>
+                    若只看事故数据它会掉出前十，但 OWASP 判定那是<strong>防御效果</strong>：团队在这条上投入最多，干净的成功案例较少进入公开数据库。攻击面本身没有缩小。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">深入</span>
+                    <a href="/{{ locale }}/what-is-prompt-injection" class="underline">攻击原理、与越狱的差异与纵深防御的实务做法</a>
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#excessive-agency" class="underline">LLM03 过度代理权</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 输出处理不当</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">敏感信息泄漏 <span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>模型的输出泄漏了不该给这个用户的信息——个资、证书、营业秘密，或其他用户的数据。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一套 RAG 系统把整个知识库的权限一视同仁，于是业务部门的人问得到只有法务该看的合约条款。模型没有出错，是检索层从一开始就没有边界。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>检索<strong>之前</strong>就套用用户权限，不要靠提示词要求模型「不要说出来」——那是请求，不是控制。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>输入与输出两端都做敏感数据侦测与屏蔽。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>用于训练或微调的数据先去识别化，因为模型记得住的东西无法事后撤回。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#hidden-context-exposure" class="underline">LLM08 隐藏脉络外泄</a>
+                    <span class="mx-2">/</span>
+                    <a href="#vector-and-embedding-weaknesses" class="underline">LLM09 向量与嵌入弱点</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="excessive-agency" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">过度代理权 <span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>系统给了模型过多的功能、权限或自主性，使得它的一次判断失误足以造成真实损害。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一个负责整理信件的 agent，被顺手给了寄信与删信的权限——因为用的是同一组证书，分开设置太麻烦。于是一封夹带指令的信就能让它对外发信。权限是为了方便给的，代价是攻击面。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>工具的权限取最小集合，不给「以防万一会用到」的能力。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>高风险或不可逆的动作要人为确认，而且确认的界面要说清楚将要发生什么。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>权限在工具层强制，不靠提示词约束——提示词说服得动，权限系统说服不动。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 变动</span>
+                    <strong>从第六升到第三，是本次最重要的移动。</strong>投票与事故数据在这条上难得一致：损害正在 agent 化的部署里发生。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#prompt-injection" class="underline">LLM01 提示词注入</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 输出处理不当</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">供应链 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>模型权重、数据集、套件与插件的来源本身不可信或已被污染。传统软件供应链的问题，多了模型这一类无法用读源代码来审计的资产。<strong>2026 版把「模型对象名实不符」纳入这一条</strong>——被推广的那份权重不是它宣称的东西。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>从公开模型仓库拉下来的微调权重、来路不明的 LoRA 配接器，或 agent 工具链里某个第三方套件。你看得懂前端的每一进程序，但看不懂那份权重文档里有什么。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>模型与数据集比照软件相依处理：来源查核、版本锁定、哈希比对。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>产出并维护 AI 物料清单，让「我们到底装了什么」是一个查得到答案的问题。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>第三方模型先在隔离环境评估行为再上线，不要直接接到有权限的系统上。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 数据与模型投毒</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">数据与模型投毒 <span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>有人在预训练、微调或嵌入的数据里植入内容，借此改变模型的行为，或埋下只在特定触发词出现时才启动的后门。<strong>2026 版把微调阶段的颠覆明确纳入</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一个会被爬进训练集的公开页面，被刻意写入特定触发词与对应的错误答案。模型在所有一般测试上都正常，只有遇到那个词时才会转向——这是它难防的原因：异常不会出现在你测试的地方。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>训练与微调数据的来源可追溯，知道每一批数据是谁放进来的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>对照固定的基准集侦测行为漂移，而不是只看整体指标有没有变差。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>微调后做红队测试，特别针对触发词这类只在窄条件下显现的行为。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#supply-chain" class="underline">LLM04 供应链</a>
+                    <span class="mx-2">/</span>
+                    <a href="#misinformation" class="underline">LLM07 错误信息</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="unbounded-consumption" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">无节制消耗 <span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>对推论的用量没有边界，导致成本失控、服务降级，或模型的行为被大量查询复制出去。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>一个公开的对话端点没有速率限制，被持续调用以搜集输入与输出配对来复制模型行为。帐单与延迟同时恶化，而流量在监控上看起来只是「使用量成长」。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>依用户与 API 密钥设速率与配额上限，而不是只在整体层级设一个总量。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>限制输入长度与输出 token 数，两端都要。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>监控每用户成本并设异常告警——先看到帐单才发现，通常已经是一个月后。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 变动</span>
+                    <strong>从第十升到第六，上升四名。</strong>从业者把资源与成本耗尽看得比旧排名重得多。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#excessive-agency" class="underline">LLM03 过度代理权</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="misinformation" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">错误信息 <span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>模型产生看似可信但实际错误的内容，而下游把它当成事实使用。危害的大小取决于谁接住它、有没有人核对。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>模型虚构一个不存在的套件名称，开发者照着安装——而攻击者早已在套件库注册了那个名字。模型的错误在这里不只是错，它变成了一条可被预测、因此可被埋伏的路径。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>有出处要求的场景一律走检索并附上引用，让答案可以被追回来源。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>关键决策保留人工复核，而且复核的人要看得到模型依据什么。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>对用户揭露不确定性，不要用肯定的语气包装推测。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 变动</span>
+                    升两名，而且<strong>是投票与事故数据分歧最大的一条</strong>：从业者排得低、真实事故排得高。当一个流畅自信的输出驱动了一个决定或一次工具调用，错的答案就变成错的行动。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 数据与模型投毒</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">隐藏脉络外泄 <span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>放进模型脉络、但不打算让用户看到的指令与运作信息，被<strong>抽取、推断或还原</strong>。范围不只系统提示词：还包括开发者指令、从知识库或设置档取来的政策文字、工具与函数的 schema，以及应用组进脉络窗口的其他规则与素材。共同点是——不打算给用户看，但模型读得到。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>用户用重述、翻译或角色扮演诱导模型复述自己的指令，于是写在里面的 API 密钥、内部折扣规则或工具权限一起外流。更隐蔽的一种是拒答规则被还原：用户原本只看到「抱歉，我不能这么做」，外泄之后看到的是触发那句话的条件与例外，于是知道怎么绕过。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>假设隐藏脉络终将被看见来设计</strong>，把脉络里的任何内容都当成不是秘密。这是根本解，其余都是补丁。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>证书、连接字符串与 token 一律不放进脉络。真正的风险不是它被看见，是它一开始就被放进去。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>不要把隐藏脉络当成授权、权限隔离、政策执行或内容过滤的<strong>唯一</strong>边界——那些要在模型之外成立。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 变动</span>
+                    <strong>取代 2025 版的「系统提示词泄漏」并扩大范围。</strong>改名反映的是一个判断：问题从来不是那段提示词本身，而是「应该留在用户拿不到的地方的信息」这一整类东西。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 敏感信息泄漏</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 过度代理权</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">向量与嵌入弱点 <span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>RAG 用的向量数据库与嵌入本身成为攻击面：被投毒、跨租户泄漏，或从嵌入向量反推回原文。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>多租户的向量库没有依租户做硬性隔离，只靠检索时附带的过滤条件。一次相似度查询就跨过了客户边界，而且没有任何一道错误消息会提到这件事。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>向量库依租户与权限做硬性隔离，不要把隔离寄托在查询条件写对。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>进库的文档要有来源验证与审计轨迹，知道每一段内容是怎么进去的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>嵌入本身视为敏感数据保护——它可被部分还原，不是不可逆的哈希。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 敏感信息泄漏</a>
+                    <span class="mx-2">/</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 数据与模型投毒</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="improper-output-handling" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">输出处理不当 <span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>模型的输出未经验证就交给下游组件执行或呈现。这一条不是模型的问题，是接住模型的那段程序的问题。<strong>2026 版把助理大量产生的不安全代码纳入这一条</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">情境</p>
+                    <p>模型返回的字符串直接进 <code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>、直接拼进 SQL、直接喂给 shell。一次成功的注入因此从「模型讲错话」升级成「攻击者在你的服务器上执行指令」。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防御</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>把模型视为不可信来源，输出比照用户输入处理——它本来就可能是用户输入变形而来的。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>依下游情境做输出编码：HTML、SQL、shell 各有各的跳脱规则，没有通用的那一种。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>参数化查询，不做字符串拼接。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 变动</span>
+                    <strong>从第五落到第十，是本次跌幅最大的一条。</strong>排名下降不代表危害下降——它落后是因为其他条目上升，而这一条的范围其实还扩大了。
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">相关</span>
+                    <a href="#prompt-injection" class="underline">LLM01 提示词注入</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 过度代理权</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">来源</p>
+            <p class="leading-relaxed">
+                十条的名称、顺序与范围取自 OWASP GenAI Security Project 发布的
+                <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>
+                2026 版文档（授权 CC BY-SA 4.0）。排序方法与事故数据的数字同样出自该文档。
+                本页的整理、译名与防御作法由 TauX 撰写，不代表 OWASP 立场。
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">担心您的 LLM 应用不安全？</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                TauX Security Lab 提供 LLM 安全检测与红队演练，依这十条逐项盘点您的系统。
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">预约安全咨询</a>
+                <a href="/{{ locale }}#our-services" class="btn-quiet">了解服务详情</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

@@ -324,6 +324,28 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut destinations: HashSet<PathBuf> = HashSet::new();
     let mut sitemap = Vec::new();
 
+    // EVERY LANGUAGE THE SITE ACTUALLY PUBLISHES, FOR THE ONE NODE THAT IS NOT
+    // PER-PAGE.
+    //
+    // The WebSite node in header.html has a locale-neutral `@id` — one site,
+    // one node, shared by every page in every language. Its `inLanguage` was a
+    // literal `zh-Hant-TW`, which was true while there was one language and
+    // became a lie on all twenty English pages the moment there were two: the
+    // same `@id` asserting a different language depending on which page a
+    // crawler read it from. Per-page `{{ locale }}` would not fix it — it would
+    // make the contradiction explicit.
+    //
+    // A list is the accurate answer, and it is derived rather than written
+    // down. The roster is display order, not the published set (a roster entry
+    // with no pages behind it is inert), so this is the union of the locales
+    // pages actually declare, ordered by the roster.
+    let site_locales: Vec<&str> = site
+        .locale
+        .iter()
+        .map(|l| l.tag.as_str())
+        .filter(|tag| site.page.iter().any(|p| p.locale.contains_key(*tag)))
+        .collect();
+
     for page in &site.page {
         if page.locale.is_empty() {
             return Err(format!("{} declares no locale", page.path).into());
@@ -391,6 +413,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 // `/{{ locale }}/...`, and the `locale relative links` rule
                 // holds the templates to it.
                 locale => locale,
+                site_locales => &site_locales,
                 og_locale => &og_locale,
                 strings => site
                     .locale
@@ -468,6 +491,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             // See CANONICAL_LOCALE: one file answers every unmatched path in
             // every language, so its navigation points at one of them.
             locale => CANONICAL_LOCALE,
+            site_locales => &site_locales,
             strings => site
                 .locale
                 .iter()

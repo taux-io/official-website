@@ -5,9 +5,9 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Claude Skills 實戰指南",
-  "description": "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。",
-  "url": "https://taux.io/zh-Hant-TW/claude-skills-guide",
+  "headline": "Claude Skills 实战指南",
+  "description": "Claude Skills 完整指南：学会将 SOP 与专家知识转化为可重复使用的自动化工作流。专为开发者与团队打造。",
+  "url": "https://taux.io/zh-Hans-CN/claude-skills-guide",
   "author": {% include "_org-ref.html" %},
   "publisher": {% include "_org-ref.html" %},
   "datePublished": "{{ date_published }}",
@@ -851,29 +851,29 @@
         <div class="title-layout">
             <h1>
             <span class="display-lead">Claude Skills in Practice</span>
-            <span class="display-sub">Claude Skills 實戰指南</span>
+            <span class="display-sub">Claude Skills 实战指南</span>
         </h1>
-            <p class="subtitle">The Complete Guide to Building Skills for Claude<br><br>一份專為開發者與團隊打造的階梯式教育手冊，<br>教您如何將
-                SOP 與專家知識轉化為自動化工作流。</p>
+            <p class="subtitle">The Complete Guide to Building Skills for Claude<br><br>一份专为开发者与团队打造的阶梯式教育手册，<br>教您如何将
+                SOP 与专家知识转化为自动化工作流。</p>
         </div>
     </div>
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
         <div class="cover" data-cover>
-            <h2 class="slide-title">核心概念：什麼是 Skill？</h2>
+            <h2 class="slide-title">核心概念：什么是 Skill？</h2>
         </div>
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <p>Skill 是一個裝載了指令與工作流的資料夾，它能讓 Claude 精準掌握您專屬的作業流程，而無需每次對話都重新解釋背景。</p>
-                    <p>一個標準的 Skill 資料夾包含：</p>
+                    <p>Skill 是一个装载了指令与工作流的文档夹，它能让 Claude 精准掌握您专属的作业流程，而无需每次对话都重新解释背景。</p>
+                    <p>一个标准的 Skill 文档夹包含：</p>
                     <ul>
-                        <li><span class="highlight">SKILL.md</span> (必填)：核心指令，包含決定何時觸發的 YAML 前置資料。</li>
-                        <li><span class="highlight">scripts/</span> (選填)：可執行的自動化腳本 (如 Python、Bash)。</li>
-                        <li><span class="highlight">references/</span> (選填)：讓 Claude 按需讀取的參考文件與手冊。</li>
+                        <li><span class="highlight">SKILL.md</span> (必填)：核心指令，包含决定何时触发的 YAML 前置数据。</li>
+                        <li><span class="highlight">scripts/</span> (选填)：可执行的自动化脚本 (如 Python、Bash)。</li>
+                        <li><span class="highlight">references/</span> (选填)：让 Claude 按需读取的参考文档与手册。</li>
                     </ul>
-                    <p><strong>優勢：</strong>透過教導 Claude 一次，未來即可永久受益，並確保團隊產出的高度一致性。</p>
+                    <p><strong>优势：</strong>透过教导 Claude 一次，未来即可永久受益，并确保团队产出的高度一致性。</p>
                 </div>
                 <div>
                     <div class="image-wrapper">
@@ -905,7 +905,7 @@
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
         <div class="cover" data-cover>
-            <h2 class="slide-title">階梯式開發路徑 (The Staircase)</h2>
+            <h2 class="slide-title">阶梯式开发路径 (The Staircase)</h2>
         </div>
         <div class="content-area">
             <div class="timeline-layout">
@@ -913,29 +913,29 @@
 
                 <div class="timeline-item">
                     <div class="content-wrapper">
-                        <h3>Step 1. 規劃與場景</h3>
-                        <p>定義明確的 Use Case，決定觸發條件與目標，評估是否需要搭配外部工具 (MCP)。</p>
+                        <h3>Step 1. 规划与场景</h3>
+                        <p>定义明确的 Use Case，决定触发条件与目标，评估是否需要搭配外部工具 (MCP)。</p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="content-wrapper">
-                        <h3>Step 2. 結構建立</h3>
-                        <p>建立資料夾，配置必須的 SKILL.md，並遵循嚴格的 kebab-case 命名規範。</p>
+                        <h3>Step 2. 结构建立</h3>
+                        <p>建立文档夹，配置必须的 SKILL.md，并遵循严格的 kebab-case 命名规范。</p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="content-wrapper">
-                        <h3>Step 3. 撰寫指令</h3>
-                        <p>設定精準的 YAML 觸發詞，並運用漸進式揭露原則撰寫強大的 Markdown 指令。</p>
+                        <h3>Step 3. 撰写指令</h3>
+                        <p>设置精准的 YAML 触发词，并运用渐进式揭露原则撰写强大的 Markdown 指令。</p>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="content-wrapper">
-                        <h3>Step 4. 測試與發布</h3>
-                        <p>從手動單一任務測試開始，確認 API 與功能無誤後，打包為 ZIP 並發布給團隊。</p>
+                        <h3>Step 4. 测试与发布</h3>
+                        <p>从手动单一任务测试开始，确认 API 与功能无误后，打包为 ZIP 并发布给团队。</p>
                     </div>
                 </div>
             </div>
@@ -945,7 +945,7 @@
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
         <div class="cover" data-cover>
-            <h2 class="slide-title">MCP 與 Skills 的強大組合</h2>
+            <h2 class="slide-title">MCP 与 Skills 的强大组合</h2>
         </div>
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
@@ -953,15 +953,15 @@
                     <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
                         Connectivity</div>
                     <div class="number">MCP</div>
-                    <div class="number-label">提供外部連線能力<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
+                    <div class="number-label">提供外部连接能力<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
-                    <h3>賦予工具靈魂的關鍵大腦</h3>
-                    <p>如果 MCP (Model Context Protocol) 提供了對外連線的「四肢」，例如讀取 Notion 或建立 Linear 任務；那麼 Skills 就是告訴 Claude
-                        該如何正確使用這些工具的「大腦」。</p>
-                    <p><strong>沒有 Skill 的 MCP：</strong>用戶面對工具箱不知從何下手，每次都需要重新下達複雜 Prompt。<br><br><strong>搭配 Skill 的
-                            MCP：</strong>預設工作流自動啟動，將最佳實踐 (Best Practices) 嵌入每一次互動中，降低整合學習門檻。</p>
+                    <h3>赋予工具灵魂的关键大脑</h3>
+                    <p>如果 MCP (Model Context Protocol) 提供了对外连接的「四肢」，例如读取 Notion 或建立 Linear 任务；那么 Skills 就是告诉 Claude
+                        该如何正确使用这些工具的「大脑」。</p>
+                    <p><strong>没有 Skill 的 MCP：</strong>用户面对工具箱不知从何下手，每次都需要重新下达复杂 Prompt。<br><br><strong>搭配 Skill 的
+                            MCP：</strong>默认工作流自动启动，将最佳实践 (Best Practices) 嵌入每一次交互中，降低集成学习门槛。</p>
                 </div>
             </div>
         </div>
@@ -970,7 +970,7 @@
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
         <div class="cover" data-cover>
-            <h2 class="slide-title">三大核心應用場景 (Use Cases)</h2>
+            <h2 class="slide-title">三大核心应用场景 (Use Cases)</h2>
         </div>
         <div class="content-area">
             <div class="tiled-content">
@@ -988,8 +988,8 @@
                             <polygon points="110,140 115,135 125,145" fill="var(--ink)" />
                         </svg>
                     </div>
-                    <h3>1. 文件與資產生成</h3>
-                    <p>用於創建具備高度一致性與品質的輸出物。可嵌入品牌指南、模板結構與發布前的品質檢查清單。(無需外部工具)</p>
+                    <h3>1. 文档与资产生成</h3>
+                    <p>用于创建具备高度一致性与质量的输出物。可嵌入品牌指南、模板结构与发布前的质量检查清单。(无需外部工具)</p>
                 </div>
                 <div class="image-tile">
                     <div class="image-wrapper">
@@ -1002,8 +1002,8 @@
                             <circle cx="145" cy="145" r="10" fill="var(--ink)" />
                         </svg>
                     </div>
-                    <h3>2. 工作流自動化</h3>
-                    <p>適用於多步驟流程，能確保 Claude 按部就班執行，並包含自動驗證機制。通常需協調多個 MCP 伺服器。</p>
+                    <h3>2. 工作流自动化</h3>
+                    <p>适用于多步骤流程，能确保 Claude 按部就班执行，并包含自动验证机制。通常需协调多个 MCP 服务器。</p>
                 </div>
                 <div class="image-tile">
                     <div class="image-wrapper">
@@ -1018,8 +1018,8 @@
                             <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z" fill="var(--surface)" />
                         </svg>
                     </div>
-                    <h3>3. MCP 增強防護</h3>
-                    <p>專為增強既有 MCP 伺服器所設計。注入領域知識 (如：Sentry 自動分析 Bug)、提供自動上下文，並預防常見的 API 錯誤。</p>
+                    <h3>3. MCP 增强防护</h3>
+                    <p>专为增强既有 MCP 服务器所设计。注入领域知识 (如：Sentry 自动分析 Bug)、提供自动上下文，并预防常见的 API 错误。</p>
                 </div>
             </div>
         </div>
@@ -1028,27 +1028,27 @@
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
         <div class="cover" data-cover>
-            <h2 class="slide-title">YAML 撰寫準則：決定生死的第一線</h2>
+            <h2 class="slide-title">YAML 撰写准则：决定生死的第一线</h2>
         </div>
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
-                    <h3>嚴格的命名規範 (Naming)</h3>
-                    <p>Claude 非常挑剔資料夾與檔案名稱的格式，任何微小的錯誤都會導致 Skill 無法載入。</p>
+                    <h3>严格的命名规范 (Naming)</h3>
+                    <p>Claude 非常挑剔文档夹与文档名称的格式，任何微小的错误都会导致 Skill 无法加载。</p>
                     <ul>
-                        <li>主檔名必須精確為 <span class="highlight">SKILL.md</span> (區分大小寫，不可寫成 skill.md)。</li>
-                        <li>資料夾與 <code>name:</code> 欄位必須使用 <span class="highlight">kebab-case</span>。</li>
-                        <li><strong>嚴格禁止</strong>包含空格、大寫字母或底線 (例如：<code>Notion_Setup</code> 是錯誤的)。</li>
-                        <li>禁止包含 <code>README.md</code> 於 Skill 根目錄內。</li>
+                        <li>主文档名必须精确为 <span class="highlight">SKILL.md</span> (区分大小写，不可写成 skill.md)。</li>
+                        <li>文档夹与 <code>name:</code> 字段必须使用 <span class="highlight">kebab-case</span>。</li>
+                        <li><strong>严格禁止</strong>包含空格、大写字母或底线 (例如：<code>Notion_Setup</code> 是错误的)。</li>
+                        <li>禁止包含 <code>README.md</code> 于 Skill 根目录内。</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>描述與觸發詞 (Description)</h3>
-                    <p>Description 是 Claude 判斷是否主動啟動 Skill 的唯一依據，長度需小於 1024 字元。</p>
+                    <h3>描述与触发词 (Description)</h3>
+                    <p>Description 是 Claude 判断是否主动启动 Skill 的唯一依据，长度需小于 1024 字符。</p>
                     <ul>
-                        <li>必須同時包含：<strong>「它能做什麼」</strong>與<strong>「何時該使用它」</strong>(具體觸發詞)。</li>
-                        <li>例如：「用於分析設計圖稿。當用戶上傳 fig 檔案，或要求『設計規格』時使用。」</li>
-                        <li><strong>資安禁令</strong>：絕對禁止在 YAML 中使用 XML 標籤 <code>&lt; &gt;</code>，以防 Prompt 注入攻擊。</li>
+                        <li>必须同时包含：<strong>「它能做什么」</strong>与<strong>「何时该使用它」</strong>(具体触发词)。</li>
+                        <li>例如：「用于分析设计图稿。当用户上传 fig 文档，或要求『设计规格』时使用。」</li>
+                        <li><strong>网络安全禁令</strong>：绝对禁止在 YAML 中使用 XML 标签 <code>&lt; &gt;</code>，以防 Prompt 注入攻击。</li>
                     </ul>
                 </div>
             </div>
@@ -1058,27 +1058,27 @@
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
         <div class="cover" data-cover>
-            <h2 class="slide-title">指令設計的最佳實踐 (Best Practices)</h2>
+            <h2 class="slide-title">指令设计的最佳实践 (Best Practices)</h2>
         </div>
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-list-check"></i></div>
-                    <h3>具體且可執行</h3>
-                    <p>避免空泛的指示。例如，不要寫「妥善驗證資料」，應該明確指示：「執行
-                        <code>scripts/validate.py</code>，若出現錯誤，請檢查是否遺漏必填欄位。」程式碼比語言更具確定性。
+                    <h3>具体且可执行</h3>
+                    <p>避免空泛的指示。例如，不要写「妥善验证数据」，应该明确指示：「执行
+                        <code>scripts/validate.py</code>，若出现错误，请检查是否遗漏必填字段。」代码比语言更具确定性。
                     </p>
                 </div>
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
-                    <h3>漸進式揭露機制</h3>
-                    <p>為避免消耗過多 Token，保持 <code>SKILL.md</code> 精簡，僅放核心步驟。將詳細的 API 規範或龐大的樣板移至 <code>references/</code>
-                        資料夾，讓 Claude 需要時再去讀取。</p>
+                    <h3>渐进式揭露机制</h3>
+                    <p>为避免消耗过多 Token，保持 <code>SKILL.md</code> 精简，仅放核心步骤。将详细的 API 规范或庞大的样板移至 <code>references/</code>
+                        文档夹，让 Claude 需要时再去读取。</p>
                 </div>
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h3>預設錯誤處理</h3>
-                    <p>預見系統可能發生的錯誤並提供解法。例如設立一個「常見問題」區塊：「若遭遇連線拒絕，請用戶至設定 > 擴充功能中重新連線。」這能大幅減少人工介入。</p>
+                    <h3>默认错误处理</h3>
+                    <p>预见系统可能发生的错误并提供解法。例如设立一个「常见问题」区块：「若遭遇连接拒绝，请用户至设置 > 扩充功能中重新连接。」这能大幅减少人工介入。</p>
                 </div>
             </div>
         </div>
@@ -1087,40 +1087,40 @@
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
         <div class="cover" data-cover>
-            <h2 class="slide-title">實戰案例一：Code Review 助手</h2>
+            <h2 class="slide-title">实战案例一：Code Review 助手</h2>
         </div>
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <h3>單一任務標準結構</h3>
-                    <p>這是一個不需要外部 MCP 工具的標準 <code>SKILL.md</code> 寫法。重點在於明確的<strong>前置條件</strong>與<strong>防呆機制</strong>。
+                    <h3>单一任务标准结构</h3>
+                    <p>这是一个不需要外部 MCP 工具的标准 <code>SKILL.md</code> 写法。重点在于明确的<strong>前置条件</strong>与<strong>防呆机制</strong>。
                     </p>
                     <ul>
-                        <li><span class="highlight">YAML 區塊</span>：精準定義觸發條件。</li>
-                        <li><span class="highlight">Role (角色設定)</span>：賦予 Claude 專家視角。</li>
-                        <li><span class="highlight">Workflow (工作流)</span>：用數字編號強制執行順序。</li>
-                        <li><span class="highlight">Rules (限制)</span>：明確告知「不該做什麼」，防止過度干預。</li>
+                        <li><span class="highlight">YAML 区块</span>：精准定义触发条件。</li>
+                        <li><span class="highlight">Role (角色设置)</span>：赋予 Claude 专家视角。</li>
+                        <li><span class="highlight">Workflow (工作流)</span>：用数字编号强制执行顺序。</li>
+                        <li><span class="highlight">Rules (限制)</span>：明确告知「不该做什么」，防止过度干预。</li>
                     </ul>
                 </div>
                 <div>
                     <div class="code-window">
                         <span class="yaml-val">---</span><br>
                         <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">當使用者上傳程式碼片段，或要求 Code Review
-                            時觸發。</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">当用户上传代码片段，或要求 Code Review
+                            时触发。</span><br>
                         <span class="yaml-val">---</span><br><br>
                         <span class="md-h"># Role</span><br>
-                        <span class="md-text">你是一位嚴格且資深的後端架構師。</span><br><br>
+                        <span class="md-text">你是一位严格且资深的后端架构师。</span><br><br>
                         <span class="md-h"># Workflow</span><br>
-                        <span class="md-text">被觸發時，請嚴格按順序執行以下步驟：</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">**安全性掃描**：檢查是否有 SQL Injection 或 Hardcoded
-                            密碼。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">**效能評估**：標出時間複雜度超過 O(N^2) 的寫法。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">**產出報告**：以 Markdown
-                            表格呈現修改建議。</span><br><br>
+                        <span class="md-text">被触发时，请严格按顺序执行以下步骤：</span><br>
+                        <span class="md-list">1.</span> <span class="md-text">**安全性扫描**：检查是否有 SQL Injection 或 Hardcoded
+                            密码。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">**性能评估**：标出时间复杂度超过 O(N^2) 的写法。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">**产出报告**：以 Markdown
+                            表格呈现修改建议。</span><br><br>
                         <span class="md-h"># Rules</span><br>
-                        <span class="md-text">- 絕對**不要**直接給出完整重寫的程式碼。</span><br>
-                        <span class="md-text">- 只提供具體的修改指引與思路。</span>
+                        <span class="md-text">- 绝对**不要**直接给出完整重写的代码。</span><br>
+                        <span class="md-text">- 只提供具体的修改指引与思路。</span>
                     </div>
                 </div>
             </div>
@@ -1130,7 +1130,7 @@
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
         <div class="cover" data-cover>
-            <h2 class="slide-title">實戰案例二：串接 MCP 的自動化</h2>
+            <h2 class="slide-title">实战案例二：串接 MCP 的自动化</h2>
         </div>
         <div class="content-area">
             <div class="two-column">
@@ -1138,29 +1138,29 @@
                     <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
                         <span class="yaml-val">---</span><br>
                         <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">協助將對話中的錯誤日誌直接轉換為 Linear
-                            任務。</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">协助将对话中的错误日志直接转换为 Linear
+                            任务。</span><br>
                         <span class="yaml-val">---</span><br><br>
                         <span class="md-h"># Objective</span><br>
-                        <span class="md-text">分析錯誤日誌，並主動使用 `linear` MCP 建立 Bug Ticket。</span><br><br>
+                        <span class="md-text">分析错误日志，并主动使用 `linear` MCP 建立 Bug Ticket。</span><br><br>
                         <span class="md-h"># Instructions</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">從使用者的 Error Log 中提取：代碼、時間、可能原因。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">自動呼叫 `linear_create_issue` 工具。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">將 Title 設定為 `[Bug] {錯誤代碼}`
+                        <span class="md-list">1.</span> <span class="md-text">从用户的 Error Log 中提取：代码、时间、可能原因。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">自动调用 `linear_create_issue` 工具。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">将 Title 设置为 `[Bug] {错误代码}`
                             格式。</span><br><br>
                         <span class="md-h"># Error Handling (Fallbacks)</span><br>
-                        <span class="md-text">- 若找不到 `linear` 工具或連線失敗，**請勿道歉**。</span><br>
-                        <span class="md-text">- 直接回退：產出 Markdown Bug 報告，請使用者手動複製。</span>
+                        <span class="md-text">- 若找不到 `linear` 工具或连接失败，**请勿道歉**。</span><br>
+                        <span class="md-text">- 直接回退：产出 Markdown Bug 报告，请用户手动复制。</span>
                     </div>
                 </div>
                 <div>
-                    <h3>多步驟與錯誤回退處理</h3>
-                    <p>這示範了如何讓 Claude 像一個 RPA 機器人一樣調用外部 API，並具備自我修復的邏輯。</p>
+                    <h3>多步骤与错误回退处理</h3>
+                    <p>这示范了如何让 Claude 像一个 RPA 机器人一样调用外部 API，并具备自我修复的逻辑。</p>
                     <ul>
-                        <li><span class="highlight">Objective (目標)</span>：一句話講明這個腳本的最終目的。</li>
-                        <li><span class="highlight">工具調用指示</span>：明確寫出要呼叫的工具名稱 (如 <code>linear_create_issue</code>)。
+                        <li><span class="highlight">Objective (目标)</span>：一句话讲明这个脚本的最终目的。</li>
+                        <li><span class="highlight">工具调用指示</span>：明确写出要调用的工具名称 (如 <code>linear_create_issue</code>)。
                         </li>
-                        <li><span class="highlight">Fallback (回退機制)</span>：<strong style="color: var(--ink); font-weight: 600;">極度重要！</strong>預設 MCP 可能會斷線，告訴 Claude 在工具失效時該如何改用純文字輸出，避免流程中斷。
+                        <li><span class="highlight">Fallback (回退机制)</span>：<strong style="color: var(--ink); font-weight: 600;">极度重要！</strong>默认 MCP 可能会断线，告诉 Claude 在工具失效时该如何改用纯文字输出，避免流程中断。
                         </li>
                     </ul>
                 </div>
@@ -1173,42 +1173,42 @@
         <div class="section-title-layout">
             <hr>
             <div class="cover" data-cover>
-                <h2>測試與驗證階段</h2>
+                <h2>测试与验证阶段</h2>
             </div>
-            <p>「先在單一任務上確保 Claude 能完美執行，再將該成功模式提取並封裝為 Skill。」</p>
+            <p>「先在单一任务上确保 Claude 能完美执行，再将该成功模式提取并封装为 Skill。」</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
         <div class="cover" data-cover>
-            <h2 class="slide-title">全面測試指南：三個關鍵維度</h2>
+            <h2 class="slide-title">全面测试指南：三个关键维度</h2>
         </div>
         <div class="content-area">
             <div class="table-layout">
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 25%;">測試維度</th>
-                            <th style="width: 35%;">測試目標</th>
-                            <th style="width: 40%;">衡量與檢驗標準 (Metrics)</th>
+                            <th style="width: 25%;">测试维度</th>
+                            <th style="width: 35%;">测试目标</th>
+                            <th style="width: 40%;">衡量与检验标准 (Metrics)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>觸發測試 (Triggering)</strong></td>
-                            <td>確保 Skill 在正確的時機點被載入，並且不會在無關話題中過度觸發。</td>
-                            <td>90% 的相關請求能自動觸發 Skill (不需用戶手動叫出)；使用無關指令時保持靜默。</td>
+                            <td><strong>触发测试 (Triggering)</strong></td>
+                            <td>确保 Skill 在正确的时机点被加载，并且不会在无关话题中过度触发。</td>
+                            <td>90% 的相关请求能自动触发 Skill (不需用户手动叫出)；使用无关指令时保持静默。</td>
                         </tr>
                         <tr>
-                            <td><strong>功能測試 (Functional)</strong></td>
-                            <td>驗證工作流是否如預期產出正確結果，且妥善處理各種邊緣情況。</td>
-                            <td>0 個未處理的 API 錯誤；工具呼叫皆成功完成；確保輸出格式結構一致。</td>
+                            <td><strong>功能测试 (Functional)</strong></td>
+                            <td>验证工作流是否如预期产出正确结果，且妥善处理各种边缘情况。</td>
+                            <td>0 个未处理的 API 错误；工具调用皆成功完成；确保输出格式结构一致。</td>
                         </tr>
                         <tr>
-                            <td><strong>效能對比 (Performance)</strong></td>
-                            <td>證明導入 Skill 後，整體流程效率優於原始的「人工引導」基線。</td>
-                            <td>對話來回次數大幅減少；所需的 Token 消耗量降低；無需用戶介入糾正。</td>
+                            <td><strong>性能对比 (Performance)</strong></td>
+                            <td>证明导入 Skill 后，整体流程效率优于原始的「人工引导」基线。</td>
+                            <td>对话来回次数大幅减少；所需的 Token 消耗量降低；无需用户介入纠正。</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1219,21 +1219,21 @@
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
         <div class="cover" data-cover>
-            <h2 class="slide-title">進階設計：五大常見專家模式</h2>
+            <h2 class="slide-title">高级设计：五大常见专家模式</h2>
         </div>
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
-                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>順序編排 (Sequential Workflow)：</strong>嚴格定義步驟 1
-                        到步驟 N。適用於具備先後依賴關係的任務，如「新建客戶 -> 設定付款 -> 寄送歡迎信」。</li>
-                    <li><i class="fa-solid fa-network-wired"></i> <strong>多 MCP 協同 (Multi-MCP)：</strong>跨服務編排。如將 Figma
-                        設計匯出 (MCP 1)、存入 Google Drive (MCP 2)、並在 Linear 建立任務 (MCP 3)。</li>
-                    <li><i class="fa-solid fa-rotate"></i> <strong>迭代優化 (Iterative Refinement)：</strong>建立「產出草稿 -> 腳本驗證
-                        -> 自動修正」的封閉迴圈，直到品質達標才結束對話。</li>
-                    <li><i class="fa-solid fa-sitemap"></i> <strong>上下文感知 (Context-aware)：</strong>為 Claude
-                        建立決策樹。例如：「若檔案大於 10MB，調用雲端硬碟 MCP；若為程式碼，調用 GitHub MCP。」</li>
-                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>領域知識注入 (Domain-specific)：</strong>在呼叫 API
-                        前嵌入合規檢查或風控邏輯，讓 Claude 表現得像一位資深專家。</li>
+                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>顺序编排 (Sequential Workflow)：</strong>严格定义步骤 1
+                        到步骤 N。适用于具备先后依赖关系的任务，如「新建客户 -> 设置付款 -> 寄送欢迎信」。</li>
+                    <li><i class="fa-solid fa-network-wired"></i> <strong>多 MCP 协同 (Multi-MCP)：</strong>跨服务编排。如将 Figma
+                        设计导出 (MCP 1)、存入 Google Drive (MCP 2)、并在 Linear 建立任务 (MCP 3)。</li>
+                    <li><i class="fa-solid fa-rotate"></i> <strong>迭代优化 (Iterative Refinement)：</strong>建立「产出草稿 -> 脚本验证
+                        -> 自动修正」的封闭循环，直到质量达标才结束对话。</li>
+                    <li><i class="fa-solid fa-sitemap"></i> <strong>上下文感知 (Context-aware)：</strong>为 Claude
+                        建立决策树。例如：「若文档大于 10MB，调用云端硬盘 MCP；若为代码，调用 GitHub MCP。」</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>领域知识注入 (Domain-specific)：</strong>在调用 API
+                        前嵌入合规检查或风控逻辑，让 Claude 表现得像一位资深专家。</li>
                 </ul>
             </div>
         </div>
@@ -1243,15 +1243,15 @@
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
             <div class="cover" data-cover>
-                <h2 class="slide-title">最終步：封裝與發布</h2>
+                <h2 class="slide-title">最终步：封装与发布</h2>
             </div>
             <div class="content-area">
                 <div class="bleed-text-side">
-                    <p><strong>打包與安裝：</strong>完成測試後，將資料夾壓縮為 <code>.zip</code>。個人用戶可透過 Claude.ai 上傳；企業團隊管理員則可將其佈署至整個
-                        Workspace (自動更新)。</p>
-                    <p><strong>開源與 API：</strong>您可以將 Skill 託管於 GitHub，提供清晰的 <code>README.md</code> 安裝教學。若是應用程式開發者，也能透過
-                        API 的 <code>container.skills</code> 參數以程式化方式調用。</p>
-                    <p><strong>行銷定位：</strong>在推廣時，專注於「成果」而非技術。強調「此 Skill 能在幾秒鐘內為您完成專案配置」，讓 MCP 與 Skill 成為您系統整合的最大賣點。</p>
+                    <p><strong>打包与安装：</strong>完成测试后，将文档夹压缩为 <code>.zip</code>。个人用户可透过 Claude.ai 上传；企业团队管理员则可将其布署至整个
+                        Workspace (自动更新)。</p>
+                    <p><strong>开源与 API：</strong>您可以将 Skill 托管于 GitHub，提供清晰的 <code>README.md</code> 安装教学。若是应用程序开发者，也能透过
+                        API 的 <code>container.skills</code> 参数以程序化方式调用。</p>
+                    <p><strong>行销定位：</strong>在推广时，专注于「成果」而非技术。强调「此 Skill 能在几秒钟内为您完成项目配置」，让 MCP 与 Skill 成为您系统集成的最大卖点。</p>
                 </div>
             </div>
         </div>
@@ -1302,11 +1302,11 @@
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
             <div class="cover" data-cover>
-                <h2>準備好打造專屬 Skill 了嗎？</h2>
+                <h2>准备好打造专属 Skill 了吗？</h2>
             </div>
-            <p>「用知識驅動工具，讓自動化成為團隊標準」</p>
+            <p>「用知识驱动工具，让自动化成为团队标准」</p>
             <div class="contact-info">
-                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> 善用內建的 skill-creator 快速起步！
+                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> 善用内置的 skill-creator 快速起步！
             </div>
         </div>
     </div>

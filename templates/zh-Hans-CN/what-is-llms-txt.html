@@ -1,0 +1,287 @@
+{% include"header.html" %}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io"
+                },
+                {"@type":"ListItem","position": 2,"name":"LLMs.txt 说明","item":"https://taux.io/zh-Hans-CN/what-is-llms-txt"
+                }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt#article","headline":"LLMs.txt 是什么？AI 时代网站内容保护新规范","description":"深入解析 LLMs.txt 的定义、功能及其与 robots.txt 的差异，协助网站管理者掌握 GEO 时代的内容访问权限。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt" }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
+    </div>
+
+    <article class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                GEO 技术观点
+            </div>
+            <h1 class="mb-8">
+            <span class="display-lead">What is LLMs.txt</span>
+            <span class="display-sub">AI 时代网站内容保护新规范</span>
+        </h1>
+
+            <div class="border-t border-line pt-6 p-8 border-l border-line text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 font-semibold">
+                    <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <blockquote class="text-lg relative z-10">"LLMs.txt 就像是 AI 时代的 robots.txt。它是一个纯文字文档，用来告诉大型语言模型：这里欢迎光临，那里请勿进入。"
+                </blockquote>
+            </div>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </article>
+</div>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
+        <!-- Section 1 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                LLMs.txt 是什么？
+            </h2>
+            </div>
+            <div class="p-8 tablet:p-10 space-y-8">
+                <p class="text-lg leading-relaxed max-w-prose">
+                    它的核心目的在于让网站管理者可以明确表达内容访问与使用意图，如<strong class="font-bold">允许或限制训练、摘要、改写与引用</strong>等行为。虽然目前尚未成为正式业界标准，但已反映出网站对 AI
+                    内容利用权限与知识产权权控管的迫切需求。
+                </p>
+
+                <div class="mt-8">
+                    <h3 class="text-xl font-display font-bold mb-6 border-b border-line pb-3">与
+                        robots.txt 的关键差异</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-4 px-6 font-bold">特征</th>
+                                    <th class="py-4 px-6 font-bold">robots.txt</th>
+                                    <th class="py-4 px-6 font-bold font-semibold">LLMs.txt</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm tablet:text-base">
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">目标对象</td>
+                                    <td class="py-4 px-6">搜索引擎爬虫 (Googlebot)</td>
+                                    <td class="py-4 px-6">大型语言模型 (AI 训练、问答)</td>
+                                </tr>
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">行为范围</td>
+                                    <td class="py-4 px-6">抓取控制 (Allow/Disallow)</td>
+                                    <td class="py-4 px-6">复杂行为 (训练、改写、引用)</td>
+                                </tr>
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">主要目的</td>
+                                    <td class="py-4 px-6">索引管理</td>
+                                    <td class="py-4 px-6">知识产权权、AI 利用权限</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                功能与指令范例
+            </h2>
+            </div>
+            <div class="grid tablet:grid-cols-2 gap-8">
+                <div class="p-8 min-w-0">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <span class="mr-3 font-semibold"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg></span> 简易结构范例
+                    </h3>
+                    <div class="bg-surface p-5 text-sm font-sans overflow-x-auto">
+                        <div class="flex gap-2 mb-3 border-b border-line pb-3">
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                        </div>
+                        <pre class="leading-relaxed"><code># Title
+> Optional description goes here
+
+## Section name
+- [Link title](https://link_url): Optional details
+
+## Optional
+- [Link title](https://link_url)</code></pre>
+                    </div>
+                </div>
+
+                <div class="p-8 min-w-0">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <span class="mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg></span> 高级指令概念
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">品牌与定位</strong>说明核心服务，例如「企业 SEO 数字行销公司」。</span>
+                        </li>
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">给 AI
+                                    的提醒</strong>说明内容适用场景、工具版本与保留出处要求。</span>
+                        </li>
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">区块化导览</strong>将页面分为「教学」、「服务」等，引导 AI 理解结构。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">3</span>
+                为何需要 LLMs.txt？
+            </h2>
+            </div>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">知识产权权保护</h3>
+                    <p class="text-sm leading-relaxed">避免原创内容被无限制用于训练与生成，导致被大量复制或稀释。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">数据隐私与安全</h3>
+                    <p class="text-sm leading-relaxed">宣示不希望 AI 访问特定区域（如 UGC 或敏感信息）。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">品牌与内容质量</h3>
+                    <p class="text-sm leading-relaxed">透过提供清楚的使用指南，降低 AI 错误引用或脱线解读。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">服务器资源管理</h3>
+                    <p class="text-sm leading-relaxed">LLMs.txt 可作为一种调节与限制大规模 AI 爬取的方式。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="text-3xl font-display font-bold mb-12">常见问题 (FAQ)</h2>
+            </div>
+            <div class="space-y-4">
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: LLMs.txt 现在是正式标准吗？
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        尚未，现阶段多属概念与实验阶段；多数 AI 仍主要依 robots.txt 控管访问。
+                    </div>
+                </details>
+
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: 没有 LLMs.txt 会怎样？
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        短期不会有直接负面影响，但网站内容可能持续被 LLM 自由访问并用于训练与生成。
+                    </div>
+                </details>
+
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: 大型语言模型会遵守 LLMs.txt 吗？
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        取决于各家 AI 公司是否采用。目前较明确的是对 robots.txt 中 AI 爬虫相关 user-agent 的遵守承诺。
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-20 p-8 p-12 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="cover" data-cover>
+                    <h2 class="font-display text-3xl font-bold mb-6">想要保护您的网站内容？</h2>
+                </div>
+                <p class="mb-10 max-w-[42ch] text-lg">我们可以协助您配置最适合的 GEO 策略与 AI 协议文档。</p>
+
+                <div class="flex flex-col mobile:flex-row justify-center gap-4">
+                    <a href="mailto:hello@taux.io" class="btn">
+                        联系我们
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% include"footer.html" %}

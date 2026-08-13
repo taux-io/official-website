@@ -403,6 +403,83 @@ function ruleGraphUrlsMatchTheLocale(files) {
   return found;
 }
 
+// `inLanguage` is the one claim in the graph that a shared template can get
+// wrong on every page at once, and it did. header.html wrote a literal
+// "zh-Hant-TW" into the WebSite node; that node is included by every page in
+// every language, so all twenty English pages declared themselves Traditional
+// Chinese. Two page-level nodes carried the same literal into their English
+// twins, and a third wrote a bare "zh-Hant" where the rest of the site writes
+// "zh-Hant-TW" — a value no other line in the repo would have matched.
+//
+// None of it was visible: the pages render, the JSON parses, and the value is
+// only read by a machine that will never tell you it disagreed.
+//
+// A LIST IS ALLOWED, AND ONLY ON A NODE THAT BELONGS TO NOBODY. The WebSite
+// node has a locale-neutral `@id`, so one language cannot be the answer — a
+// per-page `{{ locale }}` there would make the same `@id` say something
+// different on each page, which is the same defect wearing a template tag.
+// Everywhere else the page's own locale is the only correct value.
+function ruleInLanguageTellsTheTruth(files) {
+  const found = [];
+  const localeOfFile = new Map(PAGES.map((p) => [p.file, p.locale]));
+  const published = new Set(PAGES.map((p) => p.locale));
+
+  // Walk rather than regex: `inLanguage` sits at any depth, and the value has
+  // to be read as a value — a string and a one-element array are different
+  // claims and the string form is the one that has to match exactly.
+  const visit = (node, fn) => {
+    if (Array.isArray(node)) return node.forEach((n) => visit(n, fn));
+    if (!node || typeof node !== "object") return;
+    if ("inLanguage" in node) fn(node);
+    for (const v of Object.values(node)) visit(v, fn);
+  };
+
+  for (const { rel, html } of files) {
+    const tag = localeOfFile.get(rel);
+    if (!tag) continue;
+
+    for (const doc of graphs(html, rel)) {
+      visit(doc, (node) => {
+        const id = node["@id"] || "";
+        const value = node.inLanguage;
+        const shared = /^https:\/\/taux\.io\/?#/.test(id);
+
+        if (Array.isArray(value)) {
+          if (!shared) {
+            found.push({
+              file: rel,
+              detail: `inLanguage is a list on ${id || node["@type"] || "a node"}, which belongs to one page — a page is written in one language`,
+            });
+            return;
+          }
+          const unknown = value.filter((v) => !published.has(v));
+          if (unknown.length) {
+            found.push({
+              file: rel,
+              detail: `inLanguage lists ${unknown.join(", ")}, which the site does not publish`,
+            });
+          }
+          if (!value.includes(tag)) {
+            found.push({
+              file: rel,
+              detail: `inLanguage omits ${tag} on a ${tag} page`,
+            });
+          }
+          return;
+        }
+
+        if (value !== tag) {
+          found.push({
+            file: rel,
+            detail: `inLanguage says ${JSON.stringify(value)} on a ${tag} page`,
+          });
+        }
+      });
+    }
+  }
+  return found;
+}
+
 // sameAs asserts "these are the same entity". Pointing it at a profile that
 // does not exist asserts a relationship with nothing, and this site did: the
 // declared Facebook page was not the real one, and the real one — linked in the
@@ -505,6 +582,14 @@ const RULES = [
     turnedOnBy: "issue 200 — nineteen pages named their pre-locale URLs",
     run: ruleGraphUrlsMatchTheLocale,
     summary: "a taux.io URL in the graph must name this page's locale, not the URL it moved from",
+  },
+  {
+    name: "inLanguage tells the truth",
+    enabled: true,
+    network: false,
+    turnedOnBy: "issue 200 stage ② — the shared WebSite node called every English page Chinese",
+    run: ruleInLanguageTellsTheTruth,
+    summary: "a page-level inLanguage must be this page's locale; only the site-wide node may list several",
   },
   {
     name: "sameAs resolves",
