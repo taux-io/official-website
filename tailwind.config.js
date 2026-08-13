@@ -46,18 +46,20 @@ module.exports = {
           "SF Pro Text",
           "system-ui",
           "-apple-system",
-          "PingFang TC",
-          "Microsoft JhengHei",
-          "Noto Sans TC",
+          // One token, five faces — src/input.css swaps it on the root's lang.
+          // Three Traditional faces hard-coded here rendered Japanese kanji in
+          // Chinese shapes; see decision #55.
+          "var(--cjk)",
           "sans-serif",
         ],
         display: [
           "SF Pro Display",
           "system-ui",
           "-apple-system",
-          "PingFang TC",
-          "Microsoft JhengHei",
-          "Noto Sans TC",
+          // One token, five faces — src/input.css swaps it on the root's lang.
+          // Three Traditional faces hard-coded here rendered Japanese kanji in
+          // Chinese shapes; see decision #55.
+          "var(--cjk)",
           "sans-serif",
         ],
       },

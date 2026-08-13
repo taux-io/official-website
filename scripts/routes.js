@@ -126,11 +126,42 @@ const PAGES = (SITE.page || []).flatMap((p) => {
   return Object.entries(locale || {}).map(([tag, text]) => ({
     ...route,
     ...text,
+    // A language may override the route's template, because translated prose
+    // cannot live in the same file as the original. Spreading `text` after
+    // `route` already does this; naming it is what stops the next reader from
+    // deleting the ordering as incidental.
+    template: text.template || route.template,
     locale: tag,
     url: servedPath(text.canonical),
     file: localeFile(route, tag),
   }));
 });
+
+// The published languages, in the order the switcher shows them.
+//
+// `script` says which writing system the locale uses, and three checks read it
+// rather than guessing from the tag: whether an h1 needs a sub-line under its
+// Latin lead, what script a title has to contain, and how many characters fit
+// on a line. Guessing would hold until ja-JP, whose kanji are Han and whose
+// kana are not.
+const LOCALES = (SITE.locale || []).map((l) => ({ ...l }));
+
+// Writing systems that carry capital letters, so a Latin display lead is the
+// content rather than a signature over it (decision #56).
+const LATIN_SCRIPTS = new Set(["Latn", "Latin"]);
+const isLatin = (tag) => {
+  const l = LOCALES.find((x) => x.tag === tag);
+  return !!l && LATIN_SCRIPTS.has(l.script);
+};
+
+// The reading measure, per writing system. DESIGN.md holds the table and says
+// which of these were measured: only Hant was. The rest are read off typographic
+// convention and are marked as estimates there rather than mixed in with it.
+const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 75, Jpan: 68, Kore: 60 };
+const measureFor = (tag) => {
+  const l = LOCALES.find((x) => x.tag === tag);
+  return (l && MEASURE_CH[l.script]) || 68;
+};
 
 // [[document]] entries are not routes: they have no `path`, they are the body a
 // static host serves for an unmatched URL. What they do have is a served path,
@@ -157,4 +188,15 @@ const VIEWPORTS = [
 ];
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8099";
 
-module.exports = { ROUTES, PAGES, DOCUMENTS, REDIRECTS, VIEWPORTS, BASE_URL, ORIGIN };
+module.exports = {
+  ROUTES,
+  PAGES,
+  DOCUMENTS,
+  REDIRECTS,
+  LOCALES,
+  VIEWPORTS,
+  BASE_URL,
+  ORIGIN,
+  isLatin,
+  measureFor,
+};

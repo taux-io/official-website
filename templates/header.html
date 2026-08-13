@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW" class="scroll-smooth">
+<html lang="{{ locale }}" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -9,6 +9,25 @@
     {% if canonical %}
     <link rel="canonical" href="{{ canonical }}">{% endif %}{% if noindex %}
     <meta name="robots" content="noindex, follow">{% endif %}
+{% if alternates %}
+    <!-- Every language this route exists in.
+
+         Generated from the page's own locale table, not from the roster: a
+         route that has not been translated yet must not advertise an alternate
+         it cannot serve. hreflang pointing at a 404 is worse than no hreflang —
+         it tells a crawler the translation is there.
+
+         `x-default` names the entry point for a reader none of the tags fit,
+         and it is `/` rather than any one language, because `/` is the path
+         that reads Accept-Language. Every other path answers a stable 301 that
+         does not vary by header (decision #58) — a redirect a crawler follows
+         once, not one whose destination depends on who asked.
+
+         A page is its own alternate too. Google's requirement is reciprocity:
+         each version must list every version including itself, or the set is
+         discarded. -->{% for a in alternates %}
+    <link rel="alternate" hreflang="{{ a.tag }}" href="{{ a.url }}">{% endfor %}
+    <link rel="alternate" hreflang="x-default" href="https://taux.io/">{% endif %}
 
     <!-- Open Graph. The share card is built from the same tokens, typeface and
          tau curve as the page; rerun scripts/assets/build-og.js after a
@@ -18,7 +37,7 @@
     <meta property="og:type" content="website">
     {% if canonical %}<meta property="og:url" content="{{ canonical }}">{% endif %}
     <meta property="og:site_name" content="TauX 拓思科技">
-    <meta property="og:locale" content="zh_TW">
+    <meta property="og:locale" content="{{ og_locale }}">
     <meta property="og:image" content="{{ og_image }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -160,6 +179,7 @@
                 <button type="button" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
                     Explore
                 </button>
+{% with link_class = "nav-link", list_class = "absolute top-full right-0 mt-2 bg-surface border border-line p-4 space-y-3 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="btn">
                     Start Building
                 </a>

@@ -8,6 +8,33 @@
 # Adding a page here is enough for the generator, the contract test, the
 # contrast audit and the share-card builder to pick it up.
 
+# THE LOCALE ROSTER.
+#
+# Only locales with pages are listed. The switcher and the hreflang block are
+# generated from this, so an entry here without pages behind it would link
+# readers and crawlers at a 404 — the roster IS the published set, not a plan.
+#
+# Issue 200 adds en-US; zh-Hans-CN, ja-JP and ko-KR follow in stages 2 and 3
+# (DESIGN.md's migration table). Decision #34's convention: the mechanism lands
+# now, the ticket that makes each locale true is the one that adds it.
+#
+# `og` is Open Graph's own locale format — underscore, not hyphen. It is a
+# separate field rather than a transform because og:locale takes a limited set
+# of language_TERRITORY values and deriving it by replacing the hyphen would
+# quietly emit `zh_Hant_TW`, which is not one of them.
+[[locale]]
+tag    = "zh-Hant-TW"
+name   = "繁體中文"
+og     = "zh_TW"
+# The writing system, and it is a field rather than something guessed from the
+# tag. Three checks read it: `heading structure` asks whether this locale needs
+# a Chinese sub-line under the Latin lead (decision #56), `check:entity` asks
+# what script the title has to contain, and geometry's `measure` probe asks how
+# many characters fit on a line before reading gets hard (DESIGN.md's table).
+# Deriving it from "zh-*" would work until ja-JP, whose kanji are Han and whose
+# kana are not.
+script = "Hant"
+
 [[page]]
 path        = "/"
 template    = "index.html"

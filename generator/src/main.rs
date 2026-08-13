@@ -64,8 +64,26 @@ fn css_version(css: &Path) -> Result<String, std::io::Error> {
     Ok(format!("{hash:016x}"))
 }
 
+/// One published language.
+///
+/// The roster is the published set rather than a plan: the switcher and the
+/// hreflang block are generated from it, so an entry with no pages behind it
+/// would point readers and crawlers at a 404.
+#[derive(Debug, Deserialize, Clone)]
+struct Locale {
+    tag: String,
+    name: String,
+    og: String,
+    /// The writing system. Read by three checks rather than by the generator;
+    /// declared here so they cannot each guess it differently.
+    #[allow(dead_code)]
+    script: String,
+}
+
 #[derive(Debug, Deserialize)]
 struct Site {
+    #[serde(default)]
+    locale: Vec<Locale>,
     page: Vec<Page>,
     /// Files the host serves for a condition rather than a path. They are
     /// rendered like any page but are not routes: nothing links to them and no
@@ -133,6 +151,18 @@ struct LocaleText {
     title: String,
     description: String,
     canonical: String,
+    /// The template this language renders from, when it is not the route's.
+    ///
+    /// TRANSLATED PAGES NEED TRANSLATED TEMPLATES, and the route-level
+    /// `template` cannot supply that: one file cannot hold two languages'
+    /// prose. Without this the second locale would render the first locale's
+    /// body under a translated title — a page that passes every gate, because
+    /// no gate reads prose, and is wrong to every reader.
+    ///
+    /// Optional so the canonical locale keeps using the route's template and
+    /// nothing has to be restated twenty times.
+    #[serde(default)]
+    template: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -292,8 +322,57 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         if page.locale.is_empty() {
             return Err(format!("{} declares no locale", page.path).into());
         }
+        // EVERY LANGUAGE THIS ROUTE EXISTS IN, FOR hreflang AND THE SWITCHER.
+        //
+        // Built from the page's own locale table rather than the roster, and
+        // the difference matters: a route that has not been translated yet must
+        // not advertise an alternate it cannot serve. hreflang pointing at a 404
+        // is worse than no hreflang — it tells a crawler the translation exists.
+        //
+        // Ordered by the roster so the switcher reads the same on every page,
+        // rather than by the BTreeMap's alphabetical accident.
+        let alternates: Vec<_> = site
+            .locale
+            .iter()
+            .filter_map(|l| {
+                page.locale.get(&l.tag).map(|t| {
+                    context! {
+                        tag => &l.tag,
+                        name => &l.name,
+                        // ABSOLUTE FOR hreflang, RELATIVE FOR THE SWITCHER, and
+                        // they are two fields because they are two jobs.
+                        //
+                        // hreflang has to be fully qualified — a relative one is
+                        // ignored. The switcher's href must NOT be: on a preview
+                        // URL or a laptop, an absolute link walks the reader off
+                        // the host they are looking at and onto production, so
+                        // the one control that exists to be clicked during
+                        // review is the one that cannot be reviewed.
+                        url => Value::from_safe_string(t.canonical.clone()),
+                        path => Value::from_safe_string(
+                            t.canonical.strip_prefix(ORIGIN).unwrap_or("/").to_string()
+                        ),
+                    }
+                })
+            })
+            .collect();
+
         for (locale, text) in &page.locale {
-            let tmpl = env.get_template(&page.template)?;
+            let og_locale = site
+                .locale
+                .iter()
+                .find(|l| &l.tag == locale)
+                .map(|l| l.og.clone())
+                .ok_or_else(|| {
+                    // A page in a language the roster does not list would be
+                    // built, linked and indexed while the switcher never
+                    // mentions it. Loud, not silent.
+                    format!(
+                        "{} declares locale {locale}, which the roster does not list",
+                        page.path
+                    )
+                })?;
+            let tmpl = env.get_template(text.template.as_deref().unwrap_or(&page.template))?;
             // Titles and descriptions are escaped — one of them contains an
             // ampersand. The two URLs are not: they are ours, from site.toml, and
             // minijinja's HTML escaper turns every slash into &#x2f;, which is
@@ -306,6 +385,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 // `/{{ locale }}/...`, and the `locale relative links` rule
                 // holds the templates to it.
                 locale => locale,
+                og_locale => &og_locale,
+                alternates => &alternates,
                 title => &text.title,
                 description => &text.description,
                 canonical => Value::from_safe_string(text.canonical.clone()),
@@ -369,6 +450,15 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             // See CANONICAL_LOCALE: one file answers every unmatched path in
             // every language, so its navigation points at one of them.
             locale => CANONICAL_LOCALE,
+            og_locale => site
+                .locale
+                .iter()
+                .find(|l| l.tag == CANONICAL_LOCALE)
+                .map(|l| l.og.as_str())
+                .unwrap_or("zh_TW"),
+            // No alternates: the error document is one file for every language,
+            // so it has no translations to point at.
+            alternates => Vec::<Value>::new(),
             title => &doc.title,
             description => &doc.description,
             canonical => Value::from_safe_string(doc.canonical.clone()),
@@ -604,6 +694,7 @@ mod tests {
             title: String::new(),
             description: String::new(),
             canonical: canonical.to_string(),
+            template: None,
         }
     }
 
