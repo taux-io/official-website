@@ -400,6 +400,18 @@ date_published = "2026-08-09"
   description = "MCP（Model Context Protocol）让 AI 应用程序接上外部数据与工具。白话解释 host、client、server 三个角色，以及 prompts、resources、tools 的差别在于「谁决定」而不是读或写。依规格修订版 2026-07-28 撰写。"
   canonical   = "https://taux.io/zh-Hans-CN/what-is-mcp"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/what-is-mcp.html"
+  title       = "MCP とは何か｜Model Context Protocol をやさしく | TauX"
+  description = "host・client・server の三つの役割。prompts・resources・tools の違いが「読み対書き」ではなく「誰が決めるか」にある理由。そして 2026-07-28 の改訂が何を取り除いたか。"
+  canonical   = "https://taux.io/ja-JP/what-is-mcp"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/what-is-mcp.html"
+  title       = "MCP란 무엇인가｜Model Context Protocol 쉽게 보기 | TauX"
+  description = "host·client·server 세 역할. prompts·resources·tools의 차이가 「읽기 대 쓰기」가 아니라 「누가 정하는가」에 있는 이유. 그리고 2026-07-28 개정이 무엇을 걷어냈는지."
+  canonical   = "https://taux.io/ko-KR/what-is-mcp"
+
   [page.locale.en-US]
   template    = "en-US/what-is-mcp.html"
   title       = "What is MCP? The Model Context Protocol explained | TauX"

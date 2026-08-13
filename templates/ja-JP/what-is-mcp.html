@@ -1,0 +1,299 @@
+{% include "header.html" %}
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/what-is-mcp#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP"
+                },
+                {"@type":"ListItem","position": 2,"name":"MCP とは","item":"https://taux.io/ja-JP/what-is-mcp"
+                }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/ja-JP/what-is-mcp#article","headline":"MCP とは何か。Model Context Protocol をやさしく","description":"MCP（Model Context Protocol）は AI アプリケーションを外部のデータとツールにつなぎます。host・client・server の三つの役割と、prompts・resources・tools の違いが「誰が決めるか」にあることを平たく説明します。仕様の改訂版 2026-07-28 にもとづく。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/what-is-mcp" }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 px-6 bg-surface">
+    <article class="max-w-4xl mx-auto relative z-10">
+
+        <header class="band mb-20">
+            <div class="tag mb-6">AI の技術メモ</div>
+            <h1 class="mb-8">
+                <span class="display-lead">Model Context Protocol</span>
+                <span class="display-sub">MCP は何を解こうとしているのか</span>
+            </h1>
+            <p class="text-lg max-w-prose leading-relaxed">
+                MCP は<strong>共通の配線規格</strong>です。AI アプリケーションを、外部のデータやツールにつなぐためのものです。ここでは三つの役割、提供される三種類のもの、そして 2026 年の改訂で何がひっくり返ったのかを、平たく説明します。
+            </p>
+            <p class="font-sans text-eyebrow uppercase mt-8">
+                仕様の改訂版 <span>2026-07-28</span> にもとづく
+            </p>
+        </header>
+
+        <!-- ① ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="what">01 — ひとことで</h2>
+            </div>
+            <p class="text-2xl tablet:text-3xl font-display leading-snug mb-8 max-w-prose">
+                どの AI アプリケーションからでも、同じやり方でどのデータ源にもつなげる。それが MCP です。
+            </p>
+            <p class="max-w-prose leading-relaxed">
+                正式名称は Model Context Protocol。Anthropic が 2024 年に提案しましたが、<strong>2025 年 12 月以降は Anthropic のものではありません</strong>。仕様は Agentic AI Foundation（Linux Foundation の下で Block、OpenAI とともに設立）へ寄贈され、いまはコミュニティが運営しています。
+            </p>
+        </section>
+
+        <!-- ② ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="why">02 — なぜ要るのか</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-8">
+                AI アプリケーションが 4 つ、つなぎたい先が 5 つあるとします。Google Drive、GitHub、データベース、Slack、社内 API。
+            </p>
+            <div class="border border-line p-8 mb-8">
+                <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
+                    <div>
+                        <p class="eyebrow mb-4">共通の規格がない場合</p>
+                        <p class="font-sans text-3xl mb-3">4 × 5 = 20</p>
+                        <p class="text-sm leading-relaxed">「アプリ × データ源」の組み合わせごとに、その都度つなぎ込みを書きます。アプリが 1 つ増えれば 5 組、データ源が 1 つ増えれば 4 組。</p>
+                    </div>
+                    <div>
+                        <p class="eyebrow mb-4">共通の規格がある場合</p>
+                        <p class="font-sans text-3xl mb-3">4 + 5 = 9</p>
+                        <p class="text-sm leading-relaxed">アプリは「クライアントのふるまい」を一度書くだけ。データ源は「サーバのふるまい」を一度書くだけ。</p>
+                    </div>
+                </div>
+            </div>
+            <p class="max-w-prose leading-relaxed">
+                これが <strong>N×M 問題</strong>です。MCP の価値はこの一文に尽きます。<strong>どの MCP クライアントも、どの MCP サーバにもつながる。</strong>USB と同じ話です。あれ以前は、周辺機器ごとに専用の口がありました。
+            </p>
+        </section>
+
+        <!-- ③ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="roles">03 — 三つの役割</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-10">
+                MCP には三つの役割があります。<strong>取り違えられるのは、たいてい最初の二つ</strong>です。「MCP クライアント」と言うとき、頭に浮かんでいるのはたいてい Claude Desktop ですが、あれはホストです。
+            </p>
+
+            <figure class="mb-10">
+              <div class="overflow-x-auto">
+                <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
+                    <title id="arch-title">MCP の三つの役割</title>
+                    <desc id="arch-desc">ホストの中にクライアントが三つあり、それぞれが一つのサーバにつながっています。前の二つのサーバは手元、三つ目は遠隔にあります。データベースはサーバの外側に描かれ、サーバがデータの手前に立つ仲介であることを示しています。</desc>
+
+                    <!-- Host, with the clients inside it. The nesting is the
+                         whole point of the diagram: a client is not a peer of
+                         the host, it is a part of it. -->
+                    <rect x="8" y="40" width="250" height="220" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" />
+                    <text x="20" y="30" class="font-sans" font-size="13" fill="currentColor" fill-opacity="0.8" letter-spacing="1.2">HOST</text>
+                    <text x="20" y="62" class="font-sans" font-size="12" fill="currentColor" fill-opacity="0.55">AI アプリケーション</text>
+
+                    <rect x="28" y="84" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="106" class="font-sans" font-size="12" fill="currentColor">Client 1</text>
+                    <rect x="28" y="134" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="156" class="font-sans" font-size="12" fill="currentColor">Client 2</text>
+                    <rect x="28" y="184" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="206" class="font-sans" font-size="12" fill="currentColor">Client 3</text>
+
+                    <!-- Arrows originate at the client. In this revision there
+                         are no server-initiated requests, so a bidirectional
+                         arrow here would be wrong. -->
+                    <line x1="148" y1="101" x2="420" y2="101" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="151" x2="420" y2="151" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="201" x2="420" y2="201" stroke="currentColor" stroke-opacity="0.35" />
+                    <polygon points="420,97 430,101 420,105" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,147 430,151 420,155" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,197 430,201 420,205" fill="currentColor" fill-opacity="0.6" />
+
+                    <rect x="434" y="84" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="106" class="font-sans" font-size="12" fill="currentColor">Server A</text>
+                    <rect x="434" y="134" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="156" class="font-sans" font-size="12" fill="currentColor">Server B</text>
+                    <rect x="434" y="184" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="206" class="font-sans" font-size="12" fill="currentColor">Server C</text>
+
+                    <text x="434" y="72" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.55">stdio（子プロセス）</text>
+                    <text x="434" y="240" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.55">Streamable HTTP</text>
+
+                    <!-- The data sits beyond the server: a server is a broker in
+                         front of the data, never the data itself. -->
+                    <ellipse cx="650" cy="101" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="151" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="201" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="101" x2="616" y2="101" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="151" x2="616" y2="151" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="201" x2="616" y2="201" stroke="currentColor" stroke-opacity="0.25" />
+                    <text x="616" y="280" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.45">あなたのデータ</text>
+                </svg>
+              </div>
+                <figcaption class="font-sans text-xs mt-4">
+                    クライアントはホストの<strong>中</strong>にあり、サーバ一つにつき一つ。矢印はつねにクライアント側から出ます。
+                </figcaption>
+            </figure>
+
+            <dl class="border-t border-line">
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Host（ホスト）</dt>
+                    <dd class="leading-relaxed max-w-prose">AI アプリケーションそのもの。Claude Desktop、VS Code、Claude Code はすべてホストです。モデルを持ち、会話を持ち、権限を決めます。<strong>ホストとは、その「アプリ」のことです。</strong></dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Client（クライアント）</dt>
+                    <dd class="leading-relaxed max-w-prose">ホストの<strong>中</strong>にある接続部品で、サーバ一つにつき一つ。アプリではなく、アプリの内側の部品です。VS Code が二つのサーバにつなげば、クライアントは二つになります。</dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Server（サーバ）</dt>
+                    <dd class="leading-relaxed max-w-prose">ツールとデータを外に出すプログラム。手元の機械で動かすことも、遠隔に置くこともできます。<strong>会話は見えず、ほかのサーバも見えません。</strong>意図してそう設計されています。</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- ④ 互動 --------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="primitives">04 — サーバが出すもの</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-4">
+                サーバが出すものは三種類。その違いは<strong>「読み」対「書き」ではありません</strong>。そこがいちばんよくある取り違えです。
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                ほんとうの違いは<strong>誰が使うと決めるか</strong>です。次の三つの場面で、答えはそれぞれ違います。
+            </p>
+
+            <div data-mcp-primitives class="border border-line">
+                <div data-tablist class="flex flex-col tablet:flex-row border-b border-line">
+                    <button type="button" data-scenario="resource" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        AI に自分のファイルを読ませたい
+                    </button>
+                    <button type="button" data-scenario="tool" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        AI にチケットを起票させたい
+                    </button>
+                    <button type="button" data-scenario="prompt" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        用意されたレビューの手順を使いたい
+                    </button>
+                </div>
+
+                <section data-panel="resource" class="p-8">
+                    <p class="eyebrow mb-4">答え：<strong>Resource</strong> — 決めるのはアプリ</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        書類を会話にドラッグする、あるいはホストが「この質問にはこのファイルが要る」と判断する。決めているのは<strong>アプリ</strong>で、モデルではありません。モデルは中身を受け取っただけです。
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        よくある例：ファイルの中身、git の履歴、データベースのスキーマ。
+                    </p>
+                </section>
+
+                <section data-panel="tool" class="p-8">
+                    <p class="eyebrow mb-4">答え：<strong>Tool</strong> — 決めるのはモデル</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        「このバグをチケットにして」と言えば、どの機能をどんな引数で呼ぶかはモデルが自分で決めます。決めているのは<strong>モデル</strong>です。
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        ここが肝心です。<strong>読むだけの照会でも tool になり得ます。</strong>モデルが自分で「引くかどうか」を決めるなら、それは tool です。だから「読み＝resource、書き＝tool」は誤りです。
+                    </p>
+                </section>
+
+                <section data-panel="prompt" class="p-8">
+                    <p class="eyebrow mb-4">答え：<strong>Prompt</strong> — 決めるのは利用者</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        メニューから「コードレビュー」を選ぶ、スラッシュコマンドを打つ。決めているのは<strong>あなた</strong>です。モデルが勝手に使いにいくことはありません。
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        よくある例：スラッシュコマンド、定型のメニュー。
+                    </p>
+                </section>
+            </div>
+
+            <p class="font-sans text-xs mt-4">
+                ├─ 三つの場面の違いはただ一つ。誰が決めるか。
+            </p>
+        </section>
+
+        <!-- ⑤ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="transport">05 — どう運ぶか</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-6">
+                標準は二つ。<strong>stdio</strong> はサーバを子プロセスとして起動し、標準入出力でやり取りします。<strong>Streamable HTTP</strong> は一つのメッセージが一回の HTTP POST になります。<strong>これは「どう運ぶか」の違いであって、「どこにあるか」の違いではありません。</strong>手元で動くサーバでも Streamable HTTP は話せます。
+            </p>
+            <p class="max-w-prose leading-relaxed">
+                知っておく価値があるのは、<strong>安全面がまったく違う</strong>ことです。stdio はあなたの権限をそのまま引き継ぎ、認証の層がありません。HTTP のほうは OAuth が要り、送信元の確認が要ります。それと「ローカルのサーバ」とは「自分の機械で動いている」という意味であって、外に出ないという意味ではありません。手元のサーバも遠隔の API を叩きにいきます。
+            </p>
+        </section>
+
+        <!-- ⑥ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="whats-new">06 — この版で変わったこと</h2>
+            </div>
+            <p class="text-2xl font-display leading-snug mb-8 max-w-prose">
+                サーバは、もう何も覚えていません。
+            </p>
+            <p class="max-w-prose leading-relaxed mb-6">
+                <span class="font-sans">2026-07-28</span> は MCP が世に出てから最も大きな改訂で、後方互換を壊すものです。以前はクライアントがサーバと握手して接続を張り、その後は互いを覚えていました。<strong>いまは握手も、接続の段階もありません。</strong>すべての要求が自分でバージョンと身元を運び、サーバは処理し終えたら忘れます。
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                向きも変わりました。<strong>サーバのほうから問い返してくることはありません。</strong>「これが要る」と返して、その要求はそこで終わります。答えを得たクライアントが<strong>もう一度出し直します</strong>。
+            </p>
+
+            <div class="border-l border-line pl-6 mb-10">
+                <p class="eyebrow mb-4">よそでこれらを見かけたら、その資料は古い</p>
+                <ul class="font-sans text-sm space-y-2">
+                    <li>├─ <code>initialize</code> の握手</li>
+                    <li>├─ <code>Mcp-Session-Id</code> ヘッダ、プロトコル層のセッション</li>
+                    <li>├─ サーバが<strong>自分から</strong>クライアントへ要求を送ること</li>
+                    <li>└─ <code>ping</code> と <code>logging/setLevel</code> の二つのメソッド</li>
+                </ul>
+            </div>
+
+            <p class="max-w-prose leading-relaxed mb-6">
+                三つ目は誤解されやすいので、はっきり書きます。「サーバはもう何も要求できなくなった」という意味ではありません。<strong>なくなったのは「自分から送りつける」という仕組みのほうで、要求を出す能力ではありません。</strong>以前はサーバが要求を直接押し込めました。いまは応答の中で「これが要る」と述べて終わり、あとはクライアントが引き取ります。
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                ですから「サーバがクライアントに何かを求める」機能は<strong>すべて残っています。通り道が変わっただけです。</strong><strong>Elicitation</strong>（利用者に一つ情報を求める）も <strong>Sampling</strong>（ホストのモデルを借りる。向きが直感と逆なので、とりわけ誤解されます）も同じです。
+            </p>
+
+            <p class="max-w-prose leading-relaxed">
+                これとは別の話として、<strong>Roots</strong>（作業ディレクトリの範囲をサーバに伝える）、<strong>Sampling</strong>、<strong>Logging</strong> の三つが<strong>非推奨になりました</strong>。まだ動きますが、いまの構成として覚えないほうがよいものです。非推奨と、上に書いた仕組みの変更は別の話です。片方は「どう運ぶか」、もう片方は「残すかどうか」です。
+            </p>
+        </section>
+
+        <!-- ⑦ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="version">07 — このページが指す版</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-6">
+                MCP のバージョンは<strong>日付そのもの</strong>です。示しているのは「最後に互換を壊す変更をした日」であって、リリースの周期ではありません。だから手元の MCP の資料は、対応する日付を見ればどれだけ新しいかがわかります。<strong>このページから持ち帰る価値がいちばん高いのは、この一点です。</strong>
+            </p>
+            <p class="font-sans text-sm mb-10">
+                2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span>2026-07-28</span>
+            </p>
+            <div class="border border-line p-8">
+                <p class="eyebrow mb-4">日付に依存する記述</p>
+                <ul class="text-sm space-y-3 leading-relaxed">
+                    <li>前節「この版で変わったこと」は <span class="font-sans">2026-07-28</span> についてのみ成り立ちます。</li>
+                    <li>非推奨になった三つが実際に削除されるのは、早くても <span class="font-sans">2027-07-28</span> 以降のいずれかの版です。</li>
+                    <li><strong>仕様から接続の段階が消えたことと、現実のサーバが無状態になったことは別です。</strong>すでに動いている多くのサーバは古い版を話し続けており、この差はしばらく残ります。</li>
+                </ul>
+            </div>
+        </section>
+
+        <nav class="border-t border-line pt-10">
+            <p class="eyebrow mb-6">次に読む</p>
+            <ul class="space-y-4">
+                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">実際に使って何かをするなら → Claude Skills 実践ガイド</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">AI 時代のもう一つの書式 → llms.txt とは何か</a></li>
+            </ul>
+        </nav>
+
+    </article>
+</div>
+
+{% include "footer.html" %}
