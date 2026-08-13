@@ -110,7 +110,7 @@
         "url": "https://taux.io",
         "name": "TauX 拓思科技",
         "alternateName": "拓思科技股份有限公司",
-        "inLanguage": "zh-Hant-TW",
+        "inLanguage": [{% for l in site_locales %}"{{ l }}"{% if not loop.last %}, {% endif %}{% endfor %}],
         "publisher": {% include "_org-ref.html" %}
       }
       ]

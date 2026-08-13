@@ -1,0 +1,261 @@
+{% include "header.html" %}
+
+<!-- Service Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/zh-Hans-CN/ai-smart-work#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首页",
+                    "item": "https://taux.io/zh-Hans-CN"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "AI 数智化内训",
+                    "item": "https://taux.io/zh-Hans-CN/ai-smart-work"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/zh-Hans-CN/ai-smart-work#service",
+            "serviceType": "AI Corporate Training",
+            "provider": {% include "_org-ref.html" %},
+            "name": "AI 数智化企业内训",
+            "description": "协助企业与个人打造专属 AI 数智化助理 (Gem)，掌握 Prompt Engineering 与 CoT 推理技术。",
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 overflow-hidden bg-surface">
+    <!-- Abstract Design -->
+    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <!-- Hero Section -->
+        <header class="band mb-16">
+            <div>
+<span class="tag mb-8">AI Corporate Training</span>
+
+                <h1 class="mb-8">
+            <span class="display-lead">From Generating to Deciding</span>
+            <span class="display-sub">95% 的人只用 AI 生成内容，5% 的人懂得用 AI 辅助决策</span>
+        </h1>
+
+                <p class="text-lg leading-relaxed max-w-prose mb-10">
+                    从「人工智能」进化到「数智化」思维。我们协助企业与个人打造专属的 AI 数智化助理 (Gem)，让 AI 不只是工具，而是你的最强大脑。
+                </p>
+
+                <a href="mailto:hello@taux.io" class="btn">
+                    预约企业内训咨询
+                </a>
+            </div>
+
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</div>
+
+<!-- Problem Section -->
+<section class="relative overflow-hidden bg-surface border-t border-line">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+        <div class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Why the Answers Are Average</span>
+                <span class="display-sub">为什么你的 AI 总是给出平庸的答案？</span>
+            </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 tablet:grid-cols-3 gap-8">
+            <div class="p-8">
+                <div class="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">Garbage In, Garbage Out</h3>
+                <p class="leading-relaxed">指令模糊，结果就模糊。不懂精确描述需求，AI 就只能给你泛泛之谈。</p>
+            </div>
+
+            <div class="p-8">
+                <div class="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">沟通断层</h3>
+                <p class="leading-relaxed">还在用搜索引擎的方式对话？AI 需要的是结构化的「工程化语言」，而非闲聊。</p>
+            </div>
+
+            <div class="p-8">
+                <div class="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">缺乏角色</h3>
+                <p class="leading-relaxed">没有设置 Persona 的 AI 就像没有灵魂的机器。赋予它角色，它才能切换视角。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Methodology -->
+<section id="methodology" class="relative overflow-hidden bg-surface border-t border-line">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="mb-16">
+            <span class="font-bold tracking-wider uppercase text-sm mb-2 block">Our
+                Methodology</span>
+            <div class="cover" data-cover>
+                <h2>
+                <span class="display-lead tablet:text-display-sm">The Craft of Asking</span>
+                <span class="display-sub">掌握 AI 沟通的「数字口才学」</span>
+            </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 laptop:grid-cols-3 gap-8">
+            <!-- Method 1 -->
+            <div class="p-8">
+                <div class="mb-6 font-semibold">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">PTCF 结构化提示词</h3>
+                <p class="mb-6">独家架构：角色 (Persona)、任务 (Task)、背景 (Context)、格式 (Format)。精准控制 AI 输出。</p>
+            </div>
+
+            <!-- Method 2 -->
+            <div class="p-8">
+                <div class="mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">深度推理 (CoT)</h3>
+                <p class="mb-6">启动逻辑区。运用思维链 (Chain of Thought)，让 AI 协助你进行复杂决策与推演。</p>
+            </div>
+
+            <!-- Method 3 -->
+            <div class="p-8">
+                <div class="mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">知识库管理 (RAG)</h3>
+                <p class="mb-6">利用 NotebookLM 打造专属大脑。将千页文档转化为可对话的智能资产。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section id="cases" class="relative overflow-hidden bg-surface border-t border-line">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <h2 class="mb-16">
+            <span class="display-lead tablet:text-display-sm">Many Roles, One Assistant</span>
+            <span class="display-sub">让 AI 成为你的百变分身</span>
+        </h2>
+        </div>
+
+        <div class="grid grid-cols-1 tablet:grid-cols-3 gap-8">
+            <div class="p-8">
+                <div class="mb-6 flex justify-center font-semibold">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-2">精准点餐模式</h3>
+                <p class="text-sm mb-4 font-semibold">应用：客户服务、订单处理</p>
+                <p class="text-sm bg-surface p-4 border-l-2 border-line">
+                    "将口语化的需求转化为标准化数据表格，像专业店员一样精准执行任务。"
+                </p>
+            </div>
+
+            <div class="p-8">
+                <div class="mb-6 flex justify-center">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-2">会议决策模拟</h3>
+                <p class="text-sm mb-4 font-semibold">应用：项目管理、风险评估</p>
+                <p class="text-sm bg-surface p-4 border-l-2 border-line">
+                    "模拟 PM、工地主任与品管经理三方辩论，针对项目风险进行交叉诘问。"
+                </p>
+            </div>
+
+            <div class="p-8">
+                <div class="mb-6 flex justify-center">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-2">自动化新闻稿</h3>
+                <p class="text-sm mb-4 font-semibold">应用：公关行销、政府文书</p>
+                <p class="text-sm bg-surface p-4 border-l-2 border-line">
+                    "输入法规与事实，自动生成符合政府风格与格式的标准新闻稿。"
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="bg-surface">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="bg-surface p-12 tablet:p-16 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
+            </div>
+            <div class="relative z-10">
+                <div class="cover" data-cover>
+                    <h2 class="mb-6">
+                        <span class="display-lead tablet:text-display-sm">Ask Well, Think Better</span>
+                        <span class="display-sub">懂得问，AI才会答；懂得想，AI才能帮</span>
+                    </h2>
+                </div>
+                <p class="text-lg mb-10 max-w-prose mx-auto">不要只是工作，要「数智化」你的工作。立即联系我们，构建您的 AI 竞争力。</p>
+                <a href="mailto:hello@taux.io" class="btn">
+                    开始咨询
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

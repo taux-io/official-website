@@ -1,0 +1,230 @@
+{% include "header.html" %}
+
+<!-- Service schema. This page answers a buying intent, so what it declares is a
+     Service with a provider — not an Article. /geo-guide keeps the Article and
+     the informational intent; the two pages take different queries on purpose
+     and are linked to each other rather than competing.
+
+     provider references the organisation declared in the header instead of
+     restating it. -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/zh-Hans-CN/geo-optimization#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首页",
+                    "item": "https://taux.io/zh-Hans-CN"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "GEO 生成式引擎优化服务",
+                    "item": "https://taux.io/zh-Hans-CN/geo-optimization"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/zh-Hans-CN/geo-optimization#service",
+            "serviceType": "Generative Engine Optimization",
+            "name": "GEO 生成式引擎优化服务",
+            "description": "针对生成式 AI 的检索与引用机制优化网站，让品牌成为 ChatGPT、Perplexity、Google AI 摘要回答问题时的引用来源。含结构化数据搭建、内容分块、实体关联与可被引用性审计。",
+            "provider": {% include "_org-ref.html" %},
+            "areaServed": "TW",
+            "availableChannel": {
+                "@type": "ServiceChannel",
+                "serviceUrl": "https://taux.io/zh-Hans-CN/geo-optimization",
+                "servicePhone": "+886-7-6211033"
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock",
+                "priceCurrency": "TWD",
+                "priceSpecification": {
+                    "@type": "PriceSpecification",
+                    "priceCurrency": "TWD",
+                    "minPrice": 80000,
+                    "maxPrice": 600000,
+                    "description": "依网站规模与内容量而定。单次审计与导入项目的区间，长期维运另计。"
+                }
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+            <span class="tag mb-6">GEO Service</span>
+            <h1 class="mb-6">
+                <span class="display-lead">Be the Answer</span>
+                <span class="display-sub">GEO 生成式引擎优化服务</span>
+            </h1>
+            <p class="text-lg max-w-[42ch] leading-relaxed">
+                搜索正在从「给你十条链接」变成「直接给你答案」。这门生意是让那个答案里有你。
+            </p>
+        </header>
+
+    </div>
+</div>
+
+<!-- What the work is -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">What We Do</span>
+                <span class="display-sub">方案内容</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
+                GEO 不是把 SEO 的做法换个名字。它问的是另一个问题：当语言模型要回答用户的问题时，你的内容是否可被检索、可被理解、可被安全引用。
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">结构化数据搭建</h3>
+                    <p class="text-sm leading-relaxed">
+                        Schema 标记、实体识别与知识图谱关联。让机器不必从版面猜你是谁、卖什么、谁写的。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">内容分块与可引用性</h3>
+                    <p class="text-sm leading-relaxed">
+                        把内容整理成模型提取得动的区块：固定结构、明确定义、每段都能单独成立地被引用。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">爬虫访问与 llms.txt</h3>
+                    <p class="text-sm leading-relaxed">
+                        AI 爬虫的访问政策盘点与 llms.txt 搭建，决定哪些内容开放给模型、以什么形式开放。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">引用率量测</h3>
+                    <p class="text-sm leading-relaxed">
+                        建立基准线并持续追踪：在主要生成式引擎上，你的品牌被提及与被引用的变化。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- How it runs -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">执行流程</span>
+            </h2>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    1</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">现况审计</h3>
+                    <p class="leading-relaxed">
+                        盘点结构化数据、内容结构、爬虫访问与实体声明，并在动工前记录可被引用性的基准线。没有基准线就无法判断之后的改动有没有用。
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    2</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">修正与搭建</h3>
+                    <p class="leading-relaxed">
+                        依审计结果修正实体声明与结构化数据、重整内容分块、建立 llms.txt。改动一次上线，让效果归因得出来。
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    3</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">量测与交付</h3>
+                    <p class="leading-relaxed">
+                        6–8 周后对照基准线，交出实际的变化而不是宣称。含自动化检查，让修好的东西不会在下一次改版时悄悄退化。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Deliverables and price -->
+<div class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What You Get</span>
+                <span class="display-sub">交付物</span>
+            </h2>
+            </div>
+            <ul class="space-y-4 max-w-[46ch]">
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>现况审计报告，含具体问题清单与优先级</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>结构化数据与实体声明的实作（我们动手，不只给建议）</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt 与 AI 爬虫访问政策</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>可持续执行的自动化检查，接进你的 CI</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>基准线与 6–8 周后的对照报告</span></li>
+            </ul>
+        </section>
+
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What It Costs</span>
+                <span class="display-sub">报价区间</span>
+            </h2>
+            </div>
+            <div class="border-t border-line pt-6 max-w-[46ch]">
+                <p class="font-sans text-2xl mb-4">NT$ 80,000 – 600,000</p>
+                <p class="leading-relaxed">
+                    区间取决于网站规模、内容量与既有结构的状况。单次审计在下缘，含实作与量测的完整导入在中段以上，长期维运另计。
+                </p>
+                <p class="leading-relaxed mt-4">
+                    先聊一次，我们会给你一个依实际范围算出来的数字，而不是先报价再凑范围。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-12">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                <span class="display-sub">想知道现在的网站站在哪里？</span>
+            </h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                告诉我们你的网址，我们先做一次免费的初步查看，说明最值得先修的三件事。
+            </p>
+            <a href="mailto:hello@taux.io" class="btn">预约 GEO 咨询</a>
+        </section>
+
+        <section class="border-t border-line pt-12 mt-16">
+            <p>
+                还在了解 GEO 是什么？先读
+                <a href="/{{ locale }}/geo-guide" class="underline">GEO 入门指南</a>，
+                那篇教你怎么自己做。
+            </p>
+        </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,334 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No ItemList: eight statistics are not a ranking, and
+     saying they were would misdescribe them to exactly the machines this page
+     is written for.
+
+     Source attribution matters more here than on any other page on this site.
+     The OWASP report is CC BY-SA 4.0 and can be restated entry by entry; this
+     one is proprietary commercial research. Headline findings are summarised
+     with attribution and a link, which is ordinary commentary. Nothing is
+     reproduced wholesale and nothing is presented as our own measurement. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/threat-landscape#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"全球威胁情势判读","item":"https://taux.io/zh-Hans-CN/threat-landscape" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/threat-landscape#article","headline":"2026 全球威胁报告重点拆解：CrowdStrike 的数据与它的适用限制","description":"CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组是怎么被量出来的、那对它能推论到多广代表什么。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/threat-landscape" },"citation":"CrowdStrike 2026 Global Threat Report"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hans-CN/threat-landscape#faq","mainEntity": [
+      {"@type":"Question","name":"CrowdStrike 2026 全球威胁报告的重点数据有哪些？","acceptedAnswer": {"@type":"Answer","text":"报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文档（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。"
+        }
+      },
+      {"@type":"Question","name":"什么是 breakout time？27 秒代表什么？","acceptedAnswer": {"@type":"Answer","text":"Breakout time 指攻击者从最初入侵的那台主机横向移动到环境中另一台主机所需的时间。它衡量的是防守方在攻击扩散之前必须完成侦测、判读与遏制的时间预算。27 秒是报告中记录到的最快值，不是平均值——把最快值当成平均会严重误判自己的处境。它真正的意义是：任何依赖人工判读才能启动的应变流程，在这个量级上都来不及。"
+        }
+      },
+      {"@type":"Question","name":"为什么 82% 的侦测是无恶意文档，这个数字要怎么读？","acceptedAnswer": {"@type":"Answer","text":"这个比例同时反映两件事：攻击者确实越来越少落地恶意文档，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文档行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文档特征为中心的杀毒无法覆盖大部分的侦测。"
+        }
+      },
+      {"@type":"Question","name":"厂商发布的威胁报告可以信吗？","acceptedAnswer": {"@type":"Answer","text":"可以用，但要知道它量的是什么。这类报告的数据通常来自厂商自家的产品遥测与事件应变案件，母体是它的客户群，不是全球所有组织。这不是说数字造假，而是说每一个数字都带着「在什么样的环境里、用什么样的工具、看得见什么」这三个限制。实务上的用法是把它当成趋势与攻击手法的情报来源，而不是当成自己组织风险概率的统计基础。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Security
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Threat Landscape 2026</span>
+                <span class="display-sub">全球威胁报告的数字怎么读</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组是怎么被量出来的——那决定了它能推论到多广。
+            </p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="章节索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目录</p>
+                <ul>
+                    <li><a href="#how-to-read" class="section-index-link">先讲怎么读</a></li>
+                    <li><a href="#numbers" class="section-index-link">八组数据</a></li>
+                    <li><a href="#speed" class="section-index-link">速度</a></li>
+                    <li><a href="#malware-free" class="section-index-link">无文档攻击</a></li>
+                    <li><a href="#ai" class="section-index-link">AI 加持的攻击</a></li>
+                    <li><a href="#nation-state" class="section-index-link">国家级行为者</a></li>
+                    <li><a href="#what-it-means" class="section-index-link">对防守方的意义</a></li>
+                    <li><a href="#source" class="section-index-link">来源与限制</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- The framing section. This is the page's reason to exist: the numbers
+             themselves are on CrowdStrike's own site and reproduced across
+             hundreds of posts. What is almost never said is where they come
+             from and what that bounds them to. -->
+        <section id="how-to-read" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">先讲怎么读，再看数字</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    这些数字值得看，但它们不是普查。<strong>威胁报告的数据来自厂商自家的产品遥测与事件应变案件</strong>，母体是它的客户环境——安装了端点侦测与回应（EDR）产品、多半是有预算做这件事的组织。
+                </p>
+                <p>
+                    这不是说数字造假。是说每一个数字都带着三个限制：<strong>在什么样的环境里量的、用什么工具量的、那个工具看得见什么</strong>。忽略这三件事，就会把「有 EDR 的环境里看到的样子」当成「全世界的样子」。
+                </p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">实用的判准</p>
+                    <p>
+                        把这类报告当成<strong>攻击手法与趋势的情报</strong>来用——那是它真正扎实的部分，因为那来自实际处理过的案件。<strong>不要</strong>把它的百分比当成自己组织风险概率的统计基础，那需要的是你自己环境的数据。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="numbers" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">八组数据</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                以下数字均取自 CrowdStrike 2026 全球威胁报告的公开页面。报告涵盖的是 2025 年的观测数据。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">数字</th>
+                            <th class="py-3 font-bold text-sm">意义</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
+                            <td class="py-4"><a href="#speed" >最快的 eCrime breakout time</a>——记录到的最快值，不是平均</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4"><a href="#speed" >平均 breakout 速度年增幅</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4"><a href="#malware-free" >2025 年的侦测为无恶意文档</a>（malware-free）</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4"><a href="#ai" >AI 加持的攻击者所发动的攻击增幅</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4"><a href="#ai" >组织的合法 AI 工具被滥用</a>来产生恶意指令</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4"><a href="#ai" >ChatGPT 在犯罪论坛被提及的次数</a>高于其他任何模型</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4"><a href="#nation-state" >中国系攻击者利用的漏洞针对边缘设备</a></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4"><a href="#nation-state" >国家级行为者的云端导向入侵增幅</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="speed" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">速度：27 秒与 +65%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">数字是什么</p>
+                    <p>
+                        <strong>Breakout time</strong> 指攻击者从最初入侵的那台主机，横向移动到环境中另一台主机所需的时间。它衡量的是防守方的<strong>时间预算</strong>：在攻击扩散出去之前，侦测、判读与遏制必须全部完成。报告记录到的最快值是 27 秒，平均速度年增 65%。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎么读</p>
+                    <p>
+                        <strong>27 秒是最快值，不是平均值。</strong>把它当成平均会严重误判——多数攻击没有这么快。但它有一个诚实的用法：它界定了<strong>最坏情况下你有多少时间</strong>，而任何需要人先看一眼才能启动的应变流程，在这个量级上都来不及。
+                    </p>
+                    <p class="mt-4">
+                        「+65%」比「27 秒」有用得多，因为那是同一套量测方法在两个年度之间的比较——<strong>同一支尺量两次，尺本身的偏差会抵消掉</strong>。这是厂商报告里最值得看的一类数字：年增率的可信度高于绝对值。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="malware-free" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">无文档攻击：82%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">数字是什么</p>
+                    <p>2025 年的侦测有 82% 属于「malware-free」——攻击过程中没有落地恶意文档，改用系统内置工具、合法软件与窃得的证书。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎么读</p>
+                    <p>
+                        这是整份报告里<strong>最需要小心的一个数字</strong>，因为它同时反映两件事：
+                    </p>
+                    <ol class="space-y-3 list-none mt-4">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>攻击者行为确实在改变，这一点有大量独立证据支持。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>侦测能力本身。</strong>「看得见没有文档的攻击」正是 EDR 产品的核心卖点。一个看不见行为只看得见文档的工具，它的 malware-free 比例会是零——不是因为那些攻击不存在，是因为它看不到。</span></li>
+                    </ol>
+                    <p class="mt-4">
+                        所以这个比例可靠地描述了<strong>「在有 EDR 的环境里会看到什么」</strong>，但不能直接外推成全世界的攻击组成。
+                    </p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">但实务结论不受影响</p>
+                    <p>
+                        不管真实比例是 82% 还是别的数字，方向是明确的：<strong>以文档特征为中心的杀毒，覆盖不到大部分的侦测</strong>。这个结论不需要那个百分比精确才成立。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">AI 加持的攻击：+89%、90+、+550%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">数字是什么</p>
+                    <p>
+                        AI 加持的攻击者所发动的攻击增加 89%；超过 90 个组织的<strong>合法 AI 工具</strong>被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎么读</p>
+                    <p>
+                        「AI 加持」这个标签的<strong>认定标准是厂商定义的</strong>，不同报告之间不可比较。所以「+89%」要当成同一份报告内部的趋势信号，不要拿去跟别家的数字并列。
+                    </p>
+                    <p class="mt-4">
+                        「+550%」测的是<strong>论坛提及次数</strong>，那是讨论热度的代理指标，不等于实际被用来发动攻击的次数。ChatGPT 被提最多，很大程度也反映它最普及。
+                    </p>
+                    <p class="mt-4">
+                        <strong>「90+ 组织的合法 AI 工具被滥用」是这三个里最扎实的一个</strong>——它是可数的事件，不是比例，也不是需要定义才能认定的分类。而它指向的正是这个站另一页在讲的东西：问题不在模型本身，在<strong>谁能喂它什么、以及它被授权去做什么</strong>。
+                    </p>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">延伸</span>
+                    企业自己部署的 LLM 应用要怎么防，见
+                    <a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a>——尤其是提示词注入与过度代理权那两条。
+                </p>
+            </div>
+        </section>
+
+        <section id="nation-state" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">国家级行为者：40% 与 +266%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">数字是什么</p>
+                    <p>中国系攻击者所利用的漏洞有 40% 针对<strong>边缘设备</strong>；国家级行为者的<strong>云端导向入侵</strong>增加 266%。报告点名的对手包括 OPERATOR PANDA（中国）、FAMOUS CHOLLIMA（北韩）与 PUNK SPIDER（eCrime）。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">怎么读</p>
+                    <p>
+                        归因到特定国家的判断<strong>建立在厂商自己的情报方法论上</strong>，而那套方法论不完全公开。这是威胁情报这个领域的常态，不是缺陷，但它意味着这类分类无法被外部独立验证。
+                    </p>
+                    <p class="mt-4">
+                        对台湾的组织来说，<strong>「40% 针对边缘设备」比归因本身重要得多</strong>。边缘设备——VPN 闸道、防火墙、路由器、NAS——通常不在端点防护的涵盖范围内、更新周期长、而且一旦被攻破就直接位于网络边界内侧。这是一个与「是谁做的」无关、但可以立刻拿去盘点的方向。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-it-means" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">对防守方的意义</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    把上面的限制全部扣掉之后，剩下的方向仍然成立——因为它们不依赖任何一个百分比精确：
+                </p>
+                <ol class="space-y-3 list-none">
+                    <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>应变速度是设计问题，不是人力问题。</strong>需要人先看一眼才能启动的流程，跟不上以秒计的横向移动。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>身分与证书是主战场。</strong>攻击者越少落地文档，就越依赖看起来合法的登录。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>边缘设备要进盘点。</strong>它们常常不在任何一张资产清单上，而那正是它们被选中的原因。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>你自己导入的 AI 工具是新的攻击面。</strong>报告里「合法 AI 工具被滥用」那 90 多个组织，用的是他们自己买的东西。</span></li>
+                </ol>
+                <p class="border-l border-line pl-6">
+                    这四点没有一项需要那些数字准确才成立。<strong>如果一份报告的价值取决于它的百分比是否精确，那它多半不值得拿来做决策。</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source and limits. Attribution is not a footnote on this page — it
+             is half the argument. -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">来源与限制</p>
+                <h2 class="font-display text-2xl font-bold mb-6">这些数字从哪里来</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    全部数据取自
+                    <a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="underline">CrowdStrike 2026 Global Threat Report</a>
+                    的公开页面，<strong>查证于 2026-08-06</strong>。报告涵盖 2025 年的观测数据，版权属 CrowdStrike。
+                </p>
+                <p>
+                    本页<strong>摘要其公开发布的重点并附上判读</strong>，不重制报告内容，数据与研究成果均非 TauX 所有。要看完整方法论、图表与对手侧写，请直接阅读原始报告。
+                </p>
+                <p>
+                    本页的判读、译名与对防守方的建议由 TauX 撰写，<strong>不代表 CrowdStrike 立场</strong>。指出一份报告的数据来源限制不是质疑它的诚信——那是使用任何遥测数据时都该做的事，包括我们自己产出的。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">想知道这些趋势对你的环境代表什么？</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                报告讲的是全球样态，你需要的是自己的资产清单与暴露面。那从盘点开始。
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">预约咨询</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">看数据治理服务</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

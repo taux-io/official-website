@@ -1,0 +1,175 @@
+{% include "header.html" %}
+
+<!-- Service Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/zh-Hans-CN/data-governance#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首页",
+                    "item": "https://taux.io/zh-Hans-CN"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "数据治理",
+                    "item": "https://taux.io/zh-Hans-CN/data-governance"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/zh-Hans-CN/data-governance#service",
+            "serviceType": "Data Governance Strategy",
+            "provider": {% include "_org-ref.html" %},
+            "name": "企业数据治理服务",
+            "description": "提供数据盘点、标准化与质量监控服务，协助企业建立完善磁铁般的数据资产管理体系。",
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+<span class="tag mb-6">Data Strategy</span>
+            <h1 class="mb-6">
+            <span class="display-lead">Govern the Data First</span>
+            <span class="display-sub">数据治理指南</span>
+        </h1>
+            <p class="text-lg max-w-prose mx-auto">从混乱到洞察：构建企业级的数据资产管理体系</p>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</div>
+
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">Why Governance First</span>
+                <span class="display-sub">为什么需要数据治理？</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 relative z-10 max-w-prose">
+                数据是新时代的石油，但未经提炼的石油无法驱动引擎。数据治理 (Data Governance) 是一套确保数据质量、安全性与可用性的管理框架。
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-3 gap-6 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> 准确性
+                    </div>
+                    <p class="text-sm leading-relaxed">确保决策基于事实而非杂讯。</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </span> 合规性
+                    </div>
+                    <p class="text-sm leading-relaxed">符合 GDPR、台湾个资法规范。</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> 可用性
+                    </div>
+                    <p class="text-sm leading-relaxed">打破数据孤岛，让业务端随取随用。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">核心服务流程</span>
+            </h2>
+            </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            数据盘点 (Data Inventory)</h3>
+                        <p class="leading-relaxed">像盘点仓库一样，搞清楚你有哪些数据、存在哪里、谁在负责。我们协助企业建立完整的数据目录 (Data
+                            Catalog)。</p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            标准化 (Standardization)</h3>
+                        <p class="leading-relaxed">定义统一的数据语言。例如：「营收」是含税还是未税？「客户」是指下单客户还是潜在客户？消除跨部门的鸡同鸭讲。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            数据质量监控 (Data Quality)</h3>
+                        <p class="leading-relaxed">建立自动化监测机制，实时发现空值、异常值或重复数据，在污染分析报表前就拦截修正。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mt-20 border-t border-line pt-12 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="cover" data-cover>
+                        <h2 class="mb-6">
+                        <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                        <span class="display-sub">准备好启动数据治理了吗？</span>
+                    </h2>
+                    </div>
+                    <p class="mb-10 max-w-prose mx-auto text-lg">让 TauX 协助您打通数据任督二脉，为企业 AI 转型奠定坚实基础。</p>
+
+                    <a href="mailto:hello@taux.io" class="btn">
+                        预约咨询
+                    </a>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

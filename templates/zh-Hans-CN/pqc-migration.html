@@ -1,0 +1,450 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ, no ItemList: the five steps are a sequence of work,
+     not a ranking, and a list type would say the wrong thing about them. HowTo
+     was the other candidate and is not used — Google has wound its support down
+     to almost nothing, and it would add a maintenance surface for no gain.
+
+     Every FAQ answer here is answerable from the page and from a named source
+     document. The regulatory dates in particular are the kind of thing that
+     gets restated confidently across the web without anyone checking whether
+     the document they come from is final. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/pqc-migration#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"PQC 后量子密码迁移","item":"https://taux.io/zh-Hans-CN/pqc-migration" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/pqc-migration#article","headline":"后量子密码 PQC 迁移：台湾企业的落地路径与全球法规时程","description":"从治理、CBOM 盘点、风险评估、加密敏捷性到供应链的五步骤执行路径，对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/pqc-migration" }
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hans-CN/pqc-migration#faq","mainEntity": [
+      {"@type":"Question","name":"什么是后量子密码（PQC）？","acceptedAnswer": {"@type":"Answer","text":"后量子密码（Post-Quantum Cryptography）是一类设计成能抵抗量子电脑攻击的加密算法。今天广泛使用的 RSA 与椭圆曲线密码，其安全性建立在大数分解与离散对数的困难度上，而这两个问题都能被够大的量子电脑有效解开。PQC 改用格、哈希、编码等数学结构，目前没有已知的量子算法能有效攻破。"
+        }
+      },
+      {"@type":"Question","name":"台湾企业有 PQC 的法规要求吗？","acceptedAnswer": {"@type":"Answer","text":"目前只有金融业有明确时程。金管会于 2026 年 6 月 18 日发布「金融业后量子密码迁移参考指引」，提出七大策略方向与 2026 至 2035 年的分阶段时程，适用对象包含金融机构与其重要供应商，性质为参考指引而非强制规范。数位发展部数位产业署则于 2025 年 4 月 16 日与后量子资安产业联盟发布「后量子密码迁移指引」，涵盖公钥基础设施、安全芯片、数字签章、网通设备等领域，但未订定产业别的完成期限。其他产业目前没有台湾本地的法定期限。"
+        }
+      },
+      {"@type":"Question","name":"企业该从哪一步开始做 PQC 迁移？","acceptedAnswer": {"@type":"Answer","text":"从治理开始，不是从盘点开始。金管会的指引把「PQC 政策与治理」列为第一项策略，顺序在密码技术盘点之前，理由很实际：没有人拍板谁负责、预算从哪里来，加密资产盘点做到一半就会停下来。治理确立之后才是 CBOM 密码物料清单盘点、风险导向的优先序、加密敏捷性建构，最后是供应链与采购要求的更新。"
+        }
+      },
+      {"@type":"Question","name":"什么是 CBOM 密码物料清单？","acceptedAnswer": {"@type":"Answer","text":"CBOM（Cryptography Bill of Materials）是加密资产的清册：系统里用了哪些算法、密钥长度、证书、函数库，各自在哪里、由谁维护、生命周期多长。它是 SBOM 软件物料清单的密码学对应物，也是 PQC 迁移的前提——无法盘点的东西就无法排优先序。CycloneDX 从 1.6 版起原生支持 CBOM 格式。金管会的指引把建立密码技术清单列为第二项策略，并放在 2026 至 2027 年的短期阶段。"
+        }
+      },
+      {"@type":"Question","name":"为什么现在就要动，量子电脑不是还没出现？","acceptedAnswer": {"@type":"Answer","text":"有两个彼此独立的理由。第一是「先收集、以后解密」（Harvest Now, Decrypt Later）：今天被截取的加密流量可以被保存到未来解密，所以保密年限长的数据在今天就已经暴露。第二个理由不依赖任何对量子电脑到来时间的预测——法规期限本身就存在。欧盟建议会员国在 2026 年底前启动迁移，关键基础设施在 2030 年底前完成高风险场景；金管会的分阶段时程从 2026 年开始。这些日期不管量子电脑哪一天出现都不会改变。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Data Governance
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Post-Quantum Migration</span>
+                <span class="display-sub">后量子密码的企业落地路径</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                从治理到供应链的五步骤执行路径，对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。
+            </p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index. Same component as /owasp-llm-top-10: real anchors,
+             fully usable with no script, highlight moves aria-current only.
+             Ids are named after the topic rather than numbered — the step order
+             is an editorial choice and could change; what each step is about
+             will not. -->
+        <nav data-section-index aria-label="章节索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目录</p>
+                <ul>
+                    <li><a href="#why-now" class="section-index-link">为什么是现在</a></li>
+                    <li><a href="#overview" class="section-index-link">五步骤速览</a></li>
+                    <li><a href="#governance" class="section-index-link"><span class="font-sans">00</span> 治理</a></li>
+                    <li><a href="#cbom" class="section-index-link"><span class="font-sans">01</span> CBOM 盘点</a></li>
+                    <li><a href="#risk-assessment" class="section-index-link"><span class="font-sans">02</span> 风险与合规</a></li>
+                    <li><a href="#crypto-agility" class="section-index-link"><span class="font-sans">03</span> 加密敏捷性</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span> 供应链</a></li>
+                    <li><a href="#regulatory-timeline" class="section-index-link">法规时程</a></li>
+                    <li><a href="#standards" class="section-index-link">标准现况</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Why now.
+
+             The urgency argument is built on regulatory dates rather than on
+             fear, deliberately. Harvest-now-decrypt-later is real and belongs
+             here, but the timeline for a cryptographically relevant quantum
+             computer is genuinely contested, and a page that leans its whole
+             case on a contested prediction is one contradicting headline away
+             from losing the reader. The regulatory dates do not depend on any
+             prediction being right. -->
+        <section id="why-now" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">为什么是现在</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    有两个<strong>彼此独立</strong>的理由，而它们的可靠程度不一样。分开讲，因为把两者混在一起正是这个题目在行销上最常被夸大的地方。
+                </p>
+                <div>
+                    <p class="eyebrow mb-2">理由一：先收集，以后解密</p>
+                    <p>
+                        「Harvest Now, Decrypt Later」是被广泛接受的威胁模型：今天截取到的加密流量可以被原封不动保存下来，等到有能力时再解。所以问题不是「你的数据今天安不安全」，而是<strong>「你的数据需要保密多久」</strong>。保密年限超过十年的东西——病历、保单、契约、身分证书、营业秘密——在今天就已经暴露在这个模型底下。
+                    </p>
+                    <p class="mt-4">
+                        但要诚实说一件事：<strong>能实际破解 RSA-2048 的量子电脑何时出现，估计差异非常大</strong>，从十年内到数十年都有严肃的专家支持。任何把某个具体年份讲得像已知事实的内容，都值得怀疑。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">理由二：法规期限已经存在</p>
+                    <p>
+                        这个理由<strong>不依赖任何预测</strong>，也是我们建议拿来做决策的那一个。欧盟建议会员国在 2026 年底前启动迁移、关键基础设施在 2030 年底前完成高风险场景；金管会的分阶段时程从 2026 年就开始。这些日期不管量子电脑哪一天出现都不会改变，而它们已经写在文档上。
+                    </p>
+                </div>
+                <p class="border-l border-line pl-6">
+                    换句话说：你不需要对量子电脑的时程有任何看法，也能算出该不该在今年动。
+                </p>
+            </div>
+        </section>
+
+        <!-- Overview: also the table of contents on small screens. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">五步骤速览</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                每一步标明对应金管会《金融业后量子密码迁移参考指引》七大策略的哪一条。金融业以外的产业目前没有台湾本地的法定期限，但这套顺序一样适用——而且如果你卖东西给金融机构，你已经在那份指引的适用范围内。
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">步骤</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">对应金管会策略</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">00</td>
+                            <td class="py-4 pr-4"><a href="#governance" class="font-bold">治理</a></td>
+                            <td class="py-4 hidden tablet:table-cell">① PQC 政策与治理</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">01</td>
+                            <td class="py-4 pr-4"><a href="#cbom" class="font-bold">盘点加密资产（CBOM）</a></td>
+                            <td class="py-4 hidden tablet:table-cell">② 盘点密码技术应用，建立密码技术清单</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">02</td>
+                            <td class="py-4 pr-4"><a href="#risk-assessment" class="font-bold">风险评估与合规比对</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑤ 以风险导向建立迁移优先序</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">03</td>
+                            <td class="py-4 pr-4"><a href="#crypto-agility" class="font-bold">建构加密敏捷性</a></td>
+                            <td class="py-4 hidden tablet:table-cell">③ 提升加密敏捷性，清除密码反模式</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">供应链量子安全</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑥ 更新采购与供应链管理要求</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm mt-6 max-w-prose">
+                金管会另外两条策略——④ 生态系协作机制与共通业务风险图像、⑦ 测试切换与营运韧性机制——贯穿全部五步，不单独成为一个阶段。
+            </p>
+        </section>
+
+        <section id="governance" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">步骤 00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">治理 <span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">要决定什么</p>
+                    <p>谁负责、预算从哪来、多久回报一次、由哪个既有委员会承接。PQC 迁移横跨网络安全、基础架构、应用开发与采购，没有一个部门能单独完成。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">为什么排在盘点之前</p>
+                    <p>
+                        这是金管会指引的顺序，理由很实际：<strong>CBOM 盘点会跨越几乎所有系统，需要各单位配合</strong>。没有人拍板谁负责、预算从哪里来，盘点做到一半就会停在「这不是我的工作」上。先有治理，盘点才推得动——这也是为什么金管会把它放在 2026 至 2027 年的短期阶段第一项。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">实务作法</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>挂在既有的网络安全治理架构下，不要另设一个新委员会——多一个组织就多一个开不成的会。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>明确指定一位负责人，职责涵盖盘点、优先序与供应商沟通三件事。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>把迁移写进多年期预算，而不是当成单次项目。金管会的时程拉到 2035 年，那不是一个年度预算周期能涵盖的。</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="cbom" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">步骤 01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">盘点加密资产 <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>
+                        CBOM 是<strong>加密资产的清册</strong>：系统里用了哪些算法、密钥长度、证书、函数库，各自在哪里、由谁维护、生命周期多长。它是 SBOM 软件物料清单的密码学对应物，<code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">CycloneDX</code> 从 1.6 版起原生支持这个格式。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">为什么它是整件事的前提</p>
+                    <p>
+                        <strong>无法盘点的东西无法排优先序。</strong>大多数企业说不出自己有几张证书、哪些系统还在用 SHA-1、哪个十年前的批量程序里写死了一组 RSA 密钥。没有清册，「先迁高风险的」这句话就无法执行，因为不知道哪些是高风险。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">实务作法</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>从对外的 TLS 与证书开始——最容易自动扫描，也最容易看到成果，能替后面争取到资源。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>接着是自研代码里的加密调用与相依函数库。这一层通常最脏，也最常出现「没有人知道这段在做什么」。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>最后是采购来的套装软件与硬件——这一层你自己看不到，只能问供应商，所以它与步骤 04 是同一件事的两端。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>用机器可读的格式维护，并接进既有的资产管理流程。<strong>一份会过期的清册比没有更危险</strong>，因为之后每一个决定都建立在它上面。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">与数据治理的关系</span>
+                    CBOM 本质上就是<a href="/{{ locale }}/data-governance" class="underline">数据治理</a>里那套「盘点、建目录、指定负责人、持续维护」的能力，套用在加密资产上。已经做过数据盘点的组织，这一步会快很多。
+                </p>
+            </div>
+        </section>
+
+        <section id="risk-assessment" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">步骤 02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">风险评估与合规比对 <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">要回答的问题</p>
+                    <p>清册列出来之后，哪些先迁？金管会的说法是「以风险导向建立迁移优先序」——不是全部一起迁，那既做不到也不必要。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">排序的三个维度</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>数据的保密年限。</strong>需要保密二十年的数据，今天就在 HNDL 的射程内；只需保密三个月的，风险低得多。这个维度通常最被低估。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>系统的更换周期。</strong>硬件安全模块、芯片、嵌入式设备的生命周期可能十年以上——这类东西如果今年采购时没有要求，就等于锁定到 2035 年之后。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>合规暴露。</strong>对照适用于你的规范：金融机构看金管会的分阶段时程，跨境营运看欧盟的 2030 年关键基础设施期限，卖产品到美国政府体系看联邦采购要求。</span></li>
+                    </ol>
+                </div>
+                <p class="border-l border-line pl-6">
+                    合规比对的重点不是背下所有日期，是<strong>找出「哪一条期限先咬到你」</strong>。多数台湾企业的答案不是 2035 年的 NIST，而是更早的采购与供应链要求。
+                </p>
+            </div>
+        </section>
+
+        <section id="crypto-agility" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">步骤 03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">建构加密敏捷性 <span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定义</p>
+                    <p>
+                        加密敏捷性是指<strong>在不改动应用逻辑的前提下更换加密算法的能力</strong>。算法是设置，不是写死在程序里的东西。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">为什么它比这次迁移本身更重要</p>
+                    <p>
+                        因为<strong>这不会是最后一次迁移</strong>。ML-KEM 与 ML-DSA 是目前的标准，但 NIST 已经在标准化 HQC 作为备援——理由正是「万一 ML-KEM 之后被攻破」。没有敏捷性，下一次迁移要把整个盘点与改造流程再走一遍；有敏捷性，那是换一个设置值。金管会把它列在 2026 至 2027 年的短期阶段，不是因为它急，是因为<strong>它决定了后面每一次迁移的成本</strong>。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">优先清除的「密码反模式」</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>算法与密钥长度写死在代码里，改一次要重新编译与发版。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>自行实作的加密逻辑，而不是调用集中的加密服务或函数库。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>证书与密钥的生命周期靠人工管理，没有自动轮替——轮替不了，就换不了。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>协商参数没有集中控管，散落在几十个服务各自的设置档里。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">过渡期作法</span>
+                    实务上多数系统会先走<strong>混合模式</strong>（传统算法与 PQC 算法并用），在 PQC 实作成熟度还在累积的期间保留退路。这也是敏捷性带来的直接好处：能并用，才能安全地切换。
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">步骤 04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">供应链量子安全 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">为什么这一条对台湾企业特别重要</p>
+                    <p>
+                        金管会那份指引的适用对象是<strong>「金融机构与其重要供应商」</strong>。也就是说，卖软件、硬件或服务给银行、保险、证券的公司，即使自己不是金融业，也已经在范围内——只是压力会透过采购合约而不是主管机关传过来。这对台湾的科技业与系统集成商是实际的商业影响，不是理论风险。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">实务作法</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>把 PQC 就绪度写进<strong>采购与招标要求</strong>。今年签下去的十年期硬件，如果没有要求，就等于替 2035 年埋了一颗地雷。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>要求供应商提供<strong>CBOM 或等效的加密资产说明</strong>，而不是一句「我们有在关注」。你自己看不到套装软件里面，只能靠问。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>把供应商的迁移时程纳入自己的排序——你的期限会被最慢的那个供应商决定。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>如果你是供应商：<strong>提前准备好答案</strong>。客户问到的时间，会比法规期限早得多。</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Regulatory timeline.
+
+             Every row names the document it comes from, because this is the
+             part of the page most likely to be restated elsewhere without
+             checking, and the part most likely to go stale here. Nothing in CI
+             can watch it: regulatory change does not live in this repository.
+             The verification date and the convention around date_modified are
+             the only defence, and they depend on a person. -->
+        <section id="regulatory-timeline" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">法规时程</p>
+                <h2 class="font-display text-2xl font-bold mb-6">全球规范落地进度</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed mb-8">
+                <p>
+                    <strong>本页法规状态查证于 2026-08-06。</strong>
+                    每一列都标明它来自哪一份文档。这一区没有任何自动化检查守得住——法规变动不在我们的版本控制里——所以本页的「最后更新日期」代表的是<strong>法规状态重新查过的日期</strong>，不是排版改动的日期。
+                </p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">地区</th>
+                            <th class="py-3 pr-4 font-bold text-sm">关键日期</th>
+                            <th class="py-3 font-bold text-sm">出处</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">美国</td>
+                            <td class="py-4 pr-4">112-bit 强度算法 <span class="font-sans">2030</span> 后弃用、<span class="font-sans">2035</span> 后禁用</td>
+                            <td class="py-4">NIST IR 8547，<strong>目前仍为公开草案</strong>。这两个年份被大量文章当成已定案引用，实际上尚未定稿</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">欧盟</td>
+                            <td class="py-4 pr-4">会员国 <span class="font-sans">2026</span> 年底前启动；关键基础设施高风险场景 <span class="font-sans">2030</span> 年底前完成</td>
+                            <td class="py-4">Commission Recommendation (EU) 2024/1101，2024-04-11 发布</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">台湾<br><span class="font-normal">金融业</span></td>
+                            <td class="py-4 pr-4">
+                                短期 <span class="font-sans">2026–2027</span> 治理、盘点方法、CBOM、加密敏捷性基础<br>
+                                中期 <span class="font-sans">2027–2029</span> 试办验证、基础升级、共同测试机制<br>
+                                中长期 <span class="font-sans">至 2035</span> 高风险高关键系统优先迁移
+                            </td>
+                            <td class="py-4">金管会《金融业后量子密码迁移参考指引》，2026-06-18 发布。适用金融机构<strong>与重要供应商</strong>，性质为<strong>参考指引，非强制</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold">台湾<br><span class="font-normal">全产业</span></td>
+                            <td class="py-4 pr-4"><strong>未订定完成期限</strong></td>
+                            <td class="py-4">数位发展部数位产业署与后量子资安产业联盟《后量子密码迁移指引》，2025-04-16 发布。涵盖公钥基础设施、安全芯片、数字签章、网通设备、零信任身分识别等领域</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">
+                <strong>对多数台湾企业而言，先咬到的不是这些日期，是采购合约。</strong>
+                金融机构开始把 PQC 就绪度写进招标要求的时间，会远早于 2035 年——而那是供应商真正需要准备好答案的时点。
+            </p>
+        </section>
+
+        <section id="standards" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">标准现况</p>
+                <h2 class="font-display text-2xl font-bold mb-6">哪些是标准，哪些还不是</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    这一区分开写，是因为「已定案的标准」与「还在标准化程序中的算法」经常被混为一谈，而采购与架构决策要建立在前者上。
+                </p>
+                <div>
+                    <p class="eyebrow mb-2">已定案（2024 年 8 月）</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">203</span><span><strong>ML-KEM</strong>（原 Kyber）——密钥封装机制，用于建立共享密钥</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">204</span><span><strong>ML-DSA</strong>（原 Dilithium）——数字签章，通用首选</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">205</span><span><strong>SLH-DSA</strong>（原 SPHINCS+）——哈希式数字签章，安全假设最保守</span></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">仍在标准化程序中</p>
+                    <p>
+                        <strong>HQC</strong> 于 2025-03-11 被 NIST 选为第五个算法，定位是 ML-KEM 的<strong>备援</strong>——万一格基假设日后被攻破。<strong>FN-DSA</strong>（原 Falcon）同样仍在标准化程序中。两者都<strong>尚未成为可引用的定案标准</strong>，架构与采购决策目前应建立在 FIPS 203/204/205 上。
+                    </p>
+                </div>
+                <p class="border-l border-line pl-6">
+                    HQC 的存在本身就是<a href="#crypto-agility" class="underline">加密敏捷性</a>的最佳论据：连 NIST 都在为「现在的标准日后可能不够用」准备退路。
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">来源</p>
+            <p class="leading-relaxed">
+                法规时程与标准状态取自
+                <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>、
+                <a href="https://eur-lex.europa.eu/eli/reco/2024/1101/oj/eng" target="_blank" rel="noopener noreferrer" class="underline">Commission Recommendation (EU) 2024/1101</a>、
+                <a href="https://www.fsc.gov.tw/ch/index.jsp" target="_blank" rel="noopener noreferrer" class="underline">金融监督管理委员会</a>
+                与
+                <a href="https://moda.gov.tw/ADI/news/latest-news/16090" target="_blank" rel="noopener noreferrer" class="underline">数位发展部数位产业署</a>
+                的公开文档。五步骤的对应关系依金管会《金融业后量子密码迁移参考指引》的七大策略。本页的整理、译名与实务建议由 TauX 撰写，不代表上述任何机关立场。
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">不知道自己有哪些加密资产？</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                多数组织卡在第一步。CBOM 盘点与数据治理是同一套能力，我们可以先聊聊你现在的资产目录长什么样。
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">预约咨询</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">看数据治理服务</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

@@ -1,0 +1,318 @@
+{% include "header.html" %}
+
+<!-- WebPage + FAQPage. The Organization used to be declared here too, with the
+     address and phone the about page's copy lacked and without the @id the
+     about page's copy had — two companies as far as a consumer was concerned.
+     It now lives in the header and is referenced. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://taux.io/zh-Hans-CN#webpage",
+      "name": "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎优化",
+      "description": "TauX 协助企业把 AI 变成能用的系统，而不是一场展示，提供 GEO 生成式引擎优化与技术开发服务。",
+      "url": "https://taux.io/zh-Hans-CN",
+      "isPartOf": {"@id": "https://taux.io/#website"},
+      "about": {"@id": "https://taux.io/#organization"}
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "GEO 和 SEO 有什么不同？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SEO 的目标是让用户找到你，通常是争取搜索结果前几名的蓝色链接。GEO 的目标是让 AI 直接推荐你，成为 AI 回答问题时引用的主要来源。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "费用怎么算？会很贵吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "费用取决于您的需求。一个形象网站可能在 15-50 万之间，而一个客制化的管理系统可能在 30-150 万。最好的方式是直接跟我们聊聊，我们提供免费咨询，帮您找出最方案。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "项目大概需要多久？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "一个网站大概 2-4 周，一支短视频 1-2 周。在确认需求后，会给您一份详细的时程表。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "项目结束后，你们会消失吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "我们的软件项目都包含一年的技术支持。后续也可以签订维护合约，把我们当成您的技术伙伴。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "如何开始第一步？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "寄一封 email 到 hello@taux.io，告诉我们您的想法。流程很简单：聊聊需求、我们提方案报价、签约开工。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Hero. Single column over a full-bleed tau curve: the two-column
+     copy-plus-illustration layout is SaaS landing-page grammar, and the
+     mock product shell that used to sit on the right was fabricated
+     evidence for a product that does not exist. -->
+<section id="about-us" class="band relative overflow-hidden bg-surface">
+
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-28 tablet:py-36">
+        <p class="eyebrow mb-8">TauX</p>
+
+        <h1 class="mb-10 max-w-3xl">
+            <!-- The break is written rather than left to the container. D-DIN
+                 Condensed carries the Latin and the CJK faces fall through, so
+                 the measured width of this line differs by machine; an
+                 unforced break lands in a different place on each. Breaking
+                 before "with AI" also puts the only content word in the
+                 sentence on a line of its own. -->
+            <span class="display-lead">Empower Your Business<br>with AI</span>
+            <span class="display-sub">把 AI 变成公司真正用得上的能力</span>
+        </h1>
+
+        <div class="max-w-[42ch]" itemscope itemtype="https://schema.org/Organization">
+            <blockquote class="quote my-8">
+                <p>&ldquo;重要的不是你说了什么，而是 AI 听懂了什么。&rdquo;</p>
+            </blockquote>
+
+            <p class="text-lg leading-relaxed mb-5 max-w-prose">
+                <strong itemprop="name" class="font-semibold">TauX</strong> 协助企业把 AI 变成能用的系统，而不是一场展示。
+            </p>
+
+            <p class="text-sm leading-relaxed max-w-prose" itemprop="description">
+                我们的名字源自希腊字母 <span class="font-sans">&tau;</span>（Tau，在物理学与控制工程中代表<strong class="font-normal">时间常数 Time Constant</strong>，象征系统对外部变革的响应速度与回归稳定的效率）。TauX 致力于协助企业优化其面对 AI 浪潮的时间常数，以最敏捷、沉稳的姿态完成数智化跃迁。
+            </p>
+        </div>
+
+        <div class="mt-12 flex flex-col mobile:flex-row gap-4">
+            <a href="#our-services" class="btn">探索服务</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services. Cards flattened to hairline-separated rows: without word spaces,
+     Chinese leans on rules and numbering to stay scannable, and numbered
+     sections are the native idiom of engineering documentation anyway. -->
+<section id="our-services" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/Service">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8">01 &mdash; Services</p>
+            <h2 class="mb-5 max-w-2xl">
+            <span class="display-lead tablet:text-display-sm">Become the Answer</span>
+            <span class="display-sub">我们如何帮你成为答案？</span>
+        </h2>
+        </div>
+        <p class="text-lg max-w-[42ch] mb-20">我们把复杂的技术，变成简单的服务。</p>
+
+        <div class="mb-24">
+            <p class="eyebrow mb-8">Before we start</p>
+            <p class="font-display text-lg tablet:text-2xl mb-2 max-w-prose">在动手前，我们会先问：</p>
+            <ul>
+                <li class="border-t border-line py-6 text-base">用户（或 AI）最想知道的答案是什么？</li>
+                <li class="border-t border-line py-6 text-base">这个答案，可以用更直接的方式表达吗？</li>
+                <li class="border-t border-line py-6 text-base">我们做的，是帮你被找到，还是被推荐？</li>
+            </ul>
+        </div>
+
+        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="eyebrow mb-4">01</p>
+                <h3 itemprop="name" id="geo-optimization" class="font-display text-xl tablet:text-2xl">
+                    <abbr title="Generative Engine Optimization" class="no-underline">GEO</abbr> 生成式引擎优化
+                </h3>
+            </div>
+            <div class="tablet:col-span-8">
+                <p itemprop="description" class="leading-relaxed text-base mb-6">
+                    <strong class="font-normal">定义：</strong>透过优化网站结构与内容语意，让 AI 能轻易读懂并引用的技术服务。<br>
+                    <strong class="font-normal">核心价值：</strong>建立「答案容器」，让品牌内容成为 AI 回答问题时的标准引用来源。
+                </p>
+                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center gap-2 eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">
+                    GEO 和 SEO 到底哪里不一样？ <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+        </article>
+
+        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="eyebrow mb-4">02</p>
+                <h3 itemprop="name" id="software-development" class="font-display text-xl tablet:text-2xl">软件平台开发</h3>
+            </div>
+            <div class="tablet:col-span-8">
+                <p itemprop="description" class="leading-relaxed text-base">
+                    <strong class="font-normal">定义：</strong>客制化开发高性能的 Web 应用、APP 与 SaaS 管理平台。<br>
+                    <strong class="font-normal">核心价值：</strong>不仅是写程序，更是打造能解决商业问题、具备高扩充性的数字资产。
+                </p>
+            </div>
+        </article>
+
+        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="eyebrow mb-4">03</p>
+                <h3 id="video-production" class="font-display text-xl tablet:text-2xl">短视频制作</h3>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed text-base">
+                    <strong class="font-normal">定义：</strong>针对 TikTok、Reels、Shorts 等短影音平台的内容策略与制作服务。<br>
+                    <strong class="font-normal">核心价值：</strong>在三秒内抓住眼球，将复杂的产品信息转化为易于传播的视觉语言。
+                </p>
+            </div>
+        </article>
+
+        <article class="border-t border-b border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="eyebrow mb-4">04</p>
+                <h3 id="ai-solutions" class="font-display text-xl tablet:text-2xl">AI 集成与自动化</h3>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed text-base">
+                    <strong class="font-normal">定义：</strong>集成智能客服、流程自动化与数据分析的 AI 解决方案。<br>
+                    <strong class="font-normal">核心价值：</strong>让 AI 承担重复性工作，提升团队效率，专注于创造更高价值的决策。
+                </p>
+            </div>
+        </article>
+
+        <div class="mt-24 max-w-2xl">
+            <blockquote class="font-display text-2xl tablet:text-3xl leading-snug mb-6">
+                &ldquo;最好的工具，是让你感觉不到工具的存在。&rdquo;
+            </blockquote>
+            <p class="eyebrow">Technology for Humanity</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="frequently-asked-questions" class="relative overflow-hidden bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8">02 &mdash; Questions</p>
+            <h2 class="mb-16">
+            <span class="display-lead tablet:text-display-sm">Common Questions</span>
+            <span class="display-sub">你可能想问</span>
+        </h2>
+        </div>
+
+        <details id="faq-geo-vs-seo" class="faq-details group border-t border-line">
+            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                <h3 class="font-display text-lg">GEO 和 SEO 有什么不同？</h3>
+                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </summary>
+            <div class="pb-8 text-sm leading-loose max-w-prose">
+                简单来说，SEO 的目标是让用户「找到你」，通常是争取搜索结果前几名的蓝色链接。GEO 的目标是让 AI「直接推荐你」，成为 AI 回答问题时引用的主要来源。一个是抢门票，一个是直接当主角。
+            </div>
+        </details>
+
+        <details id="faq-cost" class="faq-details group border-t border-line">
+            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                <h3 class="font-display text-lg">费用怎么算？会很贵吗？</h3>
+                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </summary>
+            <div class="pb-8 text-sm leading-loose max-w-prose">
+                费用取决于您的需求。一个形象网站可能在 15-50 万之间，而一个客制化的管理系统可能在 30-150 万。最好的方式是直接跟我们聊聊，我们提供免费咨询，帮您找出最划算的方案。
+            </div>
+        </details>
+
+        <details id="faq-timeline" class="faq-details group border-t border-line">
+            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                <h3 class="font-display text-lg">项目大概需要多久？</h3>
+                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </summary>
+            <div class="pb-8 text-sm leading-loose max-w-prose">
+                这得看项目大小。一个网站大概 2-4 周，一支短视频 1-2 周。在我们确认需求后，会给您一份详细的时程表。
+            </div>
+        </details>
+
+        <details id="faq-support" class="faq-details group border-t border-line">
+            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                <h3 class="font-display text-lg">项目结束后，你们会消失吗？</h3>
+                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </summary>
+            <div class="pb-8 text-sm leading-loose max-w-prose">
+                当然不会！我们的软件项目都包含一年的技术支持。后续也可以签订维护合约，把我们当成您的技术伙伴。我们希望长久合作，而不是做一次性生意。
+            </div>
+        </details>
+
+        <details id="faq-start" class="faq-details group border-t border-b border-line">
+            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                <h3 class="font-display text-lg">如何开始第一步？</h3>
+                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </summary>
+            <div class="pb-8 text-sm leading-loose max-w-prose">
+                寄一封 email 到 <a href="mailto:hello@taux.io" class="underline underline-offset-4 decoration-line hover:decoration-ink transition-colors">hello@taux.io</a>
+                给我们，告诉我们您的想法。流程很简单：聊聊需求 &rarr; 我们提方案报价 &rarr; 签约开工。就这么简单！
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- Related reading -->
+<section class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <p class="eyebrow mb-8">03 &mdash; Further reading</p>
+        <div data-cover="sr">
+            <h2 class="sr-only">延伸阅读</h2>
+        </div>
+        <div class="flex flex-wrap gap-x-10 gap-y-4">
+            <a href="/{{ locale }}/geo-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">GEO 入门指南</a>
+            <a href="/{{ locale }}/agent-prompting-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">指令秘籍 (Prompt Guide)</a>
+            <a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">什么是 LLMs.txt？</a>
+            <a href="/{{ locale }}/what-is-prompt-injection" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">什么是 Prompt Injection？</a>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact-us" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/ContactPage">
+    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8">04 &mdash; Contact</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">Start a Conversation</span>
+            <span class="display-sub">准备好聊聊了吗？</span>
+        </h2>
+        </div>
+
+        <p class="text-lg mb-12 max-w-[42ch] leading-relaxed">
+            告诉我们你遇到了什么问题，或是有什么疯狂的点子。我们会在 24 小时内回复你。
+        </p>
+
+        <a href="mailto:hello@taux.io" class="btn">寄信给我们</a>
+    </div>
+</section>
+
+{% include "footer.html" %}
