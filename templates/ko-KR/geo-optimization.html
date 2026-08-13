@@ -1,0 +1,230 @@
+{% include "header.html" %}
+
+<!-- Service schema. This page answers a buying intent, so what it declares is a
+     Service with a provider — not an Article. /geo-guide keeps the Article and
+     the informational intent; the two pages take different queries on purpose
+     and are linked to each other rather than competing.
+
+     provider references the organisation declared in the header instead of
+     restating it. -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/ko-KR/geo-optimization#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "홈",
+                    "item": "https://taux.io/ko-KR"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "GEO 생성형 엔진 최적화 서비스",
+                    "item": "https://taux.io/ko-KR/geo-optimization"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/ko-KR/geo-optimization#service",
+            "serviceType": "Generative Engine Optimization",
+            "name": "GEO 생성형 엔진 최적화 서비스",
+            "description": "생성형 AI의 검색과 인용 방식에 맞춰 사이트를 정리해, ChatGPT·Perplexity·Google AI 요약이 답할 때 인용하는 출처가 되도록 합니다. 구조화 데이터 정비, 콘텐츠 분할, 엔티티 연결, 인용 가능성 감사를 포함합니다.",
+            "provider": {% include "_org-ref.html" %},
+            "areaServed": "TW",
+            "availableChannel": {
+                "@type": "ServiceChannel",
+                "serviceUrl": "https://taux.io/ko-KR/geo-optimization",
+                "servicePhone": "+886-7-6211033"
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock",
+                "priceCurrency": "TWD",
+                "priceSpecification": {
+                    "@type": "PriceSpecification",
+                    "priceCurrency": "TWD",
+                    "minPrice": 80000,
+                    "maxPrice": 600000,
+                    "description": "사이트 규모와 분량에 따라 달라집니다. 단발 감사와 도입 프로젝트 사이에 폭이 있고, 장기 운영은 별도로 산정합니다."
+                }
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+            <span class="tag mb-6">GEO Service</span>
+            <h1 class="mb-6">
+                <span class="display-lead">Be the Answer</span>
+                <span class="display-sub">GEO 생성형 엔진 최적화</span>
+            </h1>
+            <p class="text-lg max-w-[42ch] leading-relaxed">
+                검색은 「링크 열 개를 주는 것」에서 「답을 바로 주는 것」으로 옮겨가고 있습니다. 이 일은 그 답 안에 당신을 넣는 일입니다.
+            </p>
+        </header>
+
+    </div>
+</div>
+
+<!-- What the work is -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">What We Do</span>
+                <span class="display-sub">하는 일</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
+                GEO는 SEO를 다르게 부른 것이 아닙니다. 묻는 것이 다릅니다. 언어 모델이 사용자의 질문에 답할 때, 당신의 콘텐츠가 찾아지고 이해되고 안심하고 인용될 수 있는 상태인가.
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">구조화 데이터 정비</h3>
+                    <p class="text-sm leading-relaxed">
+                        스키마 표기, 엔티티 식별, 지식 그래프 연결. 당신이 누구이고 무엇을 팔며 누가 썼는지를, 기계가 화면 배치에서 추측하지 않아도 되게 합니다.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">분할과 인용 가능성</h3>
+                    <p class="text-sm leading-relaxed">
+                        모델이 꺼내 갈 수 있는 단위로 정리합니다. 일정한 구조, 분명한 정의, 그리고 어느 단락이든 홀로 인용에 견딜 것.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">크롤러 접근과 llms.txt</h3>
+                    <p class="text-sm leading-relaxed">
+                        AI 크롤러의 접근 정책을 훑고 llms.txt를 마련합니다. 어디까지 모델에 열고 어떤 형태로 열지를 정합니다.
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">인용률 측정</h3>
+                    <p class="text-sm leading-relaxed">
+                        기준을 잡고 계속 따라갑니다. 주요 생성형 엔진에서 당신의 브랜드가 언급되고 인용되는 정도가 어떻게 움직였는지.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- How it runs -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">진행 방식</span>
+            </h2>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    1</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">현황 감사</h3>
+                    <p class="leading-relaxed">
+                        구조화 데이터, 콘텐츠 구조, 크롤러 접근, 엔티티 선언을 훑고, 착수 전에 인용 가능성의 기준을 기록합니다. 기준이 없으면 이후 변경이 효과가 있었는지 판단할 수 없습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    2</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">수정과 구현</h3>
+                    <p class="leading-relaxed">
+                        감사 결과에 따라 엔티티 선언과 구조화 데이터를 고치고, 분할을 다시 짜고, llms.txt를 마련합니다. 변경은 한 번에 올려 효과를 가려낼 수 있게 합니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    3</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">측정과 납품</h3>
+                    <p class="leading-relaxed">
+                        6~8주 뒤 기준과 맞춰 보고, 주장이 아니라 실제 변화를 드립니다. 고친 것이 다음 개편에서 조용히 되돌아가지 않도록 자동 검사도 함께 넣습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Deliverables and price -->
+<div class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What You Get</span>
+                <span class="display-sub">납품물</span>
+            </h2>
+            </div>
+            <ul class="space-y-4 max-w-[46ch]">
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>현황 감사 보고서. 구체적인 문제 목록과 우선순위 포함</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>구조화 데이터와 엔티티 선언 구현(조언만이 아니라 직접 손을 댑니다)</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt와 AI 크롤러 접근 정책</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>계속 돌아가는 자동 검사. 귀사의 CI에 붙입니다</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>기준값과 6~8주 뒤 비교 보고서</span></li>
+            </ul>
+        </section>
+
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What It Costs</span>
+                <span class="display-sub">비용 범위</span>
+            </h2>
+            </div>
+            <div class="border-t border-line pt-6 max-w-[46ch]">
+                <p class="font-sans text-2xl mb-4">NT$ 80,000 – 600,000</p>
+                <p class="leading-relaxed">
+                    범위는 사이트 규모, 분량, 지금 구조의 상태로 정해집니다. 단발 감사가 아래쪽, 구현과 측정까지 포함한 도입이 중간 이상, 장기 운영은 별도입니다.
+                </p>
+                <p class="leading-relaxed mt-4">
+                    먼저 한 번 이야기를 나눠 주세요. 범위를 보고 나서 숫자를 냅니다. 숫자를 먼저 내고 범위를 거기에 맞추지 않습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-12">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                <span class="display-sub">지금 사이트가 어디쯤 서 있는지</span>
+            </h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                URL을 알려 주시면 먼저 무료로 1차 점검을 하고, 먼저 고칠 값어치가 있는 세 가지를 알려 드립니다.
+            </p>
+            <a href="mailto:hello@taux.io" class="btn">GEO 상담 예약하기</a>
+        </section>
+
+        <section class="border-t border-line pt-12 mt-16">
+            <p>
+                GEO가 무엇인지부터라면 먼저
+                <a href="/{{ locale }}/geo-guide" class="underline">GEO 입문 가이드</a>
+                를 보세요. 직접 해 나가기 위한 안내입니다.
+            </p>
+        </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

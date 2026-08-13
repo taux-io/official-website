@@ -169,6 +169,18 @@ date_modified = "2026-08-05"
   description = "TauX 的 GEO 服务：结构化数据搭建、内容分块、llms.txt 与引用率量测，让品牌成为 ChatGPT、Perplexity 与 Google AI 摘要的引用来源。含现况审计、实作与 6–8 周后的成效对照。"
   canonical   = "https://taux.io/zh-Hans-CN/geo-optimization"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/geo-optimization.html"
+  title       = "GEO 生成エンジン最適化サービス｜AI の答えの中に入る | TauX"
+  description = "構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。"
+  canonical   = "https://taux.io/ja-JP/geo-optimization"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/geo-optimization.html"
+  title       = "GEO 생성형 엔진 최적화 서비스｜AI의 답 안으로 | TauX"
+  description = "구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다."
+  canonical   = "https://taux.io/ko-KR/geo-optimization"
+
   [page.locale.en-US]
   template    = "en-US/geo-optimization.html"
   title       = "Generative Engine Optimization Service | TauX"
@@ -190,6 +202,18 @@ date_modified = "2026-07-26"
   title       = "AI 智能办公解决方案｜企业 AI 导入与内训 | TauX"
   description = "用 AI 自动化工作流程、提升团队生产力。TauX 提供企业 AI 导入顾问与内训，教授 PTCF 提示词架构、CoT 深度推理与专属 Agent 打造。"
   canonical   = "https://taux.io/zh-Hans-CN/ai-smart-work"
+
+  [page.locale.ja-JP]
+  template    = "ja-JP/ai-smart-work.html"
+  title       = "企業向け AI 実務研修｜導入と社内トレーニング | TauX"
+  description = "役割を保ち、構造に従って動く AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型を学ぶ社内研修です。"
+  canonical   = "https://taux.io/ja-JP/ai-smart-work"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/ai-smart-work.html"
+  title       = "기업 대상 AI 실무 교육｜도입과 사내 트레이닝 | TauX"
+  description = "역할을 유지하고 구조를 따르는 AI 어시스턴트를 만드는 법과, 보기 좋은 것이 아니라 꾸준히 통하는 프롬프트의 형태를 익히는 사내 교육입니다."
+  canonical   = "https://taux.io/ko-KR/ai-smart-work"
 
   [page.locale.en-US]
   template    = "en-US/ai-smart-work.html"
@@ -259,6 +283,18 @@ date_modified = "2026-07-26"
   description = "用合乎 AI 标准的使用政策与治理框架保护企业数据。涵盖从数据管理到数字治理的成熟度评估与导入路径，专为传统产业数字转型设计。"
   canonical   = "https://taux.io/zh-Hans-CN/data-governance"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/data-governance.html"
+  title       = "データガバナンスと AI セキュリティ｜Data Governance | TauX"
+  description = "データの棚卸し、標準化、品質監視。AI に載せられるだけの信頼できるデータがあるかどうかを決める、その下ごしらえの部分です。"
+  canonical   = "https://taux.io/ja-JP/data-governance"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/data-governance.html"
+  title       = "데이터 거버넌스와 AI 보안｜Data Governance | TauX"
+  description = "데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업입니다."
+  canonical   = "https://taux.io/ko-KR/data-governance"
+
   [page.locale.en-US]
   template    = "en-US/data-governance.html"
   title       = "Data Governance for Enterprises | TauX"
@@ -304,6 +340,18 @@ date_published = "2026-02-12"
   title       = "llms.txt 是什么？AI 爬虫访问规范完整解析 | TauX"
   description = "llms.txt 是控制 AI 爬虫访问网站内容的新标准。解析它的定义、用途、与 robots.txt 的差异，以及它对 SEO 与 GEO 的实际影响。"
   canonical   = "https://taux.io/zh-Hans-CN/what-is-llms-txt"
+
+  [page.locale.ja-JP]
+  template    = "ja-JP/what-is-llms-txt.html"
+  title       = "llms.txt とは何か｜AI クローラ向けの書式を読み解く | TauX"
+  description = "llms.txt が何を表明できて robots.txt には何ができないのか。そして正直なところ、いまどういう位置づけなのか——使われている提案であって、批准された標準ではありません。"
+  canonical   = "https://taux.io/ja-JP/what-is-llms-txt"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/what-is-llms-txt.html"
+  title       = "llms.txt란 무엇인가｜AI 크롤러용 서식 읽기 | TauX"
+  description = "llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 그리고 솔직한 위치 — 쓰이고 있는 제안이지, 비준된 표준은 아닙니다."
+  canonical   = "https://taux.io/ko-KR/what-is-llms-txt"
 
   [page.locale.en-US]
   template    = "en-US/what-is-llms-txt.html"
@@ -493,6 +541,18 @@ date_modified = "2026-07-26"
   description = "TauX 的产品开发历程与技术决策纪录。我们公开分享打造过程中的取舍、失败与学到的事。"
   canonical   = "https://taux.io/zh-Hans-CN/building"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/building.html"
+  title       = "公開しながらつくる｜Building in Public | TauX"
+  description = "TauX の開発の記録。つくる過程での判断、うまくいかなかったこと、そこから学んだことを公開しています。"
+  canonical   = "https://taux.io/ja-JP/building"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/building.html"
+  title       = "공개하며 만드는 중｜Building in Public | TauX"
+  description = "TauX의 개발 기록. 만드는 과정에서의 판단, 실패한 것, 거기서 배운 것을 공개합니다."
+  canonical   = "https://taux.io/ko-KR/building"
+
   [page.locale.en-US]
   template    = "en-US/building.html"
   title       = "Building in Public | TauX"
@@ -549,6 +609,18 @@ date_modified = "2026-07-26"
   description = "TauX 拓思科技的隐私权政策，说明我们如何收集、使用与保护您的个人资料。了解您的数据权利与我们的安全承诺。"
   canonical   = "https://taux.io/zh-Hans-CN/privacy-policy"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/privacy-policy.html"
+  title       = "プライバシーポリシー | TauX"
+  description = "TauX 拓思科技のプライバシーポリシー。個人データをどのように収集し、利用し、保護しているかを説明します。"
+  canonical   = "https://taux.io/ja-JP/privacy-policy"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/privacy-policy.html"
+  title       = "개인정보 처리방침 | TauX"
+  description = "TauX 拓思科技의 개인정보 처리방침. 개인정보를 어떻게 수집하고 이용하며 보호하는지 설명합니다."
+  canonical   = "https://taux.io/ko-KR/privacy-policy"
+
   [page.locale.en-US]
   template    = "en-US/privacy-policy.html"
   title       = "Privacy Policy | TauX"
@@ -570,6 +642,18 @@ date_modified = "2026-07-26"
   title       = "服务条款｜Terms of Service | TauX"
   description = "TauX 拓思科技的服务条款。使用我们的网站与服务前，请详阅本条款以了解您的权利与义务，以及我们的服务范围。"
   canonical   = "https://taux.io/zh-Hans-CN/terms-of-service"
+
+  [page.locale.ja-JP]
+  template    = "ja-JP/terms-of-service.html"
+  title       = "サービス利用規約 | TauX"
+  description = "TauX 拓思科技の利用規約。当社のウェブサイトとサービスをご利用になる前に、権利と義務についてお読みください。"
+  canonical   = "https://taux.io/ja-JP/terms-of-service"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/terms-of-service.html"
+  title       = "서비스 이용약관 | TauX"
+  description = "TauX 拓思科技의 서비스 이용약관. 웹사이트와 서비스를 이용하기 전에 권리와 의무를 확인해 주세요."
+  canonical   = "https://taux.io/ko-KR/terms-of-service"
 
   [page.locale.en-US]
   template    = "en-US/terms-of-service.html"

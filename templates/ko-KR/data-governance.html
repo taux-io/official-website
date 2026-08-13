@@ -1,0 +1,173 @@
+{% include "header.html" %}
+
+<!-- Service Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/ko-KR/data-governance#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "홈",
+                    "item": "https://taux.io/ko-KR"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "데이터 거버넌스",
+                    "item": "https://taux.io/ko-KR/data-governance"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/ko-KR/data-governance#service",
+            "serviceType": "Data Governance Strategy",
+            "provider": {% include "_org-ref.html" %},
+            "name": "기업 데이터 거버넌스 지원",
+            "description": "데이터 인벤토리·표준화·품질 모니터링을 통해 기업이 데이터 자산을 관리할 수 있는 체계를 갖추도록 돕습니다.",
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+<span class="tag mb-6">Data Strategy</span>
+            <h1 class="mb-6">
+            <span class="display-lead">Govern the Data First</span>
+            <span class="display-sub">데이터 거버넌스 안내</span>
+        </h1>
+            <p class="text-lg max-w-prose mx-auto">혼란에서 통찰로. 기업 수준의 데이터 자산 관리 체계를 만듭니다</p>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</div>
+
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">Why Governance First</span>
+                <span class="display-sub">왜 거버넌스가 먼저인가</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 relative z-10 max-w-prose">
+                데이터는 새 시대의 석유라고들 합니다. 다만 정제하지 않은 석유는 엔진을 돌리지 못합니다. 데이터 거버넌스는 데이터의 품질·보안·가용성을 보장하기 위한 관리 틀입니다.
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-3 gap-6 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> 정확성
+                    </div>
+                    <p class="text-sm leading-relaxed">판단의 근거를 잡음이 아니라 사실에 둡니다.</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </span> 규제 준수
+                    </div>
+                    <p class="text-sm leading-relaxed">GDPR과 대만 개인정보보호법 요건에 맞춥니다.</p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <div class="text-xl mb-3 font-bold flex items-center">
+                        <span class="mr-2 font-semibold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </span> 가용성
+                    </div>
+                    <p class="text-sm leading-relaxed">사일로를 허물어 현업이 필요할 때 바로 꺼내 쓰게 합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">진행 방식</span>
+            </h2>
+            </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            데이터 인벤토리 (Data Inventory)</h3>
+                        <p class="leading-relaxed">창고 재고를 세듯, 어떤 데이터가 어디에 있고 누가 맡고 있는지부터 분명히 합니다. 데이터 카탈로그를 갖추는 일까지 함께합니다.</p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            표준화 (Standardization)</h3>
+                        <p class="leading-relaxed">데이터의 말을 하나로 맞춥니다. 「매출」은 세금 포함인가 아닌가. 「고객」은 주문한 곳인가, 잠재 고객까지인가. 부서끼리 말이 어긋나는 원인을 없앱니다.</p>
+                    </div>
+                </div>
+
+                <div class="border-line p-8 border-l border-line flex items-start group">
+                    <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                        3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">
+                            데이터 품질 모니터링 (Data Quality)</h3>
+                        <p class="leading-relaxed">자동으로 감시하는 장치를 두어 결측·이상치·중복을 바로 찾아냅니다. 리포트를 오염시키기 전에 잡아 고칩니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mt-20 border-t border-line pt-12 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="cover" data-cover>
+                        <h2 class="mb-6">
+                        <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                        <span class="display-sub">시작할 준비가 되셨나요</span>
+                    </h2>
+                    </div>
+                    <p class="mb-10 max-w-prose mx-auto text-lg">데이터의 흐름을 뚫고 AI 도입의 토대를 다지는 일부터 TauX가 함께합니다.</p>
+
+                    <a href="mailto:hello@taux.io" class="btn">
+                        상담 예약하기
+                    </a>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% include "footer.html" %}

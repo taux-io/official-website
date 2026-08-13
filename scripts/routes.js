@@ -157,9 +157,19 @@ const isLatin = (tag) => {
 };
 
 // The reading measure, per writing system. DESIGN.md holds the table and says
-// which of these were measured: only Hant was. The rest are read off typographic
-// convention and are marked as estimates there rather than mixed in with it.
-const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 75, Jpan: 68, Kore: 60 };
+// which of these were measured.
+//
+// `Kore` WAS 60, ON A REASON THAT TURNED OUT TO BE FALSE. The note read
+// "hangul is wider"; measured, a hangul syllable is 20.77px against a kanji's
+// 24px in the same size — it is NARROWER. At 68ch a Korean line holds about 48
+// syllables, inside the convention it was meant to respect.
+//
+// It was not a harmless spare margin either. These pages carry English legal
+// text in every locale (a deliberate decision — see the note in the templates),
+// and the probe takes its limit from `html[lang]`, so English paragraphs that
+// pass on all four other locales failed on this one at 61.3ch. A limit that
+// fires on prose it was never about is not caution, it is a false positive.
+const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 75, Jpan: 68, Kore: 68 };
 const measureFor = (tag) => {
   const l = LOCALES.find((x) => x.tag === tag);
   return (l && MEASURE_CH[l.script]) || 68;

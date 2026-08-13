@@ -1,0 +1,85 @@
+{% include "header.html" %}
+
+<!-- Schema.org JSON-LD: WebPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Terms of Service | TauX",
+  "description": "TauX 拓思科技의 서비스 이용약관. 웹사이트와 서비스를 이용하기 전에 권리와 의무를 확인해 주세요.",
+  "url": "https://taux.io/ko-KR/terms-of-service",
+  "publisher": {% include "_org-ref.html" %}
+}
+</script>
+
+<!-- THE BODY STAYS IN ENGLISH, AND THAT IS THE SITE'S EXISTING ANSWER RATHER
+     THAN AN OMISSION HERE.
+
+     The zh-Hant-TW original already serves this text in English to a Chinese
+     reader — every locale does. Legal text is the one place where a
+     translation that is nearly right is worse than one that is not attempted:
+     the words are the obligation, not a description of it.
+
+     What IS localised is everything that tells a reader and a crawler what
+     this page is: the sub-line, the title, the description. If the body is
+     ever translated it should be by someone who can be held to it, and then
+     for every locale at once — not one at a time. -->
+
+<section class="band relative bg-surface">
+    <div class="max-w-3xl mx-auto px-6">
+        <h1 class="mb-8">
+            <span class="display-lead">Terms of Service</span>
+            <span class="display-sub">서비스 이용약관</span>
+        </h1>
+
+        <div class="space-y-8">
+            <p class="mb-6">Last updated: February 17, 2026</p>
+
+            <div class="p-8">
+                <h3 class="text-xl font-display mb-4">1. Agreement to Terms</h3>
+                <p class="leading-relaxed">
+                    This website is operated by 拓思科技股份有限公司 (TauX Co., Ltd.). By accessing or using our website and services, you agree to be bound by these Terms of Service and our
+                    Privacy Policy. If you do not agree to these terms, please do not use our services.
+                </p>
+            </div>
+
+            <div class="p-8">
+                <h3 class="text-xl font-display mb-4">2. Intellectual Property Rights</h3>
+                <p class="leading-relaxed">
+                    Unless otherwise indicated, the Site and Services are our proprietary property and all source code,
+                    databases, functionality, software, website designs, audio, video, text, photographs, and graphics on
+                    the Site (collectively, the "Content") are owned or controlled by us or licensed to us.
+                </p>
+            </div>
+
+            <div class="p-8">
+                <h3 class="text-xl font-display mb-4">3. User Representations</h3>
+                <p class="leading-relaxed">
+                    By using the Site, you represent and warrant that: (1) all registration information you submit will be
+                    true, accurate, current, and complete; (2) you have the legal capacity and you agree to comply with
+                    these Terms of Service.
+                </p>
+            </div>
+
+            <div class="p-8">
+                <h3 class="text-xl font-display mb-4">4. Prohibited Activities</h3>
+                <p class="leading-relaxed">
+                    You may not access or use the Site for any purpose other than that for which we make the Site available.
+                    The Site may not be used in connection with any commercial endeavors except those that are specifically
+                    endorsed or approved by us.
+                </p>
+            </div>
+
+            <div class="p-8">
+                <h3 class="text-xl font-display mb-4">5. Governing Law</h3>
+                <p class="leading-relaxed">
+                    These Terms shall be governed by and defined following the laws of Taiwan (R.O.C). TauX Inc. and
+                    yourself irrevocably consent that the courts of Taiwan shall have exclusive jurisdiction to resolve any
+                    dispute which may arise in connection with these terms.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

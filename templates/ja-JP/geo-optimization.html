@@ -1,0 +1,230 @@
+{% include "header.html" %}
+
+<!-- Service schema. This page answers a buying intent, so what it declares is a
+     Service with a provider — not an Article. /geo-guide keeps the Article and
+     the informational intent; the two pages take different queries on purpose
+     and are linked to each other rather than competing.
+
+     provider references the organisation declared in the header instead of
+     restating it. -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/ja-JP/geo-optimization#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "ホーム",
+                    "item": "https://taux.io/ja-JP"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "GEO 生成エンジン最適化サービス",
+                    "item": "https://taux.io/ja-JP/geo-optimization"
+                }
+            ]
+        },
+        {
+            "@type": "Service",
+            "@id": "https://taux.io/ja-JP/geo-optimization#service",
+            "serviceType": "Generative Engine Optimization",
+            "name": "GEO 生成エンジン最適化サービス",
+            "description": "生成 AI の検索と引用の仕組みに合わせてサイトを整え、ChatGPT・Perplexity・Google の AI 要約が答えるときの引用元になることを目指します。構造化データの整備、コンテンツの分割、エンティティの関連づけ、引用されやすさの監査までを含みます。",
+            "provider": {% include "_org-ref.html" %},
+            "areaServed": "TW",
+            "availableChannel": {
+                "@type": "ServiceChannel",
+                "serviceUrl": "https://taux.io/ja-JP/geo-optimization",
+                "servicePhone": "+886-7-6211033"
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock",
+                "priceCurrency": "TWD",
+                "priceSpecification": {
+                    "@type": "PriceSpecification",
+                    "priceCurrency": "TWD",
+                    "minPrice": 80000,
+                    "maxPrice": 600000,
+                    "description": "サイトの規模と分量によります。単発の監査と導入プロジェクトで幅があり、継続運用は別途お見積もりします。"
+                }
+            }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 tablet:pb-32 px-6 overflow-hidden bg-surface">
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-20">
+            <span class="tag mb-6">GEO Service</span>
+            <h1 class="mb-6">
+                <span class="display-lead">Be the Answer</span>
+                <span class="display-sub">GEO 生成エンジン最適化</span>
+            </h1>
+            <p class="text-lg max-w-[42ch] leading-relaxed">
+                検索は「十本のリンクを返す」から「答えそのものを返す」へ動いています。この仕事は、その答えの中にあなたを入れることです。
+            </p>
+        </header>
+
+    </div>
+</div>
+
+<!-- What the work is -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16 relative">
+            <div class="cover" data-cover>
+                <h2 class="mb-6 relative z-10">
+                <span class="display-lead tablet:text-display-sm">What We Do</span>
+                <span class="display-sub">やること</span>
+            </h2>
+            </div>
+            <p class="text-lg leading-relaxed mb-10 max-w-[42ch] relative z-10">
+                GEO は SEO の言い換えではありません。問いが違います——言語モデルが利用者の質問に答えるとき、あなたのコンテンツは見つけられ、理解され、安心して引用できる状態にあるか。
+            </p>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">構造化データの整備</h3>
+                    <p class="text-sm leading-relaxed">
+                        スキーマの記述、エンティティの特定、ナレッジグラフへの接続。あなたが何者で、何を売り、誰が書いたのかを、機械が見た目から推測せずに済むようにします。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">分割と、引用されやすさ</h3>
+                    <p class="text-sm leading-relaxed">
+                        モデルが取り出せる単位に整えます。決まった構造、はっきりした定義、そしてどの段落も単独で引用に耐えること。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">クローラの扱いと llms.txt</h3>
+                    <p class="text-sm leading-relaxed">
+                        AI クローラのアクセス方針を洗い出し、llms.txt を用意します。どこまでをモデルに開き、どんな形で開くかを決めます。
+                    </p>
+                </div>
+                <div class="border-t border-line pt-6">
+                    <h3 class="text-xl mb-3 font-bold">引用率の計測</h3>
+                    <p class="text-sm leading-relaxed">
+                        基準を取り、追い続けます。主要な生成エンジンの上で、あなたのブランドが言及され引用される度合いがどう動いたか。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- How it runs -->
+<div class="relative overflow-hidden bg-surface py-24 tablet:py-32 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="space-y-6">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">How the Work Runs</span>
+                <span class="display-sub">進め方</span>
+            </h2>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    1</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">現状の監査</h3>
+                    <p class="leading-relaxed">
+                        構造化データ、コンテンツの構造、クローラのアクセス、エンティティ宣言を洗い出し、着手前に引用されやすさの基準を記録します。基準がなければ、あとの変更が効いたかどうか判断できません。
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    2</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">修正と実装</h3>
+                    <p class="leading-relaxed">
+                        監査の結果に沿ってエンティティ宣言と構造化データを直し、分割を組み直し、llms.txt を用意します。変更はまとめて一度に出し、効果の切り分けができるようにします。
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-line p-8 border-l border-line flex items-start">
+                <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-xl font-bold flex-shrink-0 mr-6">
+                    3</div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">計測と納品</h3>
+                    <p class="leading-relaxed">
+                        6〜8 週間後に基準と突き合わせ、主張ではなく実際の変化をお渡しします。直したものが次の改修で静かに戻らないよう、自動チェックも付けます。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Deliverables and price -->
+<div class="relative overflow-hidden bg-surface py-24 px-6 border-t border-line">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What You Get</span>
+                <span class="display-sub">納品物</span>
+            </h2>
+            </div>
+            <ul class="space-y-4 max-w-[46ch]">
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>現状監査のレポート。具体的な問題の一覧と優先順位つき</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>構造化データとエンティティ宣言の実装（助言だけでなく、こちらで手を動かします）</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt と AI クローラのアクセス方針</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>継続して回る自動チェック。御社の CI に組み込みます</span></li>
+                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>基準値と、6〜8 週間後の比較レポート</span></li>
+            </ul>
+        </section>
+
+        <section class="mb-16">
+            <div class="cover" data-cover>
+                <h2 class="mb-8">
+                <span class="display-lead tablet:text-display-sm">What It Costs</span>
+                <span class="display-sub">費用の目安</span>
+            </h2>
+            </div>
+            <div class="border-t border-line pt-6 max-w-[46ch]">
+                <p class="font-sans text-2xl mb-4">NT$ 80,000 – 600,000</p>
+                <p class="leading-relaxed">
+                    幅はサイトの規模、分量、いまの構造の状態で決まります。単発の監査が下限、実装と計測まで含む導入が中位から上、継続運用は別途です。
+                </p>
+                <p class="leading-relaxed mt-4">
+                    まず一度お話しさせてください。範囲を見てから数字を出します。数字を先に出して範囲を合わせにいくことはしません。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-12">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Ready to Start</span>
+                <span class="display-sub">いまのサイトがどこに立っているか</span>
+            </h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                URL をお知らせいただければ、まず無料で一次診断を行い、先に直す価値のある三点をお伝えします。
+            </p>
+            <a href="mailto:hello@taux.io" class="btn">GEO の相談を予約する</a>
+        </section>
+
+        <section class="border-t border-line pt-12 mt-16">
+            <p>
+                GEO が何かを知るところからなら、まずは
+                <a href="/{{ locale }}/geo-guide" class="underline">GEO 入門ガイド</a>
+                を。自分で進めるための手引きです。
+            </p>
+        </section>
+    </div>
+</div>
+
+{% include "footer.html" %}
