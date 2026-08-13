@@ -609,8 +609,23 @@ status = 301
 # hand-written pairs is twenty chances to transpose one.
 
 [[redirect]]
-from = "/"
-to   = "/zh-Hant-TW"
+# THE ONE REDIRECT THAT IS NOT PERMANENT, AND THE COMMENT ABOVE SAID SO BEFORE
+# THE DATA DID.
+#
+# `status` was absent, so this took the 301 default with the other twenty while
+# the paragraph above described it as a 302. The comment was the design; the
+# data was what shipped, and what shipped is what every visitor's browser now
+# holds. A cached 301 means the browser does not ask again — so a reader who
+# has ever loaded `/` will never see a language-dependent answer here, no
+# matter what rule is added at the zone later.
+#
+# 302 because the destination is ABOUT TO DEPEND ON THE REQUEST. That is the
+# whole reason decision #58 separated this path from the other twenty: they are
+# renames and a rename is permanent, this one is a negotiation and a
+# negotiation is never permanent.
+from   = "/"
+to     = "/zh-Hant-TW"
+status = 302
 
 [[redirect]]
 from = "/geo-guide"

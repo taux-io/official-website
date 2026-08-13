@@ -162,6 +162,29 @@ npm run serve        # wrangler dev（本機，會套用 _headers）
 
 www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `_redirects` 裡——Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
 
+### `/` 的語言協商，以及那個欄位讀不到
+
+`/` 依 `Accept-Language` 送人去對應的 locale，設在 zone 的 Redirect Rules（Rules → Redirect Rules）。與 HSTS 同一個代價、同一個緩解：設定活在後台，契約測試只能對 production 斷言。
+
+**計畫裡假設可以用的欄位不能用。** `http.request.accepted_languages` 是 Cloudflare 幫你解析並依 `q=` 權重排好序的陣列，正是這件事要的東西——但它的文件寫明「only available in Transform Rules」。Redirect Rules 看不到它，只看得到生的 `http.request.headers["accept-language"]`。
+
+繞法是對生字串比對前綴，而它成立的理由要寫清楚：**瀏覽器送出的 `Accept-Language` 本來就依偏好排序**，`q=` 只用在後段。所以生字串的開頭就是使用者的第一順位，`starts_with` 拿到的答案和解析過的欄位一樣。**不一樣的情況**：客戶端亂序、或第一個標籤是 `*`。那是 302，猜錯的代價是一次跳轉，不是一個被記住的錯誤。
+
+規則依序，第一個命中的贏：
+
+| # | 條件（`http.request.uri.path eq "/"` 之外） | 目的地 |
+|---|---|---|
+| 1 | `starts_with "zh-CN"` 或 `"zh-Hans"` 或 `"zh-SG"` | `/zh-Hans-CN` |
+| 2 | `starts_with "zh"` | `/zh-Hant-TW`（含 `zh-TW`、`zh-HK`、`zh-MO`、裸 `zh`） |
+| 3 | `starts_with "en"` | `/en-US` |
+| — | 都不命中 | 落到 `_redirects` 的 `/ /zh-Hant-TW 302` |
+
+**簡體那條必須排在裸 `zh` 前面**，否則 `zh-CN` 會先被第 2 條吃掉。
+
+全部用 **302**，包含落底的那條。bot 豁免因此不需要寫成 User-Agent 判斷：爬蟲多半不送 `Accept-Language`，不命中就落底到正典 locale，這正是決策 #59 要的結果。**而且狀態碼對誰都一樣**——如果 bot 拿 301、人拿 302，那是依 User-Agent 給不同回應，離 cloaking 只差一步。同一個 302、不同目的地、由請求標頭決定，是標準的內容協商。
+
+⚠️ **`/` 曾經是 301，而且已經快取在訪客的瀏覽器裡。** 上面那段設計寫在 `site.toml` 的註解裡，但那筆 `[[redirect]]` 沒寫 `status`，於是跟其餘二十條一起吃了 301 的預設值。**註解是設計，資料是上線的東西。** 已改成 302，但改不掉別人瀏覽器裡已經存著的那一份——那些人不會再問，直接去 `/zh-Hant-TW`。這是這個缺陷真正的代價，也是為什麼它值得單獨修一次而不是等階段 ③。
+
 ### 切換期間壞掉的四件事
 
 四件都是「看起來成立、實際不成立」，而且第一版的檢查都放行了它們。記在這裡是因為每一件的**檢查方式**才是教訓，不是那個設定本身。
