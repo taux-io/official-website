@@ -151,6 +151,10 @@ Every route on the site has an English edition. These are all of them.
 -   [데이터 거버넌스와 AI 보안](https://taux.io/ko-KR/data-governance): 데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업.
 -   [llms.txt とは何か](https://taux.io/ja-JP/what-is-llms-txt): llms.txt が何を表明できて robots.txt には何ができないのか。使われている提案であって、批准された標準ではありません。
 -   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
+-   [AI プロンプト設計ガイド](https://taux.io/ja-JP/agent-prompting-guide): 何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、エージェントの設計まで。
+-   [AI 프롬프트 설계 가이드](https://taux.io/ko-KR/agent-prompting-guide): 무엇을 지정하고 무엇을 맡기며 잘됐는지 어떻게 확인하는가. 역할과 과제, 단계 지시, 출력 형식, 에이전트 설계까지.
+-   [プロンプトインジェクションとは](https://taux.io/ja-JP/what-is-prompt-injection): 仕組み、ジェイルブレイクとの違い、そして実際にリスクを下げる多層の防ぎ方。
+-   [프롬프트 인젝션이란](https://taux.io/ko-KR/what-is-prompt-injection): 작동 방식, 탈옥과의 차이, 그리고 실제로 위험을 낮추는 여러 겹의 방어.
 -   [公開しながらつくる](https://taux.io/ja-JP/building): TauX の開発の記録。準備中のページです。
 -   [공개하며 만드는 중](https://taux.io/ko-KR/building): TauX의 개발 기록. 준비 중인 페이지입니다.
 -   [プライバシーポリシー](https://taux.io/ja-JP/privacy-policy): 個人データをどのように収集し、利用し、保護しているか。本文は英語です。
