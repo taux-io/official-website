@@ -11,7 +11,7 @@
 //! adding a page in one place brings the generator, the audits and the share
 //! cards along with it.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process;
@@ -107,13 +107,30 @@ struct Document {
     noindex: bool,
 }
 
+/// The text of one page in one locale.
+///
+/// Split out from `Page` because everything above it — the path, the template,
+/// the dates — is a property of the route, and everything here is a property of
+/// the route *in a language*. Written as one flat table per page, this was
+/// twenty entries; at five locales it would have been a hundred, hand-written,
+/// with the path and template repeated five times each. site.toml's opening
+/// comment is about exactly that: declared once, parsed by a real parser in
+/// both languages.
+#[derive(Debug, Deserialize)]
+struct LocaleText {
+    title: String,
+    description: String,
+    canonical: String,
+}
+
 #[derive(Debug, Deserialize)]
 struct Page {
     path: String,
     template: String,
-    title: String,
-    description: String,
-    canonical: String,
+    /// Keyed by locale tag. A `BTreeMap` rather than a `HashMap` so the build is
+    /// reproducible: the render order decides the order pages land in the
+    /// sitemap, and a hash map would reshuffle it between runs.
+    locale: BTreeMap<String, LocaleText>,
     /// When the page's content last changed. Required, and written by hand.
     ///
     /// This used to be derived from the commit that last touched the template,
@@ -146,10 +163,13 @@ struct Page {
     noindex: bool,
 }
 
-impl Page {
+impl LocaleText {
     /// The slug the share card is filed under, derived from the canonical URL
     /// exactly as the card builder derives it. Deriving it from the route
     /// instead is how a page once advertised an image that was never generated.
+    ///
+    /// It hangs off the locale rather than the page because the canonical is
+    /// per-locale: one route, one card per language.
     fn slug(&self) -> String {
         let s = self
             .canonical
@@ -162,9 +182,17 @@ impl Page {
             s.to_string()
         }
     }
+}
 
+impl Page {
     /// Where the file has to land for the host to serve it at `path` without a
     /// visible .html.
+    ///
+    /// Takes the locale even though it does not use it yet. Issue 199 gives
+    /// every path a locale prefix, and the two writers that would then disagree
+    /// — this and the canonical in site.toml — are the pair that has to move
+    /// together. Threading it now means that change edits one body rather than
+    /// one body and every call site.
     ///
     /// These URLs are indexed, so **none of them may change without leaving a
     /// redirect behind**. This used to read "none of them may change" flatly,
@@ -180,7 +208,7 @@ impl Page {
     /// the trailing-slash form — a redirect hop on every indexed URL, and a
     /// canonical tag pointing somewhere the host will not serve directly.
     /// `geo-guide.html` is served at `/geo-guide` with no redirect at all.
-    fn output_path(&self, root: &Path) -> PathBuf {
+    fn output_path(&self, root: &Path, _locale: &str) -> PathBuf {
         if self.path == "/" {
             return root.join("index.html");
         }
@@ -226,45 +254,75 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     // file that is not there would hide it until someone loaded the site.
     let css_v = css_version(&root.join("static").join("css").join("styles.min.css"))?;
     let mut written = BTreeMap::new();
+    let mut destinations: HashSet<PathBuf> = HashSet::new();
     let mut sitemap = Vec::new();
 
     for page in &site.page {
-        let tmpl = env.get_template(&page.template)?;
-        // Titles and descriptions are escaped — one of them contains an
-        // ampersand. The two URLs are not: they are ours, from site.toml, and
-        // minijinja's HTML escaper turns every slash into &#x2f;, which is
-        // decoded correctly by parsers but is noise no reader should be served.
-        let html = tmpl.render(context! {
-            title => &page.title,
-            description => &page.description,
-            canonical => Value::from_safe_string(page.canonical.clone()),
-            // Passed explicitly rather than defaulted in the template because
-            // UndefinedBehavior::Strict makes an absent variable a build error,
-            // and that is the behaviour worth keeping.
-            noindex => page.noindex,
-            year => year,
-            css_version => &css_v,
-            og_image => Value::from_safe_string(
-                format!("{ORIGIN}/static/og/{}.png", page.slug())
-            ),
-            date_modified => &page.date_modified,
-            ..match &page.date_published {
-                Some(d) => context! { date_published => d },
-                // Absent rather than empty, so a template that wants it fails
-                // loudly under the strict undefined behaviour set above.
-                None => context! {},
-            }
-        })?;
-        let html = strip_comments(&html);
-
-        sitemap.push((page.canonical.clone(), page.date_modified.clone()));
-
-        let dest = page.output_path(&out);
-        if let Some(parent) = dest.parent() {
-            fs::create_dir_all(parent)?;
+        if page.locale.is_empty() {
+            return Err(format!("{} declares no locale", page.path).into());
         }
-        fs::write(&dest, html)?;
-        written.insert(page.path.clone(), dest.strip_prefix(&out)?.to_path_buf());
+        for (locale, text) in &page.locale {
+            let tmpl = env.get_template(&page.template)?;
+            // Titles and descriptions are escaped — one of them contains an
+            // ampersand. The two URLs are not: they are ours, from site.toml, and
+            // minijinja's HTML escaper turns every slash into &#x2f;, which is
+            // decoded correctly by parsers but is noise no reader should be served.
+            let html = tmpl.render(context! {
+                title => &text.title,
+                description => &text.description,
+                canonical => Value::from_safe_string(text.canonical.clone()),
+                // Passed explicitly rather than defaulted in the template because
+                // UndefinedBehavior::Strict makes an absent variable a build error,
+                // and that is the behaviour worth keeping.
+                noindex => page.noindex,
+                year => year,
+                css_version => &css_v,
+                og_image => Value::from_safe_string(
+                    format!("{ORIGIN}/static/og/{}.png", text.slug())
+                ),
+                date_modified => &page.date_modified,
+                ..match &page.date_published {
+                    Some(d) => context! { date_published => d },
+                    // Absent rather than empty, so a template that wants it fails
+                    // loudly under the strict undefined behaviour set above.
+                    None => context! {},
+                }
+            })?;
+            let html = strip_comments(&html);
+
+            sitemap.push((text.canonical.clone(), page.date_modified.clone()));
+
+            let dest = page.output_path(&out, locale);
+            let rel = dest.strip_prefix(&out)?.to_path_buf();
+
+            // TWO LOCALES MUST NOT LAND ON THE SAME FILE.
+            //
+            // `output_path` ignores the locale today, so a second locale added
+            // before issue 199 gives paths their prefix would silently overwrite the
+            // first: one file on disk, two entries in the sitemap, and every gate
+            // green — because they all walk the route table rather than the tree.
+            // check:entity is the only one that reads dist/, and it counts pages
+            // against site.toml, so it would report the shortfall as a broken build
+            // rather than as a collision.
+            //
+            // Guarded rather than remembered. The failure is silent, and this repo's
+            // notes open with what silent failures have cost it.
+            if !destinations.insert(rel.clone()) {
+                return Err(format!(
+                    "{} in {locale} would overwrite {} — paths need a locale prefix \
+                 before a second locale can exist (issue 199)",
+                    page.path,
+                    rel.display()
+                )
+                .into());
+            }
+
+            if let Some(parent) = dest.parent() {
+                fs::create_dir_all(parent)?;
+            }
+            fs::write(&dest, html)?;
+            written.insert(page.path.clone(), rel);
+        }
     }
 
     for doc in &site.document {
@@ -487,16 +545,24 @@ fn current_year() -> i32 {
 mod tests {
     use super::*;
 
+    const TEST_LOCALE: &str = "zh-Hant-TW";
+
     fn page(path: &str, canonical: &str) -> Page {
         Page {
             path: path.to_string(),
             template: "t.html".to_string(),
-            title: String::new(),
-            description: String::new(),
-            canonical: canonical.to_string(),
+            locale: BTreeMap::from([(TEST_LOCALE.to_string(), text(canonical))]),
             date_modified: "2026-01-01".to_string(),
             date_published: None,
             noindex: false,
+        }
+    }
+
+    fn text(canonical: &str) -> LocaleText {
+        LocaleText {
+            title: String::new(),
+            description: String::new(),
+            canonical: canonical.to_string(),
         }
     }
 
@@ -506,19 +572,21 @@ mod tests {
     // tag pointing at a form the host will not serve directly.
     #[test]
     fn home_becomes_index() {
-        let out = page("/", "https://taux.io").output_path(Path::new("dist"));
+        let out = page("/", "https://taux.io").output_path(Path::new("dist"), TEST_LOCALE);
         assert_eq!(out, Path::new("dist/index.html"));
     }
 
     #[test]
     fn routes_become_flat_files_not_directories() {
-        let out = page("/geo-guide", "https://taux.io/geo-guide").output_path(Path::new("dist"));
+        let out = page("/geo-guide", "https://taux.io/geo-guide")
+            .output_path(Path::new("dist"), TEST_LOCALE);
         assert_eq!(out, Path::new("dist/geo-guide.html"));
     }
 
     #[test]
     fn a_path_that_is_already_a_filename_keeps_its_name() {
-        let out = page("/404.html", "https://taux.io/404").output_path(Path::new("dist"));
+        let out =
+            page("/404.html", "https://taux.io/404").output_path(Path::new("dist"), TEST_LOCALE);
         assert_eq!(out, Path::new("dist/404.html"));
     }
 
@@ -527,16 +595,13 @@ mod tests {
     // that was never generated.
     #[test]
     fn slug_comes_from_the_canonical_url() {
-        assert_eq!(
-            page("/geo-guide", "https://taux.io/geo-guide").slug(),
-            "geo-guide"
-        );
+        assert_eq!(text("https://taux.io/geo-guide").slug(), "geo-guide");
     }
 
     #[test]
     fn the_home_page_slug_is_index() {
-        assert_eq!(page("/", "https://taux.io").slug(), "index");
-        assert_eq!(page("/", "https://taux.io/").slug(), "index");
+        assert_eq!(text("https://taux.io").slug(), "index");
+        assert_eq!(text("https://taux.io/").slug(), "index");
     }
 
     // A retired path defaults to 301 rather than 302. A temporary redirect

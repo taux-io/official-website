@@ -68,10 +68,30 @@ function readRedirects() {
   }));
 }
 
-// The declared surface, unedited. Every field site.toml carries reaches the
-// caller — template, both date fields, noindex — because the callers that need
-// them are the reason this export exists.
-const PAGES = (SITE.page || []).map((p) => ({ ...p }));
+// The declared surface, unedited, FLATTENED ACROSS LOCALES. Every field
+// site.toml carries reaches the caller — template, both date fields, noindex —
+// because the callers that need them are the reason this export exists.
+//
+// site.toml became two-dimensional: a route declares its path, template and
+// dates once, and each locale under it supplies title, description and
+// canonical. Flattening here rather than exposing the nesting is deliberate.
+// Every caller — check:llms, check:entity, check:dates, the contract test, the
+// contrast audit, the share-card builder — wants one entry per thing it has to
+// visit, and a page in two languages is two things to visit. Handing them the
+// nested shape would make each of them write the same loop, which is how this
+// module came to exist: "what is a page" had five definitions.
+//
+// The note above about a seam that narrows the data applies in the other
+// direction too, so `locale` rides along. A caller that needs to know which
+// language it is looking at should not have to parse it back out of the URL.
+const PAGES = (SITE.page || []).flatMap((p) => {
+  const { locale, ...route } = p;
+  return Object.entries(locale || {}).map(([tag, text]) => ({
+    ...route,
+    ...text,
+    locale: tag,
+  }));
+});
 
 // [[document]] entries are not routes: they have no `path`, they are the body a
 // static host serves for an unmatched URL. What they do have is a served path,

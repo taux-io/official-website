@@ -11,182 +11,222 @@
 [[page]]
 path        = "/"
 template    = "index.html"
-# The claim leads and the keyword follows. "GEO" is the highest-value term this
-# site ranks for and the new lead line does not contain it, so dropping it from
-# the title to make room would trade measured traffic for a slogan. Both fit.
-title       = "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎優化"
-description = "拓思科技（TauX）協助企業把 AI 變成能用的系統，而不是一場展示：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
-canonical   = "https://taux.io/"
 date_modified = "2026-08-09"
+
+  [page.locale.zh-Hant-TW]
+  # The claim leads and the keyword follows. "GEO" is the highest-value term this
+  # site ranks for and the new lead line does not contain it, so dropping it from
+  # the title to make room would trade measured traffic for a slogan. Both fit.
+  title       = "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎優化"
+  description = "拓思科技（TauX）協助企業把 AI 變成能用的系統，而不是一場展示：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
+  canonical   = "https://taux.io/"
 
 [[page]]
 path        = "/geo-guide"
 template    = "geo-guide.html"
-title       = "GEO 生成式引擎優化完整指南｜Generative Engine Optimization | TauX"
-description = "GEO 是什麼？和 SEO 差在哪？完整拆解生成式引擎優化的原理與執行方法，讓品牌成為 ChatGPT、Perplexity 等 AI 搜尋引擎回答問題時的引用來源。"
-canonical   = "https://taux.io/geo-guide"
 date_modified = "2026-07-26"
 date_published = "2025-08-15"
+
+  [page.locale.zh-Hant-TW]
+  title       = "GEO 生成式引擎優化完整指南｜Generative Engine Optimization | TauX"
+  description = "GEO 是什麼？和 SEO 差在哪？完整拆解生成式引擎優化的原理與執行方法，讓品牌成為 ChatGPT、Perplexity 等 AI 搜尋引擎回答問題時的引用來源。"
+  canonical   = "https://taux.io/geo-guide"
 
 [[page]]
 path        = "/geo-optimization"
 template    = "geo-optimization.html"
-title       = "GEO 生成式引擎優化服務｜讓品牌成為 AI 的答案 | TauX"
-description = "TauX 的 GEO 服務：結構化資料建置、內容分塊、llms.txt 與引用率量測，讓品牌成為 ChatGPT、Perplexity 與 Google AI 摘要的引用來源。含現況稽核、實作與 6–8 週後的成效對照。"
-canonical   = "https://taux.io/geo-optimization"
 date_modified = "2026-08-05"
+
+  [page.locale.zh-Hant-TW]
+  title       = "GEO 生成式引擎優化服務｜讓品牌成為 AI 的答案 | TauX"
+  description = "TauX 的 GEO 服務：結構化資料建置、內容分塊、llms.txt 與引用率量測，讓品牌成為 ChatGPT、Perplexity 與 Google AI 摘要的引用來源。含現況稽核、實作與 6–8 週後的成效對照。"
+  canonical   = "https://taux.io/geo-optimization"
 
 [[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
-title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
-description = "用 AI 自動化工作流程、提升團隊生產力。TauX 提供企業 AI 導入顧問與內訓，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。"
-canonical   = "https://taux.io/ai-smart-work"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
+  description = "用 AI 自動化工作流程、提升團隊生產力。TauX 提供企業 AI 導入顧問與內訓，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。"
+  canonical   = "https://taux.io/ai-smart-work"
 
 [[page]]
 path        = "/threat-landscape"
 template    = "threat-landscape.html"
-title       = "2026 全球威脅報告重點拆解｜CrowdStrike 數據與它的適用限制 | TauX"
-description = "CrowdStrike 2026 全球威脅報告的八組關鍵數據：27 秒 breakout、82% 無檔案偵測、AI 加持攻擊增加 89%。每一組都說明它是怎麼被量出來的，以及那對它能推論到多廣代表什麼。"
-canonical   = "https://taux.io/threat-landscape"
 date_modified = "2026-08-06"
 date_published = "2026-08-06"
+
+  [page.locale.zh-Hant-TW]
+  title       = "2026 全球威脅報告重點拆解｜CrowdStrike 數據與它的適用限制 | TauX"
+  description = "CrowdStrike 2026 全球威脅報告的八組關鍵數據：27 秒 breakout、82% 無檔案偵測、AI 加持攻擊增加 89%。每一組都說明它是怎麼被量出來的，以及那對它能推論到多廣代表什麼。"
+  canonical   = "https://taux.io/threat-landscape"
 
 [[page]]
 path        = "/pqc-migration"
 template    = "pqc-migration.html"
-title       = "後量子密碼 PQC 遷移指南｜台灣企業落地路徑與全球法規時程 | TauX"
-description = "後量子密碼遷移的五步驟執行路徑：治理、CBOM 加密資產盤點、風險評估、加密敏捷性與供應鏈。對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。"
-canonical   = "https://taux.io/pqc-migration"
 date_modified = "2026-08-06"
 date_published = "2026-08-06"
+
+  [page.locale.zh-Hant-TW]
+  title       = "後量子密碼 PQC 遷移指南｜台灣企業落地路徑與全球法規時程 | TauX"
+  description = "後量子密碼遷移的五步驟執行路徑：治理、CBOM 加密資產盤點、風險評估、加密敏捷性與供應鏈。對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。"
+  canonical   = "https://taux.io/pqc-migration"
 
 [[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
-title       = "資料治理與 AI 資安｜Data Governance | TauX"
-description = "用合乎 AI 標準的使用政策與治理框架保護企業資料。涵蓋從資料管理到數位治理的成熟度評估與導入路徑，專為傳統產業數位轉型設計。"
-canonical   = "https://taux.io/data-governance"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "資料治理與 AI 資安｜Data Governance | TauX"
+  description = "用合乎 AI 標準的使用政策與治理框架保護企業資料。涵蓋從資料管理到數位治理的成熟度評估與導入路徑，專為傳統產業數位轉型設計。"
+  canonical   = "https://taux.io/data-governance"
 
 [[page]]
 path        = "/google-workspace-with-ai"
 template    = "google-workspace-with-ai.html"
-title       = "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX"
-description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
-canonical   = "https://taux.io/google-workspace-with-ai"
 date_modified = "2026-07-26"
 date_published = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "Google Workspace AI 導入效益與 ROI 怎麼判讀 | TauX"
+  description = "Forrester 與 Google 公布的導入效益數據該怎麼看？拆解四組廠商數字的方法論、對照獨立研究，並說明為什麼自陳式的時間節省需要用量測驗證。"
+  canonical   = "https://taux.io/google-workspace-with-ai"
 
 [[page]]
 path        = "/what-is-llms-txt"
 template    = "what-is-llms-txt.html"
-title       = "llms.txt 是什麼？AI 爬蟲存取規範完整解析 | TauX"
-description = "llms.txt 是控制 AI 爬蟲存取網站內容的新標準。解析它的定義、用途、與 robots.txt 的差異，以及它對 SEO 與 GEO 的實際影響。"
-canonical   = "https://taux.io/what-is-llms-txt"
 date_modified = "2026-07-26"
 date_published = "2026-02-12"
+
+  [page.locale.zh-Hant-TW]
+  title       = "llms.txt 是什麼？AI 爬蟲存取規範完整解析 | TauX"
+  description = "llms.txt 是控制 AI 爬蟲存取網站內容的新標準。解析它的定義、用途、與 robots.txt 的差異，以及它對 SEO 與 GEO 的實際影響。"
+  canonical   = "https://taux.io/what-is-llms-txt"
 
 [[page]]
 path        = "/what-is-mcp"
 template    = "what-is-mcp.html"
-title       = "MCP 是什麼？模型上下文協定架構白話解說 | TauX"
-description = "MCP（Model Context Protocol）讓 AI 應用程式接上外部資料與工具。白話解釋 host、client、server 三個角色，以及 prompts、resources、tools 的差別在於「誰決定」而不是讀或寫。依規格修訂版 2026-07-28 撰寫。"
-canonical   = "https://taux.io/what-is-mcp"
 date_modified = "2026-08-09"
 date_published = "2026-08-09"
+
+  [page.locale.zh-Hant-TW]
+  title       = "MCP 是什麼？模型上下文協定架構白話解說 | TauX"
+  description = "MCP（Model Context Protocol）讓 AI 應用程式接上外部資料與工具。白話解釋 host、client、server 三個角色，以及 prompts、resources、tools 的差別在於「誰決定」而不是讀或寫。依規格修訂版 2026-07-28 撰寫。"
+  canonical   = "https://taux.io/what-is-mcp"
 
 [[page]]
 path        = "/what-is-prompt-injection"
 template    = "what-is-prompt-injection.html"
-title       = "什麼是 Prompt Injection 提示詞注入？AI 資安威脅解析 | TauX"
-description = "提示詞注入的攻擊原理、與越獄（Jailbreak）的差異，以及縱深防禦的實務做法。保護你的 LLM 應用不被惡意指令操控。"
-canonical   = "https://taux.io/what-is-prompt-injection"
 date_modified = "2026-07-26"
 date_published = "2026-02-17"
+
+  [page.locale.zh-Hant-TW]
+  title       = "什麼是 Prompt Injection 提示詞注入？AI 資安威脅解析 | TauX"
+  description = "提示詞注入的攻擊原理、與越獄（Jailbreak）的差異，以及縱深防禦的實務做法。保護你的 LLM 應用不被惡意指令操控。"
+  canonical   = "https://taux.io/what-is-prompt-injection"
 
 [[page]]
 path        = "/owasp-llm-top-10"
 template    = "owasp-llm-top-10.html"
-title       = "OWASP LLM Top 10 2026｜LLM 應用十大資安風險完整解析 | TauX"
-description = "OWASP Top 10 for LLM Applications 2026 十條風險逐項拆解：定義、攻擊面與防禦作法，並附 2025 到 2026 的完整排序變動與範圍調整。"
-canonical   = "https://taux.io/owasp-llm-top-10"
 date_modified = "2026-08-06"
 date_published = "2026-08-05"
+
+  [page.locale.zh-Hant-TW]
+  title       = "OWASP LLM Top 10 2026｜LLM 應用十大資安風險完整解析 | TauX"
+  description = "OWASP Top 10 for LLM Applications 2026 十條風險逐項拆解：定義、攻擊面與防禦作法，並附 2025 到 2026 的完整排序變動與範圍調整。"
+  canonical   = "https://taux.io/owasp-llm-top-10"
 
 [[page]]
 path        = "/agent-prompting-guide"
 template    = "agent-prompting-guide.html"
-title       = "AI Agent 提示詞工程指南｜從新手到高手 | TauX"
-description = "Prompt Engineering 完整指南：從單一任務指派到 AI Agent 設計模式，涵蓋提示詞架構、推理鏈與代理人工作流的實務原則。專為開發者與進階使用者撰寫。"
-canonical   = "https://taux.io/agent-prompting-guide"
 date_modified = "2026-07-26"
 date_published = "2026-02-17"
+
+  [page.locale.zh-Hant-TW]
+  title       = "AI Agent 提示詞工程指南｜從新手到高手 | TauX"
+  description = "Prompt Engineering 完整指南：從單一任務指派到 AI Agent 設計模式，涵蓋提示詞架構、推理鏈與代理人工作流的實務原則。專為開發者與進階使用者撰寫。"
+  canonical   = "https://taux.io/agent-prompting-guide"
 
 [[page]]
 path        = "/claude-skills-guide"
 template    = "claude-skills-guide.html"
-title       = "Claude Skills 實戰指南 | TauX GEO Tech"
-description = "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。"
-canonical   = "https://taux.io/claude-skills-guide"
 date_modified = "2026-07-26"
 date_published = "2026-03-02"
+
+  [page.locale.zh-Hant-TW]
+  title       = "Claude Skills 實戰指南 | TauX GEO Tech"
+  description = "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。"
+  canonical   = "https://taux.io/claude-skills-guide"
 
 [[page]]
 path        = "/adk-skill-patterns"
 template    = "adk-skill-patterns.html"
-title       = "5 種 Agent Skill 設計模式 | TauX ADK Guide"
-description = "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
-canonical   = "https://taux.io/adk-skill-patterns"
 date_modified = "2026-07-26"
 date_published = "2026-04-06"
+
+  [page.locale.zh-Hant-TW]
+  title       = "5 種 Agent Skill 設計模式 | TauX ADK Guide"
+  description = "Google Cloud 五種 ADK Agent Skill 設計模式完整解析：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。"
+  canonical   = "https://taux.io/adk-skill-patterns"
 
 [[page]]
 path        = "/agent-dev-workflow"
 template    = "agent-dev-workflow.html"
-# The subject is the flow, not the pack. Three routes already sit near this
-# topic (/claude-skills-guide, /adk-skill-patterns, /agent-prompting-guide) and
-# they all answer "what is a skill"; this one answers "what order do you run
-# them in". The slug carries no third-party handle, because a slug is permanent
-# and the pack it describes is not ours.
-title       = "AI Agent 開發流程實戰｜25 支 skill 串成的主幹七步 | TauX"
-description = "把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：grill、spec、tickets、implement、code-review 主幹七步，四個完整劇本，31 個已知坑與 14 天練習計畫。"
-canonical   = "https://taux.io/agent-dev-workflow"
 date_modified = "2026-08-13"
 date_published = "2026-08-13"
+
+  [page.locale.zh-Hant-TW]
+  # The subject is the flow, not the pack. Three routes already sit near this
+  # topic (/claude-skills-guide, /adk-skill-patterns, /agent-prompting-guide) and
+  # they all answer "what is a skill"; this one answers "what order do you run
+  # them in". The slug carries no third-party handle, because a slug is permanent
+  # and the pack it describes is not ours.
+  title       = "AI Agent 開發流程實戰｜25 支 skill 串成的主幹七步 | TauX"
+  description = "把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：grill、spec、tickets、implement、code-review 主幹七步，四個完整劇本，31 個已知坑與 14 天練習計畫。"
+  canonical   = "https://taux.io/agent-dev-workflow"
 
 [[page]]
 path        = "/building"
 template    = "building.html"
-title       = "公開打造中｜Building in Public | TauX"
-description = "TauX 的產品開發歷程與技術決策紀錄。我們公開分享打造過程中的取捨、失敗與學到的事。"
-canonical   = "https://taux.io/building"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "公開打造中｜Building in Public | TauX"
+  description = "TauX 的產品開發歷程與技術決策紀錄。我們公開分享打造過程中的取捨、失敗與學到的事。"
+  canonical   = "https://taux.io/building"
 
 [[page]]
 path        = "/about"
 template    = "about.html"
-title       = "關於 TauX 拓思科技｜AI 與 GEO 技術團隊"
-description = "認識 TauX 拓思科技團隊。我們位於高雄，專注於 GEO 生成式引擎優化與 AI 技術落地，致力於銜接人的需求與 AI 的能力。"
-canonical   = "https://taux.io/about"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "關於 TauX 拓思科技｜AI 與 GEO 技術團隊"
+  description = "認識 TauX 拓思科技團隊。我們位於高雄，專注於 GEO 生成式引擎優化與 AI 技術落地，致力於銜接人的需求與 AI 的能力。"
+  canonical   = "https://taux.io/about"
 
 [[page]]
 path        = "/privacy-policy"
 template    = "privacy-policy.html"
-title       = "隱私權政策｜Privacy Policy | TauX"
-description = "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。了解您的資料權利與我們的安全承諾。"
-canonical   = "https://taux.io/privacy-policy"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "隱私權政策｜Privacy Policy | TauX"
+  description = "TauX 拓思科技的隱私權政策，說明我們如何收集、使用與保護您的個人資料。了解您的資料權利與我們的安全承諾。"
+  canonical   = "https://taux.io/privacy-policy"
 
 [[page]]
 path        = "/terms-of-service"
 template    = "terms-of-service.html"
-title       = "服務條款｜Terms of Service | TauX"
-description = "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務，以及我們的服務範圍。"
-canonical   = "https://taux.io/terms-of-service"
 date_modified = "2026-07-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "服務條款｜Terms of Service | TauX"
+  description = "TauX 拓思科技的服務條款。使用我們的網站與服務前，請詳閱本條款以了解您的權利與義務，以及我們的服務範圍。"
+  canonical   = "https://taux.io/terms-of-service"
 
 # Generated as documents rather than declared as visitable routes. Cloudflare
 # answers any unmatched path with 404.html at a 404 status — the Go server had
