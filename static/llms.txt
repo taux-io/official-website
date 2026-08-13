@@ -143,6 +143,20 @@ Every route on the site has an English edition. These are all of them.
 
 -   [TauX 拓思科技について](https://taux.io/ja-JP/about): TauX が何をつくっているか、社名の由来（ギリシャ文字 τ、制御工学の時定数）、そして実際に納品しているもの。台湾・高雄を拠点に GEO と AI システムを手がけています。
 -   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): TauX가 무엇을 만드는지, 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수), 그리고 실제로 납품하는 것. 대만 가오슝에서 GEO와 AI 시스템을 만듭니다.
+-   [GEO 生成エンジン最適化サービス](https://taux.io/ja-JP/geo-optimization): 構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。
+-   [GEO 생성형 엔진 최적화 서비스](https://taux.io/ko-KR/geo-optimization): 구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다.
+-   [企業向け AI 実務研修](https://taux.io/ja-JP/ai-smart-work): 役割を保ち構造に従う AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型。
+-   [기업 대상 AI 실무 교육](https://taux.io/ko-KR/ai-smart-work): 역할을 유지하고 구조를 따르는 AI 어시스턴트를 만드는 법과, 보기 좋은 것이 아니라 꾸준히 통하는 프롬프트의 형태.
+-   [データガバナンスと AI セキュリティ](https://taux.io/ja-JP/data-governance): データの棚卸し、標準化、品質監視。AI に載せられるだけの信頼できるデータがあるかどうかを決める下ごしらえ。
+-   [데이터 거버넌스와 AI 보안](https://taux.io/ko-KR/data-governance): 데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업.
+-   [llms.txt とは何か](https://taux.io/ja-JP/what-is-llms-txt): llms.txt が何を表明できて robots.txt には何ができないのか。使われている提案であって、批准された標準ではありません。
+-   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
+-   [公開しながらつくる](https://taux.io/ja-JP/building): TauX の開発の記録。準備中のページです。
+-   [공개하며 만드는 중](https://taux.io/ko-KR/building): TauX의 개발 기록. 준비 중인 페이지입니다.
+-   [プライバシーポリシー](https://taux.io/ja-JP/privacy-policy): 個人データをどのように収集し、利用し、保護しているか。本文は英語です。
+-   [개인정보 처리방침](https://taux.io/ko-KR/privacy-policy): 개인정보를 어떻게 수집하고 이용하며 보호하는지. 본문은 영어입니다.
+-   [サービス利用規約](https://taux.io/ja-JP/terms-of-service): ウェブサイトとサービスの利用条件。本文は英語です。
+-   [서비스 이용약관](https://taux.io/ko-KR/terms-of-service): 웹사이트와 서비스 이용 조건. 본문은 영어입니다.
 
 
 ## 聯絡資訊

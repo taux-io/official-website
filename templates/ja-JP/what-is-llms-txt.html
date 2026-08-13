@@ -1,0 +1,285 @@
+{% include"header.html" %}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/what-is-llms-txt#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP"
+                },
+                {"@type":"ListItem","position": 2,"name":"LLMs.txt とは","item":"https://taux.io/ja-JP/what-is-llms-txt"
+                }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/ja-JP/what-is-llms-txt#article","headline":"llms.txt とは何か。AI 時代のコンテンツ利用を示す新しい書式","description":"llms.txt の定義と役割、robots.txt との違いを整理し、GEO 時代にサイト運営者がコンテンツ利用の範囲をどう示すかを解説します。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/what-is-llms-txt" }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 px-6 overflow-hidden bg-surface">
+    <!-- Background Decor -->
+    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
+    </div>
+
+    <article class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                GEO の技術メモ
+            </div>
+            <h1 class="mb-8">
+            <span class="display-lead">What is LLMs.txt</span>
+            <span class="display-sub">AI 時代のコンテンツ利用を示す書式</span>
+        </h1>
+
+            <div class="border-t border-line pt-6 p-8 border-l border-line text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 font-semibold">
+                    <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <blockquote class="text-lg relative z-10">「llms.txt は AI 時代の robots.txt のようなものです。ここは歓迎、ここは遠慮してほしい——それを大規模言語モデルに伝えるための、ただのテキストファイルです。」
+                </blockquote>
+            </div>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </article>
+</div>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
+        <!-- Section 1 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                llms.txt とは何か
+            </h2>
+            </div>
+            <div class="p-8 tablet:p-10 space-y-8">
+                <p class="text-lg leading-relaxed max-w-prose">
+                    ねらいは、サイト運営者が「どう使ってよいか」をはっきり書けるようにすることです。<strong class="font-bold">学習・要約・書き換え・引用</strong>を許すのか、制限するのか。正式な業界標準にはまだなっていませんが、AI による
+                    コンテンツ利用と知的財産の扱いを整理したいという、切実な必要から生まれています。
+                </p>
+
+                <div class="mt-8">
+                    <h3 class="text-xl font-display font-bold mb-6 border-b border-line pb-3">robots.txt との違い</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-4 px-6 font-bold">観点</th>
+                                    <th class="py-4 px-6 font-bold">robots.txt</th>
+                                    <th class="py-4 px-6 font-bold font-semibold">LLMs.txt</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm tablet:text-base">
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">相手</td>
+                                    <td class="py-4 px-6">検索エンジンのクローラ（Googlebot）</td>
+                                    <td class="py-4 px-6">大規模言語モデル（学習、質問応答）</td>
+                                </tr>
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">扱える範囲</td>
+                                    <td class="py-4 px-6">取得の可否（Allow / Disallow）</td>
+                                    <td class="py-4 px-6">より込み入った行為（学習、書き換え、引用）</td>
+                                </tr>
+                                <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                                    <td class="py-4 px-6">主なねらい</td>
+                                    <td class="py-4 px-6">インデックスの管理</td>
+                                    <td class="py-4 px-6">知的財産と、AI に許す利用の範囲</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                書き方の例
+            </h2>
+            </div>
+            <div class="grid tablet:grid-cols-2 gap-8">
+                <div class="p-8 min-w-0">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <span class="mr-3 font-semibold"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg></span> 最小の構成
+                    </h3>
+                    <div class="bg-surface p-5 text-sm font-sans overflow-x-auto">
+                        <div class="flex gap-2 mb-3 border-b border-line pb-3">
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                            <span class="w-3 h-3 rounded-full bg-ink"></span>
+                        </div>
+                        <pre class="leading-relaxed"><code># Title
+> Optional description goes here
+
+## Section name
+- [Link title](https://link_url): Optional details
+
+## Optional
+- [Link title](https://link_url)</code></pre>
+                    </div>
+                </div>
+
+                <div class="p-8 min-w-0">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <span class="mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg></span> もう少し踏み込んだ書き方
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">何をしている会社か</strong>中心となる事業を書きます。たとえば「企業向け SEO とデジタルマーケティングの会社」。</span>
+                        </li>
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">AI への申し送り</strong>どんな場面で使える内容か、対象のバージョン、出典を残してほしいという要望。</span>
+                        </li>
+                        <li class="flex items-start border-t border-line pt-6 p-4">
+                            <span class="font-semibold mr-3 mt-0.5 font-bold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg></span>
+                            <span><strong class="block mb-1">区分けした案内</strong>ページを「解説」「サービス」などに分け、構造が伝わるようにします。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="text-3xl font-display font-bold mb-8 flex items-center">
+                <span class="w-12 h-12 rounded-full font-semibold flex items-center justify-center mr-4 text-2xl">3</span>
+                なぜ llms.txt が要るのか
+            </h2>
+            </div>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">知的財産を守る</h3>
+                    <p class="text-sm leading-relaxed">自前のコンテンツが際限なく学習と生成に使われ、複製され薄まっていくのを避けます。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">データの扱いと安全</h3>
+                    <p class="text-sm leading-relaxed">投稿欄や機微な情報など、AI に触れてほしくない領域をはっきり示します。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">読まれ方の質</h3>
+                    <p class="text-sm leading-relaxed">使い方をはっきり書いておくことで、誤った引用や見当違いの解釈を減らします。</p>
+                </div>
+                <div class="p-8 min-w-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-semibold mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">サーバ負荷の調整</h3>
+                    <p class="text-sm leading-relaxed">大規模なクロールを加減し、抑えるための手立てにもなります。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="text-3xl font-display font-bold mb-12">よくある質問</h2>
+            </div>
+            <div class="space-y-4">
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: llms.txt はもう正式な標準ですか
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        まだです。いまは提案と実験の段階で、多くの AI はアクセスの可否を robots.txt で判断しています。
+                    </div>
+                </details>
+
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: 置かないとどうなりますか
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        短期に直接の不利益はありません。ただし、コンテンツは言語モデルに自由に読まれ、学習と生成に使われ続けます。
+                    </div>
+                </details>
+
+                <details class="group p-8 p-6 cursor-pointer">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center">
+                        Q: 言語モデルは llms.txt を守りますか
+                        <span class="transition-transform group-open:rotate-180 font-semibold">▼</span>
+                    </summary>
+                    <div class="mt-4 border-t border-line pt-4 leading-relaxed">
+                        各社が採用するかどうか次第です。いまはっきりしているのは、robots.txt に書かれた AI クローラ向け user-agent を守るという表明のほうです。
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-20 p-8 p-12 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="cover" data-cover>
+                    <h2 class="font-display text-3xl font-bold mb-6">サイトのコンテンツを守りたい方へ</h2>
+                </div>
+                <p class="mb-10 max-w-[42ch] text-lg">御社に合った GEO の方針と、AI 向けの設定ファイルの用意までお手伝いします。</p>
+
+                <div class="flex flex-col mobile:flex-row justify-center gap-4">
+                    <a href="mailto:hello@taux.io" class="btn">
+                        お問い合わせ
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% include"footer.html" %}
