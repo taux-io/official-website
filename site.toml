@@ -478,20 +478,20 @@ template    = "about.html"
 date_modified = "2026-07-26"
 
   [page.locale.zh-Hant-TW]
-  title       = "關於 TauX 拓思科技｜AI 與 GEO 技術團隊"
-  description = "認識 TauX 拓思科技團隊。我們位於高雄，專注於 GEO 生成式引擎優化與 AI 技術落地，致力於銜接人的需求與 AI 的能力。"
+  title       = "關於 TauX 拓思科技｜把 AI 變成企業戰力的 GEO 團隊"
+  description = "TauX 拓思科技把 AI 變成企業真正用得上的能力，而不是一場展示。專注 GEO 生成式引擎優化與 AI 技術落地，總部位於高雄。名字的由來、我們相信什麼、我們實際交付什麼。"
   canonical   = "https://taux.io/zh-Hant-TW/about"
 
   [page.locale.zh-Hans-CN]
   template    = "zh-Hans-CN/about.html"
-  title       = "关于 TauX 拓思科技｜AI 与 GEO 技术团队"
-  description = "认识 TauX 拓思科技团队。我们位于高雄，专注于 GEO 生成式引擎优化与 AI 技术落地，致力于衔接人的需求与 AI 的能力。"
+  title       = "关于 TauX 拓思科技｜把 AI 变成企业战力的 GEO 团队"
+  description = "TauX 拓思科技把 AI 变成企业真正用得上的能力，而不是一场展示。专注 GEO 生成式引擎优化与 AI 技术落地，总部位于高雄。名字的由来、我们相信什么、我们实际交付什么。"
   canonical   = "https://taux.io/zh-Hans-CN/about"
 
   [page.locale.en-US]
   template    = "en-US/about.html"
-  title       = "About TauX | Kaohsiung-based GEO and AI engineering"
-  description = "TauX builds Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we actually ship."
+  title       = "About TauX | Empowering business with AI through GEO"
+  description = "TauX turns AI into something a business can actually run on, not a demo. Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we ship."
   canonical   = "https://taux.io/en-US/about"
 
 [[page]]
