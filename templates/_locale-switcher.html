@@ -24,7 +24,14 @@
      language is not a switcher; issue 200 gives it a second entry. -->
 {% if alternates | length > 1 %}
 <details class="locale-switcher relative">
-    <summary class="eyebrow cursor-pointer list-none inline-flex items-center gap-2 min-h-[44px]">
+    <!-- `whitespace-nowrap` and a width floor, not just a height floor.
+         `min-h-[44px]` alone left the summary 41px wide at 320px with "繁體中文"
+         broken one character per line — 96px tall, under the touch floor, and
+         reading like a rendering fault. A language name is a label; it never
+         wraps. Same defect the role column had in /agent-dev-workflow, and the
+         same fix. It failed only on CI: the face is wider there, so the local
+         run measured just inside the floor. -->
+    <summary class="eyebrow cursor-pointer list-none inline-flex items-center gap-2 whitespace-nowrap min-h-[44px] min-w-[44px]">
         {% for a in alternates %}{% if a.tag == locale %}{{ a.name }}{% endif %}{% endfor %}
         <span aria-hidden="true">▾</span>
     </summary>
