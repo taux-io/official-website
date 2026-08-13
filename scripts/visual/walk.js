@@ -83,6 +83,39 @@ async function scrollThrough(page) {
 // The escape hatch is named rather than universal. Handing every probe the page
 // would collapse this back into "yield a page handle and let each caller
 // re-derive the walk", which is the shape this module exists to replace.
+// A PROBE RETURNS AN ARRAY OF FINDINGS, AND THIS REFUSES ANYTHING ELSE.
+//
+// The contract used to be implicit, and one probe broke it in the way that
+// costs the most: `overflow` returned a STRING. The loop here was
+// `for (const f of produced ?? [])`, and a string iterates one character at a
+// time — `{...'r'}` spreads to `{0:'r'}`, so every finding arrived with
+// `detail: undefined` and there were as many of them as the message had
+// characters. CI printed the same headline 98 times with `undefined` under each.
+//
+// The gate still went red, correctly, which is why this survived: it was
+// failing and unreadable at the same time. `/terms-of-service` at 320px has
+// been the reason main is red since the second brand reset — four merges, and
+// this repo's merge is its deploy. Nobody could act on 98 lines of `undefined`,
+// so it became weather.
+//
+// Throwing is the point. Normalising a string into one finding here would fix
+// today's caller and leave the next probe author free to write the same bug —
+// and the failure mode is silent output, which is the kind this repo keeps
+// losing days to. A probe that returns the wrong shape is a programming error
+// and should stop the run at the probe that did it, by name.
+function record(findings, probe, path, viewport, produced) {
+  if (produced == null) return;
+  if (!Array.isArray(produced)) {
+    throw new TypeError(
+      `probe "${probe.name}" returned ${typeof produced}, not an array of findings. ` +
+        `Return [] for a clean measurement and [{ detail: "..." }] for each finding.`
+    );
+  }
+  for (const f of produced) {
+    findings.push({ probe: probe.name, path, viewport: viewport.name, ...f });
+  }
+}
+
 function probeViewports(probe, viewports) {
   if (probe.viewports === "widest") {
     return [viewports.reduce((a, b) => (b.width > a.width ? b : a))];
@@ -137,9 +170,7 @@ async function walk({
           if (probe.onPage) {
             const produced = await probe.onPage(page, where);
             stats.measurements++;
-            for (const f of produced ?? []) {
-              findings.push({ probe: probe.name, path, viewport: viewport.name, ...f });
-            }
+            record(findings, probe, path, viewport, produced);
             continue;
           }
 
@@ -151,9 +182,7 @@ async function walk({
             await page.waitForTimeout(TRANSIENT_SETTLE_MS);
             produced = await page.evaluate(probe.inPage, probe.args);
           }
-          for (const f of produced ?? []) {
-            findings.push({ probe: probe.name, path, viewport: viewport.name, ...f });
-          }
+          record(findings, probe, path, viewport, produced);
         }
       }
     }
