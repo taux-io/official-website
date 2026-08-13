@@ -155,6 +155,8 @@ Every route on the site has an English edition. These are all of them.
 -   [TauX 拓思科技](https://taux.io/ko-KR): AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로. GEO, 소프트웨어 개발, 숏폼 영상, AI 자동화. 대만 가오슝에서.
 -   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。
 -   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.
+-   [Agent Skill の五つの設計パターン](https://taux.io/ja-JP/adk-skill-patterns): Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。それぞれが実際に解いている問題。
+-   [Agent Skill 설계 패턴 다섯 가지](https://taux.io/ko-KR/adk-skill-patterns): Tool Wrapper, Generator, Reviewer, Inversion, Pipeline. 각각이 실제로 푸는 문제.
 -   [MCP とは何か](https://taux.io/ja-JP/what-is-mcp): host・client・server の三つの役割、prompts・resources・tools の違いが「誰が決めるか」にある理由、2026-07-28 の改訂が取り除いたもの。
 -   [MCP란 무엇인가](https://taux.io/ko-KR/what-is-mcp): host·client·server 세 역할, prompts·resources·tools의 차이가 「누가 정하는가」에 있는 이유, 2026-07-28 개정이 걷어낸 것.
 -   [AI プロンプト設計ガイド](https://taux.io/ja-JP/agent-prompting-guide): 何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、エージェントの設計まで。

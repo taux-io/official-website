@@ -41,6 +41,7 @@
 /google-workspace-with-ai
 /ja-JP
 /ja-JP/about
+/ja-JP/adk-skill-patterns
 /ja-JP/agent-prompting-guide
 /ja-JP/ai-smart-work
 /ja-JP/building
@@ -54,6 +55,7 @@
 /ja-JP/what-is-prompt-injection
 /ko-KR
 /ko-KR/about
+/ko-KR/adk-skill-patterns
 /ko-KR/agent-prompting-guide
 /ko-KR/ai-smart-work
 /ko-KR/building
