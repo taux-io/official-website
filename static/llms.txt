@@ -151,6 +151,10 @@ Every route on the site has an English edition. These are all of them.
 -   [데이터 거버넌스와 AI 보안](https://taux.io/ko-KR/data-governance): 데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업.
 -   [llms.txt とは何か](https://taux.io/ja-JP/what-is-llms-txt): llms.txt が何を表明できて robots.txt には何ができないのか。使われている提案であって、批准された標準ではありません。
 -   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
+-   [TauX 拓思科技](https://taux.io/ja-JP): AI を、一度きりのデモではなく企業が実際に運用できるシステムに。GEO、ソフトウェア開発、ショート動画、AI の自動化。台湾・高雄から。
+-   [TauX 拓思科技](https://taux.io/ko-KR): AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로. GEO, 소프트웨어 개발, 숏폼 영상, AI 자동화. 대만 가오슝에서.
+-   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。
+-   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.
 -   [AI プロンプト設計ガイド](https://taux.io/ja-JP/agent-prompting-guide): 何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、エージェントの設計まで。
 -   [AI 프롬프트 설계 가이드](https://taux.io/ko-KR/agent-prompting-guide): 무엇을 지정하고 무엇을 맡기며 잘됐는지 어떻게 확인하는가. 역할과 과제, 단계 지시, 출력 형식, 에이전트 설계까지.
 -   [プロンプトインジェクションとは](https://taux.io/ja-JP/what-is-prompt-injection): 仕組み、ジェイルブレイクとの違い、そして実際にリスクを下げる多層の防ぎ方。
