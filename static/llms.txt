@@ -91,6 +91,13 @@ The site is being translated route by route. These are live today; the rest rema
 -   [What is llms.txt? | TauX](https://taux.io/en-US/what-is-llms-txt): What llms.txt is, what it expresses that robots.txt cannot, and an honest account of its status: a proposal in use, not a ratified standard.
 -   [What is Prompt Injection? The security flaw every LLM app inherits | TauX](https://taux.io/en-US/what-is-prompt-injection): How prompt injection works, how it differs from jailbreaking, and the layered defences that actually reduce the risk.
 -   [AI Prompting Guide: from first prompt to agents | TauX](https://taux.io/en-US/agent-prompting-guide): What to specify, what to leave open, and how to tell whether it worked. Covers role and task framing, step instructions, output formats, and designing agents.
+-   [The 2026 Global Threat Report: what eight numbers can support | TauX](https://taux.io/en-US/threat-landscape): Eight headline figures from the CrowdStrike 2026 Global Threat Report, how each was measured, and what that means for how far it generalises.
+-   [Post-quantum cryptography migration: five steps and the clocks already running | TauX](https://taux.io/en-US/pqc-migration): Governance, CBOM inventory, risk assessment, crypto-agility and supply chain — mapped to the FSC's seven strategies, with the US, EU and Taiwan timelines and where each comes from.
+-   [Reading the Workspace AI numbers: what each one measured | TauX](https://taux.io/en-US/google-workspace-with-ai): The method, sample size and vintage behind four widely quoted Workspace AI figures, set against independent research, and why self-reported time savings need objective verification.
+-   [What is MCP? The Model Context Protocol explained | TauX](https://taux.io/en-US/what-is-mcp): Host, client and server; why prompts, resources and tools differ by who decides rather than read versus write; and what the 2026-07-28 revision removed.
+-   [OWASP LLM Top 10 2026: ten risks, broken down | TauX](https://taux.io/en-US/owasp-llm-top-10): Each of the ten risks with its definition, real attack surface and defences — plus the 2025-to-2026 reordering, the four entries that widened, and how the ranking method changed.
+-   [A practical guide to building Claude Skills | TauX](https://taux.io/en-US/claude-skills-guide): Turning an SOP or a piece of expert knowledge into a reusable automated workflow: folder structure, the YAML rules that decide whether it loads, testing, and release.
+-   [Five Agent Skill Design Patterns for ADK | TauX](https://taux.io/en-US/adk-skill-patterns): Tool Wrapper, Generator, Reviewer, Inversion and Pipeline — the five patterns from Google Cloud Tech, and what problem each one is actually solving.
 
 ## 其他頁面
 
