@@ -160,6 +160,12 @@ date_published = "2026-08-06"
   description = "後量子密碼遷移的五步驟執行路徑：治理、CBOM 加密資產盤點、風險評估、加密敏捷性與供應鏈。對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。"
   canonical   = "https://taux.io/zh-Hant-TW/pqc-migration"
 
+  [page.locale.en-US]
+  template    = "en-US/pqc-migration.html"
+  title       = "Post-quantum cryptography migration: five steps and the clocks already running | TauX"
+  description = "Governance, CBOM inventory, risk assessment, crypto-agility and supply chain — mapped to the FSC's seven strategies, with the US, EU and Taiwan timelines and where each comes from."
+  canonical   = "https://taux.io/en-US/pqc-migration"
+
 [[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
