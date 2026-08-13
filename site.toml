@@ -124,6 +124,18 @@ date_modified = "2026-08-09"
   description = "拓思科技（TauX）协助企业把 AI 变成能用的系统，而不是一场展示：GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。总部位于高雄，服务全台企业。"
   canonical   = "https://taux.io/zh-Hans-CN"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/index.html"
+  title       = "TauX 拓思科技｜AI を、会社が本当に使える力に｜GEO 生成エンジン最適化"
+  description = "TauX は AI を、一度きりのデモではなく企業が実際に運用できるシステムに変えます。GEO、ソフトウェア開発、ショート動画、AI の自動化。台湾・高雄から。"
+  canonical   = "https://taux.io/ja-JP"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/index.html"
+  title       = "TauX 拓思科技｜AI를 회사가 진짜 쓸 수 있는 힘으로｜GEO 생성형 엔진 최적화"
+  description = "TauX는 AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로 바꿉니다. GEO, 소프트웨어 개발, 숏폼 영상, AI 자동화. 대만 가오슝에서."
+  canonical   = "https://taux.io/ko-KR"
+
   [page.locale.en-US]
   template    = "en-US/index.html"
   title       = "TauX — Empower Your Business with AI | Generative Engine Optimization"
