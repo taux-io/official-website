@@ -1,0 +1,1437 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No HowTo: the seven steps are a flow with branches and
+     human checkpoints, not a recipe with a guaranteed outcome, and marking them
+     up as HowTo would promise machines a determinism the page spends most of its
+     length denying.
+
+     Attribution matters here the way it does on /threat-landscape, for the
+     opposite reason. That page summarises proprietary research; this one
+     describes an MIT-licensed open-source pack. The pack is not ours, the
+     tutorial is. author/publisher is TauX because TauX wrote the teaching; the
+     upstream is named in the first section rather than in a footer, and it is
+     linked as an ordinary citation rather than through sameAs — sameAs states
+     identity, and this is not our identity. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/agent-dev-workflow#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"An agent development workflow","item":"https://taux.io/en-US/agent-dev-workflow" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/en-US/agent-dev-workflow#article","headline":"An agent development workflow: 25 skills, seven steps down the main line","description":"Turning the 25 skills in mattpocock/skills into one repeatable development workflow: seven steps down the main line, four worked scenarios, 31 known pitfalls and a 14-day practice plan.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"zh-Hant","citation":"mattpocock/skills v1.2.3 (MIT)"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/en-US/agent-dev-workflow#faq","mainEntity": [
+      {"@type":"Question","name":"What is the difference between a user-invoked and a model-invoked skill?","acceptedAnswer": {"@type":"Answer","text":"This is the only classification axis in the whole pack. A user-invoked skill can only be typed by a human, no other skill may call it, its description is written for people, and its role is orchestrator: it decides how the flow runs. A model-invoked skill can be typed too, and the agent will also reach for it on its own; its description is written for the model, and its role is a discipline library. The rule is that user-invoked may call model-invoked, but never another user-invoked. One common side effect: the harness does not put user-invoked skills in the list injected into the model, so the agent often reports that these skills are not installed. They are installed. Type it anyway."
+        }
+      },
+      {"@type":"Question","name":"What is a tracer bullet, and why is horizontal slicing wrong?","acceptedAnswer": {"@type":"Answer","text":"A tracer bullet is a thin but complete path through every layer — schema, API, UI, tests — that can be demoed on its own the moment it lands. A horizontal slice delivers one layer at a time: all the schema in one ticket, all the API in another. The problem is that nothing works until every layer is in place, and the acceptance criteria have to reach into work another ticket owns. The measured cost: one team used 26 layer-sliced tickets and averaged 20 agent runs to close each one, roughly three quarters of it rework, and their own retrospective traced every class of failure to horizontal slicing rather than implementation quality. The test is one sentence: what can I demo when this ticket is done? If you cannot name a behaviour, it is a horizontal slice."
+        }
+      },
+      {"@type":"Question","name":"Why run code review in a separate session?","acceptedAnswer": {"@type":"Answer","text":"Reviewing your own code in the same context is confirmation bias with a slash command attached — an agent that wrote the code favours its own solution. Three more things go with that: the review looks at the diff <fixed-point>...HEAD，, excluding staged and working-tree changes, so commit before reviewing. Findings are hypotheses rather than evidence: the sub-agent does not verify each one against the files, so a citation may point at the wrong place — read it before acting. And every run finds something new, because changes create new surface and the judgement half is not deterministic. There is no convergence guarantee: treat a pass as a list of leads, act on the ones backed by a written rule, and stop."
+        }
+      },
+      {"@type":"Question","name":"What are the most common ways to misuse these skills?","acceptedAnswer": {"@type":"Answer","text":"Seven. Passive grilling — forty agreed-with-that answers producing a plan you nodded at in which nothing was actually decided. Clearing or compacting between to-spec and to-tickets, when almost everything you worked out lives only in that context window. Running triage on tickets you generated yourself. Reaching for wayfinder on a well-scoped feature, when the test is session count rather than project size. Using a vocabulary skill as a driver. Running the review in the same session as the coding. And customising by editing SKILL.md, which updates overwrite and plugin installs make read-only — long-term behaviour belongs in your own instruction file. There is also a meta-antipattern: treating the process as a substitute for thinking. Output quality tracks the quality of your answers, not the number of questions."
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Engineering
+            </div>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+                <span class="display-lead">Ship with skills, not vibes</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                Not a list of tools — <strong>one main line with a few on-ramps</strong>. From a vague idea to a commit: what to type at each step, where to stop, and the places this goes quietly wrong.
+            </p>
+        </header>
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="Section index" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">Contents</p>
+                <ul>
+                    <li><a href="#concepts" class="section-index-link"><span class="font-sans">01</span> Three concepts first</a></li>
+                    <li><a href="#install" class="section-index-link"><span class="font-sans">02</span> Installing</a></li>
+                    <li><a href="#setup" class="section-index-link"><span class="font-sans">03</span> Setup</a></li>
+                    <li><a href="#map" class="section-index-link"><span class="font-sans">04</span> All 25 mapped</a></li>
+                    <li><a href="#main-flow" class="section-index-link"><span class="font-sans">05</span> The seven steps</a></li>
+                    <li><a href="#situations" class="section-index-link"><span class="font-sans">06</span> By situation</a></li>
+                    <li><a href="#scenarios" class="section-index-link"><span class="font-sans">07</span> Four scenarios</a></li>
+                    <li><a href="#pitfalls" class="section-index-link"><span class="font-sans">08</span> Known pitfalls</a></li>
+                    <li><a href="#claude-md" class="section-index-link"><span class="font-sans">09</span> Your instruction file</a></li>
+                    <li><a href="#vocabulary" class="section-index-link"><span class="font-sans">10</span> Vocabulary</a></li>
+                    <li><a href="#antipatterns" class="section-index-link"><span class="font-sans">11</span> Seven antipatterns</a></li>
+                    <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> A 14-day plan</a></li>
+                    <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> One-page reference</a></li>
+                    <li><a href="#source" class="section-index-link">Source</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- ==================================================================
+             01 · Concepts.
+
+             The source material colour-coded four roles (blue / crimson /
+             graphite / olive) and carried the coding through every section. The
+             classification is information, so it survives; the colour does not.
+             This site has one accent and colour was never allowed to be the only
+             carrier of meaning anyway. Every role below is a word.
+             ================================================================== -->
+        <section id="concepts" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Three concepts to get straight first</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    This page describes <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT  licence), version  <strong>1.2.3</strong> , with 25 published skills.<strong>These skills are not TauX's work</strong>；this guide is. Every test, pitfall and scenario below was written by us after reading the official documentation and the issues. It is neither a translation nor a reproduction.
+                </p>
+                <p>
+                    Miss any of these and every skill after them gets used wrong.
+                </p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">One: who can invoke it</h3>
+            <p class="leading-relaxed mb-6">This is the <strong>only classifying axis</strong> in the whole pack.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Who triggers it</td>
+                            <td class="py-4 pr-4">Only a human typing its name. No other skill can call it either</td>
+                            <td class="py-4">You can type it, and the agent will reach for it on its own</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Configuration</td>
+                            <td class="py-4 pr-4"><code>disable-model-invocation: true</code></td>
+                            <td class="py-4">Neither is set</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Who the description is for</td>
+                            <td class="py-4 pr-4">Humans — it appears in the slash command list</td>
+                            <td class="py-4">The model, with plenty of trigger phrasing</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">What it is</td>
+                            <td class="py-4 pr-4"><strong>An orchestrator</strong> — it decides how the flow runs</td>
+                            <td class="py-4"><strong>A discipline</strong> — reusable methodology</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">Three consequences in practice</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li>A document saying "then run <code>/implement</code>" means <strong>you</strong> type it. The agent will not carry on by itself.</li>
+                    <li>The harness does not put user-invoked skills into the list it injects, so agents routinely report that these are not installed. <strong>They are. Type it anyway.</strong></li>
+                    <li>To see what is actually installed, read <code>.claude-plugin/plugin.json</code> — that is the authority.</li>
+                </ul>
+            </div>
+            <p class="leading-relaxed mt-6">
+                The rule itself: a user-invoked skill may call a model-invoked one, and <strong>never another user-invoked one</strong>.
+            </p>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">Two: four roles</h3>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Main line</p>
+                    <p>The fixed path from idea to shipped: <code>grill-with-docs</code> → <code>to-spec</code> → <code>to-tickets</code> → <code>implement</code> → <code>code-review</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">On-ramp</p>
+                    <p>Generates work, then merges onto the main line: <code>triage</code> (things other people filed), <code>wayfinder</code> (too large for one session), <code>improve-codebase-architecture</code> (a periodic survey that produces subjects).</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Standalone</p>
+                    <p>Reach for it any time and put it down after: <code>prototype</code>、<code>research</code>、<code>diagnosing-bugs</code>、<code>resolving-merge-conflicts</code>、<code>wizard</code>、<code>handoff</code>、<code>teach</code>、<code>to-questionnaire</code>、<code>wait-what</code>、<code>grill-me</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Vocabulary</p>
+                    <p>No flow of its own — precise words, borrowed by other skills: <code>codebase-design</code> (module shape), <code>domain-modeling</code> (domain language), <code>writing-for-agents</code> (documents agents read), <code>grilling</code> (the interview primitive).</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">The vocabulary layer is the easiest to misuse</p>
+                    <p>They have <strong>no flow</strong>. Say "go ahead" to <code>codebase-design</code> and the agent invents a process of its own, then burns 100k tokens refactoring something nobody asked about (filed as issue 449). Run the vocabulary layer with a <strong>driver skill on top and the vocabulary underneath</strong>.</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">Three: the phase boundary</h3>
+            <p class="leading-relaxed mb-6">
+                A block of work inside a session is a <strong>phase</strong> — interview, implementation, QA. The question "what do I do with my context" <strong>only arises between two phases</strong>. Mid-phase there is no choice: carry on, or hand the rest to a subagent.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Order</th>
+                            <th class="py-3 pr-4 font-bold text-sm">Option</th>
+                            <th class="py-3 font-bold text-sm">When to pick it</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">1</td>
+                            <td class="py-4 pr-4 font-semibold">Carry on</td>
+                            <td class="py-4">The next phase needs this one's actual words, or your smart zone still has room. The only option that preserves primary material, so <strong>rule it out first</strong> before considering anything else</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">2</td>
+                            <td class="py-4 pr-4 font-semibold">clear</td>
+                            <td class="py-4">Everything behind you is disposable. Cheapest, and one-way if you judged wrong</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">3</td>
+                            <td class="py-4 pr-4 font-semibold">handoff</td>
+                            <td class="py-4">Something needs to <strong>move</strong>: another harness, another directory, a colleague, or a side thread you want to fork off</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">4</td>
+                            <td class="py-4 pr-4 font-semibold">subagent</td>
+                            <td class="py-4">The task is tight enough to finish without you there</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">5</td>
+                            <td class="py-4 pr-4 font-semibold">compact</td>
+                            <td class="py-4">None of the above. It is the floor rather than the first choice, and it is where most cases land</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                The two most often confused: <code>handoff</code> is not a general bridge between windows; what it buys is <strong>portability</strong>. <code>compact</code> is the bottom of the tree, not a reflex. The three preserve different things — compact preserves your <strong>intent</strong>，clear  preserves nothing, and handoff preserves the work's <strong>ability to move</strong>。And all three turn the conversation — primary material — into a summary, which is secondary.
+            </p>
+        </section>
+
+        <!-- ==================================================================
+             02 · Install
+             ================================================================== -->
+        <section id="install" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Installing: two routes, pick one</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                Two installation methods, two philosophies. <strong>Install both and you have two copies of every skill.</strong>
+            </p>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-2">Route A — subscribe</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <p class="leading-relaxed">Or, inside a session, <code>/plugin install mattpocock-skills</code>. It is on the official marketplace, so no source to add first, and updates arrive on their own.<strong>The cost: read-only. You cannot edit it.</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Route B — editable</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <p class="leading-relaxed">It asks which skills to install and onto which agents. <strong>Make sure <code>setup-matt-pocock-skills</code></strong> is ticked. The files land in your repo as ordinary files you own, editable however you like. Update it yourself with  <code>npx skills update</code>。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">Route B's trap</p>
+                    <p class="leading-relaxed">A <code>SKILL.md</code> you edited by hand <strong>is overwritten by <code>npx skills update</code></strong>. Anything you want to persist goes inin your own <code>CLAUDE.md</code> / <code>AGENTS.md</code> (see <a href="#claude-md" class="underline">section 09</a>), or say it at every invocation — do not edit the skill file.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Trying the beta bucket</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <p class="leading-relaxed">The plugin does not ship these. At the time of writing the in-progress bucket holds <code>loop-me</code>、<code>writing-beats</code>、<code>writing-fragments</code>、<code>writing-shape</code>、<code>claude-handoff</code>、<code>setup-ts-deep-modules</code>——. No documentation pages, and liable to change or vanish. There is also a misc bucket outside the plugin: <code>git-guardrails-claude-code</code>（ (a hook that blocks dangerous git commands), <code>setup-pre-commit</code>、<code>migrate-to-shoehorn</code>、<code>scaffold-exercises</code>。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             03 · Setup
+             ================================================================== -->
+        <section id="setup" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Setup, once per repo</h2>
+            </div>
+            <p class="leading-relaxed mb-6">
+                <code>/setup-matt-pocock-skills</code> is <strong>a precondition for every engineering skill, not a step in the flow</strong>.
+            </p>
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Decision</th>
+                            <th class="py-3 pr-4 font-bold text-sm">What it proposes</th>
+                            <th class="py-3 font-bold text-sm">When it actually asks</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Issue tracker</td>
+                            <td class="py-4 pr-4">Guesses from your git remote</td>
+                            <td class="py-4">Every time — this is the only real choice</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Triage labels</td>
+                            <td class="py-4 pr-4">Reuses the five standard names</td>
+                            <td class="py-4">Only if triage is installed</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">Domain document layout</td>
+                            <td class="py-4 pr-4">Single context: one <code>CONTEXT.md</code> plus <code>docs/adr/</code></td>
+                            <td class="py-4">Only if it detects a monorepo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Four tracker options: <strong>GitHub</strong> (needs <code>gh</code>), <strong>GitLab</strong> (needs <code>glab</code>), <strong>Local markdown</strong>（<code>.scratch/&lt;feature&gt;/</code>， — you do not even need a remote), <strong>Other</strong>（ — you write a paragraph describing your workflow).
+                </p>
+                <p>
+                    Local markdown is <strong>a first-class option, not a fallback</strong>: solo project, no remote, fully supported. Do not run it alongside GitHub on the same project — they replace each other, they do not stack.
+                </p>
+                <p>
+                    "Other" is not a placeholder either — it is how Jira, Linear and Azure DevOps work here. You describe your workflow, it writes your words into <code>docs/agents/issue-tracker.md</code>, and downstream skills follow that text.This is also why <strong>none of this is tied to GitHub</strong>，, and why you never edit a skill file to change tracker.
+                </p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">Three pitfalls worth knowing about</h3>
+            <div class="space-y-8 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">One: it does not create your labels</p>
+                    <p class="mb-3"><code>triage-labels.md</code> is only a mapping table. On a fresh GitHub repo those labels do not exist, so applying one fails. Create them once yourself:</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+gh label create needs-info
+gh label create ready-for-agent
+gh label create ready-for-human
+gh label create wontfix
+gh label create bug
+gh label create enhancement</pre>
+                    <p class="mt-3">To use <code>wayfinder</code>, five more have to exist first (<code>gh</code> fails outright on a label that is not there): <code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Two: it looks at which files exist, not which harness you use</p>
+                    <p>You are on Codex but the repo still has a stray <code>CLAUDE.md</code>, so the <code>## Agent skills</code> section lands somewhere Codex will never read. Fix: move it by hand into <code>AGENTS.md</code>, or make <code>AGENTS.md</code> the real one and have <code>CLAUDE.md</code> hold a single line pointing at it.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Three: rerun it after updating the skills</p>
+                    <p>The seed templates change, so an older <code>issue-tracker.md</code> may no longer match. When downstream behaviour turns odd, rerunning is the cheapest fix.</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">How to tell it worked</h3>
+            <ul class="space-y-3 leading-relaxed">
+                <li><code>docs/agents/issue-tracker.md</code> and <code>domain.md</code> exist (plus <code>triage-labels.md</code>) if triage is installed</li>
+                <li>The instruction file your harness <strong>actually reads</strong> now contains <code>## Agent skills</code></li>
+                <li>From then on <code>/to-tickets</code> stops asking where issues go, and <code>/triage</code> applies labels rather than inventing them</li>
+                <li><strong>Not one word of the skill files changed.</strong> If setup edited a <code>SKILL.md</code>, something went wrong</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             04 · The map. The source shipped this as a filterable table with the
+             role column carried by colour; the role is a word here and the filter
+             is gone. A filter that hides rows is a scroll-reveal by another name,
+             and the whole table is 25 rows.
+             ================================================================== -->
+        <section id="map" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">All 25, mapped</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                The dependency column is the one that matters in practice — <strong>with a dependency missing, a skill degrades quietly into improvisation.</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Invoked by</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Role</th>
+                            <th class="py-3 pr-4 font-bold text-sm">In one line</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">Hard dependency</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">setup-matt-pocock-skills</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Setup</td><td class="py-4 pr-4">Run once per repo: tracker, labels, document layout</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">ask-matt</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Router</td><td class="py-4 pr-4">Describe your situation; it tells you which sequence to type</td><td class="py-4 hidden tablet:table-cell">Only knows this pack's skills</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Primitive</td><td class="py-4 pr-4">The round-by-round interview engine every other grilling skill is built on</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-me</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Stateless interview. No repo needed, subject need not be code</td><td class="py-4 hidden tablet:table-cell">grilling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Main line, head</td><td class="py-4 pr-4">The same interview, plus reading the codebase and writing <code>CONTEXT.md</code> and ADRs</td><td class="py-4 hidden tablet:table-cell">grilling, domain-modeling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">On-ramp</td><td class="py-4 pr-4">Work too large for one session, drawn as a map of decision tickets</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-spec</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Main line</td><td class="py-4 pr-4">Condenses the conversation into a spec and files it. No further interviewing</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Main line</td><td class="py-4 pr-4">Cuts a spec or conversation into tracer-bullet tickets and declares the blocking edges</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">implement</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Main line</td><td class="py-4 pr-4">Works the ticket, drives tdd internally, runs code-review at the end, commits</td><td class="py-4 hidden tablet:table-cell">tracker (when driven from a ticket)</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">tdd</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Engine</td><td class="py-4 pr-4">Red-green, and tests only on a <strong>pre-agreed seam</strong></td><td class="py-4 hidden tablet:table-cell">codebase-design</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">code-review</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Main line, tail</td><td class="py-4 pr-4">Two-axis review — Standards and Spec — of the diff against a fixed point</td><td class="py-4 hidden tablet:table-cell">tracker (Spec axis)</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">triage</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">On-ramp</td><td class="py-4 pr-4">Runs issues <strong>other people</strong> filed through a state machine</td><td class="py-4 hidden tablet:table-cell">tracker, labels</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">On-ramp</td><td class="py-4 pr-4">Scans the codebase for deepening opportunities and produces an HTML report</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Answers <strong>one</strong> design question with throwaway code</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Six-phase diagnosis for hard bugs and performance regressions. No theorising before a red loop exists</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">A background agent reads primary sources and leaves a cited markdown file</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">resolving-merge-conflicts</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Resolves each hunk by intent, runs the checks, finishes the merge, never aborts</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wizard</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Generates an interactive bash script that walks a human through the steps only a human can do</td><td class="py-4 hidden tablet:table-cell">uses <code>gh</code> at run time</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">codebase-design</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Vocabulary</td><td class="py-4 pr-4">Precise words for module, interface, depth and seam, plus four principles</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Vocabulary</td><td class="py-4 pr-4">Actively builds and sharpens the domain language, writing into <code>CONTEXT.md</code> and ADRs as it goes</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">handoff</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Compresses the current conversation into a portable handoff document</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">teach</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Turns the current directory into a teaching workspace that persists across sessions</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-questionnaire</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Turns a decision only somebody else can make into a questionnaire</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wait-what</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">Standalone</td><td class="py-4 pr-4">Type it when the last answer did not land; the agent re-pitches it</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">writing-for-agents</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">Vocabulary</td><td class="py-4 pr-4">Guidelines for documents agents read: skills, instruction files, specs, prompts</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">Two branches worth remembering</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>The prototype branch.</strong> When the interview hits a question nobody can answer in words until they see something, stop, prototype it, and come back with a one-line answer.</li>
+                    <li><strong>Spec and tickets only pay off across sessions.</strong> For a change that fits in one context window, go straight from <code>grill-with-docs</code> to <code>implement</code> and skip the two in between.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             05 · The main flow, seven steps.
+             ================================================================== -->
+        <section id="main-flow" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">The seven steps, worked through</h2>
+            </div>
+            <div class="border-l border-line pl-6 mb-10">
+                <p class="eyebrow mb-2">The worked example</p>
+                <p class="leading-relaxed">An internal tools repo (Next.js and Postgres) needs a contract-expiry reminder: list contracts expiring within 30 days, email the owner, show a red dot in the admin panel. It crosses schema, API, UI and mail. It is broad enough to be worth the full flow.</p>
+            </div>
+
+            <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — grill a vague idea into decisions</h3>
+            <div class="space-y-6 leading-relaxed">
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs I want to add a contract expiry reminder</pre>
+                <p>Start a clean conversation and <strong>turn plan mode off</strong>. Plan mode pushes the agent to produce a plan quickly, which is the opposite of staying in the question.</p>
+                <div>
+                    <p class="eyebrow mb-2">What happens</p>
+                    <p>It reads your codebase, then asks questions <strong>in rounds</strong>. Each round is the current <strong>frontier</strong> — every question whose prerequisites are settled, asked at once — so you are never asked something still hanging in the air. The format is fixed: a numbered heading, the body, and one line of recommended answer. Thirteen questions usually take three rounds; forty-six across four rounds is an ordinary session.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How to answer</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 yes
+2 the second one
+3 no — our contracts have no partial termination
+4 I do not know</pre>
+                    <p class="mt-3"><strong>The biggest failure mode is passivity.</strong> Answer "agreed" forty times and you get a plan the agent wrote and you nodded at — it feels productive because it is long. But nothing was actually decided, and the result carries a certainty it did not earn. Being active means this: when a question is pitched shallower than you need,<strong>push back</strong>；when the scope is drifting,<strong>say so</strong>；and when you genuinely do not know, say so — that is a real answer.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">grillable vs ungrillable</p>
+                    <p>"One long form or three pages?" "How should this interaction feel?" — questions like these <strong>cannot be talked out</strong>; they need something to react to. Stop, prototype it, come back with a one-line answer. Pushing on an ungrillable question is the main way a session  session blows up: the agent keeps rephrasing, you keep guessing, and the scope inflates to fill the uncertainty.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">What got resolved</th>
+                            <th class="py-3 font-bold text-sm">Where it lands</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">A <strong>term</strong> — this project's own word for something</td><td class="py-4"><code>CONTEXT.md</code>, written <strong>at that moment</strong>, not batched at the end</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">A decision that is <strong>hard to reverse, surprising without context, and the result of a real trade-off</strong></td><td class="py-4"><code>docs/adr/</code> , as an ADR</td></tr>
+                        <tr><td class="py-4 pr-4">Everything else you decided</td><td class="py-4">In the conversation only. Nowhere else</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">What that third row means</p>
+                <p class="leading-relaxed"><strong>Almost everything you worked out exists only in this context window.</strong> So do not clear, do not compact — go straight on to <code>/to-spec</code>。</p>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <code>CONTEXT.md</code> is <strong>a glossary and only a glossary</strong>: no implementation detail, no spec, no scratch notes. An ADR needs all three conditions at once, so <strong>most sessions produce zero ADR，and that is by design</strong>。
+            </p>
+            <p class="leading-relaxed mt-6">
+                Use <strong>your best model</strong> here. Grilling draws on the model's own intuition for how systems break; implementation leans more on context and can run cheaper.
+            </p>
+
+            <h3 id="step-2" class="font-display text-xl font-bold mt-14 mb-4">Step 2 — turn what was decided into a document that survives</h3>
+            <div class="space-y-6 leading-relaxed">
+                <p><code>/to-spec</code>, <strong>in the same conversation. Do not open a new one.</strong></p>
+                <p>It <strong>does not interview you</strong>. By this point everything that needed deciding is decided, so it synthesises — from the conversation, the codebase, <code>CONTEXT.md</code> and the ADRs.</p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">A spec is a record of decisions, not where they get made</p>
+                    <p>It exists because context windows end. Everything you just grilled out sits in a conversation about to be discarded; the spec is that conversation's survivor. So it verifies nothing and decides nothing. <strong>Any sentence in a spec that you did not say is a defect.</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">It confirms the seams with you first</p>
+                    <p>Before writing a word it drafts which <strong>seams</strong> — the public boundaries where a test observes behaviour — this feature should be tested on, and brings them to you. It prefers an existing seam to a new one, and takes the <strong>highest</strong> one it can. Ideally the whole change has exactly one. That pre-agreed seam then travels downstream: <code>tdd</code>  writes tests only on a pre-agreed seam, and <code>code-review</code>  checks whether any unagreed seam was used.<strong>So answer this exchange properly rather than deferring it to implementation.</strong></p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Where you are</th>
+                            <th class="py-3 font-bold text-sm">What to run</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Nothing decided yet</td><td class="py-4"><code>grill-with-docs</code> first</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Decided, and <strong>it fits in one context window</strong></td><td class="py-4">Go straight to <code>implement</code> and <strong>skip the spec</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Decided, and the work spans several sessions</td><td class="py-4"><code>/to-spec</code>, then <code>/to-tickets</code></td></tr>
+                        <tr><td class="py-4 pr-4">Just cleared a wayfinder map</td><td class="py-4"><code>/to-spec #&lt;map_issue&gt;</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">Common pitfalls</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong><code>ready-for-agent</code> label, misread</strong>. A spec gets tagged with it, meaning "this no longer needs triage" — <strong>an entry qualification, not a work order</strong>. But if you have an unattended agent polling that label, it cannot tell the difference and will try to do the whole spec in one go. Fix: exclude the parent spec explicitly in that agent's prompt, or  <code>/to-tickets</code>  has run, remove the label.</li>
+                    <li><strong>Refactoring work does not fit the template.</strong> The template leans hard on user stories, and architectural work forced into one becomes a story nobody asked for. Lean on the implementation-decisions and testing-decisions sections instead，, and let the durable architectural decisions land as ADRs out of  <code>grill-with-docs</code>  can land green.</li>
+                    <li><strong>It does not check for duplicates.</strong> It will not search the tracker for an existing issue, and it will not link the ADRs it is following. Search the busy areas yourself first.</li>
+                    <li><strong>A large spec gets truncated.</strong> Past a certain size the tracker cannot return the issue cleanly, and there is no local copy to fall back on.<code>/to-spec</code> and <code>/to-tickets</code>: do not clear and do not compact in between.</li>
+                </ul>
+            </div>
+
+            <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — cut it into tracer bullets</h3>
+            <p class="leading-relaxed mb-6"><code>/to-tickets</code>, same window — or <code>/to-tickets #&lt;spec_issue&gt;</code>. A plan that exists only in the conversation works too — it reads the conversation directly.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">Horizontal (wrong)</th>
+                            <th class="py-3 font-bold text-sm">Vertical (right)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">A ticket delivers</td><td class="py-4 pr-4"><strong>One layer</strong> of the change — all the schema in one ticket, all the API in another</td><td class="py-4">A thin path through <strong>every layer</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Once landed</td><td class="py-4 pr-4">Nothing moves until every layer is in place</td><td class="py-4">It demos on its own</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Acceptance criteria</td><td class="py-4 pr-4">Have to reach into work another ticket owns</td><td class="py-4">Only assess what this ticket owns</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>
+                    This is the most-violated rule, and <strong>the cost has been measured</strong>. One team cut 26 tickets by layer — corpus, producer, aggregator, selector — and averaged <strong>20 agent runs to close each ticket</strong>，, roughly three-quarters of it rework. Their own retrospective traced every category of failure to the horizontal slicing rather than to implementation quality.
+                </p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">The check to run</p>
+                    <p>Ask one question of every ticket: <strong>"when this is done, what can I demo?"</strong> If the answer is not a <strong>behaviour</strong>, it is a horizontal slice. Some people add a demo-path line to each ticket and report it pushes the model towards vertical decomposition.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Before it files anything</p>
+                    <p><strong>Prefactoring</strong>: it looks first for work that makes the change easy, and puts that ahead of the change itself. Then it hands you <strong>a numbered list and interrogates it</strong>: is the granularity right, are the blocking edges real, should any be merged or split.<strong>Nothing reaches the tracker before you approve it</strong>—— — the interrogation step is where you push back.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Wide refactors are the one exception</p>
+                    <p>One shape breaks the tracer-bullet rule: <strong>a single mechanical change whose blast radius covers the whole codebase</strong> — renaming a field, swapping a shared type. One edit breaks a thousand call sites and no vertical slice can land green. Use expand–migrate–contract：<strong>Expand</strong>—— — the new form sits beside the old one and nothing breaks. <strong>Migrate</strong>—— — move call sites in batches sized by blast radius, one ticket per batch, each blocked by expand, and CI stays green because the old form is still there. <strong>Contract</strong>—— — delete the old form once nothing calls it, blocked by every migrate batch.</p>
+                </div>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">Common pitfalls</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>Twelve tickets for a three-line change.</strong> Over-decomposition is the commonest friction. Tell it to merge them at the interrogation step. The more fundamental answer: if the whole change fits in one context window, <strong>you do not need this skill at all</strong>。</li>
+                    <li><strong>Sub-issues are not created on GitHub.</strong> Known and unfixed (issue 554), worse on Codex. <code>gh</code> has supported this natively since v2.94: <code>gh issue create --parent</code> and <code>gh issue edit --add-sub-issue</code>.</li>
+                    <li><strong>"Blocked by" only appears in the body.</strong> Same family of problem (issue 513). GitHub has this natively: <code>gh issue create --blocked-by</code>. Because blockers are filed first, the number is always available at creation time.</li>
+                    <li><strong>Acceptance criteria that assess nothing.</strong> For each one, state what observation would prove it false, and confirm it is red at the starting commit.</li>
+                    <li><strong>The tickets are filed — now what?</strong> Nothing assigns them. Look at the board, count the tickets with no open blockers, and start that many agent sessions. <strong>One ticket per fresh context, clearing in between.</strong></li>
+                </ul>
+            </div>
+
+            <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — one ticket, one session</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <div class="border-l border-line pl-6 mb-8">
+                <p class="eyebrow mb-2">Why the full reference matters</p>
+                <p class="leading-relaxed"><code>/implement #2</code>’s <code>#2</code> resolves against <strong>any numbered list the agent can see</strong> — and in a fresh session ession that might be a todo file or a checklist rather than the tracker you configured. It resolves confidently and <strong>does not fail closed</strong>，, so you will not notice immediately when it is wrong. Pass the full URL or  <code>owner/repo#2</code>，, and have it read the title back before starting.</p>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">The five beats of a run</p>
+                    <ol class="space-y-2 mt-2">
+                        <li>Read the ticket or spec and derive the seam</li>
+                        <li>Drive <code>tdd</code> on the pre-agreed seam, one red-green slice at a time</li>
+                        <li>Typecheck often, running a single test file as it goes</li>
+                        <li>Run the full suite once at the end</li>
+                        <li>Run <code>code-review</code>, then commit to the <strong>current branch</strong></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">What it never does</p>
+                    <p><strong>It never reopens the plan.</strong> No interview, no clarifying round, no alternative proposal. What was decided upstream is the input, and its job is to turn that into a commit. That is exactly the difference from typing "do this" at a fresh agent, which will redesign as it goes.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Symptom</th>
+                            <th class="py-3 font-bold text-sm">What is happening</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">It finished but the ticket is still open and the criteria unticked</td><td class="py-4"><strong>Correct and expected.</strong>implement  There is no closing step; it stops at the commit.<strong>You close the ticket yourself</strong>—— — this bites hardest on the dependency chain, because the frontier is defined as tickets whose blockers are all closed, and if nobody closes anything nothing ever becomes work</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Can it do every ticket at once, in parallel?</td><td class="py-4"><strong>No.</strong> In one checkout ckout, running several implements in parallel is worse than unsupported: field reports from a single afternoon include an amend landing on another session's commit, a stash disappearing, and commits going to the wrong branch. The community workaround und is a worktree, though the stash is still shared</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Can it open a PR?</td><td class="py-4">Not built in. It commits to the current branch and will not create one for you. Some people override that at invocation tiranch。Some people override it at invocation</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review says it cannot see my changes</td><td class="py-4">It reviews <code>diff &lt;fixed-point&gt;...HEAD</code>，<strong>excluding staged and working-tree changes</strong>。implement  runs the review before committing, so unless there is an intermediate commit that diff is empty.<strong>Commit first, then review</strong></td></tr>
+                        <tr><td class="py-4 pr-4">One ticket burned 150k tokens</td><td class="py-4">Usually the ticket is too big rather than the skill misused. A run covers exploring the codebase, red-green on each seam, the full suite and the review, so over 100k tokens is normal.<strong>The leverage is upstream</strong>：: size the ticket so it fits a fresh window. If one keeps blowing out, split it rather than raising the effort setting</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                Some people <strong>deliberately skip</strong> the built-in review: an agent reviewing its own code favours its own solution. Running <code>code-review</code> separately against a fixed point in a clean session is a reasonable alternative.
+            </p>
+
+            <h3 id="step-5" class="font-display text-xl font-bold mt-14 mb-4">Step 5 — the red-green engine</h3>
+            <p class="leading-relaxed mb-6">
+                <code>tdd</code> is <strong>a reference, not a driver</strong>. It holds the rules of the loop; someone else runs the session — you, or <code>implement</code>）。
+            </p>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Red-green</p>
+                    <p>Write a failing test, then write only enough code to pass it. Do not write the next test ahead of time. <strong>There is no refactor phase</strong> — removed in June 2026, because agents almost never performed it and because review and implementation  work better in separate sessions. Refactoring belongs to code-review.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Vertical slice</p>
+                    <p>One seam, one test, one minimal implementation, then repeat. The first cycle is the tracer bullet, proving a path works end to end. The opposite is writing all the tests and then all the code — which verifies <strong>imagined</strong> behaviour, checking the shape of things rather than what a user does, and locks you into a test structure before you understand the implementation.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Pre-agreed seam</p>
+                    <p>The rule is absolute: <strong>no test without a confirmed seam.</strong> On the full chain, seams are agreed at <code>to-spec</code>; called on its own, it asks you directly.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Antipattern</th>
+                            <th class="py-3 font-bold text-sm">How it shows</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Implementation-coupled</td><td class="py-4">You rename an internal function, behaviour is unchanged, and the tests break. Mocking your own collaborators, asserting call counts, verifying through a database query instead of the interface</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tautological</td><td class="py-4">The expected value is computed the same way the code computes it, so the test cannot fail.<strong>The expected value has to come from somewhere else</strong>：a known-good literal, a hand-worked example, the spec</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Horizontal slicing</td><td class="py-4">A batch of tests lands before any implementation does</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <strong>Mock only at system boundaries</strong> — external APIs, time, randomness. Sometimes the filesystem or the database. <strong>Never mock your own modules.</strong>
+            </p>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">Common pitfalls</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>"It asked me which test seam and I have no idea."</strong> The commonest friction (issue 607). The prompt lists candidate seams by name without saying what each catches and what it misses. <strong>Ask the agent for the trade-off</strong>：component : what does a component-level seam miss that an integration seam catches, and how much slower is it? This is exactly why the full chain agrees seams at  <code>to-spec</code> .</li>
+                    <li><strong>It writes the implementation before the test.</strong> This happens. The skill is written to live with it, and no instruction makes an agent comply every time. If a particular slice genuinely needs strictness, watch it run.</li>
+                    <li><strong>It writes a browser test first and then spins.</strong> Reports of an agent writing Playwright, running it repeatedly against a feature that does not exist yet, and concluding the test is broken. Declare it in the repo instruction file: browser tests come after the behaviour work works.</li>
+                    <li><strong>It does not know about your other tickets.</strong> Run against one, it will happily propose work belonging to a sibling (issue 129). Giving it the spec alongside the ticket helps; cutting the tickets correctly in the first place helps more.</li>
+                </ul>
+            </div>
+
+            <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — the two-axis review</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <p class="leading-relaxed mb-6">
+                <strong>You must supply the fixed point.</strong> Without one it asks rather than guesses, and it verifies the ref resolves and the diff is non-empty before spawning any sub-agent.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th class="py-3 font-bold text-sm">Spec</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">The question</td><td class="py-4 pr-4">Was it done right?</td><td class="py-4">Was it the right thing to do?</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">What it reads</td><td class="py-4 pr-4">The repo's own written standards, plus a built-in smell baseline</td><td class="py-4">The originating issue or spec</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">What it reports</td><td class="py-4 pr-4">Explicit violations, which can be hard failures, plus smells, which are always judgement calls</td><td class="py-4">Missing or partly implemented requirements, scope creep, requirements implemented wrongly</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Every finding must cite</td><td class="py-4 pr-4">A standards file and clause, or a smell name and the hunk</td><td class="py-4">The line of the spec</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>
+                    The two axes <strong>run in separate sub-agents</strong> and cannot see each other's reasoning. The report ends with the worst finding on each axis and <strong>refuses to pick an overall winner across them</strong> — because a change can pass one and fail the other: code that follows every convention but does the wrong thing passes Standards and fails Spec; code that follows the ticket exactly but breaks the repo's conventions does the reverse.<strong>A blended verdict lets the axis that passed cover for the one that failed.</strong>
+                </p>
+                <p>
+                    The smell baseline is the floor beneath Standards: the twelve code smells from chapter 3 of Fowler's <em>Refactoring</em>. Each is a "this might be" heuristic, never a hard violation, and each is stated as what it is and how to fix it — so a finding arrives<strong>with an action already attached</strong>。Anything your linter already handles is skipped by both axes.
+                </p>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">Common pitfalls</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>It collides with the built-in command of the same name.</strong> The most reported issue, unfixed. The built-in one hunts bugs in a diff; this one checks compliance with standards and spec. With both installed one wins, and which depends on how they were installed.</li>
+                    <li><strong>Sub-agents invoke it again and spawn more agents.</strong> Reproduced by several people across several harnesses, once reaching more than fifty. The fix on a fork is a line in each sub-agent brief: do not invoke code-review e-review or spawn additional agents; perform the review directly.<strong>Running this unattended, watch the agent count.</strong></li>
+                    <li><strong>Should it run in the same session as the coding?</strong> Prefer a new one. Somebody put it well: <strong>reviewing yourself in the same context is confirmation bias with a slash command attached.</strong></li>
+                    <li><strong>Can the findings be trusted?</strong> Not without checking. A sub-agent's output is <strong>a hypothesis, not evidence</strong>. It aggregates two reports without verifying each against the files, so a citation may point at the wrong place or overstate the impact. Read the citation before acting on the finding.</li>
+                    <li><strong>Why does every run find something new?</strong> Changes create new surface, and the judgement half is not deterministic. <strong>There is no convergence guarantee.</strong> Treat one pass as a list of leads, act on the ones backed by a written rule, and stop — do not run it until it comes back clean. It will not.</li>
+                </ul>
+            </div>
+
+            <h3 id="step-7" class="font-display text-xl font-bold mt-14 mb-4">Step 7 — closing out, and the loop</h3>
+            <p class="leading-relaxed mb-4">The loop for one ticket:</p>
+            <ol class="space-y-2 leading-relaxed mb-8">
+                <li>clear context</li>
+                <li><code>/implement &lt;ticket&gt;</code> — <code>tdd</code> runs inside it</li>
+                <li>commit</li>
+                <li><code>/code-review &lt;fixed-point&gt;</code> in a clean session</li>
+                <li>Close the ticket and tick the criteria by hand — <strong>implement does not do this</strong></li>
+                <li>Take the next ticket off the frontier and go back to step 1</li>
+            </ol>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Cadence</p>
+                    <ul class="space-y-2 mt-2">
+                        <li><strong>Daily.</strong> The main line. One ticket per session, clearing in between.</li>
+                        <li><strong>Every few days.</strong> <code>/improve-codebase-architecture</code>, turning structural debt into subjects that feed back onto the main line.</li>
+                        <li><strong>When work arrives from outside.</strong> <code>/triage</code>. On a project with no external reporters you will rarely reach for it.</li>
+                        <li><strong>When a skill gap turns up.</strong> <code>/teach</code>, in a directory of its own.</li>
+                    </ul>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">Do not forget</p>
+                    <p>The one thing in the whole chain <strong>nobody does for you</strong> is <strong>closing the ticket and ticking the criteria</strong>. Implement stops at the commit. The dependency chain only advances when you close things — otherwise the frontier never produces anything new toable.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             06 · Situation index. The source used a colour chip per role; the
+             role is the eyebrow here.
+             ================================================================== -->
+        <section id="situations" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">By situation: which skill to reach for</h2>
+            </div>
+            <p class="leading-relaxed mb-10">
+                Everything off the main line is a branch you take in a specific situation. Ordered here by <strong>the situation you are in</strong>.
+            </p>
+
+            <div class="space-y-12">
+                <div>
+                    <p class="eyebrow mb-2">Standalone — prototype</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I cannot talk this one out</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It writes <strong>throwaway code that answers one question</strong>. The question comes first and shapes everything after it; a prototype answering the wrong question is pure waste however good it looks. "Throwaway" constrains <strong>how it is written</strong>, not whether it must be destroyed. No tests, no error handling beyond making it run, no abstraction, no persistence.</p>
+                        <p>The two branches produce very different things. "Does this logic or state model feel right?" gets you <strong>a single shareable HTML file</strong> — with a state panel, a free-play button and tabbed walkthroughs, everything labelled in domain language, ready to hand to a designer or a domain expert to try for themselves. The logic behind it is a clean pure module that never touches the DOM, so once validated it lifts straight into production code. "What should this look like?" gets you<strong>several radically different UI variants on the same route</strong>，, switched with a floating bar. The variants have to disagree on <strong>structure</strong> rather than colour — three lightly tweaked card grids are wallpaper, not a prototype.</p>
+                        <p><strong>The moment you catch yourself hardening it, you have stopped prototyping</strong> — adding tests, wiring a real database, generalising for something you might need later.</p>
+                        <p><strong>What to do with the output.</strong> The answer — the verdict and the question it settled — goes somewhere durable: a commit message, an ADR, the implementation issue. The prototype itself is not deleted and does not go to main; commit it to <code>prototype/&lt;name&gt;</code> branch、<strong>never merged</strong>，, with a pointer left on the implementation issue.</p>
+                        <p><strong>Pitfalls.</strong> Agents suggest prototyping when you should be implementing — a naming problem: to an agent unfamiliar with the flow it reads like the obvious next step after a ticket exists. And <strong>do not prototype a whole app</strong>：: there is no natural stopping point, momentum turns it into the product, and code with no tests and no error handling meets users that way.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — research</p>
+                    <h3 class="font-display text-lg font-bold mb-3">An external fact is blocking a decision</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It works only from <strong>primary sources</strong> — official documentation, source code, specifications, first-party APIs — tracing every claim back to whichever one owns the answer. <strong>It does not answer you in the conversation</strong>; the output is a file, with a link on every claim. The decisive move:the reading runs in a <strong>background agent</strong>。</p>
+                        <p><strong>Research is legwork you delegated, not thinking you outsourced.</strong></p>
+                        <p><strong>Pitfall.</strong> It spawns a second copy of itself (issue 530): the skill tells the caller to start a background agent without constraining the agent type, so what starts is a general-purpose agent holding the same tools and instructions, which starts another. Somebody measured <strong>a single research task burning roughly 450k tokens across three overlapping executions</strong>，, the duplicate finishing half an hour later entirely out of sight.<strong>Check the background task list after invoking it and stop the duplicates.</strong></p>
+                        <p>Three more. The inverse failure: if your global instructions forbid further delegation, the background agent politely declines and the skill quietly does nothing. "High-trust source" is the model's own judgement with no allowlist, so your real mitigation is <strong>following two or three citations at random</strong> — landing on「a summary of the thing rather than the thing itself means the run failed.<strong>There is no stopping criterion</strong>，, so scope is your responsibility: one API, one behaviour, one version claim comes back far better than "research X".</p>
+                        <p><strong>A research file is not an ADR.</strong> ADRs stay; research files get archived or deleted once used. A stale research file is worse than none — it poisons every later read of the repo.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — diagnosing-bugs</p>
+                    <h3 class="font-display text-lg font-bold mb-3">Something is broken and I do not know why</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>Six phases: build a repro, minimise it, rank hypotheses, instrument, fix with a regression test, clean up.</p>
+                        <p><strong>It will not let the agent form a theory before a tight feedback loop exists.</strong> A named command, <strong>already run once</strong>, red on this bug, and green once fixed. A coding agent handed a bug report defaults to reading the code and guessing; this skill blocks that.<strong>No command that can go red means no phase 2.</strong>That gate is the entire value of the skill.</p>
+                        <p><strong>Having a loop is not the goal; a tight one is.</strong> Fast — seconds. Deterministic — the same verdict every time. Sharp — asserting your exact symptom, not "it did not crash". And runnable unattended. A thirty-second flaky loop is barely better than none。For an intermittent bug the goal is not a clean repro but <strong>a higher reproduction rate</strong>——: loop the trigger, parallelise, add load, inject sleeps.</p>
+                    </div>
+                    <p class="eyebrow mt-6 mb-3">Ways to build one, in order of preference</p>
+                    <ol class="space-y-2 leading-relaxed text-sm">
+                        <li>A failing test on a seam that reaches the bug</li>
+                        <li>curl or an HTTP script against a dev server</li>
+                        <li>A CLI call with fixture input, diffed against a known-good snapshot</li>
+                        <li>A headless browser script asserting DOM, console or network</li>
+                        <li>Replaying a capture — a saved request, payload or event log</li>
+                        <li>A throwaway harness — the smallest subset of the system, one function call</li>
+                        <li>A property or fuzz loop, for "sometimes the output is wrong"</li>
+                        <li>A bisect harness you can hand to <code>git bisect run</code></li>
+                        <li>A differential loop — same input, old version against new</li>
+                        <li>A human-in-the-loop bash script, as a last resort</li>
+                    </ol>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th class="py-3 font-bold text-sm">What must be true</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">To enter phase 2</td><td class="py-4">A named command, <strong>already run</strong>, with its output pasted in (sensitive values masked), that goes red on this bug</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">To enter phase 3</td><td class="py-4">The repro reproduces <strong>and</strong> has been minimised — every element left is load-bearing</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">To enter phase 4</td><td class="py-4">Three to five ranked, falsifiable hypotheses, each with its prediction stated, shown to you before any is tested</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">To enter phase 5</td><td class="py-4">Each probe maps to a specific prediction, one variable at a time, every debug line carrying a greppable tag</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Done</td><td class="py-4">The original repro no longer reproduces, all instrumentation is removed, and <strong>the hypothesis that turned out right is written into the commit message</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><strong>Pitfalls.</strong> It fires on lightweight questions where you only wanted a direct answer — the most reported problem (issue 578, four people describing the same shape). Say "answer directly, do not diagnose", or turn off its model invocation. <strong>Do not use it to hunt for where the performance problem is</strong>， — it diagnoses a failure you can already name. It <strong>does not stop to ask before writing the fix</strong>，; phase 3 is the only human checkpoint.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — resolving-merge-conflicts</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I am stuck in a merge or rebase conflict</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It <strong>refuses to treat a conflict as a text problem</strong>. Before touching a hunk it traces both sides back to <strong>primary sources</strong> — the commit message, the PR, the originating issue — so it is choosing between <strong>two intentions</strong> rather than between two blocks of text, and it keeps both wherever they are compatible. Where they genuinely are not, it picks the side matching this merge's stated goal and states the trade-off. It never invents new behaviour to paper over a conflict, and <strong>it does not abort</strong>：merge : the merge is always carried to a finished commit.</p>
+                        <p>It also finds the repo's own automated checks and runs them before committing — because a merge is the easiest place in git to produce something that satisfies both branches and passes neither one's tests.</p>
+                        <p><strong>Extra practical knowledge.</strong> Do not partition files between parallel tasks to avoid conflicts — it costs more than it saves. The one discipline worth keeping is <strong>large refactors first</strong>. When working in parallel worktrees, <strong>the merge back is best doneby the session that wrote the change</strong>，, because only that session knows the intent. Batching everyone's conflicts onto the last agent throws away exactly what this skill works to reconstruct.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">On-ramp — improve-codebase-architecture</p>
+                    <h3 class="font-display text-lg font-bold mb-3">The codebase is rotting</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It scans the codebase for <strong>deepening opportunities</strong> — places where a shallow module, whose interface is nearly as complex as what it hides, could become a deep one — writes them up as an HTML report, and then grills whichever candidate you pick.</p>
+                        <p><strong>It never changes code.</strong> A whole run produces one HTML file and one conversation. The refactor itself happens later, in another session, through the normal build flow. That is what makes it <strong>a survey rather than a refactoring tool</strong>, and why it is worth running against a codebase you are not ready to touch yet.</p>
+                        <p><strong>Two filters.</strong> The <em>deletion test</em>: imagine removing this module — does complexity <strong>concentrate</strong> behind a smaller interface, or <strong>disperse</strong> across the callers? Only「concentrating cases get a card. Unless you name a region it also reads recent commit history first and biases the scan towards <strong>paths that are changing</strong> — a deepening in code nobody touches is a refactor you will never cash in.</p>
+                        <p>Three strength labels. <strong>Strong</strong> — the deletion test passes cleanly and the friction is real; take it seriously. <strong>Worth exploring</strong> — it makes sense, but the payoff depends on where the code goes next. <strong>Speculative</strong>（Speculative</strong> — listed for completeness, and mostly safe to ignore.</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Situation</th>
+                                    <th class="py-3 font-bold text-sm">How to use it</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Routine maintenance</td><td class="py-4">Every few days, or whenever there is a gap. Stops structure rotting between features</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Before a large piece of work</td><td class="py-4">Point it at the spec: "how do we make this change easy?"<strong>This is the most effective prompt</strong></td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Brownfield audit</td><td class="py-4">Run it against a large, unstructured, vibe-coded repo  repo to see what shape it actually is</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Testing legacy code</td><td class="py-4">Use it to find the missing seams first, then write tests against hard-to-test code</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-4 leading-relaxed mt-6">
+                        <p><strong>Pitfalls.</strong> "It grilled me for an hour about one idea" is the loudest complaint — say <strong>"do not grill me, just give me the report"</strong> when you invoke it. The report opens unstyled and without diagrams because it loads resources from a CDN, fails silently when blocked, and the agent cannot see it（ — it never renders that page — so <strong>tell it to use inline CSS and hand-written SVG</strong>。One candidate per session.<strong>It will almost never say your codebase is fine</strong>—— — an all-Speculative report is it telling you, in the only way it can, that it found nothing.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">On-ramp — triage</p>
+                    <h3 class="font-display text-lg font-bold mb-3">Other people have filed a pile of issues</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>Only for issues you did not create.</strong> Raw bug reports, feature requests from outside, an external PR that appeared overnight.<code>to-tickets</code> produces tickets that are agent-ready by construction, so running triage on them is wasted effort at best. It <strong>recommends and waits</strong>：: it gives you its category and status judgement with reasons, and applies nothing until you say so.</p>
+                        <p>Everything triaged ends up with <strong>exactly one category role and one status role</strong>. Two categories: bug and enhancement. Five statuses: <code>needs-triage</code> (you need to assess it), <code>needs-info</code>（ (waiting on the reporter; back to needs-triage once they reply), <code>ready-for-agent</code>（ (fully specified, with an agent brief), <code>ready-for-human</code>（ (the same brief plus why it cannot be delegated), <code>wontfix</code>（ (closed, with the reason recorded).</p>
+                        <p><code>wontfix</code> comes in three kinds, and the difference matters because <strong>only one of them gets written into the knowledge base</strong>. Already implemented: leave a comment pointing at where it lives, and <strong>do not</strong> file it in out-of-scope — that is a built feature, not a rejected one, and filing it there pollutes the deduplication check. A rejected bug: explain politely and close. A rejected enhancement: write a file in the out-of-scope directory and link to it from the closing comment. That directory holds <strong>one markdown file per rejected concept</strong>（ rather than one per issue — and triage reads the whole directory before assessing anything, <strong>matching by concept rather than keyword</strong>。</p>
+                        <p><strong>Verify before writing the brief.</strong> For a bug, follow the reporter's steps; for a PR, check it out and run the relevant tests. Then report one of three outcomes: confirmed with a code path, could not reproduce, or not enough detail to try — which is itself the strongest needs-info  signal there is. All of it exists to make the  <strong>agent brief</strong>  good, and that brief is written to be <strong>durable rather than precise</strong>：: types, signatures and behavioural contracts, and <strong>never file paths or line numbers</strong>，, because an issue may sit for weeks while the code beneath it moves.</p>
+                        <p><strong>Pitfalls.</strong> Labels are not created for you. Five statuses <strong>are not enough</strong> is the most-cited gap — blocked, deferred and implemented have all been asked for and none shipped. And <strong>do not turn it loose on a whole backlog at once</strong>——「. The "show me what needs attention" pass is a cheap list meant for picking from, and across twenty issues an agent quietly treats it as the evidence base — while it <strong>returns issue bodies and not comments</strong>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">On-ramp — wayfinder</p>
+                    <h3 class="font-display text-lg font-bold mb-3">This piece of work will not fit in one session</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It takes on work <strong>too large for one agent session</strong> — where you can name the <strong>destination</strong> but cannot yet see the route — and draws it as a shared <strong>map</strong> on the tracker, made of decision tickets, then resolves them one at a time until the route is clear.</p>
+                        <p><strong>It plans; it does not execute.</strong> Each ticket holds a question that produces a decision when resolved, rather than a slice of build work. The map is finished when <strong>nothing remains to be decided before somebody builds the thing.</strong> This is the rule agents break most break.</p>
+                        <p>The boundary against <code>grill-with-docs</code> is <strong>session count, not project size</strong>. Fits in one conversation: use grilling, which is cheaper and better. Does not fit: wayfinder. <strong>Reaching forwayfinder on a well-scoped feature is a common mistake.</strong></p>
+                        <p><strong>Four things on a map.</strong> <em>Destination</em> — what the end looks like, <strong>named before any ticket exists</strong>. <em>Decisions so far</em> — one line per closed ticket，, each linking to where the detail actually lives. <em>Not yet specified</em>，, the <strong>fog of war</strong>—— — decisions you can see coming but cannot yet state precisely. The test is <strong>whether you can state the question precisely right now</strong>，, not whether you can answer it. <em>Out of scope</em>—— — work judged outside the destination, closed and never graduated. The map is <strong>an index, not storage</strong>，; a decision lives only in its own ticket.</p>
+                        <p>The <strong>frontier</strong> is the set of tickets that are open, unblocked and unclaimed. A session claims one by assigning it to itself before doing any work, so the assignee is the claim. Tickets are <strong>referred to by name throughout, never a bare number</strong>——A wall of issue numbers is unreadable in prose.</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Type</th>
+                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Mode</th>
+                                    <th class="py-3 font-bold text-sm">When to use it</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">The default. The question can be talked out</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">「"What should this look like?" — a question that cannot be talked out. The artefact links off the ticket as an asset</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">AFK</td><td class="py-4">A fact outside the working directory is blocking a decision. Launched while the map is drawn, burning in parallel</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">task</td><td class="py-4 pr-4 whitespace-nowrap">Either</td><td class="py-4">Nothing to decide, but <strong>manual work</strong> is blocking one — granting access, registering a service, moving data so the shape becomes visible</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><code>task</code> is the only type that does rather than decides, and it exists to <strong>unblock a decision</strong>, <strong>never to deliver part of the destination</strong>. It is the type most often got wrong in practice: agents treat it as an implementation step and start writing product code inside the map.<code>research</code>  is the one exception to one-ticket-per-session.</p>
+                        <p><strong>Three fatal pitfalls.</strong> One: <strong>the agent starts writing production code mid-session</strong> — the most reported failure. "Plan, do not execute" can be overridden in the map's Notes, and <strong>Notes the Notes are written by the agent</strong>，, so the constraint and its exemption live in the same file, owned by the party being constrained. One user watched an agent write "this map carries execution" into its own Notes, read it back as permission in a later session, and start work on a production server. Two: <strong>you still run <code>/to-spec</code> and <code>/to-tickets</code></strong>——decision ticket  after the map is empty — the decision tickets all closed with it, and what remains is a map full of linked decisions, which is not a build plan. Three: <strong>do not run grilling tickets in parallel</strong>， — two sessions share no context, so you get asked in one what you just answered in the other.</p>
+                        <p>And one measured account: <strong>"I drew 27 tickets and by the thirteenth none of the rest made sense."</strong> Two counters: scope the map to <strong>one bounded destination</strong> — a well-defined epic performs far better than a vague "implement V1" — and <strong>prototype aggressively</strong>. The author's phrasing: wayfinder is prototypemaxxing, not planmaxxing.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — handoff</p>
+                    <h3 class="font-display text-lg font-bold mb-3">Something needs to move</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It compresses the current conversation into a <strong>handoff document</strong> — a markdown file written to the OS temp directory rather than the workspace, so a fresh agent can read it and pick up.</p>
+                        <p><strong>What it buys is portability, not compression.</strong> That makes it much narrower than it sounds: you only need the file when work has to <strong>move</strong>. Four triggers: switching harness, moving to another directory or repo, handing work to a colleague, and forking off a side thread found mid-phase.</p>
+                        <p><strong>The most-skipped use is the fork.</strong> You stay in your own session and hand a copy of the accumulated context to a second agent working in parallel. The prototype branch works exactly this way: you are deep in a design conversation, hit something only running code can settle, and do not want to spend a hard-won thread on looking it up. Hand off to a prototype session, get the answer, bring it back, and cite it in the original thread.<strong>Two crossings, one live conversation, nothing re-explained.</strong></p>
+                        <p>What travels: the live thread — what is in flight, why, and what is next — plus a suggested set of skills. Secrets are masked before writing. It deliberately carries <strong>none</strong> of what is already written down: spec, plan, ADR, issue, commit, diff  are referenced by path or URL, never copied.</p>
+                        <p><strong>Pitfalls.</strong> The file lives in a temp directory with a long path that differs per OS — <strong>ask for the path and write it down before moving on</strong>. Some environments clear temp between sessions, so if the next one will not start soon, copy it somewhere durable. Hand it to the next agent by <strong>pointing at the path</strong>，. Do not paste a summary into a shell command — one containing special characters gets mangled, and the typical failure is <strong>silent truncation</strong>；「It captures the what and not the why" is fair criticism, so <strong>pass what the next session is for as a parameter</strong>，, and watch for unverified beliefs written down as facts.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — to-questionnaire</p>
+                    <h3 class="font-display text-lg font-bold mb-3">The answer is in somebody else's head</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It turns a decision you cannot make alone into a <strong>questionnaire</strong> for whoever holds the piece you are missing.</p>
+                        <p><strong>It grills the sending, not the subject.</strong> Interviewing you about the subject would be pointless — not knowing the subject is why you are writing to somebody else. So it asks only the two things you can always answer: <strong>who it is for</strong> — their role, expertise and relation to you, which fixes the register and how much context the document has to carry — and <strong>what you need back</strong>（ — the specific decision or fact you cannot settle alone, which becomes the checklist the result is measured against. Everything after that is drafting.</p>
+                        <p>The shape of the document: one line of purpose, a short paragraph of context for somebody who has never been inside your head, questions <strong>most important first</strong> and grouped by topic, <strong>one idea per question and never compound</strong>, and <strong>explicit permission to answer "Ido not know"</strong>—— — flagged uncertainty is useful, a confident guess that reads as fact is not. It ends with a catch-all.</p>
+                        <p>It deliberately does <strong>not</strong> branch and does <strong>not</strong> take multiple recipients. Three people holding three pieces means running it three times. The commonest use is a grilling that has stalled: run it <strong>in the same conversation</strong> — it has no ingest t stage, and it works after a grilling purely because that session is already in the context.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — wait-what</p>
+                    <h3 class="font-display text-lg font-bold mb-3">That last answer did not land</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>The agent <strong>re-pitches</strong> what it just said: supplying the context you were missing, in plain words, using the vocabulary from your project's <code>CONTEXT.md</code>.</p>
+                        <p><strong>This skill is three lines long, and that is the design rather than an unfinished draft.</strong> A skill against verbosity fails by growing: four hundred lines telling a model to be concise still produces verbosity, because what the model reads is the volume, not the plea.</p>
+                        <p><strong>The name is the mechanism.</strong> The leading word is <em>wait</em>. "Be more concise" is an instruction about <strong>the agent's output</strong>, and a model complies by cutting words — leaving you more lost. <em>Wait</em> is about <strong>your state</strong>：: it says understanding failed here. An agent told to be shorter writes a telegram; an agent told "wait, you lost me" will <strong>go back and re-pitch</strong>。Every popular alternative names the output, and the model overcorrects into a register that is shorter without being clearer. <strong>Naming the listener asks for both halves</strong>：fewer words <strong>and</strong>the premise you were missing.</p>
+                        <p>It also says re-pitch <strong>that</strong> rather than "the last message" — what lost you is usually bigger than one paragraph, and how far back to go is the agent's call. The real cure is establishing shared language in advance; wait-what repairs the one that already went wrong.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — teach</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I want to learn something, over many days</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It turns the directory you run it in into a standing teaching workspace, and teaches a subject across multiple sessions through a series of <strong>short, self-styled HTML lessons</strong>.</p>
+                        <p><strong>It does not teach from what the model already knows.</strong> Parametric knowledge is treated as untrustworthy: before teaching it finds high-trust sources, records them, and cites them in every lesson. It is <strong>stateful</strong> — mission, resources, lessons and learning records all live in the directory as files:</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-line">
+                                        <th class="py-3 pr-4 font-bold text-sm">Path</th>
+                                        <th class="py-3 font-bold text-sm">What goes in it</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm align-top">
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">MISSION.md</td><td class="py-4">Why you are learning this. Everything else hangs off it; without it, the first thing it does is interview you until it exists</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">RESOURCES.md</td><td class="py-4">Curated sources, split into Knowledge and Wisdom（Wisdom, meaning community sources</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">lessons/</td><td class="py-4">Numbered lessons — the main unit of teaching</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">reference/</td><td class="py-4">Compressed cheat sheets, algorithms, glossaries — the documents you <strong>actually return to</strong></td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">learning-records/</td><td class="py-4">ADR-style records of what you have demonstrably learned，, used to decide what to teach next</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">assets/</td><td class="py-4">Reusable components — the first is a shared stylesheet — so the lessons look like one course</td></tr>
+                                    <tr><td class="py-4 pr-4 font-semibold">NOTES.md</td><td class="py-4">Teaching preferences you have stated</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>The central idea is <strong>storage strength</strong> — long-term retention — rather than <strong>fluency</strong>, the sense of recall in the moment that feels like mastery while reading and is gone a week later. It builds the first with <strong>desirable difficulty</strong>. Knowledge comes first, and difficulty is the enemy there — it consumes the working memory you need to understand. Skill is drilled afterwards through tight feedback loops, where difficulty becomes the tool.<strong>Lessons are rarely reread; reference documents are</strong>——, so a lesson's compressed essence belongs in the reference directory rather than buried in the lesson that introduced it.</p>
+                        <p><strong>Pitfalls.</strong> Files can land in the wrong place (issue 377 — somebody's lessons were written into the global skills directory), so <strong>name the directory explicitly at the start</strong>. <strong>The correct quiz answer is always the first option</strong> (confirmed across models, unfixed, and one contributor measured 33 out of 33 across nine lessons). <strong>There is no assessment step</strong>，, so state your existing knowledge and your gaps in the first message. <strong>There is no spaced-repetition schedule</strong>， — ask for revision yourself.</p>
+                        <p>Not only for code — the non-code uses outnumber the code ones in the record. Within code, the strongest use is not learning a language from scratch but <strong>finding your bearings in an unfamiliar codebase or a new team's stack</strong>. The author suggested a neat combination: when a grilling reaches something you do not understand, <strong>do not stop the grilling to learn it</strong>——handoff  to a teaching workspace, learn it there, and come back.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — wizard</p>
+                    <h3 class="font-display text-lg font-bold mb-3">There is a manual process only a human can do</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It generates an <strong>interactive bash script</strong> that walks a human through a manual procedure step by step — wiring up a third-party service, running a one-off migration, moving a project from state A to state B.</p>
+                        <p><strong>The agent writes the script and never runs it.</strong> You run it on your own machine. So a wizard is not instructions you follow — it is <strong>a program that drives the process and holds the state</strong>, and your part is clicking, pasting and pressing Enter.Stage  is one focused task on one screen, and the script clears the terminal between stages.</p>
+                        <p><strong>Scoping comes before the script.</strong> It reads your repo rather than asking cold — environment files, compose files, framework config, and every secret and variable reference in the CI configuration. Each of those is a value the wizard rd must produce. Then it gives you an ordered stage list to confirm, and only afterwards maps each stage to the exact path a human walks. Where it does not know what the current UI looks like, it asks you or checks the documentation <strong>rather than inventing the clicks</strong>。</p>
+                        <p>The template has already solved the UX: progress, confirmation gates, opening URLs across platforms, hidden input for secrets, idempotent writes to the environment file, writing CI secrets, and a closing summary of what it had to skip. <strong>The fixed library half is identical in every wizard and never hand-edited — consistency is the</strong>The agent writing a wizard never runs it end to end, using static validation instead. <strong>The first run is yours, and that run is the test</strong>。</p>
+                        <p><strong>Pitfalls.</strong> <strong>There is no going back a step</strong> — a typo at stage three means interrupting and rerunning, which is cheap because values already written to the environment file come back as defaults. <strong>Arrow keys are broken</strong> in the prompts (issue 741); backspace ckspace works. It does not check the state of third-party services. <strong>API key never enters the model's context</strong>—— — but a key you pasted into the chat during scoping is in the context like any other pasted text.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Vocabulary — codebase-design</p>
+                    <h3 class="font-display text-lg font-bold mb-3">What shape should a module be</h3>
+                    <p class="leading-relaxed mb-6">It fixes the words you use when designing modules, defines each precisely, <strong>bans the loose alternatives</strong>, and states the principles that follow from them.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Word</th>
+                                    <th class="py-3 pr-4 font-bold text-sm">Meaning</th>
+                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">Do not say</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Module</td><td class="py-4 pr-4">Anything with an interface and an implementation. <strong>Deliberatelyscale-independent</strong>——a function, a class, a package, a slice across layers</td><td class="py-4 hidden tablet:table-cell">unit、component、service</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Interface</td><td class="py-4 pr-4">Everything a caller must know to use it correctly<strong>everything</strong>：: type signatures, plus invariants, ordering constraints, error modes, required configuration and performance characteristics</td><td class="py-4 hidden tablet:table-cell">API、signature</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Depth</td><td class="py-4 pr-4">Leverage at the interface. <strong>Deep</strong> is a lot of behaviour behind a small interface. <strong>Shallow</strong> is where the interface is nearly as complex as the implementation</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4 pr-4">A place where you can change behaviour without editing there. It is the interface's <strong>location</strong></td><td class="py-4 hidden tablet:table-cell">boundary</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Adapter</td><td class="py-4 pr-4">The concrete thing satisfying an interface at a seam. It names the <strong>role, not the material</strong></td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leverage</td><td class="py-4 pr-4">What the caller gets from depth: more capability per unit of interface learned</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Locality</td><td class="py-4 pr-4">What the maintainer gets from depth: changes, bugs and verification concentrate in one place</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p>Depth is <strong>deliberately not</strong> defined as implementation lines over interface lines — that metric rewards writing a fatter implementation. What is used here is depth-as-leverage.</p>
+                        <p><strong>Four principles.</strong> Depth is a property of the interface, not the implementation. The <strong>deletion test</strong>: remove the module — if complexity disappears it was a pass-through; if it reappears across N callers it is earning its keep. <strong>The interface is the test surface</strong>， — wanting to test past it means the module is the wrong shape. <strong>One adapter is a hypothetical seam; two adapters make it a real one</strong>。</p>
+                        <p><strong>Pitfall.</strong> <strong>Do not use it as a driver</strong> (issue 449). Told to "continue and advance the open items", the agent grabs whatever it finds that most resembles an action, re-explores code a previous session already mapped, and runs a long time before asking you anything.<strong>Name a driver skill and let this one sit underneath it.</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Vocabulary — domain-modeling</p>
+                    <h3 class="font-display text-lg font-bold mb-3">The words are fighting each other</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It builds and sharpens the project's <strong>ubiquitous language</strong> while you design — challenging words that conflict with the glossary, forcing a precise term when you reach for a vague one, and stress-testing a relationship with concrete scenarios until the boundaries are exact.</p>
+                        <p><strong>It is an active discipline, not a passive one.</strong> Reading <code>CONTEXT.md</code> to borrow vocabulary is a one-line habit any skill can have; this one is for when you are <strong>changing the model</strong>. Which is why it <strong>interrupt you</strong>: it writes into  <code>CONTEXT.md</code>—— mid-conversation, at the moment a term is settled — because the batched version is a session's <strong>summary</strong>，, and the live version is that session's <strong>actual output</strong>。</p>
+                        <p>Two artefacts, two standards. <code>CONTEXT.md</code> holds <strong>terms</strong> — what a thing is, in a sentence or two. The threshold for writing is a vague word becoming a formal term; the timing is immediate; and it <strong>never holds</strong> implementation detail, spec、ec, scratch notes or general programming concepts. An ADR holds <strong>one decision</strong>（ in one to three sentences — context, choice, reason — and the threshold is <strong>all three at once</strong>——: hard to reverse, surprising without context, the result of a real trade-off. And it is offered, never assumed.</p>
+                        <p><strong>The rule to actually remember is the <code>CONTEXT.md</code> one</strong>, because it is the one that breaks in practice: <strong>it is a glossary and only a glossary.</strong> Left unattended, a model reads "write it into CONTEXT.md" as permission to persist every answer you gave, and the file becomes a running spec. <strong>This is the most reported problem with the skill, across several models.</strong></p>
+                        <p><strong>The move that makes this skill worth having.</strong> When you state how something works, it checks the code and lays the contradiction out: "your code cancels the whole Order, but you just said partial cancellation is possible — which is it?" Language and code are forced to <strong>agree out loud</strong>, before either is changed.<strong>limits</strong>：It cross-references only the code and what is already committed, and <strong>does not search your issue tracker</strong>， — so a naming conflict argued out and deliberately settled months ago in a closed issue gets raised again as new.</p>
+                        <p><strong>Pitfalls.</strong> <code>CONTEXT.md</code> grows past 500 lines — <strong>size is the symptom, not the disease</strong>. Tell it directly to make the file concise and strip the implementation detail. Only once the file is genuinely lean and still spans two domains no reader wants in their head at once should you consider splitting it, because <strong>splitting a bloated file just gives you several bloated files</strong>。<strong>Automatic invocation is its weakest point</strong>：. A grilling that finishes with  <code>CONTEXT.md</code>  untouched is this happening — name the skill explicitly.<strong>An agent-written glossary nobody reviewed is worse than none</strong>：: it becomes confident-sounding folklore that later sessions treat as truth.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Vocabulary — writing-for-agents</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I am writing a document an agent will read</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>Skills, instruction files, specs, runtime prompts, READMEs — anything an agent reads. Different wrappers, same craft.</p>
+                        <p><strong>Its default move is deletion, not explanation.</strong> Ask an agent to write instructions for another agent and most of the words go on explaining what the model already knows — <strong>every one of those lines is a no-op</strong>: paid for in context, changing nothing. This reference is the lens for finding them, which is why it earns as much on <strong>documents you already have</strong> as on a blank file.</p>
+                        <p><strong>Two kinds of load.</strong> <em>Context load</em> is what permanently loaded material costs in the agent's window: a line in the instruction file, a skill description, anything present every turn whether or not it is ever triggered. <em>Cognitive load</em> is the cost on <strong>you</strong>: which documents exist and when to reach for which. You are the index. <strong>That is not a cost to minimise — it is the price of human control.</strong> Once those two are clear, most writing decisions become the same trade-off made in different places.</p>
+                        <p><strong>Five levers.</strong> <em>Context pointer</em> — a reference that sits in context, names material outside it, and encodes when to go and fetch it. How reliably an agent reaches through it is decided by the pointer's <strong>wording</strong>, not its target. <em>Information hierarchy</em> — the ladder from in-file steps, to in-file reference, to reference behind a pointer. <em>Completion criteria</em> — the defence against <strong>premature completion</strong>. <em>Leading words</em> — compressed concepts already in the model's pre-training, anchored twice: in the body for execution, in the pointer for triggering. <em>Pruning</em> — single source of truth, relevance, and the no-op test applied sentence by sentence.</p>
+                        <p><strong>The no-op test is behavioural, not aesthetic.</strong> Delete the line and ask whether the agent's behaviour changed. A sentence that fails it gets <strong>deleted whole</strong> rather than reworded. When people disagree about one, <strong>run the document</strong> to settle it rather than arguing. The tests: the document gets better as it gets shorter, and you will be surprised how little is left. <strong>Nothing is said twice</strong>（ — repetition is the most reliable sign a document has never been tested.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Standalone — grill-me</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I have an idea that has not taken shape</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It interviews you about a <strong>loose idea</strong> until you can commit to it. You do not need a worked-out plan to start — <strong>producing that plan is what the session is for</strong>. It is <strong>stateless</strong>: no files, no workspace. What remains is the sharper version in your head. The subject need not be code and you need no repo.</p>
+                        <p><strong>Turn plan mode off.</strong> It pushes the agent to produce a plan quickly, which is the opposite of staying in the question.</p>
+                        <p><strong>What it looks like when it is working.</strong> You disagree with something — <strong>a session you never pushed back in is a session you did not need</strong>. Questions arrive in a few rounds rather than a long drip, and later rounds visibly build on what you said earlier. You end up somewhere you did not expect, because a question turned over a decision you had been making implicitly. And by the end you can defend every choice to somebody who was not in the room.</p>
+                        <p><strong>Count rounds, not questions.</strong> Forty-six questions across four rounds is an ordinary session. Two hundred means the scope is too large — and a very long session drifts into the <strong>dumb zone</strong>, where the context window is full enough that question quality drops. Once the grilling is done and you are committed, <strong>do not start a new session</strong>， — that conversation's context is the value.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">Router — ask-matt</p>
+                    <h3 class="font-display text-lg font-bold mb-3">I do not know which one to reach for</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>It <strong>recommends, then stops</strong>. No grilling, no spec, no files opened, and it will not launch the skill it just named — what you get is what to type next, and then you type it. The unit it thinks in is a <strong>flow</strong>: a path <em>through</em> skills rather than a single skill.</p>
+                        <p><strong>Honest limits worth knowing.</strong> It is a <strong>hand-written</strong> map, it lags the repo, and it only knows this pack's skills. It <strong>will tell you half the skills are not installed</strong> — known and unfixed: most of what it routes to is user-invoked, the harness leaves those out of the list it injects, and the agent treats that list as complete and reports them missing.<strong>They are installed.</strong></p>
+                        <p>It <strong>can also describe another skill's behaviour wrongly</strong>, answering from its own one-line summary rather than from the skill. One detailed report traced three instances in a single session, including advice to skip <code>to-spec</code> — that <code>SKILL.md</code> was never opened, and the cost was a missed seam check and tickets that underestimated the work. <strong>When it makes a load-bearing claim about another skill, have it open that <code>SKILL.md</code>.</strong></p>
+                        <p><strong>Where it sits.</strong> ask-matt is a <strong>secondary source</strong> above the pack. When the router and a <code>SKILL.md</code> disagree, the <code>SKILL.md</code> </code> is right.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             07 · Scenarios
+             ================================================================== -->
+        <section id="scenarios" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Four worked scenarios</h2>
+            </div>
+            <p class="leading-relaxed mb-10">The main-line example is in <a href="#main-flow" class="underline">section 05</a>. These are the four next most common situations.</p>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario B — intermittent 500s in production</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>The situation.</strong> A customer reports that submitting sometimes returns a 500, and you cannot reproduce it.</p>
+                        <ol class="space-y-2">
+                            <li>Somebody else reported it, so take the on-ramp: <code>/triage</code>. Can you reproduce it from their steps? If not, <code>needs-info</code> — or decide to chase it now.</li>
+                            <li>Chasing it now means a <strong>fresh session</strong>: <code>/diagnosing-bugs</code>, and say explicitly "build me a loop that goes red first".</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">Phase 1 is the only hard gate, and the only one you need to watch</p>
+                            <p>It must hand you a command that has <strong>already been run, with its output pasted in, and that is red on this bug</strong>. For an intermittent bug the goal is not a clean repro but <strong>a higher reproduction rate</strong>. <strong>With no red command, do not let it into phase 2。</strong>When it starts guessing, pull it back.</p>
+                        </div>
+                        <p>The rest is mechanical: minimise, with every remaining element justified as load-bearing; three to five ranked falsifiable hypotheses, which is <strong>the only human checkpoint</strong>; tagged probes; <strong>the regression test before the fix</strong>; clean up; and the hypothesis that turned out right written into commit message。</p>
+                        <p><strong>One branch to know about.</strong> When there is no correct seam for that regression test, it should say so rather than write a shallow test that gives false comfort — <strong>"there is no seam" is itself the finding</strong>, and it goes to <code>improve-codebase-architecture</code>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario C — inheriting a legacy repo nobody tidied</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>The situation.</strong> You have joined an eight-year-old project, or inherited a vibe-coded repo. No ADRs, no domain language, no design principles.</p>
+                        <ol class="space-y-2">
+                            <li><strong>Day one.</strong> <code>/setup-matt-pocock-skills</code> for the tracker and document layout.</li>
+                            <li><strong>Day one.</strong> <code>/grill-with-docs</code>, asking it to build up this existing repo through <code>CONTEXT.md</code>. Expect a <strong>long</strong> interview — some report more than fifty questions before the file took shape — and steer it actively. It reads the code and asks you what it found, and <strong>「which of the words already in the code are the right words is yours to decide</strong>。</li>
+                            <li><strong>Day two.</strong> <code>/improve-codebase-architecture</code>, opening with "do not grill me, give me the report first". <strong>An all-Speculative report means it found nothing</strong>；Pick a Strong candidate.</li>
+                            <li><strong>Day two.</strong> One candidate at a time: let it grill that candidate, and the output is a decision rather than a diff. Then on to <code>to-spec</code>、<code>to-tickets</code>、<code>implement</code>。</li>
+                            <li><strong>Afterwards.</strong> Rerun the architecture survey every few days as maintenance.</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">Why that order</p>
+                            <p>Establish the shared vocabulary first and the architecture survey's output improves dramatically — candidates come back named "the Order intake module", <strong>in your words</strong>, rather than "FooBarHandler".</p>
+                        </div>
+                        <p><strong>Honest expectations.</strong> On genuinely out-of-control projects, people report it "helped a bit and was not enough"; on an eight-year-old legacy codebase somebody watched the model circle in place, while the same skill produces a clean map on a tidy repo. <strong>There is currently no skill dedicated to this case.</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario D — a large greenfield project</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>The situation.</strong> A new product module from nothing, with no clear route, and obviously more than one conversation can settle.</p>
+                        <ol class="space-y-2">
+                            <li>Make sure the five <code>wayfinder:</code> labels exist — <code>gh</code> fails outright on one that does not.</li>
+                            <li><code>/wayfinder</code>. The first act is <strong>naming the destination</strong>. It is asking for the destination of the whole map, not of this session; <strong>scope it to one bounded epic</strong>， rather than "implement V1".</li>
+                            <li>It runs one breadth-first grilling and draws the Destination, Decisions so far, the fog, and Out of scope. The test between fog and ticket is <strong>whether you can state the question precisely right now</strong>. If the opening grill finds no fog at all, it should stop and say this is too small to need a map.</li>
+                            <li>Research tickets are launched while the map is being drawn and burn in parallel; the rest go <strong>one at a time</strong>, claimed by assigning them to yourself.</li>
+                            <li>For each one resolved: post the resolution comment, close the ticket, leave a line on the map, and then <strong>stop</strong>. Clearing fog ahead of it graduates whatever is now stateable into new tickets.</li>
+                            <li>Once the map is empty: <code>/to-spec #&lt;map_issue&gt;</code> — pass <strong>the map itself</strong>, not an individual decision ticket — then <code>/to-tickets</code>、<code>/implement</code>。</li>
+                        </ol>
+                        <p>The <strong>three fatal pitfalls</strong> are listed under wayfinder in <a href="#situations" class="underline">section 06</a>: the agent starts writing production code, do not skip <code>to-spec</code>、do not run grilling tickets in parallel。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario E — a decision that is not about code at all</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>The situation.</strong> A business decision — whether to start a product line, how to price a proposal, the argument structure of an article.</p>
+                        <ol class="space-y-2">
+                            <li>Start a clean conversation — <strong>you do not need to be in a repo</strong> — turn plan mode off, and run <code>/grill-me</code>.</li>
+                            <li>Answer round by round, numbered, in one go. Push back on questions pitched too shallow; say so when the scope is drifting; <strong>"I do not know" is a real answer</strong>.</li>
+                            <li>A question you can only answer once you see something is ungrillable. Outside code that usually means: sketch a page, build a spreadsheet, or ask one customer.</li>
+                            <li>When the answer is in somebody else's head, run <code>/to-questionnaire</code> <strong>in the same conversation</strong>, send it, and start the next round when the answers come back.</li>
+                            <li>It is stateless: no files, no workspace. What it leaves is the sharper version in your head.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             08 · Pitfalls. The source used a red "高" chip; severity is a word
+             in its own column here.
+             ================================================================== -->
+        <section id="pitfalls" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Known pitfalls</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                Ordered by the symptom you notice first. <strong>Serious</strong> means it costs you money or time.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Symptom</th>
+                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">Which skill</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Serious</th>
+                            <th class="py-3 font-bold text-sm">What to do</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The agent says some skills are not installed</td><td class="py-4 pr-4 hidden tablet:table-cell">ask-matt and others</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">User-invoked skills do not enter the model's list. <strong>They are installed. Type it anyway.</strong> The authority is <code>.claude-plugin/plugin.json</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>gh</code> says the label does not exist</td><td class="py-4 pr-4 hidden tablet:table-cell">triage, wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">setup <strong>does not</strong> create labels — run <code>gh label create</code> once</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The interview dumps every question at once with no recommended answers</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">grilling grilling or domain-modeling did not load. <strong>Ask the agent which skills it loaded</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">A good interview but <code>CONTEXT.md</code> never changed</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">domain-modeling domain-modeling did not load. Name it explicitly</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>CONTEXT.md</code> has grown past 500 lines</td><td class="py-4 pr-4 hidden tablet:table-cell">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">It absorbed implementation detail. Tell it directly to make the file concise and strip that out</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Reading the spec keeps getting truncated</td><td class="py-4 pr-4 hidden tablet:table-cell">to-spec → to-tickets</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">Between those two steps, <strong>do not clear or compact</strong>，. Run both in the same window</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Twelve tickets for a three-line change</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Tell it to merge them at the interrogation step. If the change really is small, go straight to implement and skip this skill</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Tickets cut one per layer</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Ask each ticket what it can demo when done; if the answer is not a behaviour, it is a horizontal slice</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">No sub-issues created; blocked-by only in the body</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Known and unfixed. Do it afterwards with  <code>gh issue create --parent</code>、<code>--add-sub-issue</code>、<code>--blocked-by</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Acceptance criteria already pass before any work starts</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">For each one, ask what observation would prove it false, and confirm it is red at the starting commit</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>/implement #2</code> did something entirely unrelated</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4"><code>#2</code>  resolves against any numbered list it can see. <strong>Pass the full URL and have it read the title back</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">It finished but the ticket is open and criteria unticked</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Expected behaviour — there is no closing step. <strong>Close the ticket yourself</strong>，so the dependency chain can advance</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review says it cannot see my changes</td><td class="py-4 pr-4 hidden tablet:table-cell">implement、code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">It diffs to HEAD, excluding anything uncommitted. <strong>Commit first, then review</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Several implements in parallel produced strange git states</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">Not supported in one checkout. Use a worktree, though the stash is still shared</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Name collision with the built-in code-review</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Remove the built-in one, or fork this under a new name</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Review sub-agents spawn more agents</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">Known and unfixed; one run reached more than fifty. <strong>Watch the agent count when running unattended</strong>；fork , and add a line to the fork forbidding further spawning</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Every review run finds something new</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">No convergence guarantee. Treat it as a list of leads, act on the ones backed by a written rule, then <strong>stop</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Research burned 450k tokens</td><td class="py-4 pr-4 hidden tablet:table-cell">research</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">nesting bug（issue 530），It spawns a second copy of itself. <strong>Check the background task list after invoking it</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">You wanted one answer and it went off building a repro</td><td class="py-4 pr-4 hidden tablet:table-cell">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Say "answer directly, do not diagnose", or turn off its model invocation</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">It writes the implementation before the test</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">It happens; the skill lives with it. If a slice needs strictness, watch it run</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">It writes a browser test first and then spins</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Declare it in the repo instruction file: browser tests come after the behaviour works</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The architecture report opens unstyled and without diagrams</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">An external CDN was blocked. Tell it to use inline CSS and hand-written SVG</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">It grilled me for an hour instead of offering options</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Say "do not grill me, just give the report" when invoking it</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Saying "go" to a vocabulary skill burned 100k tokens</td><td class="py-4 pr-4 hidden tablet:table-cell">codebase-design</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">It has no flow. <strong>Name a driver skill and let it sit underneath</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The wayfinder agent started writing production code</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">Notes  can override "plan, do not execute", and the Notes are written by the agent. <strong>Read the Notes first</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">By ticket 13 of 27 the rest stopped making sense</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Scope the map to one bounded epic, and prototype aggressively</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Three paragraphs per grilling question, and it is exhausting</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Lower the reasoning effort and add a plain-language line to the global instruction file. <strong>Unresolved</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The handoff file has gone</td><td class="py-4 pr-4 hidden tablet:table-cell">handoff</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Temp directories get cleared. <strong>Ask for the path and copy it somewhere durable if you need to</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">Lessons were written into the global skills directory</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4">issue 377。<strong>Name the directory explicitly and confirm where the first lesson lands</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">The correct quiz answer is always A</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">Known and unfixed — 33 out of 33. Treat position as meaningless, or ask for a component that shuffles at render time</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">A typo in the wizard and no way back a step</td><td class="py-4 pr-4 hidden tablet:table-cell">wizard</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">There is no back. Interrupt and rerun — saved values come back as defaults. Arrow keys are broken; use backspace</td></tr>
+                        <tr><td class="py-4 pr-4">I edited a <code>SKILL.md</code> and the update wiped it</td><td class="py-4 pr-4 hidden tablet:table-cell">All of them</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">Serious</td><td class="py-4"><code>npx skills update</code>  overwrites it, and plugin installs are read-only. <strong>Put long-term behaviour in your own instruction file</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             09 · CLAUDE.md
+             ================================================================== -->
+        <section id="claude-md" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Suggested lines for your own instruction file</h2>
+            </div>
+            <p class="leading-relaxed mb-6">
+                This is customisation through the supported route — <strong>edits to a skill file get overwritten; these do not</strong>. Copy the whole block into your <code>CLAUDE.md</code> or <code>AGENTS.md</code>.
+            </p>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+
+- When grilling, ask one question at a time.
+- Do not start implementing without my explicit permission.
+- Browser and end-to-end tests are written after the behaviour works,
+  never as the first red test.
+- Keep questions and recommendations short. One paragraph maximum
+  per question.
+- When a skill asserts something about another skill's behaviour,
+  open that skill's SKILL.md before acting on it.
+- code-review sub-agents must not invoke /code-review or spawn
+  additional agents; perform the review directly.</pre>
+            <p class="eyebrow mt-8 mb-3">What each line prevents</p>
+            <ul class="space-y-3 leading-relaxed">
+                <li><strong>One question at a time</strong>：Restores the single-question rhythm. Recommended for anyone reading slowly, working in a second language, or who needs the scaffolding to focus.</li>
+                <li><strong>Do not start implementing without permission</strong>：Stops grilling starting work of its own once the frontier empties — which happens on weaker models and at low effort.</li>
+                <li><strong>Browser tests last</strong>：Stops tdd writing Playwright first and spinning.</li>
+                <li><strong>Keep questions and recommendations short</strong> Mitigates verbosity in wayfinder and grilling.</li>
+                <li><strong>Open the <code>SKILL.md</code> being asserted about first.</strong> Stops ask-matt misdescribing another skill from its own summary.</li>
+                <li><strong>Review sub-agents must not spawn agents.</strong> Stops runaway fan-out — this is the line fork users measured as effective.</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             10 · Vocabulary
+             ================================================================== -->
+        <section id="vocabulary" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Vocabulary</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                These are the shared language of the whole pack. <strong>Without them, the output of a skill will not read.</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Word</th>
+                            <th class="py-3 font-bold text-sm">Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4">A place where you can change behaviour without editing there. Tests live on seams. It is the interface's <strong>location</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Pre-agreed seam</td><td class="py-4">A seam agreed before any code is written. This is why the tests last: the implementation underneath can be rewritten without touching them</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tracer bullet</td><td class="py-4">A thin but complete path through every layer, demoable on its own the moment it lands</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Vertical / horizontal slice</td><td class="py-4">Vertical is one path through every layer, and correct. Horizontal is one layer at a time, which is wrong and the most common failure</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deep / shallow module</td><td class="py-4">Deep is a lot of behaviour behind a small interface; shallow is where the interface is nearly as complex as the implementation</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deletion test</td><td class="py-4">Imagine deleting the module: does complexity <strong>concentrate</strong> behind a smaller interface, which earns its place, or <strong>spread</strong> out to the callers, which makes it a pass-through</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Locality / Leverage</td><td class="py-4">Locality is what the maintainer gets — changes concentrate in one place. Leverage is what the caller gets: behaviour per unit of interface learned</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Design tree / Frontier / Round</td><td class="py-4">A design tree is decisions hanging off decisions; the frontier is the set of decisions whose prerequisites are all resolved; a round asks the whole frontier at once</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Grillable / ungrillable</td><td class="py-4">A question that can be talked out, against one that needs something to react to, which goes to prototype instead</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Fog of war</td><td class="py-4">A decision on a wayfinder map you can see coming but cannot yet state precisely</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Decision ticket</td><td class="py-4">The wayfinder unit: it holds a question that produces a decision when resolved. It is <strong>not</strong> a slice of build work to execute</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Destination</td><td class="py-4">What the end of an entire wayfinder map looks like. Naming it is the first act of drawing one</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Spec / Ticket</td><td class="py-4">A spec is the destination and the decisions fixing it, and it is kept. A ticket is an execution step toward it, and is thrown away once used</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Primary / secondary source</td><td class="py-4">Primary is the conversation itself, commits, official documentation, and source code. Secondary is any summary. <strong>Primary wins on conflict</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context pointer</td><td class="py-4">A reference in context that names material outside it and encodes when to go and fetch it</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Progressive disclosure</td><td class="py-4">Moving reference material only one branch needs behind a pointer, keeping the main file readable</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context load / Cognitive load</td><td class="py-4">The first is what permanently loaded material costs in the model's window. The second is what knowing which documents exist and when to use them costs <strong>you</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">No-op</td><td class="py-4">A line of text whose deletion changes no agent behaviour. It is paid for in context and changes nothing</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leading word</td><td class="py-4">A compressed concept already in the model's pre-training — tight, red, tracer bullet — that the agent thinks with</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Storage strength / fluency</td><td class="py-4">Long-term retention, against the sense of recall in the moment — the second reads as mastery while you are in it and is gone a week later</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Smart zone / dumb zone</td><td class="py-4">The context window still has room, against being full enough that quality drops</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">HITL / AFK</td><td class="py-4">Human in the loop — it needs a live exchange — against something that finishes without you there</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase boundary</td><td class="py-4">Between two blocks of work; the only place to ask what to do with your context</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Expand–migrate–contract</td><td class="py-4">The three stages of a wide refactor: add the new form beside the old, move call sites in batches, delete the old once nothing calls it</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             11 · Antipatterns
+             ================================================================== -->
+        <section id="antipatterns" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">11</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Seven antipatterns</h2>
+            </div>
+            <p class="leading-relaxed mb-8">The most common ways this gets used wrong.</p>
+            <ol class="space-y-6 leading-relaxed">
+                <li><strong>Passive grilling.</strong> Forty "agreed"s and out comes a plan the agent wrote and you nodded at. <strong>A session you never pushed back in is a session you did not need.</strong></li>
+                <li><strong>Clearing or compacting between to-spec and to-tickets.</strong> Almost everything you grilled out lives only in that context window. Cut it and the spec quietly loses what you actually decided.</li>
+                <li><strong>Running triage on tickets you generated.</strong> <code>to-tickets</code> produces agent-ready tickets by construction. Triage is the on-ramp for work <strong>other people</strong> filed.</li>
+                <li><strong>Reaching for wayfinder on a well-scoped feature.</strong> The test is <strong>session count</strong>: if it fits in one conversation use <code>grill-with-docs</code>, which is cheaper and better.</li>
+                <li><strong>Using a vocabulary skill as a driver.</strong> Say "go ahead" to <code>codebase-design</code> or <code>domain-modeling</code> and the agent invents a process and burns a lot of tokens. Name a driver。</li>
+                <li><strong>Running the review in the coding session.</strong> Reviewing yourself in the same context is not review; it is confirmation bias with a slash command attached.</li>
+                <li><strong>Customising by editing <code>SKILL.md</code>.</strong> Updates overwrite it and plugin installs are read-only. Put long-term behaviour in your own instruction file.</li>
+            </ol>
+            <div class="border-l border-line pl-6 mt-10">
+                <p class="eyebrow mb-2">And one meta-antipattern</p>
+                <p class="leading-relaxed">Treating the process as a substitute for thinking. The author takes the opposite position in the README: approaches that help by <strong>taking over the process</strong> charge you your control for it, and make bugs in the process itself hard to fix. These skills are deliberately kept small, editable, and composable. <strong>Output quality tracks the quality of your answers, not the number of questions.</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             12 · 14-day plan
+             ================================================================== -->
+        <section id="plan" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">12</p>
+                <h2 class="font-display text-2xl font-bold mb-6">A 14-day learning plan</h2>
+            </div>
+            <p class="leading-relaxed mb-8">About 30 to 60 minutes a day, <strong>on a real project of your own</strong>.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Day</th>
+                            <th class="py-3 pr-4 font-bold text-sm">What to do</th>
+                            <th class="py-3 font-bold text-sm">How to know it passed</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">01</td><td class="py-4 pr-4">Read the <a href="#concepts" class="underline">three underlying ideas</a>; install the plugin or skills.sh (<strong>pick one</strong>); run setup in a repo; create the labels</td><td class="py-4">Three files exist under <code>docs/agents/</code>, and the instruction file has <code>## Agent skills</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">02</td><td class="py-4 pr-4"><code>/grill-me</code> on a <strong>non-code</strong> decision. Practise pushing back on purpose</td><td class="py-4">At least three push-backs, and you can defend every choice to someone who was not there</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">03</td><td class="py-4 pr-4"><code>/grill-with-docs</code> on your existing repo for one small feature</td><td class="py-4"><code>CONTEXT.md</code> grows line by line as you go, and 0 to 1 ADRs come out</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">04</td><td class="py-4 pr-4">Continue in the same conversation with <code>/to-spec</code>. Read the seam and out-of-scope sections properly</td><td class="py-4">You remember making every decision in the spec</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">05</td><td class="py-4 pr-4">Continue in the same window with <code>/to-tickets</code>. At the interrogation step ask each ticket what it can demo</td><td class="py-4">Every ticket demos a behaviour, and the top one has no blockers</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">06</td><td class="py-4 pr-4"><code>/implement</code> the first ticket (<strong>full URL</strong>) and watch the trace throughout</td><td class="py-4">You can see the <code>tdd</code> call in the trace, and it reaches a commit</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">07</td><td class="py-4 pr-4">Run <code>/code-review main</code> in a fresh session. Chase every citation</td><td class="py-4">Two separate reports, and <strong>you reject at least one finding</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">08</td><td class="py-4 pr-4">Read the <code>codebase-design</code> vocabulary as a dictionary, not a process</td><td class="py-4">The words component, service, and boundary stop appearing in your design talk</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">09</td><td class="py-4 pr-4">Hit a question that cannot be talked out and run <code>/prototype</code></td><td class="py-4">A shareable HTML file or a few structurally different variants, and a one-line answer</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">10</td><td class="py-4 pr-4">Run <code>/diagnosing-bugs</code> on a real bug. Watch the Phase 1 gate closely</td><td class="py-4"><strong>You see red command output before you see the first theory</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">11</td><td class="py-4 pr-4"><code>/improve-codebase-architecture</code> — remember to say "report first" — and pick one Strong candidate</td><td class="py-4">An HTML report, and one candidate grilled into a decision</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">12</td><td class="py-4 pr-4">Practise a fork with <code>/handoff</code>: keep the main conversation and open a parallel session</td><td class="py-4">The original session is untouched, and the new agent starts work without you re-explaining</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">13</td><td class="py-4 pr-4">Practise <code>/wait-what</code> and <code>/to-questionnaire</code>, and write <a href="#claude-md" class="underline">section 09</a> into your instruction file</td><td class="py-4">The re-explanation is shorter and clearer, and the questionnaire can be sent as is</td></tr>
+                        <tr><td class="py-4 pr-4 font-sans font-semibold">14</td><td class="py-4 pr-4">Run <code>/wayfinder</code> on work that is genuinely too big, scoped down to one bounded epic</td><td class="py-4">The destination is written before any ticket, and every open ticket reads as a question</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">
+                The rhythm afterwards: the main line daily, the architecture sweep every few days, and <code>/teach</code> opening a dedicated directory whenever a skill needs filling in.
+            </p>
+        </section>
+
+        <!-- ==================================================================
+             13 · Cheat sheet. The source shipped this as an ASCII block whose
+             meaning depended on column alignment. DESIGN.md forbids that — <pre>
+             content may lean on indentation but never on columns — so the
+             grouping is carried by headings and the comments moved out of the
+             block into the line beside each command.
+             ================================================================== -->
+        <section id="cheatsheet" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">13</p>
+                <h2 class="font-display text-2xl font-bold mb-6">One-page cheatsheet</h2>
+            </div>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-3">Once per repo</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/setup-matt-pocock-skills</code> — tracker, labels, and document layout</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">The main line, idea to ship</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-with-docs</code> — there is a repo, and one session covers it</li>
+                        <li><code>/to-spec</code> — only needed across sessions. Same window, do not clear</li>
+                        <li><code>/to-tickets</code> — cut tracer bullets and declare blocking edges. Same window</li>
+                        <li><code>/implement &lt;full ticket URL&gt;</code> — one ticket per session, clear in between</li>
+                        <li><code>/code-review &lt;fixed-point&gt;</code> — run in a clean session, commit first</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">On-ramps</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/triage</code> — issues other people filed</li>
+                        <li><code>/wayfinder</code> — it does not fit in one session. Clear, then come back to <code>/to-spec</code></li>
+                        <li><code>/improve-codebase-architecture</code> — a structural check-up every few days</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">Any time</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-me</code> — no repo, no files, and the subject need not be code</li>
+                        <li><code>/prototype</code> — design questions that cannot be talked out, one question at a time</li>
+                        <li><code>/research</code> — external facts. Runs in the background; check it did not spawn twice</li>
+                        <li><code>/diagnosing-bugs</code> — hard bugs. No guessing before there is a red loop</li>
+                        <li><code>/resolving-merge-conflicts</code> — you are already stuck in a conflict</li>
+                        <li><code>/wizard</code> — manual processes only a human can do</li>
+                        <li><code>/handoff</code> — something needs to move, or you are forking a branch</li>
+                        <li><code>/to-questionnaire</code> — The answer is in somebody else's head</li>
+                        <li><code>/wait-what</code> — you did not follow what just went past</li>
+                        <li><code>/teach</code> — learning a subject across many days</li>
+                        <li><code>/ask-matt</code> — you do not know which one to use. It recommends, then stops</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">The vocabulary layer. Do not use it as a driver</p>
+                    <p class="leading-relaxed"><code>codebase-design</code>、<code>domain-modeling</code>、<code>grilling</code>、<code>writing-for-agents</code></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">Five options at a phase boundary, judged in order</p>
+                    <p class="leading-relaxed">continue → clear → handoff → subagent → compact</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             Source. Named in section 01 as well; repeated here because this is
+             where a reader who skipped to the end will look for it.
+             ================================================================== -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Sources</p>
+                <h2 class="font-display text-2xl font-bold mb-6">What this tutorial is based on</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Based on the <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>version 1.2.3</strong>, covering the 25 published skills. Written and rewritten after reading that repo's <code>README.md</code>, <code>CONTEXT.md</code>, all 25 official skill documents, <code>.claude-plugin/plugin.json</code>, and <code>CHANGELOG.md</code>. The repo is released under the <strong>MIT</strong> licence.
+                </p>
+                <p>
+                    <strong>This page is a tutorial written independently by TauX. It is not a translation or a reproduction of the official documentation.</strong> The skills themselves, their names, and their behaviour belong to the original author. The arrangement, the tests, the terminology, and every comment on this page were written by TauX and <strong>do not represent the original author's position</strong>.
+                </p>
+                <p>
+                    Every issue number here is an issue in that repo, and <strong>most were still open at the time of writing</strong>. That means two things: the pitfalls are real, and they may already be fixed. <strong>If something behaves oddly, search that repo for the symptom first</strong> — the best fate for a hard-coded list of pitfalls is that one day all of it expires.
+                </p>
+                <p>
+                    The version marker is not decoration. These skills move fast — <code>to-prd</code> was renamed <code>to-spec</code> in v1.1, and the refactor stage of <code>tdd</code> was removed in June 2026 — and <strong>without a version number a reader cannot tell which part of a tutorial still holds</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">Want this flow inside your own team?</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                The tools are public. The hard part is wiring them into the tracker, the standards, and the delivery rhythm you already have. That part we have done before.
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">Book a consultation</a>
+                <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">See enterprise AI adoption and training</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

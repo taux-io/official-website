@@ -1,0 +1,302 @@
+{% include "header.html" %}
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/what-is-mcp#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io"
+                },
+                {"@type":"ListItem","position": 2,"name":"What is MCP","item":"https://taux.io/en-US/what-is-mcp"
+                }
+            ]
+        },
+        {"@type":"TechArticle","@id":"https://taux.io/en-US/what-is-mcp#article","headline":"What is MCP? The Model Context Protocol, explained plainly","description":"MCP（Model Context Protocol）Connecting AI applications to outside data and tools. The three roles — host, client, server — and why prompts, resources and tools differ by who decides, not by read versus write. Written against revision 2026-07-28.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/what-is-mcp" }
+        }
+    ]
+}
+</script>
+
+<div class="relative pt-32 pb-24 px-6 bg-surface">
+    <article class="max-w-4xl mx-auto relative z-10">
+
+        <header class="band mb-20">
+            <div class="tag mb-6">AI Technical Note</div>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-8">
+                <span class="display-lead">Model Context Protocol</span>
+            </h1>
+            <p class="text-lg max-w-prose leading-relaxed">
+                MCP is <strong>one wiring standard</strong> for connecting AI applications to outside data and tools. This page covers the three roles, the three things a server offers, and what the 2026 revision threw out.
+            </p>
+            <p class="font-sans text-eyebrow uppercase mt-8">
+                Written against revision <span>2026-07-28</span>
+            </p>
+        </header>
+
+        <!-- ① ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="what">01 — In one sentence</h2>
+            </div>
+            <p class="text-2xl tablet:text-3xl font-display leading-snug mb-8 max-w-prose">
+                MCP lets any AI application connect to any data source the same way.
+            </p>
+            <p class="max-w-prose leading-relaxed">
+                Model Context Protocol. Anthropic introduced it in 2024, <strong>and since December 2025 it has not been Anthropic's</strong> — the protocol was donated to the Agentic AI Foundation（Linux Foundation , co-founded with Block and OpenAI, and is now governed by the community.
+            </p>
+        </section>
+
+        <!-- ② ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="why">02 — The problem it solves</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-8">
+                Four AI applications, and five things to connect them to: Google Drive, GitHub, a database, Slack, an internal API.
+            </p>
+            <div class="border border-line p-8 mb-8">
+                <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
+                    <div>
+                        <p class="eyebrow mb-4">Without a shared protocol</p>
+                        <p class="font-sans text-3xl mb-3">4 × 5 = 20</p>
+                        <p class="text-sm leading-relaxed">Every application-times-source pair is written separately. One more application is five more integrations; one more source is four.</p>
+                    </div>
+                    <div>
+                        <p class="eyebrow mb-4">With one</p>
+                        <p class="font-sans text-3xl mb-3">4 + 5 = 9</p>
+                        <p class="text-sm leading-relaxed">Each application implements "be a client" once. Each source implements "be a server" once.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="max-w-prose leading-relaxed">
+                This is the <strong>N×M problem</strong>, and MCP's entire value is one sentence: <strong>any MCP client can talk to any MCP server</strong>. USB is the same story — before it, every peripheral brought its own connector.
+            </p>
+        </section>
+
+        <!-- ③ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="roles">03 — The three roles</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-10">
+                Three roles, and <strong>the first two are what everyone conflates</strong>. When people say "MCP client" they usually mean Claude Desktop — which is the host.
+            </p>
+
+            <figure class="mb-10">
+              <div class="overflow-x-auto">
+                <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
+                    <title id="arch-title">The three MCP roles</title>
+                    <desc id="arch-desc">A host contains three clients, each connected to one server. The first two servers are local, the third remote. The database sits outside the server, showing the server as an intermediary in front of the data.</desc>
+
+                    <!-- Host, with the clients inside it. The nesting is the
+                         whole point of the diagram: a client is not a peer of
+                         the host, it is a part of it. -->
+                    <rect x="8" y="40" width="250" height="220" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" />
+                    <text x="20" y="30" class="font-sans" font-size="13" fill="currentColor" fill-opacity="0.8" letter-spacing="1.2">HOST</text>
+                    <text x="20" y="62" class="font-sans" font-size="12" fill="currentColor" fill-opacity="0.55">AI application</text>
+
+                    <rect x="28" y="84" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="106" class="font-sans" font-size="12" fill="currentColor">Client 1</text>
+                    <rect x="28" y="134" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="156" class="font-sans" font-size="12" fill="currentColor">Client 2</text>
+                    <rect x="28" y="184" width="120" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="40" y="206" class="font-sans" font-size="12" fill="currentColor">Client 3</text>
+
+                    <!-- Arrows originate at the client. In this revision there
+                         are no server-initiated requests, so a bidirectional
+                         arrow here would be wrong. -->
+                    <line x1="148" y1="101" x2="420" y2="101" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="151" x2="420" y2="151" stroke="currentColor" stroke-opacity="0.35" />
+                    <line x1="148" y1="201" x2="420" y2="201" stroke="currentColor" stroke-opacity="0.35" />
+                    <polygon points="420,97 430,101 420,105" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,147 430,151 420,155" fill="currentColor" fill-opacity="0.6" />
+                    <polygon points="420,197 430,201 420,205" fill="currentColor" fill-opacity="0.6" />
+
+                    <rect x="434" y="84" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="106" class="font-sans" font-size="12" fill="currentColor">Server A</text>
+                    <rect x="434" y="134" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="156" class="font-sans" font-size="12" fill="currentColor">Server B</text>
+                    <rect x="434" y="184" width="150" height="34" fill="none" stroke="currentColor" stroke-opacity="0.35" />
+                    <text x="446" y="206" class="font-sans" font-size="12" fill="currentColor">Server C</text>
+
+                    <text x="434" y="72" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.55">stdio (subprocess)</text>
+                    <text x="434" y="240" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.55">Streamable HTTP</text>
+
+                    <!-- The data sits beyond the server: a server is a broker in
+                         front of the data, never the data itself. -->
+                    <ellipse cx="650" cy="101" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="151" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <ellipse cx="650" cy="201" rx="34" ry="9" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="101" x2="616" y2="101" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="151" x2="616" y2="151" stroke="currentColor" stroke-opacity="0.25" />
+                    <line x1="584" y1="201" x2="616" y2="201" stroke="currentColor" stroke-opacity="0.25" />
+                    <text x="616" y="280" class="font-sans" font-size="11" fill="currentColor" fill-opacity="0.45">your data</text>
+                </svg>
+              </div>
+                <figcaption class="font-sans text-xs mt-4">
+                    Clients live <strong>inside</strong> the host, one per server. Arrows always start at the client.
+                </figcaption>
+            </figure>
+
+            <dl class="border-t border-line">
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Host</dt>
+                    <dd class="leading-relaxed max-w-prose">The AI application itself. Claude Desktop, VS Code, Claude Code. It holds the model, the conversation and the permissions. <strong>The host is the application</strong>。</dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Client</dt>
+                    <dd class="leading-relaxed max-w-prose">A connector <strong>inside</strong> the host, one per server. Not an application — a part of one. VS Code talking to two servers has two clients.</dd>
+                </div>
+                <div class="border-b border-line py-6">
+                    <dt class="font-sans mb-2">Server</dt>
+                    <dd class="leading-relaxed max-w-prose">The program offering tools and data. It may run on your machine or somewhere else. It <strong>cannot see your conversation, and cannot see other servers</strong> — that isolation is deliberate.</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- ④ 互動 --------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="primitives">04 — What a server offers</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-4">
+                Three things, and the difference between them is <strong>not</strong> read versus write. That is the intuition almost everyone arrives with, and it is wrong.
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                The real difference is <strong>who decides to use it</strong>. Three situations, three different answers:
+            </p>
+
+            <div data-mcp-primitives class="border border-line">
+                <div data-tablist class="flex flex-col tablet:flex-row border-b border-line">
+                    <button type="button" data-scenario="resource" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        I want the AI to read my file
+                    </button>
+                    <button type="button" data-scenario="tool" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        I want the AI to open a ticket
+                    </button>
+                    <button type="button" data-scenario="prompt" class="flex-1 text-left font-sans text-eyebrow uppercase px-6 py-5 border-b-2 border-transparent aria-selected:text-primary aria-selected:border-line tablet:border-r tablet:border-r-line">
+                        I want to run a review process I already have
+                    </button>
+                </div>
+
+                <section data-panel="resource" class="p-8">
+                    <p class="eyebrow mb-4"><strong>Resource</strong> — the application decides</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        You drag a document in, or the host works out that this question needs that file attached. The decision belongs to the <strong>application</strong>, not the model. The model simply receives the content.
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        Typically: file contents, git history, a database schema.
+                    </p>
+                </section>
+
+                <section data-panel="tool" class="p-8">
+                    <p class="eyebrow mb-4"><strong>Tool</strong> — the model decides</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        You say "file this bug as a ticket" and the model works out which function to call and with what arguments. The decision belongs to the <strong>model</strong>.
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        The key point: <strong>a read-only lookup can be a tool</strong>, as long as the model is the one deciding to run it. Which is why "read equals resource, write equals tool" does not hold.
+                    </p>
+                </section>
+
+                <section data-panel="prompt" class="p-8">
+                    <p class="eyebrow mb-4"><strong>Prompt</strong> — the user decides</p>
+                    <p class="leading-relaxed max-w-prose mb-4">
+                        You pick "code review" from a menu, or type a slash command. The decision is <strong>yours</strong> — the model will not reach for it on its own.
+                    </p>
+                    <p class="text-sm leading-relaxed max-w-prose">
+                        Typically: slash commands, template menus.
+                    </p>
+                </section>
+            </div>
+
+            <p class="font-sans text-xs mt-4">
+                ├─ One difference across all three: who presses the button.
+            </p>
+        </section>
+
+        <!-- ⑤ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="transport">05 — How it travels</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-6">
+                Two standard transports. <strong>stdio</strong>: the server is a subprocess, talking over standard input and output. <strong>Streamable HTTP</strong>: each message is an HTTP POST. <strong>This is a difference in how, not in where</strong>：A server running on your own machine can speak Streamable HTTP just as well.
+            </p>
+            <p class="max-w-prose leading-relaxed">
+                Worth knowing that <strong>their security properties differ completely</strong>: stdio inherits your user permissions and has no auth layer at all; the HTTP path wants OAuth and origin validation. And "local server" means "runs on your machine" — it says nothing about whether it reaches the internet. A local server can call a remote API perfectly happily.
+            </p>
+        </section>
+
+        <!-- ⑥ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="whats-new">06 — What this revision changed</h2>
+            </div>
+            <p class="text-2xl font-display leading-snug mb-8 max-w-prose">
+                Servers no longer remember anything.
+            </p>
+            <p class="max-w-prose leading-relaxed mb-6">
+                <span class="font-sans">2026-07-28</span> is the largest revision since MCP appeared, and it breaks things. A client used to handshake with a server to establish a connection, after which both remembered each other. <strong>There is now no handshake and no connection phase</strong> — every request carries its own version and identity, and the server forgets it as soon as it has answered.
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                The direction changed too: <strong>a server does not ask you a question</strong>. It returns "I need this" and ends the request; the client gets the answer and <strong>sends a fresh one</strong>.
+            </p>
+
+            <div class="border-l border-line pl-6 mb-10">
+                <p class="eyebrow mb-4">Seeing any of these elsewhere means that material is out of date</p>
+                <ul class="font-sans text-sm space-y-2">
+                    <li>├─ <code>initialize</code> handshake</li>
+                    <li>├─ <code>Mcp-Session-Id</code> header, and protocol-level sessions</li>
+                    <li>├─ a server <strong>initiating</strong> a request to a client</li>
+                    <li>└─ <code>ping</code>、<code>logging/setLevel</code> as methods</li>
+                </ul>
+            </div>
+
+            <p class="max-w-prose leading-relaxed mb-6">
+                The third one needs spelling out, because it reads as "servers can no longer ask for anything". <strong>What went is the mechanism for initiating a request, not the ability to ask.</strong> A server used to push a request across; now it can only say "I need this" in a response and stop, and the client picks it up from there.
+            </p>
+            <p class="max-w-prose leading-relaxed mb-10">
+                So the features where a server asks a client for something <strong>are all still there, just routed differently</strong> — including <strong>Elicitation</strong> (asking the user for a piece of information) and <strong>Sampling</strong> (borrowing the host's model; the direction is the opposite of the intuitive one, so it trips people up more than anything else here).
+            </p>
+
+            <p class="max-w-prose leading-relaxed">
+                Separately: <strong>Roots</strong> (telling a server which directories are in scope), <strong>Sampling</strong> and <strong>Logging</strong> are <strong>marked deprecated</strong>. They still work today, but do not treat them as the architecture to learn. Deprecation and the mechanism change above are separate things: one is about how a message travels, the other about whether the feature stays at all.
+            </p>
+        </section>
+
+        <!-- ⑦ ------------------------------------------------------------- -->
+        <section class="mb-20">
+            <div class="cover" data-cover>
+                <h2 class="eyebrow mb-6" id="version">07 — Which revision this page describes</h2>
+            </div>
+            <p class="max-w-prose leading-relaxed mb-6">
+                An MCP version <strong>is a date</strong>. It marks the last day a breaking change was made, not a release cadence. So for any MCP material you come across, the date tells you how current it is — <strong>which is the single most useful thing on this page</strong>.
+            </p>
+            <p class="font-sans text-sm mb-10">
+                2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span>2026-07-28</span>
+            </p>
+            <div class="border border-line p-8">
+                <p class="eyebrow mb-4">Statements with a shelf life</p>
+                <ul class="text-sm space-y-3 leading-relaxed">
+                    <li>The previous section holds for <span class="font-sans">2026-07-28</span> and no other revision.</li>
+                    <li>The three deprecated features will not actually be removed before some revision after <span class="font-sans">2027-07-28</span>.</li>
+                    <li><strong>"The protocol no longer needs a connection phase" is not "deployed servers are all stateless."</strong> A great many servers in the wild still speak the older revision, and that gap will persist.</li>
+                </ul>
+            </div>
+        </section>
+
+        <nav class="border-t border-line pt-10">
+            <p class="eyebrow mb-6">Next</p>
+            <ul class="space-y-4">
+                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">How to actually build with it → Claude Skills  guide</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">Another new standard worth knowing → LLMs.txt </a></li>
+            </ul>
+        </nav>
+
+    </article>
+</div>
+
+{% include "footer.html" %}

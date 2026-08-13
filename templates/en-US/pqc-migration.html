@@ -1,0 +1,453 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ, no ItemList: the five steps are a sequence of work,
+     not a ranking, and a list type would say the wrong thing about them. HowTo
+     was the other candidate and is not used — Google has wound its support down
+     to almost nothing, and it would add a maintenance surface for no gain.
+
+     Every FAQ answer here is answerable from the page and from a named source
+     document. The regulatory dates in particular are the kind of thing that
+     gets restated confidently across the web without anyone checking whether
+     the document they come from is final. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/pqc-migration#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"Post-Quantum Cryptography Migration","item":"https://taux.io/en-US/pqc-migration" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/en-US/pqc-migration#article","headline":"Post-quantum cryptography migration: a five-step path, and the regulatory clocks already running","description":"A five-step path — governance, CBOM inventory, risk assessment, crypto-agility, supply chain — mapped to the FSC's seven strategies, with US, EU and Taiwan timelines and their sources.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/pqc-migration" }
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/en-US/pqc-migration#faq","mainEntity": [
+      {"@type":"Question","name":"What is post-quantum cryptography?","acceptedAnswer": {"@type":"Answer","text":"Post-quantum cryptography is a family of algorithms designed to resist attack by a quantum computer. RSA and elliptic-curve cryptography, both in wide use today, rest on the difficulty of integer factorisation and discrete logarithms — problems a sufficiently large quantum computer solves efficiently. PQC uses lattice, hash and code-based constructions instead, against which no efficient quantum algorithm is currently known."
+        }
+      },
+      {"@type":"Question","name":"Are there regulatory requirements in Taiwan?","acceptedAnswer": {"@type":"Answer","text":"Only the financial sector has a stated timeline. On 2026-06-18 the FSC issued PQC migration guidance for finance: seven strategic directions and phases running from 2026 to 2035, applying to financial institutions and their significant suppliers. It is guidance rather than a mandate. Separately, on 2025-04-16 the Administration for Digital Industries and a post-quantum security industry alliance published migration guidance covering PKI, secure chips, digital signatures and network equipment, without setting sector completion deadlines. No other sector has a local statutory deadline in Taiwan today."
+        }
+      },
+      {"@type":"Question","name":"Where should a company start?","acceptedAnswer": {"@type":"Answer","text":"Start with governance, not the inventory. The FSC lists PQC policy and governance as its first strategy, ahead of the cryptographic inventory, for a practical reason: without someone deciding who owns the work and where the budget comes from, the inventory stalls halfway. Governance first, then the CBOM, then risk-based prioritisation, then crypto-agility, and finally supply chain and procurement requirements."
+        }
+      },
+      {"@type":"Question","name":"What is a CBOM?","acceptedAnswer": {"@type":"Answer","text":"A CBOM — Cryptography Bill of Materials — is a register of cryptographic assets: which algorithms, key lengths, certificates and libraries are in use, where each lives, who maintains it, and how long its lifecycle is. It is the cryptographic counterpart of an SBOM and a precondition for migration, because you cannot prioritise what you cannot enumerate. CycloneDX has supported the format natively since 1.6. The FSC lists building this register as its second strategy, in the near-term 2026–2027 phase."
+        }
+      },
+      {"@type":"Question","name":"Why act now, when quantum computers do not exist yet?","acceptedAnswer": {"@type":"Answer","text":"Two independent reasons. First, harvest-now-decrypt-later: traffic intercepted today can be stored and decrypted later, so data with a long confidentiality requirement is already exposed. Second — and this one depends on no forecast at all — the regulatory deadlines already exist. The EU recommends member states begin by end-2026 and complete high-risk critical-infrastructure scenarios by end-2030; the FSC's phases start in 2026. Those dates do not move whenever quantum computers arrive."
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Data Governance
+            </div>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+                <span class="display-lead">Post-Quantum Migration</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                A five-step path from governance to supply chain, mapped to the FSC's seven strategies, with the US, EU and Taiwan timelines and where each comes from.
+            </p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index. Same component as /owasp-llm-top-10: real anchors,
+             fully usable with no script, highlight moves aria-current only.
+             Ids are named after the topic rather than numbered — the step order
+             is an editorial choice and could change; what each step is about
+             will not. -->
+        <nav data-section-index aria-label="Section index" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">Contents</p>
+                <ul>
+                    <li><a href="#why-now" class="section-index-link">Why now</a></li>
+                    <li><a href="#overview" class="section-index-link">The five steps</a></li>
+                    <li><a href="#governance" class="section-index-link"><span class="font-sans">00</span> Governance</a></li>
+                    <li><a href="#cbom" class="section-index-link"><span class="font-sans">01</span> CBOM inventory</a></li>
+                    <li><a href="#risk-assessment" class="section-index-link"><span class="font-sans">02</span> Risk and compliance</a></li>
+                    <li><a href="#crypto-agility" class="section-index-link"><span class="font-sans">03</span> Crypto-agility</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span> Supply chain</a></li>
+                    <li><a href="#regulatory-timeline" class="section-index-link">Regulatory timelines</a></li>
+                    <li><a href="#standards" class="section-index-link">Standards status</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Why now.
+
+             The urgency argument is built on regulatory dates rather than on
+             fear, deliberately. Harvest-now-decrypt-later is real and belongs
+             here, but the timeline for a cryptographically relevant quantum
+             computer is genuinely contested, and a page that leans its whole
+             case on a contested prediction is one contradicting headline away
+             from losing the reader. The regulatory dates do not depend on any
+             prediction being right. -->
+        <section id="why-now" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Why now</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Two <strong>independent</strong> reasons, and they are not equally reliable. Keeping them apart matters, because conflating them is how this subject gets oversold.
+                </p>
+                <div>
+                    <p class="eyebrow mb-2">One: harvest now, decrypt later</p>
+                    <p>
+                        Harvest-now-decrypt-later is a widely accepted threat model: traffic intercepted today can be stored untouched and decrypted whenever the capability arrives. So the question is not whether your data is safe today, but <strong>how long it needs to stay secret</strong>。Anything with a confidentiality horizon beyond ten years — medical records, policies, contracts, identity credentials, trade secrets — is already exposed under that model.
+                    </p>
+                    <p class="mt-4">
+                        One honest caveat: <strong>estimates for when a quantum computer could actually break RSA-2048 vary enormously</strong> — serious people put it anywhere from within a decade to several. Treat any content that states a specific year as settled fact with suspicion.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Two: the regulatory deadlines already exist</p>
+                    <p>
+                        This one <strong>depends on no forecast at all</strong>, and it is the one to plan against. The EU recommends member states begin migration by the end of 2026 and complete high-risk critical-infrastructure scenarios by the end of 2030; the FSC's phased timeline starts in 2026. Those dates hold regardlessof when quantum computers arrive, and they are already written down.
+                    </p>
+                </div>
+                <p class="border-l border-line pl-6">
+                    Put differently: you do not need an opinion about quantum timelines to work out whether to start this year.
+                </p>
+            </div>
+        </section>
+
+        <!-- Overview: also the table of contents on small screens. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">The five steps</h2>
+            </div>
+            <p class="leading-relaxed mb-8">
+                Each step is mapped to one of the seven strategies in the FSC's PQC migration guidance for the financial sector. Outside finance there is no local statutory deadline in Taiwan yet, but the sequence holds — and if you sell to a financial institution you are already inside that guidance's scope.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">Step</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">FSC strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">00</td>
+                            <td class="py-4 pr-4"><a href="#governance" class="font-bold">Governance</a></td>
+                            <td class="py-4 hidden tablet:table-cell">① PQC policy and governance</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">01</td>
+                            <td class="py-4 pr-4"><a href="#cbom" class="font-bold">Inventory the cryptography (CBOM)</a></td>
+                            <td class="py-4 hidden tablet:table-cell">② Inventory cryptographic use, build the register</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">02</td>
+                            <td class="py-4 pr-4"><a href="#risk-assessment" class="font-bold">Risk assessment and compliance mapping</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑤ Prioritise migration by risk</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">03</td>
+                            <td class="py-4 pr-4"><a href="#crypto-agility" class="font-bold">Build crypto-agility</a></td>
+                            <td class="py-4 hidden tablet:table-cell">③ Improve crypto-agility, remove anti-patterns</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">Quantum-safe supply chain</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑥ Update procurement and supply-chain requirements</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm mt-6 max-w-prose">
+                The FSC's other two strategies — ④ ecosystem coordination and a shared risk picture, and ⑦ cutover testing and operational resilience — run through all five rather than forming a stage of their own.
+            </p>
+        </section>
+
+        <section id="governance" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Step 00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Governance <span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">What has to be decided</p>
+                    <p>Who owns it, where the budget comes from, how often it reports, and which existing committee carries it. PQC migration cuts across security, infrastructure, application development and procurement — no single department can finish it alone.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Why this comes before the inventory</p>
+                    <p>
+                        That is the FSC's ordering, for a practical reason: <strong>a CBOM inventory touches nearly every system and needs cooperation from every team</strong>. Without someone deciding who owns it and where the money comes from, the inventory stalls halfway on "that is not my job". Governance first is what makes the inventory movable — which is why the FSCputs it first in the near-term 2026–2027 phase.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">In practice</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Hang it off the security governance you already have. A new committee is one more meeting that will not happen.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Name one owner, responsible for the inventory, the prioritisation and the supplier conversations.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Budget for it across years rather than as a project. The FSC timeline runs to 2035, which is not an annual budget cycle.</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="cbom" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Step 01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Inventory the cryptography <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>
+                        A CBOM is <strong>a register of cryptographic assets</strong>: which algorithms, key lengths, certificates and libraries are in use, where each lives, who maintains it and how long its lifecycle is. It is the cryptographic counterpart of an SBOM,<code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">CycloneDX</code> has supported the format natively since 1.6.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Why everything else waits on it</p>
+                    <p>
+                        <strong>You cannot prioritise what you cannot enumerate.</strong> Most organisations cannot say how many certificates they hold, which systems still use SHA-1, or which ten-year-old batch job has an RSA key hard-coded in it. Without the register, "migrate the high-risk things first" is not an instruction anyone can follow, because nobody knows which those are。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">In practice</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Start with external TLS and certificates — easiest to scan automatically, quickest to show a result, and that result is what funds the rest.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Then cryptographic calls in your own code and its dependencies. This layer is usually the messiest, and where "nobody knows what this does"。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Last, purchased software and hardware. You cannot see inside this layer; you can only ask the supplier — which makes it the same job as step 04.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>Keep it machine-readable and wired into the asset management you already run. <strong>A register that goes stale is more dangerous than none</strong>，because every later decision rests on it.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">Relation to data governance</span>
+                    A CBOM is really the<a href="/{{ locale }}/data-governance" class="underline">data governance</a> capability — inventory, catalogue, assign an owner, keep it current — applied to cryptographic assets. If you have already done a data inventory, this step goes much faster.
+                </p>
+            </div>
+        </section>
+
+        <section id="risk-assessment" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Step 02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Risk assessment and compliance mapping <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">The question to answer</p>
+                    <p>Once the register exists: what moves first? The FSC's phrasing is "prioritise migration by risk" — not everything at once, which is neither possible nor necessary.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Three dimensions to rank on</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>How long the data must stay secret.</strong> Data with a twenty-year confidentiality requirement is already in harvest-now-decrypt-later range today; something that needs three months of secrecy is far lower risk. This dimension is the one most often underweighted.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>How often the system is replaced.</strong> HSMs, chips and embedded devices can have lifecycles of ten years or more. Buy one this year without requiring readiness and you have locked yourself in past 2035.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>Compliance exposure.</strong> Against whichever regime applies: financial institutions look at the FSC's phases, cross-border operations at the EU's 2030 critical-infrastructure deadline, and anyone selling into US government at federal procurement requirements.</span></li>
+                    </ol>
+                </div>
+                <p class="border-l border-line pl-6">
+                    The point of the compliance mapping is not to memorise every date. It is to find <strong>which deadline reaches you first</strong> — and for most companies that is not NIST in 2035, it is a procurement requirement arriving much sooner.
+                </p>
+            </div>
+        </section>
+
+        <section id="crypto-agility" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Step 03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Build crypto-agility <span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>
+                        Crypto-agility is <strong>being able to change algorithm without changing application logic</strong>. The algorithm is configuration, not something compiled in.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Why it outlasts this migration</p>
+                    <p>
+                        Because <strong>this will not be the last one</strong>. ML-KEM and ML-DSA are the current standards, and NIST is already standardising HQC as a fallback — on the explicit grounds that ML-KEM might one day be broken. Without agility, the next migration repeats the whole inventory and rewrite from scratch; with it, the next migration is a configuration change. The FSC places it in the near-term phase not because it is urgent but because<strong>it sets the cost of every migration after this one</strong>。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Anti-patterns to clear first</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Algorithm and key length hard-coded, so changing one means a recompile and a release.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Home-rolled cryptography instead of calls into a central service or library.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Certificate and key lifecycles managed by hand with no automatic rotation. If you cannot rotate, you cannot switch.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>Negotiation parameters scattered across dozens of service configs with nothing central.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">During the transition</span>
+                    Most systems will run <strong>hybrid mode</strong> first — classical and post-quantum algorithms side by side — keeping a way back while PQC implementations mature. That is agility paying off directly: being able to run both is what makes the switch safe.
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Step 04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Quantum-safe supply chain <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Why this one matters especially in Taiwan</p>
+                    <p>
+                        The FSC guidance applies to <strong>financial institutions and their significant suppliers</strong>. So a company selling software, hardware or services to a bank, insurer or broker is already in scope without being in finance — the pressure simply arrives through a procurement contract rather than a regulator. For Taiwan's tech companies and systems integrators that is a commercial consequence, not a theoretical risk.
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">In practice</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Put PQC readiness into <strong>procurement and tender requirements</strong>. Ten-year hardware signed this year， without that requirement is a mine laid for 2035.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Ask suppliers for <strong>a CBOM or an equivalent account of their cryptography</strong>, rather than accepting "we are looking into it". You cannot see inside packaged software; asking is the only instrument you have.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Fold supplier timelines into your own prioritisation — your deadline is set by your slowest supplier.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>If you are the supplier: <strong>have the answer ready</strong>. Customers will ask well before the regulatory deadline does.</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Regulatory timeline.
+
+             Every row names the document it comes from, because this is the
+             part of the page most likely to be restated elsewhere without
+             checking, and the part most likely to go stale here. Nothing in CI
+             can watch it: regulatory change does not live in this repository.
+             The verification date and the convention around date_modified are
+             the only defence, and they depend on a person. -->
+        <section id="regulatory-timeline" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Regulatory timelines</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Where the rules stand</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed mb-8">
+                <p>
+                    <strong>Regulatory status on this page was checked on 2026-08-06.</strong>
+                    Every row names the document it comes from. No automated check can hold this section — regulations do not change inside our version control — so this page's last-updated date means <strong>the day the regulatory status was re-checked</strong>, not the day the layout moved.
+                </p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Jurisdiction</th>
+                            <th class="py-3 pr-4 font-bold text-sm">Key dates</th>
+                            <th class="py-3 font-bold text-sm">Source</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">United States</td>
+                            <td class="py-4 pr-4">112-bit-strength algorithms deprecated after <span class="font-sans">2030</span>, disallowed after <span class="font-sans">2035</span></td>
+                            <td class="py-4">NIST IR 8547, <strong>still a public draft</strong>. Both years are widely quoted as settled; they are not yet final</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">European Union</td>
+                            <td class="py-4 pr-4">Member states to begin by end <span class="font-sans">2026</span>; high-risk critical-infrastructure scenarios by end <span class="font-sans">2030</span> by then</td>
+                            <td class="py-4">Commission Recommendation (EU) 2024/1101, issued 2024-04-11</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">Taiwan<br><span class="font-normal">financial sector</span></td>
+                            <td class="py-4 pr-4">
+                                Near term <span class="font-sans">2026–2027</span>: governance, inventory method, CBOM, agility foundations<br>
+                                Medium <span class="font-sans">2027–2029</span>: pilots, infrastructure upgrades, shared testing<br>
+                                Long term <span class="font-sans">to 2035</span>: migrate high-risk, high-criticality systems first
+                            </td>
+                            <td class="py-4">FSC PQC Migration Reference Guidance for the Financial Sector, issued 2026-06-18. Applies to financial institutions <strong>and significant suppliers</strong>; it is <strong>guidance, not a mandate</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold">Taiwan<br><span class="font-normal">all sectors</span></td>
+                            <td class="py-4 pr-4"><strong>No completion deadline set</strong></td>
+                            <td class="py-4">PQC Migration Guidance from the Administration for Digital Industries (moda) and the post-quantum security industry alliance, issued 2025-04-16. Covers PKI, secure chips, digital signatures, network equipment and zero-trust identity</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">
+                <strong>For most companies here, the thing that reaches you first is not any of these dates. It is a procurement contract.</strong>
+                Financial institutions will start writing PQC readiness into tenders long before 2035, and that is the point at which a supplier actually needs an answer.
+            </p>
+        </section>
+
+        <section id="standards" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">Standards status</p>
+                <h2 class="font-display text-2xl font-bold mb-6">What is standardised and what is not</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    Separated out because finalised standards and algorithms still in the standardisation process get conflated constantly — and procurement and architecture decisions should rest on the first kind.
+                </p>
+                <div>
+                    <p class="eyebrow mb-2">Final (August 2024)</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">203</span><span><strong>ML-KEM</strong> (formerly Kyber) — key encapsulation, for establishing a shared key</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">204</span><span><strong>ML-DSA</strong> (formerly Dilithium) — digital signatures, the general-purpose first choice</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">205</span><span><strong>SLH-DSA</strong> (formerly SPHINCS+) — hash-based digital signatures,the most conservative security assumptions</span></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Still in process</p>
+                    <p>
+                        <strong>HQC</strong>  was selected by NIST on 2025-03-11 as a fifth algorithm, positioned as a <strong>fallback</strong> for ML-KEM should the lattice assumptions ever be broken.<strong>FN-DSA</strong>（ (formerly Falcon) is likewise still in process. Neither is<strong>a finalised standard you can cite</strong>，, so architecture and procurement decisions should rest on FIPS 203/204/205 for now.
+                    </p>
+                </div>
+                <p class="border-l border-line pl-6">
+                    The existence of HQC is itself the best argument for <a href="#crypto-agility" class="underline">crypto-agility</a>: even NIST is preparing a way out in case today's standard turns out not to be enough.
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">Sources</p>
+            <p class="leading-relaxed">
+                Regulatory timelines and standards status are taken from
+                <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>、
+                <a href="https://eur-lex.europa.eu/eli/reco/2024/1101/oj/eng" target="_blank" rel="noopener noreferrer" class="underline">Commission Recommendation (EU) 2024/1101</a>、
+                <a href="https://www.fsc.gov.tw/ch/index.jsp" target="_blank" rel="noopener noreferrer" class="underline">the Financial Supervisory Commission</a>
+                and
+                <a href="https://moda.gov.tw/ADI/news/latest-news/16090" target="_blank" rel="noopener noreferrer" class="underline">the Administration for Digital Industries</a>
+                . The five-step mapping follows the seven strategies in the FSC's guidance. The synthesis, terminology and practical recommendations are TauX's and do not represent the position of any of these bodies.
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">Not sure what cryptography you are running?</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                Most organisations stall at step one. A CBOM inventory is the same capability as data governance — start by telling us what your asset catalogue looks like today.
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">Book a consultation</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">See data governance</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

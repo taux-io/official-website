@@ -1,0 +1,209 @@
+{% include"header.html" %}
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+        {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/agent-prompting-guide#breadcrumb","itemListElement": [
+                {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io" },
+                {"@type":"ListItem","position": 2,"name":"Prompting Guide","item":"https://taux.io/en-US/agent-prompting-guide" }
+            ]
+        },
+        {"@type":"Article","@id":"https://taux.io/en-US/agent-prompting-guide#article","headline":"Getting an AI to understand you: a prompting guide from first prompt to agents","description":"Prompt Engineering（From a single well-formed instruction through to designing agents: what to specify, what to leave open, and how to tell whether it worked.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/agent-prompting-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" }
+        }
+    ]
+}
+</script>
+
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="absolute inset-0 pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-8">
+            <span class="display-lead">Make the Machine Understand</span>
+        </h1>
+            <p class="text-lg mb-8 max-w-prose">A practical prompt-engineering guide</p>
+
+            <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
+                <h3 class="text-lg font-bold mb-2">Why the model keeps missing the point</h3>
+                <p class="mb-4">
+                    It is rarely that the model is not capable. It is that the instruction left room to be read another way. Prompt engineering is programming in prose.
+                    The job is to give a clear instruction, the context needed to follow it, and the shape the answer should take.
+                </p>
+                <p>
+                    Think of it as briefing an extremely capable intern on their first day. Sharp, fast, no idea how your company works — and if you leave a gap, they will fill it with a guess.
+                </p>
+            </div>
+        </header>
+
+            <!-- The same step response as the homepage, drawn once and left
+                 still. A reader spends minutes on this page, so it carries the
+                 mark without carrying the animation's cost.
+
+                 The curve drifts within this strip as the page scrolls. Travel
+                 is the strip's height times the factor, so a thin frame needs a
+                 large factor to read as anything: at 0.25 it moved 20px over a
+                 full pass, which is nothing. Overscaled to 200% so the bound —
+                 half the travel, 24px — stays inside the overhang. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 space-y-32">
+        <!-- Part 1: Prompting 101 -->
+        <section id="prompting-101" class="p-8 border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; Prompting 101</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                Part one: the basics
+            </h2>
+            </div>
+            <p class="mb-8 ml-16">For: writing, document analysis, one-shot questions, extraction.</p>
+
+            <div class="space-y-10 ml-4 tablet:ml-16">
+                <!-- Point 1 -->
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">1. Give it a role and a task</h3>
+                    <p class="mb-3">Do not throw it a sentence. Cast it, the way a director would.</p>
+                    <div class="border-t border-line pt-6 p-5 text-sm mb-3">
+                        <span class="font-bold block mb-2 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg> Weak: "What is this?"
+                        </span>
+                        <span class="font-bold block flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg> Better: "You are a claims adjuster at a Swedish insurer. Read this accident report and determine fault."
+                        </span>
+                    </div>
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Without being told it is a road accident report, the model may read it as a skiing incident. Name the role and it stops guessing.
+                    </p>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">2. Give it the reference material</h3>
+                    <p class="mb-3">Anything fixed — a standard form, a regulation — goes at the top, in the system prompt.</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Why:</strong> so the model spends its attention on the content rather than re-deriving the format each time. You hand the intern the staffhandbook once, not with every task.</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Tip:</strong> XML tags work well (<code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;contents&lt;/form&gt;</code>）。AI Models follow structure well.</li>
+                    </ul>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">3. Specify the steps, not just the result</h3>
+                    <p class="mb-3">Do not ask only for an answer. Describe the process a person would follow, and ask for that.</p>
+                    <div class="border-t border-line pt-6 p-5 text-sm mb-3">
+                        <strong class="font-semibold mb-1 block">How to write it:</strong>
+                        <span>"Step one: check the tick-boxes on the form. Step two: read the scene diagram. Step three: state your conclusion."</span>
+                    </div>
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Making the model show its working lifts accuracy noticeably — and gives you something to check.
+                    </p>
+                </div>
+
+                <!-- Point 4 -->
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">4. Specify the output format</h3>
+                    <p class="mb-3">Say "return JSON", or "wrap the conclusion in a <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> tag".</p>
+                    <p class="text-sm flex items-start">
+                        <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Then code can consume the result directly, with nobody copying and pasting.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 2: Agents -->
+        <section id="agent-prompting" class="p-8 border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent Prompting</p>
+                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                Part two: prompting agents
+            </h2>
+            </div>
+            <p class="mb-8 ml-16">For: tool use, search, writing code, multi-step work.</p>
+
+            <div class="space-y-10 ml-4 tablet:ml-16">
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">1. What an agent is</h3>
+                    <p>The basics treat the model as a question-answering box. An agent works like a colleague, in a loop:<br>
+                        <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">use a tool → look at the result → decide the next move → use another tool</span><br>
+                        <span class="inline-block mt-2 text-sm">until the job is done.</span>
+                    </p>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">2. When it is worth it</h3>
+                    <p class="mb-3">Not for everything. Agents earn their cost when the task is complex and the path through it is not known in advance.</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start">
+                            <span class="mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
+                            <strong>Use one for:</strong> market research, where nobody knows how many searches it will take.
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
+                            <strong>Do not for:</strong> a fixed process with a written SOP, or anything simple.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">3. Think like the agent</h3>
+                    <p class="mb-3">Ask yourself: handed these tools and this brief on my first day, would I know what to do?</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Name tools precisely.</strong> Short, accurate, no two that overlap.</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Give principles, not a script.</strong> "Five searches for a simple question, ten for a hard one" — or「stop as soon as you have the answer".</li>
+                    </ul>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">4. Make it plan before it acts</h3>
+                    <p class="mb-3">Current models can reason as they go — ask them to.</p>
+                    <ul class="list-none space-y-2 ml-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>The instruction:</strong>before calling a tool, state the plan — "what am I searching for, and what kind of source would settle it?"</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>The check:</strong>after the result comes back — "is this trustworthy, and does it need corroborating?"</li>
+                    </ul>
+                </div>
+
+                <div class="relative pl-6 border-l border-line">
+                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                    <h3 class="text-xl font-bold mb-2">5. How to test it</h3>
+                    <p>Start small. Run a handful of cases by hand and read the logs.<br>
+                        Which tools did it call? Did it loop? That tells you far more about the instruction than the final answer does.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Links -->
+        <section class="mt-16 pt-8 border-t border-line">
+            <h3 class="font-bold mb-6 font-display text-xl">Further reading</h3>
+            <div class="flex flex-wrap gap-3">
+                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                    The GEO guide <span class="ml-2">→</span>
+                </a>
+                <a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                    What is llms.txt? <span class="ml-2">→</span>
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% include"footer.html" %}

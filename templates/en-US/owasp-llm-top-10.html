@@ -1,0 +1,625 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     The ItemList is the point of this page as far as a retrieval system is
+     concerned. A ranked list rendered as headings can only be guessed at from
+     document structure — order and completeness are both inferred, and both can
+     be inferred wrong. ItemList states them: ten items, positions one to ten,
+     each with the name a reader would search for.
+
+     The FAQ now carries the version question it could not answer before. The
+     2026 edition is in hand, so "what changed" has a first-hand answer instead
+     of the fabricated one that would otherwise have sat inside structured data,
+     invisible on the page and taken verbatim by the machines reading it. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/owasp-llm-top-10#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/en-US/owasp-llm-top-10" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/en-US/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM  applications: the ten most critical security risks","description":"OWASP Top 10 for LLM Applications 2026 Ten risks broken down one by one, with the 2025-to-2026 reordering and the scope changes that came with it.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/en-US/owasp-llm-top-10#list" }
+  },
+  {"@type":"ItemList","@id":"https://taux.io/en-US/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM  applications, in the order of the OWASP 2026 edition.","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"LLM01 Prompt Injection Prompt Injection","description":"Any input entering the model context that changes its behaviour, including cross-modal carriers hidden in images or audio.","url":"https://taux.io/en-US/owasp-llm-top-10#prompt-injection" },
+      {"@type":"ListItem","position": 2,"name":"LLM02 Sensitive Information Disclosure Sensitive Information Disclosure","description":"The model's output reveals something this user should not have: personal data, credentials, trade secrets, or another user's data.","url":"https://taux.io/en-US/owasp-llm-top-10#sensitive-information-disclosure" },
+      {"@type":"ListItem","position": 3,"name":"LLM03 Excessive Agency Excessive Agency","description":"The system grants more capability, permission or autonomy than needed, so one lapse causes real damage. Sixth to third in 2026.","url":"https://taux.io/en-US/owasp-llm-top-10#excessive-agency" },
+      {"@type":"ListItem","position": 4,"name":"LLM04 Supply Chain Supply Chain","description":"Model weights, datasets, packages and plugins of untrustworthy or tampered provenance, including artifacts that are not what they claim.","url":"https://taux.io/en-US/owasp-llm-top-10#supply-chain" },
+      {"@type":"ListItem","position": 5,"name":"LLM05 Data and Model Poisoning Data and Model Poisoning","description":"Content planted in pre-training, fine-tuning or embedding data to shift behaviour or install a trigger-activated backdoor.","url":"https://taux.io/en-US/owasp-llm-top-10#data-and-model-poisoning" },
+      {"@type":"ListItem","position": 6,"name":"LLM06 Unbounded Consumption Unbounded Consumption","description":"No bound on inference usage: runaway cost, degraded service, or behaviour cloned through bulk querying. Up four places in 2026.","url":"https://taux.io/en-US/owasp-llm-top-10#unbounded-consumption" },
+      {"@type":"ListItem","position": 7,"name":"LLM07 Misinformation Misinformation","description":"Plausible, wrong output taken downstream as fact. Incident data puts its real harm above where practitioners rank it.","url":"https://taux.io/en-US/owasp-llm-top-10#misinformation" },
+      {"@type":"ListItem","position": 8,"name":"LLM08 Hidden Context Exposure Hidden Context Exposure","description":"Instructions and operational detail placed in context but not meant for the user, extracted, inferred or reconstructed. Replaces and widens 2025's system prompt leakage.","url":"https://taux.io/en-US/owasp-llm-top-10#hidden-context-exposure" },
+      {"@type":"ListItem","position": 9,"name":"LLM09 Vector and Embedding Weaknesses Vector and Embedding Weaknesses","description":"RAG  vector stores and embeddings as an attack surface: poisoning, cross-tenant leakage, or inversion back to the source text.","url":"https://taux.io/en-US/owasp-llm-top-10#vector-and-embedding-weaknesses" },
+      {"@type":"ListItem","position": 10,"name":"LLM10 Improper Output Handling Improper Output Handling","description":"Model output executed or rendered downstream without validation, including insecure code produced at volume by assistants. Fifth to tenth in 2026.","url":"https://taux.io/en-US/owasp-llm-top-10#improper-output-handling" }
+    ]
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/en-US/owasp-llm-top-10#faq","mainEntity": [
+      {"@type":"Question","name":"What is the OWASP Top 10 for LLM Applications?","acceptedAnswer": {"@type":"Answer","text":"A list maintained by the OWASP GenAI Security Project setting out the ten most critical categories of security risk in large language model applications. It is the checklist most organisations start from when auditing an AI deployment, running from prompt injection and excessive agency through to improper output handling."
+        }
+      },
+      {"@type":"Question","name":"OWASP LLM Top 10 2026  — what are the ten?","acceptedAnswer": {"@type":"Answer","text":"In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling."
+        }
+      },
+      {"@type":"Question","name":"2026  versus 2025 — what changed?","acceptedAnswer": {"@type":"Answer","text":"The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants."
+        }
+      },
+      {"@type":"Question","name":"OWASP  — how was the 2026 order decided?","acceptedAnswer": {"@type":"Answer","text":"The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement."
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Security Lab
+            </div>
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-6">
+                <span class="display-lead">OWASP LLM Top 10</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">
+                Ten risks, each with its definition, real attack surface and defences — the first checklist to work against when auditing an AI deployment.
+            </p>
+        </header>
+
+        <!-- The same step response as the homepage, drawn once and left still.
+             A reader spends minutes on this page, so it carries the mark
+             without carrying the animation's cost. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index.
+
+             Ten anchors and a heading. It is a table of contents that happens
+             to know where you are, not a widget that has to run before the page
+             is navigable — with no script it still lists and still jumps.
+
+             Sits outside the space-y-32 stack rather than inside it: space-y
+             adds a top margin to every element after the first, and an absolute
+             child still counts as an element, so putting it in the stack would
+             push the whole page down by eight rem.
+
+             Hidden below xl. On a phone the overview table below is the table
+             of contents, which is why its anchors had to be real from the
+             start — this rail is the second consumer of those ids, not the
+             first. -->
+        <nav data-section-index aria-label="Section index" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">Contents</p>
+                <ul>
+                    <li><a href="#overview" class="section-index-link">Overview</a></li>
+                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-sans">LLM01</span> Prompt Injection</a></li>
+                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-sans">LLM02</span> Sensitive Information Disclosure</a></li>
+                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-sans">LLM03</span> Excessive Agency</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">LLM04</span> Supply Chain</a></li>
+                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-sans">LLM05</span> Data and Model Poisoning</a></li>
+                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-sans">LLM06</span> Unbounded Consumption</a></li>
+                    <li><a href="#misinformation" class="section-index-link"><span class="font-sans">LLM07</span> Misinformation</a></li>
+                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> Hidden Context Exposure</a></li>
+                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> Vector and Embedding Weaknesses</a></li>
+                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> Improper Output Handling</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Version status.
+
+             This block was written as one self-contained section precisely so
+             the 2026 upgrade would be a replacement rather than a rewrite. This
+             is that replacement: what it used to say — "2026 exists, we have
+             not confirmed it, we will not copy a list nobody checked" — is now
+             a diff against the real thing. -->
+        <section id="version-status" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">What changed from 2025 to 2026</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed">
+                <p>
+                    This page follows the <strong>2026 edition</strong>. <strong>The ordering moved more than in any previous year</strong>, so an audit done against the old list is worth revisiting.
+                </p>
+            </div>
+
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">2025</th>
+                            <th class="py-3 pr-4 font-bold text-sm">2026</th>
+                            <th class="py-3 font-bold text-sm">Risk</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">01</td><td class="py-3 pr-4 font-sans">01</td><td class="py-3">Prompt Injection <span>— unchanged</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">02</td><td class="py-3 pr-4 font-sans">02</td><td class="py-3">Sensitive Information Disclosure <span>— unchanged</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">06</td><td class="py-3 pr-4 font-sans">03</td><td class="py-3">Excessive Agency <strong>— up three, the most significant move</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">03</td><td class="py-3 pr-4 font-sans">04</td><td class="py-3">Supply Chain <span>— down one</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans">05</td><td class="py-3">Data and Model Poisoning <span>— down one</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans">06</td><td class="py-3">Unbounded Consumption <strong>— up four</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans">07</td><td class="py-3">Misinformation <span>— up two</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">Hidden Context Exposure <strong>— renamed and widened</strong><span>（was "system prompt leakage")</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans">09</td><td class="py-3">Vector and Embedding Weaknesses <span>— down one</span></td></tr>
+                        <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans">10</td><td class="py-3">Improper Output Handling <strong>— down five, the largest fall</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-l border-line pl-6 space-y-4 leading-relaxed mt-8">
+                <p>
+                    <strong>Four entries widened in scope rather than new ones being added.</strong>
+                    OWASP folds emerging risks into the entry that already owns them rather than fragmenting the list: prompt injection now covers <strong>cross-modal</strong> attacks (instructions hidden in an image or audio), supply chain covers <strong>model artifacts that are not what they claim</strong>, and data and modelpoisoning now covers<strong>fine-tuning-stage subversion</strong>、output handling covers<strong>insecure code produced at volume by assistants</strong>。
+                </p>
+                <p>
+                    <strong>The ranking method changed, and that is the most useful thing to know about this edition.</strong>
+                    Previously the order came entirely from a community vote. For 2026 incident data was added for the first time: 7,714 real incidents drawn from public vulnerability and AI-harm databases, of which 6,639 had enough detail to classify. The final weighting is <strong>three-quarters vote, one-quarter data</strong> ——deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
+                </p>
+                <p>
+                    Where the two disagree is more informative than where they agree. Prompt injection is the clearest case: <strong>on incident data alone it would fall out of the top ten</strong> — but OWASP reads that as <strong>defences working</strong> rather than risk receding, because teams have put more effort here than anywhere else, and clean successful attacks reach public databases less often. It stays first. Misinformation is the mirror image: ranked low by the vote, high by the data — the widest divergence, and the one pointing the more painful way.
+                </p>
+                <p>
+                    One boundary worth holding on to: <strong>this list covers the model as a component inside an application.</strong>
+                    Once the model becomes an <strong>actor</strong> — calling tools, carrying memory across sessions, causing downstream consequences — the risks move to OWASP's Agentic Top 10, and the two lists have to be read together.
+                </p>
+            </div>
+        </section>
+
+        <!-- Overview table.
+             Also the table of contents on small screens, where the section
+             index is not shown. Its anchors are real links to real ids, which
+             check:design enforces.
+
+             The ids are named after the risk rather than its number. LLM05 was
+             Improper Output Handling in 2025 and is Data and Model Poisoning in
+             2026 — numeric ids would have made every existing link land
+             silently on different content the moment the ranking moved. The
+             number changes between editions; the topic does not. Same reason
+             the URL carries no year. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">The ten at a glance</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">Risk</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">OWASP name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-4 pr-4"><a href="#prompt-injection" class="font-bold">Prompt Injection</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="font-bold">Sensitive Information Disclosure</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-4 pr-4"><a href="#excessive-agency" class="font-bold">Excessive Agency</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">Supply Chain</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="font-bold">Data and Model Poisoning</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-4 pr-4"><a href="#unbounded-consumption" class="font-bold">Unbounded Consumption</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-4 pr-4"><a href="#misinformation" class="font-bold">Misinformation</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="font-bold">Hidden Context Exposure</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="font-bold">Vector and Embedding Weaknesses</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-4 pr-4"><a href="#improper-output-handling" class="font-bold">Improper Output Handling</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- LLM01 is deliberately a summary. This is the pillar page; writing
+             prompt injection out in full here would put it in direct
+             competition with /what-is-prompt-injection for the same queries,
+             and that page is the one that should win them. -->
+        <section id="prompt-injection" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Prompt Injection <span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>Any input entering the model's context changes its behaviour away from what the developer intended. Architecturally the model cannot separate instruction from data — both are tokens in the same stream — so there is no clean equivalent of a parameterised query.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>Direct injection is typing "ignore all previous instructions" into the box. Indirect injection hides the instruction in a page, email or document the model will read. <strong>The 2026 edition folds cross-modal attacks into this entry</strong> — an instruction inside an image or audio file, invisible on screen and legible to the model.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <p>There is no single fix. The principle is to treat all external content as untrusted, and to enforce permissions <strong>outside the model</strong> — persuading the model should not move what it is allowed to do.</p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Why it is still first</span>
+                    On incident data alone it would drop out of the top ten. OWASP reads that as <strong>defences working</strong>: this is where teams have invested most, and clean successful attacks reach public databases less often. The attack surface itself has not shrunk.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">In depth</span>
+                    <a href="/{{ locale }}/what-is-prompt-injection" class="underline">The mechanism, how it differs from jailbreaking, and layered defences in practice</a>
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#excessive-agency" class="underline">LLM03 Excessive Agency</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 Improper Output Handling</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Sensitive Information Disclosure <span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>The model's output reveals something this user should not have: personal data, credentials, trade secrets, or another user's data.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A RAG system treats the whole knowledge base as one permission scope, so someone in sales can ask about contract terms only legal should see. The model did nothing wrong; the retrieval layer never had a boundary.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>retrieval<strong>before</strong>Apply the user's permissions before retrieval. Asking the model in the prompt not to say something is a request, not a control.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Detect and redact sensitive data on the way in and on the way out.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>De-identify anything used for training or fine-tuning — what a model has memorised cannot be withdrawn afterwards.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#hidden-context-exposure" class="underline">LLM08 Hidden Context Exposure</a>
+                    <span class="mx-2">/</span>
+                    <a href="#vector-and-embedding-weaknesses" class="underline">LLM09 Vector and Embedding Weaknesses</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="excessive-agency" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Excessive Agency <span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>The system grants the model more capability, permission or autonomy than it needs, so a single lapse in judgement is enough to cause real damage.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>An agent that sorts mail is given send and delete as well, because it uses the same credentials and separating them was fiddly. Now one email carrying an instruction can make it send mail outward. The permission was granted for convenience; the cost is attack surface.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Give each tool the minimum permission set. Nothing granted "in case it is needed".</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Human confirmation for anything high-risk or irreversible — and the confirmation screen has to say plainly what is about to happen.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Enforce permissions at the tool layer, not in the prompt. A prompt can be argued with; a permission system cannot.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Change in 2026</span>
+                    <strong>Sixth to third — the most significant move this edition.</strong> Vote and incident data rarely agree as closely as they do here: the damage is happening in agentic deployments.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#prompt-injection" class="underline">LLM01 Prompt Injection</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 Improper Output Handling</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Supply Chain <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>Model weights, datasets, packages and plugins whose provenance is untrustworthy or already tampered with. The classic software supply chain problem, plus a class of asset you cannot audit by reading source. <strong>The 2026 edition folds in model artifacts that are not what they claim</strong> — the weights being promoted are not the ones it claims to be.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>Fine-tuned weights pulled from a public hub, a LoRA adapter of unclear origin, a third-party package somewhere in an agent toolchain. You can read every line of your frontend; you cannot read what is inside that weights file.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Treat models and datasets as dependencies: verify provenance, pin versions, check hashes.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Produce and maintain an AI bill of materials, so "what exactly are we running" is a question with an answer.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Evaluate third-party models in isolation before deployment. Do not wire one straight into a system that holds permissions.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 Data and Model Poisoning</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Data and Model Poisoning <span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>Content planted in pre-training, fine-tuning or embedding data to shift the model's behaviour, or to install a backdoor that only fires on a particular trigger phrase. <strong>The 2026 edition names fine-tuning-stage subversion explicitly.</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A public page destined to be crawled into a training set is written with a specific trigger phrase and the wrong answer beside it. The model behaves normally on every ordinary test and diverges only on that phrase — which is why it is hard to catch. The anomaly is not where you are looking.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Keep provenance for training and fine-tuning data — know who contributed each batch.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Detect behavioural drift against a fixed benchmark set, rather than watching aggregate metrics for a dip.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Red-team after fine-tuning, specifically for behaviour that only appears under narrow conditions.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#supply-chain" class="underline">LLM04 Supply Chain</a>
+                    <span class="mx-2">/</span>
+                    <a href="#misinformation" class="underline">LLM07 Misinformation</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="unbounded-consumption" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Unbounded Consumption <span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>No bound on inference usage, leading to runaway cost, degraded service, or the model's behaviour being replicated through bulk querying.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A public chat endpoint with no rate limit is called continuously to harvest input-output pairs and clone the behaviour. The bill and the latency both worsen, and on the dashboard the traffic just looks like growth.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Rate limits and quotas per user and per API key, not one aggregate ceiling.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Cap input length and output tokens. Both ends.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Monitor cost per user with anomaly alerts. Finding out from the invoice usually means finding out a month late.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Change in 2026</span>
+                    <strong>Tenth to sixth, up four places.</strong> Practitioners weight resource and cost exhaustion far more heavily than the old ranking did.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#excessive-agency" class="underline">LLM03 Excessive Agency</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="misinformation" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Misinformation <span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>The model produces something plausible and wrong, and something downstream treats it as fact. How much harm follows depends on who catches it and whether anyone checks.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>The model invents a package name that does not exist and a developer installs it — except an attacker registered that name in the registry first. Here the model's mistake is not merely wrong; it is predictable, and therefore something that can be waited for.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Where provenance matters, retrieve and cite, so the answer can be traced back.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Keep a human in the loop for decisions that matter — and show that person what the model based it on.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Surface uncertainty. Do not wrap a guess in a confident register.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Change in 2026</span>
+                    Up two places, and <strong>the entry where vote and incident data diverge most</strong>: practitioners rank it low, real incidents rank it high. Once a fluent, confident output drives a decision or a tool call, a wrong answer becomes a wrong action.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 Data and Model Poisoning</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Hidden Context Exposure <span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>Instructions and operational detail placed in the model's context but not meant for the user are <strong>extracted, inferred or reconstructed</strong>. This is wider than the system prompt: developer instructions, policy text pulled from a knowledge base or config, tool and function schemas, and whatever else the application assembles into the context window. What they share: not intended for the user, and legible to the model.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A user gets the model to restate its own instructions through paraphrase, translation or role-play, and out come the API key, the internal discount rules, the tool permissions. The subtler variant is refusal logic reconstructed: the user used to see "sorry, I cannot do that" and now sees the conditions that trigger it and the exceptions to it, and therefore how to get around them.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>Design as though the hidden context will eventually be seen</strong>, and treat everything in it asnot secret. That is the root fix; everything else is a patch.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Never put credentials, connection strings or tokens in the context. The risk is not that they are seen; it is that they were put there in the first place.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Never make hidden context the <strong>only</strong> boundary for authorisation, permission separation, policy enforcement or content filtering — those have to hold outside the model.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Change in 2026</span>
+                    <strong>Replaces "system prompt leakage" from 2025, with a wider scope.</strong> The rename encodes a judgement: the problem was never that particular prompt, it is the whole class of information meant to stay out of the user's reach.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 Sensitive Information Disclosure</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 Excessive Agency</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Vector and Embedding Weaknesses <span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>The vector store and the embeddings behind RAG become an attack surface in their own right: poisoned, leaking across tenants, or inverted back into the original text.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A multi-tenant vector store with no hard separation by tenant, relying on a filter attached at query time. One similarity search crosses a customer boundary, and no error message anywhere mentions it.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Isolate the store by tenant and permission at the storage layer. Do not rest isolation on a query filter being written correctly.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Verify and log the provenance of everything indexed — know how each passage got in.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Treat embeddings as sensitive data. They are partially invertible, not a one-way hash.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 Sensitive Information Disclosure</a>
+                    <span class="mx-2">/</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 Data and Model Poisoning</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="improper-output-handling" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">Improper Output Handling <span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Definition</p>
+                    <p>Model output handed to a downstream component to execute or render without validation. This entry is not about the model; it is about the code catching it. <strong>The 2026 edition folds in insecure code produced at volume by assistants.</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">How it shows up</p>
+                    <p>A returned string goes straight into <code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>、, concatenated into SQL, passed to a shell. One successful injection therefore escalates from "the model said something wrong" to "an attacker is running commands on your server".</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Defences</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Treat the model as an untrusted source and its output as user input — which, transformed, is often exactly what it is.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Encode for the destination. HTML, SQL and shell each have their own escaping rules and there is no universal one.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Parameterised queries. No string concatenation.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">Change in 2026</span>
+                    <strong>Fifth to tenth, the largest fall this edition.</strong> A lower rank does not mean less harm — it fell because other entries rose, and its own scope actually widened.
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">Related</span>
+                    <a href="#prompt-injection" class="underline">LLM01 Prompt Injection</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 Excessive Agency</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">Source</p>
+            <p class="leading-relaxed">
+                The names, order and scope of the ten are taken from the OWASP GenAI Security Project's
+                <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>
+                2026 edition (licensed CC BY-SA 4.0). The ranking methodology and the incident-data figures come from the same document.
+                The synthesis, terminology and defensive recommendations are TauX's and do not represent OWASP's position.
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">Not sure your LLM application holds up?</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">
+                TauX Security Lab runs LLM security assessments and red-team exercises, working through your system against each of these ten.
+            </p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">Book a security review</a>
+                <a href="/{{ locale }}#our-services" class="btn-quiet">See what is involved</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

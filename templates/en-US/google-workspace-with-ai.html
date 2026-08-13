@@ -1,0 +1,527 @@
+{% include "header.html" %}
+
+<!-- Schema.org JSON-LD: BreadcrumbList + Article.
+     Citations and the FAQ block are added with the content. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://taux.io/en-US/google-workspace-with-ai#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://taux.io/en-US"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Workspace AI: reading the ROI",
+          "item": "https://taux.io/en-US/google-workspace-with-ai"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "@id": "https://taux.io/en-US/google-workspace-with-ai#article",
+      "headline": "Reading the Workspace AI numbers: what each one measured",
+      "description": "How to read vendor-published Workspace AI benefit figures: the method, sample size and vintage behind each, set against independent research, and why self-reported time savings need objective verification.",
+      "author": {% include "_org-ref.html" %},
+      "publisher": {% include "_org-ref.html" %},
+      "datePublished": "{{ date_published }}",
+      "dateModified": "{{ date_modified }}",
+      "inLanguage": "zh-Hant-TW",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://taux.io/en-US/google-workspace-with-ai"
+      },
+      "isPartOf": {
+        "@id": "https://taux.io/#website"
+      },
+      "image": "https://taux.io/static/og/google-workspace-with-ai.png",
+      "citation": [
+        {
+          "@type": "Report",
+          "name": "The Total Economic Impact™ Of Google Workspace with Gemini",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Forrester Consulting"
+          },
+          "funder": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2026-02",
+          "url": "https://tei.forrester.com/go/google/workspacewithgemini"
+        },
+        {
+          "@type": "Report",
+          "name": "Gemini at Work: Enterprise Customer Study",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2024-07",
+          "url": "https://workspace.google.com/blog/product-announcements/google-workspace-extends-gemini-benefits-to-more-customers"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Equifax boosts security and productivity with Google Workspace with Gemini",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "url": "https://workspace.google.com/blog/customer-stories/equifax-embraces-gemini-for-secure-innovation-across-business-units"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Macquarie Bank Democratizes Agentic AI with Gemini Enterprise",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2025-10",
+          "url": "https://www.googlecloudpresscorner.com/2025-10-09-Macquarie-Bank-Democratizes-Agentic-AI,-Scaling-Customer-Innovation-with-Gemini-Enterprise"
+        },
+        {
+          "@type": "ScholarlyArticle",
+          "name": "Does Generative AI Narrow Education-Based Productivity Gaps? Evidence from a Randomized Experiment",
+          "publisher": {
+            "@type": "Organization",
+            "name": "National Bureau of Economic Research"
+          },
+          "url": "https://www.nber.org/papers/w34851"
+        },
+        {
+          "@type": "ScholarlyArticle",
+          "name": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+          "publisher": {
+            "@type": "Organization",
+            "name": "METR"
+          },
+          "datePublished": "2025-07",
+          "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+        },
+        {
+          "@type": "Report",
+          "name": "AI, Productivity, and Labor Markets: A Review of the Empirical Evidence",
+          "publisher": {
+            "@type": "Organization",
+            "name": "International Center for Law & Economics"
+          },
+          "url": "https://laweconcenter.org/resources/ai-productivity-and-labor-markets-a-review-of-the-empirical-evidence/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://taux.io/en-US/google-workspace-with-ai#faq",
+      "inLanguage": "zh-Hant-TW",
+      "isPartOf": {
+        "@id": "https://taux.io/#website"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the ROI on Google Workspace AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Forrester  published a Google-commissioned TEI study in February 2026 reporting a three-year ROI of 416%, net present value of US$123.7m and payback under six months. Those figures rest on interviews with six decision-makers at five organisations, projected onto a hypothetical composite organisation of 20,000 people — so it is a financial model rather than a measurement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much time does it actually save per week?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Forrester  records three hours a week for the average Gemini user — user, not employee. Google's Gemini at Work survey records 105 minutes, from 18 companies and just over 3,200 responses, compiled in July 2024. Both are self-reported."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there independent evidence for these benefits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. A field experiment with 5,172 support agents at a Fortune 500 company measured a 15% productivity gain by issues resolved per hour, rising to 36% for the lowest-skilled quintile. An NBER randomised controlled trial with 1,174 adults found AI narrowed the productivity gap attributable to education from 0.548 standard deviations to 0.139. Neither was vendor-commissioned."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why discount self-reported time savings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "METR  ran a randomised controlled trial in July 2025 in which 16 experienced developers were 19% slower on 246 real tasks while using AI tools — and believed afterwards they had been 20% faster. Perception and reality differed by nearly forty percentage points, in opposite directions. The sample is small, the domain is software, and METR has marked the result historical; it is still enough to show that asking users how much time they saved is not a reliable measurement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "So how should a company decide?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Measure it in your own organisation, and design the measurement before the rollout — afterwards there is no control group left. In practice: pick tasks you can count objectively (volume, cycle time, rework rate), take a baseline before anyone gets the tool, keep a control group or roll out in waves, and record self-reported and objective figures separately. The gap between those two is itself an important signal."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<article class="relative pt-32 pb-16 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band">
+            <p class="eyebrow mb-8">Google Workspace — Adoption</p>
+
+            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
+     because Chinese has no upper case; on an English page the lead IS the
+     content. `heading structure` asks for `display-sub` only from non-Latin
+     locales (decision #56). -->
+    <h1 class="mb-8">
+            <span class="display-lead">Manual versus Automated</span>
+        </h1>
+
+            <p class="text-lg tablet:text-lg leading-relaxed max-w-prose">
+                The vendor numbers all look good. This page is not about whether they are true —
+                it is about <strong class="font-normal">what they measured</strong>, and whether that method predicts anything about your organisation.
+            </p>
+        </header>
+
+    </div>
+</article>
+
+<section id="vendor-figures" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; Vendor Figures</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">What the Vendors Claim</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-4">
+            These four are the most widely quoted. We went back to each original source.
+            <strong class="font-normal">Every figure checks out</strong> — but several of the widely circulated paraphrases do not match the source, and those are flagged below.
+        </p>
+        <p class="text-sm leading-relaxed max-w-prose mb-14">
+            Each comes with its method, sample size and vintage. Reading those three before reading the number is the habit this page is trying to demonstrate.
+        </p>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">416<span class="text-2xl tablet:text-3xl ml-2">%</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">Three-year ROI. The same report gives a net present value of US$123.7m and a payback period under six months.</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">The Total Economic Impact™ Of Google Workspace with Gemini, Forrester Consulting (commissioned by Google）</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">Interviews with six decision-makers at five organisations, projected onto a <strong class="font-normal">hypothetical composite organisation</strong> of 20,000 people and US$4bn revenue　·　February 2026 February 2026</p>
+                    <p class="text-sm leading-relaxed mt-3">That is standard TEI methodology, and it is not a large-sample study. Six interviews support a financial model, not a measurement.</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">3<span class="text-2xl tablet:text-3xl ml-2">hrs/week</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">Saved per week by the average <strong class="font-normal">Gemini user</strong> — 150 hours a year.</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">As above (Forrester TEI)</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">As above; this figure is an input to the model rather than an independent measurement　·　February 2026</p>
+                    <p class="text-sm leading-relaxed mt-3">It is usually paraphrased as "per employee". The source says "per user" — non-users are not in the denominator, and the gap between the two is your adoption rate.</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">105<span class="text-2xl tablet:text-3xl ml-2">min/week</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">Self-reported time saved. In the same survey, 75% of daily users said their work quality improved.</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">Gemini at Work, a Google survey of enterprise customers</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed"><strong class="font-normal">18 companies, just over 3,200 responses</strong>; pilots from December 2023, data compiled　·　July 2024</p>
+                    <p class="text-sm leading-relaxed mt-3">Often described as a "global quantitative census". It is a questionnaire of pilot participants at 18 customers — not a census — and the data is now two years old.</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">130,000<span class="text-2xl tablet:text-3xl ml-2">hours</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">Staff hours recovered over seven months.</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">Macquarie Bank customer story, Google Cloud press release</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">Customer-reported; covers <strong class="font-normal">about 80%</strong> of 5,000 staff　·　October 2025</p>
+                    <p class="text-sm leading-relaxed mt-3">Commonly paraphrased as "bank-wide Workspace rollout automating mail and forms". What was actually deployed was <strong class="font-normal">Gemini Enterprise</strong>  rather than Workspace, and the reported uses were drafting reports, summarising financial documents and generating insight from datasets.</p>
+                </div>
+            </article>
+
+        <div class="border-t border-b border-line py-10 mt-4">
+            <p class="eyebrow mb-4">Disclosure</p>
+            <p class="leading-relaxed max-w-prose">
+                All four sources were <strong class="font-normal">commissioned or published by Google, about Google's own product</strong>.
+                None is independent. That does not make them false — we checked, and they are not —
+                but it does decide how much weight they carry.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="independent-evidence" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Independent Research</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">The Gains Are Real</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-14">
+            If only the vendor said it worked, the conclusion here would be "cannot tell". But independent research does find a benefit,
+            and it does so with <strong class="font-normal">objective measurement rather than a questionnaire</strong>.
+        </p>
+
+        <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="font-display text-5xl tablet:text-6xl leading-none">+15<span class="text-2xl tablet:text-3xl ml-2">%</span></p>
+                <p class="text-sm mt-3">Lowest-skilled quintile: <span>+36%</span></p>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed mb-4">
+                    Productivity gain among support agents, measured as <strong class="font-normal">issues resolved per hour</strong>. Not self-reported.
+                </p>
+                <p class="eyebrow mb-2">Method</p>
+                <p class="text-sm leading-relaxed">
+                    5,172 support agents at a Fortune 500 company. Field experiment, objectively counted, not vendor-commissioned.
+                </p>
+            </div>
+        </article>
+
+        <article class="border-t border-b border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="font-display text-5xl tablet:text-6xl leading-none">0.55<span class="text-2xl tablet:text-3xl ml-2">→ 0.14</span></p>
+                <p class="text-sm mt-3">Gap attributable to education (standard deviations)</p>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed mb-4">
+                    AI lifted everyone, and lifted the less-educated group substantially more,
+                    narrowing the gap between the two from 0.548 standard deviations to 0.139.
+                </p>
+                <p class="eyebrow mb-2">Method</p>
+                <p class="text-sm leading-relaxed">
+                    Randomised controlled trial, 1,174 adults aged 25–45. NBER working paper w34851.
+                </p>
+            </div>
+        </article>
+
+        <p class="leading-relaxed max-w-prose mt-10">
+            A literature review across writing, support, software, accounting, law and translation finds task completion times falling by
+            <strong class="font-normal">15% to over 50%</strong>, with disproportionate gains for the less experienced.
+        </p>
+        <p class="text-sm leading-relaxed max-w-prose mt-4">
+            One caution: these studies measure <strong class="font-normal">completion time or throughput on a specific task</strong>.
+            The vendor figures describe <strong class="font-normal">total hours saved per week</strong>. Those are not the same quantity,
+            and lining them up to compare sizes is misleading.
+        </p>
+    </div>
+</section>
+
+<section id="how-it-was-measured" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; How It Was Measured</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">Self-Reported Time Is Unreliable</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-14">
+            This is the most important section here. Every vendor figure above
+            is <strong class="font-normal">self-reported, or modelled on self-report</strong> — and self-report is precisely what the study below shows to be unreliable.
+        </p>
+
+        <div class="border-t border-line py-12">
+            <div class="grid grid-cols-1 tablet:grid-cols-3 gap-8 tablet:gap-6 mb-10">
+                <div class="border-l border-line pl-5">
+                    <p class="eyebrow mb-3">Expected beforehand</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">24% faster</p>
+                </div>
+                <div class="border-l border-ink pl-5">
+                    <p class="eyebrow mb-3">Actually measured</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">19% slower</p>
+                </div>
+                <div class="border-l border-line pl-5">
+                    <p class="eyebrow mb-3">Believed afterwards</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">20% faster</p>
+                </div>
+            </div>
+
+            <p class="leading-relaxed max-w-prose mb-4">
+                Same people, same work. Nineteen per cent slower in fact, and twenty per cent faster in their own estimation —
+                <strong class="font-normal">a gap of nearly forty percentage points, pointing the wrong way</strong>.
+            </p>
+            <p class="eyebrow mb-2">Method</p>
+            <p class="text-sm leading-relaxed max-w-prose">
+                METR, July 2025. Randomised controlled trial: 16 experienced developers, 246 real tasks on mature open-source projects, objectively timed.
+            </p>
+            <p class="eyebrow mt-6 mb-2">Limits</p>
+            <p class="text-sm leading-relaxed max-w-prose">
+                The sample is 16 people; the domain is software development and does not extrapolate to knowledge work generally;
+                <strong class="font-normal">METR has itself marked the result as historical</strong>
+                and is redesigning the experiment, on the grounds that it may not reflect current tools and workflows.
+            </p>
+        </div>
+
+        <p class="leading-relaxed max-w-prose mt-10">
+            This does not deny that AI helps — section 02's objective measurements establish that it does.
+            What it undermines is <strong class="font-normal">asking users how much time they saved</strong> as a method —
+            which is exactly where section 01's four figures come from.
+        </p>
+    </div>
+</section>
+
+<!-- The questions this page answers, stated as questions.
+     FAQPage markup has to correspond to content a reader can see; marking up
+     an exchange that only exists in the structured data misrepresents the page,
+     which on this page in particular would be self-defeating. -->
+<section id="questions" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Questions</p>
+            <h2 class="mb-14">
+            <span class="display-lead tablet:text-display-sm">Common Questions</span>
+        </h2>
+        </div>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">What is the ROI on Google Workspace AI?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Forrester  published a Google-commissioned TEI study in February 2026 reporting a three-year ROI of 416%, net present value of US$123.7m and payback under six months. Those figures rest on interviews with six decision-makers at five organisations, projected onto a hypothetical composite organisation of 20,000 people — so it is a financial model rather than a measurement.
+                </div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">How much time does it actually save per week?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Forrester  records three hours a week for the average Gemini user — user, not employee. Google's Gemini at Work survey records 105 minutes, from 18 companies and just over 3,200 responses, compiled in July 2024. Both are self-reported.
+                </div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">Is there independent evidence for these benefits?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Yes. A field experiment with 5,172 support agents at a Fortune 500 company measured a 15% productivity gain by issues resolved per hour, rising to 36% for the lowest-skilled quintile. An NBER randomised controlled trial with 1,174 adults found AI narrowed the productivity gap attributable to education from 0.548 standard deviations to 0.139. Neither was vendor-commissioned.
+                </div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">Why discount self-reported time savings?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    METR  ran a randomised controlled trial in July 2025 in which 16 experienced developers were 19% slower on 246 real tasks while using AI tools — and believed afterwards they had been 20% faster. Perception and reality differed by nearly forty percentage points, in opposite directions. The sample is small, the domain is software, and METR has marked the result historical; it is still enough to show that asking users how much time they saved is not a reliable measurement.
+                </div>
+            </details>
+
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">So how should a company decide?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Measure it in your own organisation, and design the measurement before the rollout — afterwards there is no control group left. In practice: pick tasks you can count objectively (volume, cycle time, rework rate), take a baseline before anyone gets the tool, keep a control group or roll out in waves, and record self-reported and objective figures separately. The gap between those two is itself an important signal.
+                </div>
+            </details>
+    </div>
+</section>
+
+<section id="measurement" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Measurement</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">Answer With Measurement</span>
+        </h2>
+        </div>
+
+        <p class="text-lg leading-relaxed max-w-prose mb-10">
+            Putting the three sections together: the benefit is real and objectively measured;
+            the published vendor figures are all self-reported; and in the one trial that timed people objectively, self-report was badly wrong.
+            So those figures <strong class="font-normal">cannot predict what will happen in your organisation</strong> —
+            and they were never produced for that purpose.
+        </p>
+
+        <p class="leading-relaxed max-w-prose mb-12">
+            Only one thing answers that question: measuring in your own organisation.
+            And the measurement has to be <strong class="font-normal">designed before the rollout</strong> —
+            decide to measure afterwards and you no longer have a control group.
+        </p>
+
+        <div class="border-t border-line pt-10 mb-12">
+            <p class="eyebrow mb-8">What that takes</p>
+            <ul class="max-w-2xl">
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">Pick tasks you can count</strong> — volume, cycle time, rework rate. Not "does it feel faster".
+                </li>
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">Take a baseline</strong> before anyone gets the tool.
+                </li>
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">Keep a control group</strong>, or at least roll out in waves, so the before-and-after is not just seasonality.
+                </li>
+                <li class="border-t border-b border-line py-5">
+                    <strong class="font-normal">Record self-reported and objective figures separately</strong> — the gap between them is the most valuable signal you will get.
+                </li>
+            </ul>
+        </div>
+
+        <p class="leading-relaxed max-w-prose mb-12">
+            This is one of the things we do: before you roll out Workspace AI,
+            design a measurement that <strong class="font-normal">can actually be used to decide something</strong> afterwards.
+            If the result comes back weaker than hoped, that is also a finding — and worth more than 416%, because it is yours.
+        </p>
+
+        <div class="flex flex-col mobile:flex-row gap-4">
+            <a href="/{{ locale }}#contact-us" class="btn">Talk about your measurement design</a>
+            <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">AI training for teams</a>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}
