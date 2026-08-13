@@ -254,6 +254,12 @@ date_modified = "2026-07-26"
   description = "TauX 的產品開發歷程與技術決策紀錄。我們公開分享打造過程中的取捨、失敗與學到的事。"
   canonical   = "https://taux.io/zh-Hant-TW/building"
 
+  [page.locale.en-US]
+  template    = "en-US/building.html"
+  title       = "Building in Public | TauX"
+  description = "TauX's product development log: the trade-offs we made, the things that broke, and what we learned. Written as it happens, not after."
+  canonical   = "https://taux.io/en-US/building"
+
 [[page]]
 path        = "/about"
 template    = "about.html"

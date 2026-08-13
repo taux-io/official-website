@@ -452,7 +452,13 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 fs::create_dir_all(parent)?;
             }
             fs::write(&dest, html)?;
-            written.insert(page.path.clone(), rel);
+            // KEYED BY PATH *AND* LOCALE. Keyed by path alone, the second
+            // language of a route overwrote the first in this map: 22 files on
+            // disk and "21 pages written" printed underneath them. The build
+            // summary is the one place a person looks to see that a page was
+            // produced, and it was quietly under-reporting by one per
+            // translation.
+            written.insert(format!("{} [{locale}]", page.path), rel);
         }
     }
 

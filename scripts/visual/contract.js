@@ -89,11 +89,42 @@ const CHECKS = [
         : `HEAD expected ${route.expectedStatus}, got ${headStatus} (GET may still be fine — that is the failure)`,
   },
   {
+    // The page must declare the language it was rendered as, not one language.
+    //
+    // This asserted `zh-Hant-TW` flatly, which was right while there was one
+    // locale and becomes a false failure the moment there are two — the English
+    // page would have been reported broken for correctly saying so. The route
+    // knows which locale it is; the page has to agree with it.
     name: "lang",
-    run: ({ doc }) =>
-      doc.lang === "zh-Hant-TW"
+    run: ({ route, doc }) =>
+      doc.lang === route.locale
         ? null
-        : `expected zh-Hant-TW, got "${doc.lang || "(empty)"}"`,
+        : `expected ${route.locale}, got "${doc.lang || "(empty)"}"`,
+  },
+  {
+    // hreflang has to be reciprocal or the whole set is discarded: every version
+    // lists every version, including itself. And x-default has to name the one
+    // path that reads Accept-Language — `/` — rather than any single language.
+    //
+    // x-default is asserted because getting it wrong is silent. A bulk rewrite
+    // of absolute URLs after the locale move pointed it at the Chinese home,
+    // which reads as "when in doubt, Chinese" instead of "when in doubt, ask" —
+    // valid markup, no error anywhere, and the opposite of the intent.
+    name: "hreflang",
+    contentOnly: true,
+    run: ({ route, doc }) => {
+      if (!doc.alternates.length) return null; // untranslated route: nothing to declare
+      const self = doc.alternates.find((a) => a.hreflang === route.locale);
+      if (!self) return `does not list itself (${route.locale})`;
+      if (self.href !== route.canonical) {
+        return `lists itself as ${self.href}, canonical is ${route.canonical}`;
+      }
+      const xd = doc.alternates.find((a) => a.hreflang === "x-default");
+      if (!xd) return "no x-default";
+      return xd.href === `${ORIGIN}/`
+        ? null
+        : `x-default is ${xd.href}, must be ${ORIGIN}/ — the path that reads Accept-Language`;
+    },
   },
   {
     name: "canonical",
@@ -228,6 +259,10 @@ const READ_DOCUMENT = () => {
   return {
     lang: document.documentElement.lang,
     canonical: (document.querySelector("link[rel=canonical]") || {}).href || null,
+    alternates: [...document.querySelectorAll("link[rel=alternate][hreflang]")].map((l) => ({
+      hreflang: l.getAttribute("hreflang"),
+      href: l.href,
+    })),
     ogImage: meta('meta[property="og:image"]'),
     ogImageAlt: meta('meta[property="og:image:alt"]'),
     twitterImage: meta('meta[name="twitter:image"]'),

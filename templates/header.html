@@ -27,7 +27,7 @@
          each version must list every version including itself, or the set is
          discarded. -->{% for a in alternates %}
     <link rel="alternate" hreflang="{{ a.tag }}" href="{{ a.url }}">{% endfor %}
-    <link rel="alternate" hreflang="x-default" href="https://taux.io/zh-Hant-TW">{% endif %}
+    <link rel="alternate" hreflang="x-default" href="https://taux.io/">{% endif %}
 
     <!-- Open Graph. The share card is built from the same tokens, typeface and
          tau curve as the page; rerun scripts/assets/build-og.js after a
@@ -106,7 +106,7 @@
       {% include "_identity.html" %},
       {
         "@type": "WebSite",
-        "@id": "https://taux.io/zh-Hant-TW#website",
+        "@id": "https://taux.io/#website",
         "url": "https://taux.io",
         "name": "TauX 拓思科技",
         "alternateName": "拓思科技股份有限公司",
