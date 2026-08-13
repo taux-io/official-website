@@ -22,6 +22,18 @@ use serde::Deserialize;
 
 const ORIGIN: &str = "https://taux.io";
 
+/// Where a path goes when nothing says otherwise (decision #58's "canonical
+/// locale"). It is the destination of the root redirects and the language the
+/// error document speaks.
+///
+/// THE 404 CANNOT BE MULTILINGUAL AND THAT IS A REAL LIMITATION, not an
+/// oversight. The host answers every unmatched path with one file, chosen
+/// before it knows anything about the reader, so its navigation has to point
+/// somewhere concrete. Pointing it at `/` instead would hand every link on it
+/// to the language sniff and cost a hop on each — worse, and still not the
+/// reader's language until they click.
+const CANONICAL_LOCALE: &str = "zh-Hant-TW";
+
 /// The `?v=` on the stylesheet link, derived from the stylesheet's own bytes.
 ///
 /// It used to be a literal in header.html. `_headers` caches `/static/css/*`
@@ -188,11 +200,26 @@ impl Page {
     /// Where the file has to land for the host to serve it at `path` without a
     /// visible .html.
     ///
-    /// Takes the locale even though it does not use it yet. Issue 199 gives
-    /// every path a locale prefix, and the two writers that would then disagree
-    /// — this and the canonical in site.toml — are the pair that has to move
-    /// together. Threading it now means that change edits one body rather than
-    /// one body and every call site.
+    /// Every path carries a locale prefix and no locale lives at the root
+    /// (decision #58). The root holds redirects only.
+    ///
+    /// THE LOCALE HOME IS A FLAT FILE, NOT A DIRECTORY INDEX, and the two
+    /// layouts were measured against the host rather than reasoned about:
+    ///
+    /// ```text
+    ///                                /zh-Hant-TW   /zh-Hant-TW/geo-guide
+    ///   zh-Hant-TW/index.html        307 -> /..-TW/  200
+    ///   zh-Hant-TW.html + zh-Hant-TW/  200          200
+    /// ```
+    ///
+    /// The first costs a redirect hop on the highest-value URL each language
+    /// has. The second serves every canonical form directly and answers the
+    /// trailing-slash variants with a 307 back to it — the same invariant the
+    /// site already holds, extended one level down rather than broken.
+    ///
+    /// So a locale's home is `<locale>.html` and its pages are
+    /// `<locale>/<path>.html`. Those two coexist: a file and a directory with
+    /// the same stem are different keys to the host.
     ///
     /// These URLs are indexed, so **none of them may change without leaving a
     /// redirect behind**. This used to read "none of them may change" flatly,
@@ -208,16 +235,20 @@ impl Page {
     /// the trailing-slash form — a redirect hop on every indexed URL, and a
     /// canonical tag pointing somewhere the host will not serve directly.
     /// `geo-guide.html` is served at `/geo-guide` with no redirect at all.
-    fn output_path(&self, root: &Path, _locale: &str) -> PathBuf {
+    fn output_path(&self, root: &Path, locale: &str) -> PathBuf {
         if self.path == "/" {
-            return root.join("index.html");
+            return root.join(format!("{locale}.html"));
         }
         // Error documents keep their literal name; the host maps status codes
-        // to them by filename.
+        // to them by filename. They are not localised and take no prefix — the
+        // host picks one file for an unmatched path and cannot know a language.
         if self.path.ends_with(".html") {
             return root.join(self.path.trim_start_matches('/'));
         }
-        root.join(format!("{}.html", self.path.trim_start_matches('/')))
+        root.join(format!(
+            "{locale}/{}.html",
+            self.path.trim_start_matches('/')
+        ))
     }
 }
 
@@ -268,6 +299,13 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             // minijinja's HTML escaper turns every slash into &#x2f;, which is
             // decoded correctly by parsers but is noise no reader should be served.
             let html = tmpl.render(context! {
+                // THE TEMPLATES ARE SHARED ACROSS LOCALES, SO LINKS CANNOT BE
+                // LITERAL. header.html is one file rendered once per language;
+                // writing `/zh-Hant-TW/geo-guide` into it would send an English
+                // reader to the Chinese page. Every internal link is
+                // `/{{ locale }}/...`, and the `locale relative links` rule
+                // holds the templates to it.
+                locale => locale,
                 title => &text.title,
                 description => &text.description,
                 canonical => Value::from_safe_string(text.canonical.clone()),
@@ -328,6 +366,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     for doc in &site.document {
         let tmpl = env.get_template(&doc.template)?;
         let html = strip_comments(&tmpl.render(context! {
+            // See CANONICAL_LOCALE: one file answers every unmatched path in
+            // every language, so its navigation points at one of them.
+            locale => CANONICAL_LOCALE,
             title => &doc.title,
             description => &doc.description,
             canonical => Value::from_safe_string(doc.canonical.clone()),
@@ -570,19 +611,41 @@ mod tests {
     // A page written to `geo-guide/index.html` is served at `/geo-guide/` and the
     // bare path answers 308 — a redirect hop on an indexed URL, and a canonical
     // tag pointing at a form the host will not serve directly.
+
+    // A LOCALE'S HOME IS A FLAT FILE, NOT A DIRECTORY INDEX, and the two layouts
+    // were measured against the host rather than argued about:
+    //
+    //   zh-Hant-TW/index.html   /zh-Hant-TW -> 307 to the trailing-slash form
+    //   zh-Hant-TW.html         /zh-Hant-TW -> 200
+    //
+    // That hop would land on the highest-value URL each language has.
     #[test]
-    fn home_becomes_index() {
-        let out = page("/", "https://taux.io").output_path(Path::new("dist"), TEST_LOCALE);
-        assert_eq!(out, Path::new("dist/index.html"));
+    fn a_locale_home_is_a_flat_file() {
+        let out =
+            page("/", "https://taux.io/zh-Hant-TW").output_path(Path::new("dist"), TEST_LOCALE);
+        assert_eq!(out, Path::new("dist/zh-Hant-TW.html"));
     }
 
     #[test]
-    fn routes_become_flat_files_not_directories() {
-        let out = page("/geo-guide", "https://taux.io/geo-guide")
+    fn routes_become_flat_files_under_their_locale() {
+        let out = page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide")
             .output_path(Path::new("dist"), TEST_LOCALE);
-        assert_eq!(out, Path::new("dist/geo-guide.html"));
+        assert_eq!(out, Path::new("dist/zh-Hant-TW/geo-guide.html"));
     }
 
+    // Nothing may land on the same file twice. The generator guards this at
+    // build time too; here it is the property that guard depends on.
+    #[test]
+    fn two_locales_do_not_share_a_file() {
+        let p = page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide");
+        assert_ne!(
+            p.output_path(Path::new("dist"), "zh-Hant-TW"),
+            p.output_path(Path::new("dist"), "en-US")
+        );
+    }
+
+    // The host answers every unmatched path with one file, chosen before it
+    // knows anything about the reader, so the error document takes no prefix.
     #[test]
     fn a_path_that_is_already_a_filename_keeps_its_name() {
         let out =
@@ -592,16 +655,20 @@ mod tests {
 
     // The share-card builder derives the same slug from the same canonical URL.
     // Deriving it from the route instead is how a page once advertised an image
-    // that was never generated.
+    // that was never generated. The slug now carries the locale, so the card
+    // lands beside the page rather than colliding with its translations.
     #[test]
     fn slug_comes_from_the_canonical_url() {
-        assert_eq!(text("https://taux.io/geo-guide").slug(), "geo-guide");
+        assert_eq!(
+            text("https://taux.io/zh-Hant-TW/geo-guide").slug(),
+            "zh-Hant-TW/geo-guide"
+        );
     }
 
     #[test]
-    fn the_home_page_slug_is_index() {
-        assert_eq!(text("https://taux.io").slug(), "index");
-        assert_eq!(text("https://taux.io/").slug(), "index");
+    fn the_home_page_slug_is_the_locale() {
+        assert_eq!(text("https://taux.io/zh-Hant-TW").slug(), "zh-Hant-TW");
+        assert_eq!(text("https://taux.io/zh-Hant-TW/").slug(), "zh-Hant-TW");
     }
 
     // A retired path defaults to 301 rather than 302. A temporary redirect

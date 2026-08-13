@@ -24,9 +24,19 @@ function main() {
 
   // A page counts as listed if the file links to its URL. Trailing slashes and
   // anchors are tolerated; anything else is a link somewhere other than here.
+  //
+  // MULTIPLE SEGMENTS, AND CASE MATTERS. This used to read `(\/[a-z0-9-]*)?` —
+  // one lower-case segment. Decision #58 made every URL two segments deep and
+  // the first of them a locale tag with capitals in it, so the pattern matched
+  // `/zh-` and stopped: twenty listed pages read as twenty missing ones.
+  //
+  // Upper case is not cosmetic here. A URL path is case-sensitive, and
+  // `zh-Hant-TW` is the spelling the canonical, the file on disk and the
+  // hreflang all use. Lower-casing the class would let `/zh-hant-tw/geo-guide`
+  // satisfy a check for a URL the host does not serve.
   const linked = new Set();
-  for (const m of text.matchAll(/https:\/\/taux\.io(\/[a-z0-9-]*)?/g)) {
-    linked.add(m[1] && m[1] !== "/" ? m[1] : "/");
+  for (const m of text.matchAll(/https:\/\/taux\.io((?:\/[A-Za-z0-9-]+)*)\/?/g)) {
+    linked.add(m[1] || "/");
   }
 
   const published = ROUTES.filter((r) => !r.standalone);

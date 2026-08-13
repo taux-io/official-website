@@ -52,7 +52,11 @@ const HEADER = `# Every path this site has ever published, one per line.
 
 function readSite() {
   return {
-    paths: PAGES.map((p) => p.path),
+    // The URL, not the route identity. This ledger's whole job is "no indexed
+    // URL disappeared without a redirect", and after decision #58 the route
+    // identity is no longer a URL — reading `path` here would have reported
+    // nothing retired on the change that retired all twenty.
+    paths: PAGES.map((p) => p.url),
     redirects: new Set(REDIRECTS.map((r) => r.from)),
   };
 }

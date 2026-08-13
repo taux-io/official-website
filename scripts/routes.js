@@ -37,7 +37,8 @@ function readRoutes() {
     // slug from the canonical URL. Deriving it here too keeps all three in step.
     const slug = p.canonical.replace(ORIGIN, "").replace(/^\/|\/$/g, "") || "index";
     return {
-      path: p.path,
+      // The URL, not the route identity. An auditor fetches this.
+      path: p.url,
       name: slug,
       title: p.title,
       description: p.description,
@@ -84,12 +85,50 @@ function readRedirects() {
 // The note above about a seam that narrows the data applies in the other
 // direction too, so `locale` rides along. A caller that needs to know which
 // language it is looking at should not have to parse it back out of the URL.
+
+// THE SERVED PATH IS THE CANONICAL'S PATH, NOT `page.path`.
+//
+// Those were the same string until decision #58 gave every route a locale
+// prefix. Now `page.path` is the route's identity — the thing that is the same
+// in every language — and the URL a visitor or a crawler actually asks for is
+// `/<locale><path>`, which is exactly what the canonical already spells out.
+//
+// Reading `page.path` here after the move would have been quiet rather than
+// loud: the contract test would fetch `/geo-guide`, get the 301 it now answers
+// with, and report a route that no longer exists as healthy. `check:routes`
+// would compare its ledger against route identities instead of URLs and report
+// that nothing was retired — on the change that retired all twenty.
+const servedPath = (canonical) => canonical.replace(ORIGIN, "") || "/";
+
+// THREE THINGS THAT USED TO BE ONE STRING, EACH NAMED.
+//
+// Before locales, `path` was the route's identity, the URL it was served at and
+// (bar a suffix) the file it landed in. Decision #58 split them apart, and the
+// dangerous version of this change is the one that keeps calling all three
+// `path` and lets each caller mean whatever it meant before:
+//
+//   path — the route's identity. `/geo-guide`. The same in every language, and
+//          the key you match a translation against.
+//   url  — what a visitor or crawler asks for. `/zh-Hant-TW/geo-guide`.
+//   file — where it lands in dist/. `zh-Hant-TW/geo-guide.html`.
+//
+// `file` mirrors Page::output_path in the generator, including the locale home
+// being a flat `<locale>.html` rather than a directory index — measured against
+// the host, see that function's comment for the two layouts and their hops.
+const localeFile = (route, tag) => {
+  if (route.path === "/") return `${tag}.html`;
+  if (route.path.endsWith(".html")) return route.path.replace(/^\//, "");
+  return `${tag}/${route.path.replace(/^\//, "")}.html`;
+};
+
 const PAGES = (SITE.page || []).flatMap((p) => {
   const { locale, ...route } = p;
   return Object.entries(locale || {}).map(([tag, text]) => ({
     ...route,
     ...text,
     locale: tag,
+    url: servedPath(text.canonical),
+    file: localeFile(route, tag),
   }));
 });
 

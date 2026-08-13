@@ -48,21 +48,21 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 
 ## 技術資源
 
--   [GEO 生成式引擎優化服務](https://taux.io/geo-optimization): TauX 的 GEO 服務內容、執行流程、交付物與報價區間。想找廠商做 GEO 的人看這頁。
--   [GEO 入門指南](https://taux.io/geo-guide): 深入了解 GEO 與 SEO 的差異及執行細節。
--   [AI for Smart Work](https://taux.io/ai-smart-work): 企業 AI 內訓服務，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。
--   [2026 全球威脅報告重點拆解](https://taux.io/threat-landscape): CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組的量測方法與適用限制。重點不只是數字本身，是廠商遙測資料能推論到多廣。
--   [後量子密碼 PQC 遷移指南](https://taux.io/pqc-migration): 企業導入 PQC 的五步驟落地路徑（治理、CBOM 盤點、風險評估、加密敏捷性、供應鏈），對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。法規狀態查證日期標於頁面上。
--   [Data Governance 數據治理指南](https://taux.io/data-governance): 針對傳統產業數位轉型的完整路徑，包含資料管理到數位治理的成熟度評估。
--   [Agent Prompting Guide](https://taux.io/agent-prompting-guide): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。
--   [Prompt Injection 安全指南](https://taux.io/what-is-prompt-injection): AI 提示詞注入攻擊的原理、案例與防禦措施。
--   [OWASP LLM Top 10 2026](https://taux.io/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2026 版撰寫，並附 2025 到 2026 的排序變動、範圍調整與排序方法的改變。
--   [LLMs.txt 是什麼](https://taux.io/what-is-llms-txt): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
--   [MCP 是什麼](https://taux.io/what-is-mcp): Model Context Protocol 的白話架構解說。host / client / server 三個角色，prompts / resources / tools 的差別在於「誰決定」，以及 2026-07-28 修訂版把連線階段整個移除的影響。依該修訂版撰寫。
--   [Claude Skills 實戰指南](https://taux.io/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
--   [ADK Agent Skill 設計模式](https://taux.io/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
--   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。
--   [AI Agent 開發流程實戰](https://taux.io/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程。主幹七步（grill、spec、tickets、implement、code-review）、四個完整劇本、31 個已知坑與 14 天練習計畫。依該 pack 1.2.3 版撰寫，為獨立編寫的中文教學而非官方文件翻譯。
+-   [GEO 生成式引擎優化服務](https://taux.io/zh-Hant-TW/geo-optimization): TauX 的 GEO 服務內容、執行流程、交付物與報價區間。想找廠商做 GEO 的人看這頁。
+-   [GEO 入門指南](https://taux.io/zh-Hant-TW/geo-guide): 深入了解 GEO 與 SEO 的差異及執行細節。
+-   [AI for Smart Work](https://taux.io/zh-Hant-TW/ai-smart-work): 企業 AI 內訓服務，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。
+-   [2026 全球威脅報告重點拆解](https://taux.io/zh-Hant-TW/threat-landscape): CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組的量測方法與適用限制。重點不只是數字本身，是廠商遙測資料能推論到多廣。
+-   [後量子密碼 PQC 遷移指南](https://taux.io/zh-Hant-TW/pqc-migration): 企業導入 PQC 的五步驟落地路徑（治理、CBOM 盤點、風險評估、加密敏捷性、供應鏈），對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。法規狀態查證日期標於頁面上。
+-   [Data Governance 數據治理指南](https://taux.io/zh-Hant-TW/data-governance): 針對傳統產業數位轉型的完整路徑，包含資料管理到數位治理的成熟度評估。
+-   [Agent Prompting Guide](https://taux.io/zh-Hant-TW/agent-prompting-guide): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。
+-   [Prompt Injection 安全指南](https://taux.io/zh-Hant-TW/what-is-prompt-injection): AI 提示詞注入攻擊的原理、案例與防禦措施。
+-   [OWASP LLM Top 10 2026](https://taux.io/zh-Hant-TW/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2026 版撰寫，並附 2025 到 2026 的排序變動、範圍調整與排序方法的改變。
+-   [LLMs.txt 是什麼](https://taux.io/zh-Hant-TW/what-is-llms-txt): 解釋 llms.txt 的概念、用途與對 SEO/GEO 的影響。
+-   [MCP 是什麼](https://taux.io/zh-Hant-TW/what-is-mcp): Model Context Protocol 的白話架構解說。host / client / server 三個角色，prompts / resources / tools 的差別在於「誰決定」，以及 2026-07-28 修訂版把連線階段整個移除的影響。依該修訂版撰寫。
+-   [Claude Skills 實戰指南](https://taux.io/zh-Hant-TW/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
+-   [ADK Agent Skill 設計模式](https://taux.io/zh-Hant-TW/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
+-   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/zh-Hant-TW/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。
+-   [AI Agent 開發流程實戰](https://taux.io/zh-Hant-TW/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程。主幹七步（grill、spec、tickets、implement、code-review）、四個完整劇本、31 個已知坑與 14 天練習計畫。依該 pack 1.2.3 版撰寫，為獨立編寫的中文教學而非官方文件翻譯。
 
 ---
 
@@ -81,11 +81,11 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 ## 其他頁面
 
--   [首頁](https://taux.io/): TauX 拓思科技股份有限公司官方網站。
--   [關於我們](https://taux.io/about): TauX 公司介紹、使命與聯絡方式。
--   [Building in Public](https://taux.io/building): TauX 的公開開發日誌，透明度至上。
--   [隱私權政策](https://taux.io/privacy-policy): 資料保護與隱私權承諾。
--   [服務條款](https://taux.io/terms-of-service): 使用 TauX 服務之條款與條件。
+-   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。
+-   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 公司介紹、使命與聯絡方式。
+-   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。
+-   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。
+-   [服務條款](https://taux.io/zh-Hant-TW/terms-of-service): 使用 TauX 服務之條款與條件。
 
 ## 聯絡資訊
 

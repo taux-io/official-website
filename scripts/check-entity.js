@@ -52,11 +52,29 @@ const ORGANISATION_TYPES = new Set([
   "Corporation",
 ]);
 
-function pages() {
-  return fs
-    .readdirSync(DIST)
-    .filter((f) => f.endsWith(".html"))
-    .map((f) => ({ rel: f, html: fs.readFileSync(path.join(DIST, f), "utf8") }));
+// RECURSIVE, because dist/ stopped being flat.
+//
+// Decision #58 puts every page under a locale directory, and a flat readdir
+// found two files where there were twenty-one: `404.html` and the locale home.
+// It did not fail — it reported "3 of 3 rules enforced, 2 pages" and exited
+// zero. A checker that silently narrows what it looks at is worse than one that
+// crashes, and this one exists precisely because gates that walk the route
+// table cannot see what the build actually wrote.
+function pages(dir = DIST, prefix = "") {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      // static/ holds assets, not documents, and walking it would read every
+      // committed share card looking for JSON-LD.
+      if (rel === "static") continue;
+      out.push(...pages(path.join(dir, entry.name), rel));
+      continue;
+    }
+    if (!entry.name.endsWith(".html")) continue;
+    out.push({ rel, html: fs.readFileSync(path.join(dir, entry.name), "utf8") });
+  }
+  return out;
 }
 
 // Every JSON-LD document on a page, already parsed. check:jsonld is the gate
@@ -406,9 +424,10 @@ async function main() {
   // did not exist. Asking for each declared file by name is both stricter and
   // immune to that.
   const wanted = [
-    ...PAGES.map((p) =>
-      p.path === "/" ? "index.html" : `${p.path.replace(/^\//, "")}.html`
-    ),
+    // The file, not the route identity. routes.js derives it the same way the
+    // generator's output_path does, so this cannot drift from where the build
+    // actually writes — which is the whole reason this check reads dist/.
+    ...PAGES.map((p) => p.file),
     ...DOCUMENTS.map((d) => d.output),
   ];
   const missing = wanted.filter((f) => !fs.existsSync(path.join(DIST, f)));

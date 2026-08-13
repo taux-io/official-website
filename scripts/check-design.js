@@ -322,6 +322,19 @@ function ruleAnchorIntegrity(files) {
 
   const templateFor = new Map(PAGES.map((p) => [p.path, p.template]));
 
+  // Cross-page links carry the render's locale as a placeholder, because the
+  // templates are shared and the prefix is not (`locale relative links`). What
+  // this rule resolves against is the route's identity, which is what remains
+  // once the placeholder comes off: `/{{ locale }}/geo-guide` is `/geo-guide`,
+  // and a bare `/{{ locale }}` is the home page.
+  //
+  // Stripping it here rather than teaching every caller means the two rules
+  // cannot disagree about what an internal link looks like.
+  const routeIdentity = (href) => {
+    const bare = href.replace(/^\/\{\{\s*locale\s*\}\}/, "");
+    return bare === "" ? "/" : bare;
+  };
+
   const idCache = new Map();
   const idsOf = (template) => {
     if (!idCache.has(template)) idCache.set(template, reachable(template, byName).ids);
@@ -364,7 +377,7 @@ function ruleAnchorIntegrity(files) {
   }
 
   for (const { file, line, target, frag } of crossPage.values()) {
-    const template = templateFor.get(target);
+    const template = templateFor.get(routeIdentity(target));
     if (!template) {
       found.push({ file, line, detail: `${target}#${frag} — no page declares ${target}` });
       continue;
@@ -474,6 +487,44 @@ function routeTemplates(files) {
 // ---------------------------------------------------------------------------
 
 const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
+// An internal link that names a declared route must carry the locale.
+//
+// THE TEMPLATES ARE SHARED AND THE PREFIX IS NOT. header.html is one file
+// rendered once per language, so `href="/geo-guide"` in it does two wrong
+// things at once: it costs a 301 for every reader, and once a second locale
+// exists it sends an English reader to the Chinese page. The second failure is
+// silent — the link works, the page loads, it is simply the wrong language, and
+// no gate that checks status codes can see it.
+//
+// Forty-eight links were in this state the moment decision #58 landed. They
+// were rewritten to `/{{ locale }}/...`; this is what stops the forty-ninth.
+//
+// Only paths that name a declared route are checked. `/static/...`, `/404`,
+// fragments, `mailto:` and anything with a scheme are somewhere else's problem
+// — and a link to another origin is not ours to prefix.
+function ruleLocaleRelativeLinks(files) {
+  const found = [];
+  const routeIds = new Set(PAGES.map((p) => p.path).filter((p) => p !== "/"));
+
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/href="([^"]*)"/g)) {
+      const href = m[1];
+      if (!href.startsWith("/")) continue;
+      if (href.startsWith("/{{")) continue;
+      const bare = href.split(/[#?]/)[0].replace(/\/$/, "");
+      if (bare !== "" && !routeIds.has(bare)) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, m.index),
+        detail:
+          `href="${href}" names a route without the render's locale — ` +
+          `write /{{ locale }}${bare} so the shared template follows the page it is rendered into`,
+      });
+    }
+  }
+  return found;
+}
+
 function ruleCollapsibleShipsOpen(files) {
   const found = [];
   for (const { rel, html } of files) {
@@ -1238,6 +1289,13 @@ const RULES = [
     turnedOnBy: "#66",
     run: ruleAnchorIntegrity,
     summary: "a fragment link must point at an element that exists on the rendered page",
+  },
+  {
+    name: "locale relative links",
+    enabled: true,
+    turnedOnBy: "issue 199",
+    run: ruleLocaleRelativeLinks,
+    summary: "an internal link names a declared route and must carry the render's locale",
   },
   {
     name: "collapsible ships open",
