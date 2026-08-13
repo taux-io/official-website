@@ -147,6 +147,18 @@ date_published = "2025-08-15"
   description = "GEO 是什么？和 SEO 差在哪？完整拆解生成式引擎优化的原理与执行方法，让品牌成为 ChatGPT、Perplexity 等 AI 搜索引擎回答问题时的引用来源。"
   canonical   = "https://taux.io/zh-Hans-CN/geo-guide"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/geo-guide.html"
+  title       = "GEO 入門ガイド｜AI に引用してもらうには | TauX"
+  description = "生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。"
+  canonical   = "https://taux.io/ja-JP/geo-guide"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/geo-guide.html"
+  title       = "GEO 입문 가이드｜AI가 인용하게 하려면 | TauX"
+  description = "생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 심사를 거친 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법."
+  canonical   = "https://taux.io/ko-KR/geo-guide"
+
   [page.locale.en-US]
   template    = "en-US/geo-guide.html"
   title       = "GEO Guide: how to get AI to cite you | TauX"
