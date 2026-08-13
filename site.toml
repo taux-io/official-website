@@ -399,6 +399,18 @@ date_published = "2026-02-17"
   description = "提示词注入的攻击原理、与越狱（Jailbreak）的差异，以及纵深防御的实务做法。保护你的 LLM 应用不被恶意指令操控。"
   canonical   = "https://taux.io/zh-Hans-CN/what-is-prompt-injection"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/what-is-prompt-injection.html"
+  title       = "プロンプトインジェクションとは｜LLM アプリが受け継ぐ欠陥 | TauX"
+  description = "プロンプトインジェクションの仕組み、ジェイルブレイクとの違い、そして実際にリスクを下げる多層の防ぎ方。"
+  canonical   = "https://taux.io/ja-JP/what-is-prompt-injection"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/what-is-prompt-injection.html"
+  title       = "프롬프트 인젝션이란｜LLM 앱이 물려받는 결함 | TauX"
+  description = "프롬프트 인젝션이 작동하는 방식, 탈옥과의 차이, 그리고 실제로 위험을 낮추는 여러 겹의 방어."
+  canonical   = "https://taux.io/ko-KR/what-is-prompt-injection"
+
   [page.locale.en-US]
   template    = "en-US/what-is-prompt-injection.html"
   title       = "What is Prompt Injection? The security flaw every LLM app inherits | TauX"
@@ -444,6 +456,18 @@ date_published = "2026-02-17"
   title       = "AI Agent 提示词工程指南｜从新手到高手 | TauX"
   description = "Prompt Engineering 完整指南：从单一任务指派到 AI Agent 设计模式，涵盖提示词架构、推理链与代理人工作流的实务原则。专为开发者与高级用户撰写。"
   canonical   = "https://taux.io/zh-Hans-CN/agent-prompting-guide"
+
+  [page.locale.ja-JP]
+  template    = "ja-JP/agent-prompting-guide.html"
+  title       = "AI プロンプト設計ガイド｜最初の一文からエージェントまで | TauX"
+  description = "何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、そしてエージェントの設計まで。"
+  canonical   = "https://taux.io/ja-JP/agent-prompting-guide"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/agent-prompting-guide.html"
+  title       = "AI 프롬프트 설계 가이드｜첫 문장에서 에이전트까지 | TauX"
+  description = "무엇을 지정하고 무엇을 맡기며 잘됐는지 어떻게 확인하는가. 역할과 과제를 주는 법, 단계 지시, 출력 형식, 그리고 에이전트 설계까지."
+  canonical   = "https://taux.io/ko-KR/agent-prompting-guide"
 
   [page.locale.en-US]
   template    = "en-US/agent-prompting-guide.html"
