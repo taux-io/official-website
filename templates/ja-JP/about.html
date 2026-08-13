@@ -1,0 +1,126 @@
+{% include "header.html" %}
+
+<!-- Organization Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://taux.io/ja-JP/about#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "ホーム",
+                    "item": "https://taux.io/ja-JP"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "会社概要",
+                    "item": "https://taux.io/ja-JP/about"
+                }
+            ]
+        },
+        {
+            "@type": "AboutPage",
+            "@id": "https://taux.io/ja-JP/about#webpage",
+            "name": "TauX 拓思科技について",
+            "url": "https://taux.io/ja-JP/about",
+            "isPartOf": {"@id": "https://taux.io/#website"},
+            "mainEntity": {"@id": "https://taux.io/#organization"}
+        }
+    ]
+}
+</script>
+
+<section class="band relative overflow-hidden bg-surface">
+    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+        <!-- Hero -->
+        <span class="tag mb-4 inline-block">Who Builds This</span>
+        <h1 class="mb-6">
+            <!-- The sub-line is required here and not on the English twin.
+                 Decision #6 gave the h1 a Latin lead over a local sub because
+                 Chinese has no upper case; the same holds for Japanese, so
+                 `heading structure` asks this locale for a `display-sub`
+                 (decision #56). -->
+            <span class="display-lead">Empowering Business with AI</span>
+            <span class="display-sub">AI を、企業が本当に使える力に</span>
+        </h1>
+        <p class="text-xl max-w-[42ch] leading-relaxed mb-6">
+            TauX 拓思科技は、GEO（生成エンジン最適化）と、その周辺の AI システムを手がけています。台湾・高雄を拠点に、製造業や現場の近くで開発し、どこに出しても通用する水準で納品します。
+        </p>
+        <p class="text-sm max-w-[42ch] leading-relaxed font-sans">
+            社名はギリシャ文字 <strong class="font-sans">τ</strong> に由来します。Tau は制御工学と物理学における<strong>時定数</strong>——システムが外部の変化に反応し、新しい安定状態へ移るまでにかかる時間です。TauX が扱うのは、企業が AI に適応するときの時定数です。適応するかどうかではなく、どれだけ時間がかかるか。
+        </p>
+    </div>
+</section>
+
+<section class="relative overflow-hidden bg-surface border-t border-line">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16 mb-20">
+            <div class="border-t border-line pt-8">
+                <div class="cover" data-cover>
+                    <h2 class="mb-4">
+                    <span class="display-lead tablet:text-display-sm">Our Mission</span>
+                    <span class="display-sub">私たちの使命</span>
+                </h2>
+                </div>
+                <p class="leading-relaxed">
+                    生成 AI がウェブの流入を組み替えつつある今、私たちの使命はブランドを従来の SEO から GEO へ移すことです。独自の「回答コンテナ」技術によって、御社のコンテンツが AI に優先して読まれ、引用されるようにします。
+                </p>
+            </div>
+            <div class="border-t border-line pt-8">
+                <div class="cover" data-cover>
+                    <h2 class="mb-4">
+                    <span class="display-lead tablet:text-display-sm">What We Build With</span>
+                    <span class="display-sub">技術の基盤</span>
+                </h2>
+                </div>
+                <p class="leading-relaxed">
+                    高い性能を要するバックエンドは Go（Golang）で構築し、フロントエンドは現代的な技術でユーザー体験を突き詰めます。データガバナンスから自動化エージェントまで、技術面を一貫して支えます。
+                </p>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="border-t border-line pt-8">
+            <div class="cover" data-cover>
+                <h2 class="mb-6">
+                <span class="display-lead tablet:text-display-sm">Find Us</span>
+                <span class="display-sub">お問い合わせ</span>
+            </h2>
+            </div>
+            <div class="flex flex-col tablet:flex-row gap-8">
+                <div class="flex items-center gap-2">
+                    <span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </span>
+                    <a href="mailto:hello@taux.io" class="hover:opacity-60 transition-opacity">hello@taux.io</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span>+886-7-6211033</span>
+                </div>
+            </div>
+            <!-- The prose address is localised; the one in the Organization
+                 node is not. `_identity.html` holds the registered string and
+                 concatenates back to it exactly, because that one is identity.
+                 This one is for a reader finding the door, which is why the
+                 English twin romanises it and this reads it in Japanese kanji. -->
+            <p class="mt-6">台湾 高雄市岡山区文賢路 57 号 2 階</p>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

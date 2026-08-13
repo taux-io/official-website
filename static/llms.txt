@@ -137,6 +137,14 @@ Every route on the site has an English edition. These are all of them.
 -   [隐私权政策](https://taux.io/zh-Hans-CN/privacy-policy): 数据保护与隐私权承诺。
 -   [服务条款](https://taux.io/zh-Hans-CN/terms-of-service): 使用 TauX 服务之条款与条件。
 
+## 日本語版・한국어판
+
+翻訳は route ごとに進めています。以下が現在公開されているものです。／번역은 라우트 단위로 진행 중이며, 아래가 현재 공개된 것입니다.
+
+-   [TauX 拓思科技について](https://taux.io/ja-JP/about): TauX が何をつくっているか、社名の由来（ギリシャ文字 τ、制御工学の時定数）、そして実際に納品しているもの。台湾・高雄を拠点に GEO と AI システムを手がけています。
+-   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): TauX가 무엇을 만드는지, 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수), 그리고 실제로 납품하는 것. 대만 가오슝에서 GEO와 AI 시스템을 만듭니다.
+
+
 ## 聯絡資訊
 
 -   **Email**: hello@taux.io

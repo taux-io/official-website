@@ -17,7 +17,7 @@ const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 const stylesheet = require("../stylesheet");
-const { ROUTES } = require("../routes");
+const { ROUTES, LOCALES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
 const OUT_DIR = path.join(ROOT, "static", "og");
@@ -48,29 +48,61 @@ function routes() {
       .join(" — "),
     description: r.description,
     name: r.name,
+    locale: r.locale,
   }));
 }
+
+// THE CJK FACE FOLLOWS THE CARD'S LANGUAGE, THE SAME WAY THE SITE'S DOES.
+//
+// Decision #55 gave every locale its own CJK stack because the old one was
+// three Traditional faces and Japanese kanji answered by PingFang TC are
+// visibly the wrong glyph forms to a Japanese reader (直, 骨, 令, 海, 説).
+// That fix landed in src/input.css and NOT here, so the cards kept the
+// singular assumption the site had just dropped — a Japanese card would have
+// shipped with Chinese glyphs BY CONSTRUCTION rather than by the build
+// machine's luck, which is the gap decision #57 accepted. #57 accepted not
+// knowing which face a machine has; it did not accept asking for the wrong one.
+//
+// A card is the one asset seen away from the site and never noticed to be
+// wrong in a browser, which is the same argument that moved the palette out of
+// this file.
+const CJK = {
+  Hant: '"PingFang TC", "Microsoft JhengHei", "Noto Sans TC"',
+  Hans: '"PingFang SC", "Microsoft YaHei", "Noto Sans SC"',
+  Jpan: '"Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP"',
+  Kore: '"Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR"',
+  // English cards still carry a CJK face: the registered company name and the
+  // address appear on them in Chinese, and with no face Windows answers with a
+  // Ming serif (decision #40).
+  Latn: '"PingFang TC", "Microsoft JhengHei", "Noto Sans TC"',
+};
+
+const cjkFor = (tag) => {
+  const l = LOCALES.find((x) => x.tag === tag);
+  return CJK[l && l.script] || CJK.Hant;
+};
 
 const CARD = (item, fontCss, tokenCss) => `
 <style>
   ${fontCss}
   ${tokenCss}
+  :root { --cjk: ${cjkFor(item.locale)}; }
   * { margin: 0; box-sizing: border-box; }
   html, body { width: ${WIDTH}px; height: ${HEIGHT}px; }
   body {
     background: rgb(var(--surface-rgb));
     color: rgb(var(--ink-rgb));
-    font-family: "SF Pro Text", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 72px 80px;
     position: relative; overflow: hidden;
   }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
   .mark { font-family: "SF Pro Display", system-ui, -apple-system, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
-  .kicker { font-family: "SF Pro Display", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
+  .kicker { font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
   h1 {
     position: relative; z-index: 1;
-    font-family: "SF Pro Display", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif;
     font-size: ${item.title.length > 34 ? 62 : 80}px;
     font-weight: 600; line-height: 1.07; letter-spacing: -0.005em;
     max-width: 940px;
