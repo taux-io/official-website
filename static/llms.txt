@@ -62,6 +62,7 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 -   [Claude Skills 實戰指南](https://taux.io/claude-skills-guide): 專為開發者打造的階梯式教育手冊，教您如何將 SOP 與專家知識轉化為自動化工作流。
 -   [ADK Agent Skill 設計模式](https://taux.io/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。
 -   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。
+-   [AI Agent 開發流程實戰](https://taux.io/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程。主幹七步（grill、spec、tickets、implement、code-review）、四個完整劇本、31 個已知坑與 14 天練習計畫。依該 pack 1.2.3 版撰寫，為獨立編寫的中文教學而非官方文件翻譯。
 
 ---
 

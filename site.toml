@@ -143,6 +143,20 @@ date_modified = "2026-07-26"
 date_published = "2026-04-06"
 
 [[page]]
+path        = "/agent-dev-workflow"
+template    = "agent-dev-workflow.html"
+# The subject is the flow, not the pack. Three routes already sit near this
+# topic (/claude-skills-guide, /adk-skill-patterns, /agent-prompting-guide) and
+# they all answer "what is a skill"; this one answers "what order do you run
+# them in". The slug carries no third-party handle, because a slug is permanent
+# and the pack it describes is not ours.
+title       = "AI Agent 開發流程實戰｜25 支 skill 串成的主幹七步 | TauX"
+description = "把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：grill、spec、tickets、implement、code-review 主幹七步，四個完整劇本，31 個已知坑與 14 天練習計畫。"
+canonical   = "https://taux.io/agent-dev-workflow"
+date_modified = "2026-08-13"
+date_published = "2026-08-13"
+
+[[page]]
 path        = "/building"
 template    = "building.html"
 title       = "公開打造中｜Building in Public | TauX"

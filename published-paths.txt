@@ -10,6 +10,7 @@
 /
 /about
 /adk-skill-patterns
+/agent-dev-workflow
 /agent-prompting-guide
 /ai-smart-work
 /building
