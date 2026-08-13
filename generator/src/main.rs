@@ -78,6 +78,12 @@ struct Locale {
     /// declared here so they cannot each guess it differently.
     #[allow(dead_code)]
     script: String,
+    /// Prose that lives in a shared template and therefore cannot be translated
+    /// by writing a second file. One key today; the alternative is an inline
+    /// `{% if locale == ... %}`, which is a branch per language inside a file
+    /// every language reads.
+    #[serde(default)]
+    strings: BTreeMap<String, String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -386,6 +392,12 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 // holds the templates to it.
                 locale => locale,
                 og_locale => &og_locale,
+                strings => site
+                    .locale
+                    .iter()
+                    .find(|l| &l.tag == locale)
+                    .map(|l| l.strings.clone())
+                    .unwrap_or_default(),
                 alternates => &alternates,
                 title => &text.title,
                 description => &text.description,
@@ -440,7 +452,13 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 fs::create_dir_all(parent)?;
             }
             fs::write(&dest, html)?;
-            written.insert(page.path.clone(), rel);
+            // KEYED BY PATH *AND* LOCALE. Keyed by path alone, the second
+            // language of a route overwrote the first in this map: 22 files on
+            // disk and "21 pages written" printed underneath them. The build
+            // summary is the one place a person looks to see that a page was
+            // produced, and it was quietly under-reporting by one per
+            // translation.
+            written.insert(format!("{} [{locale}]", page.path), rel);
         }
     }
 
@@ -450,6 +468,12 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             // See CANONICAL_LOCALE: one file answers every unmatched path in
             // every language, so its navigation points at one of them.
             locale => CANONICAL_LOCALE,
+            strings => site
+                .locale
+                .iter()
+                .find(|l| l.tag == CANONICAL_LOCALE)
+                .map(|l| l.strings.clone())
+                .unwrap_or_default(),
             og_locale => site
                 .locale
                 .iter()

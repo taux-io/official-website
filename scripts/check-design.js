@@ -86,6 +86,20 @@ function walk(dir, out = []) {
   return out;
 }
 
+// HOW site.toml NAMES A TEMPLATE, which stopped being its basename.
+//
+// Templates used to be a flat directory, so `path.basename` and "what the route
+// table declares" were the same string. A translated page needs its own file —
+// one file cannot hold two languages' prose — so they live in `templates/en-US/`
+// and site.toml declares `en-US/building.html`.
+//
+// Keyed by basename, the two `building.html` files collide: the map keeps
+// whichever came last, and the rules above then check one language's template
+// twice and the other's never. It surfaced as "site.toml declares missing
+// template en-US/building.html", which is the good outcome — the same collision
+// with the *other* iteration order would have reported nothing at all.
+const templateKey = (rel) => path.relative(TEMPLATES, path.join(ROOT, rel));
+
 const lineOf = (text, index) => text.slice(0, index).split("\n").length;
 
 // Numeric character references have to go before anything looks for a hex
@@ -290,7 +304,7 @@ function ruleRadiusScale(files) {
 // needed neither.
 function ruleHeadingStructure(files) {
   const found = [];
-  const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
+  const byName = new Map(files.map((f) => [templateKey(f.rel), f]));
 
   // Which languages each template actually renders into. A document has no
   // locale of its own — one file answers every unmatched path — so it is held
@@ -355,7 +369,7 @@ function ruleHeadingStructure(files) {
 // a reference to an element.
 function ruleAnchorIntegrity(files) {
   const found = [];
-  const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
+  const byName = new Map(files.map((f) => [templateKey(f.rel), f]));
 
   const templateFor = new Map(PAGES.map((p) => [p.path, p.template]));
 
@@ -517,7 +531,7 @@ function renderedNodes(name, byName, chain = []) {
 
 function routeTemplates(files) {
   const declared = [...PAGES, ...DOCUMENTS].map((p) => p.template);
-  const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
+  const byName = new Map(files.map((f) => [templateKey(f.rel), f]));
   return { declared, byName };
 }
 

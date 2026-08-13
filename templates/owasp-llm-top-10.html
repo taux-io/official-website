@@ -14,27 +14,27 @@
      invisible on the page and taken verbatim by the machines reading it. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-  {"@type":"BreadcrumbList","@id":"https://taux.io/owasp-llm-top-10#breadcrumb","itemListElement": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#breadcrumb","itemListElement": [
       {"@type":"ListItem","position": 1,"name":"首頁","item":"https://taux.io" },
-      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/owasp-llm-top-10" }
+      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/zh-Hant-TW/owasp-llm-top-10" }
     ]
   },
-  {"@type":"TechArticle","@id":"https://taux.io/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM 應用的十大資安風險","description":"OWASP Top 10 for LLM Applications 2026 十條風險逐項拆解，含 2025 到 2026 的排序變動與範圍調整。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/owasp-llm-top-10#list" }
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM 應用的十大資安風險","description":"OWASP Top 10 for LLM Applications 2026 十條風險逐項拆解，含 2025 到 2026 的排序變動與範圍調整。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#list" }
   },
-  {"@type":"ItemList","@id":"https://taux.io/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM 應用的十大資安風險，依 OWASP 2026 版的順序。","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
-      {"@type":"ListItem","position": 1,"name":"LLM01 提示詞注入 Prompt Injection","description":"進入模型脈絡的任何輸入改變了它的行為，包含藏在圖像或音訊裡的跨模態載體。","url":"https://taux.io/owasp-llm-top-10#prompt-injection" },
-      {"@type":"ListItem","position": 2,"name":"LLM02 敏感資訊洩漏 Sensitive Information Disclosure","description":"模型的輸出洩漏了不該給這個使用者的資訊——個資、憑證、營業秘密，或其他使用者的資料。","url":"https://taux.io/owasp-llm-top-10#sensitive-information-disclosure" },
-      {"@type":"ListItem","position": 3,"name":"LLM03 過度代理權 Excessive Agency","description":"系統給了模型過多的功能、權限或自主性，使它的一次判斷失誤足以造成真實損害。2026 版從第六升到第三。","url":"https://taux.io/owasp-llm-top-10#excessive-agency" },
-      {"@type":"ListItem","position": 4,"name":"LLM04 供應鏈 Supply Chain","description":"模型權重、資料集、套件與外掛的來源不可信或已被污染，含模型物件名實不符。","url":"https://taux.io/owasp-llm-top-10#supply-chain" },
-      {"@type":"ListItem","position": 5,"name":"LLM05 資料與模型投毒 Data and Model Poisoning","description":"有人在預訓練、微調或嵌入的資料裡植入內容，改變模型行為或埋下觸發式後門。","url":"https://taux.io/owasp-llm-top-10#data-and-model-poisoning" },
-      {"@type":"ListItem","position": 6,"name":"LLM06 無節制消耗 Unbounded Consumption","description":"對推論的用量沒有邊界，導致成本失控、服務降級，或模型行為被大量查詢複製。2026 版上升四名。","url":"https://taux.io/owasp-llm-top-10#unbounded-consumption" },
-      {"@type":"ListItem","position": 7,"name":"LLM07 錯誤資訊 Misinformation","description":"模型產生看似可信但實際錯誤的內容，而下游把它當成事實使用。事故資料顯示其實際危害高於從業者的直覺排序。","url":"https://taux.io/owasp-llm-top-10#misinformation" },
-      {"@type":"ListItem","position": 8,"name":"LLM08 隱藏脈絡外洩 Hidden Context Exposure","description":"放進模型脈絡、但不打算讓使用者看到的指令與運作資訊被抽取、推斷或還原。2026 版取代並擴大了 2025 版的系統提示詞洩漏。","url":"https://taux.io/owasp-llm-top-10#hidden-context-exposure" },
-      {"@type":"ListItem","position": 9,"name":"LLM09 向量與嵌入弱點 Vector and Embedding Weaknesses","description":"RAG 用的向量資料庫與嵌入成為攻擊面：投毒、跨租戶洩漏，或從嵌入反推原文。","url":"https://taux.io/owasp-llm-top-10#vector-and-embedding-weaknesses" },
-      {"@type":"ListItem","position": 10,"name":"LLM10 輸出處理不當 Improper Output Handling","description":"模型的輸出未經驗證就交給下游組件執行或呈現，含助理大量產生的不安全程式碼。2026 版從第五落到第十。","url":"https://taux.io/owasp-llm-top-10#improper-output-handling" }
+  {"@type":"ItemList","@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM 應用的十大資安風險，依 OWASP 2026 版的順序。","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"LLM01 提示詞注入 Prompt Injection","description":"進入模型脈絡的任何輸入改變了它的行為，包含藏在圖像或音訊裡的跨模態載體。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#prompt-injection" },
+      {"@type":"ListItem","position": 2,"name":"LLM02 敏感資訊洩漏 Sensitive Information Disclosure","description":"模型的輸出洩漏了不該給這個使用者的資訊——個資、憑證、營業秘密，或其他使用者的資料。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#sensitive-information-disclosure" },
+      {"@type":"ListItem","position": 3,"name":"LLM03 過度代理權 Excessive Agency","description":"系統給了模型過多的功能、權限或自主性，使它的一次判斷失誤足以造成真實損害。2026 版從第六升到第三。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#excessive-agency" },
+      {"@type":"ListItem","position": 4,"name":"LLM04 供應鏈 Supply Chain","description":"模型權重、資料集、套件與外掛的來源不可信或已被污染，含模型物件名實不符。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#supply-chain" },
+      {"@type":"ListItem","position": 5,"name":"LLM05 資料與模型投毒 Data and Model Poisoning","description":"有人在預訓練、微調或嵌入的資料裡植入內容，改變模型行為或埋下觸發式後門。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#data-and-model-poisoning" },
+      {"@type":"ListItem","position": 6,"name":"LLM06 無節制消耗 Unbounded Consumption","description":"對推論的用量沒有邊界，導致成本失控、服務降級，或模型行為被大量查詢複製。2026 版上升四名。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#unbounded-consumption" },
+      {"@type":"ListItem","position": 7,"name":"LLM07 錯誤資訊 Misinformation","description":"模型產生看似可信但實際錯誤的內容，而下游把它當成事實使用。事故資料顯示其實際危害高於從業者的直覺排序。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#misinformation" },
+      {"@type":"ListItem","position": 8,"name":"LLM08 隱藏脈絡外洩 Hidden Context Exposure","description":"放進模型脈絡、但不打算讓使用者看到的指令與運作資訊被抽取、推斷或還原。2026 版取代並擴大了 2025 版的系統提示詞洩漏。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#hidden-context-exposure" },
+      {"@type":"ListItem","position": 9,"name":"LLM09 向量與嵌入弱點 Vector and Embedding Weaknesses","description":"RAG 用的向量資料庫與嵌入成為攻擊面：投毒、跨租戶洩漏，或從嵌入反推原文。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#vector-and-embedding-weaknesses" },
+      {"@type":"ListItem","position": 10,"name":"LLM10 輸出處理不當 Improper Output Handling","description":"模型的輸出未經驗證就交給下游組件執行或呈現，含助理大量產生的不安全程式碼。2026 版從第五落到第十。","url":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#improper-output-handling" }
     ]
   },
-  {"@type":"FAQPage","@id":"https://taux.io/owasp-llm-top-10#faq","mainEntity": [
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hant-TW/owasp-llm-top-10#faq","mainEntity": [
       {"@type":"Question","name":"什麼是 OWASP Top 10 for LLM Applications？","acceptedAnswer": {"@type":"Answer","text":"這是 OWASP GenAI Security Project 維護的一份清單，列出大型語言模型應用最關鍵的十類資安風險。它是企業做 AI 風險盤點時最常被當成起點的對照表，涵蓋從提示詞注入、過度代理權到輸出處理不當等十個項目。"
         }
       },

@@ -7,7 +7,7 @@
   "@type": "WebPage",
   "name": "Building in Public",
   "description": "Follow our journey as we build TauX. Transparency, updates, and behind-the-scenes.",
-  "url": "https://taux.io/zh-Hant-TW/building",
+  "url": "https://taux.io/en-US/building",
   "publisher": {% include "_org-ref.html" %}
 }
 </script>
@@ -23,10 +23,17 @@
             </svg>
         </div>
 
-        <!-- Title -->
+        <!-- Title.
+
+             ONE LINE, NOT TWO, and that is the rule rather than an omission.
+             Decision #6 gave the h1 a Latin lead over a Chinese sub because
+             Chinese has no upper case, so the display signature could only be
+             carried by the Latin line. On an English page the lead IS the
+             content, and a sub-line under it would have nothing to say.
+             `heading structure` asks for `display-sub` only from locales whose
+             script is not Latin (decision #56). -->
         <h1 class="mb-6">
             <span class="display-lead">Building in Public</span>
-            <span class="display-sub">公開建造中</span>
         </h1>
 
         <!-- Description -->

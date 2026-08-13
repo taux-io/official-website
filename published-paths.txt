@@ -16,6 +16,7 @@
 /building
 /claude-skills-guide
 /data-governance
+/en-US/building
 /geo-guide
 /geo-optimization
 /google-workspace-with-ai

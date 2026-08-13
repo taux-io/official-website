@@ -39,6 +39,8 @@ function readRoutes() {
     return {
       // The URL, not the route identity. An auditor fetches this.
       path: p.url,
+      // Which language this row is, so an auditor can assert the page agrees.
+      locale: p.locale,
       name: slug,
       title: p.title,
       description: p.description,
