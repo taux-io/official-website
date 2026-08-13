@@ -39,6 +39,8 @@
 /geo-guide
 /geo-optimization
 /google-workspace-with-ai
+/ja-JP/about
+/ko-KR/about
 /owasp-llm-top-10
 /pqc-migration
 /privacy-policy

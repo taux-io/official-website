@@ -20,7 +20,9 @@
 # It claimed the roster was the published set — true while the two were the same
 # list, and wrong the moment they were not.
 #
-# ja-JP and ko-KR follow in stage 3 (DESIGN.md's migration table).
+# Stage 3 is arriving one route at a time, the way en-US did: /about is the
+# tracer bullet in ja-JP and ko-KR, and the roster entries are already here
+# because a roster entry with nothing behind it is inert.
 #
 # `og` is Open Graph's own locale format — underscore, not hyphen. It is a
 # separate field rather than a transform because og:locale takes a limited set
@@ -68,6 +70,31 @@ script = "Hans"
   # registered name ever contained a character that differs, this line would
   # keep the registered form and 版權所有 would still convert.
   copyright = "拓思科技股份有限公司 版权所有"
+
+[[locale]]
+tag    = "ja-JP"
+name   = "日本語"
+# `Jpan` rather than `Hani`, and that is the reason the script is a field at
+# all. Japanese kanji ARE Han characters, so a test that looks for Han would
+# pass on a page of untranslated Chinese. `check:entity` asks this locale for
+# kana instead — the one thing Chinese cannot supply.
+script = "Jpan"
+og     = "ja_JP"
+
+  [locale.strings]
+  # 拓思科技股份有限公司 stays. It is the registered name, and a registered name
+  # is identity in every language — the same rule that kept it out of the
+  # English footer. Only the notice around it is Japanese.
+  copyright = "拓思科技股份有限公司 無断転載を禁じます"
+
+[[locale]]
+tag    = "ko-KR"
+name   = "한국어"
+script = "Kore"
+og     = "ko_KR"
+
+  [locale.strings]
+  copyright = "拓思科技股份有限公司 무단 전재 및 재배포 금지"
 
 [[locale]]
 tag    = "en-US"
@@ -487,6 +514,18 @@ date_modified = "2026-07-26"
   title       = "关于 TauX 拓思科技｜把 AI 变成企业战力的 GEO 团队"
   description = "TauX 拓思科技把 AI 变成企业真正用得上的能力，而不是一场展示。专注 GEO 生成式引擎优化与 AI 技术落地，总部位于高雄。名字的由来、我们相信什么、我们实际交付什么。"
   canonical   = "https://taux.io/zh-Hans-CN/about"
+
+  [page.locale.ja-JP]
+  template    = "ja-JP/about.html"
+  title       = "TauX 拓思科技について｜GEO と AI エンジニアリング"
+  description = "TauX が何をつくっているか、社名の由来（ギリシャ文字 τ、制御工学の時定数）、そして実際に納品しているもの。台湾・高雄を拠点に GEO と AI システムを手がけています。"
+  canonical   = "https://taux.io/ja-JP/about"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/about.html"
+  title       = "TauX 拓思科技 소개｜GEO와 AI 엔지니어링"
+  description = "TauX가 무엇을 만드는지, 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수), 그리고 실제로 납품하는 것. 대만 가오슝에서 GEO와 AI 시스템을 만듭니다."
+  canonical   = "https://taux.io/ko-KR/about"
 
   [page.locale.en-US]
   template    = "en-US/about.html"
