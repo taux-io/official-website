@@ -277,6 +277,12 @@ date_published = "2026-03-02"
   description = "Claude Skills 完整指南：學會將 SOP 與專家知識轉化為可重複使用的自動化工作流。專為開發者與團隊打造。"
   canonical   = "https://taux.io/zh-Hant-TW/claude-skills-guide"
 
+  [page.locale.en-US]
+  template    = "en-US/claude-skills-guide.html"
+  title       = "A practical guide to building Claude Skills | TauX"
+  description = "Turning an SOP or a piece of expert knowledge into a reusable automated workflow: folder structure, the YAML rules that decide whether it loads, testing, and release."
+  canonical   = "https://taux.io/en-US/claude-skills-guide"
+
 [[page]]
 path        = "/adk-skill-patterns"
 template    = "adk-skill-patterns.html"

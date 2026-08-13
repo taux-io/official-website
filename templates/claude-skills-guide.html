@@ -31,7 +31,17 @@
         min-height: 100vh;
         padding: 30px 15px;
         place-items: center;
-        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+        /* The site stack, and the CJK tail is the --cjk token so this file follows
+           the page's language like everything else (decision #55).
+
+           IT USED TO NAME D-DIN. That face was self-hosted and went with
+           decision #53; static/fonts/ has not existed since. Four declarations
+           here kept asking for it and quietly resolved to PingFang TC — on a
+           page nobody looked at in Windows, and with no gate that can see
+           inside a <style> block. check:classes reads utility classes; it
+           cannot read this. Copying it into the English twin would have made
+           two of them. */
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
         overflow-x: hidden;
     }
 
@@ -111,7 +121,7 @@
     .skills-guide-body h2,
     .skills-guide-body h3,
     .skills-guide-body th {
-        font-family: "D-DIN Condensed", "D-DIN", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif;
         font-weight: 700;
         /* This page carries its own light palette in this block, so it has to
            state a heading colour rather than inherit the site default, which
@@ -616,7 +626,7 @@
            this site sets nowhere else and which is invisible from a Mac.
            DESIGN.md decision #40 in its new form: there is no monospace in
            this vocabulary, and nothing may reach the generic family. */
-        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
         font-weight: 600;
         word-break: break-all;
     }
@@ -630,7 +640,7 @@
            this site sets nowhere else and which is invisible from a Mac.
            DESIGN.md decision #40 in its new form: there is no monospace in
            this vocabulary, and nothing may reach the generic family. */
-        font-family: "D-DIN", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
         font-size: 16px;
         line-height: 1.6;
         color:var(--ink);
