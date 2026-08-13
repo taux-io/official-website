@@ -177,6 +177,48 @@
     @apply bg-ink/5 rounded-none px-1 py-0.5;
   }
 
+  /* ONE CJK FACE PER LOCALE (decision #55).
+
+     The stack used to end in `PingFang TC, Microsoft JhengHei, Noto Sans TC` —
+     three Traditional Chinese faces — and that was correct while Chinese was
+     the only CJK on the site. It stops being correct the moment a second one
+     arrives: PingFang TC covers most kanji, so Japanese text renders in it, and
+     直 骨 令 海 説 take Chinese shapes a Japanese reader spots immediately. Han
+     unification means the codepoint is shared and the glyph is not. Simplified
+     hits the same wall from the other side. Korean hangul is not in PingFang TC
+     at all, so it falls through to whatever `sans-serif` resolves to.
+
+     `--cjk` is what the two families in tailwind.config.js end with, and this is
+     the only place it changes. Keyed on the root's lang attribute, which the
+     generator writes from the locale being rendered — so the face follows the
+     page rather than the visitor's guess.
+
+     NOTHING MEASURES WHETHER THE RIGHT FACE ARRIVED. Named in DESIGN.md's list
+     of things nothing checks, beside the same gap for SF Pro. A Mac renders
+     Japanese in PingFang TC without complaint and without a symptom any probe
+     here can read. */
+  :root {
+    --cjk: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC";
+  }
+
+  :root:lang(zh-Hans-CN) {
+    --cjk: "PingFang SC", "Microsoft YaHei", "Noto Sans SC";
+  }
+
+  :root:lang(ja-JP) {
+    --cjk: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP";
+  }
+
+  :root:lang(ko-KR) {
+    --cjk: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR";
+  }
+
+  /* en-US keeps the Traditional faces underneath rather than dropping CJK.
+     English pages still carry Chinese proper nouns — the registered company
+     name and the Kaohsiung address — and with no face behind them they fall to
+     the platform default, which on Windows is a Ming serif this site sets
+     nowhere else. Decision #40 records the same failure from the other end. */
+
   html {
     @apply scroll-smooth font-sans;
   }

@@ -158,7 +158,15 @@ async function main() {
     await page.setContent(CARD(item, fontCss, tokenCss), { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(120);
-    await page.screenshot({ path: path.join(OUT_DIR, `${item.name}.png`) });
+    // The slug is the canonical URL's path, so it now contains a locale prefix
+    // and therefore a slash: `zh-Hant-TW/geo-guide`. Keeping the card's path
+    // identical to the page's path is what stops the two from drifting — the
+    // generator and this file derive the same slug from the same canonical, and
+    // a page once advertised an image that was never generated because they
+    // did not. The directory has to exist first.
+    const dest = path.join(OUT_DIR, `${item.name}.png`);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    await page.screenshot({ path: dest });
     console.log(`  ${item.name}.png  ${item.title}`);
   }
 

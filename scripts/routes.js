@@ -37,7 +37,8 @@ function readRoutes() {
     // slug from the canonical URL. Deriving it here too keeps all three in step.
     const slug = p.canonical.replace(ORIGIN, "").replace(/^\/|\/$/g, "") || "index";
     return {
-      path: p.path,
+      // The URL, not the route identity. An auditor fetches this.
+      path: p.url,
       name: slug,
       title: p.title,
       description: p.description,
@@ -68,10 +69,99 @@ function readRedirects() {
   }));
 }
 
-// The declared surface, unedited. Every field site.toml carries reaches the
-// caller — template, both date fields, noindex — because the callers that need
-// them are the reason this export exists.
-const PAGES = (SITE.page || []).map((p) => ({ ...p }));
+// The declared surface, unedited, FLATTENED ACROSS LOCALES. Every field
+// site.toml carries reaches the caller — template, both date fields, noindex —
+// because the callers that need them are the reason this export exists.
+//
+// site.toml became two-dimensional: a route declares its path, template and
+// dates once, and each locale under it supplies title, description and
+// canonical. Flattening here rather than exposing the nesting is deliberate.
+// Every caller — check:llms, check:entity, check:dates, the contract test, the
+// contrast audit, the share-card builder — wants one entry per thing it has to
+// visit, and a page in two languages is two things to visit. Handing them the
+// nested shape would make each of them write the same loop, which is how this
+// module came to exist: "what is a page" had five definitions.
+//
+// The note above about a seam that narrows the data applies in the other
+// direction too, so `locale` rides along. A caller that needs to know which
+// language it is looking at should not have to parse it back out of the URL.
+
+// THE SERVED PATH IS THE CANONICAL'S PATH, NOT `page.path`.
+//
+// Those were the same string until decision #58 gave every route a locale
+// prefix. Now `page.path` is the route's identity — the thing that is the same
+// in every language — and the URL a visitor or a crawler actually asks for is
+// `/<locale><path>`, which is exactly what the canonical already spells out.
+//
+// Reading `page.path` here after the move would have been quiet rather than
+// loud: the contract test would fetch `/geo-guide`, get the 301 it now answers
+// with, and report a route that no longer exists as healthy. `check:routes`
+// would compare its ledger against route identities instead of URLs and report
+// that nothing was retired — on the change that retired all twenty.
+const servedPath = (canonical) => canonical.replace(ORIGIN, "") || "/";
+
+// THREE THINGS THAT USED TO BE ONE STRING, EACH NAMED.
+//
+// Before locales, `path` was the route's identity, the URL it was served at and
+// (bar a suffix) the file it landed in. Decision #58 split them apart, and the
+// dangerous version of this change is the one that keeps calling all three
+// `path` and lets each caller mean whatever it meant before:
+//
+//   path — the route's identity. `/geo-guide`. The same in every language, and
+//          the key you match a translation against.
+//   url  — what a visitor or crawler asks for. `/zh-Hant-TW/geo-guide`.
+//   file — where it lands in dist/. `zh-Hant-TW/geo-guide.html`.
+//
+// `file` mirrors Page::output_path in the generator, including the locale home
+// being a flat `<locale>.html` rather than a directory index — measured against
+// the host, see that function's comment for the two layouts and their hops.
+const localeFile = (route, tag) => {
+  if (route.path === "/") return `${tag}.html`;
+  if (route.path.endsWith(".html")) return route.path.replace(/^\//, "");
+  return `${tag}/${route.path.replace(/^\//, "")}.html`;
+};
+
+const PAGES = (SITE.page || []).flatMap((p) => {
+  const { locale, ...route } = p;
+  return Object.entries(locale || {}).map(([tag, text]) => ({
+    ...route,
+    ...text,
+    // A language may override the route's template, because translated prose
+    // cannot live in the same file as the original. Spreading `text` after
+    // `route` already does this; naming it is what stops the next reader from
+    // deleting the ordering as incidental.
+    template: text.template || route.template,
+    locale: tag,
+    url: servedPath(text.canonical),
+    file: localeFile(route, tag),
+  }));
+});
+
+// The published languages, in the order the switcher shows them.
+//
+// `script` says which writing system the locale uses, and three checks read it
+// rather than guessing from the tag: whether an h1 needs a sub-line under its
+// Latin lead, what script a title has to contain, and how many characters fit
+// on a line. Guessing would hold until ja-JP, whose kanji are Han and whose
+// kana are not.
+const LOCALES = (SITE.locale || []).map((l) => ({ ...l }));
+
+// Writing systems that carry capital letters, so a Latin display lead is the
+// content rather than a signature over it (decision #56).
+const LATIN_SCRIPTS = new Set(["Latn", "Latin"]);
+const isLatin = (tag) => {
+  const l = LOCALES.find((x) => x.tag === tag);
+  return !!l && LATIN_SCRIPTS.has(l.script);
+};
+
+// The reading measure, per writing system. DESIGN.md holds the table and says
+// which of these were measured: only Hant was. The rest are read off typographic
+// convention and are marked as estimates there rather than mixed in with it.
+const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 75, Jpan: 68, Kore: 60 };
+const measureFor = (tag) => {
+  const l = LOCALES.find((x) => x.tag === tag);
+  return (l && MEASURE_CH[l.script]) || 68;
+};
 
 // [[document]] entries are not routes: they have no `path`, they are the body a
 // static host serves for an unmatched URL. What they do have is a served path,
@@ -98,4 +188,15 @@ const VIEWPORTS = [
 ];
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8099";
 
-module.exports = { ROUTES, PAGES, DOCUMENTS, REDIRECTS, VIEWPORTS, BASE_URL, ORIGIN };
+module.exports = {
+  ROUTES,
+  PAGES,
+  DOCUMENTS,
+  REDIRECTS,
+  LOCALES,
+  VIEWPORTS,
+  BASE_URL,
+  ORIGIN,
+  isLatin,
+  measureFor,
+};

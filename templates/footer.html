@@ -10,7 +10,7 @@
              topic column at a readable width and costs one row of height on a
              surface nobody is short of. -->
         <div class="mb-16 max-w-xs">
-            <a href="/" class="block font-display text-2xl uppercase tracking-[0.09em] mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
+            <a href="/{{ locale }}" class="block font-display text-2xl uppercase tracking-[0.09em] mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
             <p class="text-sm leading-relaxed mb-8">
                 Pioneering the future of work with advanced AI agents and robust data governance frameworks.
             </p>
@@ -44,8 +44,8 @@
                         <!-- Home and GitHub are omitted here on purpose: the brand block above
                         already links both. See templates/_nav-columns.html. -->
                     <ul class="space-y-4">
-                        <li><a href="/about" class="footer-link">About</a></li>
-                        <li><a href="/building" class="footer-link">Building in Public</a></li>
+                        <li><a href="/{{ locale }}/about" class="footer-link">About</a></li>
+                        <li><a href="/{{ locale }}/building" class="footer-link">Building in Public</a></li>
                     </ul>
                 </div>
 
@@ -53,9 +53,10 @@
 
         <div class="border-t border-line pt-8 flex flex-col tablet:flex-row justify-between items-center gap-4">
             <p class="eyebrow">&copy; {{ year }} 拓思科技股份有限公司 版權所有</p>
-            <div class="flex gap-8">
-                <a href="/privacy-policy" class="eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">Privacy Policy</a>
-                <a href="/terms-of-service" class="eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">Terms of Service</a>
+            <div class="flex gap-8 items-center">
+{% with link_class = "footer-link", list_class = "absolute bottom-full left-0 mb-2 bg-surface border border-line p-4 space-y-3 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
+                <a href="/{{ locale }}/privacy-policy" class="eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">Privacy Policy</a>
+                <a href="/{{ locale }}/terms-of-service" class="eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">Terms of Service</a>
             </div>
         </div>
     </div>

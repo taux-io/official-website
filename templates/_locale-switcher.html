@@ -1,0 +1,40 @@
+<!-- The language switcher. One definition, rendered by the nav and the footer.
+
+     A NATIVE <details>, AND EVERY PART OF THAT IS LOAD BEARING.
+
+     It opens and closes with no script. Decision #13's precedent is nineteen
+     elements left permanently invisible because their visibility depended on a
+     script running; the switcher is how a reader who cannot read this page gets
+     to one they can, so it is the last thing that should need JavaScript.
+
+     A closed <details> keeps its contents out of the tab order natively, so it
+     owes nothing to decision #48's `inert` obligation — the closed menu overlay
+     had to be taught that, this does not.
+
+     It is not a <select>. A select needs a script to navigate on change, which
+     puts it back in the first paragraph, and its options are not links: they
+     cannot be opened in a new tab, copied, or crawled.
+
+     It carries no `data-panel`, so `collapsible ships open` does not apply.
+     That rule exists for panels a script collapses — the reason behind it is
+     that markup should not hide what only a script can reveal, and nothing here
+     is hidden from anything but the eye.
+
+     Rendered only when there is somewhere to switch to. A switcher between one
+     language is not a switcher; issue 200 gives it a second entry. -->
+{% if alternates | length > 1 %}
+<details class="locale-switcher relative">
+    <summary class="eyebrow cursor-pointer list-none inline-flex items-center gap-2 min-h-[44px]">
+        {% for a in alternates %}{% if a.tag == locale %}{{ a.name }}{% endif %}{% endfor %}
+        <span aria-hidden="true">▾</span>
+    </summary>
+    <ul class="{{ list_class }}">
+        {% for a in alternates %}
+        <li>
+            <a href="{{ a.path }}" hreflang="{{ a.tag }}" lang="{{ a.tag }}"
+               class="{{ link_class }}"{% if a.tag == locale %} aria-current="true"{% endif %}>{{ a.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</details>
+{% endif %}

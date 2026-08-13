@@ -27,7 +27,12 @@
 
 const fs = require("fs");
 const path = require("path");
-const { PAGES, DOCUMENTS } = require("./routes");
+const { PAGES, DOCUMENTS, LOCALES } = require("./routes");
+
+// The language the error document speaks. Same constant, same reason, as the
+// generator's: one file answers every unmatched path, chosen before the host
+// knows anything about the reader.
+const CANONICAL_LOCALE = "zh-Hant-TW";
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
@@ -36,7 +41,31 @@ const ORIGIN = "https://taux.io";
 const LD = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
 const TITLE = /<title>([\s\S]*?)<\/title>/;
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;
-const CJK = /[㐀-䶿一-鿿豈-﫿]/;
+// THE SCRIPT A TITLE HAS TO CONTAIN, PER WRITING SYSTEM.
+//
+// This was one constant named CJK and one assertion: every title and every
+// description contains Chinese. That was right while Chinese was the only
+// language on the site, and it becomes wrong the moment a second arrives —
+// /en-US/geo-guide would have failed this gate on its first build for the crime
+// of being in English.
+//
+// It is not relaxed, it is made specific. The point of the original assertion
+// was that a page must be written in the language it claims: a title left
+// untranslated is invisible to a reader scanning results, and invisible to every
+// check that only counts characters. Asking each locale for its own script keeps
+// that and drops the assumption that there is only one.
+//
+// Japanese asks for kana rather than kanji, and Korean for hangul, for the same
+// reason the original asked for Chinese: a Japanese title that is only kanji is
+// far more likely to be untranslated Chinese than real Japanese, and the shared
+// codepoints make the two indistinguishable to a Han test.
+const SCRIPT_PATTERN = {
+  Hant: /[㐀-䶿一-鿿豈-﫿]/,
+  Hans: /[㐀-䶿一-鿿豈-﫿]/,
+  Latn: /[A-Za-z]/,
+  Jpan: /[\u3041-\u309F\u30A0-\u30FF]/,
+  Kore: /[\uAC00-\uD7A3\u1100-\u11FF]/,
+};
 
 // How this company writes its own name, in every form it uses. Matched against
 // an Organization node's name, legalName and alternateName so that one written
@@ -52,11 +81,29 @@ const ORGANISATION_TYPES = new Set([
   "Corporation",
 ]);
 
-function pages() {
-  return fs
-    .readdirSync(DIST)
-    .filter((f) => f.endsWith(".html"))
-    .map((f) => ({ rel: f, html: fs.readFileSync(path.join(DIST, f), "utf8") }));
+// RECURSIVE, because dist/ stopped being flat.
+//
+// Decision #58 puts every page under a locale directory, and a flat readdir
+// found two files where there were twenty-one: `404.html` and the locale home.
+// It did not fail — it reported "3 of 3 rules enforced, 2 pages" and exited
+// zero. A checker that silently narrows what it looks at is worse than one that
+// crashes, and this one exists precisely because gates that walk the route
+// table cannot see what the build actually wrote.
+function pages(dir = DIST, prefix = "") {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      // static/ holds assets, not documents, and walking it would read every
+      // committed share card looking for JSON-LD.
+      if (rel === "static") continue;
+      out.push(...pages(path.join(dir, entry.name), rel));
+      continue;
+    }
+    if (!entry.name.endsWith(".html")) continue;
+    out.push({ rel, html: fs.readFileSync(path.join(dir, entry.name), "utf8") });
+  }
+  return out;
 }
 
 // Every JSON-LD document on a page, already parsed. check:jsonld is the gate
@@ -250,24 +297,47 @@ function ruleOneOrganisationIdentity(files) {
   return found;
 }
 
-// The market is Traditional Chinese. A title and description with no Chinese in
-// them share no surface with the query they are meant to match — which was
-// literally true of the flagship GEO guide, whose content is Chinese and whose
-// title and description were not.
-function ruleFacingChinese(files) {
+// A title and description must be written in the language the page claims.
+//
+// One with none of that language's script in it shares no surface with the query
+// it is meant to match — which was literally true of the flagship GEO guide,
+// whose content was Chinese and whose title and description were not.
+//
+// THE RULE USED TO SAY "CHINESE" AND NOW SAYS "THE PAGE'S SCRIPT". Same
+// assertion, one assumption removed: the market is no longer one language, and
+// a check that hard-codes the market fails the first page that is not in it —
+// for the crime of being correctly translated. Which script comes from the
+// locale roster, so a new language declares its answer once.
+function ruleFacingItsOwnLanguage(files) {
   const found = [];
+  // Which locale wrote each built file, keyed the way `pages()` reports them.
+  const localeOfFile = new Map(PAGES.map((p) => [p.file, p.locale]));
+
   for (const { rel, html } of files) {
+    // The error document is not a route and belongs to no locale; it speaks the
+    // canonical one, because one file answers every unmatched path.
+    const tag = localeOfFile.get(rel) || CANONICAL_LOCALE;
+    const script = (LOCALES.find((l) => l.tag === tag) || {}).script;
+    const pattern = SCRIPT_PATTERN[script];
+    if (!pattern) {
+      found.push({ file: rel, detail: `locale ${tag} declares script "${script}", which has no pattern here` });
+      continue;
+    }
+
     const title = TITLE.exec(html);
     const description = DESCRIPTION.exec(html);
     if (!title) {
       found.push({ file: rel, detail: "no <title>" });
-    } else if (!CJK.test(title[1])) {
-      found.push({ file: rel, detail: `title has no Chinese — ${title[1].trim()}` });
+    } else if (!pattern.test(title[1])) {
+      found.push({ file: rel, detail: `title is not in ${tag} (${script}) — ${title[1].trim()}` });
     }
     if (!description) {
       found.push({ file: rel, detail: "no meta description" });
-    } else if (!CJK.test(description[1])) {
-      found.push({ file: rel, detail: `description has no Chinese — ${description[1].slice(0, 60)}…` });
+    } else if (!pattern.test(description[1])) {
+      found.push({
+        file: rel,
+        detail: `description is not in ${tag} (${script}) — ${description[1].slice(0, 60)}…`,
+      });
     }
   }
   return found;
@@ -365,8 +435,8 @@ const RULES = [
     enabled: true,
     network: false,
     turnedOnBy: "#105 — rewrites nine titles and descriptions to lead in Chinese",
-    run: ruleFacingChinese,
-    summary: "title and description must share surface with a Traditional Chinese query",
+    run: ruleFacingItsOwnLanguage,
+    summary: "title and description must be written in the script the page's locale declares",
   },
   {
     name: "sameAs resolves",
@@ -406,9 +476,10 @@ async function main() {
   // did not exist. Asking for each declared file by name is both stricter and
   // immune to that.
   const wanted = [
-    ...PAGES.map((p) =>
-      p.path === "/" ? "index.html" : `${p.path.replace(/^\//, "")}.html`
-    ),
+    // The file, not the route identity. routes.js derives it the same way the
+    // generator's output_path does, so this cannot drift from where the build
+    // actually writes — which is the whole reason this check reads dist/.
+    ...PAGES.map((p) => p.file),
     ...DOCUMENTS.map((d) => d.output),
   ];
   const missing = wanted.filter((f) => !fs.existsSync(path.join(DIST, f)));

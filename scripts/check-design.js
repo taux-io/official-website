@@ -32,7 +32,12 @@
 const fs = require("fs");
 const path = require("path");
 const stylesheet = require("./stylesheet");
-const { PAGES, DOCUMENTS } = require("./routes");
+const { PAGES, DOCUMENTS, isLatin } = require("./routes");
+
+// The language the error document speaks; the generator holds the same constant
+// and for the same reason — one file answers every unmatched path, chosen
+// before the host knows anything about the reader.
+const CANONICAL_LOCALE = "zh-Hant-TW";
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -268,12 +273,39 @@ function ruleRadiusScale(files) {
 // line. Every H1 is therefore two lines: a Latin lead and a Chinese sub. The
 // route table is read rather than the template directory so that a page added
 // to the site cannot quietly skip this.
+// CONDITIONAL ON THE WRITING SYSTEM, NOT SWITCHED OFF (decision #56).
+//
+// Decision #6's reason for the two-line h1 was that Chinese has no upper case,
+// so the display signature could only be carried by a Latin line above it. That
+// reason does not exist on a Latin page: there the lead IS the content, and
+// requiring a sub-line under it would demand a second line with nothing to say.
+//
+// So `display-lead` is asked of every template and `display-sub` only of those
+// that render into a non-Latin locale. A template serving both — which is what
+// the canonical locale's templates do until issue 200 gives each language its
+// own — still owes the sub-line, because it still renders a Chinese page.
+//
+// The rule shrank to where it holds rather than being turned off. Turning it off
+// to get a green build is the same move as keeping an exemption list, and this
+// needed neither.
 function ruleHeadingStructure(files) {
   const found = [];
-  const declared = [...PAGES, ...DOCUMENTS].map((p) => p.template);
   const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
 
-  for (const template of declared) {
+  // Which languages each template actually renders into. A document has no
+  // locale of its own — one file answers every unmatched path — so it is held
+  // to the canonical locale's requirement.
+  const localesOf = new Map();
+  for (const p of PAGES) {
+    if (!localesOf.has(p.template)) localesOf.set(p.template, []);
+    localesOf.get(p.template).push(p.locale);
+  }
+  for (const d of DOCUMENTS) {
+    if (!localesOf.has(d.template)) localesOf.set(d.template, []);
+    localesOf.get(d.template).push(CANONICAL_LOCALE);
+  }
+
+  for (const [template, locales] of localesOf) {
     const f = byName.get(template);
     if (!f) {
       found.push({ file: `site.toml`, line: 0, detail: `declares missing template ${template}` });
@@ -284,13 +316,18 @@ function ruleHeadingStructure(files) {
       found.push({ file: f.rel, line: 0, detail: "no <h1>" });
       continue;
     }
+    const needsSub = locales.some((tag) => !isLatin(tag));
+    const required = needsSub ? ["display-lead", "display-sub"] : ["display-lead"];
+
     for (const h of headings) {
-      const missing = ["display-lead", "display-sub"].filter((c) => !h[1].includes(c));
+      const missing = required.filter((c) => !h[1].includes(c));
       if (missing.length) {
         found.push({
           file: f.rel,
           line: lineOf(f.html, h.index),
-          detail: `<h1> missing ${missing.join(" and ")}`,
+          detail:
+            `<h1> missing ${missing.join(" and ")}` +
+            (needsSub ? "" : ` — ${locales.join(", ")} is Latin, so no sub-line is asked for`),
         });
       }
     }
@@ -321,6 +358,19 @@ function ruleAnchorIntegrity(files) {
   const byName = new Map(files.map((f) => [path.basename(f.rel), f]));
 
   const templateFor = new Map(PAGES.map((p) => [p.path, p.template]));
+
+  // Cross-page links carry the render's locale as a placeholder, because the
+  // templates are shared and the prefix is not (`locale relative links`). What
+  // this rule resolves against is the route's identity, which is what remains
+  // once the placeholder comes off: `/{{ locale }}/geo-guide` is `/geo-guide`,
+  // and a bare `/{{ locale }}` is the home page.
+  //
+  // Stripping it here rather than teaching every caller means the two rules
+  // cannot disagree about what an internal link looks like.
+  const routeIdentity = (href) => {
+    const bare = href.replace(/^\/\{\{\s*locale\s*\}\}/, "");
+    return bare === "" ? "/" : bare;
+  };
 
   const idCache = new Map();
   const idsOf = (template) => {
@@ -364,7 +414,7 @@ function ruleAnchorIntegrity(files) {
   }
 
   for (const { file, line, target, frag } of crossPage.values()) {
-    const template = templateFor.get(target);
+    const template = templateFor.get(routeIdentity(target));
     if (!template) {
       found.push({ file, line, detail: `${target}#${frag} — no page declares ${target}` });
       continue;
@@ -474,6 +524,44 @@ function routeTemplates(files) {
 // ---------------------------------------------------------------------------
 
 const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
+// An internal link that names a declared route must carry the locale.
+//
+// THE TEMPLATES ARE SHARED AND THE PREFIX IS NOT. header.html is one file
+// rendered once per language, so `href="/geo-guide"` in it does two wrong
+// things at once: it costs a 301 for every reader, and once a second locale
+// exists it sends an English reader to the Chinese page. The second failure is
+// silent — the link works, the page loads, it is simply the wrong language, and
+// no gate that checks status codes can see it.
+//
+// Forty-eight links were in this state the moment decision #58 landed. They
+// were rewritten to `/{{ locale }}/...`; this is what stops the forty-ninth.
+//
+// Only paths that name a declared route are checked. `/static/...`, `/404`,
+// fragments, `mailto:` and anything with a scheme are somewhere else's problem
+// — and a link to another origin is not ours to prefix.
+function ruleLocaleRelativeLinks(files) {
+  const found = [];
+  const routeIds = new Set(PAGES.map((p) => p.path).filter((p) => p !== "/"));
+
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/href="([^"]*)"/g)) {
+      const href = m[1];
+      if (!href.startsWith("/")) continue;
+      if (href.startsWith("/{{")) continue;
+      const bare = href.split(/[#?]/)[0].replace(/\/$/, "");
+      if (bare !== "" && !routeIds.has(bare)) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, m.index),
+        detail:
+          `href="${href}" names a route without the render's locale — ` +
+          `write /{{ locale }}${bare} so the shared template follows the page it is rendered into`,
+      });
+    }
+  }
+  return found;
+}
+
 function ruleCollapsibleShipsOpen(files) {
   const found = [];
   for (const { rel, html } of files) {
@@ -1238,6 +1326,13 @@ const RULES = [
     turnedOnBy: "#66",
     run: ruleAnchorIntegrity,
     summary: "a fragment link must point at an element that exists on the rendered page",
+  },
+  {
+    name: "locale relative links",
+    enabled: true,
+    turnedOnBy: "issue 199",
+    run: ruleLocaleRelativeLinks,
+    summary: "an internal link names a declared route and must carry the render's locale",
   },
   {
     name: "collapsible ships open",

@@ -51,6 +51,7 @@
 // neighbours, so adding a page to site.toml brings it under all of them.
 
 const { walk } = require("./walk");
+const { LOCALES, measureFor } = require("../routes");
 
 // /404 is a [[document]] rather than a [[page]], so it is not in ROUTES and
 // neither contrast nor contract ever requests it — DESIGN.md says so of both.
@@ -126,6 +127,17 @@ const TOUCH_TARGET_MIN_PX = 44;
 // paragraph ends up depends on its ancestors, its type size and its face.
 //
 // Half a character of slack for sub-pixel rounding.
+// THE LIMIT IS PER WRITING SYSTEM, AND THE PAGE SAYS WHICH ONE IT IS.
+//
+// 68 was chosen for Chinese, which sets denser than the 75 usually quoted for
+// Latin; DESIGN.md holds the table and marks which values were measured. Only
+// the Chinese one was — the rest are read off typographic convention and are
+// named there as estimates rather than mixed in with it.
+//
+// The probe picks its limit from `document.documentElement.lang` rather than
+// from a list threaded in beside the route. A parallel list is a second place
+// to say which language a page is in, and the two would agree until someone
+// edited one.
 const MEASURE_MAX_CH = 68;
 const MEASURE_TOLERANCE_CH = 0.5;
 // Short runs are labels, captions and table cells that happen to be in a <p>.
@@ -277,7 +289,8 @@ function measureControlsInPage({ radius, minTarget }) {
 // decision taken across every row, and capping one cell would break the column
 // rather than help anyone. Measured before excluding them — the widest cell on
 // the site is 46.8ch, inside the limit anyway.
-function measureReadingInPage({ maxCh, minChars }) {
+function measureReadingInPage({ byLocale, fallbackCh, tolerance, minChars }) {
+  const maxCh = (byLocale[document.documentElement.lang] || fallbackCh) + tolerance;
   const out = [];
   for (const el of document.querySelectorAll("main p, main li")) {
     const text = el.textContent.trim();
@@ -326,7 +339,12 @@ async function main() {
       {
         name: "measure",
         inPage: measureReadingInPage,
-        args: { maxCh: MEASURE_MAX_CH + MEASURE_TOLERANCE_CH, minChars: MEASURE_MIN_CHARS },
+        args: {
+          byLocale: Object.fromEntries(LOCALES.map((l) => [l.tag, measureFor(l.tag)])),
+          fallbackCh: MEASURE_MAX_CH,
+          tolerance: MEASURE_TOLERANCE_CH,
+          minChars: MEASURE_MIN_CHARS,
+        },
         // Container widths grow monotonically with the viewport, so the widest
         // pass is the worst case; measuring at all eight would report the same
         // paragraph eight times.
@@ -345,7 +363,8 @@ async function main() {
   const combos = `${stats.paths} paths x ${stats.viewports} widths: ${WIDTHS.join(", ")}`;
   console.log(`\n${stats.paths * stats.viewports} route/width combinations checked for horizontal overflow (${combos})`);
   console.log(`${stats.paths * stats.viewports} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
-  console.log(`${stats.paths} routes checked for a ${MEASURE_MAX_CH}ch reading measure (widest viewport only)`);
+  const limits = LOCALES.map((l) => `${l.tag} ${measureFor(l.tag)}ch`).join(", ");
+  console.log(`${stats.paths} routes checked for a reading measure (${limits}; widest viewport only)`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
   // scope would report green on ground it never covered.
