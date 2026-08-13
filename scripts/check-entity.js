@@ -343,6 +343,66 @@ function ruleFacingItsOwnLanguage(files) {
   return found;
 }
 
+// A URL inside structured data must be the page's own, in the page's own locale.
+//
+// NINETEEN PAGES SHIPPED NAMING URLS THEY NO LONGER LIVE AT. Decision #58 moved
+// every route behind a locale prefix, and the JSON-LD kept the old absolute
+// URLs hard-coded in the templates: seventy-nine references telling crawlers
+// that /geo-guide is the page, when /geo-guide is now a 301.
+//
+// Every gate nearby was blind to it, and each for a defensible reason:
+//   check:jsonld  asks whether the JSON parses and whether a key repeats.
+//   ruleReferencesResolve asks whether an @id points at a node the SAME
+//                 DOCUMENT declares — and #organization does, in every locale.
+//   the contract test reads what the page declares in <head>, not in its graph.
+//
+// So the graph could name a stale origin-relative URL forever while three
+// checks agreed the page was fine. This asks the one question none of them did:
+// does a taux.io URL in this document belong to a route, and if so is it this
+// page's locale? A canonical says where the page is; the graph has to agree.
+function ruleGraphUrlsMatchTheLocale(files) {
+  const found = [];
+  const localeOfFile = new Map(PAGES.map((p) => [p.file, p.locale]));
+  // Route identities, so a URL can be recognised as naming a page at all.
+  const identities = [...new Set(PAGES.map((p) => p.path))].filter((p) => p !== "/");
+  const prefixes = LOCALES.map((l) => `/${l.tag}`);
+
+  for (const { rel, html } of files) {
+    const tag = localeOfFile.get(rel);
+    // The error document belongs to no locale and names no route.
+    if (!tag) continue;
+
+    for (const doc of graphs(html, rel)) {
+      const text = JSON.stringify(doc);
+      for (const m of text.matchAll(/"https:\/\/taux\.io([^"#]*)(#[^"]*)?"/g)) {
+        const tail = m[1] || "";
+        const bare = tail.replace(/\/$/, "");
+        // Already carries a locale prefix: correct if it is this page's.
+        const worn = prefixes.find((p) => bare === p || bare.startsWith(p + "/"));
+        if (worn) {
+          if (worn !== `/${tag}`) {
+            found.push({
+              file: rel,
+              detail: `graph names ${worn} on a ${tag} page — https://taux.io${tail}${m[2] || ""}`,
+            });
+          }
+          continue;
+        }
+        // No prefix. Only a problem if it names a route; the bare origin with a
+        // fragment is the site-wide #organization node and belongs to nobody.
+        if (bare === "" ) continue;
+        if (identities.includes(bare)) {
+          found.push({
+            file: rel,
+            detail: `graph names the pre-locale URL https://taux.io${tail}${m[2] || ""} — it answers a 301 now`,
+          });
+        }
+      }
+    }
+  }
+  return found;
+}
+
 // sameAs asserts "these are the same entity". Pointing it at a profile that
 // does not exist asserts a relationship with nothing, and this site did: the
 // declared Facebook page was not the real one, and the real one — linked in the
@@ -431,12 +491,20 @@ const RULES = [
     summary: "one company, one @id, site-wide",
   },
   {
-    name: "chinese facing copy",
+    name: "copy faces its own language",
     enabled: true,
     network: false,
     turnedOnBy: "#105 — rewrites nine titles and descriptions to lead in Chinese",
     run: ruleFacingItsOwnLanguage,
     summary: "title and description must be written in the script the page's locale declares",
+  },
+  {
+    name: "graph urls match the locale",
+    enabled: true,
+    network: false,
+    turnedOnBy: "issue 200 — nineteen pages named their pre-locale URLs",
+    run: ruleGraphUrlsMatchTheLocale,
+    summary: "a taux.io URL in the graph must name this page's locale, not the URL it moved from",
   },
   {
     name: "sameAs resolves",

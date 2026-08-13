@@ -10,13 +10,18 @@
 
 # THE LOCALE ROSTER.
 #
-# Only locales with pages are listed. The switcher and the hreflang block are
-# generated from this, so an entry here without pages behind it would link
-# readers and crawlers at a 404 — the roster IS the published set, not a plan.
+# The roster is the DISPLAY ORDER and the per-locale settings. It is NOT the
+# published set, and the difference is what lets English arrive one route at a
+# time: hreflang and the switcher are built from each page's own locale table,
+# so a route with no English entry advertises no English alternate and offers no
+# English link. A roster entry with nothing behind it is inert, not a 404.
 #
-# Issue 200 adds en-US; zh-Hans-CN, ja-JP and ko-KR follow in stages 2 and 3
-# (DESIGN.md's migration table). Decision #34's convention: the mechanism lands
-# now, the ticket that makes each locale true is the one that adds it.
+# ⚠️ This comment said the opposite until en-US arrived with no pages behind it.
+# It claimed the roster was the published set — true while the two were the same
+# list, and wrong the moment they were not.
+#
+# zh-Hans-CN, ja-JP and ko-KR follow in stages 2 and 3 (DESIGN.md's migration
+# table).
 #
 # `og` is Open Graph's own locale format — underscore, not hyphen. It is a
 # separate field rather than a transform because og:locale takes a limited set
@@ -34,6 +39,30 @@ og     = "zh_TW"
 # Deriving it from "zh-*" would work until ja-JP, whose kanji are Han and whose
 # kana are not.
 script = "Hant"
+
+  # Strings that live in shared templates.
+  #
+  # The header, the footer and the nav are ONE file rendered once per language,
+  # so any prose in them cannot be translated by writing a second file the way a
+  # page can. There is exactly one such string today — the footer's copyright
+  # line — and a table for one string looks like overkill until you notice the
+  # alternative is `{% if locale == "en-US" %}` inline, which is where a
+  # template starts growing a branch per language.
+  #
+  # The company's legal name and address are NOT here. They are identity, not
+  # prose: check:entity asserts the Organization name matches 拓思, and a
+  # translated legal name would be a different company.
+  [locale.strings]
+  copyright = "拓思科技股份有限公司 版權所有"
+
+[[locale]]
+tag    = "en-US"
+name   = "English"
+og     = "en_US"
+script = "Latn"
+
+  [locale.strings]
+  copyright = "TauX Co., Ltd. All rights reserved."
 
 [[page]]
 path        = "/"

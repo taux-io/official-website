@@ -52,7 +52,7 @@
         </div>
 
         <div class="border-t border-line pt-8 flex flex-col tablet:flex-row justify-between items-center gap-4">
-            <p class="eyebrow">&copy; {{ year }} 拓思科技股份有限公司 版權所有</p>
+            <p class="eyebrow">&copy; {{ year }} {{ strings.copyright }}</p>
             <div class="flex gap-8 items-center">
 {% with link_class = "footer-link", list_class = "absolute bottom-full left-0 mb-2 bg-surface border border-line p-4 space-y-3 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
                 <a href="/{{ locale }}/privacy-policy" class="eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">Privacy Policy</a>

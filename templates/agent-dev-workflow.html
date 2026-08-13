@@ -16,14 +16,14 @@
      identity, and this is not our identity. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-  {"@type":"BreadcrumbList","@id":"https://taux.io/agent-dev-workflow#breadcrumb","itemListElement": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hant-TW/agent-dev-workflow#breadcrumb","itemListElement": [
       {"@type":"ListItem","position": 1,"name":"首頁","item":"https://taux.io" },
-      {"@type":"ListItem","position": 2,"name":"AI Agent 開發流程實戰","item":"https://taux.io/agent-dev-workflow" }
+      {"@type":"ListItem","position": 2,"name":"AI Agent 開發流程實戰","item":"https://taux.io/zh-Hant-TW/agent-dev-workflow" }
     ]
   },
-  {"@type":"TechArticle","@id":"https://taux.io/agent-dev-workflow#article","headline":"AI Agent 開發流程實戰：25 支 skill 串成的主幹七步","description":"把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：主幹七步、四個完整劇本、31 個已知坑與 14 天練習計畫。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"zh-Hant","citation":"mattpocock/skills v1.2.3 (MIT)"
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hant-TW/agent-dev-workflow#article","headline":"AI Agent 開發流程實戰：25 支 skill 串成的主幹七步","description":"把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程：主幹七步、四個完整劇本、31 個已知坑與 14 天練習計畫。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hant-TW/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"zh-Hant","citation":"mattpocock/skills v1.2.3 (MIT)"
   },
-  {"@type":"FAQPage","@id":"https://taux.io/agent-dev-workflow#faq","mainEntity": [
+  {"@type":"FAQPage","@id":"https://taux.io/zh-Hant-TW/agent-dev-workflow#faq","mainEntity": [
       {"@type":"Question","name":"user-invoked 與 model-invoked 的 skill 差在哪裡？","acceptedAnswer": {"@type":"Answer","text":"這是整套 skill 唯一的分類軸線。user-invoked 只有人類打得出來，其他 skill 也不能呼叫它，它的 description 是寫給人看的，定位是編排者——決定流程怎麼走。model-invoked 你可以打，agent 也會自己判斷後抓來用，description 寫給模型看，定位是紀律庫。規則是 user-invoked 可以呼叫 model-invoked，但永遠不能呼叫另一個 user-invoked。一個常見的副作用是：harness 不把 user-invoked skill 放進注入模型的清單，所以 agent 常常回報這些 skill 沒安裝——它們有裝，照打就是。"
         }
       },
