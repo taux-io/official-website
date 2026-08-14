@@ -45,6 +45,7 @@
 /ja-JP/agent-prompting-guide
 /ja-JP/ai-smart-work
 /ja-JP/building
+/ja-JP/claude-skills-guide
 /ja-JP/data-governance
 /ja-JP/geo-guide
 /ja-JP/geo-optimization
@@ -59,6 +60,7 @@
 /ko-KR/agent-prompting-guide
 /ko-KR/ai-smart-work
 /ko-KR/building
+/ko-KR/claude-skills-guide
 /ko-KR/data-governance
 /ko-KR/geo-guide
 /ko-KR/geo-optimization

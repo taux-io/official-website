@@ -528,6 +528,18 @@ date_published = "2026-03-02"
   description = "Claude Skills 完整指南：学会将 SOP 与专家知识转化为可重复使用的自动化工作流。专为开发者与团队打造。"
   canonical   = "https://taux.io/zh-Hans-CN/claude-skills-guide"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/claude-skills-guide.html"
+  title       = "Claude Skills 実践ガイド | TauX"
+  description = "SOP や専門知識を、繰り返し使える自動化された仕事の流れに変えるまで。フォルダの構成、読み込まれるかを決める YAML の決まり、試し方、そして配り方。"
+  canonical   = "https://taux.io/ja-JP/claude-skills-guide"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/claude-skills-guide.html"
+  title       = "Claude Skills 실전 가이드 | TauX"
+  description = "SOP와 전문 지식을 되풀이해 쓸 수 있는 자동화된 업무 흐름으로 바꾸기까지. 폴더 구성, 읽힐지를 정하는 YAML 규칙, 시험하는 법, 그리고 배포."
+  canonical   = "https://taux.io/ko-KR/claude-skills-guide"
+
   [page.locale.en-US]
   template    = "en-US/claude-skills-guide.html"
   title       = "A practical guide to building Claude Skills | TauX"
