@@ -872,7 +872,7 @@
                         <li><span class="highlight">scripts/</span>(선택) 실행할 수 있는 자동화 스크립트(Python, Bash 등).</li>
                         <li><span class="highlight">references/</span>(선택) Claude가 필요할 때 읽는 참고 자료와 안내서.</li>
                     </ul>
-                    <p><strong>듣는 지점:</strong>한 번 가르치면 그다음부터 계속 듣습니다. 팀 산출물의 형태도 고르게 맞습니다.</p>
+                    <p><strong>듣는 지점:</strong> 한 번 가르치면 그다음부터 계속 듣습니다. 팀 산출물의 형태도 고르게 맞습니다.</p>
                 </div>
                 <div>
                     <div class="image-wrapper">
@@ -958,7 +958,7 @@
                 <div>
                     <h3>도구에 혼을 넣는 두뇌</h3>
                     <p>MCP(Model Context Protocol)가 바깥과 잇는 「손발」 — Notion을 읽고 Linear에 과제를 세우는 — 이라면, Skills는 그 도구를 어떻게 제대로 쓸지 알려 주는 「두뇌」입니다.</p>
-                    <p><strong>Skill이 없는 MCP:</strong>도구함을 앞에 두고 어디부터 손댈지 몰라, 매번 복잡한 지시를 다시 씁니다.<br><br><strong>Skill이 있는 MCP:</strong>기본 흐름이 알아서 켜지고, 정석이 주고받을 때마다 심어집니다. 익힐 것이 줄어듭니다.</p>
+                    <p><strong>Skill이 없는 MCP:</strong> 도구함을 앞에 두고 어디부터 손댈지 몰라, 매번 복잡한 지시를 다시 씁니다.<br><br><strong>Skill이 있는 MCP:</strong> 기본 흐름이 알아서 켜지고, 정석이 주고받을 때마다 심어집니다. 익힐 것이 줄어듭니다.</p>
                 </div>
             </div>
         </div>
@@ -1033,19 +1033,19 @@
                     <h3>이름 짓는 규칙 (Naming)</h3>
                     <p>Claude는 폴더 이름과 파일 이름의 형태에 아주 까다로워서, 사소한 차이에도 Skill이 읽히지 않습니다.</p>
                     <ul>
-                        <li>주 파일 이름은 정확히<span class="highlight">SKILL.md</span>(대소문자를 구분합니다. skill.md는 안 됩니다)</li>
-                        <li>폴더와<code>name:</code>항목에는 다음을 씁니다<span class="highlight">kebab-case</span>.</li>
-                        <li><strong>엄금</strong>공백, 대문자, 밑줄을 넣지 말 것(예:<code>Notion_Setup</code>는 틀립니다)</li>
-                        <li>두지 말 것:<code>README.md</code>을 Skill 바로 아래에</li>
+                        <li>주 파일 이름은 정확히 <span class="highlight">SKILL.md</span>(대소문자를 구분합니다. skill.md는 안 됩니다)</li>
+                        <li>폴더와 <code>name:</code> 항목에는 다음을 씁니다 <span class="highlight">kebab-case</span>.</li>
+                        <li><strong>엄금</strong> 공백, 대문자, 밑줄을 넣지 말 것(예: <code>Notion_Setup</code>는 틀립니다)</li>
+                        <li>두지 말 것: <code>README.md</code>을 Skill 바로 아래에</li>
                     </ul>
                 </div>
                 <div>
                     <h3>설명과 방아쇠 말 (Description)</h3>
                     <p>Description은 Claude가 스스로 Skill을 켤지 판단하는 유일한 근거입니다. 1024자 미만으로 씁니다.</p>
                     <ul>
-                        <li>둘 다 반드시 씁니다:<strong>「무엇을 할 수 있는가」</strong>와<strong>「언제 쓰는가」</strong>(구체적인 방아쇠 말)</li>
+                        <li>둘 다 반드시 씁니다: <strong>「무엇을 할 수 있는가」</strong>와 <strong>「언제 쓰는가」</strong>(구체적인 방아쇠 말)</li>
                         <li>예: 「디자인 원고를 읽어 낼 때 쓴다. 사용자가 fig 파일을 올렸을 때, 또는 『디자인 사양』을 요청했을 때.」</li>
-                        <li><strong>보안상 금지</strong>: YAML 안에서 XML 태그<code>&lt; &gt;</code>를 쓰지 말 것. 프롬프트 인젝션을 막기 위해서입니다.</li>
+                        <li><strong>보안상 금지</strong>: YAML 안에서 XML 태그 <code>&lt; &gt;</code>를 쓰지 말 것. 프롬프트 인젝션을 막기 위해서입니다.</li>
                     </ul>
                 </div>
             </div>
@@ -1067,7 +1067,7 @@
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
                     <h3>단계적으로 열기</h3>
-                    <p>토큰을 너무 쓰지 않도록,<code>SKILL.md</code>은 중심 절차만 남깁니다. 자세한 API 사양이나 큰 틀은<code>references/</code>폴더로 옮겨, Claude가 필요할 때 읽으러 가게 합니다.</p>
+                    <p>토큰을 너무 쓰지 않도록, <code>SKILL.md</code>은 중심 절차만 남깁니다. 자세한 API 사양이나 큰 틀은 <code>references/</code> 폴더로 옮겨, Claude가 필요할 때 읽으러 가게 합니다.</p>
                 </div>
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -1087,7 +1087,7 @@
             <div class="two-column">
                 <div>
                     <h3>단일 작업의 표준 형태</h3>
-                    <p>외부 MCP를 쓰지 않는 표준적인<code>SKILL.md</code>쓰는 법입니다. 요점은 분명한 <strong>전제 조건</strong>과 <strong>실수를 막는 장치</strong>.
+                    <p>외부 MCP를 쓰지 않는 표준적인 <code>SKILL.md</code> 쓰는 법입니다. 요점은 분명한 <strong>전제 조건</strong>과 <strong>실수를 막는 장치</strong>.
                     </p>
                     <ul>
                         <li><span class="highlight">YAML 부분</span>: 켜지는 조건을 정확히 정한다.</li>
@@ -1147,7 +1147,7 @@
                     <p>Claude를 RPA처럼 외부 API를 부르게 하면서, 스스로 추스르는 갈래까지 갖게 한 예입니다.</p>
                     <ul>
                         <li><span class="highlight">Objective(목적)</span>: 이 절차가 끝내 무엇을 이루는지 한 문장으로.</li>
-                        <li><span class="highlight">도구를 부르는 지시</span>: 부를 도구의 이름을 분명히 쓴다(예:<code>linear_create_issue</code>).
+                        <li><span class="highlight">도구를 부르는 지시</span>: 부를 도구의 이름을 분명히 쓴다(예: <code>linear_create_issue</code>).
                         </li>
                         <li><span class="highlight">Fallback(퇴로)</span>: <strong style="color: var(--ink); font-weight: 600;">여기가 요점입니다.</strong>MCP는 끊긴다고 보고, 도구를 못 쓸 때 글로 출력하도록 바꾸는 법을 Claude에 미리 일러 둡니다. 흐름이 중간에 멎지 않습니다.</li>
                     </ul>
@@ -1212,11 +1212,11 @@
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
-                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>순서대로 늘어놓기 (Sequential Workflow):</strong>단계 1부터 단계 N까지를 엄격히 정합니다. 앞뒤 의존이 있는 일에 어울립니다. 예를 들어 「고객을 등록한다 → 결제를 설정한다 → 환영 메일을 보낸다」.</li>
-                    <li><i class="fa-solid fa-network-wired"></i> <strong>여러 MCP를 넘나들기 (Multi-MCP):</strong>서비스를 넘나들며 엮습니다. Figma에서 내보내고(MCP 1), Google Drive에 저장하고(MCP 2), Linear에 과제를 세웁니다(MCP 3).</li>
-                    <li><i class="fa-solid fa-rotate"></i> <strong>되풀이하며 다듬기 (Iterative Refinement):</strong>「초안을 낸다 → 스크립트로 검증한다 → 자동으로 고친다」는 닫힌 고리를 만들어, 질이 닿을 때까지 끝내지 않습니다.</li>
-                    <li><i class="fa-solid fa-sitemap"></i> <strong>문맥으로 가르기 (Context-aware):</strong>Claude에 판단의 나무를 줍니다. 「10MB를 넘는 파일이면 클라우드 스토리지 MCP, 코드면 GitHub MCP.」</li>
-                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>영역 지식 주입 (Domain-specific):</strong>API를 부르기 전에 규정 확인이나 리스크 판단을 끼웁니다. 경험 많은 전문가처럼 굴게 하기 위해서입니다.</li>
+                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>순서대로 늘어놓기 (Sequential Workflow):</strong> 단계 1부터 단계 N까지를 엄격히 정합니다. 앞뒤 의존이 있는 일에 어울립니다. 예를 들어 「고객을 등록한다 → 결제를 설정한다 → 환영 메일을 보낸다」.</li>
+                    <li><i class="fa-solid fa-network-wired"></i> <strong>여러 MCP를 넘나들기 (Multi-MCP):</strong> 서비스를 넘나들며 엮습니다. Figma에서 내보내고(MCP 1), Google Drive에 저장하고(MCP 2), Linear에 과제를 세웁니다(MCP 3).</li>
+                    <li><i class="fa-solid fa-rotate"></i> <strong>되풀이하며 다듬기 (Iterative Refinement):</strong> 「초안을 낸다 → 스크립트로 검증한다 → 자동으로 고친다」는 닫힌 고리를 만들어, 질이 닿을 때까지 끝내지 않습니다.</li>
+                    <li><i class="fa-solid fa-sitemap"></i> <strong>문맥으로 가르기 (Context-aware):</strong> Claude에 판단의 나무를 줍니다. 「10MB를 넘는 파일이면 클라우드 스토리지 MCP, 코드면 GitHub MCP.」</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>영역 지식 주입 (Domain-specific):</strong> API를 부르기 전에 규정 확인이나 리스크 판단을 끼웁니다. 경험 많은 전문가처럼 굴게 하기 위해서입니다.</li>
                 </ul>
             </div>
         </div>
@@ -1230,9 +1230,9 @@
             </div>
             <div class="content-area">
                 <div class="bleed-text-side">
-                    <p><strong>묶는 법과 넣는 법:</strong>시험을 마쳤으면 폴더를<code>.zip</code>로 묶습니다. 개인은 Claude.ai에서 올릴 수 있습니다. 기업 관리자는 Workspace 전체에 배포할 수 있습니다(자동으로 갱신됩니다).</p>
-                    <p><strong>공개와 API:</strong>Skill은 GitHub에 둘 수 있습니다. 설치 절차를<code>README.md</code>에 알기 쉽게 써 두세요. 앱을 개발한다면 API의<code>container.skills</code>로 부를 수도 있습니다.</p>
-                    <p><strong>어떻게 보일 것인가:</strong>알릴 때는 기술이 아니라 성과 쪽으로 붙입니다. 「이 Skill은 몇 초 만에 프로젝트 초기 설정을 끝냅니다」라고 말할 수 있다면, MCP와 Skill은 그대로 강점이 됩니다.</p>
+                    <p><strong>묶는 법과 넣는 법:</strong> 시험을 마쳤으면 폴더를 <code>.zip</code>로 묶습니다. 개인은 Claude.ai에서 올릴 수 있습니다. 기업 관리자는 Workspace 전체에 배포할 수 있습니다(자동으로 갱신됩니다).</p>
+                    <p><strong>공개와 API:</strong> Skill은 GitHub에 둘 수 있습니다. 설치 절차를 <code>README.md</code>에 알기 쉽게 써 두세요. 앱을 개발한다면 API의 <code>container.skills</code>로 부를 수도 있습니다.</p>
+                    <p><strong>어떻게 보일 것인가:</strong> 알릴 때는 기술이 아니라 성과 쪽으로 붙입니다. 「이 Skill은 몇 초 만에 프로젝트 초기 설정을 끝냅니다」라고 말할 수 있다면, MCP와 Skill은 그대로 강점이 됩니다.</p>
                 </div>
             </div>
         </div>
