@@ -506,6 +506,18 @@ date_published = "2026-08-05"
   description = "OWASP Top 10 for LLM Applications 2026 十条风险逐项拆解：定义、攻击面与防御作法，并附 2025 到 2026 的完整排序变动与范围调整。"
   canonical   = "https://taux.io/zh-Hans-CN/owasp-llm-top-10"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/owasp-llm-top-10.html"
+  title       = "OWASP LLM Top 10 2026｜十のリスクを一つずつ | TauX"
+  description = "十のリスクそれぞれの定義、実際の攻撃面、防ぎ方。2025 から 2026 への順位変動、範囲が広がった四条、そして順位の決め方がどう変わったか。"
+  canonical   = "https://taux.io/ja-JP/owasp-llm-top-10"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/owasp-llm-top-10.html"
+  title       = "OWASP LLM Top 10 2026｜열 가지 리스크를 하나씩 | TauX"
+  description = "열 리스크 각각의 정의, 실제 공격면, 막는 법. 2025에서 2026으로의 순위 변동, 범위가 넓어진 네 조항, 그리고 순위 정하는 방식이 어떻게 바뀌었는지."
+  canonical   = "https://taux.io/ko-KR/owasp-llm-top-10"
+
   [page.locale.en-US]
   template    = "en-US/owasp-llm-top-10.html"
   title       = "OWASP LLM Top 10 2026: ten risks, broken down | TauX"
