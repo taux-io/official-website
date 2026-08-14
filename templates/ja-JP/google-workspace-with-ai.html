@@ -1,0 +1,457 @@
+{% include "header.html" %}
+
+<!-- Schema.org JSON-LD: BreadcrumbList + Article.
+     Citations and the FAQ block are added with the content. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://taux.io/ja-JP/google-workspace-with-ai#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://taux.io/ja-JP"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Workspace AI の導入効果",
+          "item": "https://taux.io/ja-JP/google-workspace-with-ai"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "@id": "https://taux.io/ja-JP/google-workspace-with-ai#article",
+      "headline": "手動 vs 自動：効率の話",
+      "description": "ベンダーが公表する Workspace AI の導入効果をどう読むか。四つの数字の調査方法・標本の大きさ・データの年を確かめ、ベンダー委託でない独立研究と突き合わせ、自己申告の節約時間がなぜ計測での確認を要するのかまで。",
+      "author": {% include "_org-ref.html" %},
+      "publisher": {% include "_org-ref.html" %},
+      "datePublished": "{{ date_published }}",
+      "dateModified": "{{ date_modified }}",
+      "inLanguage": "{{ locale }}",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://taux.io/ja-JP/google-workspace-with-ai"
+      },
+      "isPartOf": {
+        "@id": "https://taux.io/#website"
+      },
+      "image": "https://taux.io/static/og/google-workspace-with-ai.png",
+      "citation": [
+        {
+          "@type": "Report",
+          "name": "The Total Economic Impact™ Of Google Workspace with Gemini",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Forrester Consulting"
+          },
+          "funder": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2026-02",
+          "url": "https://tei.forrester.com/go/google/workspacewithgemini"
+        },
+        {
+          "@type": "Report",
+          "name": "Gemini at Work: Enterprise Customer Study",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2024-07",
+          "url": "https://workspace.google.com/blog/product-announcements/google-workspace-extends-gemini-benefits-to-more-customers"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Equifax boosts security and productivity with Google Workspace with Gemini",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "url": "https://workspace.google.com/blog/customer-stories/equifax-embraces-gemini-for-secure-innovation-across-business-units"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Macquarie Bank Democratizes Agentic AI with Gemini Enterprise",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google"
+          },
+          "datePublished": "2025-10",
+          "url": "https://www.googlecloudpresscorner.com/2025-10-09-Macquarie-Bank-Democratizes-Agentic-AI,-Scaling-Customer-Innovation-with-Gemini-Enterprise"
+        },
+        {
+          "@type": "ScholarlyArticle",
+          "name": "Does Generative AI Narrow Education-Based Productivity Gaps? Evidence from a Randomized Experiment",
+          "publisher": {
+            "@type": "Organization",
+            "name": "National Bureau of Economic Research"
+          },
+          "url": "https://www.nber.org/papers/w34851"
+        },
+        {
+          "@type": "ScholarlyArticle",
+          "name": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+          "publisher": {
+            "@type": "Organization",
+            "name": "METR"
+          },
+          "datePublished": "2025-07",
+          "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+        },
+        {
+          "@type": "Report",
+          "name": "AI, Productivity, and Labor Markets: A Review of the Empirical Evidence",
+          "publisher": {
+            "@type": "Organization",
+            "name": "International Center for Law & Economics"
+          },
+          "url": "https://laweconcenter.org/resources/ai-productivity-and-labor-markets-a-review-of-the-empirical-evidence/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://taux.io/ja-JP/google-workspace-with-ai#faq",
+      "inLanguage": "{{ locale }}",
+      "isPartOf": {
+        "@id": "https://taux.io/#website"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Google Workspace の AI を入れると投資収益率はどのくらいですか",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Forrester が 2026 年 2 月に公表した、Google 委託の TEI 報告では三年間の投資収益率 416%、正味現在価値 1 億 2,370 万ドル、回収期間六か月未満とされています。この数字は意思決定者六名・五組織への聞き取りを土台に、従業員 20,000 人の想定複合組織へ投射したものです。つまり測定ではなく財務モデルです。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "従業員は実際に週どれだけ時間を浮かせられますか",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Forrester の研究では Gemini 利用者一人あたり週 3 時間と記されています。全従業員ではなく利用者である点に注意してください。Google の Gemini at Work 調査では 105 分で、標本は 18 社・3,200 件あまり、データのまとめは 2024 年 7 月です。どちらも自己申告の数字です。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ベンダー以外の証拠はありますか",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "あります。ある Fortune 500 企業のサポート担当 5,172 名を対象とした実地実験では、一時間あたりの解決件数という客観指標で生産性が 15% 上がり、技能が下から五分の一の層では 36% 上がりました。NBER の無作為化比較試験（成人 1,174 名）でも、学歴による生産性の差が 0.548 標準偏差から 0.139 へ縮まっています。いずれもベンダーの委託ではありません。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "自己申告の節約時間を割り引いて読むべき理由は何ですか",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "METR が 2025 年 7 月に公表した無作為化比較試験では、熟練開発者 16 名が 246 件の実作業で AI を使ったとき実際には 19% 遅くなりましたが、本人はあとから 20% 速くなったと答えました。認識と実際が 40 ポイント近く離れ、向きも逆です。標本は小さく領域もソフトウェア開発に限られ、METR 自身が結果を過去のデータとしていますが、利用者に尋ねる測り方が当てにならないことを示すには十分です。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "では企業は、導入する価値があるかをどう判断すればよいですか",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "自分の組織で測ることです。しかもその測定は導入の前に設計しておかなければなりません。入れてしまってからでは対照群が残りません。具体的には、客観的に数えられる作業を選ぶ（件数、所要時間、やり直し率）、誰かが道具を手にする前に基準値を取る、対照群を残すか段階的に入れる、そして自己申告の数字と客観的な数字を分けて記録する——この二つのずれ自体が重要な手がかりです。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<article class="relative pt-32 pb-16 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band">
+            <p class="eyebrow mb-8">Google Workspace — Adoption</p>
+
+            <h1 class="mb-8">
+            <span class="display-lead">Manual versus Automated</span>
+            <span class="display-sub">手動 vs 自動：効率の話</span>
+        </h1>
+
+            <p class="text-lg tablet:text-lg leading-relaxed max-w-prose">ベンダーが出す導入効果の数字は、どれも見栄えがします。このページで扱うのはその真偽ではなく、それが <strong class="font-normal">何を測ったのか</strong> であり、その測り方であなたの組織に何が起きるかを言い当てられるのか、という点です。</p>
+        </header>
+
+    </div>
+</article>
+
+<section id="vendor-figures" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; Vendor Figures</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">What the Vendors Claim</span>
+            <span class="display-sub">手動と自動で、どれだけ違うと言われているか</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-4">最も広く引かれている四つの数字です。それぞれ原典まで戻って確かめました。<strong class="font-normal">数字はすべて事実です</strong>——ただし出回っている言い換えのいくつかは原文と食い違っており、それも下に記します。</p>
+        <p class="text-sm leading-relaxed max-w-prose mb-14">それぞれに調査方法、標本の大きさ、データの年を添えました。数字より先にこの三つを見る——このページが示したいのはそれです。</p>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">416<span class="text-2xl tablet:text-3xl ml-2">%</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">三年間の投資収益率。同じ報告書は正味現在価値 1 億 2,370 万ドル、回収期間六か月未満とも記しています。</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">The Total Economic Impact™ Of Google Workspace with Gemini, Forrester Consulting（Google 委託）</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">意思決定者六名、五組織への聞き取りを、従業員 20,000 人・年商 40 億ドルの<strong class="font-normal">想定上の複合組織</strong>に投射　·　2026 年 2 月</p>
+                    <p class="text-sm leading-relaxed mt-3">TEI の手法としては標準ですが、大標本の研究ではありません。六回の聞き取りが支えているのは財務モデルであって、測定ではありません。</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">3<span class="text-2xl tablet:text-3xl ml-2">時間／週</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">平均して一人の<strong class="font-normal">Gemini 利用者</strong>が週に浮かせた時間。年に直すと 150 時間。</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">同上（Forrester TEI）</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">同上。この数字はモデルへの入力であって独立した測定ではありませんに投射　·　2026 年 2 月</p>
+                    <p class="text-sm leading-relaxed mt-3">よく「従業員一人あたり」と言い換えられます。原文は「利用者一人あたり」です。使っていない人は分母に入らないので、差は導入率で決まります。</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">105<span class="text-2xl tablet:text-3xl ml-2">分／週</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">利用者が自分で申告した節約時間。同じ調査で、毎日使う人の 75% が仕事の質が上がったと答えています。</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">Gemini at Work、Google の法人顧客調査</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed"><strong class="font-normal">18 社、3,200 件あまりの回答</strong>。試行は 2023 年 12 月から、データのまとめは　·　2024 年 7 月</p>
+                    <p class="text-sm leading-relaxed mt-3">「世界規模の定量調査」と紹介されることがあります。18 社の試行参加者へのアンケートであって全数調査ではなく、データはすでに二年前のものです。</p>
+                </div>
+            </article>
+
+            <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+                <div class="tablet:col-span-4">
+                    <p class="font-display text-5xl tablet:text-6xl leading-none">130,000<span class="text-2xl tablet:text-3xl ml-2">時間</span></p>
+                </div>
+                <div class="tablet:col-span-8">
+                    <p class="leading-relaxed mb-4">七か月で積み上がった時間。</p>
+                    <p class="eyebrow mb-2">Source</p>
+                    <p class="text-sm leading-relaxed">Macquarie Bank の事例、Google Cloud のニュースリリース</p>
+                    <p class="eyebrow mt-4 mb-2">Method</p>
+                    <p class="text-sm leading-relaxed">顧客自身の申告。従業員 5,000 名のうち<strong class="font-normal">およそ 80%</strong>　·　2025 年 10 月</p>
+                    <p class="text-sm leading-relaxed mt-3">「全行に Workspace を導入し、メールとフォームを自動化した」と言い換えられがちです。実際に使われたのは<strong class="font-normal">Gemini Enterprise</strong>であって Workspace ではなく、用途として挙がっているのは報告書の下書き、財務資料の要約、データからの示唆づくりです。</p>
+                </div>
+            </article>
+
+        <div class="border-t border-b border-line py-10 mt-4">
+            <p class="eyebrow mb-4">Disclosure</p>
+            <p class="leading-relaxed max-w-prose">右の四つの出典は<strong class="font-normal">すべて Google の委託か発表であり、対象は Google 自身の製品です</strong>。独立した第三者のものは一つもありません。数字が嘘だという意味ではありません——確かめたとおり、嘘ではありません——ただ、どれだけの重みで読むかは変わります。</p>
+        </div>
+    </div>
+</section>
+
+<section id="independent-evidence" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Independent Research</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">The Gains Are Real</span>
+            <span class="display-sub">効果は本物です。ベンダー以外の証拠があります</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-14">効くと言っているのがベンダーだけなら、このページの結論は「判断できない」になります。ですが独立した研究が効果を測っています。しかも<strong class="font-normal">アンケートではなく客観的な計測で</strong>。
+        </p>
+
+        <article class="border-t border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="font-display text-5xl tablet:text-6xl leading-none">+15<span class="text-2xl tablet:text-3xl ml-2">%</span></p>
+                <p class="text-sm mt-3">技能が下から五分の一の層：<span>+36%</span></p>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed mb-4">サポート担当の生産性の伸び。指標は<strong class="font-normal">一時間あたりの解決件数</strong>であって、自己申告ではありません。</p>
+                <p class="eyebrow mb-2">Method</p>
+                <p class="text-sm leading-relaxed">ある Fortune 500 企業のサポート担当 5,172 名を対象とした実地実験。客観的な計数。ベンダーの委託ではありません。</p>
+            </div>
+        </article>
+
+        <article class="border-t border-b border-line py-10 grid grid-cols-1 tablet:grid-cols-12 gap-4 tablet:gap-10">
+            <div class="tablet:col-span-4">
+                <p class="font-display text-5xl tablet:text-6xl leading-none">0.55<span class="text-2xl tablet:text-3xl ml-2">→ 0.14</span></p>
+                <p class="text-sm mt-3">学歴による差（標準偏差）</p>
+            </div>
+            <div class="tablet:col-span-8">
+                <p class="leading-relaxed mb-4">AI は全員の成績を上げますが、学歴の低い層への効き方がはるかに大きく、二群の差は 0.548 標準偏差から 0.139 まで縮まりました。</p>
+                <p class="eyebrow mb-2">Method</p>
+                <p class="text-sm leading-relaxed">無作為化比較試験。25〜45 歳の成人 1,174 名。NBER ワーキングペーパー w34851。</p>
+            </div>
+        </article>
+
+        <p class="leading-relaxed max-w-prose mt-10">執筆、サポート、ソフトウェア開発、会計、法務、翻訳にまたがる文献の総覧では、作業時間が<strong class="font-normal">15% から 50% 以上</strong>短縮され、経験の浅い人ほど効きが大きいと報告されています。</p>
+        <p class="text-sm leading-relaxed max-w-prose mt-4">気をつけたいのは、これらの研究が測っているのが<strong class="font-normal">ある作業の所要時間や処理量</strong>であるのに対し、ベンダーの数字が言っているのは<strong class="font-normal">週あたりに浮いた合計時間</strong>だという点です。別のものを並べて大小を比べるのは誤導です。</p>
+    </div>
+</section>
+
+<section id="how-it-was-measured" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; How It Was Measured</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">Self-Reported Time Is Unreliable</span>
+            <span class="display-sub">人は、自分がどれだけ時間を浮かせたかを正しく言えません</span>
+        </h2>
+        </div>
+        <p class="leading-relaxed max-w-prose mb-14">ここがこのページで最も重要な節です。前に挙げたベンダーの数字は<strong class="font-normal">すべて自己申告か、自己申告を土台にしたモデル</strong>です。そして自己申告こそ、次の研究が当てにならないと示した測り方です。</p>
+
+        <div class="border-t border-line py-12">
+            <div class="grid grid-cols-1 tablet:grid-cols-3 gap-8 tablet:gap-6 mb-10">
+                <div class="border-l border-line pl-5">
+                    <p class="eyebrow mb-3">事前の予想</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">24% 速い</p>
+                </div>
+                <div class="border-l border-ink pl-5">
+                    <p class="eyebrow mb-3">実際の計測</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">19% 遅い</p>
+                </div>
+                <div class="border-l border-line pl-5">
+                    <p class="eyebrow mb-3">事後の自己評価</p>
+                    <p class="font-display text-4xl tablet:text-5xl leading-none">20% 速い</p>
+                </div>
+            </div>
+
+            <p class="leading-relaxed max-w-prose mb-4">同じ人たち、同じ作業です。実際は 19% 遅くなったのに、本人はあとから 20% 速くなったと答えました——<strong class="font-normal">認識と実際が 40 ポイント近く離れ、しかも向きが逆です</strong>。
+            </p>
+            <p class="eyebrow mb-2">Method</p>
+            <p class="text-sm leading-relaxed max-w-prose">METR、2025 年 7 月。無作為化比較試験。熟練開発者 16 名、成熟したオープンソース 246 件の実作業、客観的な計時。</p>
+            <p class="eyebrow mt-6 mb-2">Limits</p>
+            <p class="text-sm leading-relaxed max-w-prose">標本は 16 名にすぎず、領域はソフトウェア開発なので一般の知識労働にそのまま広げることはできません。<strong class="font-normal">METR 自身がこの結果を過去のデータとして扱っています</strong>。いまの道具と働き方を必ずしも映していないという理由で、実験を設計し直しているところです。</p>
+        </div>
+
+        <p class="leading-relaxed max-w-prose mt-10">これは AI の効果を否定するものではありません——02 節の客観的な計測が効果の存在を示しています。否定されるのは<strong class="font-normal">「利用者にどれだけ時間が浮いたか尋ねる」という測り方</strong>であり、それはまさに 01 節の四つの数字の出どころです。</p>
+    </div>
+</section>
+
+<!-- The questions this page answers, stated as questions.
+     FAQPage markup has to correspond to content a reader can see; marking up
+     an exchange that only exists in the structured data misrepresents the page,
+     which on this page in particular would be self-defeating. -->
+<section id="questions" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Questions</p>
+            <h2 class="mb-14">
+            <span class="display-lead tablet:text-display-sm">Common Questions</span>
+            <span class="display-sub">よくいただく質問</span>
+        </h2>
+        </div>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">Google Workspace の AI を入れると投資収益率はどのくらいですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester が 2026 年 2 月に公表した、Google 委託の TEI 報告では三年間の投資収益率 416%、正味現在価値 1 億 2,370 万ドル、回収期間六か月未満とされています。この数字は意思決定者六名・五組織への聞き取りを土台に、従業員 20,000 人の想定複合組織へ投射したものです。つまり測定ではなく財務モデルです。</div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">従業員は実際に週どれだけ時間を浮かせられますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester の研究では Gemini 利用者一人あたり週 3 時間と記されています。全従業員ではなく利用者である点に注意してください。Google の Gemini at Work 調査では 105 分で、標本は 18 社・3,200 件あまり、データのまとめは 2024 年 7 月です。どちらも自己申告の数字です。</div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">ベンダー以外の証拠はありますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">あります。ある Fortune 500 企業のサポート担当 5,172 名を対象とした実地実験では、一時間あたりの解決件数という客観指標で生産性が 15% 上がり、技能が下から五分の一の層では 36% 上がりました。NBER の無作為化比較試験（成人 1,174 名）でも、学歴による生産性の差が 0.548 標準偏差から 0.139 へ縮まっています。いずれもベンダーの委託ではありません。</div>
+            </details>
+
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">自己申告の節約時間を割り引いて読むべき理由は何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">METR が 2025 年 7 月に公表した無作為化比較試験では、熟練開発者 16 名が 246 件の実作業で AI を使ったとき実際には 19% 遅くなりましたが、本人はあとから 20% 速くなったと答えました。認識と実際が 40 ポイント近く離れ、向きも逆です。標本は小さく領域もソフトウェア開発に限られ、METR 自身が結果を過去のデータとしていますが、利用者に尋ねる測り方が当てにならないことを示すには十分です。</div>
+            </details>
+
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3 class="font-display text-lg">では企業は、導入する価値があるかをどう判断すればよいですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">自分の組織で測ることです。しかもその測定は導入の前に設計しておかなければなりません。入れてしまってからでは対照群が残りません。具体的には、客観的に数えられる作業を選ぶ（件数、所要時間、やり直し率）、誰かが道具を手にする前に基準値を取る、対照群を残すか段階的に入れる、そして自己申告の数字と客観的な数字を分けて記録する——この二つのずれ自体が重要な手がかりです。</div>
+            </details>
+    </div>
+</section>
+
+<section id="measurement" class="bg-surface border-t border-line">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="cover" data-cover>
+            <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Measurement</p>
+            <h2 class="mb-6">
+            <span class="display-lead tablet:text-display-sm">Answer With Measurement</span>
+            <span class="display-sub">資料ではなく、計測で答える</span>
+        </h2>
+        </div>
+
+        <p class="text-lg leading-relaxed max-w-prose mb-10">三つの節の結論を並べます。効果は本物で、客観的な計測がそれを支えています。しかしベンダーの数字はすべて自己申告に由来し、その自己申告は唯一の客観的な計時試験で大きく外れました。ですからそれらの数字は<strong class="font-normal">あなたの組織に何が起きるかを言い当てるのには使えません</strong>——そもそもそのためにつくられた数字ではありません。</p>
+
+        <p class="leading-relaxed max-w-prose mb-12">その問いに答えられるのは一つだけです。自分の組織で測ること。そして測定は<strong class="font-normal">導入の前に設計しておく</strong>必要があります。入れたあとで測ろうとしたときには、対照群はもうありません。</p>
+
+        <div class="border-t border-line pt-10 mb-12">
+            <p class="eyebrow mb-8">What that takes</p>
+            <ul class="max-w-2xl">
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">客観的に数えられる作業を選ぶ</strong>——件数、所要時間、やり直し率。「速くなった気がする」ではなく</li>
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">先に基準値を取る</strong>。誰かが道具を手にする前に</li>
+                <li class="border-t border-line py-5">
+                    <strong class="font-normal">対照群を残す</strong>。少なくとも段階的に入れて、前後の差が季節変動との比較だけにならないように</li>
+                <li class="border-t border-b border-line py-5">
+                    <strong class="font-normal">自己申告と客観的な数字を分けて記録する</strong>——この二つのずれ自体が、いちばん値打ちのある手がかりです</li>
+            </ul>
+        </div>
+
+        <p class="leading-relaxed max-w-prose mb-12">これは私たちが提供しているものの一つです。Workspace の AI を入れる前に、<strong class="font-normal">入れたあとで本当に判断に使える</strong>計測を設計するお手伝いをします。結果として効果が思ったほどでなかったなら、それも一つの結論です。しかも 416% より値打ちがあります。あなたのものだからです。</p>
+
+        <div class="flex flex-col mobile:flex-row gap-4">
+            <a href="/{{ locale }}#contact-us" class="btn">計測の設計を相談する</a>
+            <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">企業向け AI 研修</a>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

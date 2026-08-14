@@ -49,6 +49,7 @@
 /ja-JP/data-governance
 /ja-JP/geo-guide
 /ja-JP/geo-optimization
+/ja-JP/google-workspace-with-ai
 /ja-JP/privacy-policy
 /ja-JP/terms-of-service
 /ja-JP/what-is-llms-txt
@@ -64,6 +65,7 @@
 /ko-KR/data-governance
 /ko-KR/geo-guide
 /ko-KR/geo-optimization
+/ko-KR/google-workspace-with-ai
 /ko-KR/privacy-policy
 /ko-KR/terms-of-service
 /ko-KR/what-is-llms-txt
