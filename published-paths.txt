@@ -52,6 +52,7 @@
 /ja-JP/google-workspace-with-ai
 /ja-JP/privacy-policy
 /ja-JP/terms-of-service
+/ja-JP/threat-landscape
 /ja-JP/what-is-llms-txt
 /ja-JP/what-is-mcp
 /ja-JP/what-is-prompt-injection
@@ -68,6 +69,7 @@
 /ko-KR/google-workspace-with-ai
 /ko-KR/privacy-policy
 /ko-KR/terms-of-service
+/ko-KR/threat-landscape
 /ko-KR/what-is-llms-txt
 /ko-KR/what-is-mcp
 /ko-KR/what-is-prompt-injection

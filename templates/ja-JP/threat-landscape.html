@@ -1,0 +1,288 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No ItemList: eight statistics are not a ranking, and
+     saying they were would misdescribe them to exactly the machines this page
+     is written for.
+
+     Source attribution matters more here than on any other page on this site.
+     The OWASP report is CC BY-SA 4.0 and can be restated entry by entry; this
+     one is proprietary commercial research. Headline findings are summarised
+     with attribution and a link, which is ordinary commentary. Nothing is
+     reproduced wholesale and nothing is presented as our own measurement. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/threat-landscape#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"世界の脅威情勢を読む","item":"https://taux.io/ja-JP/threat-landscape" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/ja-JP/threat-landscape#article","headline":"2026 グローバル脅威レポートを読み解く：CrowdStrike の数字と、その届く範囲","description":"CrowdStrike 2026 グローバル脅威レポートの八つの数字と、それぞれがどう測られたのか、そしてそれがどこまで一般化できるかについて何を意味するのか。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/threat-landscape" },"citation":"CrowdStrike 2026 Global Threat Report"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/ja-JP/threat-landscape#faq","mainEntity": [
+      {"@type":"Question","name":"CrowdStrike 2026 グローバル脅威レポートの主な数字は何ですか","acceptedAnswer": {"@type":"Answer","text":"公開ページに載っている主な数字は次のとおりです。eCrime の breakout time の最短が 27 秒。AI を使う攻撃者による攻撃が 89% 増加。2025 年の検知の 82% が悪意あるファイルを伴わない（malware-free）。90 を超える組織で正規の AI ツールが不正な指示の生成に悪用された。ChatGPT が犯罪フォーラムで言及された回数がほかのどのモデルより 550% 多い。breakout の平均の速さが前年比 65% 増。中国系の攻撃者が突いた脆弱性の 40% がエッジ機器を狙ったもの。国家が背後にいる相手によるクラウド経由の侵入が 266% 増加。"
+        }
+      },
+      {"@type":"Question","name":"breakout time とは何ですか。27 秒は何を意味しますか","acceptedAnswer": {"@type":"Answer","text":"Breakout time とは、最初に入られた一台から環境内の別の一台へ攻撃者が横に移るまでの時間です。攻撃が広がる前に検知・判断・封じ込めを終えるために守る側に残された時間の予算を測っています。27 秒はレポートに記録された最短値であって平均ではありません。最短を平均だと思うと自分の状況をひどく読み違えます。ほんとうの意味はこうです。人の判断を待って動き出す対応手順は、この桁では間に合いません。"
+        }
+      },
+      {"@type":"Question","name":"なぜ検知の 82% がファイルを伴わないのか、この数字はどう読めばよいですか","acceptedAnswer": {"@type":"Answer","text":"この割合は二つのことを同時に映しています。攻撃者が悪意あるファイルを落とすことが実際に減り、正規のツールと盗んだ認証情報に移っていること。そして検知する力そのもの——ファイルのないふるまいが見えることは、まさに EDR（エンドポイントの検知と対応）製品の売りです。この数字は CrowdStrike 自身の検知テレメトリから来ており、母集団はそれを導入した環境です。ですから「EDR のある環境で何が見えるか」は確かに描けますが、世界全体の攻撃の内訳にそのまま広げることはできません。守る側の実務的な結論は変わりません。ファイルの特徴を中心に据えたウイルス対策では、検知の大半を覆えません。"
+        }
+      },
+      {"@type":"Question","name":"ベンダーが出す脅威レポートは信用できますか","acceptedAnswer": {"@type":"Answer","text":"使えます。ただし何を測っているかを知ったうえでです。この種のレポートのデータはたいていベンダー自身の製品テレメトリとインシデント対応の案件から来ており、母集団はその顧客であって世界のすべての組織ではありません。数字が捏造だという話ではなく、どの数字にも「どんな環境で、どんな道具で、何が見えているか」という三つの限界がついて回るという話です。実務では、傾向と攻撃手法の情報源として使い、自分の組織のリスク確率の統計的な土台としては使わないことです。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Security
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Threat Landscape 2026</span>
+                <span class="display-sub">世界の脅威レポートの数字をどう読むか</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">CrowdStrike 2026 グローバル脅威レポートの八つの数字と、それぞれがどう測られたのか——それが、どこまで一般化できるかを決めます。</p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目次</p>
+                <ul>
+                    <li><a href="#how-to-read" class="section-index-link">まず読み方</a></li>
+                    <li><a href="#numbers" class="section-index-link">八つの数字</a></li>
+                    <li><a href="#speed" class="section-index-link">速さ</a></li>
+                    <li><a href="#malware-free" class="section-index-link">ファイルを置かない攻撃</a></li>
+                    <li><a href="#ai" class="section-index-link">AI を使う攻撃</a></li>
+                    <li><a href="#nation-state" class="section-index-link">国家が背後にいる相手</a></li>
+                    <li><a href="#what-it-means" class="section-index-link">守る側にとって何を意味するか</a></li>
+                    <li><a href="#source" class="section-index-link">出典と限界</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- The framing section. This is the page's reason to exist: the numbers
+             themselves are on CrowdStrike's own site and reproduced across
+             hundreds of posts. What is almost never said is where they come
+             from and what that bounds them to. -->
+        <section id="how-to-read" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">数字より先に、読み方</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>見る値打ちはありますが、これは全数調査ではありません。<strong>脅威レポートのデータは、ベンダー自身の製品テレメトリとインシデント対応の案件から来ます</strong>。母集団はその顧客環境——EDR（エンドポイントの検知と対応）を導入している、たいていは予算のある組織です。</p>
+                <p>数字が捏造だという話ではありません。どの数字にも三つの限界がついて回るという話です。<strong>どんな環境で測ったか、何で測ったか、その道具に何が見えているか</strong>。この三つを飛ばすと、「EDR のある環境で見えた姿」を「世界の姿」だと思い込むことになります。</p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">使うときの目安</p>
+                    <p>この種のレポートは<strong>攻撃手法と傾向の情報</strong>として使ってください。実際に対応した案件から来ている、いちばん確かな部分です。<strong>避けたいのは</strong>その割合を自分の組織のリスク確率の土台にすることです。それには自分の環境のデータが要ります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="numbers" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">八つの数字</h2>
+            </div>
+            <p class="leading-relaxed mb-8">以下の数字はすべて CrowdStrike 2026 グローバル脅威レポートの公開ページから。対象は 2025 年の観測データです。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">数字</th>
+                            <th class="py-3 font-bold text-sm">意味</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
+                            <td class="py-4"><a href="#speed" >eCrime の breakout time の最短</a>——記録された最短値であって、平均ではありません</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4"><a href="#speed" >breakout の速さの前年比</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4"><a href="#malware-free" >2025 年の検知のうち、悪意あるファイルを伴わないもの</a>（malware-free）</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4"><a href="#ai" >AI を使う攻撃者による攻撃の増加</a></td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4"><a href="#ai" >組織で、正規の AI ツールが悪用され</a>不正な指示の生成に使われた</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4"><a href="#ai" >ChatGPT が犯罪フォーラムで言及された回数</a>ほかのどのモデルより多い</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4"><a href="#nation-state" >中国系の攻撃者が突いた脆弱性のうち、エッジ機器を狙ったもの</a></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4"><a href="#nation-state" >国家が背後にいる相手によるクラウド経由の侵入の増加</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="speed" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">速さ：27 秒と +65%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">この数字は何か</p>
+                    <p>
+                        <strong>Breakout time</strong>最初に入られた一台から、環境内の別の一台へ横に移るまでの時間です。測っているのは守る側の<strong>時間の予算</strong>——攻撃が広がる前に、検知・判断・封じ込めをすべて終える必要があります。記録された最短は 27 秒、平均の速さは前年比 65% 増でした。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">どう読むか</p>
+                    <p>
+                        <strong>27 秒は最短値であって平均ではありません。</strong>平均だと思うと状況をひどく読み違えます。多くの攻撃はここまで速くありません。ただ正直な使い方が一つあります。<strong>最悪の場合に残された時間</strong>を示していることです。人がまず目を通さないと動き出さない手順は、この桁では間に合いません。</p>
+                    <p class="mt-4">「+65%」のほうが「27 秒」よりずっと使えます。同じ測り方で二つの年を比べたものだからです——<strong>同じ物差しで二度測れば、物差し自体のずれは打ち消されます</strong>。ベンダーのレポートで最も見る値打ちがあるのはこの種の数字です。前年比は絶対値より信用できます。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="malware-free" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">ファイルを置かない攻撃：82%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">この数字は何か</p>
+                    <p>2025 年の検知の 82% が malware-free——攻撃の過程で悪意あるファイルを落とさず、OS 標準のツール、正規のソフト、盗んだ認証情報を使うものでした。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">どう読むか</p>
+                    <p>これはレポート全体で<strong>最も慎重に扱うべき数字</strong>です。二つのことを同時に映しているからです。</p>
+                    <ol class="space-y-3 list-none mt-4">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>攻撃者のふるまいが実際に変わっていること。これには独立した証拠が数多くあります。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>そして、検知する力そのもの。</strong>「ファイルのない攻撃が見える」ことは、まさに EDR 製品の売りです。ふるまいが見えずファイルしか見えない道具なら、malware-free の割合はゼロになります。攻撃がないからではなく、見えていないからです。</span></li>
+                    </ol>
+                    <p class="mt-4">ですからこの割合が確かに描いているのはしているのは<strong>「EDR のある環境で何が見えるか」</strong>であって、世界全体の攻撃の内訳にそのまま広げることはできません。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">ただし、実務の結論は変わりません</p>
+                    <p>本当の割合が 82% でも別の数字でも、向きははっきりしています。<strong>ファイルの特徴を中心に据えたウイルス対策では、検知の大半をつかまえられません</strong>。この結論は、あの割合が正確でなくても成り立ちます。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">AI を使う攻撃：+89%、90 以上、+550%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">この数字は何か</p>
+                    <p>AI を使う攻撃者による攻撃が 89% 増加。90 を超える組織で<strong>正規の AI ツール</strong>が不正な指示の生成に悪用されました。ChatGPT が犯罪フォーラムで言及された回数は、ほかのどのモデルより 550% 多いという結果です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">どう読むか</p>
+                    <p>「AI を使った」という区分の<strong>線引きはベンダーが決めています</strong>。レポート間で比べられません。ですから「+89%」は同じレポート内部の傾向として読み、他社の数字と並べないでください。</p>
+                    <p class="mt-4">「+550%」が測っているのは<strong>フォーラムでの言及回数</strong>です。話題の多さの代理指標であって、実際に攻撃へ使われた回数ではありません。ChatGPT が最も多いのは、それがいちばん普及していることの反映でもあります。</p>
+                    <p class="mt-4">
+                        <strong>「90 を超える組織で正規の AI ツールが悪用された」が、この三つで最も確かです</strong>——数えられる事象であって、割合でも、定義しないと判定できない分類でもありません。そしてこれが指しているのは、このサイトの別のページで扱っていることです。問題はモデルそのものではなく、<strong>誰が何を食べさせられるか、そしてそれに何を許しているか</strong>。
+                    </p>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">関連</span>自社で動かす LLM アプリをどう守るかは<a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a>を。とくにプロンプトインジェクションと、権限を渡しすぎる話の二つ。</p>
+            </div>
+        </section>
+
+        <section id="nation-state" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">国家が背後にいる相手：40% と +266%</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">この数字は何か</p>
+                    <p>中国系の攻撃者が突いた脆弱性の 40% が<strong>エッジ機器</strong>を狙ったもの。国家が背後にいる相手による<strong>クラウド経由の侵入</strong>は 266% 増えました。名指しされている相手には OPERATOR PANDA（中国）、FAMOUS CHOLLIMA（北朝鮮）、PUNK SPIDER（eCrime）が含まれます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">どう読むか</p>
+                    <p>特定の国に結びつける判断は<strong>ベンダー自身の情報分析の手法に依っており</strong>、その手法は全部が公開されているわけではありません。脅威情報の分野では普通のことで欠陥ではありませんが、この種の分類は外部から独立に検証できないということです。</p>
+                    <p class="mt-4">台湾の組織にとっては、<strong>「40% がエッジ機器」のほうが、誰の仕業かよりずっと重要です</strong>。エッジ機器——VPN のゲートウェイ、ファイアウォール、ルータ、NAS——はたいていエンドポイント保護の外にあり、更新の間隔が長く、破られればそのままネットワークの内側に立たれます。「誰の仕業か」とは無関係に、いますぐ棚卸しに使える方向です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-it-means" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">守る側にとって何を意味するか</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>上の限界をすべて差し引いても、残る方向はそのまま成り立ちます。どれも、特定の割合が正確であることに依存していないからです。</p>
+                <ol class="space-y-3 list-none">
+                    <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>対応の速さは設計の問題であって、人手の問題ではありません。</strong>人がまず目を通さないと動かない手順は、秒単位の横移動に追いつきません。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>主戦場は身元と認証情報です。</strong>攻撃者がファイルを落とさなくなるほど、正規に見えるログインへの依存が強まります。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>エッジ機器を棚卸しに入れること。</strong>どの資産台帳にも載っていないことが多く、それこそが狙われる理由です。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>自分で入れた AI ツールが新しい攻撃面です。</strong>レポートの「正規の AI ツールが悪用された」90 余りの組織が使っていたのは、自分たちで買ったものです。</span></li>
+                </ol>
+                <p class="border-l border-line pl-6">この四つは、どれも数字が正確であることを必要としません。<strong>割合が正確かどうかでレポートの値打ちが決まるなら、そのレポートはたいてい判断には使えません。</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source and limits. Attribution is not a footnote on this page — it
+             is half the argument. -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">出典と限界</p>
+                <h2 class="font-display text-2xl font-bold mb-6">この数字はどこから来たか</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>すべて<a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="underline">CrowdStrike 2026 Global Threat Report</a>の公開ページから。<strong>確認日 2026-08-06</strong>。対象は 2025 年の観測データで、著作権は CrowdStrike にあります。</p>
+                <p>このページは<strong>公開された要点をまとめ、読み方を添えたもの</strong>であり、レポートの内容を複製するものではありません。データと研究成果は TauX のものではありません。方法論、図表、相手の分析を見るには原典をお読みください。</p>
+                <p>このページの解釈、訳語、守る側への提案は TauX が書いたもので、<strong>CrowdStrike の立場を示すものではありません</strong>。レポートのデータ源の限界を指摘することは、その誠実さを疑うことではありません。テレメトリを扱うときにいつもすべきことであり、それは私たち自身が出す数字にも当てはまります。</p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">この傾向が自分の環境に何を意味するのか</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">レポートが語るのは世界の姿です。要るのは自分の資産台帳と、露出している面。そこは棚卸しから始まります。</p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">データガバナンスのサービスを見る</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}
