@@ -1,0 +1,1390 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ. No HowTo: the seven steps are a flow with branches and
+     human checkpoints, not a recipe with a guaranteed outcome, and marking them
+     up as HowTo would promise machines a determinism the page spends most of its
+     length denying.
+
+     Attribution matters here the way it does on /threat-landscape, for the
+     opposite reason. That page summarises proprietary research; this one
+     describes an MIT-licensed open-source pack. The pack is not ours, the
+     tutorial is. author/publisher is TauX because TauX wrote the teaching; the
+     upstream is named in the first section rather than in a footer, and it is
+     linked as an ordinary citation rather than through sameAs — sameAs states
+     identity, and this is not our identity. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/agent-dev-workflow#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"AI Agent 開発ワークフロー実践","item":"https://taux.io/ja-JP/agent-dev-workflow" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/ja-JP/agent-dev-workflow#article","headline":"AI Agent 開発ワークフロー実践：25 個の skill でつなぐ本流の七ステップ","description":"mattpocock/skills の 25 個の skill を、繰り返せる一本の開発ワークフローにつなぎます。本流の七ステップ、四つの完全なシナリオ、31 個の既知の落とし穴と 14 日間の練習計画。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"{{ locale }}","citation":"mattpocock/skills v1.2.3 (MIT)"
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/ja-JP/agent-dev-workflow#faq","mainEntity": [
+      {"@type":"Question","name":"user-invoked と model-invoked の skill は何が違いますか","acceptedAnswer": {"@type":"Answer","text":"これは skill 群全体で唯一の分類軸です。user-invoked は人間しか打てず、ほかの skill から呼ぶこともできません。その description は人に向けて書かれており、役割はオーケストレーター——フローの進み方を決めます。model-invoked は自分で打つこともできますし、agent が自分で判断して取りに行くこともあります。description はモデルに向けて書かれ、役割は規律のライブラリです。ルールは、user-invoked は model-invoked を呼べるが、別の user-invoked は決して呼べない、というものです。よくある副作用が一つあります。harness は user-invoked skill をモデルへ注入する一覧に入れないため、agent はこれらの skill が入っていないとよく報告します——入っています。そのまま打てば動きます。"
+        }
+      },
+      {"@type":"Question","name":"tracer bullet とは何ですか。水平にチケットを切るのがなぜ間違いなのですか","acceptedAnswer": {"@type":"Answer","text":"Tracer bullet は、すべての層（schema、API、UI、テスト）を貫く、細いけれども完全な一本の道です。着地したその時点で単独で demo できます。水平スライスは一度に一層ずつ届けます——schema を全部で一枚のチケット、API を全部で一枚のチケット——問題は、すべての層がそろうまで何も動かないこと、そして受け入れ条件が別のチケットの持ち物にまで手を伸ばさなければならないことです。実測された代償があります。あるチームは層で切ったチケットを 26 枚使い、一枚を閉じるのに平均 20 回の agent 実行を要し、そのおよそ四分の三は手戻りでした。彼ら自身の振り返りは、あらゆる種類の失敗を実装の品質ではなく水平スライスに突き当てています。判定基準は一文だけです。このチケットが終わったら何を demo できるのか。振る舞いを言えないものが水平スライスです。"
+        }
+      },
+      {"@type":"Question","name":"なぜ code review は別の session で走らせるのですか","acceptedAnswer": {"@type":"Answer","text":"同じ context で自分の書いたコードをレビューするのは、slash command 付きの確証バイアスです——コードを書いた agent は自分の解法をひいきします。ほかに三つ、あわせて知っておくべきことがあります。レビューが見るのは diff <fixed-point>...HEAD で、staged と working tree は除外されます。だから先に commit してから review してください。レビューの指摘は証拠ではなく仮説です。sub-agent は一つずつファイルに戻って確かめないので、引用が別の場所を指していることがあります。引用を見てから動いてください。そして走らせるたびに新しい問題が見つかります。修正が新しい面をつくり、判断に属する半分は決定的ではないからで、収束の保証はありません——手がかりの一覧として扱い、明文の規則が裏づけているものを片づけたら手を止めてください。"
+        }
+      },
+      {"@type":"Question","name":"この skill 群がいちばんよく誤用されるのはどんな形ですか","acceptedAnswer": {"@type":"Answer","text":"七つあります。受け身の grilling（四十回続けて同意し、うなずいただけで何も本当には決めていない計画が出てくる）。to-spec と to-tickets のあいだで clear や compact をする（問い詰めて得たものの大半は、その context window の中にしかありません）。自分で作ったチケットに triage を走らせる。範囲がきちんと決まっている機能に wayfinder を持ち出す（判定基準は session の数であってプロジェクトの大きさではありません）。語彙層をドライバーとして使う。review をコードを書いたのと同じ session で走らせる。そして SKILL.md を書き換えてカスタマイズする（更新で上書きされ、plugin は読み取り専用です。長く効かせたい振る舞いは自分の CLAUDE.md に書いてください）。もう一つメタなアンチパターンがあります。流れができたからもう考えなくてよい、と受け取ってしまうことです——出てくるものの品質は、問いの数ではなくあなたの答えの品質を追いかけます。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Engineering
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Ship with skills, not vibes</span>
+                <span class="display-sub">25 個の skill を一本の開発フローにつなぐ</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">これはツールボックスの一覧ではなく、<strong>一本の本流に何本かの合流路を足したもの</strong>です。曖昧なアイデアから commit にたどり着くまで、各ステップで何を打つのか、どこで立ち止まるのか、そしてどこが静かに壊れるのかを扱います。</p>
+        </header>
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目次</p>
+                <ul>
+                    <li><a href="#concepts" class="section-index-link"><span class="font-sans">01</span> 三つの土台</a></li>
+                    <li><a href="#install" class="section-index-link"><span class="font-sans">02</span> インストール</a></li>
+                    <li><a href="#setup" class="section-index-link"><span class="font-sans">03</span> 前準備</a></li>
+                    <li><a href="#map" class="section-index-link"><span class="font-sans">04</span> 全体の地図</a></li>
+                    <li><a href="#main-flow" class="section-index-link"><span class="font-sans">05</span> 本流の七ステップ</a></li>
+                    <li><a href="#situations" class="section-index-link"><span class="font-sans">06</span> 状況別インデックス</a></li>
+                    <li><a href="#scenarios" class="section-index-link"><span class="font-sans">07</span> 四つのシナリオ</a></li>
+                    <li><a href="#pitfalls" class="section-index-link"><span class="font-sans">08</span> 既知の落とし穴一覧</a></li>
+                    <li><a href="#claude-md" class="section-index-link"><span class="font-sans">09</span> 自分の CLAUDE.md</a></li>
+                    <li><a href="#vocabulary" class="section-index-link"><span class="font-sans">10</span> コア用語</a></li>
+                    <li><a href="#antipatterns" class="section-index-link"><span class="font-sans">11</span> 七つのアンチパターン</a></li>
+                    <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> 14 日プラン</a></li>
+                    <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> 1 ページのチートシート</a></li>
+                    <li><a href="#source" class="section-index-link">出典</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- ==================================================================
+             01 · Concepts.
+
+             The source material colour-coded four roles (blue / crimson /
+             graphite / olive) and carried the coding through every section. The
+             classification is information, so it survives; the colour does not.
+             This site has one accent and colour was never allowed to be the only
+             carrier of meaning anyway. Every role below is a word.
+             ================================================================== -->
+        <section id="concepts" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">まず押さえる三つの土台</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>本ページが扱うのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT ライセンス）の <strong>1.2.3</strong> 版、公開済みの 25 個の skill です。<strong>この skill 群は TauX の作品ではありません</strong>。このチュートリアルが TauX のものです。以下の判定基準、落とし穴、シナリオはすべて、公式ドキュメントと issue を読み込んだうえで書き起こした日本語の教材であり、翻訳でも転載でもありません。</p>
+                <p>この三つを先に理解しておかないと、後に出てくる skill はどれも使い方を誤ります。</p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">一、誰が呼び出せるか</h3>
+            <p class="leading-relaxed mb-6">これは、この pack <strong>唯一の分類軸です</strong>。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">誰が呼び出せるか</td>
+                            <td class="py-4 pr-4">人間が名前を打つときだけ。他の skill から呼ぶこともできない</td>
+                            <td class="py-4">自分で打ってもよく、agent が自分で判断して使うこともある</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">設定</td>
+                            <td class="py-4 pr-4"><code>disable-model-invocation: true</code></td>
+                            <td class="py-4">どちらも設定しない</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">description は誰向けか</td>
+                            <td class="py-4 pr-4">人間（slash command の一覧）</td>
+                            <td class="py-4">モデル（多数のトリガー文を含む）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">位置づけ</td>
+                            <td class="py-4 pr-4"><strong>オーケストレーター</strong>：フローの進み方を決める</td>
+                            <td class="py-4"><strong>規律のライブラリ</strong>：再利用できる方法論</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">実務上の三つの帰結</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li>ドキュメントに「次は <code>/implement</code>を実行」と書かれていたら、それは<strong>あなた</strong>に打てという意味です。agent が自動で続けてくれることはありません。</li>
+                    <li>harness は user-invoked skill をモデルに渡す一覧に入れないため、agent はこれらの skill が入っていないと「思い込む」ことがよくあります。<strong>ちゃんと入っています。そのまま打てば動きます。</strong></li>
+                    <li>実際に何が入っているか確かめるには <code>.claude-plugin/plugin.json</code>を見てください。そこに書かれているものが正です。</li>
+                </ul>
+            </div>
+            <p class="leading-relaxed mt-6">ルール自体はこうです：user-invoked は model-invoked を呼べますが、<strong>別の user-invoked を呼ぶことは決してできません</strong>。
+            </p>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">二、四つの役割</h3>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">本流</p>
+                    <p>アイデアから ship までの決まった経路：<code>grill-with-docs</code> → <code>to-spec</code> → <code>to-tickets</code> → <code>implement</code> → <code>code-review</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">合流路</p>
+                    <p>作業を生み出してから本流に合流させます：<code>triage</code>（他人から投げ込まれたもの）、<code>wayfinder</code>（一つの session に収まらないもの）、<code>improve-codebase-architecture</code>（定期点検から題材が出てくるもの）。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">単独</p>
+                    <p>いつでも呼び出し、使い終わったら離れます：<code>prototype</code>、<code>research</code>、<code>diagnosing-bugs</code>、<code>resolving-merge-conflicts</code>、<code>wizard</code>、<code>handoff</code>、<code>teach</code>、<code>to-questionnaire</code>、<code>wait-what</code>、<code>grill-me</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">語彙層</p>
+                    <p>フローを持たず、正確な用語だけを提供し、他から借りられます：<code>codebase-design</code>（モジュールの形）、<code>domain-modeling</code>（ドメイン言語）、<code>writing-for-agents</code>（agent に読ませるドキュメント）、<code>grilling</code>（インタビューのプリミティブ）。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">もっとも誤用されやすい語彙層</p>
+                    <p>これらには<strong>フローがありません</strong>。たとえば <code>codebase-design</code> に「始めよう」と言うと、agent は独自のフローを勝手に発明し、頼んでもいないものをリファクタリングして 100k token を燃やします（登録済みの issue 449）。語彙層は「<strong>driver skill が上、語彙層が下</strong>」という形で走らせます。</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">三、Phase boundary</h3>
+            <p class="leading-relaxed mb-6">一つの session の中の一区切りの作業を <strong>phase</strong>と呼びます（インタビュー、実装、QA…）。「自分の context をどうするか」という問いが<strong>成立するのは二つの phase のあいだだけです</strong>。phase の途中に選択肢はなく、続けるか、残りを subagent に投げるかしかありません。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">優先順位</th>
+                            <th class="py-3 pr-4 font-bold text-sm">選択肢</th>
+                            <th class="py-3 font-bold text-sm">選ぶタイミング</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">1</td>
+                            <td class="py-4 pr-4 font-semibold">続ける</td>
+                            <td class="py-4">次の phase がこの phase の生の発言を必要とする、または smart zone にまだ余裕がある場合。一次資料を保てる唯一の選択肢なので、<strong>まずこれを排除してから</strong>ほかを考える</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">2</td>
+                            <td class="py-4 pr-4 font-semibold">clear</td>
+                            <td class="py-4">この先の内容はすべて捨ててよい。いちばん安いが、判断を誤れば一方通行</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">3</td>
+                            <td class="py-4 pr-4 font-semibold">handoff</td>
+                            <td class="py-4">何かを<strong>引っ越し</strong>させる必要があるとき：harness を変える、ディレクトリを変える、同僚に渡す、途中で見つけた支線を切り出す</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">4</td>
+                            <td class="py-4 pr-4 font-semibold">subagent</td>
+                            <td class="py-4">タスクの範囲が十分に締まっていて、自分がいなくても走り切れる</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">5</td>
+                            <td class="py-4 pr-4 font-semibold">compact</td>
+                            <td class="py-4">どれにも当てはまらない。第一候補ではなく最後の受け皿だが、実務ではここに落ちることがいちばん多い</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">よく取り違えられるのが二つあります：<code>handoff</code> は「ウィンドウをまたぐ汎用の橋」ではありません。それが買うのは<strong>可搬性だけです</strong>。<code>compact</code> はツリーの底であって最初に手を出すものではありません。三つが守るものは違います——compact が守るのはあなたの<strong>意図</strong>、clear は何も守らず、handoff が守るのは仕事の<strong>移動できる力</strong>。そしてこの三つはいずれも、会話（一次資料）を要約（二次資料）に変えてしまいます。</p>
+        </section>
+
+        <!-- ==================================================================
+             02 · Install
+             ================================================================== -->
+        <section id="install" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">インストール：二つの道から一つを選ぶ</h2>
+            </div>
+            <p class="leading-relaxed mb-8">二つのインストール方法は、二つの哲学を表します。<strong>両方入れると、すべての skill が二重になります。</strong>
+            </p>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-2">ルート A — 購読</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <p class="leading-relaxed">または session 内で <code>/plugin install mattpocock-skills</code>と打ちます。すでに公式 marketplace にあるので、ソースを先に追加する必要はなく、更新も自動で届きます。<strong>代償：読み取り専用で、手を入れられません。</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">ルート B — 手を入れられる版</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <p class="leading-relaxed">どの skill を入れるか、どの agent に入れるかを聞かれます。<strong>必ずチェックすべきなのは <code>setup-matt-pocock-skills</code>。</strong>ファイルは「自分が所有する普通のファイル」として repo に書き込まれ、自由に変更できます。更新したいときは自分で <code>npx skills update</code>。</p>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">ルート B の落とし穴</p>
+                    <p class="leading-relaxed">手で書き換えた <code>SKILL.md</code> <strong>は <code>npx skills update</code> によって上書きされます</strong>。長期にわたって効かせたい振る舞いは、自分の <code>CLAUDE.md</code> / <code>AGENTS.md</code>（詳しくは <a href="#claude-md" class="underline">第 09 節</a>）に書くか、呼び出すたびに口に出して伝えてください——skill ファイルは書き換えないこと。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">beta を試したい人へ</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <p class="leading-relaxed">plugin ではこれらは手に入りません。執筆時点の in-progress bucket には <code>loop-me</code>、<code>writing-beats</code>、<code>writing-fragments</code>、<code>writing-shape</code>、<code>claude-handoff</code>、<code>setup-ts-deep-modules</code>があります——ドキュメントページはなく、いつ変わっても消えてもおかしくありません。plugin に入らない misc bucket もあります：<code>git-guardrails-claude-code</code>（hook で危険な git コマンドを止める）、<code>setup-pre-commit</code>、<code>migrate-to-shoehorn</code>、<code>scaffold-exercises</code>。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             03 · Setup
+             ================================================================== -->
+        <section id="setup" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">前準備、repo ごとに一度</h2>
+            </div>
+            <p class="leading-relaxed mb-6">
+                <code>/setup-matt-pocock-skills</code> は、すべての engineering skill の<strong>前提条件であり、フローの一ステップではありません</strong>。
+            </p>
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">決定事項</th>
+                            <th class="py-3 pr-4 font-bold text-sm">先に提案してくるもの</th>
+                            <th class="py-3 font-bold text-sm">実際に聞かれる条件</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Issue tracker</td>
+                            <td class="py-4 pr-4">git remote から推測</td>
+                            <td class="py-4">毎回聞かれる——唯一の本物の選択</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-semibold">Triage の label</td>
+                            <td class="py-4 pr-4">標準の五つの名前をそのまま使う</td>
+                            <td class="py-4">triage を入れた場合のみ聞かれる</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-semibold">Domain ドキュメントの配置</td>
+                            <td class="py-4 pr-4">単一 context：root に <code>CONTEXT.md</code> と <code>docs/adr/</code></td>
+                            <td class="py-4">monorepo のシグナルを検出したときだけ聞かれる</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>Tracker の四つの選択肢：<strong>GitHub</strong>（要 <code>gh</code>）、<strong>GitLab</strong>（要 <code>glab</code>）、<strong>Local markdown</strong>（<code>.scratch/&lt;feature&gt;/</code>、remote すら不要）、<strong>Other</strong>（作業フローを説明する文章を自分で書く）。</p>
+                <p>Local markdown は<strong>代替案ではなく一級市民です</strong>：一人プロジェクトで remote がなくても完全にサポートされます。ただし GitHub を使うプロジェクトで local markdown を併用しないでください。両者は代替であって重ねるものではありません。</p>
+                <p>「Other」もプレースホルダーではありません——Jira、Linear、Azure DevOps が動くのはこれのおかげです：自分が作業フローを説明すると、その言葉をそのまま <code>docs/agents/issue-tracker.md</code>に書き込み、下流の skill はその文章どおりに動きます。だからこそ<strong>この一式は GitHub に縛られていません</strong>し、tracker を変えるために skill ファイルを書き換える必要も永遠にありません。</p>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">必ず知っておきたい三つの落とし穴</h3>
+            <div class="space-y-8 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">一、label は作ってくれません</p>
+                    <p class="mb-3"><code>triage-labels.md</code> は「対照表」にすぎません。新しい GitHub repo にはそれらの label がそもそも存在せず、貼ろうとすると失敗します。まず自分で一度作ります：</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+gh label create needs-info
+gh label create ready-for-agent
+gh label create ready-for-human
+gh label create wontfix
+gh label create bug
+gh label create enhancement</pre>
+                    <p class="mt-3">使うのが <code>wayfinder</code> なら、あと五つも先に作っておく必要があります（<code>gh</code> は存在しない label に当たると即失敗します）：<code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">二、見ているのはファイルの有無で、どの harness を使っているかではありません</p>
+                    <p>Codex を使っているのに repo に <code>CLAUDE.md</code>が残っていると、 <code>## Agent skills</code> の節が、Codex には永遠に読めない場所に書かれます。対処は手動で <code>AGENTS.md</code>へ移すか、 <code>AGENTS.md</code> を本体にして、<code>CLAUDE.md</code> にはそこを指す一行だけを置くことです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">三、skills を更新したらもう一度走らせてよい</p>
+                    <p>シードのテンプレートは版が変わるので、古い <code>issue-tracker.md</code> は新しい skill と噛み合わないことがあります。下流の挙動が怪しくなったら、走らせ直すのがいちばん安い直し方です。</p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-xl font-bold mt-14 mb-4">成功したかどうかの見分け方</h3>
+            <ul class="space-y-3 leading-relaxed">
+                <li><code>docs/agents/issue-tracker.md</code> と <code>domain.md</code> が存在します（triage を入れていれば <code>triage-labels.md</code>）</li>
+                <li>自分の harness <strong>が本当に読む</strong>指示ファイルに次の見出しがあります： <code>## Agent skills</code></li>
+                <li>その後は <code>/to-tickets</code> が issue の置き場所を聞いてこなくなり、<code>/triage</code> は label を「貼る」のであって「発明」はしません</li>
+                <li><strong>skill ファイル自体は一文字も変わっていません。</strong>setup が何かの <code>SKILL.md</code>を書き換えていたら、それは事故です</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             04 · The map. The source shipped this as a filterable table with the
+             role column carried by colour; the role is a word here and the filter
+             is gone. A filter that hides rows is a scroll-reveal by another name,
+             and the whole table is 25 rows.
+             ================================================================== -->
+        <section id="map" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">25 個の skill、全体の地図</h2>
+            </div>
+            <p class="leading-relaxed mb-8">「ハード依存」の列が実戦での要点です——<strong>依存が入っていなければ、skill は静かにただの即興へと退化します。</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼び出し元</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">役割</th>
+                            <th class="py-3 pr-4 font-bold text-sm">一言で</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">ハード依存</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">setup-matt-pocock-skills</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">前準備</td><td class="py-4 pr-4">repo ごとに一度実行。tracker、label、ドキュメント配置を設定</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">ask-matt</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">ルーター</td><td class="py-4 pr-4">状況を書けば、どの並びを打てばよいかを教えてくれる</td><td class="py-4 hidden tablet:table-cell">この pack の skill しか知らない</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">プリミティブ</td><td class="py-4 pr-4">ラウンドごとに進むインタビューエンジン。他の grilling はすべてこの上に建つ</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-me</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">ステートレスなインタビュー。repo は不要、主題はコードでなくてよい</td><td class="py-4 hidden tablet:table-cell">grilling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">本流の先頭</td><td class="py-4 pr-4">同じインタビューに加えて codebase を読み <code>CONTEXT.md</code> と ADR を書く</td><td class="py-4 hidden tablet:table-cell">grilling、domain-modeling</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">合流路</td><td class="py-4 pr-4">一つの session に収まらない大きな仕事を、decision チケットの地図として描く</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-spec</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">本流</td><td class="py-4 pr-4">会話を一つの spec に収束させて tracker に登録。もうインタビューはしない</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">本流</td><td class="py-4 pr-4">spec または会話を tracer-bullet チケットに切り分け、ブロッキングエッジを宣言</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">implement</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">本流</td><td class="py-4 pr-4">チケットどおりに作り、内部で tdd を駆動、締めくくりに code-review を走らせて commit</td><td class="py-4 hidden tablet:table-cell">tracker（チケット由来の場合）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">tdd</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">エンジン</td><td class="py-4 pr-4">red-green。<strong>事前に合意した seam</strong> の上にだけテストを書く</td><td class="py-4 hidden tablet:table-cell">codebase-design</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">code-review</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">本流の末尾</td><td class="py-4 pr-4">ある固定点に対する diff を Standards と Spec の二軸で審査</td><td class="py-4 hidden tablet:table-cell">tracker（Spec 軸）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">triage</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">合流路</td><td class="py-4 pr-4"><strong>他人</strong>が投げ込んできた issue を状態機械に通す</td><td class="py-4 hidden tablet:table-cell">tracker、label</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">合流路</td><td class="py-4 pr-4">codebase を走査して「モジュールを深化させる」機会を探し、HTML レポートを出す</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">使い捨てのコードで<strong>一つ</strong>の設計上の問いに答える</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">難しい bug と性能リグレッションの六段階診断。red loop ができるまでは推測しない</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">バックグラウンドの agent が一次資料を読み、引用付きの markdown を残す</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">resolving-merge-conflicts</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">hunk ごとに「意図」に沿って衝突を解決し、検査を走らせ、merge を完了する。決して諦めない</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wizard</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">対話型の bash script を生成し、人間にしかできない手順を案内する</td><td class="py-4 hidden tablet:table-cell">実行時に <code>gh</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">codebase-design</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">語彙層</td><td class="py-4 pr-4">モジュール、インターフェース、depth、seam の正確な用語と四つの原則</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">語彙層</td><td class="py-4 pr-4">ドメイン言語を能動的に築き磨き、その場で書き込む <code>CONTEXT.md</code> と ADR を書く</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">handoff</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">現在の会話を、持ち運べる引き継ぎドキュメントに圧縮する</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">teach</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">現在のディレクトリを、session をまたぐ学習ワークスペースに変える</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">to-questionnaire</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">「他人しか知らない」決定を一枚の質問票にする</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">wait-what</td><td class="py-4 pr-4 whitespace-nowrap">User</td><td class="py-4 pr-4 whitespace-nowrap">単独</td><td class="py-4 pr-4">直前の説明が腑に落ちないときに打つと、agent が語り直す</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">writing-for-agents</td><td class="py-4 pr-4 whitespace-nowrap">Model</td><td class="py-4 pr-4 whitespace-nowrap">語彙層</td><td class="py-4 pr-4">agent が読む文書（skill、指示ファイル、spec、prompt）の指針</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">覚えておきたい二つの分岐</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>prototype への分岐</strong>：インタビュー中に「言葉にできない、見ないと分からない」問いに当たったら、いったん止めて prototype を作り、見てから一行で答える。</li>
+                    <li><strong>spec と tickets が割に合うのは session をまたぐときだけ</strong>。単一の context window で収まる変更なら、そのまま <code>grill-with-docs</code> から <code>implement</code>へ進み、間の二歩は飛ばします。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             05 · The main flow, seven steps.
+             ================================================================== -->
+        <section id="main-flow" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">本流の七ステップ、順を追って</h2>
+            </div>
+            <div class="border-l border-line pl-6 mb-10">
+                <p class="eyebrow mb-2">通しの事例</p>
+                <p class="leading-relaxed">社内ツールの repo（Next.js と Postgres）に「契約期限リマインダー」を足したい——30 日以内に期限が来る契約を一覧し、担当者にメールを送り、管理画面に赤い点を出す。schema、API、UI、メール送信にまたがり、幅として十分で、フル工程を通す価値があります。</p>
+            </div>
+
+            <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — 曖昧なアイデアを問い詰めて決定に変える</h3>
+            <div class="space-y-6 leading-relaxed">
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs 契約期限リマインダー機能を追加したい</pre>
+                <p>きれいな会話を一つ開き、<strong>plan mode を切ります</strong>。plan mode は agent に計画を早く出させようとしますが、それは「問いの中に留まる」ことのちょうど逆です。</p>
+                <div>
+                    <p class="eyebrow mb-2">何が起きるか</p>
+                    <p>codebase を読んだうえで、<strong>ラウンドごとに</strong>質問してきます。各ラウンドはその時点の <strong>frontier</strong>——前提条件がすべて解決した問いをまとめて一度に聞くので、宙に浮いたままの問いを聞かれることはありません。形式は固定で、番号つきの見出し、本文、一行の推奨回答。13 問なら通常 3 ラウンド、46 問を 4 ラウンドに分けるのもごく普通の一回です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">どう答えるか</p>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 はい
+2 二つ目
+3 いいえ。うちの契約に一部解約はありません
+4 分かりません</pre>
+                    <p class="mt-3"><strong>最大の失敗モードは受け身です。</strong>「同意」と四十回答えれば、agent が書いてあなたが頷いただけの計画ができます——長いので生産的に感じます。でも実際には何も決まっておらず、結果は自分で稼いでいない確からしさをまとっています。能動的とは、こういうことです。必要な精度より浅く問われたら<strong>押し返す</strong>、範囲が漂っているなら<strong>口に出す</strong>、本当に分からないなら「分かりません」と答える。これは本物の答えです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">grillable vs ungrillable</p>
+                    <p>「一枚の長いフォームか、三ページか」「このインタラクションはどんな感じであるべきか」——こうした問いは<strong>話しても出てきません</strong>。反応できる何かが要ります。ぶつかったら、いったん止めて prototype を作り、見てから一行で答える。ungrillable な問いを押して話し続けるのが session の爆発する主因です。agent は言い換えて聞き続け、あなたは推測を重ね、範囲は不確かさを埋めるために膨らみます。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">何が片づいたか</th>
+                            <th class="py-3 font-bold text-sm">どこに残るか</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一つの<strong>用語</strong>——このプロジェクト固有の言い方</td><td class="py-4"><code>CONTEXT.md</code>、<strong>その場で書き込む</strong>。最後にまとめて出すのではありません</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一つの<strong>元に戻しにくく、context がなければ意外に映り、本当にトレードオフがある</strong>決定</td><td class="py-4"><code>docs/adr/</code> の下に置く一件の ADR</td></tr>
+                        <tr><td class="py-4 pr-4">ほかに決めたことすべて</td><td class="py-4">会話の中だけ。ほかのどこにもありません</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-l border-line pl-6 mt-8">
+                <p class="eyebrow mb-2">三行目の意味</p>
+                <p class="leading-relaxed">問い詰めて出した<strong>ものの大部分は、この context window の中にしか存在しません</strong>。だから clear もしない、compact もしない。同じ会話の中でそのまま <code>/to-spec</code>。</p>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <code>CONTEXT.md</code> は<strong>用語集であり、用語集でしかありません</strong>——実装の詳細も、spec も、下書きも入れません。ADR は三つの条件が同時に成り立つ必要があるので、<strong>ほとんどの session は ADR を 0 件しか出しません。それは設計どおりです</strong>。
+            </p>
+            <p class="leading-relaxed mt-6">このステップでは<strong>手持ちで最良のモデル</strong>を使います。grilling が食うのはモデル自身の「システムはどう壊れるか」という直感です。実装の段階はむしろ context を食うので、もっと安いモデルで構いません。</p>
+
+            <h3 id="step-2" class="font-display text-xl font-bold mt-14 mb-4">Step 2 — 決まったことを、生き延びる文書に変える</h3>
+            <div class="space-y-6 leading-relaxed">
+                <p><code>/to-spec</code>、<strong>同じ会話の中で。新しい会話を開かないこと</strong>。</p>
+                <p>これは<strong>あなたにインタビューしません</strong>。ここまで来れば決めるべきことは決まっているので、これは「総合」です——会話、codebase、<code>CONTEXT.md</code> と ADR から整理します。</p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">spec は決定の記録であって、決定の現場ではない</p>
+                    <p>これが存在する理由は context window が終わるからです。いま問い詰めて出したものはすべて、まもなく捨てられる会話の中にあります。spec はその会話の生き残りです。だから何も検証しないし、何も決めません。<strong>spec の中に、あなたが言っていない一文があれば、それは欠陥です。</strong></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">まず seam をあなたと確認する</p>
+                    <p>一文字も書く前に、この機能をどの <strong>seam</strong>（テストが振る舞いを観察する公開の境界）の上でテストすべきかを草案にして、あなたに聞いてきます。新しく開くより既存の seam を好み、取れるかぎり<strong>いちばん高い</strong>ところの seam を取ります。理想の数は変更全体で一つだけです。この「事前に合意した seam」は下流へそのまま伝わります：<code>tdd</code> は事前に合意した seam の上にだけテストを書き、<code>code-review</code> は合意していない seam が使われていないかを確認します。<strong>だからこのやり取りは真面目に答えてください。実装の段階に先送りしないこと。</strong></p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">いまどこにいるか</th>
+                            <th class="py-3 font-bold text-sm">何を走らせるか</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">まだ何も決まっていない</td><td class="py-4">まず <code>grill-with-docs</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">決まっていて、しかも<strong>一つの context window で終わる</strong></td><td class="py-4">そのまま <code>implement</code>、<strong>spec を飛ばす</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">決まっていて、仕事が複数の session にまたがる</td><td class="py-4"><code>/to-spec</code>、そのあと <code>/to-tickets</code></td></tr>
+                        <tr><td class="py-4 pr-4">wayfinder の地図を片づけ終えたところ</td><td class="py-4"><code>/to-spec #&lt;map_issue&gt;</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">よくある落とし穴</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong><code>ready-for-agent</code> ラベルの誤解</strong>：spec にこれが貼られ、意味は「もう triage は要らない」です。つまり<strong>入場資格であってチケットではありません</strong>。しかし、このラベルを監視する無人の agent がいると、その違いが分からず、spec 全体を一気にやりきろうとします。対処は、その agent の prompt で parent spec を明示的に除外するか、 <code>/to-tickets</code> の実行が終わったらラベルを外すことです。</li>
+                    <li><strong>リファクタリング型の作業はテンプレートに合わない</strong>：テンプレートは user story に寄りすぎていて、アーキテクチャの作業を当てはめると「誰も要求していない物語」になります。代わりに implementation-decisions と testing-decisions の二つの節に頼り、長く効くアーキテクチャの決定は ADR の形で <code>grill-with-docs</code> の側で固めます。</li>
+                    <li><strong>重複は調べません</strong>：同じ issue が既に立っていないか tracker を検索することはなく、従っている ADR をリンクすることもありません。よく触る領域は自分で先に検索しておきます。</li>
+                    <li><strong>spec が大きすぎると切り詰められます</strong>：巨大な spec は tracker issue がきれいに返せる量を超え、しかも戻れるローカルの控えもありません。<code>/to-spec</code> と <code>/to-tickets</code> の間では clear も compact もしないでください。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — tracer bullet に切り分ける</h3>
+            <p class="leading-relaxed mb-6"><code>/to-tickets</code>、同じウィンドウで。あるいは <code>/to-tickets #&lt;spec_issue&gt;</code>。計画が会話の中にあるだけで spec になっていなくても構いません。会話をそのまま読みます。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">水平スライス（誤）</th>
+                            <th class="py-3 font-bold text-sm">垂直スライス（正）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">チケット 1 枚が届けるもの</td><td class="py-4 pr-4">変更の<strong>1 つの層</strong>（schema を全部で 1 枚、API を全部で 1 枚）</td><td class="py-4">1 本の細い道が<strong>すべての層</strong>を貫く</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">着地したあと</td><td class="py-4 pr-4">すべての層がそろうまで何も動かない</td><td class="py-4">それ単体で demo できる</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">受け入れ条件</td><td class="py-4 pr-4">別のチケットが持つ作業まで手を伸ばさざるを得ない</td><td class="py-4">自分が持つものだけを評価する</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>これは最も破られやすいルールであり、<strong>代償は実測されています</strong>：あるチームは層ごとに切ったチケットを 26 枚使いました（corpus、producer、aggregator、selector）。平均で<strong>チケット 1 枚を閉じるのに agent を 20 回走らせました</strong>。そのうち約四分の三は手戻りです。チーム自身の振り返りは、あらゆる種類の失敗を、実装の品質ではなく水平スライスに突き当てています。</p>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">やるべきチェック</p>
+                    <p>チケット 1 枚ごとに、ひとこと問いかけます——<strong>「これが終わったら何を demo できるか？」</strong>答えとして<strong>振る舞い</strong>を挙げられないなら、それは水平スライスです。チケットごとに demo path を 1 行足す人もいて、モデルを垂直分解のほうへ押せると報告されています。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">発行の前に</p>
+                    <p><strong>Prefactoring</strong>：まず「変更を容易にしてから、その容易になった変更を行う」という作業を探し、いちばん前に並べます。そのうえで、<strong>番号付きのリストを渡して詰問してきます</strong>：粒度は適切か、ブロッキングエッジは本物か、統合すべきものや分割すべきものはないか。<strong>承認するまで、tracker には何も入りません</strong>——この詰問ステップこそ、押し返す場所です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">広域リファクタリングだけが例外</p>
+                    <p>tracer-bullet のルールを破る形が一つだけあります——<strong>単一の機械的な変更でありながら、影響範囲が codebase 全体に及ぶもの</strong>（フィールド名を一つ変える、共通の型を一つ差し替える）です。一度の編集で数千の呼び出し箇所が壊れ、緑のまま着地できる垂直スライスは存在しません。expand–migrate–contract で進めます：<strong>Expand</strong>——新しい形を古い形の隣に足すだけで、何も壊しません。<strong>Migrate</strong>——影響範囲に沿って呼び出し箇所をバッチに分けて移します。1 バッチが 1 チケットで、いずれも expand にブロックされ、古い形が残っているので CI は緑のままです。<strong>Contract</strong>——呼び出し元がなくなってから古い形を削除します。すべての migrate バッチにブロックされます。</p>
+                </div>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">よくある落とし穴</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>3 行の変更が 12 枚のチケットに切られる</strong>：分解しすぎることが最もよくある摩擦です。詰問ステップで統合するように言ってください。もっと根本的な答えはこうです——変更全体が一つの context window に収まるなら、<strong>そもそもこの skill は要りません</strong>。</li>
+                    <li><strong>GitHub で sub-issue として作られない</strong>：既知で未修正です（issue 554）。Codex ではさらに深刻です。<code>gh</code> は v2.94 からネイティブ対応しています—— <code>gh issue create --parent</code> と <code>gh issue edit --add-sub-issue</code>。</li>
+                    <li><strong>「Blocked by」が本文にしか書かれない</strong>：同種の問題です（issue 513）。GitHub にはネイティブの <code>gh issue create --blocked-by</code>があります。ブロッカーが先に発行されるので、番号は作成の時点で必ず手に入ります。</li>
+                    <li><strong>受け入れ条件が何も評価していない</strong>：一つひとつについて「どんな観察がそれを偽だと示すか」を挙げ、開始時点の commit で赤になることを確かめます。</li>
+                    <li><strong>チケットを出し終えた、そのあとは？</strong>自動の割り当てはありません。ボードを見て、未完了のブロッカーを持たないチケットが何枚あるかを数え、その数だけ agent session を開きます。<strong>チケット 1 枚につき真新しい context を一つ、あいだで clear。</strong></li>
+                </ul>
+            </div>
+
+            <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — チケット 1 枚に session 1 つ</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <div class="border-l border-line pl-6 mb-8">
+                <p class="eyebrow mb-2">なぜ完全な reference を書くのか</p>
+                <p class="leading-relaxed"><code>/implement #2</code> の <code>#2</code> は<strong>「agent から見えるあらゆる番号付きリスト」</strong>に対して解決されます——新しい session ではそれが todo ファイルや checklist かもしれず、自分が設定した tracker とは限りません。しかも解決の仕方は自信満々で、<strong>fail-closed になりません</strong>。だから間違っていてもすぐには気づけません。完全な URL か <code>owner/repo#2</code>を渡し、タイトルを読み上げて確認させてから始めさせます。</p>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">1 回の run の五つの拍</p>
+                    <ol class="space-y-2 mt-2">
+                        <li>ticket か spec を読み、seam を導き出す</li>
+                        <li>事前に合意した seam の上で <code>tdd</code>を回し、一度に red-green スライスを一つ</li>
+                        <li>こまめに typecheck し、途中は単一のテストファイルを走らせる</li>
+                        <li>仕上げに完全なテストスイートを 1 回走らせる</li>
+                        <li>最後に <code>code-review</code>を走らせ、そのあと commit する先は<strong>現在の branch</strong></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">絶対にしないこと</p>
+                    <p><strong>計画を開き直すことは決してありません。</strong>インタビューもなく、確認のラウンドもなく、別のやり方を提案することもありません。上流で決まったものが入力であり、その仕事はそれを一つの commit に変えることだけです。これこそが、「新しい agent に『これをやって』と打つ」こととの違いです——後者は作りながら設計をやり直します。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th class="py-3 font-bold text-sm">説明</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">走り終わったのに、チケットが開いたままで受け入れ条件にチェックが入らない</td><td class="py-4"><strong>正しく、想定どおりです。</strong>implement には締めくくりのステップがなく、commit で止まります。<strong>チケットは自分で閉じます</strong>——これは依存の連鎖でいちばん強く噛みつきます。frontier の定義は「ブロッカーがすべて閉じている」なので、誰も閉じなければ、着手できるチケットは永久に現れません</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">すべてのチケットを一度に、並行で走らせられますか？</td><td class="py-4"><strong>できません。</strong>同じ checkout で複数の implement を並行させるのは「非対応」よりたちが悪く、一つの午後のうちに、別の session の commit に amend が当たる、stash が消える、commit が違う branch に落ちる、といった現場報告があります。コミュニティの workaround は worktree ですが、stash は依然として共有です</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">PR を開けますか？</td><td class="py-4">組み込みではありません。現在の branch に commit し、branch を切ってくれることもありません。呼び出しの時点で上書きする人もいます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review が私の変更を見ていないと言う</td><td class="py-4">審査するのは <code>diff &lt;fixed-point&gt;...HEAD</code>、<strong>staged と working tree は除外します</strong>。implement は commit の前に review を走らせるので、途中の commit が既にあるのでない限り、その diff には何もありません。<strong>先に commit してから review</strong></td></tr>
+                        <tr><td class="py-4 pr-4">チケット 1 枚で 150k token 燃える</td><td class="py-4">たいていは使い方の誤りではなく、チケットが大きすぎるせいです。1 回の run は codebase の探索、seam ごとの red-green、完全なスイート、review を含むので、100k token を超えるのは普通です。<strong>てこは上流にあります</strong>：新しいウィンドウ一つに収まるところまでチケットを調整します。1 枚が何度も溢れるなら分割することであって、effort を上げることではありません</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">組み込みのあの review を<strong>あえて使わない</strong>人もいます——コードを書いた agent が自分のコードを審査すれば、自分の解法をひいきします。きれいな session で固定点に対して別途 <code>code-review</code> を走らせるのは、理にかなった代替策です。</p>
+
+            <h3 id="step-5" class="font-display text-xl font-bold mt-14 mb-4">Step 5 — red-green エンジン</h3>
+            <p class="leading-relaxed mb-6">
+                <code>tdd</code> は<strong>参考資料であって、ドライバーではありません</strong>：ループのルールを握っているだけで、session を回すのは別の誰かです（あなた、または <code>implement</code>）。
+            </p>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">Red-green</p>
+                    <p>失敗するテストを書き、それをちょうど通すだけのコードを書きます。次のテストを先回りして書きません。<strong>refactor フェーズはありません</strong>——2026 年 6 月に削除されました。agent がほとんど実行しないうえ、review と implementation は session を分けたほうが結果がよいからです。リファクタリングは code-review の担当です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Vertical slice</p>
+                    <p>一つの seam、一つのテスト、一つの最小実装、そして繰り返し。最初の cycle が tracer bullet で、一本の道が端から端まで通ることを証明します。逆は、テストを全部書いてからコードを全部書くやり方です——それが検証するのは<strong>想像上の</strong>振る舞いであり、ユーザーがすることではなく物の形を確かめているだけで、しかも実装を理解する前にあなたを一つのテスト構造に縛りつけます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">Pre-agreed seam</p>
+                    <p>ルールは絶対です：<strong>確認していない seam には、テストを書かない。</strong>チェーン全体では seam を <code>to-spec</code> の段階で合意しておきます。単独で呼び出したときは、その場で直接聞いてきます。</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">アンチパターン</th>
+                            <th class="py-3 font-bold text-sm">現れ方</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Implementation-coupled</td><td class="py-4">内部関数の名前を変えただけで振る舞いは同じなのに、テストが壊れる。自分の内部協力者を mock する、呼び出し回数をアサートする、インターフェースではなくデータベースのクエリで検証する</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tautological</td><td class="py-4">期待値がコードと同じやり方で計算されているので、テストは必ず通る。<strong>期待値は別のところから来なければならない</strong>：既知の正しいリテラル、手で計算した例、spec</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Horizontal slicing</td><td class="py-4">実装より先にテストがまとめて着地している</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-6">
+                <strong>Mock を使うのはシステム境界だけ</strong>：外部 API、時間、ランダム性。ファイルシステムやデータベースのこともあります。<strong>自分のモジュールを mock してはいけません。</strong>
+            </p>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">よくある落とし穴</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>「どの test seam にするか聞かれても、まったく分からない」</strong>：いちばん多い摩擦です（issue 607）。プロンプトは候補の seam を名前で並べるだけで、それぞれが何をとらえ何を取り逃すかを言いません。<strong>agent にトレードオフを聞き返す</strong>：component 層の seam が取り逃すもののうち integration seam がとらえるものは何か、どれだけ遅くなるか。チェーン全体が <code>to-spec</code> の段階で seam を決めておく理由も、まさにこれです。</li>
+                    <li><strong>テストより先に実装を書く</strong>：起こります。skill は「それと共に生きる」書き方であって、agent に 100% 守らせる指示は存在しません。あるスライスで本当に厳密さが要るなら、走らせながら見ていてください。</li>
+                    <li><strong>先にブラウザテストを書いて堂々巡りする</strong>：agent が Playwright を先に書き、まだ存在しない機能に対して何度も走らせ、最後に「テストが壊れている」と結論した、という報告があります。repo の指示ファイルに宣言してください：browser テストは、振る舞いが動くようになってから書く。</li>
+                    <li><strong>ほかのチケットのことを知らない</strong>：一枚のチケットに対して走らせると、兄弟チケットに属する作業を嬉々として提案してきます（issue 129）。spec を ticket と一緒に渡すと役に立ちますし、最初からチケットを正しく切っておくともっと役に立ちます。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — 二軸レビュー</h3>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <p class="leading-relaxed mb-6">
+                <strong>固定点はあなたが与える必要があります</strong>。与えなければ、勝手に推測せずに聞いてきますし、ref が解決すること、diff が空でないことを確かめてから sub-agent を生成します。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm"></th>
+                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th class="py-3 font-bold text-sm">Spec</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">問い</td><td class="py-4 pr-4">正しくやれているか？</td><td class="py-4">やっているのは正しいものか？</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">何を読むか</td><td class="py-4 pr-4">repo 自身が文書にした規範と、内蔵の smell 基準</td><td class="py-4">出どころの issue または spec</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">何を報告するか</td><td class="py-4 pr-4">明文の違反（ハードな失格になりうる）と smell（つねに判断もの）</td><td class="py-4">欠落または一部しか実装されていない要件、スコープの膨張、誤って実装された要件</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">所見ごとに引用すべきもの</td><td class="py-4 pr-4">規範ファイルと条項、または smell 名と hunk</td><td class="py-4">spec のその一行</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="space-y-6 leading-relaxed mt-8">
+                <p>二つの軸は<strong>それぞれ別の sub-agent で走り</strong>、互いの推論が見えません。報告の最後には「軸ごとの最悪の所見」を挙げ、そして<strong>軸をまたいだ総合優勝を選ぶことは拒みます</strong>——一つの変更が片方の軸は通り片方の軸は落ちうるからです：慣例をすべて守りながら間違ったものを作ったコードは Standards を通り Spec で落ち、チケットどおりに作っても repo の慣例を壊すコードはその逆になります。<strong>混ぜた裁定は、通った軸に落ちた軸をかばわせてしまいます。</strong>
+                </p>
+                <p>Smell 基準は Standards の下に敷かれた床です：Fowler『Refactoring』第 3 章の 12 個の code smell。どれも「かもしれない」というヒューリスティックな札であって決して硬い違反ではなく、しかもすべて「それは何か、どう直すか」の形で書かれているので、所見があなたのところに届くときには、<strong>すでに動作が一つ付いています</strong>。あなたの linter がすでに扱っているものは、二つの軸とも飛ばします。</p>
+            </div>
+            <div class="mt-8">
+                <p class="eyebrow mb-3">よくある落とし穴</p>
+                <ul class="space-y-3 leading-relaxed">
+                    <li><strong>同名の組み込みコマンドと衝突する</strong>：最も多く報告されていて、未修正です。組み込みのほうは「diff から bug を探す」もので、こちらは規範と spec への適合です。両方入れるとどちらかが勝ち、どちらが勝つかはインストールのしかた次第です。</li>
+                    <li><strong>sub-agent がまた自分を呼び、agent がどんどん増える</strong>：複数の人が複数の harness で再現していて、一度は 50 個以上に達しました。fork での直し方は、二つの sub-agent brief にそれぞれ一行入れることです：「code-review を呼び出したり追加の agent を生成したりせず、このレビューを直接実行すること」。<strong>無人で走らせるときは、agent の数を見ていてください。</strong></li>
+                    <li><strong>コードを書いたのと同じ session で走らせるべきか？</strong>新しいほうを勧めます。うまい言い方をした人がいます：<strong>同じ context で自分をレビューするのは、slash command 付きの確証バイアスです。</strong></li>
+                    <li><strong>所見は信じてよいか？</strong>確かめずには信じられません。sub-agent の出力は<strong>証拠ではなく仮説です</strong>。二つの報告をまとめますが、一件ずつファイルに戻って検証はしないので、引用が別の場所を指したり影響を誇張したりすることがあります。所見ごとの引用を見てから動いてください。</li>
+                    <li><strong>なぜ走らせるたびに新しい問題が出るのか？</strong>変更は新しい面をつくりますし、判断ものの半分は決定的ではありません。<strong>収束の保証はありません。</strong>一回の pass を手がかりの一覧とみなし、明文の規則に裏づけられたものを片づけて、そこで止めてください——「きれい」になるまで走らせてはいけません。そうはなりません。</li>
+                </ul>
+            </div>
+
+            <h3 id="step-7" class="font-display text-xl font-bold mt-14 mb-4">Step 7 — 締めくくりとループ</h3>
+            <p class="leading-relaxed mb-4">チケット一枚のループ：</p>
+            <ol class="space-y-2 leading-relaxed mb-8">
+                <li>clear context</li>
+                <li><code>/implement &lt;ticket&gt;</code>（<code>tdd</code> の実行はこの中で回る）</li>
+                <li>commit</li>
+                <li><code>/code-review &lt;fixed-point&gt;</code>、クリーンな session で</li>
+                <li>チケットを手で閉じ、受け入れ条件を突き合わせる——<strong>implement はこれをやってくれない</strong></li>
+                <li>frontier から次のチケットを取り、第 1 歩に戻る</li>
+            </ol>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">リズム</p>
+                    <ul class="space-y-2 mt-2">
+                        <li><strong>毎日</strong>：本流。チケット一枚につき session 一つ、あいだで clear。</li>
+                        <li><strong>数日おき</strong>：<code>/improve-codebase-architecture</code>、構造の負債を新しい課題に変えて本流へ戻す。</li>
+                        <li><strong>inbound の仕事があるとき</strong>：<code>/triage</code>。外部からの報告がないプロジェクトでは、開くことはほとんどない。</li>
+                        <li><strong>技能を補いたいとき</strong>：<code>/teach</code>、専用のディレクトリを一つ作る。</li>
+                    </ul>
+                </div>
+                <div class="border-l border-line pl-6">
+                    <p class="eyebrow mb-2">忘れないこと</p>
+                    <p>チェーン全体で唯一<strong>誰も代わりにやってくれない</strong>ことが、<strong>チケットを閉じて受け入れ条件を突き合わせること</strong>です。implement は commit で止まります。依存の鎖を先へ進めるには、あなたがチケットを閉じるしかありません——さもないと frontier に新しく着手できる項目が出てきません。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             06 · Situation index. The source used a colour chip per role; the
+             role is the eyebrow here.
+             ================================================================== -->
+        <section id="situations" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">状況別インデックス、どんなときにどれを取るか</h2>
+            </div>
+            <p class="leading-relaxed mb-10">本流以外の skill は、どれも「特定の状況でだけ逸れていく」ものです。ここでは<strong>あなたの状況</strong>で並べます。</p>
+
+            <div class="space-y-12">
+                <div>
+                    <p class="eyebrow mb-2">単独 — prototype</p>
+                    <h3 class="font-display text-lg font-bold mb-3">この問題は議論では決着しない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>これが書くのは<strong>一つの問いに答えるための使い捨てのコード</strong>です。問いが先に来て、あとに来るすべての形を決めます。間違った問いに答える prototype は、どれだけ見栄えがよくても純粋な無駄です。「使い捨て」は、<strong>どう書くか</strong>への制約であって、「必ず破棄する」という約束ではありません：テストなし、動く以上のエラー処理なし、抽象化なし、永続化なし。</p>
+                        <p>二つの分岐で、返ってくるものは大きく違います。「このロジックや状態モデルは正しく感じられるか？」には<strong>共有できる単一の HTML ファイル</strong>が返ってきます——state panel、free-play ボタン、タブ式のナビゲーションを備え、すべて領域の言葉でラベルづけしてあるので、デザイナーや領域の専門家にそのまま渡して自分で感じてもらえます。裏のロジックは DOM に触れないきれいな純モジュールで、検証できたらそのまま本番のコードへ引き上げられます。「これはどう見えるべきか？」には<strong>同じ route 上に並ぶ、大きく異なる複数の UI バリアント</strong>が返ってきます。フローティングの下部バーで切り替えます。バリアントが食い違うべき場所は色ではありません。<strong>構造</strong>です——軽く調整しただけの card grid が三つ並んでも、それは壁紙であって prototype ではありません。</p>
+                        <p><strong>それを「堅牢化」していると気づいた瞬間、もう prototype を作ってはいません</strong>——テストを足す、本物のデータベースにつなぐ、「あとで必要になるかも」のために一般化する。そういうことです。</p>
+                        <p><strong>成果物をどう扱うか</strong>：答え（裁決と、それが解決した問い）は耐久性のある場所に置きます——commit message、ADR、実装 issue。prototype 自体は消しませんが、main にも入れません。commit 先は <code>prototype/&lt;name&gt;</code> branch、<strong>決して merge しません</strong>。実装 issue にポインタを一つ残します。</p>
+                        <p><strong>落とし穴</strong>：本当は実装すべき場面で、agent は prototype を勧めてきます——命名の問題で、流れに不慣れな agent には「チケットができたあとの当然の次の一歩」と読めてしまうのです。それからもう一つ。<strong>app 全体を prototype しないこと</strong>：自然な停止点がなく、惰性でそのまま製品になり、「テストもエラー処理もない」コードがそのままユーザーの前に出ます。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — research</p>
+                    <h3 class="font-display text-lg font-bold mb-3">外部の事実が判断を止めている</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>それが素材にするのは<strong>一次資料</strong>だけです（公式ドキュメント、ソースコード、仕様、ファーストパーティの API）。どの主張も、答えを持っているその出所まで遡ります。<strong>会話の中では答えてくれません</strong>——出力は一つのファイルで、どの主張にもリンクが付きます。決め手は、読む部分をどこで走らせるかです。<strong>バックグラウンド agent</strong>。</p>
+                        <p><strong>research は委任した足仕事であって、外注した思考ではありません。</strong></p>
+                        <p><strong>落とし穴</strong>：自分自身の二つ目を生んでしまいます（issue 530）——skill は呼び出し側にバックグラウンド agent を立てろと言うだけで agent の種類を縛らないため、立ち上がるのは同じツールと指示を握った汎用 agent で、それがまた一つ立ち上げます。ある人の計測がこれです。<strong>単一の research タスクが、三回の重なった実行で約 450k token を燃やしました</strong>。重複したほうは三十分後、完全に視界の外で終わっていました。<strong>呼び出したらバックグラウンドタスクの一覧を見て、重複を止めてください。</strong></p>
+                        <p>もう三つあります。逆向きの失敗——グローバルな指示がさらなる委任を禁じている場合、バックグラウンド agent は丁重に断り、skill は静かに何もしません。「信頼度の高い出所」はモデル自身の判断で、allowlist はありません。実際に効く緩和策はこれです。<strong>引用を二つ三つ、無作為に追いかけること</strong>。そのもの自体ではなく「そのものの要約」に着地していたら、その実行は失敗です。<strong>停止基準がありません</strong>。範囲はこちらの責任です——一つの API、一つの挙動、一つのバージョンについての主張のほうが、「research X」よりはるかに良いものが返ってきます。</p>
+                        <p><strong>research ファイルは ADR ではありません</strong>：ADR は残し、research ファイルは使い終わったらアーカイブするか削除します。古くなった research ファイルは無いより悪く、以後の repo 読み取りを汚染します。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — diagnosing-bugs</p>
+                    <h3 class="font-display text-lg font-bold mb-3">何かが壊れた、理由が分からない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>六つのフェーズ：repro を作る、最小化する、仮説に順位をつける、プローブを仕込む、リグレッションテスト付きで直す、片づける。</p>
+                        <p><strong>「タイト」なフィードバックループができるまで、agent に理論を立てさせません。</strong>名前の付いたコマンドが一つ、<strong>すでに一度走らせてある</strong>、この bug では赤で、直せば緑になる。bug 報告を渡された coding agent の既定の振る舞いはコードを読んで推測することですが、この skill はそれを塞ぎます。<strong>赤にできるコマンドがなければ、Phase 2 はありません。</strong>その gate こそが、この skill の価値のすべてです。</p>
+                        <p><strong>ループが「ある」ことは目標ではなく、「タイト」であることが目標です</strong>：速い（秒単位）、決定的（毎回同じ裁定）、鋭い（「crash しなかった」ではなく、正確な症状を断言する）、agent が無人で走らせられる。30 秒かかって flaky なループは、無いのとたいして変わりません。断続的に出る bug では、目標はきれいな repro ではありません。<strong>再現率を上げること</strong>です——トリガーをループさせる、並列化する、負荷をかける、sleep を注入する。</p>
+                    </div>
+                    <p class="eyebrow mt-6 mb-3">ループの作り方の階段、好ましい順</p>
+                    <ol class="space-y-2 leading-relaxed text-sm">
+                        <li>bug に到達できる seam に置いた、失敗するテスト</li>
+                        <li>dev server に対する curl か HTTP script</li>
+                        <li>fixture 入力を与えた CLI 呼び出しと、既知の良好なスナップショットとの diff</li>
+                        <li>DOM、console、network を断言する headless browser script</li>
+                        <li>キャプチャの再生（保存した request、payload、event log）</li>
+                        <li>使い捨ての harness（システムの最小の部分集合、関数呼び出し一回）</li>
+                        <li>property または fuzz のループ、「たまに出力が間違う」向け</li>
+                        <li>そのまま <code>git bisect run</code> に渡せる bisect harness</li>
+                        <li>differential loop（同じ入力で、旧版と新版を突き合わせる）</li>
+                        <li>human-in-the-loop の bash script、最後の手段</li>
+                    </ol>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th class="py-3 font-bold text-sm">真でなければならないこと</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase 2 に進む</td><td class="py-4">名前の付いたコマンドが一つ、<strong>すでに走らせてあり</strong>、出力も貼ってあり（機微な値はマスク済み）、この bug で赤になるもの</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase 3 に進む</td><td class="py-4">repro が再現し、<strong>かつ</strong>最小化されていること——残った要素は一つひとつが効いていること</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase 4 に進む</td><td class="py-4">順位をつけた反証可能な仮説が 3 から 5 個、それぞれ予測を明示し、どれかを試す前に必ず先に見せること</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase 5 に進む</td><td class="py-4">プローブが特定の予測に対応し、変数は一度に一つ、どの debug log にも grep できるタグが付いていること</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">完了</td><td class="py-4">元の repro がもう再現せず、計測の仕掛けはすべて撤去され、<strong>当たっていた仮説が commit message に書かれていること</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><strong>落とし穴</strong>：直接の答えだけが欲しい軽い質問でも発動してしまいます——いちばん多く報告されている問題です（issue 578、四人が同じ形を報告）。「診断せずに直接答えて」とはっきり言うか、この skill の model invocation を切ってください。<strong>「性能の問題がどこにあるか」を探すのには使えません</strong>。診断できるのは、すでに名前を言える失敗です。それに<strong>修正を書く前に立ち止まって聞いてはくれません</strong>。人間のチェックポイントは Phase 3 だけです。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — resolving-merge-conflicts</p>
+                    <h3 class="font-display text-lg font-bold mb-3">merge か rebase の衝突で詰まっている</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>これは<strong>衝突をテキストの問題として扱うことを拒みます</strong>。hunk に手を触れる前に、両側を<strong>一次資料</strong>まで遡ります——commit message、PR、元の issue——ですから、選んでいるのは<strong>二つの意図</strong>の間であって、二つのテキストの塊の間ではありません。両立できるところでは両方を残します。本当に両立しないときは、この merge の明示された目標に合うほうを選び、そのトレードオフを言葉にします。衝突を取り繕うために新しい振る舞いを発明することはありませんし、<strong>途中で投げ出しません</strong>：merge は必ず完了した commit まで運ばれます。</p>
+                        <p>repo 自身の自動化された検査を見つけ出し、commit の前に走らせもします——merge は git のなかで、「二つの branch を同時に満たしているのに、どちらの側のテストも通らない」ものが最も生まれやすい場所だからです。</p>
+                        <p><strong>追加の実務知識</strong>：衝突を避けるために並行タスクのあいだで「ファイルを分け合う」のはやめてください。得られるものよりコストのほうが高くつきます。守る価値のある唯一の規律はこれです。<strong>大きなリファクタリングを先に済ませる</strong>。worktree で並行して進めるときは、<strong>merge して戻すのは、その変更を書いた session がやるのがいちばんです</strong>。意図を知っているのはその session だけだからです。全員の衝突をまとめて最後の agent に batch で渡すのは、この skill が苦労して組み立て直そうとしているものを、ちょうど捨てる行為です。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">合流路 — improve-codebase-architecture</p>
+                    <h3 class="font-display text-lg font-bold mb-3">codebase が腐っていく</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>codebase をスキャンして<strong>深化の機会</strong>——浅いモジュール（インターフェースが、それが隠しているものとほぼ同じくらい複雑なモジュール）を深いモジュールに変えられる箇所——を洗い出し、HTML レポートにまとめ、選んだ候補に対して grilling を行います。</p>
+                        <p><strong>コードは決して変更しません。</strong>run 全体が生み出すのは「HTML ファイル 1 つと対話 1 回」です。リファクタリングそのものは後で別の session で、通常の構築フローに乗せます。これが、<strong>リファクタリングツールではなく点検である</strong>ということの意味であり、「まだ手を付ける準備ができていない」codebase に対して走らせる価値がある理由でもあります。</p>
+                        <p><strong>フィルターは二つ</strong>：<em>deletion test</em>——このモジュールを削除したと想像したとき、複雑さはより小さなインターフェースの背後に<strong>集約</strong>されるのか、それとも各呼び出し側へ<strong>拡散</strong>するのか。「集約」になるケースだけがカードになります。また、領域を指定しない限り、直近の commit 履歴を先に読み、スキャンを<strong>いま動いている</strong>パスへ寄せます——誰も触っていないコードの深化は、あなたが永遠に実行しないリファクタリングです。</p>
+                        <p>強度ラベルは三段階：<strong>Strong</strong>（deletion test を明確に通過し、摩擦も実在する。真剣に見る価値あり）、<strong>Worth exploring</strong>（筋は通るが、見返りはコードがこの先どこへ向かうかに左右される）、<strong>Speculative</strong>（網羅性のために挙げてあるだけで、大半は安心して無視できる）。</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">場面</th>
+                                    <th class="py-3 font-bold text-sm">使い方</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">定期メンテナンス</td><td class="py-4">数日おき、または空き時間に走らせ、機能と機能のあいだで構造が腐るのを防ぐ</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">大きな案件の前</td><td class="py-4">spec に向けて「この変更をやりやすくするには？」と聞く。<strong>これが最も効く prompt</strong></td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Brownfield 監査</td><td class="py-4">大規模で構造のない vibe-coded な repo に走らせ、実際どんな形をしているのかを見る</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Legacy のテスト作業</td><td class="py-4">まずこれで足りない seam を洗い出し、そのうえでテストしにくいコードにテストを書く</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-4 leading-relaxed mt-6">
+                        <p><strong>落とし穴</strong>：「一つのアイデアのために一時間も問い詰められた」が最も声の大きい不満です——呼び出すときに「<strong>問い詰めないで、そのままレポートをください</strong>」と伝えてください。レポートを開いてもスタイルも図もないのは、外部リソースを CDN から読み込んでおり、ブロックされても静かに失敗するので agent からは見えないためです（agent はそのページを描画しません）。<strong>inline CSS と手書きの SVG を使うよう指示します</strong>。session 一つにつき候補は一つです。<strong>この skill が「あなたの codebase に問題はない」と言うことはまずありません</strong>——全部が Speculative のレポートというのは、何も見つからなかったことを、それが知っている唯一の方法で伝えているだけです。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">合流路 — triage</p>
+                    <h3 class="font-display text-lg font-bold mb-3">他人から issue が大量に投げ込まれる</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>自分が作成していない issue にだけ使います。</strong>生の bug 報告、外から来た feature request、突然現れた外部の PR。<code>to-tickets</code> が産出するチケットは構造上すでに agent-ready であり、それらに triage を走らせても、うまくいって無駄骨です。この skill は<strong>提案して待ちます</strong>：分類と状態の判断を理由とともに伝え、指示があるまで何も適用しません。</p>
+                        <p>triage された項目はどれも、最終的に<strong>分類の役割ちょうど一つと状態の役割ちょうど一つ</strong>を持って終わります。分類は二つ、bug と enhancement。状態は五つ：<code>needs-triage</code>（評価が必要なもの）、<code>needs-info</code>（報告者待ち。返信があれば needs-triage に戻る）、<code>ready-for-agent</code>（完全に仕様化され、agent brief が付いている）、<code>ready-for-human</code>（同じ brief に「なぜ委譲できないか」を加えたもの）、<code>wontfix</code>（クローズ、理由は記録済み）。</p>
+                        <p><code>wontfix</code> は三種類あり、その違いは重要です。なぜなら<strong>知識ベースに書き込まれるのは一種類だけ</strong>だからです：すでに実装されているものは、それが存在する場所を指すコメントを残し、out-of-scope には<strong>書きません</strong>（それは作られた機能であって拒否された機能ではありません。書き込むと重複チェックを汚染します）。拒否した bug は丁寧に説明してクローズします。拒否した enhancement は out-of-scope ディレクトリにファイルを一つ書き、クローズのコメントからリンクします。そのディレクトリは<strong>拒否された概念一つにつき markdown 一つ</strong>（issue 一つにつき一つではありません）であり、triage は何かを評価する前にディレクトリ全体を読み、<strong>キーワードではなく概念で照合します</strong>。</p>
+                        <p><strong>brief を書く前に検証します</strong>：bug は報告者の手順どおりに再現し、PR は checkout して関連するテストを走らせ、そのうえで三つの結果のいずれかを報告します——確認済み（コードパス付き）、再現できない、試すには詳細が足りない（これ自体が最も強い needs-info のサインです）。すべては <strong>agent brief</strong> を良くするためであり、その brief は<strong>正確さより耐久性</strong>を旨として書かれます：型、シグネチャ、振る舞いの契約を書き、<strong>ファイルパスと行番号は決して書きません</strong>。issue は何週間も放置されることがあり、その下でコードは動き続けるからです。</p>
+                        <p><strong>落とし穴</strong>：label は自動では作られません。状態が五つでは<strong>足りない</strong>というのが最もよく挙げられる不足です（blocked、deferred、implemented はいずれも要望がありますが、どれも ship されていません）。<strong>backlog 全体に一度に放って走らせないでください</strong>——「注意が必要なものを見せて」というパスは、選ぶための安価なリストです。一度に二十個の issue を回すと、agent はそれを静かに証拠の土台として扱ってしまいます。そのうえこの skill が返すのは、<strong>issue の本文だけでコメントは返しません</strong>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">合流路 — wayfinder</p>
+                    <h3 class="font-display text-lg font-bold mb-3">この案件は session 一つに収まらない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>この skill が引き受けるのは、<strong>agent session 一つには収まらないほど大きな</strong>案件です——<strong>目的地</strong>は言えるのに、まだ経路が見えない。それを tracker 上の共有された一枚の<strong>地図</strong>として描きます。地図は decision チケットで構成され、一度に一枚ずつ解いて経路がはっきりするまで進めます。</p>
+                        <p><strong>計画はしますが、実行はしません。</strong>各チケットは「解決すると決定が出る」問いを一つ抱えているのであって、実行すべき構築の一片ではありません。地図が完成したと言えるのは：<strong>誰かがこれを作り始める前に、決めるべきことが何も残っていない状態です。</strong>このルールは agent が最もよく破ります。</p>
+                        <p>これと <code>grill-with-docs</code> の境界は <strong>session の数であって、プロジェクトの大きさではありません</strong>：一つの会話に収まるなら grilling（安くて質も良い）。収まらないときだけ wayfinder です。<strong>範囲がはっきりしている機能に wayfinder を持ち出すのは、よくある間違いです。</strong></p>
+                        <p><strong>地図に載る四つのもの</strong>：<em>Destination</em>——行き着いた先がどんな姿か。それを<strong>どのチケットよりも先に名付けます</strong>。<em>Decisions so far</em>——クローズしたチケット一枚につき一行、それぞれ詳細が実際に住んでいる場所へリンクします。<em>Not yet specified</em>、つまり<strong>戦争の霧</strong>——来ることは見えていても、まだ正確に言い表せない決定です。判定基準は<strong>その問いをいま正確に言えるかどうか</strong>であって、答えられるかどうかではありません。<em>Out of scope</em>——目的地の外だと判断した作業です。クローズし、決して卒業させません。地図は<strong>保管場所ではなく索引</strong>であり、決定はそれ自身のチケットの中にだけ生きています。</p>
+                        <p><strong>Frontier</strong> は「開いていて、ブロックされておらず、まだ引き受けられていない」チケットのことです。session は作業を始める前にチケットを自分に assign して引き受けるので、assignee がそのまま引き受けの印です。チケットは<strong>常に名前で呼び、裸の番号は使いません</strong>——issue 番号がずらりと並んだ壁は、文章の中では読めません。</p>
+                    </div>
+                    <div class="overflow-x-auto mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">タイプ</th>
+                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">モード</th>
+                                    <th class="py-3 font-bold text-sm">使いどころ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">grilling</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">デフォルト。話し合いで問題をはっきりさせられる場合</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">prototype</td><td class="py-4 pr-4 whitespace-nowrap">HITL</td><td class="py-4">「これはどんな形であるべきか」——話し合いでは決まらない問い。成果物はチケットから asset としてリンク</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">research</td><td class="py-4 pr-4 whitespace-nowrap">AFK</td><td class="py-4">作業ディレクトリの外にある事実が意思決定を止めている場合。地図を描く時点で発射し、並行で焼き切る</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">task</td><td class="py-4 pr-4 whitespace-nowrap">どちらでも</td><td class="py-4">決めることは何もないのに、<strong>手作業</strong>が一つの決定を止めている場合——権限の付与、サービスの登録、形が見えるようにデータを移す</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p><code>task</code> は「決める」ではなく「やる」唯一のタイプであり、存在理由は<strong>ある決定のブロックを外すこと</strong>、<strong>目的地を届けるための一部になることは決してありません</strong>。実務でもっとも間違えられるタイプです：agent がこれを実装ステップだと思い込み、地図の中でプロダクトコードを書き始めます。<code>research</code> は「1 session につきチケット 1 枚」の唯一の例外です。</p>
+                        <p><strong>致命的な落とし穴が三つあります。</strong>一つめは、<strong>wayfinder の session の途中で agent が本番コードを書き始める</strong>——最も多く報告されている失敗です。「計画はするが実行はしない」という既定値は地図の Notes で上書きできますが、 <strong>Notes を書くのは agent 自身</strong>です。したがって、制約とその免除が「制約される側」の所有する同じファイルの中に同居することになります。あるユーザーは、agent が「この地図は実行を伴う」と自分の Notes に書き込み、あとの session でそれを自分への許可として読み戻し、本番サーバー上で作業を始めるのを目にしました。二つめは、<strong>地図が空になったあとも必要なのは <code>/to-spec</code> と <code>/to-tickets</code></strong>——decision チケットは地図が閉じるときにすべて閉じられ、残るのは「リンクされた決定で埋まった地図」であって、それは構築計画ではありません。三つめは、<strong>grilling のチケットを並行して走らせてはいけません</strong>。二つの session は context を共有しないため、片方でついさっき答えた質問を、もう片方でまた聞かれることになります。</p>
+                        <p>実測された報告がもう一つあります：<strong>「27 枚のチケットを描いて、13 枚目まで進んだところで残り全部が意味をなさなくなった」</strong>。対抗策は二つ。地図の範囲を<strong>境界のある目的地一つ</strong>に絞ること（きちんと定義された epic のほうが、漠然とした「V1 を実装する」よりはるかにうまくいきます）、そして<strong>積極的に prototype すること</strong>。著者の言い方では、wayfinder は「prototypemaxxing」であって「planmaxxing」ではありません。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — handoff</p>
+                    <h3 class="font-display text-lg font-bold mb-3">何かを移す必要がある</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>現在の会話を一つの<strong>引き継ぎドキュメント</strong>に圧縮します——ワークスペースではなく OS の一時ディレクトリに書き出される markdown ファイルで、まっさらな agent がそれを読めばそのまま引き継げます。</p>
+                        <p><strong>これが買っているのは可搬性であって、圧縮ではありません。</strong>そのぶん、聞こえるよりずっと狭い用途になります：ファイルが要るのは、仕事が<strong>動く</strong>ときだけです。トリガーは四つ——harness を替える、別のディレクトリや repo に移る、仕事を同僚に渡す、phase の途中で見つかった支線を分岐させる。</p>
+                        <p><strong>最も飛ばされがちな使い方は分岐です。</strong>自分は自分の session に留まったまま、蓄積した context の複製を、並行して働く二人目の agent に渡します。prototype の脇道はまさにこう使います：深い設計の会話の最中に、走らせてみないと決着しない問題にぶつかり、しかも苦労して積み上げた thread をその調べものに費やしたくない——prototype の session に handoff し、答えを受け取り、それを持ち帰って、元の thread で引用する。<strong>二回の横断、生きた会話は一つ、話し直しはゼロ。</strong></p>
+                        <p>何が旅をするか：ドキュメントは生きた thread（いま何が飛んでいるか、なぜか、次は何か）と、推奨する skill を一組携えていきます。秘密は書き出す前にマスクされます。すでに書き留められているものは、意図的に<strong>一切</strong>持っていきません——spec、計画、ADR、issue、commit、diff はすべてパスか URL で参照し、決してコピーしません。</p>
+                        <p><strong>落とし穴</strong>：ファイルは一時ディレクトリにあり、パスは長く OS ごとに違うので、<strong>パスを尋ねて書き留めてから先へ進む</strong>こと。session をまたいで temp を消す環境もあるので、次の session がすぐに始まらないなら、自分で永続的な場所へコピーしておきます。次の agent への渡し方は<strong>パスを指す</strong>ことです。要約を shell コマンドに貼り込んではいけません——特殊文字を含む要約は壊れますし、典型的な失敗は<strong>黙って切り詰められること</strong>です。「what は拾うが why は拾わない」というのは公正な批判なので、<strong>「次の session は何のためか」をパラメータとして渡す</strong>とよいでしょう。そして、検証されていない思い込みが事実として書き留められていないか注意してください。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — to-questionnaire</p>
+                    <h3 class="font-display text-lg font-bold mb-3">答えは他人の頭の中にある</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>自分ひとりでは決められない決定を、一通の<strong>質問票</strong>に変えて、足りないピースを握っている人に渡します。</p>
+                        <p><strong>それが問い詰めるのは「今回の送付」であって、主題ではありません。</strong>主題についてあなたを問い詰めても、ここでは意味がありません——主題を知らないことこそが、他人に書いて送る理由なのですから。そこで、必ず答えられる二つのことだけを尋ねます：<strong>誰に宛てるのか</strong>（相手の役割、専門、あなたとの関係。これで語り口と、ドキュメントがどれだけ context を自前で持つべきかが決まります）と<strong>何を持ち帰る必要があるのか</strong>（自分では決着させられない具体的な決定や事実。これが成果物を測るチェックリストになります）。そのあとはすべて起草です。</p>
+                        <p>ドキュメントの形：一行の purpose と、「あなたの頭の中に一度も入ったことのない人」に向けた短い context。質問は<strong>重要なものから先に</strong>並べ、主題ごとにまとめる。<strong>一問に一つの考えだけ、複合質問は絶対に作らない</strong>。<strong>「わかりません」と答えてよいと明示する</strong>——フラグの立った不確かさは役に立ち、事実のように読める自信ありげな推測は役に立ちません。最後は catch-all を一つ。</p>
+                        <p>これは意図的に<strong>一切</strong>分岐せず、<strong>一切</strong>複数の宛先を取りません。三人が三つの答えを握っているなら、三回走らせます。最もよくある使い方は、行き詰まった grilling です：<strong>同じ会話の中で</strong>走らせます——ingest の段階を持たないこの skill が grilling のあとで働くのは、その session がすでに context に入っているからにほかなりません。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — wait-what</p>
+                    <h3 class="font-display text-lg font-bold mb-3">いまの説明が腑に落ちない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>agent が、いま言ったばかりのことを<strong>もう一度売り込み直します</strong>：足りなかった context を補い、平易な言葉で書き、あなたのプロジェクトの <code>CONTEXT.md</code> にある語彙を使います。</p>
+                        <p><strong>この skill はたった三行で、それは未完成の草稿ではなく設計です。</strong>冗長さと戦う skill は、長くなることで失敗します：四百行の「簡潔にせよ」を読んでも、モデルはやはり冗長になります。モデルが読み取るのは、訴えの中身ではなく分量だからです。</p>
+                        <p><strong>名前がそのまま仕組みです。</strong>先頭に来る語は <em>wait</em>。「もっと簡潔に」は <strong>agent の出力</strong>についての指示で、モデルは「言葉を削る」ことで従い、その結果あなたはもっと迷子になります。<em>wait</em> が指すのは<strong>あなたの状態</strong>です：「理解はここで失敗した」と言っているのです。「短くして」と言われた agent は電報を書きます。「待って、置いていかれた」と言われた agent は<strong>戻って説明し直します</strong>。流行している言い回しはどれも出力を名指ししていて、モデルは短いだけで明確にはならない語り口へと過剰修正します。<strong>聞き手を名指しすれば、両方の半分がそろって手に入ります</strong>：より少ない言葉、<strong>そして</strong>あなたに欠けていた前提。</p>
+                        <p>意図的に「説明し直すのは<strong>それ</strong>」と言い、「直前のメッセージ」とは言いません——あなたを置き去りにしたものはたいてい一段落より大きく、どこまで戻るかは agent が決めます。本当の解毒剤は、あらかじめ共有言語を作っておくことです。wait-what が直せるのは、すでに起きてしまった一件だけです。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — teach</p>
+                    <h3 class="font-display text-lg font-bold mb-3">何日もかけて何かを学びたい</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>これを実行したディレクトリを常設の学習ワークスペースに変え、一連の<strong>自前のスタイルを持つ短い HTML レッスン</strong>で、複数の session にまたがって一つの主題を教えます。</p>
+                        <p><strong>モデルがすでに知っていることからは教えません。</strong>parametric knowledge は信用できないものとして扱われます：教える前に、まず信頼度の高い資料を探し、資料ファイルに記録し、どのレッスンでもそれを引用します。そして<strong>状態を持ちます</strong>——mission、資料、レッスン、学習ログはすべてファイルとしてディレクトリの中に住んでいます：</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-line">
+                                        <th class="py-3 pr-4 font-bold text-sm">パス</th>
+                                        <th class="py-3 font-bold text-sm">入るもの</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm align-top">
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">MISSION.md</td><td class="py-4">なぜこれを学ぶのか。ほかのすべてがこれにぶら下がります。これが無ければ、まずそれが存在するまであなたにインタビューします</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">RESOURCES.md</td><td class="py-4">厳選された出典。Knowledge と Wisdom（コミュニティ）に分かれます</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">lessons/</td><td class="py-4">番号付きのレッスン——教える単位の主役</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">reference/</td><td class="py-4">圧縮されたチートシート、アルゴリズム、用語集——<strong>実際に読み返すことになる</strong>ドキュメント</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">learning-records/</td><td class="py-4">ADR 形式の「何を確かに学んだか」の記録。次に何を教えるかを決めるのに使います</td></tr>
+                                    <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">assets/</td><td class="py-4">再利用できる部品——最初のものは共有 stylesheet——レッスンが同じ一つの講座に見えるようにします</td></tr>
+                                    <tr><td class="py-4 pr-4 font-semibold">NOTES.md</td><td class="py-4">あなたが述べた教え方の好み</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>中心にある考えは <strong>storage strength</strong>（長期の保持）であって、 <strong>fluency</strong>（その場の思い出せる感じ。読んでいるあいだは習熟したように感じられ、一週間後には消えています）ではありません。それは<strong>望ましい困難</strong>を使って前者を作ります。知識が先です（この段階では難度は敵であり、理解に必要なワーキングメモリを食います）。技能はそのあと、タイトなフィードバックループで鍛えます（この段階では難度は道具です）。<strong>レッスンはめったに読み返されませんが、リファレンス文書は読み返されます</strong>——ですから、一つのレッスンの圧縮されたエッセンスはリファレンスのディレクトリに属するのであって、それを導入したレッスンの中に埋めるものではありません。</p>
+                        <p><strong>落とし穴</strong>：ファイルが間違った場所に書き込まれることがあり（issue 377、あるユーザーのレッスンがグローバルの skill ディレクトリに書き込まれました）、<strong>最初にディレクトリ名をはっきり言ってください</strong>。<strong>小テストの正解が必ず最初の選択肢になります</strong>（複数のモデルで確認済み、未修正。あるコントリビューターは 9 レッスン 33 回すべてが A だったと報告しています）。<strong>能力評価のステップがありません</strong>。最初のメッセージで、自分の既存の知識とギャップを伝えてください。<strong>間隔反復のスケジュールもありません</strong>。復習したければ自分から頼んでください。</p>
+                        <p>コードのためだけではありません——記録では、コード以外の用途のほうが大きな割合を占めます。コードの中では、いちばん強い用途はゼロから言語を学ぶことではなく、<strong>見知らぬ codebase や新しいチームの技術スタックの中で方向をつかむこと</strong>です。著者はきれいな組み合わせを一つ挙げています。問い詰められている最中に分からないものに当たったら、<strong>grilling を止めて学びに行かないでください</strong>——学習ワークスペースへ handoff し、そこで学び、戻って続きをやります。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — wizard</p>
+                    <h3 class="font-display text-lg font-bold mb-3">人間にしかできない手作業の手順がある</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>それは<strong>対話型 bash script</strong>を生成し、人間を一歩ずつ手作業の手順に沿って導きます——サードパーティサービスをつなぐ、一度きりの移行を走らせる、プロジェクトを状態 A から状態 B へ移す。</p>
+                        <p><strong>agent が script を書きますが、それを実行することは決してありません。</strong>実行するのは自分のマシンの上です。ですから wizard は、それに従って進める手順書ではありません——それは<strong>プロセスを駆動し、状態を保持するプログラム</strong>であり、あなたの担当はクリックとペースト、そして Enter を押すことです。Stage は「一つの画面に一つの集中したタスク」で、script は stage の間でターミナルをクリアします。</p>
+                        <p><strong>script を書く前にまず scoping</strong>：それは何も知らないまま尋ねるのではなく、あなたの repo を読みます——環境ファイル、compose ファイル、framework config、そして CI 設定の中のすべての secret と変数参照。そのどれもが wizard の出さなければならない値です。そのうえで順序づけた stage の一覧を出して確認を取り、そのあとで初めて各 stage を人間がたどる正確な経路に対応づけます。今の UI がどうなっているか分からないときは、あなたに尋ねるか文書を調べるのであって、<strong>クリックを発明したりはしません</strong>。</p>
+                        <p>template がすでに UX を解決しています：進捗、確認ゲート、クロスプラットフォームでの URL の起動、secret の伏せ字入力、環境ファイルへの冪等な書き込み、CI secret の書き込み、そして「何をスキップしなければならなかったか」の締めくくりの要約。<strong>固定ライブラリの半分はどの wizard でも同じで、決して手で直しません。一貫性こそが要点です。</strong>wizard を書く agent はそれをエンドツーエンドで実行せず、静的な検証に切り替えます。<strong>最初に実行するのはあなたで、その一回がそのままテストです</strong>。</p>
+                        <p><strong>落とし穴</strong>：<strong>途中で前のステップに戻れません</strong>。3 つ目のステージで打ち間違えたら中断して走り直しです（走り直しは安く、環境ファイルに書き込み済みの値はデフォルトとして戻ってきます）。プロンプトでは<strong>矢印キーに bug があり</strong>（issue 741）、backspace は効きます。サードパーティサービスの状態を調べに行くことはしません。<strong>API key はモデルの context に入りません</strong>——ただし scoping のときに key をチャットへ貼り付ければ、それは貼り付けた他のどんなテキストとも同じく context の中にあります。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">語彙層 — codebase-design</p>
+                    <h3 class="font-display text-lg font-bold mb-3">モジュールはどんな形であるべきか</h3>
+                    <p class="leading-relaxed mb-6">これはモジュールを設計するときに使う言葉を固定し、一つひとつを正確に定義して、<strong>ゆるい代替語を禁じます</strong>。そして、そこから導かれるいくつかの原則を述べます。</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-line">
+                                    <th class="py-3 pr-4 font-bold text-sm">用語</th>
+                                    <th class="py-3 pr-4 font-bold text-sm">意味</th>
+                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">使わない語</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm align-top">
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Module</td><td class="py-4 pr-4">インターフェースと実装を持つものすべて。<strong>意図的に規模とは無関係</strong>——一つの関数、一つの class、一つの package、層をまたぐ一つのスライス</td><td class="py-4 hidden tablet:table-cell">unit、component、service</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Interface</td><td class="py-4 pr-4">呼び出し側が正しく使うために知っていなければならない<strong>すべて</strong>：型シグネチャに加えて、不変条件、順序の制約、エラーモード、必須の設定、性能特性</td><td class="py-4 hidden tablet:table-cell">API、signature</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Depth</td><td class="py-4 pr-4">インターフェースにかかるてこ。<strong>深い</strong>：小さなインターフェースの背後に大量の振る舞い。<strong>浅い</strong>：インターフェースが実装とほぼ同じくらい複雑</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4 pr-4">そこを編集しなくても振る舞いを変えられる場所。インターフェースの<strong>位置</strong></td><td class="py-4 hidden tablet:table-cell">boundary</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Adapter</td><td class="py-4 pr-4">ある seam の上で、あるインターフェースを満たす具体的なもの。名前が指すのは<strong>役割であって素材ではない</strong></td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leverage</td><td class="py-4 pr-4">呼び出し側が depth から得るもの：インターフェースを一単位学ぶごとに、より多くの力が手に入る</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr><td class="py-4 pr-4 font-semibold">Locality</td><td class="py-4 pr-4">保守する側が depth から得るもの：変更、bug、検証が一か所に集まる</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 space-y-4 leading-relaxed">
+                        <p>Depth <strong>は意図的に</strong>「実装の行数をインターフェースの行数で割ったもの」とは定義されていません——その指標は、実装をより肥大化させることに報いてしまうからです。ここで使うのは depth-as-leverage です。</p>
+                        <p><strong>四つの原則</strong>：depth はインターフェースの性質であって、実装の性質ではありません。<strong>deletion test</strong>——このモジュールを削除して複雑さが消えるなら、それは pass-through。複雑さが N 個の呼び出し側に再び現れるなら、それは稼いでいるということ。<strong>インターフェースこそがテスト面</strong>であり、その外側まで測りたくなったら、それはモジュールの形が間違っているということです。<strong>adapter が一つなら仮説上の seam、adapter が二つあって初めて本物の seam</strong>。</p>
+                        <p><strong>落とし穴</strong>：<strong>これを driver として使わないでください</strong>（issue 449）。「続けて未解決の事項を進めて」と言われると、agent は見つけられるうちでいちばん動作らしいものをつかみ、前の session ですでに読み込んだコードを探索し直し、長く走ってからようやく何かを尋ねてきます。<strong>driver となる skill を名指しして、これはその下に置いてください。</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">語彙層 — domain-modeling</p>
+                    <h3 class="font-display text-lg font-bold mb-3">言葉がぶつかっている</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>これは設計を進めるのと同時に、プロジェクトの <strong>ubiquitous language</strong>を作り上げ、磨いていきます——用語集と衝突する言い回しに異議を唱え、曖昧な言葉を使ったときに正確な言葉を引き出し、具体的なシナリオで一つの関係を境界がはっきりするまで圧力テストします。</p>
+                        <p><strong>これは能動的な規律であって、受動的なものではありません。</strong>ただ <code>CONTEXT.md</code> を読んで語彙を借りるのは、どの skill にもできる一行の習慣です。これは<strong>モデルを変えている</strong>ときに使うものです。これが、<strong>あなたを中断させる</strong>理由です：用語が決着したその瞬間に、会話の途中で <code>CONTEXT.md</code>へ書き込みます——バッチ版は一回の session の<strong>要約</strong>であるのに対し、リアルタイム版はその session の<strong>実際の成果物</strong>。</p>
+                        <p>成果物は二つ、基準も二つ。<code>CONTEXT.md</code> に入るのは<strong>用語</strong>（あるものが何であるか、一〜二文）です。書き込みのしきい値は「曖昧な言葉が正式な用語になったとき」、タイミングはリアルタイムです。<strong>決して入らないのは</strong>実装の詳細、spec、走り書き、一般的なプログラミングの概念です。ADR に入るのは<strong>一つの決定</strong>（一〜三文：context、選択、理由）です。書き込みのしきい値は<strong>三つすべてに当てはまること</strong>——逆転が難しいこと、context がなければ意外に感じること、実際のトレードオフの結果であること——であり、しかも提案であって既定ではありません。</p>
+                        <p><strong>本当に覚えておくべきなのは <code>CONTEXT.md</code> のあのルールです</strong>。実戦で壊れるのがそのルールだからです：<strong>それは用語集であり、用語集でしかありません。</strong>放っておくと、モデルは「CONTEXT.md に書き込む」を「与えられた答えをすべて永続化してよい」という許可として受け取り、ファイルは走り続ける spec になってしまいます——<strong>これはこの skill でいちばん多く報告されている問題で、複数のモデルにまたがっています。</strong></p>
+                        <p><strong>この skill の効きを実感できる動き</strong>：何かがどう動くのかをあなたが述べると、それはコードを調べて矛盾を並べて見せます——「あなたのコードは Order 全体をキャンセルしていますが、いま部分キャンセルができると言いました。どちらが正しいのですか？」こうして、どちらか一方が変更される前に、言語とコードは<strong>声に出して揃う</strong>ことを強いられます。<strong>制限</strong>：交差参照するのはコードと commit 済みのドキュメントだけで、<strong>あなたの issue tracker は検索しません</strong>。ですから、数か月前にクローズされた issue の中で議論し尽くして意図的に決着させた命名の衝突が、新しいものとして持ち出されます。</p>
+                        <p><strong>落とし穴</strong>：<code>CONTEXT.md</code> が 500 行以上に膨らむ——<strong>サイズは症状であって病気ではありません</strong>。そのまま、簡潔にして実装の詳細を取り除くよう指示してください。ファイルが本当に引き締まっているのに、読者が同時に頭へ入れたくない二つの領域をなお含んでいる場合にだけ、分割を検討します——<strong>肥大したファイルを分割しても、肥大したファイルが複数できるだけです</strong>。<strong>自動トリガーはこの skill の最も弱いところです</strong>：grilling を一通り走らせても <code>CONTEXT.md</code> の中身がまったく変わっていないなら、まさにそれが起きています。名指しで指示してください。<strong>人のレビューを経ていない、agent が書いた用語集は、無いよりも悪いものです</strong>：自信ありげに響く言い伝えになり、後続の session に真実として扱われます。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">語彙層 — writing-for-agents</p>
+                    <h3 class="font-display text-lg font-bold mb-3">agent に読ませる文書を書きたい</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>skill、指示ファイル、spec、runtime prompt、README——agent が読むものならすべてです。包装は違っても、書き方は同じです。</p>
+                        <p><strong>この skill の既定の動きは削除であって、説明ではありません。</strong>agent に別の agent 向けの指示を書かせると、字数の大半はモデルがすでに知っていることの説明に消えます。<strong>そのどの一行も no-op です</strong>：context の対価を払いながら、行動を何ひとつ変えていません。この参考資料はそれを見つけ出すためのレンズです。だからこの skill が値を返す相手は、白紙のファイルだけではありません。<strong>すでに手元にある文書</strong>に対しても、少なくとも同じだけの価値を生みます。</p>
+                        <p><strong>負担は二種類あります。</strong><em>Context load</em> は、常時ロードされる材料が agent のウィンドウの中で払わせるコストです。指示ファイルの一行、skill description、トリガーされるかどうかに関係なく毎 turn context に居座るもの、そのすべてです。<em>Cognitive load</em> のほうは<strong>あなた</strong>にかかるコストです。どの文書が存在し、いつどれに手を伸ばすか——索引はあなた自身です。<strong>これは最小化すべきコストではなく、人間が主導権を握るための値段です。</strong>この二つが腑に落ちれば、書くときの判断の大半は、同じ取捨を場所を変えて行うだけになります。</p>
+                        <p><strong>五つのてこ</strong>：<em>Context pointer</em>（context の中にあり、context の外の材料を名指しし、「いつ取りに行くか」まで符号化した参照。agent がどれだけ確実にそこへ手を伸ばすかを決めるのは、pointer の<strong>言葉づかい</strong>であって、その参照先ではありません）、<em>Information hierarchy</em>（「ファイル内の手順」から「ファイル内の参考」へ、さらに「pointer の先に置いた参考」へと上がる梯子）、<em>Completion criteria</em>（防ぐのは<strong>早すぎる完了</strong>、その防衛線です）、<em>Leading words</em>（モデルの事前学習にすでにある圧縮された概念。錨は二度下ろします——body では実行のために、pointer ではトリガーのために）、<em>Pruning</em>（単一の真実の源、関連性、そして一文ずつ当てる no-op test）。</p>
+                        <p><strong>no-op test は行動で測るもので、美意識で測るものではありません</strong>：その一行を消して、agent の行動が変わるかを問います。通らなかった文は、<strong>丸ごと削る</strong>——言い換えるのではありません。意見が割れたときは、<strong>その文書を走らせて</strong>決着をつけます。議論はしません。判定基準は、文書が良くなると同時に短くなること、そして残りの少なさに驚くこと。もうひとつ、<strong>同じことが二度書かれていない</strong>こと（重複は「この文書は一度も試されていない」ことの最も確かな徴候です）。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">単独 — grill-me</p>
+                    <h3 class="font-display text-lg font-bold mb-3">アイデアはあるが、まだ形になっていない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>この skill が手に取るのは<strong>ゆるいアイデア</strong>です。それを材料にインタビューし、あなたがそれに踏み切れるようになるまで続きます。練り上げた計画がなくても始められます——<strong>その計画を作ることこそが、この session の目的です</strong>。そしてこの skill は<strong>無状態</strong>です。ファイルも書かず、作業場も残しません。残るのは、頭の中にある、より鋭くなった版だけです。題材はコードでなくてよく、repo も要りません。</p>
+                        <p><strong>plan mode は切ってください。</strong>これは agent に早く計画を出せと急かすもので、「問いの中に留まる」ことの正反対です。</p>
+                        <p><strong>うまく回っているときの姿</strong>：あなたが何かに異を唱えます——<strong>一度も押し返さなかった session は、そもそも要らなかった session です</strong>。質問は長い点滴ではなく「数回のラウンド」で届き、後のラウンドは前に言ったことの上に明らかに積み上がります。ある問いが、ずっと暗黙のうちに下していた決定を掘り返すので、予想しなかった場所にたどり着きます。終わるころには、どの選択もその場にいなかった人に向かって弁護できます。</p>
+                        <p><strong>ラウンドを数えて、質問を数えないでください。</strong>46 問を 4 ラウンドに分けるのは普通の一回です。200 問は範囲が大きすぎるという意味で、長すぎる session は <strong>dumb zone</strong>——つまり context window が埋まりすぎて質問の質が落ちる領域——へ漂っていきます。問い詰めが終わって腹が決まったら、<strong>新しい session を開かないでください</strong>。その会話の context こそが価値です。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="eyebrow mb-2">ルーター — ask-matt</p>
+                    <h3 class="font-display text-lg font-bold mb-3">どれを使えばいいのか分からない</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p>これは<strong>勧めて、そこで止まります</strong>。grill もせず、spec も書かず、ファイルも開かず、名指ししたばかりの skill を代わりに起動することもしません——手に入るのは「次に何を打つか」だけで、打つのはあなたです。渡してくる思考の単位は <strong>flow</strong>：単一の skill ではなく、skill を<strong>貫く</strong>一本の道筋のことです。</p>
+                        <p><strong>知っておくべき正直な限界。</strong>これは<strong>手書き</strong>の地図で、repo に遅れますし、この pack の skill しか知りません。しかも<strong>「skill の半分は入っていない」と言ってきます</strong>——既知で未修正です。routing される skill の大半は user-invoked で、harness はそれらを agent に注入する一覧に載せません。agent はその一覧を完全なものとして扱い、存在しないと報告します。<strong>それらは入っています。</strong></p>
+                        <p>さらに、この skill は<strong>他の skill の挙動を誤って説明することがあります</strong>：skill 本体ではなく、自分が持つ一行の要約から答えるからです。ある詳細な報告では、単一の session の中で三回それが起きており、「thread を spec に変えるもの」という大雑把な印象だけで <code>to-spec</code>を飛ばすよう勧めた例も含まれていました。その <code>SKILL.md</code> ファイルは一度も開かれておらず、代償として本物の seam チェックが一回抜け、切り出したチケットは作業量を過小評価していました。<strong>他の skill について効いている断言をしてきたら、まず開かせてください——その <code>SKILL.md</code>。</strong></p>
+                        <p><strong>位置づけ</strong>：ask-matt はこの一式の上に立つ <strong>secondary source</strong>です。router と <code>SKILL.md</code> が食い違ったときは、<code>SKILL.md</code> のほうが正しいです。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             07 · Scenarios
+             ================================================================== -->
+        <section id="scenarios" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">四つの完全なシナリオ</h2>
+            </div>
+            <p class="leading-relaxed mb-10">本流のシナリオは <a href="#main-flow" class="underline">第 05 節</a>にあります。ここでは、それ以外で最もよくある四つの状況を挙げます。</p>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">シナリオ B — 本番環境で断続的に出る 500</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>状況</strong>：顧客から「ときどき送信すると 500 が返る」と報告があり、自分では再現できません。</p>
+                        <ol class="space-y-2">
+                            <li>他人からの報告なので、まず合流路に乗ります：<code>/triage</code>。報告者の手順で再現できますか。できなければ <code>needs-info</code>、あるいは今すぐ追うと決めます。</li>
+                            <li>今すぐ追うと決めたら、<strong>session を開き直します</strong>：<code>/diagnosing-bugs</code>、そして「まず赤くなるループを作ってくれ」と明言します。</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">Phase 1 だけが本当の関門で、見張るべきもそこだけ</p>
+                            <p>まず渡してもらうのは、<strong>すでに実行済みで、出力が貼られていて、この bug で赤くなる</strong>コマンドです。断続的な bug では、目標はきれいな再現ではなく<strong>再現率を上げること</strong>。<strong>赤いコマンドがないうちは、Phase 2 に進ませないでください。</strong>推測を始めたら引き戻します。</p>
+                        </div>
+                        <p>この先は機械的です：最小化（残った要素はどれも、なぜ効いているのかを言えること）、3 から 5 個の順位づけされた反証可能な仮説（<strong>唯一の人間のチェックポイント</strong>）、タグ付きのプローブを埋めること、<strong>修正より先にリグレッションテストを書くこと</strong>、後始末、そして当たった仮説を commit message に書くこと。</p>
+                        <p><strong>知っておくべき分岐がひとつ</strong>：そのリグレッションテストを置く正しい seam がないとき、この skill はそう言うべきで、偽の安心を与える浅いテストを書くべきではありません——<strong>「seam がない」こと自体が発見です</strong>。渡す先は <code>improve-codebase-architecture</code>。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">シナリオ C — 誰も片づけていない legacy repo を引き継ぐ</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>状況</strong>：八年目のプロジェクトに入ったばかり、あるいは vibe-coded な repo を引き継いだところです。ADR もなく、領域言語もなく、設計原則もありません。</p>
+                        <ol class="space-y-2">
+                            <li><strong>初日</strong>：<code>/setup-matt-pocock-skills</code> で tracker と文書の配置を整えます。</li>
+                            <li><strong>初日</strong>：<code>/grill-with-docs</code>で、この既存の repo を <code>CONTEXT.md</code> を通して立ち上げてもらいます。覚悟すべきは<strong>とても長い</strong>インタビューです（ファイルが形になるまで 50 問以上かかったという報告もあります）。しかも能動的に舵を取ってください——この skill はコードを読み、見つけたものについて質問してきますが、<strong>「コードにすでにある言葉のどれが正しい言葉か」を決めるのはあなたです</strong>。</li>
+                            <li><strong>二日目</strong>：<code>/improve-codebase-architecture</code>を呼び、開口一番「問い詰めないで、まずレポートをください」と伝えます。<strong>すべてが Speculative なら、実際には何も見つけられていないということです</strong>。Strong の候補を一つ選びます。</li>
+                            <li><strong>二日目</strong>：候補は一度に一つ。その候補について grilling させ、成果物は diff ではなく「決定」です。そのあとに <code>to-spec</code>、<code>to-tickets</code>、<code>implement</code>。</li>
+                            <li><strong>その後</strong>：数日おきにアーキテクチャ点検をもう一度回して、メンテナンスとします。</li>
+                        </ol>
+                        <div class="border-l border-line pl-6">
+                            <p class="eyebrow mb-2">なぜこの順番なのか</p>
+                            <p>先に共通の語彙を作っておくと、アーキテクチャ点検の出力は格段に良くなります——候補が「Order intake モジュール」のような<strong>あなたたちの名詞</strong>で語られ、「FooBarHandler」ではなくなります。</p>
+                        </div>
+                        <p><strong>正直な期待値</strong>：本当に収拾がつかなくなったプロジェクトでは「少しは助かったが、それでも足りない」という報告があります。八年もの legacy codebase では、モデルが同じ場所を堂々巡りするのを見た人もいて、一方で同じ skill が整った repo ではきれいな図を出してきます。<strong>いまのところ、このケースを専門に扱う skill はありません。</strong></p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">シナリオ D — 大規模なグリーンフィールド案件</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>状況</strong>：新しいプロダクトモジュールをゼロから作る。道すじはまったく見えておらず、一回の対話で話しきれるものでないのは明らかです。</p>
+                        <ol class="space-y-2">
+                            <li>まず五つの <code>wayfinder:</code> label があることを確認します（存在しない label があると <code>gh</code> コマンドがそのまま失敗します）。</li>
+                            <li><code>/wayfinder</code>。最初にやるのは、<strong>destination の命名</strong>です。問われるのは「地図全体の目的地」であって、この session の目的地ではありません。<strong>範囲は境界のはっきりした一つの epic まで絞ります</strong>。「V1 の実装」ではいけません。</li>
+                            <li>幅優先の grilling を一度おこない、Destination、Decisions so far、霧、Out of scope を描き出します。霧とチケットを分ける判定基準は<strong>その問いを「いま」正確に言えるかどうか</strong>です。冒頭の grill で霧が一つも見つからなければ、「これは地図が要らないほど小さい」と言って止まるべきです。</li>
+                            <li>research チケットは地図を描いている最中に発射され、並行で燃やします。ほかのチケットは<strong>一度に一枚だけ</strong>。自分に assign して引き受けます。</li>
+                            <li>一枚解くごとに、resolution のコメントを貼り、チケットを閉じ、地図に一行残して、そこで<strong>止まる</strong>。前方の霧を晴らし、いま言葉にできるようになったものを新しいチケットへ卒業させます。</li>
+                            <li>地図が空になったら：<code>/to-spec #&lt;map_issue&gt;</code>（渡すのは<strong>メインの地図</strong>で、個別の decision チケットではありません）。そのあとに <code>/to-tickets</code>、<code>/implement</code>。</li>
+                        </ol>
+                        <p><strong>三つの致命的な落とし穴</strong>は <a href="#situations" class="underline">第 06 節</a> の wayfinder の項目にすでに挙げてあります：agent が本番コードを書き始める、そして <code>to-spec</code>を飛ばさない、grilling チケットを並行で回さない。</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-lg font-bold mb-3">シナリオ E — コードとまったく関係のない意思決定</h3>
+                    <div class="space-y-4 leading-relaxed">
+                        <p><strong>状況</strong>：ビジネス上の判断を考えている——新しい製品ラインを立ち上げるか、提案の価格をどう決めるか、記事の論証の骨組みをどう組むか。</p>
+                        <ol class="space-y-2">
+                            <li>きれいな対話を一つ開きます（<strong>どの repo の中にいる必要もありません</strong>）。plan mode を切って、 <code>/grill-me</code>。</li>
+                            <li>一巡ずつ答え、番号を振ってまとめて返します。浅すぎる問いは押し返し、範囲がずれてきたら言葉にします。<strong>「わかりません」は本当の答えです</strong>。</li>
+                            <li>「実物を見ないと答えられない」問いに当たったら、それは ungrillable です。コード以外の場面ではたいてい、一枚の下書きを先に作る、一枚の表を先に計算する、顧客を一人先に捕まえる、のいずれかになります。</li>
+                            <li>「答えが他人の頭の中にある」問いに当たったら、<strong>同じ会話の中で</strong> <code>/to-questionnaire</code>。それをその人に送り、答えが返ってきたら次の一巡を開きます。</li>
+                            <li>これはステートレスです：ファイルを書かず、ワークスペースも残しません。残るのは、あなたの頭の中にある、より鋭くなった版だけです。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             08 · Pitfalls. The source used a red "高" chip; severity is a word
+             in its own column here.
+             ================================================================== -->
+        <section id="pitfalls" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">既知の落とし穴一覧</h2>
+            </div>
+            <p class="leading-relaxed mb-8">「最初に目にする症状」の順に並べています。<strong>重大</strong>は、お金か時間を無駄にするという意味です。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">どの skill</th>
+                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">重大</th>
+                            <th class="py-3 font-bold text-sm">対処法</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4">agent が一部の skill は入っていないと言う</td><td class="py-4 pr-4 hidden tablet:table-cell">ask-matt など</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">user-invoked skill はモデルの一覧に載りません。<strong>入っているので、そのまま打てばよい</strong>。正となるのは <code>.claude-plugin/plugin.json</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>gh</code> が label は存在しないと言う</td><td class="py-4 pr-4 hidden tablet:table-cell">triage、wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">setup <strong>は label を作りません</strong>。自分で <code>gh label create</code> を一度実行します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">インタビューが質問を一度に全部出し、推奨の答えもない</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">grilling か domain-modeling が読み込まれていません。<strong>agent に「どの skill を読み込んだか」と聞く</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">インタビューは良いのに <code>CONTEXT.md</code> が変わらない</td><td class="py-4 pr-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">domain-modeling が読み込まれていません。名指しで呼び出します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>CONTEXT.md</code> が 500 行以上に膨れ上がる</td><td class="py-4 pr-4 hidden tablet:table-cell">domain-modeling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">実装の詳細を吸収しています。簡潔にして実装の詳細を取り除くよう直接命じます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">spec の読み込みが途中で切れ続ける</td><td class="py-4 pr-4 hidden tablet:table-cell">to-spec → to-tickets</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">二つのステップの間では、<strong>clear も compact もしない</strong>。同じウィンドウで最後まで回します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">3 行の変更が 12 枚のチケットに切られる</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">詰問ステップでまとめるよう指示します。本当に小さいならそのまま implement して、これは使いません</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">レイヤーごとに一枚のチケットに切られる</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">チケットごとに「終わったら何が demo できるか」を聞き、振る舞いを答えられないものが水平スライスです</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">sub-issue にならず、blocked-by が本文に書かれるだけ</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">既知の未修正です。あとから自分で <code>gh issue create --parent</code>、<code>--add-sub-issue</code>、<code>--blocked-by</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">受け入れ条件が着手前にもう通っている</td><td class="py-4 pr-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">一条ずつ「どんな観察がこれを偽だと示すか」を聞き、開始時の commit で赤になることを確かめます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4"><code>/implement #2</code> がまったく無関係なことをする</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4"><code>#2</code> は「見えている番号つきリストなら何でも」に対して解決されます。<strong>完全な URL を渡し、タイトルを読み上げさせる</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">終わってもチケットは開いたまま、受け入れ条件にチェックが入らない</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">想定どおりの動きで、締めくくりのステップがありません。<strong>手でチケットを閉じる</strong>と、依存の連鎖がようやく前に進みます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">code-review が私の変更を見ていないと言う</td><td class="py-4 pr-4 hidden tablet:table-cell">implement、code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">HEAD との diff を取るので、commit していないものは入りません。<strong>先に commit してから review</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">implement を並行で何本も回すと git の状態がおかしくなる</td><td class="py-4 pr-4 hidden tablet:table-cell">implement</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">同じ checkout では対応していません。worktree を使いますが、stash は共有のままです</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">組み込みの code-review と名前がぶつかる</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">組み込みのほうを外すか、fork して別名にします</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">review の sub-agent がさらに agent を生む</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">既知の未修正で、一度は 50 個以上まで増えました。<strong>無人で回すときは agent の数を見張る</strong>。fork には再生成を禁じる一行を足します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">review が回すたびに新しい問題を見つける</td><td class="py-4 pr-4 hidden tablet:table-cell">code-review</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">収束する保証はありません。手がかりの一覧として扱い、明文のルールに裏づけられたものだけ直して、そこで<strong>やめる</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">research が 450k token を焼く</td><td class="py-4 pr-4 hidden tablet:table-cell">research</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">nesting bug（issue 530）で、自分自身をもう一つ生みます。<strong>呼び出したあと、バックグラウンドのタスク一覧を確認する</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一言の答えがほしいだけなのに、再現環境を作りにいく</td><td class="py-4 pr-4 hidden tablet:table-cell">diagnosing-bugs</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">「診断せずに直接答えて」と言うか、その model invocation を切ります</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">テストより先に実装を書く</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">起こります。skill はこの点を抱えたまま生きています。あるスライスで厳密にやりたいなら、見張りながら回します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">先にブラウザテストを書いて堂々巡りする</td><td class="py-4 pr-4 hidden tablet:table-cell">tdd</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">repo の指示ファイルで宣言します：browser テストは振る舞いが動いたあとに書く</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">アーキテクチャのレポートを開いてもスタイルも図もない</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">外部 CDN が遮断されています。inline CSS と手書きの SVG を使わせます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">一時間問い詰めてくるだけで選択肢をくれない</td><td class="py-4 pr-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">呼ぶときに「問い詰めないで、そのままレポートをください」と言います</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">語彙層に「開始」と言って 100k token を焼く</td><td class="py-4 pr-4 hidden tablet:table-cell">codebase-design</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">これには流れがありません。<strong>driver となる skill を名指しし、その下に座らせる</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">wayfinder の agent が本番コードを書き始める</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">Notes は「計画のみで実行しない」を上書きでき、その Notes は agent が書いています。<strong>先に Notes を読む</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">27 枚のチケットのうち 13 枚目まで来たら全部が的外れ</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">範囲を境界のある一つの epic に絞り、積極的に prototype します</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">grilling が一問ごとに三段落で、疲れる</td><td class="py-4 pr-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">reasoning effort を下げ、グローバルの指示ファイルに平易な一文を足します。<strong>未解決</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">handoff のファイルが消える</td><td class="py-4 pr-4 hidden tablet:table-cell">handoff</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">一時ディレクトリは消されます。<strong>パスを聞き、必要なら自分で永続する場所へコピーする</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">コースがグローバルの skill ディレクトリに書き込まれる</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4">issue 377。<strong>ディレクトリ名をはっきり伝え、第一課がどこに落ちるかを先に確かめる</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">小テストの正解がいつも A</td><td class="py-4 pr-4 hidden tablet:table-cell">teach</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">既知の未修正です（33 回すべて的中）。位置には意味がないものとして扱うか、render のときにシャッフルする部品を求めます</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4">wizard で打ち間違えて一つ前に戻りたい</td><td class="py-4 pr-4 hidden tablet:table-cell">wizard</td><td class="py-4 pr-4 whitespace-nowrap">—</td><td class="py-4">戻る手段はありません。中断して回し直します（保存済みの値が既定値になります）。方向キーには bug があるので backspace を使います</td></tr>
+                        <tr><td class="py-4 pr-4">自分で書き換えた <code>SKILL.md</code>。更新後に消えた</td><td class="py-4 pr-4 hidden tablet:table-cell">すべて</td><td class="py-4 pr-4 font-semibold whitespace-nowrap">重大</td><td class="py-4"><code>npx skills update</code> が上書きし、plugin は読み取り専用。<strong>長期的な振る舞いは自分の指示ファイルに書く</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             09 · CLAUDE.md
+             ================================================================== -->
+        <section id="claude-md" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">自分の指示ファイルに入れるとよいもの</h2>
+            </div>
+            <p class="leading-relaxed mb-6">これは「公式の経路でカスタマイズする」やり方です——<strong>skill のファイルを書き換えると上書きされますが、ここは上書きされません</strong>。全体をそのままコピーして構いません。貼り先は自分の <code>CLAUDE.md</code> か <code>AGENTS.md</code>。
+            </p>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+
+- When grilling, ask one question at a time.
+- Do not start implementing without my explicit permission.
+- Browser and end-to-end tests are written after the behaviour works,
+  never as the first red test.
+- Keep questions and recommendations short. One paragraph maximum
+  per question.
+- When a skill asserts something about another skill's behaviour,
+  open that skill's SKILL.md before acting on it.
+- code-review sub-agents must not invoke /code-review or spawn
+  additional agents; perform the review directly.</pre>
+            <p class="eyebrow mt-8 mb-3">各行が防いでいるもの</p>
+            <ul class="space-y-3 leading-relaxed">
+                <li><strong>一度に一問</strong>：一問ずつのリズムに戻します。読むのが遅い人、第二言語で読む人、集中の足場が要る人におすすめです。</li>
+                <li><strong>許可なく実装を始めない</strong>：grilling が frontier を空にしたあと勝手に作り始めるのを防ぎます。弱いモデルや低い effort のときに起こります。</li>
+                <li><strong>ブラウザテストは最後に書く</strong>：tdd が先に Playwright を書いて堂々巡りになるのを防ぎます。</li>
+                <li><strong>質問と提案は短く</strong>：wayfinder と grilling の冗長さを和らげます。</li>
+                <li><strong>まず開くのは、主張の対象になっている <code>SKILL.md</code></strong>：ask-matt が自分の要約で別の skill を誤って説明するのを防ぎます。</li>
+                <li><strong>review の sub-agent はさらに agent を生成しない</strong>：暴走する fan-out を防ぎます。fork したユーザーが実測で効果を確かめた一行です。</li>
+            </ul>
+        </section>
+
+        <!-- ==================================================================
+             10 · Vocabulary
+             ================================================================== -->
+        <section id="vocabulary" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">中核の用語</h2>
+            </div>
+            <p class="leading-relaxed mb-8">これらの語は skill 群に共通する言語です。<strong>意味が取れなければ、skill の出力も読めません。</strong>
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">用語</th>
+                            <th class="py-3 font-bold text-sm">語義</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Seam</td><td class="py-4">そこを編集しなくても振る舞いを変えられる場所。テストは seam の上に載る。seam はインターフェースの<strong>位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Pre-agreed seam</td><td class="py-4">コードを書く前に合意しておいた seam。テストが長持ちする理由——下の実装を書き直してもテストはそのまま</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Tracer bullet</td><td class="py-4">すべての層を貫く細いが完全な一本の道。落ちた瞬間から単独で demo できる</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Vertical / horizontal slice</td><td class="py-4">垂直は一本の道がすべての層を貫く（正しい）。水平は一度に一層（誤り、最もよくある失敗）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deep / shallow module</td><td class="py-4">深いほうは小さなインターフェースの後ろに大量の振る舞い。浅いほうはインターフェースが実装とほぼ同じ複雑さ</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Deletion test</td><td class="py-4">このモジュールを消したと想像する：複雑さがより小さなインターフェースの後ろに<strong>集約</strong>、これは残す価値がある。それとも呼び出し側に<strong>拡散</strong>、それなら pass-through</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Locality / Leverage</td><td class="py-4">Locality は保守する側が得るもの（変更が一か所に集まる）。Leverage は呼び出す側が得るもの（インターフェースを一単位学ぶごとに得られる能力が増える）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Design tree / Frontier / Round</td><td class="py-4">設計ツリーは決定にぶら下がる決定。frontier は前提条件がすべて解決済みの決定の集合。1 round は frontier 全体を一度に問い切ること</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Grillable / ungrillable</td><td class="py-4">話し合いで詰められる問い。対して、反応する対象が要る問い（後者は prototype へ）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Fog of war</td><td class="py-4">wayfinder の地図上で「来るのは見えるが、まだ正確に言葉にできない」決定</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Decision ticket</td><td class="py-4">wayfinder の単位：一つの問いを抱えるもの（解決すると決定が出る）。これは<strong>決して</strong>実行するビルドのスライスではない</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Destination</td><td class="py-4">wayfinder の地図一枚全体の終着点の姿。地図を描く最初の一手はそれに名前をつけること</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Spec / Ticket</td><td class="py-4">spec は目的地とそれを固定する決定（残す）。ticket はそこへ至る実行の手順（使ったら捨てる）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Primary / secondary source</td><td class="py-4">一次資料は対話そのもの、commit、公式ドキュメント、ソースコード。二次資料はあらゆる要約。<strong>食い違ったら一次資料を採る</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context pointer</td><td class="py-4">context の中にあって、context の外の材料を名指しし、「いつ取りに行くか」まで書き込んだ参照</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Progressive disclosure</td><td class="py-4">ある分岐だけが必要とする参考資料を pointer の後ろへ移し、主ファイルを読める状態に保つこと</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Context load / Cognitive load</td><td class="py-4">前者は常時読み込まれる材料がモデルのウィンドウで払うコスト。後者は「どんな文書があり、いつ使うか」を<strong>あなた</strong>が負うコスト</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">No-op</td><td class="py-4">消しても agent の振る舞いが変わらない一行。context を払っているのに何も変えていない</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Leading word</td><td class="py-4">モデルの事前学習にすでにある圧縮された概念（tight、red、tracer bullet）。agent はそれを使って考える</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Storage strength / fluency</td><td class="py-4">長期の保持。対して、その場での思い出しやすさ（後者は読んでいる間は習得した気になり、一週間後には消える）</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Smart zone / dumb zone</td><td class="py-4">context window にまだ余裕がある状態。対して、品質が落ちるほど埋まった状態</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">HITL / AFK</td><td class="py-4">人間がループの中にいる（生きたやり取りでしか解けない）。対して、その場にいなくても走り切る</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-semibold">Phase boundary</td><td class="py-4">二つの作業の間。「自分の context をどうするか」を問うべき唯一の場所</td></tr>
+                        <tr><td class="py-4 pr-4 font-semibold">Expand–migrate–contract</td><td class="py-4">広域リファクタリングの三段階：新しい形を古い形の隣に足す、呼び出し箇所を小分けに移す、呼ぶ人がいなくなってから古いほうを消す</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             11 · Antipatterns
+             ================================================================== -->
+        <section id="antipatterns" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">11</p>
+                <h2 class="font-display text-2xl font-bold mb-6">七つのアンチパターン</h2>
+            </div>
+            <p class="leading-relaxed mb-8">この仕組みが最もよく壊れる使われ方です。</p>
+            <ol class="space-y-6 leading-relaxed">
+                <li><strong>受け身の grilling。</strong>「同意」と四十回答えた末に出てくるのは、agent が書いてあなたが頷いただけの計画です。<strong>一度も押し返さなかった session は、必要のなかった session です。</strong></li>
+                <li><strong>to-spec と to-tickets の間で clear や compact をする。</strong>問い詰めて引き出したものの大半は、その context window の中にしかありません。ここで切ると、spec はあなたが本当に決めたことを静かに取りこぼします。</li>
+                <li><strong>自分で生成したチケットに triage をかける。 </strong><code>to-tickets</code> が出すチケットは構造上すでに agent-ready です。triage は<strong>他人</strong>が投げ込んできた仕事のための合流路です。</li>
+                <li><strong>範囲がきちんと切れている機能に wayfinder を持ち出す。</strong>判定基準は <strong>session の数</strong>です。一つの対話に収まるなら使うのは <code>grill-with-docs</code>。そのほうが安く、質も上です。</li>
+                <li><strong>語彙層をドライバーとして使う。</strong>たとえば <code>codebase-design</code> か <code>domain-modeling</code> に「始めよう」と言うと、agent は自分で流れを発明し、大量の token を燃やします。driver を名指ししてください。</li>
+                <li><strong>review をコードを書いたのと同じ session で走らせる。</strong>同じ context で自分を審査するのは review ではなく、slash command を付けた確証バイアスです。</li>
+                <li><strong>カスタマイズのために <code>SKILL.md</code> を書き換える。</strong>更新で上書きされますし、plugin でのインストールはそもそも読み取り専用です。長期的な振る舞いは自分の指示ファイルに書いてください。</li>
+            </ol>
+            <div class="border-l border-line pl-6 mt-10">
+                <p class="eyebrow mb-2">もう一つ、メタなアンチパターン</p>
+                <p class="leading-relaxed">これを「流れがあるから考えなくていい」と受け取ること。作者が README で取っている立場は逆です——<strong>流れを引き受けてしまう</strong>たぐいのやり方は、助けてくれる代わりにあなたの制御を取り上げ、流れ自体の bug を直しにくくします。この skill 群は意図して小さく、書き換えやすく、組み合わせられるように作られています。<strong>出力の品質は、問いの数ではなく、あなたの答えの品質に追随します。</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             12 · 14-day plan
+             ================================================================== -->
+        <section id="plan" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">12</p>
+                <h2 class="font-display text-2xl font-bold mb-6">14 日間の学習プラン</h2>
+            </div>
+            <p class="leading-relaxed mb-8">1 日あたり 30 分から 60 分ほど、対象は<strong>自分の本物のプロジェクト</strong>。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">日</th>
+                            <th class="py-3 pr-4 font-bold text-sm">やること</th>
+                            <th class="py-3 font-bold text-sm">合格の目安</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">01</td><td class="py-4 pr-4"><a href="#concepts" class="underline">三つの土台となる考え方</a>に目を通す。plugin か skills.sh を入れる（<strong>どちらか一方</strong>）。repo を一つ選んで setup を走らせる。label を作る</td><td class="py-4"><code>docs/agents/</code> に三つのファイルがある。指示ファイルには <code>## Agent skills</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">02</td><td class="py-4 pr-4"><code>/grill-me</code> で<strong>コード以外</strong>の決定を問い詰める。「押し返す」を意識して練習する</td><td class="py-4">押し返しが 3 回以上。その場にいなかった人に対して、どの選択も弁護できる</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">03</td><td class="py-4 pr-4"><code>/grill-with-docs</code> で、既存の repo に小さな機能ひとつ分のインタビューをかける</td><td class="py-4"><code>CONTEXT.md</code> が進行中に一行ずつ育つ。ADR は 0 から 1 本</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">04</td><td class="py-4 pr-4">同じ対話のまま進む先は <code>/to-spec</code>。seam と out-of-scope の二節をしっかり読む</td><td class="py-4">spec の中のどの決定も、自分が下した覚えがある</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">05</td><td class="py-4 pr-4">同じウィンドウのまま進む先は <code>/to-tickets</code>。詰問ステップでチケットごとに「何を demo できるか」を聞く</td><td class="py-4">どのチケットも振る舞いを demo できる。一番上のチケットにブロッカーがない</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">06</td><td class="py-4 pr-4"><code>/implement</code> で最初のチケットをやる（<strong>完全な URL</strong>）。trace を最後まで見る</td><td class="py-4">trace の中に <code>tdd</code> の呼び出しが見える。commit まで到達する</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">07</td><td class="py-4 pr-4">新しい session で走らせるのは <code>/code-review main</code>。引用を一つずつ追う</td><td class="py-4">分かれた二つのレポート。<strong>発見を少なくとも一つ却下している</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">08</td><td class="py-4 pr-4"><code>codebase-design</code> の用語集を読み、流れではなく辞書として扱う</td><td class="py-4">設計の対話に component、service、boundary が出てこなくなる</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">09</td><td class="py-4 pr-4">「話し合いでは詰められない」問いに当たったら、走らせるのは <code>/prototype</code></td><td class="py-4">共有できる HTML ファイル一つ、または構造的に異なるいくつかのバリアント。答えは一行</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">10</td><td class="py-4 pr-4">本物の bug に対して走らせるのは <code>/diagnosing-bugs</code>。Phase 1 の gate を注視する</td><td class="py-4"><strong>最初の理論より先に、赤いコマンド出力を見ている</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">11</td><td class="py-4 pr-4"><code>/improve-codebase-architecture</code>（「まずレポートを」と言うのを忘れずに）。Strong の候補を一つ選ぶ</td><td class="py-4">HTML のレポート。候補が一つ、問い詰められて決定になっている</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">12</td><td class="py-4 pr-4"><code>/handoff</code> で「分岐」を一度練習する。主の対話は残したまま、並行する session を一つ開く</td><td class="py-4">元の session はその場に残る。新しい agent は説明し直さなくてもすぐ着手できる</td></tr>
+                        <tr class="border-b border-line"><td class="py-4 pr-4 font-sans font-semibold">13</td><td class="py-4 pr-4">練習するのは <code>/wait-what</code> と <code>/to-questionnaire</code>。そして <a href="#claude-md" class="underline">第 09 節</a> の内容を指示ファイルに書き込む</td><td class="py-4">言い直しが「より短く、より明確」になる。質問票はそのまま送り出せる</td></tr>
+                        <tr><td class="py-4 pr-4 font-sans font-semibold">14</td><td class="py-4 pr-4">本当に大きすぎる仕事を一つ選んで走らせるのは <code>/wayfinder</code>。範囲を境界のある epic まで絞る</td><td class="py-4">destination がどのチケットよりも先に書き出されている。開いているチケットはどれも一つの問いとして読める</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">そのあとのリズム：本流は毎日、アーキテクチャの点検は数日に一度、<code>/teach</code> は技能を補う必要が出たときに専用のディレクトリを開きます。</p>
+        </section>
+
+        <!-- ==================================================================
+             13 · Cheat sheet. The source shipped this as an ASCII block whose
+             meaning depended on column alignment. DESIGN.md forbids that — <pre>
+             content may lean on indentation but never on columns — so the
+             grouping is carried by headings and the comments moved out of the
+             block into the line beside each command.
+             ================================================================== -->
+        <section id="cheatsheet" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">13</p>
+                <h2 class="font-display text-2xl font-bold mb-6">1 ページのチートシート</h2>
+            </div>
+            <div class="space-y-8">
+                <div>
+                    <p class="eyebrow mb-3">repo ごとに一度</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/setup-matt-pocock-skills</code> — tracker、label とドキュメントの配置</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">本流（アイデアから ship まで）</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-with-docs</code> — repo あり、単一の session で話し切れる</li>
+                        <li><code>/to-spec</code> — session をまたぐときだけ必要。同じウィンドウで、clear しない</li>
+                        <li><code>/to-tickets</code> — tracer bullet に切り分け、ブロッキングエッジを宣言。同じウィンドウ</li>
+                        <li><code>/implement &lt;完全な ticket URL&gt;</code> — 1 チケットに 1 session、あいだで clear</li>
+                        <li><code>/code-review &lt;fixed-point&gt;</code> — きれいな session で走らせる。先に commit</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">合流路</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/triage</code> — 他人が投げ込んできた issue</li>
+                        <li><code>/wayfinder</code> — 一つの session に収まらない。clear のあと戻る先は <code>/to-spec</code></li>
+                        <li><code>/improve-codebase-architecture</code> — 数日に一度の構造の点検</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">いつでも</p>
+                    <ul class="space-y-2 leading-relaxed">
+                        <li><code>/grill-me</code> — repo なし、ファイルなし。テーマはコードでなくてよい</li>
+                        <li><code>/prototype</code> — 話しても決まらない設計の問い、一度に一つ</li>
+                        <li><code>/research</code> — 外部の事実。バックグラウンドで走らせ、二つ生まれていないか確認</li>
+                        <li><code>/diagnosing-bugs</code> — 難しい bug。赤いループができてから推測</li>
+                        <li><code>/resolving-merge-conflicts</code> — すでにコンフリクトにはまっている</li>
+                        <li><code>/wizard</code> — 人間にしかできない手作業の手順</li>
+                        <li><code>/handoff</code> — 引っ越させるものがある、または枝を分岐させる</li>
+                        <li><code>/to-questionnaire</code> — 答えが他人の頭の中にある</li>
+                        <li><code>/wait-what</code> — さっきの部分が分からなかった</li>
+                        <li><code>/teach</code> — 何日もかけて一つのテーマを学ぶ</li>
+                        <li><code>/ask-matt</code> — どれを使うか分からない。提案して止まる</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">語彙層、ドライバーとして使わない</p>
+                    <p class="leading-relaxed"><code>codebase-design</code>、<code>domain-modeling</code>、<code>grilling</code>、<code>writing-for-agents</code></p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-3">Phase boundary の五択、上から順に判断</p>
+                    <p class="leading-relaxed">継続 → clear → handoff → subagent → compact</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             Source. Named in section 01 as well; repeated here because this is
+             where a reader who skipped to the end will look for it.
+             ================================================================== -->
+        <section id="source" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">出典</p>
+                <h2 class="font-display text-2xl font-bold mb-6">このチュートリアルは何にもとづいて書かれたか</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>もとにしたのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>1.2.3 版</strong>（公開済みの 25 個の skill）です。その repo の <code>README.md</code>、<code>CONTEXT.md</code>、25 本の公式 skill ドキュメント、<code>.claude-plugin/plugin.json</code> と <code>CHANGELOG.md</code> を読んだうえで整理し、書き直しました。この repo は <strong>MIT</strong> ライセンスで公開されています。</p>
+                <p>
+                    <strong>本ページは TauX が独自に書き下ろした日本語のチュートリアルであり、公式ドキュメントの翻訳でも転載でもありません。</strong>skill そのもの、その名称、その挙動は原作者に帰属します。本ページの構成、判定基準、訳語、そしてすべての論評は TauX が書いたものであり、<strong>原作者の立場を代弁するものではありません</strong>。
+                </p>
+                <p>本文中の issue 番号はすべてその repo の issue で、<strong>執筆時点では多くがまだ開いています</strong>。これは二つのことを意味します。落とし穴は本物であり、そしてすでに直っているかもしれない、ということです。<strong>動かしてみて妙なことが起きたら、まずその repo で症状を検索してください</strong>——固定で書き込まれた落とし穴の一覧にとって最良の結末は、いつの日かそのすべてが期限切れになることです。</p>
+                <p>バージョン表記はここでは飾りではありません。この skill 群は変化が速く（<code>to-prd</code> は v1.1 で改名されて今は <code>to-spec</code>、<code>tdd</code> の refactor 段階は 2026 年 6 月に削除されました）、<strong>バージョン番号のないチュートリアルでは、どの部分がまだ有効なのか読者には判断できません</strong>。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">このワークフローを自分のチームに組み込みたい方へ</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">ツールは公開されています。難しいのは、すでにある tracker、規範、納品のリズムにつなぎ込むところです。そこは私たちがやってきました。</p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>
+                <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">企業向け AI 導入と社内研修を見る</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}
