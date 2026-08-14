@@ -342,6 +342,18 @@ date_published = "2026-07-26"
   description = "Forrester 与 Google 公布的导入效益数据该怎么看？拆解四组厂商数字的方法论、对照独立研究，并说明为什么自陈式的时间节省需要用量测验证。"
   canonical   = "https://taux.io/zh-Hans-CN/google-workspace-with-ai"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/google-workspace-with-ai.html"
+  title       = "Workspace AI の数字をどう読むか｜何を測ったのか | TauX"
+  description = "広く引かれる四つの Workspace AI の数字について、その調査方法・標本の大きさ・データの年。独立研究と突き合わせ、自己申告の節約時間がなぜ客観的な確認を要するのか。"
+  canonical   = "https://taux.io/ja-JP/google-workspace-with-ai"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/google-workspace-with-ai.html"
+  title       = "Workspace AI 수치를 어떻게 읽을 것인가｜무엇을 측정했는가 | TauX"
+  description = "널리 인용되는 Workspace AI 수치 네 가지의 조사 방법·표본 크기·데이터 연도. 독립 연구와 맞춰 보고, 자기 보고한 절약 시간이 왜 객관적 확인을 요하는지."
+  canonical   = "https://taux.io/ko-KR/google-workspace-with-ai"
+
   [page.locale.en-US]
   template    = "en-US/google-workspace-with-ai.html"
   title       = "Reading the Workspace AI numbers: what each one measured | TauX"
