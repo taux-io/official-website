@@ -297,6 +297,18 @@ date_published = "2026-08-06"
   description = "后量子密码迁移的五步骤执行路径：治理、CBOM 加密资产盘点、风险评估、加密敏捷性与供应链。对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。"
   canonical   = "https://taux.io/zh-Hans-CN/pqc-migration"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/pqc-migration.html"
+  title       = "ポスト量子暗号への移行｜五段階と、動いている期限 | TauX"
+  description = "ガバナンス、CBOM の棚卸し、リスク評価、暗号アジリティ、サプライチェーン。台湾 FSC の七つの方針と対応づけ、米国・EU・台湾の期限とその出典を添えます。"
+  canonical   = "https://taux.io/ja-JP/pqc-migration"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/pqc-migration.html"
+  title       = "포스트 양자 암호 이행｜다섯 단계와 이미 도는 시계 | TauX"
+  description = "거버넌스, CBOM 점검, 리스크 평가, 암호 민첩성, 공급망. 대만 금감위의 일곱 방침과 대응시키고 미국·EU·대만의 기한과 출처를 붙입니다."
+  canonical   = "https://taux.io/ko-KR/pqc-migration"
+
   [page.locale.en-US]
   template    = "en-US/pqc-migration.html"
   title       = "Post-quantum cryptography migration: five steps and the clocks already running | TauX"

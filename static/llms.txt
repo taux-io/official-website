@@ -163,6 +163,8 @@ Every route on the site has an English edition. These are all of them.
 -   [Workspace AI 수치를 어떻게 읽을 것인가](https://taux.io/ko-KR/google-workspace-with-ai): 네 숫자의 조사 방법·표본·연도. 독립 연구와의 대조, 자기 보고가 믿을 수 없는 이유.
 -   [2026 グローバル脅威レポートを読み解く](https://taux.io/ja-JP/threat-landscape): 八つの数字と、それぞれの測り方。ベンダーのテレメトリという母集団が意味すること。
 -   [2026 글로벌 위협 보고서 읽어 내기](https://taux.io/ko-KR/threat-landscape): 여덟 숫자와 각각의 측정 방식. 벤더 텔레메트리라는 모집단이 뜻하는 것.
+-   [ポスト量子暗号への移行](https://taux.io/ja-JP/pqc-migration): 五段階の進め方、台湾 FSC の七方針との対応、米国・EU・台湾の期限と出典。規制状態の確認日つき。
+-   [포스트 양자 암호 이행](https://taux.io/ko-KR/pqc-migration): 다섯 단계, 대만 금감위 일곱 방침과의 대응, 미국·EU·대만의 기한과 출처. 규제 상태 확인일 포함.
 -   [MCP とは何か](https://taux.io/ja-JP/what-is-mcp): host・client・server の三つの役割、prompts・resources・tools の違いが「誰が決めるか」にある理由、2026-07-28 の改訂が取り除いたもの。
 -   [MCP란 무엇인가](https://taux.io/ko-KR/what-is-mcp): host·client·server 세 역할, prompts·resources·tools의 차이가 「누가 정하는가」에 있는 이유, 2026-07-28 개정이 걷어낸 것.
 -   [AI プロンプト設計ガイド](https://taux.io/ja-JP/agent-prompting-guide): 何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、エージェントの設計まで。
