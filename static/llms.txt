@@ -167,6 +167,8 @@ Every route on the site has an English edition. These are all of them.
 -   [포스트 양자 암호 이행](https://taux.io/ko-KR/pqc-migration): 다섯 단계, 대만 금감위 일곱 방침과의 대응, 미국·EU·대만의 기한과 출처. 규제 상태 확인일 포함.
 -   [OWASP LLM Top 10 2026](https://taux.io/ja-JP/owasp-llm-top-10): 十のリスクの定義・攻撃面・防ぎ方。順位変動、範囲が広がった四条、順位の決め方の変更。
 -   [OWASP LLM Top 10 2026](https://taux.io/ko-KR/owasp-llm-top-10): 열 리스크의 정의·공격면·막는 법. 순위 변동, 범위가 넓어진 네 조항, 순위 정하는 방식의 변경.
+-   [AI Agent 開発ワークフロー実践](https://taux.io/ja-JP/agent-dev-workflow): mattpocock/skills の 25 個の skill を一本の開発ワークフローにつなぐ。本流の七ステップ、四つのシナリオ、31 個の落とし穴、14 日間の練習計画。1.2.3 版にもとづく TauX 独自の日本語チュートリアルであり、公式ドキュメントの翻訳ではありません。
+-   [AI Agent 개발 워크플로 실전](https://taux.io/ko-KR/agent-dev-workflow): mattpocock/skills의 25개의 skill을 하나의 개발 워크플로로 잇기. 본류 일곱 단계, 시나리오 네 개, 31개의 알려진 함정, 14일 연습 계획. 1.2.3 버전 기준으로 TauX가 독자적으로 쓴 한국어 튜토리얼이며 공식 문서의 번역이 아닙니다.
 -   [MCP とは何か](https://taux.io/ja-JP/what-is-mcp): host・client・server の三つの役割、prompts・resources・tools の違いが「誰が決めるか」にある理由、2026-07-28 の改訂が取り除いたもの。
 -   [MCP란 무엇인가](https://taux.io/ko-KR/what-is-mcp): host·client·server 세 역할, prompts·resources·tools의 차이가 「누가 정하는가」에 있는 이유, 2026-07-28 개정이 걷어낸 것.
 -   [AI プロンプト設計ガイド](https://taux.io/ja-JP/agent-prompting-guide): 何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、エージェントの設計まで。
