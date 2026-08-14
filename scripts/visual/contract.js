@@ -565,6 +565,12 @@ async function main() {
     ["zh-Hans,zh;q=0.9", "/zh-Hans-CN"],
     ["en-GB,en;q=0.9", "/en-US"],
     ["de-DE,de;q=0.9", "/zh-Hant-TW"],
+    // The row that separates this design from the one it replaced. A prefix
+    // match on the raw header answers Chinese because Chinese is written
+    // first; reading the q weights answers English, which is what was asked.
+    ["zh-TW;q=0.1, en;q=0.9", "/en-US"],
+    // `*` is "anything", not a preference for any locale here.
+    ["*", "/zh-Hant-TW"],
     ["", "/zh-Hant-TW"],
   ]) {
     checked++;
@@ -587,6 +593,32 @@ async function main() {
     } else if (location !== want && location !== BASE_URL + want) {
       failures.push({
         route: label,
+        check: "language negotiation",
+        problem: `sent to ${location || "(no Location)"}, expected ${want}`,
+      });
+    }
+  }
+
+  // THE QUERY STRING SURVIVES THE NEGOTIATION.
+  //
+  // `_redirects` carries it, so the fallthrough always did. A hand-built
+  // Location in the Worker did not, so `?utm_source=` reached /zh-Hant-TW and
+  // vanished on the way to /ja-JP — campaign attribution quietly missing for
+  // exactly the readers a language redirect exists to serve, and invisible in
+  // the numbers afterwards because the visits still arrived.
+  for (const [header, want] of [
+    ["ja-JP,ja;q=0.9", "/ja-JP?utm_source=contract"],
+    ["", "/zh-Hant-TW?utm_source=contract"],
+  ]) {
+    checked++;
+    const r = await fetch(BASE_URL + "/?utm_source=contract", {
+      redirect: "manual",
+      headers: header ? { "accept-language": header } : {},
+    });
+    const location = r.headers.get("location");
+    if (location !== want && location !== BASE_URL + want) {
+      failures.push({
+        route: `/?utm_source= (Accept-Language: ${header || "absent"})`,
         check: "language negotiation",
         problem: `sent to ${location || "(no Location)"}, expected ${want}`,
       });

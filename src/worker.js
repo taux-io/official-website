@@ -77,7 +77,8 @@ export default {
 
     // Only `/` negotiates. Every other path is an asset or one of the twenty
     // stable 301s, and both are decided without looking at the reader.
-    if (new URL(request.url).pathname !== "/") return served;
+    const url = new URL(request.url);
+    if (url.pathname !== "/") return served;
 
     const target = preferred(request.headers.get("accept-language"));
 
@@ -85,7 +86,19 @@ export default {
     // or a shared cache will hand one reader's answer to the next.
     const out = new Response(served.body, served);
     out.headers.set("Vary", "Accept-Language");
-    if (target) out.headers.set("Location", target);
+
+    // THE QUERY STRING COMES ALONG, BECAUSE THE FALLTHROUGH ALREADY DOES.
+    //
+    // `_redirects` preserves it, so `/?utm_source=x` with no language
+    // preference arrives at `/zh-Hant-TW?utm_source=x`. A hand-built Location
+    // dropped it, which meant campaign attribution survived for readers who
+    // matched no locale and vanished for everyone who matched one — the
+    // difference invisible in aggregate and impossible to explain afterwards.
+    //
+    // Read off the request rather than off the served Location, because the
+    // point is to match what the reader typed, not what the assets layer
+    // decided to echo.
+    if (target) out.headers.set("Location", target + url.search);
     return out;
   },
 };
