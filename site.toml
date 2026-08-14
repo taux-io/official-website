@@ -262,6 +262,18 @@ date_published = "2026-08-06"
   description = "CrowdStrike 2026 全球威胁报告的八组关键数据：27 秒 breakout、82% 无文档侦测、AI 加持攻击增加 89%。每一组都说明它是怎么被量出来的，以及那对它能推论到多广代表什么。"
   canonical   = "https://taux.io/zh-Hans-CN/threat-landscape"
 
+  [page.locale.ja-JP]
+  template    = "ja-JP/threat-landscape.html"
+  title       = "2026 グローバル脅威レポート｜八つの数字が支えられる範囲 | TauX"
+  description = "CrowdStrike 2026 グローバル脅威レポートの八つの数字、それぞれがどう測られたか、そしてそれがどこまで一般化できるかについて何を意味するのか。"
+  canonical   = "https://taux.io/ja-JP/threat-landscape"
+
+  [page.locale.ko-KR]
+  template    = "ko-KR/threat-landscape.html"
+  title       = "2026 글로벌 위협 보고서｜여덟 숫자가 받쳐 주는 범위 | TauX"
+  description = "CrowdStrike 2026 글로벌 위협 보고서의 여덟 숫자, 각각이 어떻게 측정되었는지, 그리고 그것이 어디까지 일반화할 수 있는지."
+  canonical   = "https://taux.io/ko-KR/threat-landscape"
+
   [page.locale.en-US]
   template    = "en-US/threat-landscape.html"
   title       = "The 2026 Global Threat Report: what eight numbers can support | TauX"
