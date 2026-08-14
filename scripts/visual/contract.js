@@ -541,6 +541,58 @@ async function main() {
     }
   }
 
+    // THE LANGUAGE NEGOTIATION ON `/`.
+  //
+  // OUT OF THE AGAINST_ORIGIN BRANCH, because it is no longer a zone setting.
+  // It was going to be a Redirect Rule, which would have made it observable
+  // only against production — and Redirect Rules cannot read
+  // `http.request.accepted_languages` (Transform Rules only), so it would also
+  // have been reduced to prefix-matching the raw header. `src/worker.js` does
+  // it instead: in the repository, and asserted here against whatever
+  // BASE_URL points at, including a laptop.
+  //
+  // The `zh-TW;q=0.1, en;q=0.9` row is the one that separates the two designs.
+  // A prefix match answers Chinese because Chinese is written first; reading
+  // the weights answers English, which is what the reader asked for.
+  //
+  // The last row is the one that catches a missing rule set: with no rules at
+  // all, every other row still passes by falling through to the canonical
+  // locale. Only a header that must NOT reach the default proves the rules
+  // are there.
+  for (const [header, want] of [
+    ["zh-TW,zh;q=0.9", "/zh-Hant-TW"],
+    ["zh-CN,zh;q=0.9", "/zh-Hans-CN"],
+    ["zh-Hans,zh;q=0.9", "/zh-Hans-CN"],
+    ["en-GB,en;q=0.9", "/en-US"],
+    ["de-DE,de;q=0.9", "/zh-Hant-TW"],
+    ["", "/zh-Hant-TW"],
+  ]) {
+    checked++;
+    const r = await fetch(BASE_URL + "/", {
+      redirect: "manual",
+      headers: header ? { "accept-language": header } : {},
+    });
+    const location = r.headers.get("location");
+    const label = `/ (Accept-Language: ${header || "absent"})`;
+    // 302 for every one of them, including the fallthrough. A 301 here would
+    // be cached and outlive the preference that produced it; a 301 for bots
+    // and a 302 for readers would be a response that varies by User-Agent,
+    // which is one step from cloaking (decision #59).
+    if (r.status !== 302) {
+      failures.push({
+        route: label,
+        check: "language negotiation",
+        problem: `expected 302, got ${r.status}`,
+      });
+    } else if (location !== want && location !== BASE_URL + want) {
+      failures.push({
+        route: label,
+        check: "language negotiation",
+        problem: `sent to ${location || "(no Location)"}, expected ${want}`,
+      });
+    }
+  }
+
   // Configured at the zone, so only observable from the zone. See AGAINST_ORIGIN.
   const skipped = [];
   if (AGAINST_ORIGIN) {
@@ -589,58 +641,10 @@ async function main() {
       }
     }
 
-    // THE LANGUAGE NEGOTIATION ON `/`, WHICH IS THE ONLY ZONE SETTING WITH A
-    // RIGHT ANSWER PER REQUEST RATHER THAN ONE ANSWER.
-    //
-    // Redirect Rules cannot read `http.request.accepted_languages` — that
-    // parsed, q-weight-sorted field is Transform Rules only — so the rules
-    // match a prefix of the raw header instead. That works because browsers
-    // already send the header in preference order, and this asserts exactly
-    // that behaviour rather than the rule text, which lives in a dashboard
-    // nobody can diff.
-    //
-    // The last row is the one that catches a missing rule set: with no rules at
-    // all, every other row still passes by falling through to the canonical
-    // locale. Only a header that must NOT reach the default proves the rules
-    // are there.
-    for (const [header, want] of [
-      ["zh-TW,zh;q=0.9", "/zh-Hant-TW"],
-      ["zh-CN,zh;q=0.9", "/zh-Hans-CN"],
-      ["zh-Hans,zh;q=0.9", "/zh-Hans-CN"],
-      ["en-GB,en;q=0.9", "/en-US"],
-      ["de-DE,de;q=0.9", "/zh-Hant-TW"],
-      ["", "/zh-Hant-TW"],
-    ]) {
-      checked++;
-      const r = await fetch(ORIGIN + "/", {
-        redirect: "manual",
-        headers: header ? { "accept-language": header } : {},
-      });
-      const location = r.headers.get("location");
-      const label = `/ (Accept-Language: ${header || "absent"})`;
-      // 302 for every one of them, including the fallthrough. A 301 here would
-      // be cached and outlive the preference that produced it; a 301 for bots
-      // and a 302 for readers would be a response that varies by User-Agent,
-      // which is one step from cloaking (decision #59).
-      if (r.status !== 302) {
-        failures.push({
-          route: label,
-          check: "language negotiation",
-          problem: `expected 302, got ${r.status}`,
-        });
-      } else if (location !== want && location !== ORIGIN + want) {
-        failures.push({
-          route: label,
-          check: "language negotiation",
-          problem: `sent to ${location || "(no Location)"}, expected ${want}`,
-        });
-      }
-    }
   } else {
     skipped.push(
-      "hsts, www redirect and the language negotiation on / — configured at the",
-      `Cloudflare zone, so they are not observable from ${BASE_URL}.`,
-      `Run with BASE_URL=${ORIGIN} to assert them.`
+      "hsts and www redirect — configured at the Cloudflare zone, so they are",
+      `not observable from ${BASE_URL}. Run with BASE_URL=${ORIGIN} to assert them.`
     );
   }
 
