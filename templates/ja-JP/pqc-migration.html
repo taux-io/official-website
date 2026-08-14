@@ -1,0 +1,397 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     TechArticle and FAQ, no ItemList: the five steps are a sequence of work,
+     not a ranking, and a list type would say the wrong thing about them. HowTo
+     was the other candidate and is not used — Google has wound its support down
+     to almost nothing, and it would add a maintenance surface for no gain.
+
+     Every FAQ answer here is answerable from the page and from a named source
+     document. The regulatory dates in particular are the kind of thing that
+     gets restated confidently across the web without anyone checking whether
+     the document they come from is final. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/pqc-migration#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"PQC ポスト量子暗号への移行","item":"https://taux.io/ja-JP/pqc-migration" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/ja-JP/pqc-migration#article","headline":"ポスト量子暗号（PQC）への移行：台湾企業の道すじと世界の規制の期限","description":"ガバナンス、CBOM の棚卸し、リスク評価、暗号アジリティ、サプライチェーンの五段階。台湾 FSC の七つの方針と対応づけ、米国・EU・台湾の期限と出典を添えます。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/pqc-migration" }
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/ja-JP/pqc-migration#faq","mainEntity": [
+      {"@type":"Question","name":"ポスト量子暗号（PQC）とは何ですか","acceptedAnswer": {"@type":"Answer","text":"ポスト量子暗号（Post-Quantum Cryptography）は、量子計算機による攻撃に耐えるよう設計された暗号アルゴリズムの総称です。いま広く使われている RSA と楕円曲線暗号は、素因数分解と離散対数の難しさに安全性を置いていますが、この二つはどちらも十分に大きな量子計算機で効率よく解けます。PQC は格子、ハッシュ、符号といった数学の構造に切り替えており、いまのところ効率よく破れる量子アルゴリズムは知られていません。"
+        }
+      },
+      {"@type":"Question","name":"台湾企業に PQC の規制要件はありますか","acceptedAnswer": {"@type":"Answer","text":"いまはっきりした期限があるのは金融業だけです。台湾 FSC は 2026 年 6 月 18 日に「金融業ポスト量子暗号移行参考指針」を公表し、七つの方針と 2026〜2035 年の段階的な期限を示しました。対象は金融機関とその重要な取引先で、性質は参考指針であって強制ではありません。数位発展部数位産業署は 2025 年 4 月 16 日に後量子資安産業連盟とともに「ポスト量子暗号移行指針」を公表しており、公開鍵基盤、セキュリティチップ、電子署名、ネットワーク機器、ゼロトラストの本人確認などを対象としています。"
+        }
+      },
+      {"@type":"Question","name":"企業はどの段階から始めるべきですか","acceptedAnswer": {"@type":"Answer","text":"棚卸しではなくガバナンスから始めてください。FSC の指針は「PQC の方針とガバナンス」を第一の方針に置き、暗号技術の棚卸しより前に順序づけています。理由はとても実際的です。誰が責任を持つのか、予算はどこから出るのかが決まっていないと、暗号資産の棚卸しは途中で止まります。ガバナンスが定まってはじめて CBOM の棚卸し、リスクを軸にした優先順位づけ、暗号アジリティの構築、最後にサプライチェーンと調達要件の更新へ進みます。"
+        }
+      },
+      {"@type":"Question","name":"CBOM（暗号部品表）とは何ですか","acceptedAnswer": {"@type":"Answer","text":"CBOM（Cryptography Bill of Materials）は暗号資産の台帳です。システムのどこでどのアルゴリズムを使い、鍵長は、証明書は、ライブラリは何か。それぞれどこにあり、誰が保守し、寿命はどれだけか。SBOM（ソフトウェア部品表）の暗号版にあたり、PQC 移行の前提でもあります——棚卸しできないものに優先順位はつけられません。CycloneDX は 1.6 版から CBOM 形式に対応しています。台湾 FSC の指針はこれを第二の方針に置いています。"
+        }
+      },
+      {"@type":"Question","name":"量子計算機はまだ現れていないのに、なぜいま動くのですか","acceptedAnswer": {"@type":"Answer","text":"互いに独立した理由が二つあります。一つは「いま集めて、あとで解く」（Harvest Now, Decrypt Later）です。今日とらえられた暗号化通信は将来まで保存して解かれ得るので、秘匿の年限が長いデータは今日すでにさらされています。もう一つの理由は、量子計算機がいつ来るかという予測に一切依りません。規制の期限そのものが存在するからです。EU は加盟国に 2026 年末までの着手を、重要インフラには 2030 年末までに高リスク領域を終えるよう勧告しています。台湾 FSC の段階的な期限は 2026 年から始まります。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                Data Governance
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">Post-Quantum Migration</span>
+                <span class="display-sub">ポスト量子暗号への移行、企業の道すじ</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">ガバナンスからサプライチェーンまで五段階の進め方。台湾 FSC の七つの方針と対応づけ、米国・EU・台湾の期限と出典を添えます。</p>
+        </header>
+
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index. Same component as /owasp-llm-top-10: real anchors,
+             fully usable with no script, highlight moves aria-current only.
+             Ids are named after the topic rather than numbered — the step order
+             is an editorial choice and could change; what each step is about
+             will not. -->
+        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目次</p>
+                <ul>
+                    <li><a href="#why-now" class="section-index-link">なぜ、いまなのか</a></li>
+                    <li><a href="#overview" class="section-index-link">五段階のあらまし</a></li>
+                    <li><a href="#governance" class="section-index-link"><span class="font-sans">00</span>ガバナンス</a></li>
+                    <li><a href="#cbom" class="section-index-link"><span class="font-sans">01</span>CBOM の棚卸し</a></li>
+                    <li><a href="#risk-assessment" class="section-index-link"><span class="font-sans">02</span>リスクと適合</a></li>
+                    <li><a href="#crypto-agility" class="section-index-link"><span class="font-sans">03</span>暗号アジリティ</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span>サプライチェーン</a></li>
+                    <li><a href="#regulatory-timeline" class="section-index-link">規制の期限</a></li>
+                    <li><a href="#standards" class="section-index-link">標準の現状</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Why now.
+
+             The urgency argument is built on regulatory dates rather than on
+             fear, deliberately. Harvest-now-decrypt-later is real and belongs
+             here, but the timeline for a cryptographically relevant quantum
+             computer is genuinely contested, and a page that leans its whole
+             case on a contested prediction is one contradicting headline away
+             from losing the reader. The regulatory dates do not depend on any
+             prediction being right. -->
+        <section id="why-now" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">なぜ、いまなのか</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>理由は二つあり、<strong>互いに独立</strong>しています。確からしさが違うので分けて書きます。この二つを混ぜることが、この話題で最も誇張されやすいところだからです。</p>
+                <div>
+                    <p class="eyebrow mb-2">理由その一：いま集めて、あとで解く</p>
+                    <p>「Harvest Now, Decrypt Later」は広く受け入れられている脅威モデルです。今日とらえた暗号化通信はそのまま保存でき、解ける力がついたときに解かれます。ですから問いは「あなたのデータは今日安全か」ではなく<strong>「あなたのデータは何年ふせておく必要があるか」</strong>です。秘匿の年限が十年を超えるもの——診療記録、保険証券、契約、身元の証明、営業秘密——は、今日すでにこのモデルの下にさらされています。</p>
+                    <p class="mt-4">ただし正直に言っておくことがあります。<strong>RSA-2048 を実際に破れる量子計算機がいつ現れるかは、見積もりの幅がとても大きい</strong>。十年以内から数十年先まで、まじめな専門家の支持がそれぞれにあります。特定の年を既知の事実のように語る記述は疑ってください。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">理由その二：規制の期限はすでにある</p>
+                    <p>こちらの理由は<strong>どんな予測にも依りません</strong>。判断の土台にすることをお勧めするのはこちらです。EU は加盟国に 2026 年末までの着手を、重要インフラには 2030 年末までに高リスク領域を終えるよう勧告しています。台湾 FSC の段階的な期限は 2026 年から始まります。これらの日付は量子計算機がいつ現れようと変わりませんし、すでに文書になっています。</p>
+                </div>
+                <p class="border-l border-line pl-6">言い換えると、量子計算機の時期について何の見解も持たなくても、今年動くべきかどうかは計算できます。</p>
+            </div>
+        </section>
+
+        <!-- Overview: also the table of contents on small screens. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">五段階のあらまし</h2>
+            </div>
+            <p class="leading-relaxed mb-8">各段階に、台湾 FSC『金融業ポスト量子暗号移行参考指針』の七つの方針のどれに当たるかを示します。金融業以外に台湾国内の法定期限はいまのところありませんが、この順序はそのまま使えます——そして金融機関に何かを売っているなら、あなたはすでにその指針の範囲内です。</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">段階</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">対応する FSC の方針</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">00</td>
+                            <td class="py-4 pr-4"><a href="#governance" class="font-bold">ガバナンス</a></td>
+                            <td class="py-4 hidden tablet:table-cell">① PQC の方針とガバナンス</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">01</td>
+                            <td class="py-4 pr-4"><a href="#cbom" class="font-bold">暗号資産の棚卸し（CBOM）</a></td>
+                            <td class="py-4 hidden tablet:table-cell">② 暗号技術の利用を洗い出し、一覧をつくる</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">02</td>
+                            <td class="py-4 pr-4"><a href="#risk-assessment" class="font-bold">リスク評価と適合の突き合わせ</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑤ リスクを軸に移行の優先順位を決める</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">03</td>
+                            <td class="py-4 pr-4"><a href="#crypto-agility" class="font-bold">暗号アジリティの構築</a></td>
+                            <td class="py-4 hidden tablet:table-cell">③ 暗号アジリティを高め、暗号のアンチパターンを取り除く</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">サプライチェーンの量子安全</a></td>
+                            <td class="py-4 hidden tablet:table-cell">⑥ 調達とサプライチェーン管理の要件を更新する</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm mt-6 max-w-prose">FSC の残る二つの方針——④ 生態系での協働と共通のリスク像、⑦ 切り替え試験と運用の回復力——は五段階すべてを貫くもので、単独の段階にはなりません。</p>
+        </section>
+
+        <section id="governance" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">段階 00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">ガバナンス<span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">何を決めるか</p>
+                    <p>誰が責任を負うか、予算はどこから出るか、どの頻度で報告するか、既存のどの委員会が引き受けるか。PQC の移行はセキュリティ、基盤、アプリ開発、調達にまたがります。一つの部門だけでは終わりません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">なぜ棚卸しより先なのか</p>
+                    <p>これは FSC の指針の順序で、理由はとても実際的です。<strong>CBOM の棚卸しはほぼ全システムに及び、各部門の協力が要ります</strong>。誰が責任を持つのか、予算はどこから出るのかが決まっていないと、棚卸しは途中で「これは私の仕事ではない」で止まります。ガバナンスが先にあってはじめて棚卸しは進みます——FSC がこれを 2026〜2027 年の短期段階の第一項に置いているのもそのためです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">実務では</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>既存のセキュリティ・ガバナンスの下にぶら下げてください。新しい委員会を増やさないこと——組織が一つ増えれば、開かれない会議が一つ増えます。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>責任者を一人はっきり決めます。棚卸し、優先順位、取引先とのやり取りの三つを担当範囲に。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>移行を複数年度の予算に書き込みます。単発の案件として扱わないこと。FSC の期限は 2035 年まで伸びており、単年度の予算では収まりません。</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="cbom" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">段階 01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">暗号資産の棚卸し<span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>CBOM とは<strong>暗号資産の台帳</strong>です。システムのどこでどのアルゴリズムを使い、鍵長は、証明書は、ライブラリは何か。それぞれどこにあり、誰が保守し、寿命はどれだけか。SBOM（ソフトウェア部品表）の暗号版にあたり、<code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">CycloneDX</code>は 1.6 版からこの形式に対応しています。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">なぜこれが前提になるのか</p>
+                    <p>
+                        <strong>棚卸しできないものに優先順位はつけられません。</strong>多くの企業は、証明書が何枚あるのか、どのシステムがまだ SHA-1 を使っているのか、十年前のバッチのどこに RSA の鍵が直接書かれているのかを言えません。台帳がなければ「リスクの高いものから移す」という一文は実行できません。どれが高リスクかわからないからです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">実務では</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>外向きの TLS と証明書から始めます。自動で走査しやすく、成果も見えやすいので、次の予算を取りやすくなります。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>次に自社コードの中の暗号呼び出しと、依存しているライブラリ。この層はたいてい最も汚れており、「この部分が何をしているのか誰も知らない」が最もよく出ます。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>最後に調達したパッケージ製品とハードウェア。この層は自分では中が見えず、取引先に聞くしかありません。だから段階 04 と同じことの裏表です。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>機械が読める形式で保ち、既存の資産管理の流れにつなぎます。<strong>古びた台帳は、ないよりも危険です</strong>。以後のすべての判断がその上に乗るからです。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">データガバナンスとの関係</span>CBOM は本質的に<a href="/{{ locale }}/data-governance" class="underline">データガバナンス</a>の「棚卸し、目録づくり、担当者の指定、保ち続けること」という能力を、暗号資産に当てはめたものです。データの棚卸しをすでに済ませた組織なら、この段階はずっと速く進みます。</p>
+            </div>
+        </section>
+
+        <section id="risk-assessment" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">段階 02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">リスク評価と適合の突き合わせ<span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">答えるべき問い</p>
+                    <p>台帳ができたあと、どれから移すのか。FSC の言い方は「リスクを軸に移行の優先順位を決める」です。全部を一度に移すのではありません。それはできませんし、必要でもありません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">優先順位を決める三つの軸</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>データの秘匿年限。</strong>二十年ふせておく必要のあるデータは、今日すでに HNDL の射程内です。三か月でよいものは、リスクはずっと低い。この軸はたいてい過小に見られます。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>システムの入れ替え周期。</strong>ハードウェアセキュリティモジュール、チップ、組込み機器の寿命は十年を超えることがあります。今年の調達で要件に入れなければ、2035 年より先まで固定されるということです。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>規制へのさらされ方。</strong>自分に当たる規範を突き合わせます。金融機関なら FSC の段階的な期限、越境で事業をするなら EU の 2030 年の重要インフラ期限、米国政府向けに売るなら連邦調達の要件。</span></li>
+                    </ol>
+                </div>
+                <p class="border-l border-line pl-6">突き合わせで大事なのは日付を覚えることではなく、<strong>どの期限が最初に自分に噛みつくかを見つけること</strong>です。台湾企業の多くにとって、その答えは 2035 年の NIST ではなく、もっと早い調達とサプライチェーンの要件です。</p>
+            </div>
+        </section>
+
+        <section id="crypto-agility" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">段階 03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">暗号アジリティの構築<span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>暗号アジリティとは<strong>アプリの論理に手を入れずに暗号アルゴリズムを差し替えられること</strong>です。アルゴリズムは設定であって、コードに焼き込むものではありません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">なぜ今回の移行そのものより重要なのか</p>
+                    <p>なぜなら<strong>これが最後の移行にはならない</strong>からです。いまの標準は ML-KEM と ML-DSA ですが、NIST はすでに HQC を予備として標準化しています——理由はまさに「万一 ML-KEM が破られたら」です。アジリティがなければ、次の移行でまた棚卸しと改修をひととおりやり直すことになります。あれば、設定値を一つ変えるだけです。FSC がこれを 2026〜2027 年の短期段階に置いたのは急ぐからではなく、<strong>これが以後すべての移行の費用を決めるからです</strong>。
+                    </p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">先に取り除きたい「暗号のアンチパターン」</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>アルゴリズムと鍵長がコードに直接書かれていて、変えるたびに再ビルドとリリースが要る。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>共通の暗号サービスやライブラリを呼ばず、自前で暗号処理を書いている。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>証明書と鍵の寿命を人手で管理していて、自動の更新がない——回せなければ、替えられません。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>交渉パラメータが集中管理されておらず、数十のサービスの設定ファイルに散らばっている。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4 max-w-prose">
+                    <span class="eyebrow mr-3">移行期のやり方</span>実務では多くのシステムがまず<strong>ハイブリッド</strong>（従来のアルゴリズムと PQC を併用）で進みます。PQC の実装が成熟していく間、退路を残すためです。これはアジリティの直接の見返りでもあります。併用できるからこそ、安全に切り替えられます。</p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">段階 04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">サプライチェーンの量子安全<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">なぜ台湾の企業にとってとくに重いのか</p>
+                    <p>FSC の指針が対象とするのは<strong>「金融機関とその重要な取引先」</strong>です。つまり銀行、保険、証券にソフトウェアやハードウェア、サービスを売っている会社は、自分が金融業でなくてもすでに範囲内です。ただし圧力は監督官庁からではなく調達契約から来ます。台湾の技術産業とシステムインテグレータにとって、これは理論上のリスクではなく現実の商売の話です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">実務では</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>PQC への備えを<strong>調達と入札の要件</strong>に書き込みます。今年契約する十年もののハードウェアは、要件に入れなければ 2035 年に向けて地雷を埋めるのと同じです。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>取引先に求めるのは<strong>CBOM か、それに相当する暗号資産の説明</strong>であって、「注視しています」の一言ではありません。パッケージ製品の中は自分では見えず、聞くしかありません。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>取引先の移行時期を自分の優先順位に取り込みます。あなたの期限は、いちばん遅い取引先が決めます。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>あなたが供給する側なら、<strong>先に答えを用意しておくこと</strong>。顧客に聞かれる時期は、規制の期限よりずっと早く来ます。</span></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Regulatory timeline.
+
+             Every row names the document it comes from, because this is the
+             part of the page most likely to be restated elsewhere without
+             checking, and the part most likely to go stale here. Nothing in CI
+             can watch it: regulatory change does not live in this repository.
+             The verification date and the convention around date_modified are
+             the only defence, and they depend on a person. -->
+        <section id="regulatory-timeline" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">規制の期限</p>
+                <h2 class="font-display text-2xl font-bold mb-6">世界の規制の進み方</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed mb-8">
+                <p>
+                    <strong>このページの規制の状態は 2026-08-06 に確認しました。</strong>各行にどの文書から来たかを示しています。この区画を守れる自動チェックはありません——法規の変更は私たちのバージョン管理の中にないからです——ので、このページの「最終更新日」が意味するのは<strong>規制の状態を確認し直した日</strong>であって、体裁を直した日ではありません。</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">地域</th>
+                            <th class="py-3 pr-4 font-bold text-sm">重要な日付</th>
+                            <th class="py-3 font-bold text-sm">出典</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">米国</td>
+                            <td class="py-4 pr-4">112 ビット強度のアルゴリズム<span class="font-sans">2030</span>以降は非推奨、<span class="font-sans">2035</span>以降は禁止</td>
+                            <td class="py-4">NIST IR 8547，<strong>現時点ではまだ公開草案です</strong>。この二つの年は多くの記事で確定事項として引かれていますが、実際には確定していません</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">EU</td>
+                            <td class="py-4 pr-4">加盟国は<span class="font-sans">2026</span>年末までに着手。重要インフラの高リスク領域は<span class="font-sans">2030</span>年末までに完了</td>
+                            <td class="py-4">Commission Recommendation (EU) 2024/1101、2024-04-11 公表</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-bold">台湾<br><span class="font-normal">金融業</span></td>
+                            <td class="py-4 pr-4">短期<span class="font-sans">2026–2027</span>ガバナンス、棚卸しの方法、CBOM、暗号アジリティの基礎<br>中期<span class="font-sans">2027–2029</span>試行の検証、基盤の更新、共同の試験の仕組み<br>中長期<span class="font-sans">2035 まで</span>高リスク・高重要度のシステムから移行</td>
+                            <td class="py-4">台湾 FSC『金融業ポスト量子暗号移行参考指針』、2026-06-18 公表。対象は金融機関<strong>と重要な取引先</strong>。性質は<strong>参考指針であって強制ではありません</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold">台湾<br><span class="font-normal">全産業</span></td>
+                            <td class="py-4 pr-4"><strong>完了期限の定めなし</strong></td>
+                            <td class="py-4">数位発展部数位産業署と後量子資安産業連盟『ポスト量子暗号移行指針』、2025-04-16 公表。公開鍵基盤、セキュリティチップ、電子署名、ネットワーク機器、ゼロトラストの本人確認などを対象</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="leading-relaxed mt-8">
+                <strong>台湾企業の多くにとって、最初に噛みつくのはこれらの日付ではなく調達契約です。</strong>金融機関が PQC への備えを入札要件に書き始める時期は、2035 年よりはるかに早く来ます。そこが、供給する側がほんとうに答えを用意しておくべき時点です。</p>
+        </section>
+
+        <section id="standards" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">標準の現状</p>
+                <h2 class="font-display text-2xl font-bold mb-6">どれが標準で、どれがまだなのか</h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <p>この区画を分けて書くのは、「確定した標準」と「まだ標準化の過程にあるアルゴリズム」がよく混同されるからです。調達と設計の判断は前者の上に立てる必要があります。</p>
+                <div>
+                    <p class="eyebrow mb-2">確定済み（2024 年 8 月）</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">203</span><span><strong>ML-KEM</strong>（旧 Kyber）——鍵カプセル化。共有鍵をつくるのに使います</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">204</span><span><strong>ML-DSA</strong>（旧 Dilithium）——電子署名。汎用の第一候補</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">205</span><span><strong>SLH-DSA</strong>（旧 SPHINCS+）——ハッシュベースの電子署名。安全性の前提が最も保守的</span></li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">まだ標準化の過程</p>
+                    <p>
+                        <strong>HQC</strong>は 2025-03-11 に NIST が五つ目のアルゴリズムとして選んだもので、位置づけは ML-KEM の<strong>予備</strong>——格子の前提が将来破られた場合に備えるためです。<strong>FN-DSA</strong>（旧 Falcon）も同じくまだ標準化の過程にあります。どちらも<strong>引用できる確定標準にはなっていません</strong>。設計と調達の判断は、いまのところ FIPS 203/204/205 の上に置いてください。</p>
+                </div>
+                <p class="border-l border-line pl-6">HQC が存在すること自体が<a href="#crypto-agility" class="underline">暗号アジリティ</a>の何よりの根拠です。NIST でさえ「いまの標準が将来足りなくなるかもしれない」ことに退路を用意しています。</p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">出典</p>
+            <p class="leading-relaxed">規制の期限と標準の状態は<a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>、
+                <a href="https://eur-lex.europa.eu/eli/reco/2024/1101/oj/eng" target="_blank" rel="noopener noreferrer" class="underline">Commission Recommendation (EU) 2024/1101</a>、
+                <a href="https://www.fsc.gov.tw/ch/index.jsp" target="_blank" rel="noopener noreferrer" class="underline">金融監督管理委員会</a>と<a href="https://moda.gov.tw/ADI/news/latest-news/16090" target="_blank" rel="noopener noreferrer" class="underline">数位発展部数位産業署</a>の公開文書から取りました。五段階の対応づけは台湾 FSC『金融業ポスト量子暗号移行参考指針』の七つの方針によります。このページの整理、訳語、実務上の提案は TauX が書いたもので、上記いずれの機関の立場も示しません。</p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">自分の暗号資産が何かわからない方へ</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">多くの組織が最初の一歩で止まります。CBOM の棚卸しとデータガバナンスは同じ能力です。いまの資産目録がどうなっているか、まずお話ししましょう。</p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>
+                <a href="/{{ locale }}/data-governance" class="btn-quiet">データガバナンスのサービスを見る</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}
