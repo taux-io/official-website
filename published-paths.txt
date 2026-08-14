@@ -50,6 +50,7 @@
 /ja-JP/geo-guide
 /ja-JP/geo-optimization
 /ja-JP/google-workspace-with-ai
+/ja-JP/owasp-llm-top-10
 /ja-JP/pqc-migration
 /ja-JP/privacy-policy
 /ja-JP/terms-of-service
@@ -68,6 +69,7 @@
 /ko-KR/geo-guide
 /ko-KR/geo-optimization
 /ko-KR/google-workspace-with-ai
+/ko-KR/owasp-llm-top-10
 /ko-KR/pqc-migration
 /ko-KR/privacy-policy
 /ko-KR/terms-of-service

@@ -1,0 +1,595 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     The ItemList is the point of this page as far as a retrieval system is
+     concerned. A ranked list rendered as headings can only be guessed at from
+     document structure — order and completeness are both inferred, and both can
+     be inferred wrong. ItemList states them: ten items, positions one to ten,
+     each with the name a reader would search for.
+
+     The FAQ now carries the version question it could not answer before. The
+     2026 edition is in hand, so "what changed" has a first-hand answer instead
+     of the fabricated one that would otherwise have sat inside structured data,
+     invisible on the page and taken verbatim by the machines reading it. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/owasp-llm-top-10#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/ja-JP/owasp-llm-top-10" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/ja-JP/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM アプリの十大セキュリティリスク","description":"OWASP Top 10 for LLM Applications 2026 の十条を一つずつ。2025 から 2026 への順位変動と範囲の調整つき。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/ja-JP/owasp-llm-top-10#list" }
+  },
+  {"@type":"ItemList","@id":"https://taux.io/ja-JP/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM アプリの十大セキュリティリスク、OWASP 2026 版の順序で。","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"LLM01 プロンプトインジェクション Prompt Injection","description":"モデルの文脈に入ったあらゆる入力がふるまいを変えます。画像や音声に潜ませたモダリティをまたぐ運び手も含みます。","url":"https://taux.io/ja-JP/owasp-llm-top-10#prompt-injection" },
+      {"@type":"ListItem","position": 2,"name":"LLM02 機微情報の漏えい Sensitive Information Disclosure","description":"モデルの出力が、その利用者に渡してはいけない情報を漏らします。個人情報、認証情報、営業秘密、あるいは他の利用者のデータ。","url":"https://taux.io/ja-JP/owasp-llm-top-10#sensitive-information-disclosure" },
+      {"@type":"ListItem","position": 3,"name":"LLM03 過剰な権限 Excessive Agency","description":"システムがモデルに機能・権限・自律性を与えすぎ、一度の判断ミスが現実の損害になります。2026 版で六位から三位へ。","url":"https://taux.io/ja-JP/owasp-llm-top-10#excessive-agency" },
+      {"@type":"ListItem","position": 4,"name":"LLM04 サプライチェーン Supply Chain","description":"モデルの重み、データセット、パッケージ、拡張の出どころが信用できない、あるいは汚染されています。モデル成果物の名実不一致を含みます。","url":"https://taux.io/ja-JP/owasp-llm-top-10#supply-chain" },
+      {"@type":"ListItem","position": 5,"name":"LLM05 データとモデルの汚染 Data and Model Poisoning","description":"誰かが事前学習、ファインチューニング、埋め込みのデータに内容を仕込み、ふるまいを変えるか、合図で動く裏口を埋めます。","url":"https://taux.io/ja-JP/owasp-llm-top-10#data-and-model-poisoning" },
+      {"@type":"ListItem","position": 6,"name":"LLM06 際限のない消費 Unbounded Consumption","description":"推論の使用量に境界がなく、費用が制御を離れ、サービスが劣化し、ふるまいが大量の問い合わせで写し取られます。2026 版で四つ上昇。","url":"https://taux.io/ja-JP/owasp-llm-top-10#unbounded-consumption" },
+      {"@type":"ListItem","position": 7,"name":"LLM07 誤情報 Misinformation","description":"モデルがもっともらしいが誤った内容を出し、下流が事実として使います。事故データは、実際の害が実務者の直感より高いことを示しています。","url":"https://taux.io/ja-JP/owasp-llm-top-10#misinformation" },
+      {"@type":"ListItem","position": 8,"name":"LLM08 隠し文脈の露出 Hidden Context Exposure","description":"モデルの文脈に入れるが利用者には見せないつもりの指示や運用情報が、抜き出され、推測され、復元されます。2026 版が 2025 版のシステムプロンプト漏えいを置き換え、範囲を広げました。","url":"https://taux.io/ja-JP/owasp-llm-top-10#hidden-context-exposure" },
+      {"@type":"ListItem","position": 9,"name":"LLM09 ベクトルと埋め込みの弱点 Vector and Embedding Weaknesses","description":"RAG に使うベクトルデータベースと埋め込みが攻撃面になります。汚染、テナントをまたぐ漏えい、埋め込みからの復元。","url":"https://taux.io/ja-JP/owasp-llm-top-10#vector-and-embedding-weaknesses" },
+      {"@type":"ListItem","position": 10,"name":"LLM10 出力処理の不備 Improper Output Handling","description":"モデルの出力が検証されないまま下流の部品に渡されて実行・表示されます。アシスタントが大量に生む安全でないコードを含みます。2026 版で五位から十位へ。","url":"https://taux.io/ja-JP/owasp-llm-top-10#improper-output-handling" }
+    ]
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/ja-JP/owasp-llm-top-10#faq","mainEntity": [
+      {"@type":"Question","name":"OWASP Top 10 for LLM Applications とは何ですか","acceptedAnswer": {"@type":"Answer","text":"OWASP GenAI Security Project が保守している一覧で、大規模言語モデルのアプリで最も重要な十種類のセキュリティリスクを挙げています。企業が AI のリスク棚卸しをするとき、出発点として最もよく使われる対照表で、プロンプトインジェクション、過剰な権限、出力処理の不備まで十項目を扱います。"
+        }
+      },
+      {"@type":"Question","name":"OWASP LLM Top 10 2026 の十条は何ですか","acceptedAnswer": {"@type":"Answer","text":"2026 版の順に、LLM01 プロンプトインジェクション、LLM02 機微情報の漏えい、LLM03 過剰な権限、LLM04 サプライチェーン、LLM05 データとモデルの汚染、LLM06 際限のない消費、LLM07 誤情報、LLM08 隠し文脈の露出、LLM09 ベクトルと埋め込みの弱点、LLM10 出力処理の不備。"
+        }
+      },
+      {"@type":"Question","name":"2026 版と 2025 版はどこが違いますか","acceptedAnswer": {"@type":"Answer","text":"順位がかなり動きました。過剰な権限が六位から三位、際限のない消費が十位から六位、誤情報が九位から七位へ。サプライチェーンは三位から四位、データとモデルの汚染は四位から五位、ベクトルと埋め込みの弱点は八位から九位、出力処理の不備は五位から十位へ下がりました。プロンプトインジェクションと機微情報の漏えいは一位と二位のままです。2025 版のシステムプロンプト漏えいは改称され、利用者に見せない文脈全体を覆う隠し文脈の露出へ広がりました。ほかに四条の範囲が広がっています。プロンプトインジェクションはモダリティをまたぐ攻撃、サプライチェーンはモデル成果物の名実不一致、データとモデルの汚染はファインチューニング段階での乗っ取り、出力処理の不備はアシスタントが大量に生む安全でないコード。"
+        }
+      },
+      {"@type":"Question","name":"OWASP は 2026 版の順位をどう決めましたか","acceptedAnswer": {"@type":"Answer","text":"2026 版で初めて、コミュニティ投票のほかに事故データが入りました。公開脆弱性データベースと AI 危害データベースから実際の事故 7,714 件を集め、うち 6,639 件が分類できるだけの詳細を備えており、実務者の投票結果と突き合わせました。最終的な重みは投票が四分の三、事故データが四分の一です。意図して投票を主にしており、理由は一年分のデータでは実務者の判断を覆すには足りないというものです。"
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Security Lab
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">OWASP LLM Top 10</span>
+                <span class="display-sub">LLM アプリの十大セキュリティリスク · 2026 版</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">十のリスクを一つずつ。定義、実際の攻撃面、そして防ぎ方。企業が AI のリスク棚卸しをするときの最初の対照表です。</p>
+        </header>
+
+        <!-- The same step response as the homepage, drawn once and left still.
+             A reader spends minutes on this page, so it carries the mark
+             without carrying the animation's cost. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index.
+
+             Ten anchors and a heading. It is a table of contents that happens
+             to know where you are, not a widget that has to run before the page
+             is navigable — with no script it still lists and still jumps.
+
+             Sits outside the space-y-32 stack rather than inside it: space-y
+             adds a top margin to every element after the first, and an absolute
+             child still counts as an element, so putting it in the stack would
+             push the whole page down by eight rem.
+
+             Hidden below xl. On a phone the overview table below is the table
+             of contents, which is why its anchors had to be real from the
+             start — this rail is the second consumer of those ids, not the
+             first. -->
+        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">目次</p>
+                <ul>
+                    <li><a href="#overview" class="section-index-link">ひと目で</a></li>
+                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-sans">LLM01</span>プロンプトインジェクション</a></li>
+                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-sans">LLM02</span>機微情報の漏えい</a></li>
+                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-sans">LLM03</span>過剰な権限</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">LLM04</span>サプライチェーン</a></li>
+                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-sans">LLM05</span>データとモデルの汚染</a></li>
+                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-sans">LLM06</span>際限のない消費</a></li>
+                    <li><a href="#misinformation" class="section-index-link"><span class="font-sans">LLM07</span>誤情報</a></li>
+                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span>隠し文脈の露出</a></li>
+                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span>ベクトルと埋め込みの弱点</a></li>
+                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span>出力処理の不備</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Version status.
+
+             This block was written as one self-contained section precisely so
+             the 2026 upgrade would be a replacement rather than a rewrite. This
+             is that replacement: what it used to say — "2026 exists, we have
+             not confirmed it, we will not copy a list nobody checked" — is now
+             a diff against the real thing. -->
+        <section id="version-status" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">2025 → 2026 で変わったこと</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed">
+                <p>このページの十条は<strong>2026 版</strong>にもとづきます。<strong>順位の動きが例年より大きい</strong>ので、旧版で棚卸しした一覧は見直す値打ちがあります。</p>
+            </div>
+
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">2025</th>
+                            <th class="py-3 pr-4 font-bold text-sm">2026</th>
+                            <th class="py-3 font-bold text-sm">リスク</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">01</td><td class="py-3 pr-4 font-sans">01</td><td class="py-3">プロンプトインジェクション<span>— 変わらず</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">02</td><td class="py-3 pr-4 font-sans">02</td><td class="py-3">機微情報の漏えい<span>— 変わらず</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">06</td><td class="py-3 pr-4 font-sans">03</td><td class="py-3">過剰な権限<strong>— 三つ上昇。今回いちばん重い動き</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">03</td><td class="py-3 pr-4 font-sans">04</td><td class="py-3">サプライチェーン<span>— 一つ下降</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans">05</td><td class="py-3">データとモデルの汚染<span>— 一つ下降</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans">06</td><td class="py-3">際限のない消費<strong>— 四つ上昇</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans">07</td><td class="py-3">誤情報<span>— 二つ上昇</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">隠し文脈の露出<strong>— 改称し、範囲を広げた</strong><span>（旧「システムプロンプトの漏えい」）</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans">09</td><td class="py-3">ベクトルと埋め込みの弱点<span>— 一つ下降</span></td></tr>
+                        <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans">10</td><td class="py-3">出力処理の不備<strong>— 五つ下降。今回いちばん大きな下げ</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-l border-line pl-6 space-y-4 leading-relaxed mt-8">
+                <p>
+                    <strong>四条は範囲が広がったのであって、項目が増えたのではありません。</strong>OWASP のやり方は、新しく現れたリスクをすでにそれを含む条へ折り込むことです。一覧を細切れにしないためです。プロンプトインジェクションには<strong>モダリティをまたぐ</strong>攻撃（画像や音声に指示を潜ませる）。サプライチェーンには<strong>モデル成果物の名実不一致</strong>。データとモデルの汚染には<strong>ファインチューニング段階での乗っ取り</strong>。出力処理の不備には<strong>アシスタントが大量に生む安全でないコード</strong>。
+                </p>
+                <p>
+                    <strong>順位の決め方が変わりました。2026 版でいちばん知る値打ちがあるのはここです。</strong>これまで順位は完全にコミュニティ投票でした。2026 版で初めて事故データが入ります。公開脆弱性データベースと AI 危害データベースから集めた実際の事故 7,714 件、うち 6,639 件が分類できるだけの詳細を備えていました。最終的な重みは<strong>投票が四分の三、データが四分の一</strong>——意図して投票を主にしています。一年分のデータでは実務者の判断を覆すには足りない、という理由です。</p>
+                <p>二つが食い違うところは、一致するところより情報があります。いちばんはっきりしているのがプロンプトインジェクションです。<strong>事故データだけを見ると十位から落ちます</strong>——しかし OWASP はそれを<strong>防いだ結果</strong>であってリスクの低下ではないと判断しました。この条にはチームが最も投資しており、きれいに防げた事例は公開データベースに入りにくいからです。一位のままです。誤情報は逆で、投票では低く事故データでは高い。食い違いが最も大きく、しかも痛いほうへずれている条です。</p>
+                <p>もう一つ、覚えておく境界があります。<strong>この一覧が扱うのは「アプリの部品としてのモデル」です。</strong>モデルがツールを呼び、作業をまたいで記憶を持ち、下流に結果を及ぼす<strong>行為者</strong>になった時点で、リスクは OWASP の Agentic Top 10 へ移ります。二つの一覧は合わせて読む必要があります。</p>
+            </div>
+        </section>
+
+        <!-- Overview table.
+             Also the table of contents on small screens, where the section
+             index is not shown. Its anchors are real links to real ids, which
+             check:design enforces.
+
+             The ids are named after the risk rather than its number. LLM05 was
+             Improper Output Handling in 2025 and is Data and Model Poisoning in
+             2026 — numeric ids would have made every existing link land
+             silently on different content the moment the ranking moved. The
+             number changes between editions; the topic does not. Same reason
+             the URL carries no year. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">十条をひと目で</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">リスク</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">英語の原名</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-4 pr-4"><a href="#prompt-injection" class="font-bold">プロンプトインジェクション</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="font-bold">機微情報の漏えい</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-4 pr-4"><a href="#excessive-agency" class="font-bold">過剰な権限</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">サプライチェーン</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="font-bold">データとモデルの汚染</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-4 pr-4"><a href="#unbounded-consumption" class="font-bold">際限のない消費</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-4 pr-4"><a href="#misinformation" class="font-bold">誤情報</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="font-bold">隠し文脈の露出</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="font-bold">ベクトルと埋め込みの弱点</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-4 pr-4"><a href="#improper-output-handling" class="font-bold">出力処理の不備</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- LLM01 is deliberately a summary. This is the pillar page; writing
+             prompt injection out in full here would put it in direct
+             competition with /what-is-prompt-injection for the same queries,
+             and that page is the one that should win them. -->
+        <section id="prompt-injection" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">プロンプトインジェクション<span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルの文脈に入ったあらゆる入力がふるまいを変え、開発者の意図から外れさせます。モデルは構造上「指示」と「データ」を区別できません。どちらも同じトークン列の上のトークンであり、パラメータ化クエリに相当するきれいな解法はありません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>直接の注入は入力欄に「これまでの指示を無視して」と書くこと。間接の注入は、モデルが読みにいくウェブページ、メール、文書の中に指示を潜ませることです。<strong>2026 版はモダリティをまたぐ攻撃をこの条に入れました</strong>——画像や音声に指示を潜ませます。人の目には見えず、モデルには読めます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <p>単独の解法はありません。原則は、外部から来た内容をすべて信用できないデータとして扱い、権限を<strong>モデルの外で</strong>強制することです。モデルが説得されても、権限まで緩んではいけません。</p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">なぜまだ一位なのか</span>事故データだけを見れば十位から落ちますが、OWASP はそれを<strong>防いだ結果</strong>と判断しました。この条にチームが最も投資しており、きれいに防げた事例は公開データベースに入りにくい。攻撃面そのものは縮んでいません。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">詳しく</span>
+                    <a href="/{{ locale }}/what-is-prompt-injection" class="underline">仕組み、ジェイルブレイクとの違い、多層の防ぎ方</a>
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#excessive-agency" class="underline">LLM03 過剰な権限</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 出力処理の不備</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">機微情報の漏えい<span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルの出力が、その利用者に渡してはいけない情報を漏らします。個人情報、認証情報、営業秘密、あるいは他の利用者のデータ。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>RAG が知識ベース全体の権限を一律に扱っていて、営業部門の人が法務しか見てはいけない契約条項を引き出せてしまう。モデルは間違っていません。検索の層に最初から境界がなかったのです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>検索<strong>の前に</strong>利用者の権限を適用します。プロンプトで「言わないで」と頼むのは制御ではなくお願いです。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>入力と出力の両端で機微データの検出と伏せ字化を行います。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>学習やファインチューニングに使うデータは先に匿名化します。モデルが覚えたものは、あとから取り消せません。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#hidden-context-exposure" class="underline">LLM08 隠し文脈の露出</a>
+                    <span class="mx-2">/</span>
+                    <a href="#vector-and-embedding-weaknesses" class="underline">LLM09 ベクトルと埋め込みの弱点</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="excessive-agency" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">過剰な権限<span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>システムがモデルに機能・権限・自律性を与えすぎていて、一度の判断ミスが現実の損害になります。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>メールを整理する agent に、送信と削除の権限までついでに渡してしまう。同じ認証情報を使っていて、分けるのが面倒だったからです。すると指示を仕込んだメール一通で、外へメールを送らせることができます。権限は便利のために渡され、対価は攻撃面です。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>ツールの権限は最小の集合に。「万一使うかもしれない」機能は渡しません。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>リスクの高い操作や取り消せない操作は人の確認を挟み、その画面で何が起きるのかをはっきり示します。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>権限はツールの層で強制し、プロンプトの約束に頼らないこと。プロンプトは説得できますが、権限の仕組みは説得できません。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 の変動</span>
+                    <strong>六位から三位へ。今回いちばん重い動きです。</strong>投票と事故データがこの条では珍しく一致しました。損害は agent 化した運用のなかで実際に起きています。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#prompt-injection" class="underline">LLM01 プロンプトインジェクション</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 出力処理の不備</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">サプライチェーン<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルの重み、データセット、パッケージ、拡張の出どころ自体が信用できない、あるいは汚染されています。従来のソフトウェアサプライチェーンの問題に、ソースを読んで監査できないという種類の資産が加わります。<strong>2026 版は「モデル成果物の名実不一致」をこの条に入れました</strong>——配られているその重みが、名乗っているものではない。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>公開のモデルリポジトリから引いたファインチューニング済みの重み、出どころのわからない LoRA アダプタ、agent のツールチェーンにある第三者パッケージ。フロントエンドのコードは一行ずつ読めても、その重みファイルの中身は読めません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>モデルとデータセットはソフトウェアの依存物と同じに扱います。出どころの確認、バージョンの固定、ハッシュの照合。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>AI の部品表をつくって保ちます。「結局うちは何を入れているのか」を、調べれば答えの出る問いにするためです。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>第三者のモデルは隔離した環境でふるまいを評価してから載せます。権限のあるシステムに直接つながないこと。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 データとモデルの汚染</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">データとモデルの汚染<span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>誰かが事前学習、ファインチューニング、埋め込みのデータに内容を仕込み、モデルのふるまいを変えたり、特定の合図が出たときだけ動く裏口を埋めたりします。<strong>2026 版はファインチューニング段階での乗っ取りをはっきり含めました</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>学習データに取り込まれる公開ページに、特定の合図とそれに対応する誤った答えが意図的に書き込まれる。モデルは通常の試験ではすべて正常で、その語に出会ったときだけ向きを変えます——防ぎにくいのはここです。異常は、あなたが試すところには出てきません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>学習とファインチューニングのデータは出どころをたどれるように。どの一括分を誰が入れたのかがわかること。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>固定した基準集と突き合わせてふるまいのずれを見ます。全体の指標が悪化したかどうかだけを見ないこと。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>ファインチューニングのあとにレッドチームを。とくに合図のような、狭い条件でしか現れないふるまいを狙って。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#supply-chain" class="underline">LLM04 サプライチェーン</a>
+                    <span class="mx-2">/</span>
+                    <a href="#misinformation" class="underline">LLM07 誤情報</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="unbounded-consumption" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">際限のない消費<span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>推論の使用量に境界がなく、費用が制御を離れ、サービスが劣化し、あるいはモデルのふるまいが大量の問い合わせで写し取られます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>公開の対話エンドポイントに速度制限がなく、入力と出力の組を集めてふるまいを写すために呼ばれ続ける。請求と遅延が同時に悪化しますが、監視の上では「利用の伸び」にしか見えません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>利用者と API キーごとに速度と割当の上限を。全体に一つの総量を置くだけにしないこと。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>入力の長さと出力のトークン数、両端を制限します。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>利用者ごとの費用を監視して異常を知らせます。請求書で気づくときは、たいてい一か月後です。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 の変動</span>
+                    <strong>十位から六位へ、四つ上昇。</strong>実務者は、資源と費用の枯渇を旧来の順位よりずっと重く見ています。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#excessive-agency" class="underline">LLM03 過剰な権限</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="misinformation" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">誤情報<span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルが、もっともらしいが実際には誤った内容を出し、下流がそれを事実として使います。害の大きさは、誰が受け取るか、確かめる人がいるかで決まります。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>モデルが存在しないパッケージ名をでっち上げ、開発者がそのまま入れてしまう——攻撃者はすでにその名前をパッケージ登録所で押さえています。ここでのモデルの誤りは、ただの誤りではありません。予測でき、したがって待ち伏せできる経路になります。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>出典が要る場面では必ず検索を経由し、引用を添えます。答えから元をたどれるように。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>重要な判断には人の確認を残し、確認する人がモデルの根拠を見られるようにします。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>不確かさを利用者に示します。推測を断定の語調で包まないこと。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 の変動</span>二つ上昇。そして<strong>投票と事故データの食い違いが最も大きい条です</strong>——実務者は低く、実際の事故は高い。流暢で自信のある出力が一つの判断や一回のツール呼び出しを動かした瞬間、誤った答えは誤った行動になります。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 データとモデルの汚染</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">隠し文脈の露出<span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルの文脈に入れるが利用者には見せないつもりの指示や運用情報が、<strong>抜き出され、推測され、復元されます</strong>。範囲はシステムプロンプトだけではありません。開発者の指示、知識ベースや設定から取ったポリシーの文言、ツールや関数のスキーマ、そしてアプリが文脈に組み入れるその他の規則や素材も含みます。共通点は——利用者に見せるつもりはないが、モデルには読める、ということです。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>利用者が言い換え、翻訳、役割演技でモデルに自分の指示を復唱させ、そこに書かれた API キー、社内の割引規則、ツールの権限がまとめて流れ出す。もっと見えにくいのは拒否の規則が復元される場合です。利用者はもともと「申し訳ありませんが、それはできません」しか見ていなかったのに、漏れたあとはその一文が出る条件と例外が見え、回り道がわかってしまいます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>隠し文脈はいずれ見られるものとして設計すること</strong>。文脈に置いた内容はどれも秘密ではないと考えます。これが根本の解で、ほかはすべて継ぎ当てです。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>認証情報、接続文字列、トークンは文脈に置かないこと。ほんとうの危険は見られることではなく、そこに置いたこと自体です。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>隠し文脈を、認可、権限の分離、ポリシーの執行、内容のふるいの<strong>唯一の</strong>境界にしないこと。それらはモデルの外で成り立たせます。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 の変動</span>
+                    <strong>2025 版の「システムプロンプトの漏えい」を置き換え、範囲を広げました。</strong>改称が映しているのは一つの判断です。問題はあのプロンプトそのものではなく、「利用者の手が届かないところに置いておくべき情報」という一つの類全体だ、ということ。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 機微情報の漏えい</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 過剰な権限</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">ベクトルと埋め込みの弱点<span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>RAG に使うベクトルデータベースと埋め込み自体が攻撃面になります。汚染、テナントをまたぐ漏えい、あるいは埋め込みベクトルから元の文への復元。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>マルチテナントのベクトル庫がテナントごとの固い分離を持たず、検索時に添える絞り込み条件だけに頼っている。一度の類似度検索で顧客の境界を越えてしまい、しかもそれを告げるエラーは一つも出ません。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>ベクトル庫はテナントと権限で固く分離します。分離を、検索条件が正しく書かれていることに預けないこと。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>取り込む文書には出どころの検証と監査の跡を。どの一節がどう入ったのかがわかること。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>埋め込み自体を機微データとして守ります。部分的に復元でき、不可逆なハッシュではありません。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 機微情報の漏えい</a>
+                    <span class="mx-2">/</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 データとモデルの汚染</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="improper-output-handling" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">出力処理の不備<span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">定義</p>
+                    <p>モデルの出力が検証されないまま下流の部品に渡されて実行され、あるいは表示されます。これはモデルの問題ではなく、モデルを受け取る側のコードの問題です。<strong>2026 版はアシスタントが大量に生む安全でないコードをこの条に入れました</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">場面</p>
+                    <p>モデルが返した文字列がそのまま<code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>に入る、そのまま SQL に連結される、そのまま shell に渡される。一度の注入が「モデルが変なことを言った」から「攻撃者があなたのサーバでコマンドを実行した」に格上げされます。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">防ぎ方</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>モデルを信用できない出どころとみなし、出力を利用者入力と同じに扱います。もともと利用者入力が形を変えたものである可能性があります。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>下流の文脈に応じて出力をエスケープします。HTML、SQL、shell それぞれに規則があり、共通のものはありません。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>パラメータ化クエリを使い、文字列連結をしないこと。</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 の変動</span>
+                    <strong>五位から十位へ、今回いちばん大きな下げです。</strong>順位が下がったことは害が減ったことを意味しません。他の条が上がったから相対的に下がったのであり、この条の範囲はむしろ広がっています。</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">関連</span>
+                    <a href="#prompt-injection" class="underline">LLM01 プロンプトインジェクション</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 過剰な権限</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">出典</p>
+            <p class="leading-relaxed">十条の名称、順序、範囲は OWASP GenAI Security Project が公表した<a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 版の文書（ライセンス CC BY-SA 4.0）から。順位の決め方と事故データの数字も同じ文書によります。このページの整理、訳語、防ぎ方は TauX が書いたもので、OWASP の立場を示すものではありません。</p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">自社の LLM アプリが心配な方へ</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">TauX Security Lab では LLM のセキュリティ検査とレッドチーム演習を行い、この十条に沿って一つずつ棚卸しします。</p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">セキュリティ相談を予約する</a>
+                <a href="/{{ locale }}#our-services" class="btn-quiet">サービスの詳細</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}

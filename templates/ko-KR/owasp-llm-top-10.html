@@ -1,0 +1,595 @@
+{% include "header.html" %}
+
+<!-- Structured data.
+
+     The ItemList is the point of this page as far as a retrieval system is
+     concerned. A ranked list rendered as headings can only be guessed at from
+     document structure — order and completeness are both inferred, and both can
+     be inferred wrong. ItemList states them: ten items, positions one to ten,
+     each with the name a reader would search for.
+
+     The FAQ now carries the version question it could not answer before. The
+     2026 edition is in hand, so "what changed" has a first-hand answer instead
+     of the fabricated one that would otherwise have sat inside structured data,
+     invisible on the page and taken verbatim by the machines reading it. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {"@type":"BreadcrumbList","@id":"https://taux.io/ko-KR/owasp-llm-top-10#breadcrumb","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"홈","item":"https://taux.io" },
+      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/ko-KR/owasp-llm-top-10" }
+    ]
+  },
+  {"@type":"TechArticle","@id":"https://taux.io/ko-KR/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026: LLM 앱의 10대 보안 리스크","description":"OWASP Top 10 for LLM Applications 2026 열 조항을 하나씩. 2025에서 2026으로의 순위 변동과 범위 조정 포함.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/ko-KR/owasp-llm-top-10#list" }
+  },
+  {"@type":"ItemList","@id":"https://taux.io/ko-KR/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM 앱의 10대 보안 리스크, OWASP 2026 판 순서로.","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
+      {"@type":"ListItem","position": 1,"name":"LLM01 프롬프트 인젝션 Prompt Injection","description":"모델의 맥락에 들어온 어떤 입력이든 그 행동을 바꿉니다. 이미지나 음성에 숨긴 모달리티 넘나들기 운반체도 포함합니다.","url":"https://taux.io/ko-KR/owasp-llm-top-10#prompt-injection" },
+      {"@type":"ListItem","position": 2,"name":"LLM02 민감 정보 유출 Sensitive Information Disclosure","description":"모델의 출력이 그 사용자에게 주면 안 되는 정보를 흘립니다. 개인정보, 인증 정보, 영업 비밀, 또는 다른 사용자의 데이터.","url":"https://taux.io/ko-KR/owasp-llm-top-10#sensitive-information-disclosure" },
+      {"@type":"ListItem","position": 3,"name":"LLM03 과도한 권한 Excessive Agency","description":"시스템이 모델에 기능·권한·자율성을 너무 많이 주어 한 번의 판단 실수가 실제 손해가 됩니다. 2026 판에서 6위에서 3위로.","url":"https://taux.io/ko-KR/owasp-llm-top-10#excessive-agency" },
+      {"@type":"ListItem","position": 4,"name":"LLM04 공급망 Supply Chain","description":"모델 가중치, 데이터셋, 패키지, 확장의 출처가 믿을 수 없거나 오염돼 있습니다. 모델 산출물의 이름과 실체 불일치를 포함합니다.","url":"https://taux.io/ko-KR/owasp-llm-top-10#supply-chain" },
+      {"@type":"ListItem","position": 5,"name":"LLM05 데이터와 모델 오염 Data and Model Poisoning","description":"누군가 사전 학습, 파인튜닝, 임베딩 데이터에 내용을 심어 행동을 바꾸거나 신호로 움직이는 뒷문을 묻습니다.","url":"https://taux.io/ko-KR/owasp-llm-top-10#data-and-model-poisoning" },
+      {"@type":"ListItem","position": 6,"name":"LLM06 끝없는 소비 Unbounded Consumption","description":"추론 사용량에 경계가 없어 비용이 통제를 벗어나고, 서비스가 나빠지고, 행동이 대량 질의로 베껴집니다. 2026 판에서 네 계단 상승.","url":"https://taux.io/ko-KR/owasp-llm-top-10#unbounded-consumption" },
+      {"@type":"ListItem","position": 7,"name":"LLM07 잘못된 정보 Misinformation","description":"모델이 그럴듯하지만 틀린 내용을 내놓고 하류가 사실로 씁니다. 사고 데이터는 실제 해가 실무자의 직관보다 높음을 보입니다.","url":"https://taux.io/ko-KR/owasp-llm-top-10#misinformation" },
+      {"@type":"ListItem","position": 8,"name":"LLM08 숨긴 맥락의 노출 Hidden Context Exposure","description":"모델의 맥락에 넣지만 사용자에게는 보이지 않으려던 지시와 운영 정보가 뽑히고 추론되고 되살려집니다. 2026 판이 2025 판의 시스템 프롬프트 유출을 대체하고 범위를 넓혔습니다.","url":"https://taux.io/ko-KR/owasp-llm-top-10#hidden-context-exposure" },
+      {"@type":"ListItem","position": 9,"name":"LLM09 벡터와 임베딩 취약점 Vector and Embedding Weaknesses","description":"RAG에 쓰는 벡터 데이터베이스와 임베딩이 공격면이 됩니다. 오염, 테넌트를 넘는 유출, 임베딩에서 원문 되살리기.","url":"https://taux.io/ko-KR/owasp-llm-top-10#vector-and-embedding-weaknesses" },
+      {"@type":"ListItem","position": 10,"name":"LLM10 출력 처리 미흡 Improper Output Handling","description":"모델의 출력이 검증 없이 하류 부품에 넘어가 실행·표시됩니다. 어시스턴트가 대량으로 만드는 안전하지 않은 코드를 포함합니다. 2026 판에서 5위에서 10위로.","url":"https://taux.io/ko-KR/owasp-llm-top-10#improper-output-handling" }
+    ]
+  },
+  {"@type":"FAQPage","@id":"https://taux.io/ko-KR/owasp-llm-top-10#faq","mainEntity": [
+      {"@type":"Question","name":"OWASP Top 10 for LLM Applications란 무엇인가요","acceptedAnswer": {"@type":"Answer","text":"OWASP GenAI Security Project가 유지하는 목록으로, 대규모 언어 모델 앱에서 가장 중요한 열 종류의 보안 리스크를 꼽습니다. 기업이 AI 리스크를 점검할 때 출발점으로 가장 많이 쓰는 대조표이며, 프롬프트 인젝션, 과도한 권한, 출력 처리 미흡까지 열 항목을 다룹니다."
+        }
+      },
+      {"@type":"Question","name":"OWASP LLM Top 10 2026의 열 조항은 무엇인가요","acceptedAnswer": {"@type":"Answer","text":"2026 판 순서로 LLM01 프롬프트 인젝션, LLM02 민감 정보 유출, LLM03 과도한 권한, LLM04 공급망, LLM05 데이터와 모델 오염, LLM06 끝없는 소비, LLM07 잘못된 정보, LLM08 숨긴 맥락의 노출, LLM09 벡터와 임베딩 취약점, LLM10 출력 처리 미흡."
+        }
+      },
+      {"@type":"Question","name":"2026 판과 2025 판은 어디가 다른가요","acceptedAnswer": {"@type":"Answer","text":"순위가 꽤 움직였습니다. 과도한 권한이 6위에서 3위, 끝없는 소비가 10위에서 6위, 잘못된 정보가 9위에서 7위로 올랐습니다. 공급망은 3위에서 4위, 데이터와 모델 오염은 4위에서 5위, 벡터와 임베딩 취약점은 8위에서 9위, 출력 처리 미흡은 5위에서 10위로 내려갔습니다. 프롬프트 인젝션과 민감 정보 유출은 1위와 2위 그대로입니다. 2025 판의 시스템 프롬프트 유출은 이름이 바뀌고 사용자에게 보이지 않는 맥락 전체를 덮는 숨긴 맥락의 노출로 넓어졌습니다. 그 밖에 네 조항의 범위가 넓어졌습니다. 프롬프트 인젝션은 모달리티를 넘나드는 공격, 공급망은 모델 산출물의 이름과 실체 불일치, 데이터와 모델 오염은 파인튜닝 단계의 탈취, 출력 처리 미흡은 어시스턴트가 대량으로 만드는 안전하지 않은 코드."
+        }
+      },
+      {"@type":"Question","name":"OWASP는 2026 판 순위를 어떻게 정했나요","acceptedAnswer": {"@type":"Answer","text":"2026 판에서 처음으로 커뮤니티 투표 외에 사고 데이터가 들어왔습니다. 공개 취약점 데이터베이스와 AI 피해 데이터베이스에서 실제 사고 7,714건을 모았고 그중 6,639건이 분류할 만한 상세를 갖춰 실무자의 투표 결과와 맞춰 봤습니다. 최종 가중치는 투표 4분의 3, 사고 데이터 4분의 1입니다. 일부러 투표를 주로 삼았고, 이유는 한 해치 데이터로는 실무자의 판단을 뒤집기에 모자라다는 것입니다."
+        }
+      }
+    ]
+  }
+  ]
+}
+</script>
+
+<!-- Hero -->
+<article class="relative pt-24 pb-20 px-6 overflow-hidden bg-surface">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <header class="band mb-16">
+            <div class="tag mb-6">
+                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                AI Security Lab
+            </div>
+            <h1 class="mb-6">
+                <span class="display-lead">OWASP LLM Top 10</span>
+                <span class="display-sub">LLM 앱의 10대 보안 리스크 · 2026 판</span>
+            </h1>
+            <p class="text-lg mb-8 max-w-prose">열 가지 리스크를 하나씩. 정의, 실제 공격면, 그리고 막는 법. 기업이 AI 리스크를 점검할 때 첫 대조표입니다.</p>
+        </header>
+
+        <!-- The same step response as the homepage, drawn once and left still.
+             A reader spends minutes on this page, so it carries the mark
+             without carrying the animation's cost. -->
+    </div>
+</article>
+
+<div class="bg-surface py-24">
+    <div class="max-w-prose mx-auto px-6 relative">
+
+        <!-- Section index.
+
+             Ten anchors and a heading. It is a table of contents that happens
+             to know where you are, not a widget that has to run before the page
+             is navigable — with no script it still lists and still jumps.
+
+             Sits outside the space-y-32 stack rather than inside it: space-y
+             adds a top margin to every element after the first, and an absolute
+             child still counts as an element, so putting it in the stack would
+             push the whole page down by eight rem.
+
+             Hidden below xl. On a phone the overview table below is the table
+             of contents, which is why its anchors had to be real from the
+             start — this rail is the second consumer of those ids, not the
+             first. -->
+        <nav data-section-index aria-label="섹션 색인" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+            <div class="sticky top-24">
+                <p class="eyebrow mb-5">차례</p>
+                <ul>
+                    <li><a href="#overview" class="section-index-link">훑기</a></li>
+                    <li><a href="#prompt-injection" class="section-index-link"><span class="font-sans">LLM01</span>프롬프트 인젝션</a></li>
+                    <li><a href="#sensitive-information-disclosure" class="section-index-link"><span class="font-sans">LLM02</span>민감 정보 유출</a></li>
+                    <li><a href="#excessive-agency" class="section-index-link"><span class="font-sans">LLM03</span>과도한 권한</a></li>
+                    <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">LLM04</span>공급망</a></li>
+                    <li><a href="#data-and-model-poisoning" class="section-index-link"><span class="font-sans">LLM05</span>데이터와 모델 오염</a></li>
+                    <li><a href="#unbounded-consumption" class="section-index-link"><span class="font-sans">LLM06</span>끝없는 소비</a></li>
+                    <li><a href="#misinformation" class="section-index-link"><span class="font-sans">LLM07</span>잘못된 정보</a></li>
+                    <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span>숨긴 맥락의 노출</a></li>
+                    <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span>벡터와 임베딩 취약점</a></li>
+                    <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span>출력 처리 미흡</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    <div class="space-y-32">
+
+        <!-- Version status.
+
+             This block was written as one self-contained section precisely so
+             the 2026 upgrade would be a replacement rather than a rewrite. This
+             is that replacement: what it used to say — "2026 exists, we have
+             not confirmed it, we will not copy a list nobody checked" — is now
+             a diff against the real thing. -->
+        <section id="version-status" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">00</p>
+                <h2 class="font-display text-2xl font-bold mb-6">2025 → 2026에서 바뀐 것</h2>
+            </div>
+            <div class="border-l border-line pl-6 leading-relaxed">
+                <p>이 페이지의 열 조항은<strong>2026 판</strong>을 따릅니다.<strong>순위 변동이 예년보다 큽니다</strong>. 그러니 옛 판으로 점검한 목록은 다시 볼 값어치가 있습니다.</p>
+            </div>
+
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">2025</th>
+                            <th class="py-3 pr-4 font-bold text-sm">2026</th>
+                            <th class="py-3 font-bold text-sm">리스크</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">01</td><td class="py-3 pr-4 font-sans">01</td><td class="py-3">프롬프트 인젝션<span>— 그대로</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">02</td><td class="py-3 pr-4 font-sans">02</td><td class="py-3">민감 정보 유출<span>— 그대로</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">06</td><td class="py-3 pr-4 font-sans">03</td><td class="py-3">과도한 권한<strong>— 세 계단 상승. 이번에 가장 무거운 이동</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">03</td><td class="py-3 pr-4 font-sans">04</td><td class="py-3">공급망<span>— 한 계단 하락</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans">05</td><td class="py-3">데이터와 모델 오염<span>— 한 계단 하락</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans">06</td><td class="py-3">끝없는 소비<strong>— 네 계단 상승</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans">07</td><td class="py-3">잘못된 정보<span>— 두 계단 상승</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">숨긴 맥락의 노출<strong>— 이름을 바꾸고 범위를 넓힘</strong><span>(옛 「시스템 프롬프트 유출」)</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans">09</td><td class="py-3">벡터와 임베딩 취약점<span>— 한 계단 하락</span></td></tr>
+                        <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans">10</td><td class="py-3">출력 처리 미흡<strong>— 다섯 계단 하락. 이번에 가장 큰 낙폭</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="border-l border-line pl-6 space-y-4 leading-relaxed mt-8">
+                <p>
+                    <strong>네 조항은 범위가 넓어진 것이지 항목이 늘어난 것이 아닙니다.</strong>OWASP의 방식은 새로 나타난 리스크를 이미 그것을 품은 조항에 접어 넣는 것입니다. 목록을 잘게 쪼개지 않기 위해서입니다. 프롬프트 인젝션에는<strong>모달리티를 넘나드는</strong>공격(이미지나 음성에 지시를 숨김). 공급망에는<strong>모델 산출물의 이름과 실체 불일치</strong>. 데이터와 모델 오염에는<strong>파인튜닝 단계의 탈취</strong>. 출력 처리 미흡에는<strong>어시스턴트가 대량으로 만드는 안전하지 않은 코드</strong>。
+                </p>
+                <p>
+                    <strong>순위를 정하는 방식이 바뀌었습니다. 2026 판에서 가장 알 값어치가 있는 부분입니다.</strong>그 전까지 순위는 온전히 커뮤니티 투표였습니다. 2026 판에서 처음으로 사고 데이터가 들어옵니다. 공개 취약점 데이터베이스와 AI 피해 데이터베이스에서 모은 실제 사고 7,714건, 그중 6,639건이 분류할 만한 상세를 갖췄습니다. 최종 가중치는<strong>투표 4분의 3, 데이터 4분의 1</strong>—— 일부러 투표를 주로 삼았습니다. 한 해치 데이터로는 실무자의 판단을 뒤집기에 모자라다는 이유입니다.</p>
+                <p>둘이 어긋나는 곳이 일치하는 곳보다 정보가 많습니다. 가장 분명한 예가 프롬프트 인젝션입니다.<strong>사고 데이터만 보면 열 위 밖으로 떨어집니다</strong>—— 그러나 OWASP는 그것이<strong>막아 낸 결과</strong>이지 리스크가 낮아진 것이 아니라고 봤습니다. 이 조항에 팀이 가장 많이 투자했고, 깔끔하게 막힌 사례는 공개 데이터베이스에 잘 들어가지 않기 때문입니다. 1위 그대로입니다. 잘못된 정보는 반대로 투표에서 낮고 사고 데이터에서 높습니다. 어긋남이 가장 크고, 어긋난 방향이 아픈 쪽인 조항입니다.</p>
+                <p>기억해 둘 경계가 하나 더 있습니다.<strong>이 목록이 다루는 것은 「앱의 부품으로서의 모델」입니다.</strong>모델이 도구를 부르고, 작업을 넘어 기억을 지니며, 하류에 결과를 미치는<strong>행위자</strong>가 된 시점에 리스크는 OWASP의 Agentic Top 10으로 옮겨 갑니다. 두 목록은 함께 봐야 합니다.</p>
+            </div>
+        </section>
+
+        <!-- Overview table.
+             Also the table of contents on small screens, where the section
+             index is not shown. Its anchors are real links to real ids, which
+             check:design enforces.
+
+             The ids are named after the risk rather than its number. LLM05 was
+             Improper Output Handling in 2025 and is Data and Model Poisoning in
+             2026 — numeric ids would have made every existing link land
+             silently on different content the moment the ranking moved. The
+             number changes between editions; the topic does not. Same reason
+             the URL carries no year. -->
+        <section id="overview" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">열 조항 훑기</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-line">
+                            <th class="py-3 pr-4 font-bold text-sm">#</th>
+                            <th class="py-3 pr-4 font-bold text-sm">리스크</th>
+                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">영어 원명</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-4 pr-4"><a href="#prompt-injection" class="font-bold">프롬프트 인젝션</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="font-bold">민감 정보 유출</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-4 pr-4"><a href="#excessive-agency" class="font-bold">과도한 권한</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">공급망</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="font-bold">데이터와 모델 오염</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-4 pr-4"><a href="#unbounded-consumption" class="font-bold">끝없는 소비</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-4 pr-4"><a href="#misinformation" class="font-bold">잘못된 정보</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="font-bold">숨긴 맥락의 노출</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
+                        </tr>
+                        <tr class="border-b border-line">
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="font-bold">벡터와 임베딩 취약점</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-4 pr-4"><a href="#improper-output-handling" class="font-bold">출력 처리 미흡</a></td>
+                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- LLM01 is deliberately a summary. This is the pillar page; writing
+             prompt injection out in full here would put it in direct
+             competition with /what-is-prompt-injection for the same queries,
+             and that page is the one that should win them. -->
+        <section id="prompt-injection" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <h2 class="font-display text-2xl font-bold mb-6">프롬프트 인젝션<span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델의 맥락에 들어온 어떤 입력이든 그 행동을 바꾸어 개발자의 의도에서 벗어나게 합니다. 모델은 구조상 「지시」와 「데이터」를 가르지 못합니다. 둘 다 같은 토큰 열 위의 토큰이며, 매개변수화 질의에 해당하는 깔끔한 해법이 없습니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>직접 인젝션은 입력창에 「앞의 모든 지시를 무시하라」고 쓰는 것. 간접 인젝션은 모델이 읽으러 갈 웹페이지, 메일, 문서 안에 지시를 숨기는 것입니다.<strong>2026 판은 모달리티를 넘나드는 공격을 이 조항에 넣었습니다</strong>—— 이미지나 음성에 지시를 숨깁니다. 사람 눈에는 안 보이고 모델은 읽습니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <p>단일 해법은 없습니다. 원칙은 바깥에서 온 내용을 모두 믿을 수 없는 데이터로 다루고, 권한을<strong>모델 바깥에서</strong>강제하는 것입니다. 모델이 설득당해도 권한까지 느슨해져서는 안 됩니다.</p>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">왜 아직 1위인가</span>사고 데이터만 보면 열 위 밖으로 떨어지지만, OWASP는 그것을<strong>막아 낸 결과</strong>이라고 봤습니다. 이 조항에 팀이 가장 많이 투자했고 깔끔하게 막힌 사례는 공개 데이터베이스에 잘 안 들어갑니다. 공격면 자체는 줄지 않았습니다.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">더 보기</span>
+                    <a href="/{{ locale }}/what-is-prompt-injection" class="underline">작동 원리, 탈옥과의 차이, 여러 겹의 방어</a>
+                </p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#excessive-agency" class="underline">LLM03 과도한 권한</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 출력 처리 미흡</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <h2 class="font-display text-2xl font-bold mb-6">민감 정보 유출<span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델의 출력이 그 사용자에게 주면 안 되는 정보를 흘립니다. 개인정보, 인증 정보, 영업 비밀, 또는 다른 사용자의 데이터.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>RAG가 지식 베이스 전체의 권한을 한결같이 다뤄서, 영업 부서 사람이 법무만 봐야 할 계약 조항을 끌어낼 수 있게 됩니다. 모델이 틀린 것이 아닙니다. 검색 층에 처음부터 경계가 없었습니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>검색<strong>하기 전에</strong>사용자 권한을 적용합니다. 프롬프트로 「말하지 마」라고 부탁하는 것은 통제가 아니라 요청입니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>입력과 출력 양쪽에서 민감 데이터 탐지와 가리기를 합니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>학습이나 파인튜닝에 쓰는 데이터는 먼저 비식별화합니다. 모델이 외운 것은 나중에 거둘 수 없습니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#hidden-context-exposure" class="underline">LLM08 숨긴 맥락의 노출</a>
+                    <span class="mx-2">/</span>
+                    <a href="#vector-and-embedding-weaknesses" class="underline">LLM09 벡터와 임베딩 취약점</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="excessive-agency" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <h2 class="font-display text-2xl font-bold mb-6">과도한 권한<span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>시스템이 모델에 기능·권한·자율성을 너무 많이 주어, 한 번의 판단 실수가 실제 손해가 됩니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>메일을 정리하는 agent에 발송과 삭제 권한까지 얹어 줍니다. 같은 인증 정보를 쓰고 있어서 나누기가 번거로웠기 때문입니다. 그러면 지시를 심은 메일 한 통으로 밖으로 메일을 보내게 할 수 있습니다. 권한은 편의를 위해 주어졌고, 값은 공격면입니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>도구의 권한은 최소 집합으로. 「혹시 쓸지도 모르는」 기능은 주지 않습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>위험이 크거나 되돌릴 수 없는 동작은 사람의 확인을 끼우고, 그 화면에서 무슨 일이 일어나는지 분명히 보입니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>권한은 도구 층에서 강제하고 프롬프트의 약속에 기대지 않습니다. 프롬프트는 설득되지만 권한 체계는 설득되지 않습니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 변동</span>
+                    <strong>6위에서 3위로. 이번에 가장 무거운 이동입니다.</strong>투표와 사고 데이터가 이 조항에서는 드물게 일치했습니다. 손해는 agent화된 운영 안에서 실제로 일어나고 있습니다.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#prompt-injection" class="underline">LLM01 프롬프트 인젝션</a>
+                    <span class="mx-2">/</span>
+                    <a href="#improper-output-handling" class="underline">LLM10 출력 처리 미흡</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="supply-chain" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <h2 class="font-display text-2xl font-bold mb-6">공급망<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델 가중치, 데이터셋, 패키지, 확장의 출처 자체가 믿을 수 없거나 이미 오염돼 있습니다. 기존 소프트웨어 공급망 문제에, 소스를 읽어 감사할 수 없는 종류의 자산이 더해집니다.<strong>2026 판은 「모델 산출물의 이름과 실체 불일치」를 이 조항에 넣었습니다</strong>—— 배포되는 그 가중치가 스스로 밝힌 그것이 아닙니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>공개 모델 저장소에서 내려받은 파인튜닝 가중치, 출처를 모르는 LoRA 어댑터, agent 도구 사슬 속 제삼자 패키지. 프런트엔드 코드는 한 줄씩 읽어도 그 가중치 파일 속은 읽지 못합니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>모델과 데이터셋을 소프트웨어 의존물과 같이 다룹니다. 출처 확인, 버전 고정, 해시 대조.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>AI 자재 명세서를 만들어 유지합니다. 「결국 우리가 뭘 넣었나」를 찾으면 답이 나오는 물음으로 만들기 위해서입니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>제삼자 모델은 격리된 환경에서 행동을 평가한 뒤 올립니다. 권한 있는 시스템에 바로 잇지 않습니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 데이터와 모델 오염</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <h2 class="font-display text-2xl font-bold mb-6">데이터와 모델 오염<span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>누군가 사전 학습, 파인튜닝, 임베딩 데이터에 내용을 심어 모델의 행동을 바꾸거나, 특정 신호가 나올 때만 움직이는 뒷문을 묻습니다.<strong>2026 판은 파인튜닝 단계의 탈취를 분명히 포함했습니다</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>학습 데이터로 긁혀 들어갈 공개 페이지에 특정 신호와 그에 맞는 틀린 답이 일부러 적힙니다. 모델은 보통의 시험에서 모두 정상이고, 그 말을 만났을 때만 방향을 바꿉니다 —— 막기 어려운 까닭이 여기 있습니다. 이상은 당신이 시험하는 곳에 나오지 않습니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>학습과 파인튜닝 데이터는 출처를 따라갈 수 있게. 어느 묶음을 누가 넣었는지 알 수 있을 것.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>고정된 기준 집합과 맞춰 행동의 어긋남을 봅니다. 전체 지표가 나빠졌는지만 보지 않습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>파인튜닝 뒤에 레드팀을. 특히 신호처럼 좁은 조건에서만 드러나는 행동을 겨눠서.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#supply-chain" class="underline">LLM04 공급망</a>
+                    <span class="mx-2">/</span>
+                    <a href="#misinformation" class="underline">LLM07 잘못된 정보</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="unbounded-consumption" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <h2 class="font-display text-2xl font-bold mb-6">끝없는 소비<span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>추론 사용량에 경계가 없어 비용이 통제를 벗어나고, 서비스가 나빠지고, 또는 모델의 행동이 대량 질의로 베껴집니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>공개 대화 엔드포인트에 속도 제한이 없어, 입력과 출력 쌍을 모아 행동을 베끼려는 호출이 이어집니다. 청구서와 지연이 함께 나빠지지만 모니터링에서는 「사용량 증가」로만 보입니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>사용자와 API 키별로 속도와 할당 상한을. 전체에 총량 하나만 두지 않습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>입력 길이와 출력 토큰 수, 양쪽을 제한합니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>사용자별 비용을 감시하고 이상을 알립니다. 청구서로 알아차릴 때는 대개 한 달 뒤입니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 변동</span>
+                    <strong>10위에서 6위로, 네 계단 상승.</strong>실무자는 자원과 비용의 고갈을 예전 순위보다 훨씬 무겁게 봅니다.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#excessive-agency" class="underline">LLM03 과도한 권한</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="misinformation" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <h2 class="font-display text-2xl font-bold mb-6">잘못된 정보<span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델이 그럴듯하지만 실제로는 틀린 내용을 내놓고, 하류가 그것을 사실로 씁니다. 해의 크기는 누가 받는지, 확인하는 사람이 있는지로 정해집니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>모델이 없는 패키지 이름을 지어내고 개발자가 그대로 설치합니다 —— 공격자는 이미 그 이름을 패키지 저장소에 등록해 두었습니다. 여기서 모델의 잘못은 그냥 잘못이 아닙니다. 예측할 수 있고 따라서 매복할 수 있는 길이 됩니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>출처가 필요한 자리에서는 반드시 검색을 거치고 인용을 붙입니다. 답에서 근원을 되짚을 수 있게.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>중요한 판단에는 사람의 검토를 남기고, 검토하는 사람이 모델의 근거를 볼 수 있게 합니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>불확실함을 사용자에게 알립니다. 추측을 단정하는 말투로 감싸지 않습니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 변동</span>두 계단 상승. 그리고<strong>투표와 사고 데이터의 어긋남이 가장 큰 조항입니다</strong>—— 실무자는 낮게, 실제 사고는 높게. 매끄럽고 자신 있는 출력이 한 번의 판단이나 한 번의 도구 호출을 움직인 순간, 틀린 답은 틀린 행동이 됩니다.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 데이터와 모델 오염</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <h2 class="font-display text-2xl font-bold mb-6">숨긴 맥락의 노출<span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델의 맥락에 넣지만 사용자에게는 보이지 않으려던 지시와 운영 정보가<strong>뽑히고, 추론되고, 되살려집니다</strong>. 범위는 시스템 프롬프트만이 아닙니다. 개발자의 지시, 지식 베이스나 설정에서 가져온 정책 문구, 도구와 함수의 스키마, 그리고 앱이 맥락에 넣는 그 밖의 규칙과 소재도 들어갑니다. 공통점은 —— 사용자에게 보일 생각은 없지만 모델은 읽을 수 있다는 것.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>사용자가 바꿔 말하기, 번역, 역할극으로 모델이 제 지시를 되풀이하게 만들고, 거기 적힌 API 키, 사내 할인 규칙, 도구 권한이 함께 흘러나옵니다. 더 잘 안 보이는 쪽은 거절 규칙이 되살려지는 경우입니다. 사용자는 원래 「죄송하지만 그건 할 수 없습니다」만 봤는데, 새어 나온 뒤에는 그 말이 나오는 조건과 예외가 보여 돌아가는 길을 알게 됩니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>숨긴 맥락은 언젠가 보인다고 보고 설계할 것</strong>. 맥락에 둔 내용은 어느 것도 비밀이 아니라고 여깁니다. 이것이 근본 해법이고 나머지는 모두 덧댐입니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>인증 정보, 접속 문자열, 토큰은 맥락에 두지 않습니다. 진짜 위험은 보이는 것이 아니라 애초에 거기 둔 것입니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>숨긴 맥락을 인가, 권한 분리, 정책 집행, 내용 거르기의<strong>유일한</strong>경계로 삼지 않습니다. 그것들은 모델 바깥에서 성립시킵니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 변동</span>
+                    <strong>2025 판의 「시스템 프롬프트 유출」을 대체하고 범위를 넓혔습니다.</strong>이름을 바꾼 것이 비추는 판단은 하나입니다. 문제는 그 프롬프트 자체가 아니라 「사용자 손이 닿지 않는 곳에 두어야 할 정보」라는 한 부류 전체라는 것.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 민감 정보 유출</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 과도한 권한</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <h2 class="font-display text-2xl font-bold mb-6">벡터와 임베딩 취약점<span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>RAG에 쓰는 벡터 데이터베이스와 임베딩 자체가 공격면이 됩니다. 오염, 테넌트를 넘는 유출, 또는 임베딩 벡터에서 원문으로 되살리기.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>멀티테넌트 벡터 저장소가 테넌트별 단단한 격리 없이 검색 때 붙이는 걸러내기 조건에만 기댑니다. 한 번의 유사도 검색으로 고객 경계를 넘어가고, 그것을 알려 주는 오류는 하나도 나오지 않습니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>벡터 저장소는 테넌트와 권한으로 단단히 격리합니다. 격리를 검색 조건이 바르게 쓰였는지에 맡기지 않습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>들여오는 문서에는 출처 검증과 감사 흔적을. 어느 대목이 어떻게 들어왔는지 알 수 있게.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>임베딩 자체를 민감 데이터로 보호합니다. 부분적으로 되살릴 수 있고 되돌릴 수 없는 해시가 아닙니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#sensitive-information-disclosure" class="underline">LLM02 민감 정보 유출</a>
+                    <span class="mx-2">/</span>
+                    <a href="#data-and-model-poisoning" class="underline">LLM05 데이터와 모델 오염</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="improper-output-handling" class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <h2 class="font-display text-2xl font-bold mb-6">출력 처리 미흡<span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+            </div>
+            <div class="space-y-6 leading-relaxed">
+                <div>
+                    <p class="eyebrow mb-2">정의</p>
+                    <p>모델의 출력이 검증 없이 하류 부품에 넘어가 실행되거나 표시됩니다. 이것은 모델의 문제가 아니라 모델을 받는 쪽 코드의 문제입니다.<strong>2026 판은 어시스턴트가 대량으로 만드는 안전하지 않은 코드를 이 조항에 넣었습니다</strong>。</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">상황</p>
+                    <p>모델이 돌려준 문자열이 그대로<code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>로 들어가고, 그대로 SQL에 이어 붙고, 그대로 shell에 넘어갑니다. 한 번의 인젝션이 「모델이 이상한 말을 했다」에서 「공격자가 당신의 서버에서 명령을 실행했다」로 올라섭니다.</p>
+                </div>
+                <div>
+                    <p class="eyebrow mb-2">막는 법</p>
+                    <ol class="space-y-3 list-none">
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>모델을 믿을 수 없는 출처로 보고, 출력을 사용자 입력과 같이 다룹니다. 애초에 사용자 입력이 모양을 바꾼 것일 수 있습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>하류 맥락에 맞춰 출력을 이스케이프합니다. HTML, SQL, shell 각각 규칙이 있고 공통된 것은 없습니다.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>매개변수화 질의를 쓰고 문자열을 이어 붙이지 않습니다.</span></li>
+                    </ol>
+                </div>
+                <p class="text-sm border-t border-line pt-4">
+                    <span class="eyebrow mr-3">2026 변동</span>
+                    <strong>5위에서 10위로, 이번에 가장 큰 낙폭입니다.</strong>순위가 내려간 것이 해가 줄었다는 뜻은 아닙니다. 다른 조항이 올라가서 상대적으로 내려간 것이고, 이 조항의 범위는 오히려 넓어졌습니다.</p>
+                <p class="text-sm">
+                    <span class="eyebrow mr-3">관련</span>
+                    <a href="#prompt-injection" class="underline">LLM01 프롬프트 인젝션</a>
+                    <span class="mx-2">/</span>
+                    <a href="#excessive-agency" class="underline">LLM03 과도한 권한</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Source -->
+        <section id="source" class="border-t border-line pt-16">
+            <p class="eyebrow mb-8 font-sans">출처</p>
+            <p class="leading-relaxed">열 조항의 이름, 순서, 범위는 OWASP GenAI Security Project가 공표한<a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 판 문서(라이선스 CC BY-SA 4.0)에서. 순위를 정하는 방식과 사고 데이터의 숫자도 같은 문서에 따릅니다. 이 페이지의 정리, 번역어, 막는 법은 TauX가 썼으며 OWASP의 입장을 나타내지 않습니다.</p>
+        </section>
+
+        <!-- CTA -->
+        <section class="border-t border-line pt-16">
+            <div class="cover" data-cover>
+                <h2 class="font-display text-3xl font-bold mb-6">자사 LLM 앱이 걱정된다면</h2>
+            </div>
+            <p class="mb-10 max-w-[42ch] text-lg">TauX Security Lab은 LLM 보안 점검과 레드팀 훈련으로 이 열 조항에 따라 하나씩 훑습니다.</p>
+            <div class="flex flex-col mobile:flex-row gap-4">
+                <a href="mailto:hello@taux.io" class="btn">보안 상담 예약하기</a>
+                <a href="/{{ locale }}#our-services" class="btn-quiet">서비스 자세히 보기</a>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v=1" defer></script>
+
+{% include "footer.html" %}
