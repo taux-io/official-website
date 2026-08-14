@@ -20,9 +20,11 @@
 # It claimed the roster was the published set — true while the two were the same
 # list, and wrong the moment they were not.
 #
-# Stage 3 is arriving one route at a time, the way en-US did: /about is the
-# tracer bullet in ja-JP and ko-KR, and the roster entries are already here
-# because a roster entry with nothing behind it is inert.
+# ALL FIVE LOCALES NOW HAVE ALL TWENTY ROUTES, so the roster and the published
+# set happen to be the same list again — which is exactly the state that made
+# the comment above wrong the first time. It is right for the moment and will
+# stop being right the day a sixth locale is added, or a route lands in four
+# languages instead of five. Read the paragraph above, not this line.
 #
 # `og` is Open Graph's own locale format — underscore, not hyphen. It is a
 # separate field rather than a transform because og:locale takes a limited set
