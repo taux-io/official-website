@@ -46,15 +46,47 @@ const KANA = /[ぁ-ゟ゠-ヿ]/;
 // Widening the JSON-LD scan to `"([^"]*)"` lets a match run from the closing
 // quote of one HTML attribute to the opening quote of the next, swallowing tags
 // on the way. Ten of those appeared in one route; replacing them would have
-// shredded the markup. Hence `[^"\n]`, and the bracket filter below.
+// shredded the markup.
+//
+// ⚠️ THE FIRST FIX FOR THIS WAS A BRACKET FILTER, AND IT WAS WRONG TWICE OVER.
+//
+// It ran on both passes, so it also threw away text nodes containing `>` —
+// undoing trap 2 three lines after claiming to fix it. And on the quoted pass
+// it could not tell "this match swallowed a tag" from "this string legitimately
+// contains a bracket". A JSON-LD FAQ answer reading `diff <fixed-point>...HEAD`
+// was silently dropped by it on the last route, and `check` stayed quiet
+// because the string never entered the map for anything to compare against.
+//
+// THE DISCRIMINATOR IS LOCATION, NOT CONTENT. Attribute-spanning matches can
+// only happen where there are attributes. Inside a `<script type=ld+json>`
+// block there are no tags at all, so a quote there always closes its own
+// string, and a bracket in it is always literal text. Scoping the pass removes
+// the need to guess.
 function runs(html) {
   const body = unwrap(html).replace(/<!--[\s\S]*?-->/g, "");
   const out = [];
   const add = (t) => {
-    if (t.trim() && !t.includes("<") && !t.includes(">") && !out.includes(t)) out.push(t);
+    if (t.trim() && !out.includes(t)) out.push(t);
   };
+  // Text nodes. `[^<]` by construction, so no bracket test is needed or wanted.
   for (const m of body.matchAll(/>([^<]*)</g)) if (HAN.test(m[1])) add(m[1]);
-  for (const m of body.matchAll(/"([^"\n]*)"/g)) if (HAN.test(m[1])) add(m[1]);
+  // JSON-LD only. Escaped quotes stay part of the value rather than ending it.
+  for (const block of body.matchAll(
+    /<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g
+  )) {
+    for (const m of block[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)) if (HAN.test(m[1])) add(m[1]);
+  }
+  // ATTRIBUTE VALUES, WHICH NO TEXT-NODE SCAN CAN EVER REACH.
+  //
+  // `aria-label="章節索引"` sits in neither a text node nor a JSON-LD block, and
+  // it shipped untranslated on one route until the Korean checker found it —
+  // the only leak of the whole stage that no extraction pass would have caught.
+  //
+  // Anchored on an attribute NAME, which is what keeps this safe: the match
+  // must start at `name="`, so it cannot begin at the closing quote of one
+  // attribute and run into the next. That is the same trap-3 failure, fixed by
+  // construction rather than by filtering afterwards.
+  for (const m of body.matchAll(/\b[a-zA-Z-]+="([^"\n]*)"/g)) if (HAN.test(m[1])) add(m[1]);
   return out;
 }
 
