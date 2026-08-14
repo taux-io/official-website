@@ -1,0 +1,1295 @@
+{% include "header.html" %}
+
+<!-- Schema.org JSON-LD: TechArticle -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Claude Skills 実践ガイド",
+  "description": "Claude Skills の完全ガイド。SOP と専門知識を、繰り返し使える自動化された仕事の流れに変えるまで。開発者とチームのために。",
+  "url": "https://taux.io/ja-JP/claude-skills-guide",
+  "author": {% include "_org-ref.html" %},
+  "publisher": {% include "_org-ref.html" %},
+  "datePublished": "{{ date_published }}",
+  "dateModified": "{{ date_modified }}",
+  "proficiencyLevel": "Intermediate",
+  "inLanguage": "{{ locale }}"
+}
+</script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .skills-guide-body {
+        background-color:var(--surface);
+        display: grid;
+        gap: 30px;
+        grid-template-columns: 1fr;
+        margin: 0;
+        min-height: 100vh;
+        padding: 30px 15px;
+        place-items: center;
+        /* The site stack, and the CJK tail is the --cjk token so this file follows
+           the page's language like everything else (decision #55).
+
+           IT USED TO NAME D-DIN. That face was self-hosted and went with
+           decision #53; static/fonts/ has not existed since. Four declarations
+           here kept asking for it and quietly resolved to PingFang TC — on a
+           page nobody looked at in Windows, and with no gate that can see
+           inside a <style> block. check:classes reads utility classes; it
+           cannot read this. Copying it into the English twin would have made
+           two of them. */
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
+        overflow-x: hidden;
+    }
+
+    .skills-guide-body .slide-container {
+        align-items: center;
+        background-color:var(--surface);
+        border-radius: var(--radius);
+        border:1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1280px;
+        height: auto;
+        min-height: 720px;
+        justify-content: center;
+        overflow: hidden;
+        padding: 60px;
+        position: relative;
+        color:var(--ink);
+    }
+
+    /* The title slide is a band, and a band is one screen.
+       `.skills-guide-body .slide-container` is specificity 0,2,0 and .band is
+       0,1,0, so adding the class to #slide1 lost silently: the route kept
+       opening with a 720px title slide while check:design and the cover probe
+       both passed — the probe only measures [data-cover] bands and a hero is
+       not one. Written here rather than by raising .band, because the deck's
+       own floor is correct for every other slide. */
+    .skills-guide-body .slide-container.band {
+        /* One screen means one screen ON THIS PAGE, not one viewport measured
+           from nowhere. The deck sits inside .skills-guide-body, which pads 30px
+           at the top, and the site nav is `fixed` so it takes no flow space
+           while covering the first 64px. A plain 100vh here put the slide's
+           bottom border about 94px past the fold — a hero with a scrollbar,
+           which is the defect this override was added to close.
+
+           94 = 30 (container padding) + 64 (nav). Both are subtracted. */
+        min-height: calc(100vh - 94px);
+        min-height: calc(100svh - 94px);
+    }
+
+    .skills-guide-body .slide-container.dark-theme {
+        background-color:var(--surface);
+        color:var(--ink);
+    }
+
+    .skills-guide-body .slide-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background:var(--line);
+        z-index: 0;
+    }
+
+    .skills-guide-body .slide-container.dark-theme::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        border-radius: var(--radius);
+        background: none;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .skills-guide-body .slide-container>* {
+        position: relative;
+        z-index: 1;
+    }
+
+    .skills-guide-body h1,
+    .skills-guide-body h2,
+    .skills-guide-body h3,
+    .skills-guide-body th {
+        font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif;
+        font-weight: 700;
+        /* This page carries its own light palette in this block, so it has to
+           state a heading colour rather than inherit the site default, which
+           is now white. Tokenised along with the rest of the block. */
+        color:var(--ink);
+        margin: 0;
+    }
+
+    .skills-guide-body h1 {
+        font-size: 72px;
+        /* 0.02em, not -1px. Negative tracking is the previous reference
+           site's signature and the brand reset deleted it from the scale;
+           this one survived because no rule read this block. */
+        letter-spacing: 0.02em;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .skills-guide-body .dark-theme h1 {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .slide-title {
+        font-size: 44px;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: left;
+        width: 100%;
+        color:var(--ink);
+        border-left:3px solid var(--line);
+        padding-left: 15px;
+    }
+
+    .skills-guide-body .dark-theme .slide-title {
+        color:var(--ink);
+        border-left-color:var(--line);
+    }
+
+    .skills-guide-body h3 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        color:var(--ink);
+        line-height: 1.4;
+    }
+
+    .skills-guide-body .dark-theme h3 {
+        color:var(--ink);
+    }
+
+    .skills-guide-body p,
+    .skills-guide-body li,
+    .skills-guide-body td,
+    .skills-guide-body .subtitle,
+    .skills-guide-body .number-label {
+        font-size: 20px;
+        line-height: 1.6;
+        color:var(--ink);
+        margin: 0;
+        margin-bottom: 15px;
+    }
+
+    .skills-guide-body li {
+        margin-bottom: 15px;
+    }
+
+    .skills-guide-body td {
+        margin-bottom: 0;
+    }
+
+    .skills-guide-body .dark-theme p,
+    .skills-guide-body .dark-theme li,
+    .skills-guide-body .dark-theme td,
+    .skills-guide-body .dark-theme .subtitle,
+    .skills-guide-body .dark-theme .number-label {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .subtitle {
+        font-size: 26px;
+        font-weight: 400;
+        color:var(--ink);
+    }
+
+    .skills-guide-body .dark-theme .subtitle {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .content-area {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .title-layout {
+        text-align: center;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .skills-guide-body .title-layout .accent-text {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .dark-theme .title-layout .accent-text {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .section-title-layout {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .section-title-layout h2 {
+        font-size: 64px;
+        margin-bottom: 20px;
+        border: none;
+        padding: 0;
+    }
+
+    .skills-guide-body .section-title-layout p {
+        font-size: 28px;
+        max-width: 800px;
+        color:var(--ink);
+        /* 400. The ladder omits 500 by name, and this is a paragraph — body
+           weight, not emphasis. It survived the class-level sweep because the
+           rule read class attributes only; it reads the stylesheet now. */
+        font-weight: 400;
+    }
+
+    .skills-guide-body .section-title-layout hr {
+        background:var(--line);
+        border: none;
+        height: 2px;
+        margin: 40px auto;
+        width: 120px;
+        border-radius: var(--radius);
+    }
+
+    .skills-guide-body .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .skills-guide-body .two-column ul {
+        list-style: disc;
+        margin: 0;
+        padding-left: 25px;
+    }
+
+    .skills-guide-body .image-wrapper {
+        border-radius: var(--radius);
+        
+        height: 400px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .skills-guide-body .image-wrapper img,
+    .skills-guide-body .image-wrapper svg {
+        height: 100%;
+        width: 100%;
+        display: block;
+        object-fit: contain;
+        background-color:var(--surface);
+    }
+
+    .skills-guide-body .two-column.tiled {
+        align-items: stretch;
+    }
+
+    .skills-guide-body .two-column.tiled>div {
+        background-color:var(--surface);
+        border-radius: var(--radius);
+        padding: 40px;
+        border-top:2px solid var(--line);
+        border:1px solid var(--line);
+        border-top:2px solid var(--line);
+        height: 100%;
+    }
+
+    .skills-guide-body .dark-theme .two-column.tiled>div {
+        background-color:var(--surface);
+        border-top-color:var(--line);
+    }
+
+    .skills-guide-body .timeline-layout {
+        align-items: stretch;
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+    }
+
+    .skills-guide-body .timeline-layout .timeline-line {
+        background-color:var(--line);
+        height: 2px;
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-3px);
+        width: 100%;
+        z-index: 0;
+        border-radius: var(--radius);
+    }
+
+    .skills-guide-body .timeline-item {
+        position: relative;
+        text-align: center;
+        width: 22%;
+    }
+
+    .skills-guide-body .timeline-item::after {
+        background-color:var(--surface);
+        border-radius: var(--radius);
+        border:3px solid var(--line);
+        content: '';
+        height: 24px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 24px;
+        z-index: 1;
+    }
+
+    .skills-guide-body .timeline-item .content-wrapper {
+        left: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .skills-guide-body .timeline-item:nth-child(odd) .content-wrapper {
+        bottom: 50%;
+        margin-bottom: 35px;
+    }
+
+    .skills-guide-body .timeline-item:nth-child(even) .content-wrapper {
+        margin-top: 35px;
+        top: 50%;
+    }
+
+    .skills-guide-body .timeline-item h3 {
+        color:var(--ink);
+        font-size: 24px;
+    }
+
+    .skills-guide-body .timeline-item p {
+        font-size: 18px;
+    }
+
+    .skills-guide-body .highlight-numbers-layout>div:first-child {
+        flex: 0 0 45%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background:var(--surface);
+        padding: 40px;
+        border-radius: var(--radius);
+        border:1px solid var(--line);
+    }
+
+    .skills-guide-body .highlight-numbers-layout .number {
+        color:var(--ink);
+        font-size: 100px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .skills-guide-body .highlight-numbers-layout .number-label {
+        font-size: 24px;
+        font-weight: 700;
+        color:var(--ink);
+    }
+
+    .skills-guide-body .tiled-content {
+        align-items: stretch;
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .skills-guide-body .image-tile {
+        flex: 1;
+        background:var(--surface);
+        border-radius: var(--radius);
+        border:1px solid var(--line);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .skills-guide-body .image-tile .image-wrapper {
+        height: 200px;
+        margin-bottom: 25px;
+        border-radius: var(--radius);
+        box-shadow: none;
+    }
+
+    .skills-guide-body .image-tile h3 {
+        font-size: 22px;
+        color:var(--ink);
+        margin-bottom: 10px;
+    }
+
+    .skills-guide-body .image-tile p {
+        font-size: 16px;
+    }
+
+    .skills-guide-body .tile {
+        align-items: flex-start;
+        background-color:var(--surface);
+        border-radius: var(--radius);
+        border:1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 40px 30px;
+        text-align: left;
+        /* The token, not the keyword. `ease` is cubic-bezier(.25,.1,.25,1)
+           wearing a name — a second easing on a site that has one. */
+        transition: transform 0.2s var(--ease-standard);
+    }
+
+    .skills-guide-body .tile .icon {
+        color:var(--ink);
+        font-size: 42px;
+        margin-bottom: 25px;
+        background: rgba(25,25,24,0.06);
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius);
+    }
+
+    .skills-guide-body .tile h3 {
+        font-size: 24px;
+    }
+
+    .skills-guide-body .bullet-list {
+        max-width: 1000px;
+        width: 100%;
+        background:var(--surface);
+        padding: 40px 50px;
+        border-radius: var(--radius);
+        border-left:4px solid var(--line);
+        margin: 0 auto;
+    }
+
+    .skills-guide-body .bullet-list ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .skills-guide-body .bullet-list li {
+        font-size: 22px;
+        margin-bottom: 25px;
+        padding-left: 50px;
+        position: relative;
+    }
+
+    .skills-guide-body .bullet-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    .skills-guide-body .bullet-list i {
+        color:var(--ink);
+        font-size: 28px;
+        left: 0;
+        position: absolute;
+        top: 2px;
+    }
+
+    .skills-guide-body .bullet-list li strong {
+        color:var(--ink);
+        font-weight: 700;
+    }
+
+    .skills-guide-body .table-layout {
+        width: 100%;
+        background:var(--surface);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border:1px solid var(--line);
+    }
+
+    .skills-guide-body .table-layout table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .skills-guide-body .table-layout th,
+    .skills-guide-body .table-layout td {
+        border-bottom:1px solid var(--line);
+        padding: 20px 30px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .skills-guide-body .table-layout th {
+        background-color:var(--surface);
+        color:var(--ink);
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .skills-guide-body .table-layout tr:last-child td {
+        border-bottom: none;
+    }
+
+    .skills-guide-body .bleed-image-layout {
+        align-items: stretch;
+        display: grid;
+        gap: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0;
+    }
+
+    .skills-guide-body .bleed-image-layout>.content-container {
+        padding: 60px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .skills-guide-body .bleed-image-layout>.image-container {
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .skills-guide-body .bleed-image-layout img.bleed-image-side,
+    .skills-guide-body .bleed-image-layout svg.bleed-image-side {
+        display: block;
+        height: 100%;
+        min-height: 720px;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        border-radius: var(--radius);
+    }
+
+    .skills-guide-body .bleed-text-side p {
+        margin-bottom: 20px;
+        font-size: 22px;
+    }
+
+    .skills-guide-body .qa-layout {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        align-self: center;
+    }
+
+    .skills-guide-body .qa-layout h2 {
+        font-size: 80px;
+        margin-bottom: 30px;
+        color:var(--ink);
+    }
+
+    .skills-guide-body .qa-layout p {
+        font-size: 28px;
+        color:var(--ink);
+    }
+
+    .skills-guide-body .qa-layout .contact-info {
+        color:var(--ink);
+        font-size: 24px;
+        font-weight: 600;
+        margin-top: 50px;
+        padding: 20px 40px;
+        background: rgba(25,25,24,0.06);
+        border-radius: var(--radius);
+        display: inline-block;
+    }
+
+    .skills-guide-body .highlight {
+        background: rgba(25,25,24,0.08);
+        color:var(--ink);
+        padding: 2px 8px;
+        border-radius: var(--radius);
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
+        font-weight: 600;
+        word-break: break-all;
+    }
+
+    .skills-guide-body .code-window {
+        background-color:var(--surface);
+        border-radius: var(--radius);
+        padding: 25px;
+        /* Not `monospace`. The generic family carries no CJK, so the Chinese
+           prose inside these windows falls to MingLiU on Windows — a serif
+           this site sets nowhere else and which is invisible from a Mac.
+           DESIGN.md decision #40 in its new form: there is no monospace in
+           this vocabulary, and nothing may reach the generic family. */
+        font-family: "SF Pro Text", system-ui, -apple-system, var(--cjk), sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color:var(--ink);
+        overflow: auto;
+        border:1px solid var(--line);
+        text-align: left;
+        width: 100%;
+        min-height: 400px;
+        word-wrap: break-word;
+    }
+
+    .skills-guide-body .code-window .yaml-key {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .code-window .yaml-val {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .code-window .md-h {
+        color:var(--ink);
+        font-weight: 700;
+    }
+
+    .skills-guide-body .code-window .md-list {
+        color:var(--ink);
+    }
+
+    .skills-guide-body .code-window .md-text {
+        color:var(--ink);
+    }
+
+    @media (max-width: 1024px) {
+        .skills-guide-body .slide-container {
+            padding: 40px 30px;
+            min-height: auto;
+        }
+
+        .skills-guide-body h1 {
+            font-size: 48px;
+        }
+
+        .skills-guide-body .slide-title {
+            font-size: 32px;
+            margin-bottom: 25px;
+            border-left-width: 4px;
+            padding-left: 12px;
+        }
+
+        .skills-guide-body h3 {
+            font-size: 24px;
+        }
+
+        .skills-guide-body p,
+        .skills-guide-body li,
+        .skills-guide-body td,
+        .skills-guide-body .subtitle,
+        .skills-guide-body .number-label {
+            font-size: 16px;
+        }
+
+        .skills-guide-body .section-title-layout h2 {
+            font-size: 42px;
+        }
+
+        .skills-guide-body .qa-layout h2 {
+            font-size: 48px;
+        }
+
+        .skills-guide-body .two-column {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .skills-guide-body .image-wrapper {
+            height: auto;
+            max-height: 300px;
+        }
+
+        .skills-guide-body .image-wrapper img {
+            height: auto;
+            max-height: 300px;
+        }
+
+        .skills-guide-body .tiled-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skills-guide-body .image-tile .image-wrapper {
+            max-height: 200px;
+        }
+
+        .skills-guide-body .code-window {
+            min-height: auto;
+            max-height: 400px;
+            font-size: 14px;
+        }
+
+        .skills-guide-body .timeline-layout {
+            flex-direction: column;
+            gap: 30px;
+            padding-left: 20px;
+        }
+
+        .skills-guide-body .timeline-layout .timeline-line {
+            width: 4px;
+            height: 100%;
+            left: 0;
+            top: 0;
+            transform: none;
+        }
+
+        .skills-guide-body .timeline-item {
+            width: 100%;
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        .skills-guide-body .timeline-item::after {
+            left: -2px;
+            top: 15px;
+            transform: translate(-50%, -50%);
+        }
+
+        .skills-guide-body .timeline-item .content-wrapper {
+            position: relative;
+            top: auto !important;
+            bottom: auto !important;
+            margin: 0 !important;
+        }
+
+        .skills-guide-body .bleed-image-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .skills-guide-body .bleed-image-layout>.image-container {
+            order: -1;
+            height: 250px;
+        }
+
+        .skills-guide-body .bleed-image-layout>.content-container {
+            padding: 40px 30px;
+        }
+
+        .skills-guide-body .bleed-image-layout img.bleed-image-side {
+            min-height: auto;
+            height: 100%;
+        }
+
+        .skills-guide-body .table-layout {
+            overflow-x: auto;
+        }
+
+        .skills-guide-body .table-layout table {
+            min-width: 700px;
+        }
+
+        .skills-guide-body .highlight-numbers-layout>div:first-child {
+            padding: 30px;
+        }
+
+        .skills-guide-body .highlight-numbers-layout .number {
+            font-size: 64px;
+        }
+
+        .skills-guide-body .bullet-list {
+            padding: 30px 20px;
+        }
+
+        .skills-guide-body .bullet-list li {
+            padding-left: 40px;
+            font-size: 18px;
+        }
+
+        .skills-guide-body .bullet-list i {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .skills-guide-body .slide-container {
+            padding: 30px 20px;
+        }
+
+        .skills-guide-body h1 {
+            font-size: 36px;
+        }
+
+        .skills-guide-body .slide-title {
+            font-size: 26px;
+        }
+
+        .skills-guide-body .qa-layout h2 {
+            font-size: 36px;
+        }
+
+        .skills-guide-body .qa-layout .contact-info {
+            font-size: 16px;
+            padding: 15px 25px;
+        }
+    }
+</style>
+<div class="skills-guide-body">
+
+    <!-- Slide 1: Title_Slide -->
+    <div class="band slide-container dark-theme" id="slide1">
+        <div class="title-layout">
+            <h1>
+            <span class="display-lead">Claude Skills in Practice</span>
+            <span class="display-sub">Claude Skills 実践ガイド</span>
+        </h1>
+            <p class="subtitle">The Complete Guide to Building Skills for Claude<br><br>開発者とチームのための、段階を追った手引き。<br>SOP と専門知識を、自動化された仕事の流れに変えるまで。</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Image_Right_Text_Left -->
+    <div class="slide-container" id="slide2">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">まず概念：Skill とは何か</h2>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p>Skill は指示と手順を収めたフォルダです。会話のたびに背景を説明し直さなくても、あなた固有の進め方を Claude に正確に持たせられます。</p>
+                    <p>標準的な Skill フォルダの中身：</p>
+                    <ul>
+                        <li><span class="highlight">SKILL.md</span>（必須）中心となる指示。いつ起動するかを決める YAML の前書きを含みます。</li>
+                        <li><span class="highlight">scripts/</span>（任意）実行できる自動化スクリプト（Python、Bash など）。</li>
+                        <li><span class="highlight">references/</span>（任意）Claude が必要に応じて読む参考資料と手引き。</li>
+                    </ul>
+                    <p><strong>効くところ：</strong>一度教えれば、そのあとずっと効きます。チームの成果物の形もそろいます。</p>
+                </div>
+                <div>
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                                    <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
+                                </filter>
+                            </defs>
+                            <rect width="400" height="400" fill="var(--surface)" />
+                            <path d="M 80 120 L 140 120 L 160 150 L 320 150 L 320 280 L 80 280 Z" fill="var(--surface)" opacity="0.4" />
+                            <path d="M 100 140 L 160 140 L 180 170 L 340 170 L 340 300 L 100 300 Z" fill="var(--surface)" opacity="0.5" />
+                            <path d="M 120 160 L 180 160 L 200 190 L 360 190 L 360 320 L 120 320 Z" fill="url(#folderGrad)" filter="url(#shadow)" />
+                            <rect x="150" y="215" width="120" height="12" rx="6" fill="var(--surface)" opacity="0.8" />
+                            <rect x="150" y="245" width="80" height="12" rx="6" fill="var(--surface)" opacity="0.8" />
+                            <circle cx="280" cy="251" r="18" fill="var(--surface)" opacity="0.9" />
+                            <polygon points="275,243 288,251 275,259" fill="var(--ink)" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Timeline -->
+    <div class="slide-container" id="slide3">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">段階を追った開発の道すじ（The Staircase）</h2>
+        </div>
+        <div class="content-area">
+            <div class="timeline-layout">
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 1. 用途と場面を決める</h3>
+                        <p>使いどころをはっきりさせ、起動の条件と目標を決め、外部ツール（MCP）が要るかを見ます。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 2. 骨組みをつくる</h3>
+                        <p>フォルダをつくり、必須の SKILL.md を置き、kebab-case の命名を厳密に守ります。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 3. 指示を書く</h3>
+                        <p>YAML の起動語を正確に決め、段階的に開く原則にしたがって Markdown の指示を書きます。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="content-wrapper">
+                        <h3>Step 4. 試して配る</h3>
+                        <p>まず単一の仕事を手で試し、API と挙動に問題がないことを確かめてから ZIP にまとめてチームへ配ります。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Highlighted_Numbers -->
+    <div class="slide-container" id="slide4">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">MCP と Skills の組み合わせ</h2>
+        </div>
+        <div class="content-area">
+            <div class="two-column highlight-numbers-layout">
+                <div>
+                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
+                        Connectivity</div>
+                    <div class="number">MCP</div>
+                    <div class="number-label">外とつながる力<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
+                            Claude can do)</span></div>
+                </div>
+                <div>
+                    <h3>道具に魂を入れる、その頭脳</h3>
+                    <p>MCP（Model Context Protocol）が外とつながる「手足」——Notion を読む、Linear に課題を立てる——だとすれば、Skills はその道具をどう正しく使うかを教える「頭脳」です。</p>
+                    <p><strong>Skill のない MCP：</strong>道具箱を前にどこから手をつけるかわからず、毎回込み入った指示を書き直すことになります。<br><br><strong>Skill のある MCP：</strong>既定の流れがひとりでに立ち上がり、定石がやり取りのたびに埋め込まれます。覚えることが減ります。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Tiled_Images -->
+    <div class="slide-container" id="slide5">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">よくある三つの使いどころ（Use Cases）</h2>
+        </div>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="var(--surface)" />
+                            <!-- Document -->
+                            <rect x="60" y="40" width="80" height="110" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="4" />
+                            <line x1="75" y1="65" x2="125" y2="65" stroke="var(--line)" stroke-width="4" stroke-linecap="round" />
+                            <line x1="75" y1="85" x2="125" y2="85" stroke="var(--line)" stroke-width="4" stroke-linecap="round" />
+                            <line x1="75" y1="105" x2="105" y2="105" stroke="var(--line)" stroke-width="4" stroke-linecap="round" />
+                            <!-- Pencil / Wand -->
+                            <path d="M 115 135 L 140 110 L 150 120 L 125 145 Z" fill="var(--ink)" />
+                            <polygon points="110,140 115,135 125,145" fill="var(--ink)" />
+                        </svg>
+                    </div>
+                    <h3>1. 文書と成果物の生成</h3>
+                    <p>形と質のそろった成果物をつくるとき。ブランドの指針、テンプレートの構造、公開前のチェックリストを埋め込めます。（外部ツールは不要）</p>
+                </div>
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="var(--surface)" />
+                            <path d="M 95 40 L 105 40 L 110 55 C 115 57 120 60 125 64 L 140 58 L 148 66 L 142 80 C 146 85 149 90 151 95 L 165 100 L 165 110 L 151 115 C 149 120 146 125 142 130 L 148 144 L 140 152 L 125 146 C 120 150 115 153 110 155 L 105 170 L 95 170 L 90 155 C 85 153 80 150 75 146 L 60 152 L 52 144 L 58 130 C 54 125 51 120 49 115 L 35 110 L 35 100 L 49 95 C 51 90 54 85 58 80 L 52 66 L 60 58 L 75 64 C 80 60 85 57 90 55 Z" fill="var(--ink)" opacity="0.2" />
+                            <circle cx="100" cy="105" r="40" fill="none" stroke="var(--ink)" stroke-width="8" stroke-dasharray="15 8" />
+                            <circle cx="100" cy="105" r="18" fill="var(--ink)" />
+                            <circle cx="145" cy="145" r="25" fill="none" stroke="var(--ink)" stroke-width="6" stroke-dasharray="10 5" />
+                            <circle cx="145" cy="145" r="10" fill="var(--ink)" />
+                        </svg>
+                    </div>
+                    <h3>2. 仕事の流れの自動化</h3>
+                    <p>手数の多い流れに向きます。Claude に順を追って進めさせ、確認の仕組みも組み込めます。複数の MCP サーバをまとめることが多くなります。</p>
+                </div>
+                <div class="image-tile">
+                    <div class="image-wrapper">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="var(--surface)" />
+                            <line x1="60" y1="70" x2="140" y2="100" stroke="var(--line)" stroke-width="4" />
+                            <line x1="140" y1="100" x2="80" y2="150" stroke="var(--line)" stroke-width="4" />
+                            <line x1="60" y1="70" x2="80" y2="150" stroke="var(--line)" stroke-width="4" />
+                            <circle cx="60" cy="70" r="14" fill="var(--ink)" />
+                            <circle cx="80" cy="150" r="14" fill="var(--ink)" />
+                            <circle cx="140" cy="100" r="22" fill="var(--ink)" />
+                            <path d="M 132 93 L 148 93 L 148 102 C 148 108 140 113 140 113 C 140 113 132 108 132 102 Z" fill="var(--surface)" />
+                        </svg>
+                    </div>
+                    <h3>3. MCP を補強する</h3>
+                    <p>すでにある MCP サーバの補強に。領域の知識を入れ（Sentry でバグを自動で読み解くなど）、文脈を自動で足し、よくある API の間違いを先に防ぎます。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Two_Column_Tiled_Text -->
+    <div class="slide-container dark-theme" id="slide6">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">YAML の書き方：ここで生き死にが決まる</h2>
+        </div>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3>命名の決まり（Naming）</h3>
+                    <p>Claude はフォルダ名とファイル名の形にとても厳しく、わずかな違いで Skill が読み込まれません。</p>
+                    <ul>
+                        <li>主たるファイル名は正確に<span class="highlight">SKILL.md</span>（大文字小文字を区別します。skill.md ではいけません）</li>
+                        <li>フォルダと<code>name:</code>の項目には次を使います<span class="highlight">kebab-case</span>。</li>
+                        <li><strong>厳禁</strong>空白、大文字、下線を含めないこと（例：<code>Notion_Setup</code>は誤りです）</li>
+                        <li>置かないこと：<code>README.md</code>を Skill の直下に</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>説明と起動語（Description）</h3>
+                    <p>Description は Claude が自分から Skill を起動するかを判断する唯一の根拠です。1024 文字未満に収めます。</p>
+                    <ul>
+                        <li>両方を必ず書きます：<strong>「何ができるか」</strong>と<strong>「いつ使うか」</strong>（具体的な起動語）</li>
+                        <li>例：「デザイン原稿を読み解くときに使う。利用者が fig ファイルを上げたとき、または『デザイン仕様』を求めたとき。」</li>
+                        <li><strong>セキュリティ上の禁止</strong>：YAML の中で XML タグ<code>&lt; &gt;</code>を使わないこと。プロンプトインジェクションを防ぐためです。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide7">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">指示の書き方、定石（Best Practices）</h2>
+        </div>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+                    <h3>具体的で、実行できること</h3>
+                    <p>漠然とした指示は避けます。「データをきちんと検証する」ではなく、こう書きます。「<code>scripts/validate.py</code>を実行し、エラーが出たら必須項目の抜けを確かめる。」コードは言葉より曖昧さがありません。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>段階的に開く</h3>
+                    <p>トークンを使いすぎないために、<code>SKILL.md</code>は中心の手順だけに絞ります。細かい API 仕様や大きなひな形は<code>references/</code>フォルダへ移し、Claude が必要になったときに読みにいく形にします。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>あらかじめエラーに備える</h3>
+                    <p>起こりうるエラーを見越して、直し方まで書いておきます。たとえば「よくある不具合」の節を設け、「接続を拒否されたら、設定 &gt; 拡張機能から接続し直してください。」人が入る回数がはっきり減ります。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Practical Example 1 -->
+    <div class="slide-container" id="slide-example-1">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">実例その一：コードレビューの相棒</h2>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3>単一の仕事の、標準的な形</h3>
+                    <p>外部の MCP を使わない標準的な<code>SKILL.md</code>の書き方です。要は、はっきりした<strong>前提条件</strong>と<strong>と、うっかりを防ぐ仕掛け</strong>。
+                    </p>
+                    <ul>
+                        <li><span class="highlight">YAML の部分</span>：起動の条件を正確に決める。</li>
+                        <li><span class="highlight">Role（役割）</span>：Claude に専門家の視点を渡す。</li>
+                        <li><span class="highlight">Workflow（手順）</span>：番号で順序を強制する。</li>
+                        <li><span class="highlight">Rules（してはいけないこと）</span>：「やらないこと」を明示し、踏み込みすぎを防ぐ。</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="code-window">
+                        <span class="yaml-val">---</span><br>
+                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">利用者がコード片を上げたとき、またはコードレビューを求めたときに起動する。</span><br>
+                        <span class="yaml-val">---</span><br><br>
+                        <span class="md-h"># Role</span><br>
+                        <span class="md-text">あなたは厳しく、経験を積んだバックエンドの設計者です。</span><br><br>
+                        <span class="md-h"># Workflow</span><br>
+                        <span class="md-text">起動したら、次の手順を順番どおりに実行してください：</span><br>
+                        <span class="md-list">1.</span> <span class="md-text">**セキュリティの確認**：SQL インジェクションや、書き込まれたままのパスワードがないか見る。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">**性能の評価**：計算量が O(N^2) を超える書き方を指摘する。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">**報告を出す**：修正案を Markdown の表で示す。</span><br><br>
+                        <span class="md-h"># Rules</span><br>
+                        <span class="md-text">- 書き直した完全なコードを**渡さないこと**。</span><br>
+                        <span class="md-text">- 具体的な直し方と考え方だけを示すこと。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Practical Example 2 -->
+    <div class="slide-container dark-theme" id="slide-example-2">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">実例その二：MCP につなぐ自動化</h2>
+        </div>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
+                        <span class="yaml-val">---</span><br>
+                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
+                        <span class="yaml-key">description:</span> <span class="yaml-val">会話の中のエラーログを、そのまま Linear の課題にする。</span><br>
+                        <span class="yaml-val">---</span><br><br>
+                        <span class="md-h"># Objective</span><br>
+                        <span class="md-text">エラーログを読み解き、`linear` の MCP を自分から使ってバグ票を立てる。</span><br><br>
+                        <span class="md-h"># Instructions</span><br>
+                        <span class="md-list">1.</span> <span class="md-text">利用者の Error Log から取り出す：コード、時刻、考えられる原因。</span><br>
+                        <span class="md-list">2.</span> <span class="md-text">`linear_create_issue` を自分で呼ぶ。</span><br>
+                        <span class="md-list">3.</span> <span class="md-text">Title は `[Bug] {エラーコード}` の形にする。</span><br><br>
+                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
+                        <span class="md-text">- `linear` が見つからない、または接続できないとき、**謝らないこと**。</span><br>
+                        <span class="md-text">- そのまま切り替える：Markdown のバグ報告を出し、利用者に手で写してもらう。</span>
+                    </div>
+                </div>
+                <div>
+                    <h3>手数の多い流れと、失敗したときの逃げ道</h3>
+                    <p>Claude を RPA のように外部 API を呼ばせつつ、自分で立て直す筋道まで持たせる例です。</p>
+                    <ul>
+                        <li><span class="highlight">Objective（目的）</span>：この手順が最後に何を成すのかを一文で。</li>
+                        <li><span class="highlight">ツールを呼ぶ指示</span>：呼ぶツールの名前をはっきり書く（例：<code>linear_create_issue</code>)。
+                        </li>
+                        <li><span class="highlight">Fallback（逃げ道）</span>：<strong style="color: var(--ink); font-weight: 600;">ここが要です。</strong>MCP は切れるものと考え、ツールが使えないときに文章での出力へ切り替える方法を Claude に伝えておきます。流れが途中で止まらなくなります。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Section_Title -->
+    <div class="slide-container dark-theme" id="slide10">
+        <div class="section-title-layout">
+            <hr>
+            <div class="cover" data-cover>
+                <h2>試して確かめる段階</h2>
+            </div>
+            <p>「まず単一の仕事で Claude が完璧にこなせることを確かめ、そのうまくいった形を取り出して Skill に固める。」</p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Table -->
+    <div class="slide-container" id="slide11">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">試し方の全体像：三つの観点</h2>
+        </div>
+        <div class="content-area">
+            <div class="table-layout">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">観点</th>
+                            <th style="width: 35%;">確かめたいこと</th>
+                            <th style="width: 40%;">測り方（Metrics）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>起動の確認（Triggering）</strong></td>
+                            <td>必要な場面できちんと読み込まれ、関係のない話では出しゃばらないこと。</td>
+                            <td>関連する依頼の 90% で自動的に起動する（手で呼ばなくてよい）。関係のない指示では黙っている。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>挙動の確認（Functional）</strong></td>
+                            <td>手順が思ったとおりの結果を出し、端の場合もきちんと扱えること。</td>
+                            <td>未処理の API エラーがゼロ。ツールの呼び出しがすべて成功する。出力の形がそろっている。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>効きの比較（Performance）</strong></td>
+                            <td>Skill を入れたあとの流れが、人が手で導いていたときより効率がよいと示すこと。</td>
+                            <td>やり取りの往復が大きく減る。使うトークンが減る。利用者が直しに入らずに済む。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Styled_Bullet_Points -->
+    <div class="slide-container" id="slide12">
+        <div class="cover" data-cover>
+            <h2 class="slide-title">一歩進んだ設計：五つの型</h2>
+        </div>
+        <div class="content-area">
+            <div class="bullet-list">
+                <ul>
+                    <li><i class="fa-solid fa-arrow-down-1-9"></i> <strong>順に並べる（Sequential Workflow）：</strong>手順 1 から手順 N までを厳密に決めます。前後の依存がある仕事に向きます。たとえば「顧客を登録する → 支払いを設定する → 歓迎のメールを送る」。</li>
+                    <li><i class="fa-solid fa-network-wired"></i> <strong>複数の MCP をまたぐ（Multi-MCP）：</strong>サービスをまたいで組み立てます。Figma から書き出し（MCP 1）、Google Drive に保存し（MCP 2）、Linear に課題を立てる（MCP 3）。</li>
+                    <li><i class="fa-solid fa-rotate"></i> <strong>繰り返して整える（Iterative Refinement）：</strong>「下書きを出す → スクリプトで検証する → 自動で直す」という閉じた輪をつくり、質が届くまで終わらせません。</li>
+                    <li><i class="fa-solid fa-sitemap"></i> <strong>文脈で分ける（Context-aware）：</strong>Claude に判断の木を渡します。「10MB を超えるファイルならクラウドストレージの MCP、コードなら GitHub の MCP。」</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>領域の知識を入れる（Domain-specific）：</strong>API を呼ぶ前に、規程の確認やリスクの判断を挟みます。経験を積んだ専門家のようにふるまわせるためです。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Bleed_Image_Right -->
+    <div class="slide-container bleed-image-layout" id="slide13">
+        <div class="content-container">
+            <div class="cover" data-cover>
+                <h2 class="slide-title">最後の一歩：まとめて配る</h2>
+            </div>
+            <div class="content-area">
+                <div class="bleed-text-side">
+                    <p><strong>まとめ方と入れ方：</strong>試し終えたら、フォルダを<code>.zip</code>にまとめます。個人なら Claude.ai から上げられます。企業の管理者は Workspace 全体へ配れます（自動で更新されます）。</p>
+                    <p><strong>公開と API：</strong>Skill は GitHub に置けます。導入の手順を<code>README.md</code>にわかりやすく書いてください。アプリを開発しているなら、API の<code>container.skills</code>から呼ぶこともできます。</p>
+                    <p><strong>どう見せるか：</strong>伝えるときは技術ではなく成果に寄せます。「この Skill は数秒で案件の初期設定を終わらせます」と言えるなら、MCP と Skill はそのまま売りになります。</p>
+                </div>
+            </div>
+        </div>
+        <div class="image-container">
+            <svg class="bleed-image-side" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:var(--surface);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:var(--surface);stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="600" height="800" fill="url(#bgGrad)" />
+                <path d="M 0 200 L 600 200 M 0 400 L 600 400 M 0 600 L 600 600" stroke="var(--line)" stroke-width="1" opacity="0.3" />
+                <path d="M 200 0 L 200 800 M 400 0 L 400 800" stroke="var(--line)" stroke-width="1" opacity="0.3" />
+                <path d="M 150 250 C 250 250, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 450 280 C 350 280, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 200 550 C 250 450, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="10 6" opacity="0.6" />
+                <path d="M 420 520 C 360 460, 300 400, 300 400" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="10 6" opacity="0.6" />
+                <circle cx="300" cy="400" r="90" fill="var(--surface)" stroke="url(#accentGrad)" stroke-width="8" />
+                <rect x="250" y="375" width="100" height="50" rx="8" fill="var(--ink)" opacity="0.9" />
+                <circle cx="275" cy="400" r="8" fill="var(--surface)" />
+                <rect x="295" y="396" width="40" height="8" rx="4" fill="var(--surface)" />
+                <circle cx="150" cy="250" r="40" fill="var(--ink)" opacity="0.9" />
+                <circle cx="150" cy="235" r="12" fill="var(--surface)" />
+                <path d="M 130 265 Q 150 245 170 265 L 170 275 C 170 280 130 280 130 275 Z" fill="var(--surface)" />
+                <circle cx="450" cy="280" r="45" fill="var(--ink)" opacity="0.9" />
+                <circle cx="450" cy="265" r="14" fill="var(--surface)" />
+                <path d="M 425 298 Q 450 275 475 298 L 475 308 C 475 313 425 313 425 308 Z" fill="var(--surface)" />
+                <circle cx="200" cy="550" r="35" fill="var(--ink)" opacity="0.9" />
+                <circle cx="200" cy="538" r="10" fill="var(--surface)" />
+                <path d="M 182 563 Q 200 545 218 563 L 218 570 C 218 575 182 575 182 570 Z" fill="var(--surface)" />
+                <circle cx="420" cy="520" r="30" fill="var(--ink)" opacity="0.9" />
+                <circle cx="420" cy="510" r="9" fill="var(--surface)" />
+                <path d="M 405 532 Q 420 518 435 532 L 435 538 C 435 542 405 542 405 538 Z" fill="var(--surface)" />
+                <circle cx="210" cy="330" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="390" cy="330" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="260" cy="460" r="4" fill="var(--surface)" opacity="0.8" />
+                <circle cx="350" cy="450" r="4" fill="var(--surface)" opacity="0.8" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Slide 14: Q&A -->
+    <div class="slide-container" id="slide14">
+        <div class="qa-layout">
+            <div class="cover" data-cover>
+                <h2>自分の Skill をつくる準備はできましたか</h2>
+            </div>
+            <p>「知識で道具を動かし、自動化をチームの標準にする」</p>
+            <div class="contact-info">
+                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i>まずは組み込みの skill-creator から始めてみてください。</div>
+        </div>
+    </div>
+
+</div>
+{% include "footer.html" %}
