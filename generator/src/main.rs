@@ -13,7 +13,7 @@
 
 use std::collections::{BTreeMap, HashSet};
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use std::process;
 
 use minijinja::value::Value;
@@ -271,21 +271,71 @@ impl Page {
     /// the trailing-slash form — a redirect hop on every indexed URL, and a
     /// canonical tag pointing somewhere the host will not serve directly.
     /// `geo-guide.html` is served at `/geo-guide` with no redirect at all.
-    fn output_path(&self, root: &Path, locale: &str) -> PathBuf {
+    ///
+    /// RELATIVE, NOT JOINED, AND THAT IS THE SECURITY-RELEVANT HALF. This
+    /// returned `root.join(...)` until the build's containment check was found
+    /// not to be one: `dest.strip_prefix(&out)` is a *lexical* comparison and
+    /// does not resolve `..`, so `dist/en-US/../../escaped.html` stripped
+    /// cleanly to `../../escaped.html`, still "started with" `dist`, and the
+    /// file landed two levels above the output tree. The same unnormalised path
+    /// then keyed the collision guard, so five locales produced five distinct
+    /// `HashSet` entries naming one file — five destinations printed, one file
+    /// written, exit 0.
+    ///
+    /// A joined path cannot be vetted after the fact. Returning the relative
+    /// form is what lets `contained` check the components before the join, which
+    /// is the only point at which the check means what it says.
+    fn relative_output(&self, locale: &str) -> String {
         if self.path == "/" {
-            return root.join(format!("{locale}.html"));
+            return format!("{locale}.html");
         }
         // Error documents keep their literal name; the host maps status codes
         // to them by filename. They are not localised and take no prefix — the
         // host picks one file for an unmatched path and cannot know a language.
         if self.path.ends_with(".html") {
-            return root.join(self.path.trim_start_matches('/'));
+            return self.path.trim_start_matches('/').to_string();
         }
-        root.join(format!(
-            "{locale}/{}.html",
-            self.path.trim_start_matches('/')
-        ))
+        format!("{locale}/{}.html", self.path.trim_start_matches('/'))
     }
+}
+
+/// Resolves a site.toml-supplied destination against the output directory, and
+/// refuses anything that would land outside it.
+///
+/// WHY THIS IS NOT `strip_prefix`. It was, for pages, and it was not a
+/// containment check — see `Page::relative_output` for what `strip_prefix`
+/// actually does to a path containing `..`. Documents had no check at all:
+/// `out.join(&doc.output)` wrote wherever the string pointed, and `Path::join`
+/// given an absolute path discards the base entirely, so a `[[document]]` could
+/// write to any path the build user could reach.
+///
+/// The prefix check also fed the *collision* guard an unnormalised path, which
+/// is how five locales could produce five distinct `HashSet` keys that all named
+/// one file: the build printed five destinations, wrote one, and reported
+/// success — the silent overwrite that guard exists to make loud.
+///
+/// REJECTING RATHER THAN NORMALISING IS DELIBERATE. No route or document name in
+/// this site has a legitimate `..` or `.` in it, so a path carrying one is a
+/// mistake or worse. Rewriting it silently would hide both, and the collision
+/// guard keys on what the author wrote rather than on what it resolved to.
+fn contained(out: &Path, rel: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let mut dest = out.to_path_buf();
+    for component in Path::new(rel).components() {
+        match component {
+            Component::Normal(segment) => dest.push(segment),
+            // `..`, `.`, a leading `/` and a Windows prefix all arrive here.
+            // Every one of them either leaves the tree or resolves to a path
+            // nobody wrote down.
+            _ => {
+                return Err(format!(
+                    "{rel} is not a plain relative path — every page and document \
+                     must land inside dist/"
+                )
+                .into())
+            }
+        }
+    }
+    Ok(dest)
 }
 
 fn main() {
@@ -323,6 +373,36 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut written = BTreeMap::new();
     let mut destinations: HashSet<PathBuf> = HashSet::new();
     let mut sitemap = Vec::new();
+
+    // HOST CONFIGURATION IS COPIED BEFORE ANYTHING RENDERS, AND ITS NAME IS
+    // RESERVED.
+    //
+    // This copy used to sit after the render loops, which left the repository's
+    // own `_headers` a live target while they ran: a `[[document]]` whose
+    // `output` climbed out of dist/ overwrote the source policy file, and this
+    // copy then carried the replacement into the build. Cloudflare parses
+    // `_headers` leniently — invalid rules are dropped, valid ones kept — so a
+    // policy file full of HTML yields *zero* rules and every response ships with
+    // no CSP, no X-Frame-Options and no Referrer-Policy. It is logged as a
+    // warning, not an error, so nothing in the deploy path stops it.
+    //
+    // `contained` now refuses the climb, and copying first means the window is
+    // shut even if that check is ever weakened. Reserving the names closes the
+    // other half: a page or document may no longer land on one of these from
+    // *inside* dist/ either. `sitemap.xml` and `_redirects` are generated below
+    // rather than copied — a stale hand-edited copy in the repository root
+    // cannot override the declared table — but they are reserved on the same
+    // grounds, because a row quietly clobbered by a later write is the same
+    // silent failure in a different direction.
+    {
+        let from = root.join("_headers");
+        if from.exists() {
+            fs::copy(&from, out.join("_headers"))?;
+        }
+        for reserved in ["_headers", "_redirects", "sitemap.xml"] {
+            destinations.insert(PathBuf::from(reserved));
+        }
+    }
 
     // EVERY LANGUAGE THE SITE ACTUALLY PUBLISHES, FOR THE ONE NODE THAT IS NOT
     // PER-PAGE.
@@ -446,7 +526,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
             sitemap.push((text.canonical.clone(), page.date_modified.clone()));
 
-            let dest = page.output_path(&out, locale);
+            let dest = contained(&out, &page.relative_output(locale))?;
             let rel = dest.strip_prefix(&out)?.to_path_buf();
 
             // TWO LOCALES MUST NOT LAND ON THE SAME FILE.
@@ -524,8 +604,28 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             css_version => &css_v,
             og_image => Value::from_safe_string(format!("{ORIGIN}/static/og/index.png")),
         })?);
-        fs::write(out.join(&doc.output), html)?;
-        written.insert(format!("({})", doc.output), PathBuf::from(&doc.output));
+        // VETTED AND COLLISION-CHECKED EXACTLY LIKE A PAGE. It was neither.
+        //
+        // `out.join(&doc.output)` wrote wherever the string pointed — outside
+        // dist/, or on top of a tracked file in the repository, so an ordinary
+        // `npm run build:site` could mutate its own inputs. And documents never
+        // entered `destinations`, so a document could silently replace a page
+        // the loop above had just written, with the build still reporting both.
+        let dest = contained(&out, &doc.output)?;
+        let rel = dest.strip_prefix(&out)?.to_path_buf();
+        if !destinations.insert(rel.clone()) {
+            return Err(format!(
+                "document {} would overwrite {} — two rows resolve to one file",
+                doc.output,
+                rel.display()
+            )
+            .into());
+        }
+        if let Some(parent) = dest.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        fs::write(&dest, html)?;
+        written.insert(format!("({})", doc.output), rel);
     }
 
     // Generated from the same table and the same dates as the pages, so a URL
@@ -556,16 +656,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     copy_tree(&root.join("static"), &out.join("static"))?;
-
-    // Host configuration travels with the output. `_redirects` is not here: it
-    // is generated above rather than copied, so a stale hand-edited copy in the
-    // repository root cannot override the declared table.
-    {
-        let from = root.join("_headers");
-        if from.exists() {
-            fs::copy(&from, out.join("_headers"))?;
-        }
-    }
 
     // These sit at the root in the served site but live under static/ in the
     // repo, matching the routes the Go server exposed for them.
@@ -769,16 +859,15 @@ mod tests {
     // That hop would land on the highest-value URL each language has.
     #[test]
     fn a_locale_home_is_a_flat_file() {
-        let out =
-            page("/", "https://taux.io/zh-Hant-TW").output_path(Path::new("dist"), TEST_LOCALE);
-        assert_eq!(out, Path::new("dist/zh-Hant-TW.html"));
+        let out = page("/", "https://taux.io/zh-Hant-TW").relative_output(TEST_LOCALE);
+        assert_eq!(out, "zh-Hant-TW.html");
     }
 
     #[test]
     fn routes_become_flat_files_under_their_locale() {
-        let out = page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide")
-            .output_path(Path::new("dist"), TEST_LOCALE);
-        assert_eq!(out, Path::new("dist/zh-Hant-TW/geo-guide.html"));
+        let out =
+            page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide").relative_output(TEST_LOCALE);
+        assert_eq!(out, "zh-Hant-TW/geo-guide.html");
     }
 
     // Nothing may land on the same file twice. The generator guards this at
@@ -786,19 +875,77 @@ mod tests {
     #[test]
     fn two_locales_do_not_share_a_file() {
         let p = page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide");
-        assert_ne!(
-            p.output_path(Path::new("dist"), "zh-Hant-TW"),
-            p.output_path(Path::new("dist"), "en-US")
-        );
+        assert_ne!(p.relative_output("zh-Hant-TW"), p.relative_output("en-US"));
     }
 
     // The host answers every unmatched path with one file, chosen before it
     // knows anything about the reader, so the error document takes no prefix.
     #[test]
     fn a_path_that_is_already_a_filename_keeps_its_name() {
-        let out =
-            page("/404.html", "https://taux.io/404").output_path(Path::new("dist"), TEST_LOCALE);
-        assert_eq!(out, Path::new("dist/404.html"));
+        let out = page("/404.html", "https://taux.io/404").relative_output(TEST_LOCALE);
+        assert_eq!(out, "404.html");
+    }
+
+    // THE GUARD THAT WAS A PREFIX CHECK.
+    //
+    // `dest.strip_prefix(&out)` does not resolve `..`, so the check that was
+    // supposed to keep every write inside dist/ returned Ok for paths that leave
+    // it, and documents had no check at all. These assert the property the old
+    // code only appeared to have. Each one is a destination that reached the
+    // filesystem before `contained` existed.
+
+    #[test]
+    fn a_destination_cannot_climb_out_of_dist() {
+        // The one that mattered: dist/../_headers is the repository's own
+        // security policy, copied into the build immediately afterwards.
+        assert!(contained(Path::new("dist"), "../_headers").is_err());
+        assert!(contained(Path::new("dist"), "../../escaped.html").is_err());
+        assert!(contained(Path::new("dist"), "../static/robots.txt").is_err());
+        // The climb does not have to be at the front to work.
+        assert!(contained(Path::new("dist"), "en-US/../../escaped.html").is_err());
+    }
+
+    #[test]
+    fn an_absolute_destination_is_rejected() {
+        // `Path::join` given an absolute path discards the base entirely, so
+        // this wrote where the string pointed rather than under dist/.
+        assert!(contained(Path::new("dist"), "/tmp/anywhere.html").is_err());
+    }
+
+    #[test]
+    fn a_single_dot_is_rejected_too() {
+        // Harmless on its own. Rejected because it resolves to a path nobody
+        // wrote down, and the collision guard keys on what they did write —
+        // `./404.html` and `404.html` are one file and two keys.
+        assert!(contained(Path::new("dist"), "./404.html").is_err());
+    }
+
+    // The guard must not cost the generator a layout it actually uses. All three
+    // that `relative_output` picks between have to pass through unchanged.
+    #[test]
+    fn the_three_layouts_all_survive_containment() {
+        for rel in [
+            page("/", "https://taux.io/zh-Hant-TW").relative_output(TEST_LOCALE),
+            page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide").relative_output(TEST_LOCALE),
+            page("/404.html", "https://taux.io/404").relative_output(TEST_LOCALE),
+        ] {
+            assert_eq!(
+                contained(Path::new("dist"), &rel).unwrap(),
+                Path::new("dist").join(&rel),
+                "{rel} is a layout this site uses and must not be refused"
+            );
+        }
+    }
+
+    // Five locales once produced five distinct HashSet keys naming one file, so
+    // the collision guard never fired: the build printed five destinations,
+    // wrote one, and exited 0. Now every locale is refused at the same place.
+    #[test]
+    fn a_climbing_route_is_refused_for_every_locale() {
+        let p = page("/../../escaped", "https://taux.io/x");
+        for locale in ["zh-Hant-TW", "en-US", "ja-JP", "ko-KR", "zh-Hans-CN"] {
+            assert!(contained(Path::new("dist"), &p.relative_output(locale)).is_err());
+        }
     }
 
     // The share-card builder derives the same slug from the same canonical URL.
