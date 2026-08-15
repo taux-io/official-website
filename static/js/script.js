@@ -7,17 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initEasterEggs();
 });
 
-// Full-screen menu. One overlay, two triggers: the hamburger on small screens
-// and the Guides item on large ones.
+// Full-screen menu. One overlay, and however many triggers the markup declares:
+// the hamburger on small screens, the Explore item on large ones, and the
+// home page's hero call to action.
+//
+// FOUND BY THE MARKUP RATHER THAN LISTED HERE. This was `[hamburger, trigger]`,
+// which meant adding a third trigger was two edits in two files with nothing
+// reporting the second one missing — the button would simply render and do
+// nothing. `aria-controls` already has to name the overlay for the trigger to
+// be correct for assistive technology, so the relationship is declared in the
+// markup either way; reading it back is free and cannot drift.
+//
+// `menuClose` lives inside the overlay and carries no `aria-controls`, so it
+// does not match here and keeps its own close-only handler below.
 function initMenu() {
     const overlay = document.getElementById('menuOverlay');
     const hamburger = document.getElementById('hamburger');
-    const trigger = document.getElementById('menuTrigger');
     const closeBtn = document.getElementById('menuClose');
 
     if (!overlay) return;
 
-    const triggers = [hamburger, trigger].filter(Boolean);
+    const triggers = Array.from(
+        document.querySelectorAll('[aria-controls="menuOverlay"]')
+    ).filter((t) => t !== closeBtn);
     let lastFocused = null;
 
     const isOpen = () => overlay.classList.contains('opacity-100');

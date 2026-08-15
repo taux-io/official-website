@@ -171,12 +171,23 @@
                 TauX
             </a>
 
-            <!-- Two items, and they are the two axes: Explore opens what the
-                 site contains, Start Building is what to do about it. GEO and
-                 Data Governance used to sit alongside them and were a
-                 different kind of thing — single service pages, one level
-                 down. Both are one click away in the overlay (columns 01 and
-                 03), whose markup is always in the document.
+            <!-- One item now. Explore opens what the site contains; the
+                 Start Building button that sat beside it went to the GitHub
+                 organisation, which is a destination for developers rather
+                 than for the readers this bar is for — it is still in the
+                 overlay and in the footer. GEO and Data Governance used to sit
+                 here too and were a different kind of thing — single service
+                 pages, one level down. All of them are one click away in the
+                 overlay (columns 01, 03 and 04), whose markup is always in the
+                 document.
+
+                 THE LABEL IS A STRING, NOT A LITERAL. This file is rendered
+                 once per language, so an English word written here shipped on
+                 all five — `EXPLORE` sat above a page whose own call to action
+                 already said 探索服務. The label now comes from the locale's
+                 own vocabulary in site.toml, and `UndefinedBehavior::Strict`
+                 means a locale that forgets it fails the build rather than
+                 rendering an empty bar.
 
                  THE BREAKPOINT HERE AND THE HAMBURGER'S BELOW ARE ONE
                  DECISION. Let them drift and both navigations render together
@@ -190,12 +201,9 @@
                      probe's floor with no margin at all. 12 is 48px and matches
                      .btn's height, so the floor has somewhere to be. -->
                 <button type="button" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
-                    Explore
+                    {{ strings.nav_explore }}
                 </button>
 {% with link_class = "nav-link", list_class = "absolute top-full right-0 mt-2 bg-surface border border-line p-4 space-y-3 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
-                <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="btn">
-                    Start Building
-                </a>
             </div>
 
             <!-- 44x44. It measured 40x31 before issue 154 — the only way into
@@ -210,14 +218,14 @@
         </div>
     </nav>
 
-    <!-- Full-screen menu. One overlay serves both triggers: the hamburger on
-         small screens and Guides on large ones.
+    <!-- Full-screen menu. One overlay serves every trigger that names it in
+         `aria-controls`: the hamburger on small screens, Explore on large ones,
+         and the home page's hero call to action.
 
          SHIPS INERT, AND THE SCRIPT LIFTS IT. opacity-0 and pointer-events-none
          hide it from eyes and mice and do nothing for a keyboard: the twenty
-         links inside stayed in the tab order, so tabbing past Start Building
-         walked into twenty stops on an invisible menu with no focus ring to
-         see. inert is the one attribute that fixes that without touching what
+         links inside stayed in the tab order, so tabbing past the bar walked
+         into twenty stops on an invisible menu with no focus ring to see. inert is the one attribute that fixes that without touching what
          is in the document — the markup stays put for crawlers, which is the
          whole reason this overlay is rendered rather than fetched.
 
