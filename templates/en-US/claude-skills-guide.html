@@ -1036,7 +1036,7 @@
                     <p>Claude is unforgiving about folder and file names. A small mistake means the Skill simply does not load.</p>
                     <ul>
                         <li>The file must be named exactly <span class="highlight">SKILL.md</span> — case-sensitive, and skill.md will not do.</li>
-                        <li>The folder and the <code>name:</code> field must both be <span class="highlight">kebab-case</span>。</li>
+                        <li>The folder and the <code>name:</code> field must both be <span class="highlight">kebab-case</span>.</li>
                         <li><strong>No</strong> spaces, capitals or underscores (<code>Notion_Setup</code> is wrong).</li>
                         <li>No <code>README.md</code> in the Skill root.</li>
                     </ul>
@@ -1047,7 +1047,7 @@
                     <ul>
                         <li>It has to say both <strong>what it does</strong> and <strong>when to use it</strong>, with concrete trigger phrases.</li>
                         <li>For example: "Analyses design files. Use when the user uploads a .fig file or asks for design specifications."</li>
-                        <li><strong>Security rule:</strong> never put XML tags <code>&lt; &gt;</code>， in the YAML — that is a prompt-injection vector.</li>
+                        <li><strong>Security rule:</strong> never put XML tags <code>&lt; &gt;</code> in the YAML — that is a prompt-injection vector.</li>
                     </ul>
                 </div>
             </div>
@@ -1071,8 +1071,7 @@
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
                     <h3>Progressive disclosure</h3>
-                    <p>To keep token cost down, keep <code>SKILL.md</code> lean — the core steps only. Move detailed API specs and large templates into <code>references/</code>
-                        , for Claude to read when it needs them.</p>
+                    <p>To keep token cost down, keep <code>SKILL.md</code> lean — the core steps only. Move detailed API specs and large templates into <code>references/</code>, for Claude to read when it needs them.</p>
                 </div>
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -1157,7 +1156,7 @@
                     <p>This is Claude calling external APIs the way an RPA bot would, with a recovery path of its own.</p>
                     <ul>
                         <li><span class="highlight">Objective</span>: one sentence saying what this is ultimately for.</li>
-                        <li><span class="highlight">Naming the tool</span>: name the tool explicitly (<code>linear_create_issue</code>)。
+                        <li><span class="highlight">Naming the tool</span>: name the tool explicitly (<code>linear_create_issue</code>).
                         </li>
                         <li><span class="highlight">Fallback</span>: <strong style="color: var(--ink); font-weight: 600;">this is the important one.</strong> Assume the MCP connection can drop. Tell Claude what to produce in plain text when the tool is unavailable, so the process does not simply stop.
                         </li>
@@ -1227,12 +1226,10 @@
                          through N, strictly. For work with real dependencies — create the customer, set up payment, send the welcome mail.</li>
                     <li><i class="fa-solid fa-network-wired"></i> <strong>Multi-MCP:</strong> orchestration across services. Export from Figma
                          (one server), file it in Google Drive (a second), open a task in Linear (a third).</li>
-                    <li><i class="fa-solid fa-rotate"></i> <strong>Iterative refinement:</strong> draft, validate with a script
-                        , correct, repeat — a closed loop that only exits when the output is good enough.</li>
+                    <li><i class="fa-solid fa-rotate"></i> <strong>Iterative refinement:</strong> draft, validate with a script, correct, repeat — a closed loop that only exits when the output is good enough.</li>
                     <li><i class="fa-solid fa-sitemap"></i> <strong>Context-aware:</strong> give Claude
                          a decision tree. "Over 10MB, use the cloud storage server; if it is code, use GitHub."</li>
-                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>Domain knowledge:</strong> before the API call
-                        , run the compliance or risk checks a senior practitioner would run without being asked.</li>
+                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>Domain knowledge:</strong> before the API call, run the compliance or risk checks a senior practitioner would run without being asked.</li>
                 </ul>
             </div>
         </div>

@@ -19,7 +19,7 @@
       {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/en-US/owasp-llm-top-10" }
     ]
   },
-  {"@type":"TechArticle","@id":"https://taux.io/en-US/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026：LLM  applications: the ten most critical security risks","description":"OWASP Top 10 for LLM Applications 2026 Ten risks broken down one by one, with the 2025-to-2026 reordering and the scope changes that came with it.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/en-US/owasp-llm-top-10#list" }
+  {"@type":"TechArticle","@id":"https://taux.io/en-US/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026 — LLM applications: the ten most critical security risks","description":"OWASP Top 10 for LLM Applications 2026 Ten risks broken down one by one, with the 2025-to-2026 reordering and the scope changes that came with it.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/en-US/owasp-llm-top-10#list" }
   },
   {"@type":"ItemList","@id":"https://taux.io/en-US/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM  applications, in the order of the OWASP 2026 edition.","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [
       {"@type":"ListItem","position": 1,"name":"LLM01 Prompt Injection Prompt Injection","description":"Any input entering the model context that changes its behaviour, including cross-modal carriers hidden in images or audio.","url":"https://taux.io/en-US/owasp-llm-top-10#prompt-injection" },
@@ -153,7 +153,7 @@
                         <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">04</td><td class="py-3 pr-4 font-sans">05</td><td class="py-3">Data and Model Poisoning <span>— down one</span></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">10</td><td class="py-3 pr-4 font-sans">06</td><td class="py-3">Unbounded Consumption <strong>— up four</strong></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">09</td><td class="py-3 pr-4 font-sans">07</td><td class="py-3">Misinformation <span>— up two</span></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">Hidden Context Exposure <strong>— renamed and widened</strong><span>（was "system prompt leakage")</span></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">07</td><td class="py-3 pr-4 font-sans">08</td><td class="py-3">Hidden Context Exposure <strong>— renamed and widened</strong><span>(was "system prompt leakage")</span></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pr-4 font-sans">08</td><td class="py-3 pr-4 font-sans">09</td><td class="py-3">Vector and Embedding Weaknesses <span>— down one</span></td></tr>
                         <tr><td class="py-3 pr-4 font-sans">05</td><td class="py-3 pr-4 font-sans">10</td><td class="py-3">Improper Output Handling <strong>— down five, the largest fall</strong></td></tr>
                     </tbody>
@@ -163,11 +163,11 @@
             <div class="border-l border-line pl-6 space-y-4 leading-relaxed mt-8">
                 <p>
                     <strong>Four entries widened in scope rather than new ones being added.</strong>
-                    OWASP folds emerging risks into the entry that already owns them rather than fragmenting the list: prompt injection now covers <strong>cross-modal</strong> attacks (instructions hidden in an image or audio), supply chain covers <strong>model artifacts that are not what they claim</strong>, and data and modelpoisoning now covers<strong>fine-tuning-stage subversion</strong>、output handling covers<strong>insecure code produced at volume by assistants</strong>。
+                    OWASP folds emerging risks into the entry that already owns them rather than fragmenting the list: prompt injection now covers <strong>cross-modal</strong> attacks (instructions hidden in an image or audio), supply chain covers <strong>model artifacts that are not what they claim</strong>, and data and model poisoning now covers <strong>fine-tuning-stage subversion</strong>, output handling covers <strong>insecure code produced at volume by assistants</strong>.
                 </p>
                 <p>
                     <strong>The ranking method changed, and that is the most useful thing to know about this edition.</strong>
-                    Previously the order came entirely from a community vote. For 2026 incident data was added for the first time: 7,714 real incidents drawn from public vulnerability and AI-harm databases, of which 6,639 had enough detail to classify. The final weighting is <strong>three-quarters vote, one-quarter data</strong> ——deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
+                    Previously the order came entirely from a community vote. For 2026 incident data was added for the first time: 7,714 real incidents drawn from public vulnerability and AI-harm databases, of which 6,639 had enough detail to classify. The final weighting is <strong>three-quarters vote, one-quarter data</strong> — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
                 </p>
                 <p>
                     Where the two disagree is more informative than where they agree. Prompt injection is the clearest case: <strong>on incident data alone it would fall out of the top ten</strong> — but OWASP reads that as <strong>defences working</strong> rather than risk receding, because teams have put more effort here than anywhere else, and clean successful attacks reach public databases less often. It stays first. Misinformation is the mirror image: ranked low by the vote, high by the data — the widest divergence, and the one pointing the more painful way.
@@ -569,7 +569,7 @@
                 </div>
                 <div>
                     <p class="eyebrow mb-2">How it shows up</p>
-                    <p>A returned string goes straight into <code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>、, concatenated into SQL, passed to a shell. One successful injection therefore escalates from "the model said something wrong" to "an attacker is running commands on your server".</p>
+                    <p>A returned string goes straight into <code class="bg-ink/5 font-sans px-1.5 py-0.5 text-sm">innerHTML</code>, concatenated into SQL, passed to a shell. One successful injection therefore escalates from "the model said something wrong" to "an attacker is running commands on your server".</p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">Defences</p>

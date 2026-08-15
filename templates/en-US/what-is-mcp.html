@@ -9,7 +9,7 @@
                 }
             ]
         },
-        {"@type":"TechArticle","@id":"https://taux.io/en-US/what-is-mcp#article","headline":"What is MCP? The Model Context Protocol, explained plainly","description":"MCP（Model Context Protocol）Connecting AI applications to outside data and tools. The three roles — host, client, server — and why prompts, resources and tools differ by who decides, not by read versus write. Written against revision 2026-07-28.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/what-is-mcp" }
+        {"@type":"TechArticle","@id":"https://taux.io/en-US/what-is-mcp#article","headline":"What is MCP? The Model Context Protocol, explained plainly","description":"MCP (Model Context Protocol) connects AI applications to outside data and tools. The three roles — host, client, server — and why prompts, resources and tools differ by who decides, not by read versus write. Written against revision 2026-07-28.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/what-is-mcp" }
         }
     ]
 }
@@ -44,7 +44,7 @@
                 MCP lets any AI application connect to any data source the same way.
             </p>
             <p class="max-w-prose leading-relaxed">
-                Model Context Protocol. Anthropic introduced it in 2024, <strong>and since December 2025 it has not been Anthropic's</strong> — the protocol was donated to the Agentic AI Foundation（Linux Foundation , co-founded with Block and OpenAI, and is now governed by the community.
+                Model Context Protocol. Anthropic introduced it in 2024, <strong>and since December 2025 it has not been Anthropic's</strong> — the protocol was donated to the Agentic AI Foundation (Linux Foundation, co-founded with Block and OpenAI), and is now governed by the community.
             </p>
         </section>
 
@@ -143,7 +143,7 @@
             <dl class="border-t border-line">
                 <div class="border-b border-line py-6">
                     <dt class="font-sans mb-2">Host</dt>
-                    <dd class="leading-relaxed max-w-prose">The AI application itself. Claude Desktop, VS Code, Claude Code. It holds the model, the conversation and the permissions. <strong>The host is the application</strong>。</dd>
+                    <dd class="leading-relaxed max-w-prose">The AI application itself. Claude Desktop, VS Code, Claude Code. It holds the model, the conversation and the permissions. <strong>The host is the application</strong>.</dd>
                 </div>
                 <div class="border-b border-line py-6">
                     <dt class="font-sans mb-2">Client</dt>
@@ -223,7 +223,7 @@
                 <h2 class="eyebrow mb-6" id="transport">05 — How it travels</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
-                Two standard transports. <strong>stdio</strong>: the server is a subprocess, talking over standard input and output. <strong>Streamable HTTP</strong>: each message is an HTTP POST. <strong>This is a difference in how, not in where</strong>：A server running on your own machine can speak Streamable HTTP just as well.
+                Two standard transports. <strong>stdio</strong>: the server is a subprocess, talking over standard input and output. <strong>Streamable HTTP</strong>: each message is an HTTP POST. <strong>This is a difference in how, not in where</strong>: a server running on your own machine can speak Streamable HTTP just as well.
             </p>
             <p class="max-w-prose leading-relaxed">
                 Worth knowing that <strong>their security properties differ completely</strong>: stdio inherits your user permissions and has no auth layer at all; the HTTP path wants OAuth and origin validation. And "local server" means "runs on your machine" — it says nothing about whether it reaches the internet. A local server can call a remote API perfectly happily.
@@ -251,7 +251,7 @@
                     <li>├─ <code>initialize</code> handshake</li>
                     <li>├─ <code>Mcp-Session-Id</code> header, and protocol-level sessions</li>
                     <li>├─ a server <strong>initiating</strong> a request to a client</li>
-                    <li>└─ <code>ping</code>、<code>logging/setLevel</code> as methods</li>
+                    <li>└─ <code>ping</code>, <code>logging/setLevel</code> as methods</li>
                 </ul>
             </div>
 
