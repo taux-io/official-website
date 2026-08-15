@@ -28,7 +28,7 @@
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
                 <h3 class="text-lg font-bold mb-2">들어가며: 왜 AI는 의도를 빗나가는가</h3>
                 <p class="mb-4">
-                    AI가 둔한 것이 아닙니다. 우리가 「일을 맡기는」 방식이 분명하지 않을 뿐입니다. 프롬프트 설계는 보통의 말로 프로그램을 쓰는 일에 가깝습니다.
+                    AI가 둔한 것이 아닙니다. 우리가 '일을 맡기는' 방식이 분명하지 않을 뿐입니다. 프롬프트 설계는 보통의 말로 프로그램을 쓰는 일에 가깝습니다.
                     핵심은 분명한 지시와 필요한 배경을 주고, 그 정보를 어떻게 엮을지까지 알려 주는 것입니다.
                 </p>
                 <p>
@@ -72,12 +72,12 @@
                         <span class="font-bold block mb-2 flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg> 나쁜 예: 「이게 뭔가요?」
+                            </svg> 나쁜 예: "이게 뭔가요?"
                         </span>
                         <span class="font-bold block flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg> 좋은 예: 「당신은 스웨덴 보험사의 손해사정 담당입니다. 사고 보고서를 읽고 어느 쪽에 과실이 있는지 판단하세요.」
+                            </svg> 좋은 예: "당신은 스웨덴 보험사의 손해사정 담당입니다. 사고 보고서를 읽고 어느 쪽에 과실이 있는지 판단하세요."
                         </span>
                     </div>
                     <p class="text-sm flex items-start">
@@ -103,7 +103,7 @@
                     <p class="mb-3">결과만 요구하지 말고 과정을 정하세요. 사람이 생각하는 순서를 그대로 적어 건넵니다.</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
                         <strong class="font-semibold mb-1 block">쓰는 법 예시</strong>
-                        <span>「1단계: 서식의 체크란을 본다. 2단계: 현장 도면을 읽는다. 3단계: 결론을 낸다.」</span>
+                        <span>"1단계: 서식의 체크란을 본다. 2단계: 현장 도면을 읽는다. 3단계: 결론을 낸다."</span>
                     </div>
                     <p class="text-sm flex items-start">
                         <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 생각한 과정을 쓰게 하는 것(show its work)만으로 정확도가 눈에 띄게 올라갑니다.
@@ -114,7 +114,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold mb-2">4. 출력 형태를 정한다 (Output Formatting)</h3>
-                    <p class="mb-3">「JSON으로 돌려주세요」 「결론은 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 태그로 감싸 주세요」라고 적습니다.</p>
+                    <p class="mb-3">"JSON으로 돌려주세요" "결론은 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 태그로 감싸 주세요"라고 적습니다.</p>
                     <p class="text-sm flex items-start">
                         <span class="mr-2 font-semibold"><svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 그러면 그대로 프로그램으로 꺼낼 수 있습니다. 사람이 옮겨 붙일 일이 없어집니다.
                     </p>
@@ -137,7 +137,7 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold mb-2">1. 에이전트란 무엇인가</h3>
-                    <p>기초편의 AI는 「대답하는 기계」입니다. 에이전트는 「스스로 움직이는 담당자」로, 루프 안에서 일합니다.<br>
+                    <p>기초편의 AI는 '대답하는 기계'입니다. 에이전트는 '스스로 움직이는 담당자'로, 루프 안에서 일합니다.<br>
                         <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">도구를 쓴다 → 결과를 본다 → 다음을 생각한다 → 다시 도구를 쓴다</span><br>
                         <span class="inline-block mt-2 text-sm">일이 끝날 때까지 이것을 되풀이합니다.</span>
                     </p>
@@ -162,10 +162,10 @@
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="text-xl font-bold mb-2">3. 요령: 에이전트 쪽에 서서 생각한다</h3>
-                    <p class="mb-3">스스로에게 물어보세요. 「신입인 내가 이 도구 한 벌을 받고 막막하지 않을까.」</p>
+                    <p class="mb-3">스스로에게 물어보세요. "신입인 내가 이 도구 한 벌을 받고 막막하지 않을까."</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>도구는 분명하게.</strong> 이름은 짧고 정확하게. 역할이 겹치지 않게.</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>대본이 아니라 원칙을 준다.</strong> 예를 들어 「쉬운 물음이면 5번, 복잡하면 10번까지 검색한다」 「답이 나오면 거기서 멈춘다」.</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>대본이 아니라 원칙을 준다.</strong> 예를 들어 "쉬운 물음이면 5번, 복잡하면 10번까지 검색한다" "답이 나오면 거기서 멈춘다".</li>
                     </ul>
                 </div>
 
@@ -174,8 +174,8 @@
                     <h3 class="text-xl font-bold mb-2">4. 움직이기 전에 생각하게 한다 (Plan &amp; Guide Thinking)</h3>
                     <p class="mb-3">요즘 모델은 움직이면서 생각할 수 있습니다.</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>쓰는 법.</strong> 도구를 부르기 전에 계획하게 합니다. 「어떤 말로 검색할까. 어느 출처를 볼까.」</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>점검 장치.</strong> 결과가 오면 평가하게 합니다. 「이 정보는 믿을 만한가. 뒤를 받쳐야 하나.」</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>쓰는 법.</strong> 도구를 부르기 전에 계획하게 합니다. "어떤 말로 검색할까. 어느 출처를 볼까."</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>점검 장치.</strong> 결과가 오면 평가하게 합니다. "이 정보는 믿을 만한가. 뒤를 받쳐야 하나."</li>
                     </ul>
                 </div>
 

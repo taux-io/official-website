@@ -41,7 +41,7 @@ agent-dev-workflow.html	   "font-sans">13</span> 한
 agent-dev-workflow.html	   p>이 페이지가 다루는 것은 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">
 agent-dev-workflow.html	    <strong>1.2.3</strong> 버
 agent-dev-workflow.html	   이것은 이 pack 전체에서 <strong>
-agent-dev-workflow.html	    <li>문서에 「이어서 <code>
+agent-dev-workflow.html	    <li>문서에 "이어서 <code>
 agent-dev-workflow.html	·· ode>/implement</code>를
 agent-dev-workflow.html	   면, 그것을 입력하는 주체는 <strong>
 agent-dev-workflow.html	·· 주체는 <strong>사람</strong>입
@@ -52,7 +52,7 @@ agent-dev-workflow.html	   /strong>. 예를 들어 <code>
 agent-dev-workflow.html	·· odebase-design</code>에
 agent-dev-workflow.html	    안에서 한 덩어리의 작업을 <strong>
 agent-dev-workflow.html	··  <strong>phase</strong>라
-agent-dev-workflow.html	   를 어떻게 할까」라는 물음은 <strong>
+agent-dev-workflow.html	   를 어떻게 할까'라는 물음은 <strong>
 agent-dev-workflow.html	   g>이것부터 배제한 다음에</strong> 다
 agent-dev-workflow.html	   ass="py-4">무언가를 <strong>
 agent-dev-workflow.html	·· 언가를 <strong>이사</strong>해
@@ -145,8 +145,8 @@ agent-dev-workflow.html	   "py-4 pr-4">변경의 <strong>
 agent-dev-workflow.html	   y-4">가느다란 길 하나가 <strong>
 agent-dev-workflow.html	··  <strong>모든 계층</strong>을
 agent-dev-workflow.html	   elector). 평균적으로 <strong>
-agent-dev-workflow.html	   demo 할 수 있는가?」</strong> 답
-agent-dev-workflow.html	   ?」</strong> 답으로 <strong>
+agent-dev-workflow.html	   demo 할 수 있는가?"</strong> 답
+agent-dev-workflow.html	   ?"</strong> 답으로 <strong>
 agent-dev-workflow.html	·· 답으로 <strong>행동</strong>을
 agent-dev-workflow.html	    앞에 놓습니다. 그런 다음 <strong>
 agent-dev-workflow.html	·· 심합니다. <code>gh</code>는
@@ -156,7 +156,7 @@ agent-dev-workflow.html	·· e --blocked-by</code>가
 agent-dev-workflow.html	    다 냈습니다, 그다음은?</strong> 자
 agent-dev-workflow.html	·· >/implement #2</code>의
 agent-dev-workflow.html	·· ode>의 <code>#2</code>는
-agent-dev-workflow.html	·· 는 모든 번호 매긴 목록」</strong>을
+agent-dev-workflow.html	·· 는 모든 번호 매긴 목록'</strong>을
 agent-dev-workflow.html	    아주 자신 있게 해석하면서 <strong>
 agent-dev-workflow.html	   못합니다. 완전한 URL이나 <code>
 agent-dev-workflow.html	·· e>owner/repo#2</code>를
@@ -191,7 +191,7 @@ agent-dev-workflow.html	·· rong>당신이 처한 상황</strong>에
 agent-dev-workflow.html	··  답하기 위한 일회용 코드</strong>입
 agent-dev-workflow.html	·· strong>어떻게 쓰는가</strong>에
 agent-dev-workflow.html	·· 가능한 단일 HTML 파일</strong>이
-agent-dev-workflow.html	   어떻게 보여야 하는가?」에는 <strong>
+agent-dev-workflow.html	   어떻게 보여야 하는가?'에는 <strong>
 agent-dev-workflow.html	·· 크게 다른 여러 UI 변형</strong>입
 agent-dev-workflow.html	·· 니다. <strong>구조</strong>입
 agent-dev-workflow.html	   다. commit 하는 곳은 <code>
@@ -272,7 +272,7 @@ agent-dev-workflow.html	··  망가지고, 전형적인 실패는<strong>
 agent-dev-workflow.html	·· strong> 조용한 잘림</strong>입
 agent-dev-workflow.html	·· 할 수 없는 사안을 한 부의<strong>
 agent-dev-workflow.html	·· 부의<strong> 설문지</strong>로
-agent-dev-workflow.html	   송」이지 주제가 아닙니다.</strong> 주
+agent-dev-workflow.html	   송'이지 주제가 아닙니다.</strong> 주
 agent-dev-workflow.html	·· 하는지를 정합니다), 그리고<strong>
 agent-dev-workflow.html	·· 짧은 context. 질문은<strong>
 agent-dev-workflow.html	··  <p>이것은 의도적으로<strong>
@@ -286,14 +286,14 @@ agent-dev-workflow.html	   초고가 아니라 설계입니다.</strong> 장
 agent-dev-workflow.html	   이름이 곧 메커니즘입니다.</strong> 맨
 agent-dev-workflow.html	   ng> 맨 앞에 오는 단어는 <em>
 agent-dev-workflow.html	·· 는 단어는 <em>wait</em>입
-agent-dev-workflow.html	   니다. 「좀 더 간결하게」는 <strong>
+agent-dev-workflow.html	   니다. "좀 더 간결하게"는 <strong>
 agent-dev-workflow.html	·· rong>agent의 출력</strong>에
 agent-dev-workflow.html	·· 잃습니다. <em>wait</em>가
 agent-dev-workflow.html	·· t</em>가 가리키는 것은<strong>
 agent-dev-workflow.html	·· strong> 당신의 상태</strong>입
 agent-dev-workflow.html	·· 라는 말을 들은 agent는<strong>
 agent-dev-workflow.html	   말,<strong> 그리고</strong> 당
-agent-dev-workflow.html	·· 도적으로 「다시 설명할 것은<strong>
+agent-dev-workflow.html	·· 도적으로 "다시 설명할 것은<strong>
 agent-dev-workflow.html	·· 크스페이스로 바꾸고, 일련의<strong>
 agent-dev-workflow.html	··  갖춘 짧은 HTML 레슨</strong>으
 agent-dev-workflow.html	··  인용합니다. 그리고 이것은<strong>
@@ -360,7 +360,7 @@ agent-dev-workflow.html	    아니라, 여러 skill을 <strong>
 agent-dev-workflow.html	   ong>가느다란 길 하나가</strong> 한
 agent-dev-workflow.html	    두어야 할 정직한 한계.</strong> 이
 agent-dev-workflow.html	·· strong>손으로 쓴 것</strong>이
-agent-dev-workflow.html	    것」이라는 거친 인상만으로 <code>
+agent-dev-workflow.html	    것'이라는 거친 인상만으로 <code>
 agent-dev-workflow.html	··  <code>to-spec</code>를
 agent-dev-workflow.html	   경우도 들어 있었습니다. 그 <code>
 agent-dev-workflow.html	   <code>SKILL.md</code> 파
@@ -381,8 +381,8 @@ agent-dev-workflow.html	·· rill-with-docs</code>로
 agent-dev-workflow.html	   e>로, 이 기존 repo를 <code>
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	·· e-architecture</code>를
-agent-dev-workflow.html	   라 「결정」입니다. 그다음에 <code>
-agent-dev-workflow.html	   r intake 모듈」 같은 <strong>
+agent-dev-workflow.html	   라 '결정'입니다. 그다음에 <code>
+agent-dev-workflow.html	   r intake 모듈' 같은 <strong>
 agent-dev-workflow.html	·· strong>여러분의 명사</strong>로
 agent-dev-workflow.html	    <li>먼저 다섯 개의 <code>
 agent-dev-workflow.html	   오 (없는 label을 쓰면 <code>
@@ -426,8 +426,8 @@ agent-dev-workflow.html	   가 더 작은 인터페이스 뒤로 <strong>
 agent-dev-workflow.html	   쪽. 아니면 호출하는 쪽으로 <strong>
 agent-dev-workflow.html	   리면 결정이 나옴). 이것은 <strong>
 agent-dev-workflow.html	·· 것은 <strong>결코 </strong>실
-agent-dev-workflow.html	    있고 언제 써야 하는지」를 <strong>
-agent-dev-workflow.html	·· 지」를 <strong>사람</strong>이
+agent-dev-workflow.html	    있고 언제 써야 하는지'를 <strong>
+agent-dev-workflow.html	·· 지'를 <strong>사람</strong>이
 agent-dev-workflow.html	··  compact를 하기. </strong>캐
 agent-dev-workflow.html	   ode>to-tickets</code> 쪽
 agent-dev-workflow.html	   ady입니다. triage는 <strong>
@@ -467,7 +467,7 @@ agent-dev-workflow.html	   -4">새 session에서 <code>
 agent-dev-workflow.html	·· de-review main</code>을
 agent-dev-workflow.html	   ="py-4 pr-4">그냥 <code>
 agent-dev-workflow.html	   odebase-design</code> 용
-agent-dev-workflow.html	   」 질문을 만나면 돌릴 것은 <code>
+agent-dev-workflow.html	   ' 질문을 만나면 돌릴 것은 <code>
 agent-dev-workflow.html	   r-4">진짜 bug 하나에 <code>
 agent-dev-workflow.html	·· iagnosing-bugs</code>를
 agent-dev-workflow.html	   <code>/handoff</code> 명
@@ -491,7 +491,7 @@ agent-prompting-guide.html	   ></path></svg></span> 교
 agent-prompting-guide.html	   n><strong>왜인가.</strong> 형
 agent-prompting-guide.html	   용&lt;/form&gt;</code> 처
 agent-prompting-guide.html	   ></path></svg></span> 생
-agent-prompting-guide.html	   N으로 돌려주세요」 「결론은 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">
+agent-prompting-guide.html	   N으로 돌려주세요" "결론은 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">
 agent-prompting-guide.html	   lt;verdict&gt;</code> 태
 agent-prompting-guide.html	   ></path></svg></span> 그
 agent-prompting-guide.html	    <strong>어울린다:</strong> 시
@@ -510,7 +510,7 @@ claude-skills-guide.html	   e> 항목에는 다음을 씁니다 <span class="hig
 claude-skills-guide.html	   <li><strong>엄금</strong> 공
 claude-skills-guide.html	·· e>Notion_Setup</code>는
 claude-skills-guide.html	·· code>README.md</code>을
-claude-skills-guide.html	·· >「무엇을 할 수 있는가」</strong>와
+claude-skills-guide.html	·· >'무엇을 할 수 있는가'</strong>와
 claude-skills-guide.html	   YAML 안에서 XML 태그 <code>
 claude-skills-guide.html	·· code>&lt; &gt;</code>를
 claude-skills-guide.html	·· ts/validate.py</code>을
@@ -574,7 +574,7 @@ google-workspace-with-ai.html	·· al">주당 아낀 총 시간</strong>이
 google-workspace-with-ai.html	   다. 앞서 든 벤더의 숫자는 <strong class="font-normal">
 google-workspace-with-ai.html	··  보고를 바탕으로 한 모델</strong>입
 google-workspace-with-ai.html	    보였습니다. 부정되는 것은 <strong class="font-normal">
-google-workspace-with-ai.html	·· 남았는지 묻는」 측정 방식</strong>이
+google-workspace-with-ai.html	·· 남았는지 묻는' 측정 방식</strong>이
 google-workspace-with-ai.html	   습니다. 그러니 그 숫자들은 <strong class="font-normal">
 google-workspace-with-ai.html	   서 재는 것. 그리고 측정은 <strong class="font-normal">
 google-workspace-with-ai.html	   >도입 전에 설계해 두어야</strong> 합
@@ -623,7 +623,7 @@ owasp-llm-top-10.html	   값어치가 있는 부분입니다.</strong> 그
 owasp-llm-top-10.html	    갖췄습니다. 최종 가중치는 <strong>
 owasp-llm-top-10.html	    그러나 OWASP는 그것이 <strong>
 owasp-llm-top-10.html	·· strong>막아 낸 결과</strong>이
-owasp-llm-top-10.html	   부품으로서의 모델」입니다.</strong> 모
+owasp-llm-top-10.html	   부품으로서의 모델'입니다.</strong> 모
 owasp-llm-top-10.html	   니며, 하류에 결과를 미치는 <strong>
 owasp-llm-top-10.html	·· 치는 <strong>행위자</strong>가
 owasp-llm-top-10.html	   는 데이터로 다루고, 권한을 <strong>
@@ -651,8 +651,8 @@ pqc-migration.html	   "font-sans">03</span> 암
 pqc-migration.html	   "font-sans">04</span> 공
 pqc-migration.html	    <p>이유는 둘이고 <strong>
 pqc-migration.html	··  <strong>서로 독립</strong>입
-pqc-migration.html	   가 오늘 안전한가」가 아니라 <strong>
-pqc-migration.html	·· 동안 덮어 두어야 하는가」</strong>입
+pqc-migration.html	   가 오늘 안전한가'가 아니라 <strong>
+pqc-migration.html	·· 동안 덮어 두어야 하는가'</strong>입
 pqc-migration.html	    <p>이쪽 이유는 <strong>
 pqc-migration.html	    <p>CBOM은 <strong>
 pqc-migration.html	·· rong>암호 자산의 대장</strong>입
@@ -671,14 +671,14 @@ pqc-migration.html	   에 둔 것은 급해서가 아니라 <strong>
 pqc-migration.html	··  mr-3">과도기의 방식</span>실
 pqc-migration.html	   무에서는 많은 시스템이 먼저 <strong>
 pqc-migration.html	    지침이 대상으로 삼는 것은 <strong>
-pqc-migration.html	·· 기관과 그 중요 공급업체」</strong>입
+pqc-migration.html	·· 기관과 그 중요 공급업체'</strong>입
 pqc-migration.html	   span>PQC 준비 정도를 <strong>
 pqc-migration.html	·· rong>조달과 입찰 요건</strong>에
 pqc-migration.html	   an>공급업체에 요구할 것은 <strong>
 pqc-migration.html	·· 에 준하는 암호 자산 설명</strong>이
 pqc-migration.html	   <span>공급하는 쪽이라면 <strong>
 pqc-migration.html	   08-06에 확인했습니다.</strong> 각
-pqc-migration.html	   지막 갱신일」이 뜻하는 것은 <strong>
+pqc-migration.html	   지막 갱신일'이 뜻하는 것은 <strong>
 pqc-migration.html	·· 제 상태를 다시 확인한 날</strong>이
 pqc-migration.html	   ">112비트 강도 알고리즘 <span class="font-sans">
 pqc-migration.html	   ont-sans">2030</span> 이
@@ -716,11 +716,11 @@ threat-landscape.html	·· g>최악의 경우 남은 시간</strong>을
 threat-landscape.html	    <p>보고서 전체에서 <strong>
 threat-landscape.html	··  조심해서 다뤄야 할 숫자</strong>입
 threat-landscape.html	    비율이 확실히 그리는 것은 <strong>
-threat-landscape.html	·· 환경에서 무엇이 보이는가」</strong>이
+threat-landscape.html	·· 환경에서 무엇이 보이는가'</strong>이
 threat-landscape.html	   가. 90개가 넘는 조직에서 <strong>
 threat-landscape.html	·· trong>정규 AI 도구</strong>가
-threat-landscape.html	   p>「AI를 썼다」는 구분의 <strong>
-threat-landscape.html	   >「+550%」가 재는 것은 <strong>
+threat-landscape.html	   p>'AI를 썼다'는 구분의 <strong>
+threat-landscape.html	   >'+550%'가 재는 것은 <strong>
 threat-landscape.html	·· ng>포럼에서의 언급 횟수</strong>입
 threat-landscape.html	    문제는 모델 자체가 아니라 <strong>
 threat-landscape.html	·· ebrow mr-3">관련</span>사
@@ -772,7 +772,7 @@ what-is-mcp.html	   명령을 칩니다. 정하는 것은 <strong>
 what-is-mcp.html	··  것은 <strong>당신</strong>입
 what-is-mcp.html	··  <strong>stdio</strong>는
 what-is-mcp.html	·· treamable HTTP</strong>는
-what-is-mcp.html	   는가」의 차이가 아닙니다.</strong> 내
+what-is-mcp.html	   는가'의 차이가 아닙니다.</strong> 내
 what-is-mcp.html	   알아 둘 값어치가 있는 것은 <strong>
 what-is-mcp.html	·· ong>보안이 전혀 다르다</strong>는
 what-is-mcp.html	·· ns">2026-07-28</span>은
@@ -785,7 +785,7 @@ what-is-mcp.html	   버가 <strong>스스로</strong> 클
 what-is-mcp.html	·· >└─ <code>ping</code>과
 what-is-mcp.html	   gging/setLevel</code> 두
 what-is-mcp.html	   구를 낼 능력이 아닙니다.</strong> 전
-what-is-mcp.html	   에 무언가를 구하는」 기능은 <strong>
+what-is-mcp.html	   에 무언가를 구하는' 기능은 <strong>
 what-is-mcp.html	   자에게 정보 하나를 구함)도 <strong>
 what-is-mcp.html	    이와는 별개로 <strong>
 what-is-mcp.html	   strong>Logging</strong> 세
