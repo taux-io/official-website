@@ -118,8 +118,14 @@ jobs:
       - name: entity declarations hold
         run: npm run check:entity
 
-      - name: Korean spacing decisions are unchanged
-        run: npm run check:ko-spacing
+      # Two ledgers, one gate: word spacing across inline tags, and which
+      # quotation mark each passage carries. Both are judgement calls no
+      # pattern settles, so neither is a rule — the ledgers remember what a
+      # person decided and this step only asks whether anything moved. It was
+      # `check:ko-spacing` until the quotes ledger landed (issue #240); the
+      # name lost the word "spacing" so it would not be half-true.
+      - name: Korean spacing and quote decisions are unchanged
+        run: npm run check:ko
 
       # 190 Chinese punctuation marks shipped on the English pages and passed
       # every gate above, because not one of them reads prose. Most of "does

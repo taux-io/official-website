@@ -100,7 +100,20 @@
          incorporated 2025-03-26, registered at 高雄市岡山區文賢路57號2樓 with
          高雄市政府經濟發展局. The address parts concatenate back to the
          registered string exactly — region + locality + street — which is why
-         they are split that way rather than prettified. -->
+         they are split that way rather than prettified.
+
+         EXACTLY ONE FIELD IN IT IS PER-LOCALE, and the line between the two
+         kinds is worth stating because the next person to translate something
+         here will get it wrong in one direction or the other. `description` is
+         prose ABOUT the entity, so it comes from `strings.org_description` and
+         reads in the language of the page — a shared node writing Chinese onto
+         twenty English pages is the same shape decision #61 just fixed on the
+         WebSite node's inLanguage (issue 241 — written without the hash
+         because check:design reads a three-digit one as a hex colour, and it
+         caught this line). Everything else — legalName,
+         address, taxID, the registered name inside `name` — is the entity
+         itself, identical in every language, and check:entity asserts it. -->
+
     <script type="application/ld+json">
     {"@context": "https://schema.org","@graph": [
       {% include "_identity.html" %},

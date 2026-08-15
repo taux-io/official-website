@@ -47,16 +47,30 @@ script = "Hant"
   #
   # The header, the footer and the nav are ONE file rendered once per language,
   # so any prose in them cannot be translated by writing a second file the way a
-  # page can. There is exactly one such string today — the footer's copyright
-  # line — and a table for one string looks like overkill until you notice the
-  # alternative is `{% if locale == "en-US" %}` inline, which is where a
-  # template starts growing a branch per language.
+  # page can. The alternative to this table is `{% if locale == "en-US" %}`
+  # inline, which is where a template starts growing a branch per language.
+  #
+  # ⚠️ This comment said "there is exactly one such string today" and argued
+  # that a table for one string looks like overkill. There are two now
+  # (issue #241), and the second one arrived in a shared partial that nobody
+  # had thought of as prose — `_identity.html`, which every page includes.
   #
   # The company's legal name and address are NOT here. They are identity, not
   # prose: check:entity asserts the Organization name matches 拓思, and a
-  # translated legal name would be a different company.
+  # translated legal name would be a different company. `org_description` is
+  # the other half of that line — it is prose ABOUT the entity, not the entity,
+  # so it reads in the language of the page that carries it. The registered
+  # name inside it stays in Chinese wherever that locale's own footer already
+  # keeps it (zh, ja, ko) and gives way to the English form where the footer
+  # already does (en-US); the choice per locale is not re-litigated here.
+  #
+  # ⚠️ These strings land inside JSON in `_identity.html`, and minijinja
+  # escapes them. An apostrophe or an ampersand would be emitted as `&#x27;` /
+  # `&amp;` INSIDE a JSON string value — valid JSON, wrong text, and no gate
+  # reads prose. Keep them free of characters HTML escaping touches.
   [locale.strings]
   copyright = "拓思科技股份有限公司 版權所有"
+  org_description = "TauX（拓思科技股份有限公司）協助企業落地 AI First 策略，專注於 GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。"
 
 [[locale]]
 tag    = "zh-Hans-CN"
@@ -72,6 +86,9 @@ script = "Hans"
   # registered name ever contained a character that differs, this line would
   # keep the registered form and 版權所有 would still convert.
   copyright = "拓思科技股份有限公司 版权所有"
+  # 搭建 rather than 建置, matching what the Simplified pages already say about
+  # the same service — the glyph converter would have left 建置 standing.
+  org_description = "TauX（拓思科技股份有限公司）协助企业落地 AI First 策略，专注于 GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。"
 
 [[locale]]
 tag    = "ja-JP"
@@ -88,6 +105,7 @@ og     = "ja_JP"
   # is identity in every language — the same rule that kept it out of the
   # English footer. Only the notice around it is Japanese.
   copyright = "拓思科技股份有限公司 無断転載を禁じます"
+  org_description = "TauX（拓思科技股份有限公司）は、AI First を掛け声で終わらせず、企業が実際に運用できるシステムにします。GEO 生成エンジン最適化、AI エージェント開発、ソフトウェアプラットフォーム構築、法人向け AI 研修を手がけています。"
 
 [[locale]]
 tag    = "ko-KR"
@@ -97,6 +115,7 @@ og     = "ko_KR"
 
   [locale.strings]
   copyright = "拓思科技股份有限公司 무단 전재 및 재배포 금지"
+  org_description = "TauX(拓思科技股份有限公司)는 AI First 전략을 시연이 아니라 실제로 돌아가는 시스템으로 만듭니다. GEO 생성형 엔진 최적화, AI 에이전트 개발, 소프트웨어 플랫폼 구축, 기업 AI 교육을 합니다."
 
 [[locale]]
 tag    = "en-US"
@@ -106,6 +125,11 @@ script = "Latn"
 
   [locale.strings]
   copyright = "TauX Co., Ltd. All rights reserved."
+  # TauX Co., Ltd. rather than 拓思科技股份有限公司, following what this locale's
+  # own footer already decided. The registered Chinese name is still on every
+  # English page — `legalName` in the same node carries it, which is where a
+  # consumer looks for it.
+  org_description = "TauX Co., Ltd. turns an AI First strategy into systems a business can run on, rather than a demo that impresses once: Generative Engine Optimization, AI agent development, software platform delivery, and AI training for in-house teams. Based in Kaohsiung, Taiwan."
 
 [[page]]
 path        = "/"
