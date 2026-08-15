@@ -13,11 +13,13 @@
 #   “”    the same as "" but written with &ldquo;/&rdquo;
 #   ‘’    the same as '' but written with &lsquo;/&rsquo;
 #
-# THE LAST TWO ARE NOT A SEPARATE DECISION, they are a second spelling of the
-# first two, and they are listed separately for exactly that reason: the ledger
-# shows the inconsistency instead of hiding it. Nothing here says which mark
-# belongs where — that needs to know whether a passage is speech or a term, and
-# no pattern can tell.
+# THE LAST TWO ARE THE SAME DECISION SPELLED DIFFERENTLY, and they are recorded
+# as their own kind so that a change of spelling is visible rather than
+# invisible. It is not by itself a mistake: today's two are the home page's
+# pull quotes, and all five locales write those with &ldquo; — so the ledger
+# shows the difference and says nothing about it. Nothing here says which mark
+# belongs where either; that needs to know whether a passage is speech or a
+# term, and no pattern can tell.
 #
 # A changed line means a mark changed or the text inside it did. A new line
 # means a passage nobody has proofread yet.
