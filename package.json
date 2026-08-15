@@ -11,6 +11,8 @@
     "check:jsonld": "node scripts/check-jsonld.js",
     "check:entity": "node scripts/check-entity.js",
     "check:entity:links": "node scripts/check-entity.js --links",
+    "check:ko-spacing": "node scripts/check-ko-spacing.js",
+    "ko-spacing:record": "node scripts/check-ko-spacing.js --record",
     "check:design": "node scripts/check-design.js",
     "check:routes": "node scripts/check-routes.js",
     "routes:record": "node scripts/check-routes.js --record",
