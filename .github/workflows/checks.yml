@@ -113,6 +113,9 @@ jobs:
       - name: entity declarations hold
         run: npm run check:entity
 
+      - name: Korean spacing decisions are unchanged
+        run: npm run check:ko-spacing
+
   audit:
     runs-on: ubuntu-latest
     steps:
