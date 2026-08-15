@@ -87,7 +87,7 @@ jobs:
       # design description drifted from the code unnoticed. This reads what the
       # author wrote rather than what Tailwind emitted, which is the check above.
       #
-      # All twenty-two of its rules are enforced today. A rule is switched on by
+      # All twenty-four of its rules are enforced today. A rule is switched on by
       # the change that makes it true, so this stays green commit to commit
       # without an allowlist, and the script names the ticket that turned each
       # one on.

@@ -237,25 +237,48 @@ function ruleSectionGapScale(files) {
       const cls = /class="([^"]*)"/.exec(m[1]);
       if (!cls) continue;
       const classes = cls[1].split(/\s+/).filter(Boolean);
-      if (!classes.includes("border-t") || !classes.includes("border-line")) continue;
-      const pts = classes.map(stripVariants).filter((c) => /^pt-\d/.test(c));
+      // Stripped on BOTH sides. Matching `border-t` un-stripped while stripping
+      // the padding let a section whose hairline is responsive (`tablet:border-t`)
+      // escape the rule entirely, which is the opposite of what a rule about
+      // that hairline should do.
+      const bare = classes.map(stripVariants);
+      if (!bare.includes("border-t") || !bare.includes("border-line")) continue;
+      // GROUPED BY BREAKPOINT, NOT LUMPED TOGETHER. `pt-12 tablet:pt-16` is one
+      // padding per breakpoint and the cascade picks between them
+      // deterministically — that is NOT the ambiguity this rule is about. An
+      // earlier version stripped the variants before counting, so it would have
+      // reported that pair as "the winner is decided by the generated CSS",
+      // which is false, and this same change adopts exactly that pattern on the
+      // home page. The real defect is two paddings at the SAME breakpoint,
+      // which is what `class="pt-8 … pt-16"` was.
+      const byBreakpoint = new Map();
+      for (const c of classes) {
+        const bareC = stripVariants(c);
+        if (!/^pt-\d/.test(bareC)) continue;
+        const at = c.slice(0, c.length - bareC.length) || "base";
+        if (!byBreakpoint.has(at)) byBreakpoint.set(at, []);
+        byBreakpoint.get(at).push(bareC);
+      }
       // No `pt` at all is the cover case: the cover block supplies the gap.
       // Verified rather than assumed — every such section today opens with one.
-      if (pts.length === 0) continue;
-      if (pts.length > 1) {
-        found.push({
-          file: rel,
-          line: lineOf(html, m.index),
-          detail: `two top paddings on one section (${pts.join(" ")}) — the winner is decided by the generated CSS, not by this attribute`,
-        });
-        continue;
-      }
-      if (!ALLOWED.has(pts[0])) {
-        found.push({
-          file: rel,
-          line: lineOf(html, m.index),
-          detail: `${pts[0]} after a section rule — the scale is pt-16 top-level, pt-12 nested, or none when a cover supplies the gap`,
-        });
+      if (byBreakpoint.size === 0) continue;
+      for (const [at, values] of byBreakpoint) {
+        const where = at === "base" ? "" : ` at ${at.replace(/:$/, "")}`;
+        if (values.length > 1) {
+          found.push({
+            file: rel,
+            line: lineOf(html, m.index),
+            detail: `two top paddings on one section${where} (${values.join(" ")}) — same breakpoint, so the winner is decided by the generated CSS rather than by this attribute`,
+          });
+          continue;
+        }
+        if (!ALLOWED.has(values[0])) {
+          found.push({
+            file: rel,
+            line: lineOf(html, m.index),
+            detail: `${values[0]}${where} after a section rule — the scale is pt-16 top-level, pt-12 nested, or none when a cover supplies the gap`,
+          });
+        }
       }
     }
   }

@@ -408,6 +408,10 @@ async function main() {
         name: "fold",
         inPage: measureFoldInPage,
         args: { homePaths: LOCALES.map((l) => `/${l.tag}`) },
+        // Only the five home pages, declared to the walk rather than decided
+        // inside the probe: `reload` fires before the probe body, so a probe
+        // that returns [] early has already paid for the navigation.
+        paths: LOCALES.map((l) => `/${l.tag}`),
         // The only probe here that varies HEIGHT. See the comment on
         // measureFoldInPage for why these three and not 375x667 or 320x568.
         viewports: PHONE_VIEWPORTS,

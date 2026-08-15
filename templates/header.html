@@ -158,10 +158,14 @@
          one item that opens the full-screen menu, the way a mega menu works;
          every link stays one interaction away and, since the overlay markup is
          always in the document, still visible to crawlers. -->
-    <!-- site-nav carries the material: the shadow and the scroll edge that
-         replaced the 1px rule under it (issue 156). A hairline says "here is a
-         boundary"; a floating layer with content passing beneath it says
-         "there is more up there", which is the true statement. -->
+    <!-- ⚠️ THIS PARAGRAPH DESCRIBED A BAR THAT NO LONGER EXISTS, and it is
+         kept only long enough to say so. It read: "site-nav carries the
+         material: the shadow and the scroll edge that replaced the 1px rule
+         under it (issue 156)." There is no shadow — DESIGN.md forbids them by
+         name and `.site-nav` in input.css is a 1px `border-bottom` — and there
+         is no floating layer, because the frosted bar went with the comment
+         below. The hairline it says was replaced is the thing that is actually
+         there. -->
     <!-- OPAQUE, NOT FROSTED. This carried `bg-surface/90 backdrop-blur-md` —
          a translucent bar with a blur behind it — against DESIGN.md's component
          entry, which says in as many words 不做雙層、不做 frosted
@@ -278,7 +282,10 @@
         </div>
     </div>
 
-    <!-- Main Content Wrapper. The nav is translucent, so a light surface here
-         would show through it. -->
+    <!-- Main Content Wrapper. It carried `bg-surface` under the reasoning
+         "the nav is translucent, so a light surface here would show through
+         it" — both halves now false: the nav is opaque, and painting the
+         surface onto something that already sits on it was the invisible
+         no-op the `surface is painted once` rule was written for. -->
     <main class="pt-16 min-h-screen relative overflow-x-clip">
         
