@@ -87,11 +87,16 @@ jobs:
       # design description drifted from the code unnoticed. This reads what the
       # author wrote rather than what Tailwind emitted, which is the check above.
       #
-      # All fifteen of its rules are enforced today. A rule is switched on by the
-      # change that makes it true, so this stays green commit to commit without
-      # an allowlist, and the script names the ticket that turned each one on.
+      # All twenty-two of its rules are enforced today. A rule is switched on by
+      # the change that makes it true, so this stays green commit to commit
+      # without an allowlist, and the script names the ticket that turned each
+      # one on.
+      #
       # (This comment said "six of nine" for long enough to outlive four more
-      # rules — the drift the file underneath it exists to prevent.)
+      # rules — the drift the file underneath it exists to prevent. It then said
+      # "fifteen" while the script printed 22 of 22, so the warning outlived
+      # seven more. The number is printed on every run; this line is not where
+      # to learn it.)
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
@@ -115,6 +120,18 @@ jobs:
 
       - name: Korean spacing decisions are unchanged
         run: npm run check:ko-spacing
+
+      # 190 Chinese punctuation marks shipped on the English pages and passed
+      # every gate above, because not one of them reads prose. Most of "does
+      # this sentence read correctly" stays a person's job; the part that does
+      # not is that `。` is never a full stop in English, and that part is here.
+      #
+      # The check itself existed for a while before this line did — in
+      # scripts/i18n-extract.js, in no job, while DESIGN.md said it had been
+      # added. A tool nothing runs is not a gate, which is this repo's own
+      # argument about rules, applied to itself one file late.
+      - name: English pages carry no CJK punctuation
+        run: npm run check:i18n
 
   audit:
     runs-on: ubuntu-latest
