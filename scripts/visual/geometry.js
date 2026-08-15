@@ -44,7 +44,7 @@
 // reports green forever and inflates the count of things being watched, which is
 // worse than no check: it says the ground is covered when nobody is on it.
 //
-// THE WIDTHS ARE THE SIX BREAKPOINTS PLUS 320 AND 720 — see the constant for
+// THE WIDTHS ARE THE FIVE NAMED STEPS PLUS THREE THAT ARE NOT — see the constant for
 // why those two are not breakpoints and still have to be measured.
 //
 // Reads the same route table and starts the browser the same way as its
@@ -97,10 +97,20 @@ const WIDTHS = process.env.GEOMETRY_WIDTHS
 // 151 cleared all six: min-w-0 on the grid and flex items that would not shrink
 // below their content, and a correction to this check for the one finding that
 // was never a defect.
+// The phone heights the `fold` probe runs at. Width AND height, unlike
+// DEFAULT_WIDTHS, because a fold is a height question and every other probe
+// here has been answering it at 900px.
+const PHONE_VIEWPORTS = [
+  { name: "375x812", width: 375, height: 812 },
+  { name: "390x844", width: 390, height: 844 },
+  { name: "412x915", width: 412, height: 915 },
+];
+
 const CHECKS = {
   overflow: { enabled: true, turnedOnBy: "issue 151" },
   measure: { enabled: true, turnedOnBy: "#188 — the reading measure" },
   control: { enabled: true, turnedOnBy: "#185 — the ghost pill" },
+  fold: { enabled: true, turnedOnBy: "the Gestalt pass — the CTA cleared a fold nothing measured" },
 };
 
 // The pill's declared radius and the floor for a touch target, both measured on
@@ -272,6 +282,49 @@ function measureControlsInPage({ radius, minTarget }) {
   return out;
 }
 
+// THE HOME PAGE'S CALL TO ACTION HAS TO BE ON THE FIRST SCREEN.
+//
+// The home page is a statement, not a doorway: it carries one claim and one
+// control, and a control the reader has to scroll to find is not on the page as
+// far as most of them are concerned.
+//
+// WHY THIS WAS INVISIBLE UNTIL NOW, which is the more useful half. Every other
+// probe in this file runs at `height: 900`, the same 900 for all eight widths —
+// so the gate has never once looked at a viewport shorter than a laptop. On a
+// 900px window the button cleared the fold by 99px and there was nothing to
+// see. Measured on real phone heights it cleared 375x812 by 11px and missed
+// 375x667 entirely. This probe is the first thing here that varies height.
+//
+// THE HEIGHTS ARE THE ONES THIS SITE ACTUALLY PASSES, and that is a deliberate
+// limit rather than a claim. 375x812, 390x844 and 412x915 are the common modern
+// phones. 375x667 (SE, 2022) and 320x568 (SE, 2016) DO NOT FIT and were not
+// squeezed into fitting: getting there measured out at 15–67px per locale and
+// would have taken the hero's top padding from 112px to 32px, which buys the
+// button a place on the screen by making the statement it sits under
+// unreadable. Japanese is the binding case in every measurement — the same
+// copy wraps to more lines.
+function measureFoldInPage({ homePaths }) {
+  const path = location.pathname.replace(/\/$/, "") || "/";
+  if (!homePaths.includes(path)) return [];
+  const cta = document.querySelector("main .btn");
+  if (!cta) return [{ detail: "no call to action found in main" }];
+  // Back to the top before measuring. The walk loads each route once and
+  // resizes the viewport around it, so an earlier probe's scroll position
+  // survives into this one — and "is it on the first screen" is a question
+  // about the top of the document, not about wherever the page happens to be
+  // sitting. Measured against a stale scrollY this reported every locale as
+  // failing while a fresh load of the same page passed by 15–49px.
+  window.scrollTo(0, 0);
+  const bottom = cta.getBoundingClientRect().bottom;
+  if (bottom <= window.innerHeight) return [];
+  const label = cta.textContent.trim().replace(/\s+/g, " ").slice(0, 24);
+  return [
+    {
+      detail: `"${label}" ends ${Math.round(bottom)}px down a ${window.innerHeight}px screen — ${Math.round(bottom - window.innerHeight)}px below the fold`,
+    },
+  ];
+}
+
 // The reading measure, taken at the widest viewport only.
 //
 // Container widths grow monotonically with the viewport, so the widest pass is
@@ -351,6 +404,29 @@ async function main() {
         viewports: "widest",
         settle: false,
       },
+      {
+        name: "fold",
+        inPage: measureFoldInPage,
+        args: { homePaths: LOCALES.map((l) => `/${l.tag}`) },
+        // Only the five home pages, declared to the walk rather than decided
+        // inside the probe: `reload` fires before the probe body, so a probe
+        // that returns [] early has already paid for the navigation.
+        paths: LOCALES.map((l) => `/${l.tag}`),
+        // The only probe here that varies HEIGHT. See the comment on
+        // measureFoldInPage for why these three and not 375x667 or 320x568.
+        viewports: PHONE_VIEWPORTS,
+        // AND THE ONLY ONE THAT RELOADS. The walk's whole economy is that a
+        // resize costs a reflow rather than a navigation, and for every other
+        // probe here that is true. It is not true for `.band`, which is sized in
+        // `svh`: resized from 900 to 812 the band kept computing its height from
+        // 900, and `justify-content: center` then pushed the hero down by
+        // exactly (900-812)/2 = 44px. Measured, not deduced — every locale came
+        // out 44px worse under the walk than under a fresh load of the same page
+        // at the same size. A viewport-relative unit has to be measured on a
+        // viewport that was that size when the page loaded.
+        reload: true,
+        settle: false,
+      },
     ],
   });
 
@@ -365,6 +441,8 @@ async function main() {
   console.log(`${stats.paths * stats.viewports} checked for pill radius and ${TOUCH_TARGET_MIN_PX}px touch targets`);
   const limits = LOCALES.map((l) => `${l.tag} ${measureFor(l.tag)}ch`).join(", ");
   console.log(`${stats.paths} routes checked for a reading measure (${limits}; widest viewport only)`);
+  const heights = PHONE_VIEWPORTS.map((v) => v.name).join(", ");
+  console.log(`${LOCALES.length} home pages checked for a call to action on the first screen (${heights})`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
   // scope would report green on ground it never covered.

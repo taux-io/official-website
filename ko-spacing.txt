@@ -544,14 +544,6 @@ geo-guide.html	    </svg></span> 권
 geo-guide.html	    </svg></span> 내
 geo-guide.html	   과대학교 델리가 발표한 논문 <strong>
 geo-guide.html	··  Optimization》</strong>에
-geo-guide.html	·· ed-full mr-3"></span>훤
-geo-guide.html	·· ed-full mr-3"></span>묻
-geo-guide.html	·· ed-full mr-3"></span>읽
-geo-guide.html	·· ed-full mr-3"></span>실
-geo-guide.html	·· ed-full mr-3"></span>숫
-geo-guide.html	·· ed-full mr-3"></span>주
-geo-guide.html	·· ed-full mr-3"></span>관
-geo-guide.html	·· ed-full mr-3"></span>언
 google-workspace-with-ai.html	   루는 것은 그 진위가 아니라 <strong class="font-normal">
 google-workspace-with-ai.html	·· mal">무엇을 측정했는가</strong>이
 google-workspace-with-ai.html	   00명·연매출 40억 달러의 <strong class="font-normal">

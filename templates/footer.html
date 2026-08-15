@@ -1,7 +1,7 @@
 
 </main>
 
-<footer class="relative z-10 bg-surface border-t border-line pt-24 pb-10">
+<footer class="relative z-10 border-t border-line pt-24 pb-10">
     <div class="max-w-6xl mx-auto px-6">
         <!-- Brand sits above the columns rather than inside the grid.
 
@@ -28,7 +28,17 @@
                 </div>
         </div>
 
-        <div class="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-5 gap-12 mb-20">
+        <!-- TWO COLUMNS FROM THE NARROWEST WIDTH, NOT ONE.
+             The first column step used to be `tablet:` (768px), so a phone got
+             `grid-cols-1` and all five columns stacked: measured at 375x812,
+             the link grid alone was 1256px and the whole footer 1836px — 67% of
+             a 2749px page, against a 913px hero. On a page whose job is one
+             statement (decision: the home page is a statement, not a doorway)
+             the navigation outweighed the thing it navigates away from.
+             Two columns at 375px halve that without touching the type, the
+             gaps, or the number of links — the vocabulary is unchanged, only
+             the width at which it starts. -->
+        <div class="grid grid-cols-2 laptop:grid-cols-5 gap-12 mb-20">
 {% with link_class = "footer-link", list_space = "space-y-4" %}{% include "_nav-columns.html" %}{% endwith %}
                 <div>
                 <!-- One destination, one label, and the label is what the page is.

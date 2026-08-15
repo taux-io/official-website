@@ -200,6 +200,130 @@ function ruleNoHex(files) {
   return found;
 }
 
+// THE GAP AFTER A SECTION RULE IS ONE OF THREE, AND THE THREE MEAN DIFFERENT
+// THINGS. This is the proximity principle, written down for the first time.
+//
+// A hairline on a `<section>` is the site's inter-group boundary, and what
+// follows it says how far apart the two groups are. Three depths, measured off
+// what the templates already do rather than invented here:
+//
+//   .cover's padding-block  96px  a section that opens with a cover block —
+//                                 the cover supplies the gap, so the section
+//                                 carries no `pt` of its own (45 sections)
+//   pt-16                   64px  a top-level section that opens with content
+//                                 (355 sections)
+//   pt-12                   48px  a section nested inside another — a SUB-group,
+//                                 and a sub-group belongs closer (20 sections)
+//
+// Against intra-group spacing of `space-y-6` (24px) and `gap-4` (16px), the
+// inter:intra ratio is about 2.7:1. That ratio is the whole of proximity, and
+// nothing stated it anywhere before this rule.
+//
+// ⚠️ WHAT THIS RULE IS NOT. An earlier reading of this codebase claimed "seven
+// different paddings follow the identical separator, nothing distinguishes
+// them". That was a grep counting every `border-t border-line`, including the
+// 34 on `<p>`, 21 on `<li>` and 42 on `<div>` — a rule under a list row and a
+// rule between two sections are different jobs and correctly take different
+// gaps. Restricted to `<section>`, the site was already consistent at 355/375;
+// the genuine defects were one nested section at `pt-8` and five copies of a
+// section carrying `border-t border-line` twice AND both `pt-8` and `pt-16`,
+// where which padding won depended on the order of the generated CSS rather
+// than on anything an author wrote.
+function ruleSectionGapScale(files) {
+  const ALLOWED = new Set(["pt-16", "pt-12"]);
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<section\b([^>]*)>/g)) {
+      const cls = /class="([^"]*)"/.exec(m[1]);
+      if (!cls) continue;
+      const classes = cls[1].split(/\s+/).filter(Boolean);
+      // Stripped on BOTH sides. Matching `border-t` un-stripped while stripping
+      // the padding let a section whose hairline is responsive (`tablet:border-t`)
+      // escape the rule entirely, which is the opposite of what a rule about
+      // that hairline should do.
+      const bare = classes.map(stripVariants);
+      if (!bare.includes("border-t") || !bare.includes("border-line")) continue;
+      // GROUPED BY BREAKPOINT, NOT LUMPED TOGETHER. `pt-12 tablet:pt-16` is one
+      // padding per breakpoint and the cascade picks between them
+      // deterministically — that is NOT the ambiguity this rule is about. An
+      // earlier version stripped the variants before counting, so it would have
+      // reported that pair as "the winner is decided by the generated CSS",
+      // which is false, and this same change adopts exactly that pattern on the
+      // home page. The real defect is two paddings at the SAME breakpoint,
+      // which is what `class="pt-8 … pt-16"` was.
+      const byBreakpoint = new Map();
+      for (const c of classes) {
+        const bareC = stripVariants(c);
+        if (!/^pt-\d/.test(bareC)) continue;
+        const at = c.slice(0, c.length - bareC.length) || "base";
+        if (!byBreakpoint.has(at)) byBreakpoint.set(at, []);
+        byBreakpoint.get(at).push(bareC);
+      }
+      // No `pt` at all is the cover case: the cover block supplies the gap.
+      // Verified rather than assumed — every such section today opens with one.
+      if (byBreakpoint.size === 0) continue;
+      for (const [at, values] of byBreakpoint) {
+        const where = at === "base" ? "" : ` at ${at.replace(/:$/, "")}`;
+        if (values.length > 1) {
+          found.push({
+            file: rel,
+            line: lineOf(html, m.index),
+            detail: `two top paddings on one section${where} (${values.join(" ")}) — same breakpoint, so the winner is decided by the generated CSS rather than by this attribute`,
+          });
+          continue;
+        }
+        if (!ALLOWED.has(values[0])) {
+          found.push({
+            file: rel,
+            line: lineOf(html, m.index),
+            detail: `${values[0]}${where} after a section rule — the scale is pt-16 top-level, pt-12 nested, or none when a cover supplies the gap`,
+          });
+        }
+      }
+    }
+  }
+  return found;
+}
+
+// THE SURFACE IS PAINTED ONCE, AND EVERY REPAINT OF IT IS INVISIBLE.
+//
+// There is one surface and `body` carries it, so `bg-surface` on anything
+// inside `body` paints white on white. That is not merely redundant — it
+// silently produced OBJECTS THAT DO NOT EXIST. Measured before this rule was
+// written: 373 elements repainted the surface, and among them 40 bullet dots
+// (`w-1.5 h-1.5 bg-surface rounded-full` inside a `list-none` list, so the list
+// lost its markers entirely) and 30 numbered discs (`w-12 h-12 rounded-full
+// bg-surface`, where the number showed and the disc never did).
+//
+// TWO SHAPES ARE LEGITIMATE AND BOTH ARE MEASURED RATHER THAN ASSUMED. `body`
+// is where the surface is painted. And an element that floats over something
+// else needs its own opaque fill or the layer beneath shows through — the two
+// locale-switcher panels are `absolute`, and the nav is `fixed`. A probe over
+// eight routes found 109 `bg-surface` elements: 85 computed the same background
+// as their nearest painted ancestor, and every one of the rest was `body`, the
+// nav, or a switcher panel.
+//
+// So the test is positional, not a name list: paint the surface only where you
+// are the surface, or where you are lifted off it. `states differ` catches this
+// same tautology for states; this catches it for base declarations, which
+// nothing read before.
+function ruleSurfacePaintedOnce(files) {
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const el of elements(html)) {
+      if (!el.classes.some((c) => stripVariants(c).startsWith("bg-surface"))) continue;
+      if (el.tag === "body") continue;
+      if (el.classes.some((c) => ["absolute", "fixed"].includes(stripVariants(c)))) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, el.index),
+        detail: `<${el.tag}> repaints the surface it already sits on`,
+      });
+    }
+  }
+  return found;
+}
+
 // A reveal that starts invisible and depends on a script to undo it makes the
 // text conditional on that script running. This site shipped one: an
 // IntersectionObserver released elements as they scrolled in, a fast scroll
@@ -1291,6 +1415,20 @@ const RULES = [
     turnedOnBy: "PR 145 — the cache-buster is computed from the stylesheet",
     run: ruleCssVersionIsDerived,
     summary: "the stylesheet's ?v= must be a hash of the stylesheet, not a literal",
+  },
+  {
+    name: "section gap scale",
+    enabled: true,
+    turnedOnBy: "the Gestalt pass — proximity finally has a written ratio",
+    run: ruleSectionGapScale,
+    summary: "the gap after a section rule is pt-16, pt-12, or a cover's own 96px",
+  },
+  {
+    name: "surface is painted once",
+    enabled: true,
+    turnedOnBy: "the Gestalt pass — 373 repaints, 70 of them invisible objects",
+    run: ruleSurfacePaintedOnce,
+    summary: "bg-surface only on body or on something lifted off it (absolute/fixed)",
   },
   {
     name: "nav breakpoints paired",

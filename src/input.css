@@ -831,8 +831,9 @@
      contrast, and it is what carries the structure here: this vocabulary has no
      cards, no fills and no shadows, so a rule that cannot be seen takes the
      layout with it. Lifted rather than made opaque — there is only one weight
-     now, so there is only one value to move. The ink is pure white at 21:1 and
-     needs nothing. */
+     now, so there is only one value to move. The ink needs nothing: #1d1d1f on
+     white is already 16.83:1. (This read "the ink is pure white at 21:1",
+     which was true of the black-surface version and of nothing since.) */
   :root {
     --line-rgb: 138 138 138;
   }

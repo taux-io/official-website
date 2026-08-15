@@ -74,8 +74,10 @@ struct Locale {
     tag: String,
     name: String,
     og: String,
-    /// The writing system. Read by three checks rather than by the generator;
-    /// declared here so they cannot each guess it differently.
+    /// The writing system. Read by five things rather than by the generator;
+    /// declared here so they cannot each guess it differently. (This said
+    /// "three" while `check:entity`, `heading structure`, geometry's `measure`,
+    /// the OG card builder and the reading-measure table all read it.)
     #[allow(dead_code)]
     script: String,
     /// Prose that lives in a shared template and therefore cannot be translated

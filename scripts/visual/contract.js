@@ -50,8 +50,20 @@ const HSTS_MIN_MAX_AGE = 15552000;
 // One representative of each tier. Overlapping rules in the host config produce
 // a header carrying two max-age directives, which a browser resolves by taking
 // the first — so the value is compared exactly, not merely for presence.
+//
+// THE FONT TIER IS GONE, AND IT WAS ASSERTING NOTHING FOR TWO BRAND RESETS.
+// This listed `/static/fonts/D-DIN.woff2` at the immutable tier. That file does
+// not exist — the self-hosted faces left with the mono pair and then with
+// D-DIN, and `static/fonts/` went with them. The assertion passed anyway
+// because `_headers` matched `/static/fonts/*` by pattern and Cloudflare's
+// emulator applies a matching rule to the 404 as readily as to a file, so the
+// check compared a real header on a response that carried no font.
+//
+// A representative has to be a file that exists, or the tier is being asserted
+// against nothing — which is this project's oldest failure mode, the one
+// `_headers` opens by naming: a policy advertised for months while no response
+// carried it. There is no font tier now because there are no fonts.
 const CACHE_TIERS = {
-  "/static/fonts/D-DIN.woff2": "public, max-age=31536000, immutable",
   "/static/og/index.png": "public, max-age=604800",
   "/static/css/styles.min.css": "public, max-age=3600",
 };

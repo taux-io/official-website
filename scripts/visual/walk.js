@@ -158,6 +158,14 @@ async function walk({
       if (scroll) await scrollThrough(page);
 
       for (const probe of probes) {
+        // A probe may name the paths it is about. Without this a probe that
+        // only has something to say on five routes still pays for all of them,
+        // and if it also asks for `reload: true` it pays a NAVIGATION for each
+        // — the `fold` probe was doing 101 paths x 3 viewports of reloads to
+        // produce 15 measurements. Filtering here rather than inside the probe
+        // is what makes the saving real: the reload happens before the probe
+        // body runs, so a probe that returns [] early has already been charged.
+        if (probe.paths && !probe.paths.includes(path)) continue;
         for (const viewport of probeViewports(probe, viewports)) {
           await page.setViewportSize({ width: viewport.width, height: viewport.height });
           if (probe.reload) {

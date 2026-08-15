@@ -35,10 +35,18 @@ tag    = "zh-Hant-TW"
 name   = "繁體中文"
 og     = "zh_TW"
 # The writing system, and it is a field rather than something guessed from the
-# tag. Three checks read it: `heading structure` asks whether this locale needs
-# a Chinese sub-line under the Latin lead (decision #56), `check:entity` asks
-# what script the title has to contain, and geometry's `measure` probe asks how
-# many characters fit on a line before reading gets hard (DESIGN.md's table).
+# tag. FIVE things read it, and this list said "three" while two of them were
+# already reading it:
+#   1. `heading structure` — whether this locale needs a Chinese sub-line under
+#      the Latin lead (decision #56)
+#   2. `check:entity` — what script the title has to contain
+#   3. geometry's `measure` probe — how many characters fit on a line before
+#      reading gets hard (DESIGN.md's table)
+#   4. `scripts/assets/build-og.js` — which font stack the 100 share cards draw
+#      with (decision #62; before it read this, a Japanese card printed Chinese
+#      glyphs by construction rather than by the build machine's luck)
+#   5. `scripts/routes.js` — it owns the table the other four ask, so a locale
+#      with an unknown script is a hard finding rather than a silent default
 # Deriving it from "zh-*" would work until ja-JP, whose kanji are Han and whose
 # kana are not.
 script = "Hant"

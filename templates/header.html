@@ -158,11 +158,23 @@
          one item that opens the full-screen menu, the way a mega menu works;
          every link stays one interaction away and, since the overlay markup is
          always in the document, still visible to crawlers. -->
-    <!-- site-nav carries the material: the shadow and the scroll edge that
-         replaced the 1px rule under it (issue 156). A hairline says "here is a
-         boundary"; a floating layer with content passing beneath it says
-         "there is more up there", which is the true statement. -->
-    <nav class="site-nav fixed w-full z-50 bg-surface/90 backdrop-blur-md transition-transform" aria-label="Main Navigation">
+    <!-- ⚠️ THIS PARAGRAPH DESCRIBED A BAR THAT NO LONGER EXISTS, and it is
+         kept only long enough to say so. It read: "site-nav carries the
+         material: the shadow and the scroll edge that replaced the 1px rule
+         under it (issue 156)." There is no shadow — DESIGN.md forbids them by
+         name and `.site-nav` in input.css is a 1px `border-bottom` — and there
+         is no floating layer, because the frosted bar went with the comment
+         below. The hairline it says was replaced is the thing that is actually
+         there. -->
+    <!-- OPAQUE, NOT FROSTED. This carried `bg-surface/90 backdrop-blur-md` —
+         a translucent bar with a blur behind it — against DESIGN.md's component
+         entry, which says in as many words 不做雙層、不做 frosted
+         `backdrop-filter`, and against .site-nav's own comment in input.css
+         saying the same. Utilities beat the components layer, so the frosted
+         version is what every reader actually got, on every page, while both
+         descriptions said otherwise. Nothing checked it; the rule
+         `surface is painted once` does now. -->
+    <nav class="site-nav fixed w-full z-50 bg-surface transition-transform" aria-label="Main Navigation">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- h-full rather than the text's own 33px: the bar is 64px tall
                  and the wordmark is a control, so its target should fill the
@@ -270,7 +282,10 @@
         </div>
     </div>
 
-    <!-- Main Content Wrapper. The nav is translucent, so a light surface here
-         would show through it. -->
-    <main class="pt-16 min-h-screen relative overflow-x-clip bg-surface">
+    <!-- Main Content Wrapper. It carried `bg-surface` under the reasoning
+         "the nav is translucent, so a light surface here would show through
+         it" — both halves now false: the nav is opaque, and painting the
+         surface onto something that already sits on it was the invisible
+         no-op the `surface is painted once` rule was written for. -->
+    <main class="pt-16 min-h-screen relative overflow-x-clip">
         
