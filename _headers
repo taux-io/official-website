@@ -28,13 +28,21 @@
 # /cdn-cgi/rum on this origin, which 'self' already covers. Verified that
 # /cdn-cgi/* is answered by Cloudflare ahead of the Worker rather than falling
 # through to 404.html.
+#
+# cdn.jsdelivr.net was here until Chart.js was vendored into
+# static/js/vendor/. It is not the same kind of host as the one above: that
+# origin serves every npm package and every public GitHub repository, so
+# allowing it is close to allowing *, and it was allowed for exactly one script
+# loaded from a version-less URL that carried no integrity attribute. The one
+# remaining third-party origin is the beacon, which is injected at the edge and
+# cannot be self-hosted. Anything this repository builds is 'self'.
 
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 # Stylesheet and scripts are busted by a ?v= query that nothing enforces the
 # incrementing of. An hour plus revalidation drops nearly every round trip

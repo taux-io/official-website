@@ -1,10 +1,13 @@
 // Chart configuration for the prompt-injection page.
 //
 // Extracted from an inline <script>. The site's Content-Security-Policy allows
-// scripts only from its own origin and jsdelivr, with no 'unsafe-inline' —
-// inline blocks are the largest opening in a script policy, and one chart is
-// not a reason to leave it open. As an inline block this silently did not run:
-// Chart.js loaded and nothing drew.
+// scripts only from its own origin and the edge-injected analytics beacon, with
+// no 'unsafe-inline' — inline blocks are the largest opening in a script policy,
+// and one chart is not a reason to leave it open. As an inline block this
+// silently did not run: Chart.js loaded and nothing drew.
+//
+// Chart.js itself is now vendored at static/js/vendor/chart.umd.min.js, so
+// `Chart` below comes from this origin rather than from a CDN.
 
 document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('jailbreakChart').getContext('2d');

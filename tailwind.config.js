@@ -1,6 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./templates/**/*.html", "./static/js/**/*.js"],
+  // Vendored libraries are excluded. Tailwind scans these files as text and
+  // takes any token that looks like a utility, so a third-party bundle donates
+  // class names it never meant to: chart.umd.min.js contains the word `italic`
+  // for its font handling, and that alone added a `.italic` rule to the
+  // stylesheet nothing on the site uses. Harmless at 26 bytes and unbounded in
+  // principle — the next library decides what ships next. Our own JS still
+  // counts, because tau-curve.js and friends really do name classes.
+  content: [
+    "./templates/**/*.html",
+    "./static/js/**/*.js",
+    "!./static/js/vendor/**",
+  ],
   theme: {
     // Six steps, and they REPLACE Tailwind's defaults rather than sitting
     // beside them. This is the contract half of the expand/migrate/contract

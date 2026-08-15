@@ -84,10 +84,12 @@ taux-dev/
 - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
 
 ### Content-Security-Policy (`_headers`)
-- `script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com` — **無 `unsafe-inline`**
+- `script-src 'self' https://static.cloudflareinsights.com` — **無 `unsafe-inline`**
 - `style-src` 需要 `unsafe-inline`（16 個 style 屬性 + 2 個行內區塊）
 - `font-src 'self'` — 字體已自架
 - `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`
+
+> 唯一的第三方 script 來源是邊緣注入的 Web Analytics beacon，它無法自架。`cdn.jsdelivr.net` 曾經也在 `script-src` 裡，供一支沒有版本、沒有 `integrity` 的 Chart.js 使用：URL 指向 npm 的 `latest`，上游發什麼就在 taux.io 上執行什麼，而本地不需要任何一次 commit 或部署。該檔案已改為自架於 `static/js/vendor/`，來源也一併移除——那個 host 供應所有 npm 套件與所有公開 GitHub repo，對任何注入而言，允許它幾乎等同於允許 `*`。
 
 > 此 policy 曾經只存在於 `nginx.conf`，而該檔案不在實際運行的拓撲中，等於從未生效——整整一年沒有人發現，因為缺少 CSP 的頁面看起來和有 CSP 的頁面一模一樣。現在它在 `_headers`，而路由契約測試會對每一條路由斷言標頭確實存在且內容相符。
 

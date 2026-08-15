@@ -25,8 +25,17 @@
 }
 </script>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js, vendored at 4.5.1, for the same reason the fonts are self-hosted.
+     This used to be https://cdn.jsdelivr.net/npm/chart.js — no version, so the
+     URL resolved to whatever npm's `latest` tag pointed at, with a 12h edge TTL
+     and no integrity attribute to compare against. Whatever the package
+     published next executed here, on a page about prompt injection, with no
+     commit and no deploy on our side.
+     Self-hosted rather than pinned + SRI because it also lets script-src drop
+     cdn.jsdelivr.net entirely: that host serves any npm package and any public
+     GitHub repo, so allowing the origin is close to allowing *. Update by
+     replacing the file and bumping ?v=. -->
+<script src="/static/js/vendor/chart.umd.min.js?v=1"></script>
 
 <div class="relative pt-32 pb-24 px-6 overflow-hidden bg-surface">
     <!-- Background Decor -->
