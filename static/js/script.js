@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMenu();
     initScrollNavigation();
+    initLocaleSwitcherDismiss();
     initEasterEggs();
 });
 
@@ -99,7 +100,47 @@ function initScrollNavigation() {
             nav.classList.remove('-translate-y-full');
         }
         lastScrollY = window.scrollY;
+        closeLocaleSwitchers();
     }, { passive: true });
+}
+
+// THE LOCALE SWITCHER IS A NATIVE <details>, AND THAT IS WHY IT NEEDED THIS.
+//
+// A <details> stays open until something closes it. The nav is `fixed` and
+// slides away on scroll down — so the panel travelled with it, hung over the
+// page, and came back still open. Reported from a real page, not a probe:
+// nothing here measures "is a menu stuck".
+//
+// The close is an ENHANCEMENT, never the mechanism. Without script the switcher
+// still opens, still closes on a second click, still navigates — decision #13's
+// precedent is nineteen elements left permanently invisible because visibility
+// depended on a script running, and the switcher is how a reader who cannot
+// read this page reaches one they can. It must not need JS to work.
+//
+// Three ways out, because a menu you cannot dismiss is the actual complaint:
+// scrolling away, clicking elsewhere, and Escape.
+function closeLocaleSwitchers(except) {
+    for (const d of document.querySelectorAll('details.locale-switcher[open]')) {
+        if (d !== except) d.open = false;
+    }
+}
+
+function initLocaleSwitcherDismiss() {
+    // `closest` rather than `contains`: a click on the summary's ▾ span is
+    // inside the details and must not immediately re-close what it just opened.
+    document.addEventListener('click', (e) => {
+        closeLocaleSwitchers(e.target.closest('details.locale-switcher'));
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const open = document.querySelector('details.locale-switcher[open]');
+        if (!open) return;
+        closeLocaleSwitchers();
+        // Focus goes back to the control that opened it, or the reader is left
+        // somewhere with no visible focus ring.
+        open.querySelector('summary')?.focus();
+    });
 }
 
 // Scroll-triggered reveals were removed here deliberately.
