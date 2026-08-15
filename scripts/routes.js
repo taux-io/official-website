@@ -169,7 +169,31 @@ const isLatin = (tag) => {
 // and the probe takes its limit from `html[lang]`, so English paragraphs that
 // pass on all four other locales failed on this one at 61.3ch. A limit that
 // fires on prose it was never about is not caution, it is a false positive.
-const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 75, Jpan: 68, Kore: 68 };
+// `Latn` WAS 75, AND IT WAS UNFALSIFIABLE. Measured across all 101 routes at
+// the widest viewport (2,818 elements, the same `width:1ch` probe the gate
+// uses): the widest en-US paragraph on the site is 68.11ch. Not 75 — 68.11.
+// Reaching 75 would take 566px of width where `src/input.css` permits 514px,
+// so no English page could ever fire this limit. A threshold that cannot fail
+// is not a loose threshold, it is a decoration.
+//
+// THE REASON EVERY SCRIPT LANDS ON THE SAME NUMBER, which is the part worth
+// keeping: `src/input.css`'s `:where(main p, main li) { max-width: 68ch }` is
+// unconditional, and `tailwind.config.js`'s `prose` is 68ch too. 0 of 2,818
+// measured elements carry a wider cap. So the ceiling is a stylesheet constant,
+// not a property of any writing system — which is why all five maxima come out
+// within 0.07ch of each other and all five medians are identical at 63.55ch.
+// A per-script table cannot be justified from that data, and one that varies
+// invites the reader to believe it was derived per script.
+//
+// ⚠️ WHAT THIS PROBE ACTUALLY GUARDS, stated because the table above reads like
+// the other thing: it can detect the 68ch rule being removed or widened, or a
+// new element escaping it. It CANNOT detect "this line is too long to read
+// comfortably" — the site never lets a paragraph get wide enough to answer
+// that question. For ja-JP and en-US the comfortable measure remains genuinely
+// unmeasured. The 0.04–0.11ch of apparent excess is the engine's `68ch` and the
+// probe's `1ch × 68` disagreeing in the last quantisation step, which is what
+// MEASURE_TOLERANCE_CH exists to absorb.
+const MEASURE_CH = { Hant: 68, Hans: 68, Latn: 68, Jpan: 68, Kore: 68 };
 const measureFor = (tag) => {
   const l = LOCALES.find((x) => x.tag === tag);
   return (l && MEASURE_CH[l.script]) || 68;

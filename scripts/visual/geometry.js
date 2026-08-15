@@ -44,7 +44,7 @@
 // reports green forever and inflates the count of things being watched, which is
 // worse than no check: it says the ground is covered when nobody is on it.
 //
-// THE WIDTHS ARE THE SIX BREAKPOINTS PLUS 320 AND 720 — see the constant for
+// THE WIDTHS ARE THE FIVE NAMED STEPS PLUS THREE THAT ARE NOT — see the constant for
 // why those two are not breakpoints and still have to be measured.
 //
 // Reads the same route table and starts the browser the same way as its
