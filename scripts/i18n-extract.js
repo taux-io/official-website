@@ -112,16 +112,28 @@ const TRADITIONAL_ONLY = [
 // four leaks the Japanese filter passed, including one in an `aria-label` that
 // no text-node scan would ever have reached. Translate both, and let Korean
 // stand guard over Japanese.
+// CJK punctuation on a Latin page is never right, and it is the one part of
+// "does this prose read correctly" that a machine can actually decide.
+//
+// 190 of these shipped on the English pages — `。`, `、`, `「」`, and the
+// wreckage of a paragraph-by-paragraph replacement (`，,`, `spec、ec`) — and passed thirteen
+// gates on the way, because not one of them reads prose. This closes the half
+// of that gap that is closable. The other half, whether a sentence is right,
+// stays a person's job and is recorded as such in DESIGN.md.
+const CJK_PUNCTUATION = /[「」『』，。、；：（）？！《》]/;
+
 function leftovers(html, tag) {
   const body = html.replace(/<!--[\s\S]*?-->/g, "");
+  const test =
+    tag === "ja-JP"
+      ? (t) => TRADITIONAL_ONLY.some((c) => t.includes(c))
+      : tag === "en-US"
+        ? (t) => HAN.test(t) || CJK_PUNCTUATION.test(t)
+        : (t) => HAN.test(t);
   return body
     .split("\n")
     .map((line, i) => ({ line: i + 1, text: line.trim() }))
-    .filter(({ text }) =>
-      tag === "ja-JP"
-        ? TRADITIONAL_ONLY.some((c) => text.includes(c))
-        : HAN.test(text)
-    );
+    .filter(({ text }) => test(text));
 }
 
 function main() {
