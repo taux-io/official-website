@@ -285,7 +285,11 @@ date_published = "2026-08-06"
 [[page]]
 path        = "/pqc-migration"
 template    = "pqc-migration.html"
-date_modified = "2026-08-06"
+# 這個日期代表的是「法規狀態重新查過的日子」，不是排版改動的日子——這頁的
+# 規則沒有任何閘門守得住（法規變動不在版本控制裡），那個約定是唯一的防線。
+# 2026-08-15 重查：NIST IR 8547 仍是 initial public draft，金管會指引無滾動
+# 修正。內容因此一字未動，而日期動了——那正是這個約定的意思。
+date_modified = "2026-08-15"
 date_published = "2026-08-06"
 
   [page.locale.zh-Hant-TW]

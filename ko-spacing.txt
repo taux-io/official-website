@@ -677,7 +677,7 @@ pqc-migration.html	·· rong>조달과 입찰 요건</strong>에
 pqc-migration.html	   an>공급업체에 요구할 것은 <strong>
 pqc-migration.html	·· 에 준하는 암호 자산 설명</strong>이
 pqc-migration.html	   <span>공급하는 쪽이라면 <strong>
-pqc-migration.html	   08-06에 확인했습니다.</strong> 각
+pqc-migration.html	   08-15에 확인했습니다.</strong> 각
 pqc-migration.html	   지막 갱신일'이 뜻하는 것은 <strong>
 pqc-migration.html	·· 제 상태를 다시 확인한 날</strong>이
 pqc-migration.html	   ">112비트 강도 알고리즘 <span class="font-sans">
