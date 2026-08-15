@@ -200,6 +200,68 @@ function ruleNoHex(files) {
   return found;
 }
 
+// THE GAP AFTER A SECTION RULE IS ONE OF THREE, AND THE THREE MEAN DIFFERENT
+// THINGS. This is the proximity principle, written down for the first time.
+//
+// A hairline on a `<section>` is the site's inter-group boundary, and what
+// follows it says how far apart the two groups are. Three depths, measured off
+// what the templates already do rather than invented here:
+//
+//   .cover's padding-block  96px  a section that opens with a cover block —
+//                                 the cover supplies the gap, so the section
+//                                 carries no `pt` of its own (45 sections)
+//   pt-16                   64px  a top-level section that opens with content
+//                                 (355 sections)
+//   pt-12                   48px  a section nested inside another — a SUB-group,
+//                                 and a sub-group belongs closer (20 sections)
+//
+// Against intra-group spacing of `space-y-6` (24px) and `gap-4` (16px), the
+// inter:intra ratio is about 2.7:1. That ratio is the whole of proximity, and
+// nothing stated it anywhere before this rule.
+//
+// ⚠️ WHAT THIS RULE IS NOT. An earlier reading of this codebase claimed "seven
+// different paddings follow the identical separator, nothing distinguishes
+// them". That was a grep counting every `border-t border-line`, including the
+// 34 on `<p>`, 21 on `<li>` and 42 on `<div>` — a rule under a list row and a
+// rule between two sections are different jobs and correctly take different
+// gaps. Restricted to `<section>`, the site was already consistent at 355/375;
+// the genuine defects were one nested section at `pt-8` and five copies of a
+// section carrying `border-t border-line` twice AND both `pt-8` and `pt-16`,
+// where which padding won depended on the order of the generated CSS rather
+// than on anything an author wrote.
+function ruleSectionGapScale(files) {
+  const ALLOWED = new Set(["pt-16", "pt-12"]);
+  const found = [];
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<section\b([^>]*)>/g)) {
+      const cls = /class="([^"]*)"/.exec(m[1]);
+      if (!cls) continue;
+      const classes = cls[1].split(/\s+/).filter(Boolean);
+      if (!classes.includes("border-t") || !classes.includes("border-line")) continue;
+      const pts = classes.map(stripVariants).filter((c) => /^pt-\d/.test(c));
+      // No `pt` at all is the cover case: the cover block supplies the gap.
+      // Verified rather than assumed — every such section today opens with one.
+      if (pts.length === 0) continue;
+      if (pts.length > 1) {
+        found.push({
+          file: rel,
+          line: lineOf(html, m.index),
+          detail: `two top paddings on one section (${pts.join(" ")}) — the winner is decided by the generated CSS, not by this attribute`,
+        });
+        continue;
+      }
+      if (!ALLOWED.has(pts[0])) {
+        found.push({
+          file: rel,
+          line: lineOf(html, m.index),
+          detail: `${pts[0]} after a section rule — the scale is pt-16 top-level, pt-12 nested, or none when a cover supplies the gap`,
+        });
+      }
+    }
+  }
+  return found;
+}
+
 // THE SURFACE IS PAINTED ONCE, AND EVERY REPAINT OF IT IS INVISIBLE.
 //
 // There is one surface and `body` carries it, so `bg-surface` on anything
@@ -1330,6 +1392,13 @@ const RULES = [
     turnedOnBy: "PR 145 — the cache-buster is computed from the stylesheet",
     run: ruleCssVersionIsDerived,
     summary: "the stylesheet's ?v= must be a hash of the stylesheet, not a literal",
+  },
+  {
+    name: "section gap scale",
+    enabled: true,
+    turnedOnBy: "the Gestalt pass — proximity finally has a written ratio",
+    run: ruleSectionGapScale,
+    summary: "the gap after a section rule is pt-16, pt-12, or a cover's own 96px",
   },
   {
     name: "surface is painted once",
