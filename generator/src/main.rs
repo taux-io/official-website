@@ -451,20 +451,29 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
             // TWO LOCALES MUST NOT LAND ON THE SAME FILE.
             //
-            // `output_path` ignores the locale today, so a second locale added
-            // before issue 199 gives paths their prefix would silently overwrite the
-            // first: one file on disk, two entries in the sitemap, and every gate
-            // green — because they all walk the route table rather than the tree.
-            // check:entity is the only one that reads dist/, and it counts pages
-            // against site.toml, so it would report the shortfall as a broken build
-            // rather than as a collision.
+            // `output_path` takes the locale now (issue 199 gave every path its
+            // prefix), so the collision this guards against is no longer one
+            // locale away — it takes a mistake in the layout rules to produce.
+            // The rules are not obvious enough to trust: a locale home is a flat
+            // `<locale>.html` rather than a directory index, a `path` ending in
+            // `.html` keeps its own name and skips the prefix entirely, and the
+            // two meet if a locale tag ever matches such a route's name (`/x.html`
+            // and a locale `x` both land on `x.html`). Any of those returns two
+            // identical paths from a function whose callers assume otherwise.
             //
-            // Guarded rather than remembered. The failure is silent, and this repo's
-            // notes open with what silent failures have cost it.
+            // WHY IT IS STILL WORTH A CHECK — the failure is silent everywhere
+            // else. One file on disk, two entries in the sitemap, and every gate
+            // green, because they all walk the route table rather than the tree.
+            // check:entity is the only one that reads dist/, and it counts pages
+            // against site.toml, so it would report the shortfall as a broken
+            // build rather than as a collision.
+            //
+            // Guarded rather than remembered. This repo's notes open with what
+            // silent failures have cost it.
             if !destinations.insert(rel.clone()) {
                 return Err(format!(
-                    "{} in {locale} would overwrite {} — paths need a locale prefix \
-                 before a second locale can exist (issue 199)",
+                    "{} in {locale} would overwrite {} — two rows resolve to one \
+                 file; see Page::output_path for the three layouts it picks between",
                     page.path,
                     rel.display()
                 )

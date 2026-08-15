@@ -9,9 +9,15 @@
 // Each route rediscovered the same three traps, so they are recorded here as
 // code rather than as scar tissue.
 //
+// ⚠️ ONE MODE IS A GATE, AND IT IS THE ONLY ONE. `gate` runs in CI as
+// `npm run check:i18n`; `runs` and `check` are still authoring tools that report
+// and let a person decide. The split is not a mood — see the comment on
+// `CJK_PUNCTUATION` for what makes exactly one of these questions mechanical.
+//
 // Usage:
 //   node scripts/i18n-extract.js runs <route>          the strings to translate
 //   node scripts/i18n-extract.js check <route> <tag>   what the twin still owes
+//   node scripts/i18n-extract.js gate                  CI: CJK punctuation on the English pages
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -120,7 +126,68 @@ const TRADITIONAL_ONLY = [
 // gates on the way, because not one of them reads prose. This closes the half
 // of that gap that is closable. The other half, whether a sentence is right,
 // stays a person's job and is recorded as such in DESIGN.md.
+//
+// ⚠️ AND FOR A WHILE THAT WAS ONLY HALF TRUE. This constant landed, DESIGN.md
+// wrote that the mechanical part "已經補進 `i18n-extract`", and `i18n-extract`
+// was in no CI job — so a new English page could carry every one of these and
+// still go green. A tool is not a gate. `gate` below is the gate; the sentence
+// in DESIGN.md is now about it rather than about this constant.
 const CJK_PUNCTUATION = /[「」『』，。、；：（）？！《》]/;
+
+// WHY THE GATE READS `templates/en-US/` AND NOT `dist/en-US/`.
+//
+// dist is what ships, and reading it would be the stronger choice for anything
+// a person writes. But every built English page carries six CJK punctuation
+// marks that no English author put there: `_identity.html` is the site's single
+// Organization node — one identity site-wide, which is a rule `check:entity`
+// enforces — and it holds a registered legal name, a Taiwanese address and a
+// Chinese `description`. Gating dist would fail on that decision every run.
+// Whether that node should carry a per-locale description is a separate
+// question and belongs in a separate change; it is not this gate's business to
+// force it by staying red.
+//
+// The prose a person writes and translates lives in `templates/en-US/`, and
+// that is where all 190 of the shipped ones were. So this is where the gate
+// looks — narrower than dist, and exactly as wide as the claim it makes true.
+//
+// WHY PUNCTUATION AND NOT HAN. Three of these templates hold Han on purpose:
+// the registered company name 拓思科技股份有限公司 (a proper noun — CONTEXT.md
+// says a name is kept, not translated), a Chinese label quoted from a source
+// being described, and a structural HTML comment. Han on an English page is a
+// judgement call and a gate that fails on judgement calls gets switched off,
+// which is the reason `check` deliberately does not exit non-zero. CJK
+// punctuation has no such exception, which is what makes it gateable.
+const EN_LOCALE = "en-US";
+
+function gate() {
+  const dir = path.join(TEMPLATES, EN_LOCALE);
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".html")).sort();
+  let found = 0;
+  for (const name of files) {
+    // Comments are stripped, as they are everywhere else in this file: the
+    // generator strips them out of the output too, so they are not something a
+    // reader can be served. One English template carries `④ 互動` as a section
+    // marker copied from the source it was translated from.
+    const body = fs
+      .readFileSync(path.join(dir, name), "utf8")
+      .replace(/<!--[\s\S]*?-->/g, "");
+    body.split("\n").forEach((line, i) => {
+      if (!CJK_PUNCTUATION.test(line)) return;
+      found++;
+      console.log(`  ${EN_LOCALE}/${name}:${i + 1}  ${line.trim().slice(0, 110)}`);
+    });
+  }
+  console.log(
+    found
+      ? `\n${found} line(s) carry CJK punctuation across ${files.length} English templates`
+      : `\n${files.length} English templates, 0 CJK punctuation`
+  );
+  // Unlike `check`, this one fails the build. There is no judgement call in it:
+  // a full stop written `。` on an English page is wrong in every context, and
+  // the alternative to failing is what this repo already lived through — the
+  // rule existing in a script nothing ran.
+  process.exitCode = found ? 1 : 0;
+}
 
 function leftovers(html, tag) {
   const body = html.replace(/<!--[\s\S]*?-->/g, "");
@@ -138,8 +205,10 @@ function leftovers(html, tag) {
 
 function main() {
   const [mode, route, tag] = process.argv.slice(2);
+  // `gate` takes no route: it is the whole locale or it is not a gate.
+  if (mode === "gate") return gate();
   if (!mode || !route) {
-    console.log("\nusage: i18n-extract.js runs <route> | check <route> <tag>");
+    console.log("\nusage: i18n-extract.js runs <route> | check <route> <tag> | gate");
     process.exitCode = 1;
     return;
   }
@@ -186,4 +255,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { runs, leftovers, unwrap };
+module.exports = { runs, leftovers, unwrap, gate };

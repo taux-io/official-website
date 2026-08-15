@@ -202,9 +202,10 @@ Workers Builds 在推送 `main` 時 clone、建置、`wrangler deploy`——**�
    這是**安全的失敗**：2026-07-29 實際撞過一次，Worker 的內容照常部署，只有 triggers 沒套用，線上服務完全未受影響。
 
 2. **同樣接上 `www.taux.io`**，或不接而直接做下一步——兩者都可以，重點是 www 不能繼續指著舊的 Go 主機。
-3. **建立 www → apex 的 301。** Rules → Redirect Rules，來源 `www.taux.io/*`，目標 `https://taux.io/$1`，狀態 301。
+3. **建立 www → apex 的 301。** Rules → Redirect Rules，用**運算式**而不是 URL 形狀：匹配條件 `http.host eq "www.taux.io"`，目標 `concat("https://taux.io", http.request.uri.path)`，狀態 301。
    **不要試圖寫在 `_redirects` 裡**：Cloudflare 的 `_redirects` 來源端只接受路徑，明文不支援域名層級轉址。
-   目標一定要帶 `$1`。丟掉路徑的規則會把每一條已索引的 www URL 全部送到首頁，而且只測 `/` 的時候看起來完全正確——契約測試因此同時對 `/` 和 `/geo-guide` 斷言。
+   ⚠️ **這一步原本寫的是來源 `www.taux.io/*`、目標 `https://taux.io/$1`，而那個版本是壞的。** Redirect Rules 的 wildcard `*` 不匹配空字串：它匹配 `/geo-guide`，但**不匹配裸的根路徑** `https://www.taux.io/`，所以做出來的結果是所有子路徑正確轉址、首頁靜靜地繼續回 200。官方文件沒有寫 `*` 能不能匹配空字串，所以改用 hostname 當匹配條件——根路徑因此按定義包含在內，不依賴任何沒被文件化的行為。成因與更正記在 `NOTES.md`「切換期間壞掉的四件事」，**而這一格是照著舊結論寫成的祈使句，留到現在**：推理段落是給人讀懂的，檢查清單是給人照做的，改變設定的是後者。
+   目標一定要接上 `http.request.uri.path`。丟掉路徑的規則會把每一條已索引的 www URL 全部送到首頁，而且只測 `/` 的時候看起來完全正確——契約測試因此同時對 `/` 和 `/geo-guide` 斷言，兩種常見的錯誤設定各有一種會被其中一條抓到。
 4. **跑第 6 節的驗證。**
 5. **移除 taux.io 在舊主機上的那一份。已於 2026-07-29 交給該機器的管理者處理，不在這個 repo 的範圍內。**
 
@@ -272,10 +273,17 @@ BASE_URL=https://taux.io npm run contrast
 curl -sI https://taux.io/ | grep -i 'content-security-policy\|strict-transport-security\|^HTTP'
 curl -sI https://taux.io/static/fonts/D-DIN.woff2 | grep -i 'cache-control'   # 只能有一個 max-age
 curl -s  -o /dev/null -w '%{http_code}\n' https://taux.io/no-such-page        # 必須是 404
-curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/geo-guide  # 200，無轉址
-curl -sI -o /dev/null -w '%{http_code}\n' https://taux.io/                    # 必須是 200，不是 404
+curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/zh-Hant-TW/geo-guide  # 200，無轉址
+curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/geo-guide  # 301 到 /zh-Hant-TW/geo-guide
+curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://taux.io/           # 302 到 /zh-Hant-TW
 curl -s  -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.taux.io/geo-guide  # 301 到 apex 同路徑
+
+# bot 豁免（決策 #59 / issue #200）：200 而不是導向，且位元組與正典 locale 相同
+curl -s  -o /dev/null -w '%{http_code}\n' -A 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' https://taux.io/
+diff <(curl -s -A 'Mozilla/5.0 (compatible; Googlebot/2.1)' https://taux.io/) <(curl -s https://taux.io/zh-Hant-TW) && echo '位元組相同'
 ```
+
+⚠️ **上面三行的期望值改過。** 這一段一度寫「`/geo-guide` 是 200 無轉址」與「`/` 必須是 200，不是 404」——那在每條路徑都還沒有 locale 前綴的時候是對的。決策 #58 之後 `/` 是 302、20 條舊路徑是 301，照舊清單做的人會看到「錯誤」並去修一個沒有壞的東西。
 
 ---
 

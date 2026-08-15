@@ -45,21 +45,24 @@ npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
 npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門）
 npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
 npm run check:entity:links  # sameAs 的 URL 是否解析得到（CI 閘門，需網路）
+npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko-spacing`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `check:entity:links`。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko-spacing` / `check:i18n`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `check:entity:links`。
 
 **需要瀏覽器或網路的都在 `audit`，離線的都在 `build`。** 前兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
 
-**十三道**閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單。
+**十四道**閘門的門檻都設在「乾淨」而非「不要更糟」，趁現在乾淨時設，才不需要維護一份豁免清單。
 
-⚠️ **這個數字之前是錯的，而錯的方式值得記住。** 它寫「九道」的時候實際上有十道——`check:routes` 落地時沒有進這份清單，於是有人（我）照著這裡數，在 PR 上公開宣告「九道閘門全綠」。**文件與 CI 分歧時，綠的是 CI，錯的是宣告。** 現在是十三道：下面十道加上 `check:css`、`check:routes`、`geometry`。改 `checks.yml` 時請一併改這裡。
+⚠️ **這個數字錯過兩次，而第二次是在這段警告自己裡面。** 第一次它寫「九道」而實際有十道——`check:routes` 落地時沒有進這份清單，於是有人（我）照著這裡數，在 PR 上公開宣告「九道閘門全綠」。**文件與 CI 分歧時，綠的是 CI，錯的是宣告。**
+
+第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。現在是**十四道**——下面的清單有幾項就是幾道，這次多的是 `check:i18n`。改 `checks.yml` 時請一併改這裡。
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
-- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商（只在 `BASE_URL` 指向 production 時）
+- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是 HSTS 與 www → apex 那兩條，它們才是 zone 設定
 - **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標，以及依 locale 而定的行長上限
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡
@@ -70,6 +73,7 @@ npm run diff <a> <b>         # 像素比對
 - **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物
 - **check:entity** —— 讀**建置產物**的實體宣告，五條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko-spacing** —— 韓文的詞間空白決定沒有改變。**它是 ledger 不是規則**：韓文助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞），逐字元的規則兩邊都會判錯。所以它記住人做過的每一個決定，只在邊界改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**
+- **check:i18n** —— `templates/en-US/*.html` 沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。它讀模板不讀 `dist/`，因為每一頁建出來都帶著全站唯一 Organization 節點的六個中文標點（登記名稱、地址、中文 description），讀 `dist/` 會每次都紅在一個決定上。**這道閘門遲到了**：能自動判斷的那一半在 `i18n-extract` 裡放了一陣子，而 DESIGN.md 已經寫成「補進去了」——它不在任何 job 裡，等於沒有
 - **check:entity:links** —— `sameAs` 的 URL 解析得到。只抓硬性 404；登入牆後面的軟性 404（Facebook 對不存在的頁面回 200）抓不到，那仍然是人的判斷
 
 **`check:entity` 會拒絕稽核不完整的 `dist/`。** 建置是一頁一頁寫的，遇到第一個解析不了的模板就結束，所以失敗的建置會留下半棵樹——而所有讀 `dist/` 的檢查都會對著它報綠。這實際發生過：一個壞掉的 include 讓十七頁只寫了八頁，三條規則全部「通過」。它現在會比對 `site.toml` 宣告的頁數。
@@ -180,11 +184,17 @@ www → apex 的 301 同理，設在 zone 的 Redirect Rule。**不是**寫在 `
 
 Worker 版本兩個問題都沒有：規則進版本控制，`contract` 對 `wrangler dev` 就能跑，而且 `q=` 權重解得出來。
 
-**它不自己組回應，而那是整個設計的重點。** `wrangler.jsonc` 開頭那段警告仍然成立：`_headers` 套用在靜態資產上，套不到 Worker 產生的回應。所以 `src/worker.js` 向 assets 層要那個它本來就會送出的回應，只改一個 `Location` 標頭——`_headers` 裡的東西全部照樣到齊，因為是 assets 層放上去的。
+**它不自己組回應，而那是整個設計的重點。** `wrangler.jsonc` 開頭那段警告仍然成立：`_headers` 套用在靜態資產上，套不到 Worker 產生的回應。所以 `src/worker.js` 向 assets 層要一個回應——一般請求要的是它本來就會送出的那個，bot 要的是 `/zh-Hant-TW` 那個——然後只改標頭。`_headers` 裡的東西全部照樣到齊，因為是 assets 層放上去的。
+
+⚠️ **這是紀律，不是機制。** 危險本身沒有消失，只是被「不自己組回應」的寫法迴避掉，而**沒有任何東西檢查未來的人會不會在那支 Worker 裡直接 `new Response("…")`**：沒有規則、沒有斷言，只有那個檔案檔頭的兩段散文與下面這行的爆炸半徑。已記為決策 #63。
 
 `run_worker_first` 設成 `["/"]`：**只有這一條路徑會進 Worker**，其餘全部照舊直接走 assets，所以上面那個風險的爆炸半徑正好是一條路徑。沒設這行的話 Worker 根本看不到 `/`——`_redirects` 屬於 assets 層，它先匹配，請求在任何程式碼跑之前就被回答掉了。
 
-**沒有 User-Agent 判斷，這是刻意的。** 決策 #59 要讓 bot 豁免導向，而不碰 cloaking 的做法是**看請求標頭而不是看誰在問**：不送 `Accept-Language` 的爬蟲什麼都不匹配，自然落到正典 locale——正是那條決策要的結果。所有人拿到的都是同一個 302，只有目的地不同，而那個不同來自一個為此而生的標頭。
+**有 User-Agent 判斷，那就是 bot 豁免。** 決策 #59 與 issue #200 的驗收條件是同一件事：Googlebot 一類的爬蟲送到 `/` 要拿到 **200 而不是導向**，而且**位元組與 `zh-Hant-TW` 版相同**。做法是 `src/worker.js` 比對一份具名的爬蟲清單（Googlebot、bingbot、DuckDuckBot、Baiduspider、YandexBot、Slurp、Applebot、GPTBot、ClaudeBot、PerplexityBot），命中就向 assets 層要 `/zh-Hant-TW` 的回應原封送回。**依 User-Agent 給不同內容是 cloaking；依 User-Agent 決定跳不跳不是**——這條分界是 #59 的原文。清單漏一個的代價有界：那個爬蟲拿到跟一般讀者一樣的 302，目的地帶著自我指向的 canonical 與完整 hreflang。
+
+⚠️ **這一段先前寫的是相反的話**：「沒有 User-Agent 判斷，這是刻意的」，論點是不送 `Accept-Language` 的爬蟲自然落到正典 locale，所以已經達成 #59 要的結果。**沒有達成**——爬蟲拿到的仍然是 302，而驗收條件寫的是 200。同一段改寫同時出現在 `src/worker.js` 的檔頭與 `contract` 的註解（那裡甚至把 #59 寫成「依 UA 給 301／302 就是 cloaking」，與 #59 的原文相反），三個檔案互相印證，讀起來像這件事被想過了。**換掉條件不是滿足條件**，而三份一致的錯比一份醒目。
+
+⚠️ **`Vary` 因此是 `Accept-Language, User-Agent`**，兩個分支都送。回應現在同時取決於這兩個標頭，而共享快取存的是「這個 URL 回了什麼」而不是「走了哪個分支」——302 若不帶 `User-Agent` 存下去，下一個爬蟲就會被餵那份 302，豁免在唯一看不到的地方失效。
 
 ⚠️ **`/` 曾經是 301，而且已經快取在訪客的瀏覽器裡。** `site.toml` 的註解寫著要用 302，但那筆 `[[redirect]]` 沒寫 `status`，於是吃了 301 的預設值。**註解是設計，資料是上線的東西。** 已改成 302，但改不掉別人瀏覽器裡存著的那一份——那些人不會再問，直接去 `/zh-Hant-TW`。
 

@@ -581,9 +581,21 @@ async function main() {
     const location = r.headers.get("location");
     const label = `/ (Accept-Language: ${header || "absent"})`;
     // 302 for every one of them, including the fallthrough. A 301 here would
-    // be cached and outlive the preference that produced it; a 301 for bots
-    // and a 302 for readers would be a response that varies by User-Agent,
-    // which is one step from cloaking (decision #59).
+    // be cached and outlive the preference that produced it.
+    //
+    // ⚠️ THIS COMMENT USED TO END WITH A REWRITTEN VERSION OF DECISION #59. It
+    // read: "a 301 for bots and a 302 for readers would be a response that
+    // varies by User-Agent, which is one step from cloaking (decision #59)."
+    // #59 says the opposite, in its own words:
+    //
+    //   「送給 bot 的位元組必須和送給正典 locale 使用者的相同，差別只有跳不跳。
+    //     依 User-Agent 給不同內容是 cloaking；依 User-Agent 決定跳不跳不是。」
+    //
+    // Varying by User-Agent is what #59 asks for; varying the BYTES by
+    // User-Agent is what it forbids. The rewrite swapped an acceptance
+    // condition for an easier one and kept the citation, so the file read as
+    // though the condition had been considered and met. The exemption it
+    // explained away did not exist. It is asserted below.
     if (r.status !== 302) {
       failures.push({
         route: label,
@@ -621,6 +633,87 @@ async function main() {
         route: `/?utm_source= (Accept-Language: ${header || "absent"})`,
         check: "language negotiation",
         problem: `sent to ${location || "(no Location)"}, expected ${want}`,
+      });
+    }
+  }
+
+  // THE BOT EXEMPTION ON `/` — issue #200's acceptance condition, word for word:
+  // send a Googlebot User-Agent to `/` and get a 200 rather than a redirect,
+  // with the same bytes as the `zh-Hant-TW` version.
+  //
+  // Both halves are asserted, and neither is sufficient alone. A 200 whose body
+  // is anything other than the canonical locale's is cloaking — decision #59's
+  // whole point is that the bytes must match and only the hop may differ. And
+  // matching bytes behind a 302 is what the site did for the entire time the
+  // exemption was described in three files and implemented in none.
+  //
+  // The ordinary-browser row is the one that catches the opposite mistake. With
+  // a User-Agent pattern loose enough to match everything, every bot row above
+  // still passes; only a User-Agent that must NOT be exempted proves the test
+  // is discriminating rather than the code being broken in a generous way.
+  const canonicalBody = await (await fetch(BASE_URL + "/zh-Hant-TW")).text();
+  const AGENTS = [
+    // The literal string from #200.
+    ["Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)", true],
+    ["Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)", true],
+    ["Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.2", true],
+    ["Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ClaudeBot/1.0", true],
+    // A reader, who must still be sent to their own language.
+    [
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+        "(KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+      false,
+    ],
+  ];
+  for (const [agent, exempt] of AGENTS) {
+    checked++;
+    const short = /compatible; ([A-Za-z]+)|Chrome/.exec(agent);
+    const label = `/ (User-Agent: ${short ? short[1] || "Chrome" : agent})`;
+    const r = await fetch(BASE_URL + "/", {
+      redirect: "manual",
+      headers: { "user-agent": agent },
+    });
+
+    if (exempt && r.status !== 200) {
+      failures.push({
+        route: label,
+        check: "bot exemption",
+        problem: `expected 200, got ${r.status} (Location: ${r.headers.get("location")})`,
+      });
+    } else if (!exempt && r.status !== 302) {
+      failures.push({
+        route: label,
+        check: "bot exemption",
+        problem: `expected 302, got ${r.status} — this User-Agent is not a crawler`,
+      });
+    } else if (exempt) {
+      const body = await r.text();
+      if (body !== canonicalBody) {
+        failures.push({
+          route: label,
+          check: "bot exemption",
+          problem:
+            `body differs from /zh-Hant-TW (${body.length} bytes vs ` +
+            `${canonicalBody.length}) — decision #59 allows the hop to differ, not the bytes`,
+        });
+      }
+    }
+
+    // BOTH BRANCHES HAVE TO DECLARE BOTH HEADERS.
+    //
+    // The response at `/` now depends on Accept-Language and on User-Agent, and
+    // a shared cache files what a URL returned rather than which branch
+    // produced it. A 302 stored without `User-Agent` in Vary is replayed to the
+    // next crawler that asks, which undoes the exemption in the one place it
+    // cannot be observed from here.
+    checked++;
+    const vary = (r.headers.get("vary") || "").toLowerCase();
+    const missing = ["accept-language", "user-agent"].filter((h) => !vary.includes(h));
+    if (missing.length) {
+      failures.push({
+        route: label,
+        check: "bot exemption",
+        problem: `Vary is "${r.headers.get("vary") || "(absent)"}", missing ${missing.join(", ")}`,
       });
     }
   }

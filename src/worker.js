@@ -7,9 +7,16 @@
 // security headers. The fix is not to re-attach them here — that would put the
 // policy in two places, which is the failure the file was written to avoid.
 //
-// So this Worker never builds a response. It asks the assets layer for the one
-// it would have served, and changes a single header on the way out. Everything
-// in `_headers` arrives because the assets layer put it there.
+// So this Worker never builds a response. It asks the assets layer for one —
+// either the one it would have served for this request, or the one it serves at
+// `/zh-Hant-TW` — and changes headers on the way out. Everything in `_headers`
+// arrives because the assets layer put it there.
+//
+// ⚠️ NOTHING CHECKS THAT THE NEXT PERSON KEEPS THIS PROPERTY. There is no rule
+// that fails on a `new Response("…")` in this file; the discipline is the two
+// paragraphs above and the fact that `run_worker_first` is one path long. This
+// is written out rather than assumed, because this repo's own argument is that
+// a rule nothing checks is not a rule (decision #63).
 //
 // WHAT THIS BUYS OVER A ZONE REDIRECT RULE, which was the original plan:
 //
@@ -24,12 +31,21 @@
 //     was reduced to prefix-matching the raw header — right for ordinary
 //     browsers, wrong for anything that sends its preferences out of order.
 //
-// NO USER-AGENT CHECK, AND THAT IS THE POINT. Decision #59 exempts bots from
-// the redirect, and the way to do that without going near cloaking is to key on
-// the request header rather than on who is asking: a crawler that sends no
-// `Accept-Language` matches nothing and falls through to the canonical locale,
-// which is the outcome that decision wanted. Everyone gets the same 302; only
-// the destination differs, and it differs on a header built for exactly this.
+// THE USER-AGENT CHECK IS DECISION #59, AND IT IS NOT CLOAKING.
+//
+// #59 draws the line in one sentence: "送給 bot 的位元組必須和送給正典 locale
+// 使用者的相同，差別只有跳不跳。依 User-Agent 給不同內容是 cloaking；依
+// User-Agent 決定跳不跳不是。" That is what the code below does — a crawler on
+// `/` is handed the `/zh-Hant-TW` response, byte for byte the one a reader who
+// followed the 302 would receive, with a 200 instead of a redirect.
+//
+// THIS FILE ONCE CLAIMED THE OPPOSITE, in a paragraph headed "NO USER-AGENT
+// CHECK, AND THAT IS THE POINT". Its argument was that a crawler sending no
+// `Accept-Language` falls through to the canonical locale anyway, so keying on
+// the request header achieves what #59 wanted. It does not: the crawler still
+// got a 302, and #200's acceptance condition is a **200** at `/`, the site's
+// highest-value URL. The argument was a different, easier condition wearing the
+// original's name — and `contract` had been edited to describe that one too.
 
 // The published locales, most specific pattern first. Anything not matched here
 // falls through to whatever `_redirects` says, which is the canonical locale.
@@ -44,6 +60,36 @@ const MATCHERS = [
   [/^ko\b/, "/ko-KR"],
   [/^en\b/, "/en-US"],
 ];
+
+// The canonical locale. `/` has no content of its own; this is where both the
+// redirect and the bot exemption point.
+const CANONICAL = "/zh-Hant-TW";
+
+// THE CRAWLERS THAT GET THE EXEMPTION, NAMED ONE BY ONE.
+//
+// WHY THESE. Four search engines that index this site's market (Google, Bing,
+// DuckDuckGo, Yahoo/Slurp), two that index the regions the other locales are
+// written for (Baidu for zh-Hans-CN, Yandex), Apple's for Siri and Spotlight,
+// and the three answer engines this site's whole GEO argument is aimed at
+// (GPTBot, ClaudeBot, PerplexityBot). Every one of them is a documented,
+// self-identifying token published by its operator.
+//
+// WHY NOT WIDER. A loose pattern is the dangerous direction, not a narrow one.
+// Matching a bare `bot`/`spider`/`crawler` would catch strings that appear in
+// ordinary product names and in preview fetchers that are standing in for a
+// person, and a reader who is served a 200 at `/` never reaches their own
+// language — a silent, per-user-agent failure that nothing here would surface.
+//
+// WHAT MISSING ONE COSTS, WHICH IS BOUNDED. An unlisted crawler gets the same
+// 302 every reader gets: to its own `Accept-Language` if it sends one, to the
+// canonical locale if it does not. A 302 is temporary and uncacheable as a
+// permanent fact, the destination carries a self-referential canonical and the
+// full hreflang set, and `x-default` still points back at `/`. So the failure
+// mode is "one crawler follows one hop", not "a locale disappears from an
+// index" — which is why this list is allowed to be short and explicit rather
+// than clever. Add a token when a crawler matters; do not add a wildcard.
+const CRAWLERS =
+  /\b(?:googlebot|bingbot|duckduckbot|baiduspider|yandexbot|slurp|applebot|gptbot|claudebot|perplexitybot)\b/i;
 
 // Accept-Language, parsed properly rather than prefix-matched.
 //
@@ -71,21 +117,44 @@ export function preferred(header) {
   return null;
 }
 
+// A response whose destination depends on a request header has to say so, or a
+// shared cache will hand one reader's answer to the next. Both headers are
+// listed on BOTH branches, including the one that did not read User-Agent to
+// reach its answer: a cache stores what a URL returned, not which branch
+// produced it, so a 302 filed without `User-Agent` would be replayed to the
+// next crawler that asked.
+const VARY = "Accept-Language, User-Agent";
+
 export default {
   async fetch(request, env) {
-    const served = await env.ASSETS.fetch(request);
-
     // Only `/` negotiates. Every other path is an asset or one of the twenty
     // stable 301s, and both are decided without looking at the reader.
     const url = new URL(request.url);
-    if (url.pathname !== "/") return served;
+    if (url.pathname !== "/") return env.ASSETS.fetch(request);
 
+    // THE BOT EXEMPTION (decision #59, acceptance condition in issue #200).
+    //
+    // Not a second copy of the page, and not a hand-built response: the assets
+    // layer is asked for `/zh-Hant-TW` and its answer is passed through, so the
+    // body is the canonical locale's file byte for byte and every header in
+    // `_headers` arrives because the assets layer put it there — the same
+    // property the rest of this file is built around.
+    //
+    // The query string is not carried across. On the 302 below it has to be,
+    // because a Location is where it would otherwise be lost; a 200 has no
+    // Location, and the assets layer serves the same file either way.
+    if (CRAWLERS.test(request.headers.get("user-agent") || "")) {
+      const page = await env.ASSETS.fetch(new Request(new URL(CANONICAL, url), request));
+      const exempt = new Response(page.body, page);
+      exempt.headers.set("Vary", VARY);
+      return exempt;
+    }
+
+    const served = await env.ASSETS.fetch(request);
     const target = preferred(request.headers.get("accept-language"));
 
-    // A response whose destination depends on a request header has to say so,
-    // or a shared cache will hand one reader's answer to the next.
     const out = new Response(served.body, served);
-    out.headers.set("Vary", "Accept-Language");
+    out.headers.set("Vary", VARY);
 
     // THE QUERY STRING COMES ALONG, BECAUSE THE FALLTHROUGH ALREADY DOES.
     //
