@@ -113,7 +113,7 @@
                 <div>
                     <p class="eyebrow mb-2">One: harvest now, decrypt later</p>
                     <p>
-                        Harvest-now-decrypt-later is a widely accepted threat model: traffic intercepted today can be stored untouched and decrypted whenever the capability arrives. So the question is not whether your data is safe today, but <strong>how long it needs to stay secret</strong>。Anything with a confidentiality horizon beyond ten years — medical records, policies, contracts, identity credentials, trade secrets — is already exposed under that model.
+                        Harvest-now-decrypt-later is a widely accepted threat model: traffic intercepted today can be stored untouched and decrypted whenever the capability arrives. So the question is not whether your data is safe today, but <strong>how long it needs to stay secret</strong>. Anything with a confidentiality horizon beyond ten years — medical records, policies, contracts, identity credentials, trade secrets — is already exposed under that model.
                     </p>
                     <p class="mt-4">
                         One honest caveat: <strong>estimates for when a quantum computer could actually break RSA-2048 vary enormously</strong> — serious people put it anywhere from within a decade to several. Treat any content that states a specific year as settled fact with suspicion.
@@ -225,16 +225,16 @@
                 <div>
                     <p class="eyebrow mb-2">Why everything else waits on it</p>
                     <p>
-                        <strong>You cannot prioritise what you cannot enumerate.</strong> Most organisations cannot say how many certificates they hold, which systems still use SHA-1, or which ten-year-old batch job has an RSA key hard-coded in it. Without the register, "migrate the high-risk things first" is not an instruction anyone can follow, because nobody knows which those are。
+                        <strong>You cannot prioritise what you cannot enumerate.</strong> Most organisations cannot say how many certificates they hold, which systems still use SHA-1, or which ten-year-old batch job has an RSA key hard-coded in it. Without the register, "migrate the high-risk things first" is not an instruction anyone can follow, because nobody knows which those are.
                     </p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">In practice</p>
                     <ol class="space-y-3 list-none">
                         <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Start with external TLS and certificates — easiest to scan automatically, quickest to show a result, and that result is what funds the rest.</span></li>
-                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Then cryptographic calls in your own code and its dependencies. This layer is usually the messiest, and where "nobody knows what this does"。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Then cryptographic calls in your own code and its dependencies. This layer is usually the messiest, and where "nobody knows what this does".</span></li>
                         <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Last, purchased software and hardware. You cannot see inside this layer; you can only ask the supplier — which makes it the same job as step 04.</span></li>
-                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>Keep it machine-readable and wired into the asset management you already run. <strong>A register that goes stale is more dangerous than none</strong>，because every later decision rests on it.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>Keep it machine-readable and wired into the asset management you already run. <strong>A register that goes stale is more dangerous than none</strong>, because every later decision rests on it.</span></li>
                     </ol>
                 </div>
                 <p class="text-sm border-t border-line pt-4 max-w-prose">
@@ -283,7 +283,7 @@
                 <div>
                     <p class="eyebrow mb-2">Why it outlasts this migration</p>
                     <p>
-                        Because <strong>this will not be the last one</strong>. ML-KEM and ML-DSA are the current standards, and NIST is already standardising HQC as a fallback — on the explicit grounds that ML-KEM might one day be broken. Without agility, the next migration repeats the whole inventory and rewrite from scratch; with it, the next migration is a configuration change. The FSC places it in the near-term phase not because it is urgent but because<strong>it sets the cost of every migration after this one</strong>。
+                        Because <strong>this will not be the last one</strong>. ML-KEM and ML-DSA are the current standards, and NIST is already standardising HQC as a fallback — on the explicit grounds that ML-KEM might one day be broken. Without agility, the next migration repeats the whole inventory and rewrite from scratch; with it, the next migration is a configuration change. The FSC places it in the near-term phase not because it is urgent but because <strong>it sets the cost of every migration after this one</strong>.
                     </p>
                 </div>
                 <div>
@@ -317,7 +317,7 @@
                 <div>
                     <p class="eyebrow mb-2">In practice</p>
                     <ol class="space-y-3 list-none">
-                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Put PQC readiness into <strong>procurement and tender requirements</strong>. Ten-year hardware signed this year， without that requirement is a mine laid for 2035.</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>Put PQC readiness into <strong>procurement and tender requirements</strong>. Ten-year hardware signed this year without that requirement is a mine laid for 2035.</span></li>
                         <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span>Ask suppliers for <strong>a CBOM or an equivalent account of their cryptography</strong>, rather than accepting "we are looking into it". You cannot see inside packaged software; asking is the only instrument you have.</span></li>
                         <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span>Fold supplier timelines into your own prioritisation — your deadline is set by your slowest supplier.</span></li>
                         <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span>If you are the supplier: <strong>have the answer ready</strong>. Customers will ask well before the regulatory deadline does.</span></li>
@@ -408,7 +408,7 @@
                 <div>
                     <p class="eyebrow mb-2">Still in process</p>
                     <p>
-                        <strong>HQC</strong>  was selected by NIST on 2025-03-11 as a fifth algorithm, positioned as a <strong>fallback</strong> for ML-KEM should the lattice assumptions ever be broken.<strong>FN-DSA</strong>（ (formerly Falcon) is likewise still in process. Neither is<strong>a finalised standard you can cite</strong>，, so architecture and procurement decisions should rest on FIPS 203/204/205 for now.
+                        <strong>HQC</strong> was selected by NIST on 2025-03-11 as a fifth algorithm, positioned as a <strong>fallback</strong> for ML-KEM should the lattice assumptions ever be broken. <strong>FN-DSA</strong> (formerly Falcon) is likewise still in process. Neither is <strong>a finalised standard you can cite</strong>, so architecture and procurement decisions should rest on FIPS 203/204/205 for now.
                     </p>
                 </div>
                 <p class="border-l border-line pl-6">
@@ -422,8 +422,8 @@
             <p class="eyebrow mb-8 font-sans">Sources</p>
             <p class="leading-relaxed">
                 Regulatory timelines and standards status are taken from
-                <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>、
-                <a href="https://eur-lex.europa.eu/eli/reco/2024/1101/oj/eng" target="_blank" rel="noopener noreferrer" class="underline">Commission Recommendation (EU) 2024/1101</a>、
+                <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>,
+                <a href="https://eur-lex.europa.eu/eli/reco/2024/1101/oj/eng" target="_blank" rel="noopener noreferrer" class="underline">Commission Recommendation (EU) 2024/1101</a>,
                 <a href="https://www.fsc.gov.tw/ch/index.jsp" target="_blank" rel="noopener noreferrer" class="underline">the Financial Supervisory Commission</a>
                 and
                 <a href="https://moda.gov.tw/ADI/news/latest-news/16090" target="_blank" rel="noopener noreferrer" class="underline">the Administration for Digital Industries</a>
