@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<!-- WebPage + FAQPage. The Organization used to be declared here too, with the
+<!-- WebPage. The Organization used to be declared here too, with the
      address and phone the about page's copy lacked and without the @id the
      about page's copy had — two companies as far as a consumer was concerned.
      It now lives in the header and is referenced. -->
@@ -16,51 +16,6 @@
       "url": "https://taux.io/ko-KR",
       "isPartOf": {"@id": "https://taux.io/#website"},
       "about": {"@id": "https://taux.io/#organization"}
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "GEO와 SEO는 무엇이 다른가요",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "SEO는 사용자가 찾아오게 하는 것이 목적이고, 대개 검색 결과 상단의 파란 링크를 두고 겨룹니다. GEO는 AI가 곧바로 추천하게 하는 것, AI가 답할 때의 주된 출처가 되는 것이 목적입니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "비용은 얼마나 드나요",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "내용에 따라 달라집니다. 기업 사이트는 15~50만 대만달러, 맞춤 관리 시스템은 30~150만 대만달러 정도가 기준입니다. 먼저 한 번 이야기해 주세요. 무료로 상담하고 맞는 형태를 함께 찾습니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "기간은 얼마나 걸리나요",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "사이트는 대략 2~4주, 짧은 영상은 1~2주입니다. 요구 사항을 확인한 뒤 자세한 일정표를 드립니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "납품하면 거기서 끝인가요",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "소프트웨어 건에는 1년 기술 지원이 포함됩니다. 이후에도 유지보수 계약을 맺을 수 있습니다. 기술 쪽 파트너로 써 주시면 좋겠습니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "첫걸음은 무엇을 하면 되나요",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "hello@taux.io로 생각하고 계신 것을 메일로 보내 주세요. 그다음은 간단합니다. 요구 사항을 듣고, 제안과 견적을 드리고, 계약해 착수합니다."
-          }
-        }
-      ]
     }
   ]
 }
@@ -100,217 +55,17 @@
         </div>
 
         <div class="mt-12 flex flex-col mobile:flex-row gap-4">
-            <a href="#our-services" class="btn">서비스 보기</a>
+            <!-- Opens the overlay rather than jumping down the page. This was
+                 a fragment link into the services section, and that section is
+                 gone: a fragment pointing at an id the page no longer has
+                 scrolls nowhere and says nothing about having failed. The
+                 overlay is where those links live now, and it names the overlay
+                 in `aria-controls`, which is also how script.js finds every
+                 trigger. (The rule that would have caught the stale form is
+                 check-design's `anchor integrity` — it reads this file, so the
+                 old href cannot be quoted here either.) -->
+            <button type="button" class="btn" aria-expanded="false" aria-controls="menuOverlay">서비스 보기</button>
         </div>
-    </div>
-</section>
-
-<!-- Services. Cards flattened to hairline-separated rows: without word spaces,
-     Chinese leans on rules and numbering to stay scannable, and numbered
-     sections are the native idiom of engineering documentation anyway. -->
-<section id="our-services" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/Service">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">01 &mdash; Services</p>
-            <h2 class="mb-5 max-w-2xl">
-            <span class="display-lead tablet:text-display-sm">Become the Answer</span>
-            <span class="display-sub">어떻게 '답'으로 만드는가</span>
-        </h2>
-        </div>
-        <p class="text-lg max-w-[42ch] mb-20">복잡한 기술을 쓸 수 있는 형태로 만들어 드립니다.</p>
-
-        <div class="mb-24">
-            <p class="eyebrow mb-8">Before we start</p>
-            <p class="font-display text-lg tablet:text-2xl mb-2 max-w-prose">손을 대기 전에 이렇게 묻습니다.</p>
-            <ul>
-                <li class="border-t border-line py-6 text-base">사용자, 또는 AI가 가장 알고 싶은 답은 무엇인가.</li>
-                <li class="border-t border-line py-6 text-base">그 답을 더 곧바로 말할 수는 없는가.</li>
-                <li class="border-t border-line py-6 text-base">지금 하는 일은 찾아지게 하는 것인가, 추천받게 하는 것인가.</li>
-            </ul>
-        </div>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">01</p>
-                <h3 itemprop="name" id="geo-optimization" class="font-display text-xl tablet:text-2xl">
-                    <abbr title="Generative Engine Optimization" class="no-underline">GEO</abbr> 생성형 엔진 최적화
-                </h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base mb-6">
-                    <strong class="font-normal">하는 일:</strong> 사이트의 구조와 내용의 의미를 정리해, AI가 무리 없이 읽고 인용할 수 있는 상태로 만듭니다.<br>
-                    <strong class="font-normal">얻는 것:</strong> '답의 그릇'을 만들어, 귀사의 내용이 AI 답변의 기본 출처가 되게 합니다.
-                </p>
-                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center gap-2 eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">
-                    GEO와 SEO는 결국 어디가 다른가 <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">02</p>
-                <h3 itemprop="name" id="software-development" class="font-display text-xl tablet:text-2xl">소프트웨어 개발</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base">
-                    <strong class="font-normal">하는 일:</strong> 성능이 필요한 웹 앱, 모바일 앱, SaaS 관리 기반을 맞춤으로 만듭니다.<br>
-                    <strong class="font-normal">얻는 것:</strong> 코드를 쓰는 데 그치지 않고, 사업의 문제를 풀고 키워 갈 수 있는 자산을 만듭니다.
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">03</p>
-                <h3 id="video-production" class="font-display text-xl tablet:text-2xl">숏폼 영상 제작</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">하는 일:</strong> TikTok, Reels, Shorts를 겨냥한 기획과 제작.<br>
-                    <strong class="font-normal">얻는 것:</strong> 첫 3초에 붙잡고, 복잡한 제품 이야기를 전해지는 영상의 말로 바꿉니다.
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-b border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">04</p>
-                <h3 id="ai-solutions" class="font-display text-xl tablet:text-2xl">AI 결합과 자동화</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">하는 일:</strong> 문의 응대, 업무 자동화, 데이터 분석을 AI로 잇습니다.<br>
-                    <strong class="font-normal">얻는 것:</strong> 되풀이되는 일을 AI에 넘기고, 사람은 값어치 높은 판단에 시간을 씁니다.
-                </p>
-            </div>
-        </article>
-
-        <div class="mt-24 max-w-2xl">
-            <blockquote class="font-display text-2xl tablet:text-3xl leading-snug mb-6">
-                &ldquo;가장 좋은 도구는 도구가 있다는 것을 느끼게 하지 않습니다.&rdquo;
-            </blockquote>
-            <p class="eyebrow">Technology for Humanity</p>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section id="frequently-asked-questions" class="relative overflow-hidden bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">02 &mdash; Questions</p>
-            <h2 class="mb-16">
-            <span class="display-lead tablet:text-display-sm">Common Questions</span>
-            <span class="display-sub">자주 묻는 것들</span>
-        </h2>
-        </div>
-
-        <details id="faq-geo-vs-seo" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">GEO와 SEO는 무엇이 다른가요</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                간단히 말하면, SEO는 사용자가 '찾아오게' 하는 것이고 대개 검색 결과 상단의 파란 링크를 두고 겨룹니다. GEO는 AI가 '곧바로 추천하게' 하는 것, AI가 답할 때의 주된 출처가 되는 것을 노립니다. 하나는 입장권 다툼이고, 다른 하나는 주역 자리입니다.
-            </div>
-        </details>
-
-        <details id="faq-cost" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">비용은 얼마나 드나요</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                내용에 따라 달라집니다. 기업 사이트는 15~50만 대만달러, 맞춤 관리 시스템은 30~150만 대만달러 정도가 기준입니다. 먼저 한 번 이야기해 주세요. 무료로 상담하고 가장 값어치 있는 형태를 함께 찾습니다.
-            </div>
-        </details>
-
-        <details id="faq-timeline" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">기간은 얼마나 걸리나요</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                규모에 따릅니다. 사이트는 대략 2~4주, 짧은 영상은 1~2주. 요구 사항을 확인한 뒤 자세한 일정표를 드립니다.
-            </div>
-        </details>
-
-        <details id="faq-support" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">납품하면 거기서 끝인가요</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                아닙니다. 소프트웨어 건에는 1년 기술 지원이 포함됩니다. 이후에도 유지보수 계약을 맺을 수 있습니다. 기술 쪽 파트너로 오래 함께하고 싶습니다. 한 번 팔고 끝낼 생각은 없습니다.
-            </div>
-        </details>
-
-        <details id="faq-start" class="faq-details group border-t border-b border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">첫걸음은 무엇을 하면 되나요</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                <a href="mailto:hello@taux.io" class="underline underline-offset-4 decoration-line hover:decoration-ink transition-colors">hello@taux.io</a>로
-                생각하고 계신 것을 메일로 보내 주세요. 그다음은 간단합니다. 요구 사항을 듣고 &rarr; 제안과 견적을 드리고 &rarr; 계약해 착수합니다. 그게 전부입니다.
-            </div>
-        </details>
-    </div>
-</section>
-
-<!-- Related reading -->
-<section class="bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6">
-        <p class="eyebrow mb-8">03 &mdash; Further reading</p>
-        <div data-cover="sr">
-            <h2 class="sr-only">함께 읽기</h2>
-        </div>
-        <div class="flex flex-wrap gap-x-10 gap-y-4">
-            <a href="/{{ locale }}/geo-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">GEO 입문 가이드</a>
-            <a href="/{{ locale }}/agent-prompting-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">프롬프트 설계 가이드</a>
-            <a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">llms.txt란 무엇인가</a>
-            <a href="/{{ locale }}/what-is-prompt-injection" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">프롬프트 인젝션이란</a>
-        </div>
-    </div>
-</section>
-
-<!-- Contact -->
-<section id="contact-us" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/ContactPage">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">04 &mdash; Contact</p>
-            <h2 class="mb-6">
-            <span class="display-lead tablet:text-display-sm">Start a Conversation</span>
-            <span class="display-sub">이야기 나눠 볼까요</span>
-        </h2>
-        </div>
-
-        <p class="text-lg mb-12 max-w-[42ch] leading-relaxed">
-            막힌 것, 또는 엉뚱한 생각을 들려주세요. 24시간 안에 답을 드립니다.
-        </p>
-
-        <a href="mailto:hello@taux.io" class="btn">메일 보내기</a>
     </div>
 </section>
 

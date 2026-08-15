@@ -583,15 +583,6 @@ index.html	·· semibold">TauX</strong>는
 index.html	    회사 이름은 그리스 문자 <span class="font-sans">
 index.html	·· nt-sans">&tau;</span>에
 index.html	   물리학과 제어공학에서 말하는 <strong class="font-normal">
-index.html	   underline">GEO</abbr> 생
-index.html	   -normal">하는 일:</strong> 사
-index.html	   SEO는 결국 어디가 다른가 <span aria-hidden="true">
-index.html	   -normal">하는 일:</strong> 성
-index.html	   -normal">얻는 것:</strong> 코
-index.html	   -normal">얻는 것:</strong> 첫
-index.html	   -normal">하는 일:</strong> 문
-index.html	   -normal">얻는 것:</strong> 되
-index.html	·· >hello@taux.io</a>로
 owasp-llm-top-10.html	   nt-sans">LLM01</span> 프
 owasp-llm-top-10.html	   nt-sans">LLM02</span> 민
 owasp-llm-top-10.html	   nt-sans">LLM03</span> 과

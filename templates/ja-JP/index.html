@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<!-- WebPage + FAQPage. The Organization used to be declared here too, with the
+<!-- WebPage. The Organization used to be declared here too, with the
      address and phone the about page's copy lacked and without the @id the
      about page's copy had — two companies as far as a consumer was concerned.
      It now lives in the header and is referenced. -->
@@ -16,51 +16,6 @@
       "url": "https://taux.io/ja-JP",
       "isPartOf": {"@id": "https://taux.io/#website"},
       "about": {"@id": "https://taux.io/#organization"}
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "GEO と SEO は何が違いますか",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "SEO のねらいは利用者に見つけてもらうことで、たいていは検索結果の上位、青いリンクの取り合いです。GEO のねらいは AI に直接すすめてもらうこと、AI が答えるときの主な出典になることです。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "費用はどのくらいかかりますか",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "内容によって変わります。コーポレートサイトで 15〜50 万台湾ドル、受託の管理システムで 30〜150 万台湾ドルほどが目安です。まずは一度お話しください。無料でご相談に乗り、合う形を一緒に探します。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "どのくらいの期間がかかりますか",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "サイトでおよそ 2〜4 週間、短い動画で 1〜2 週間です。ご要望を確かめたうえで、詳しい日程をお渡しします。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "納品したら、そこで終わりですか",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ソフトウェアの案件には一年の技術サポートが付きます。その後も保守契約を結べます。技術面の相棒として使っていただければと思います。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "最初の一歩は何をすればいいですか",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "hello@taux.io にメールで、考えていることをお知らせください。あとは簡単です。ご要望を伺い、こちらから提案と見積もりを出し、契約して着手します。"
-          }
-        }
-      ]
     }
   ]
 }
@@ -100,217 +55,17 @@
         </div>
 
         <div class="mt-12 flex flex-col mobile:flex-row gap-4">
-            <a href="#our-services" class="btn">サービスを見る</a>
+            <!-- Opens the overlay rather than jumping down the page. This was
+                 a fragment link into the services section, and that section is
+                 gone: a fragment pointing at an id the page no longer has
+                 scrolls nowhere and says nothing about having failed. The
+                 overlay is where those links live now, and it names the overlay
+                 in `aria-controls`, which is also how script.js finds every
+                 trigger. (The rule that would have caught the stale form is
+                 check-design's `anchor integrity` — it reads this file, so the
+                 old href cannot be quoted here either.) -->
+            <button type="button" class="btn" aria-expanded="false" aria-controls="menuOverlay">サービスを見る</button>
         </div>
-    </div>
-</section>
-
-<!-- Services. Cards flattened to hairline-separated rows: without word spaces,
-     Chinese leans on rules and numbering to stay scannable, and numbered
-     sections are the native idiom of engineering documentation anyway. -->
-<section id="our-services" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/Service">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">01 &mdash; Services</p>
-            <h2 class="mb-5 max-w-2xl">
-            <span class="display-lead tablet:text-display-sm">Become the Answer</span>
-            <span class="display-sub">どうやって「答え」にするか</span>
-        </h2>
-        </div>
-        <p class="text-lg max-w-[42ch] mb-20">込み入った技術を、使える形にして渡します。</p>
-
-        <div class="mb-24">
-            <p class="eyebrow mb-8">Before we start</p>
-            <p class="font-display text-lg tablet:text-2xl mb-2 max-w-prose">手を動かす前に、こう尋ねます。</p>
-            <ul>
-                <li class="border-t border-line py-6 text-base">利用者、あるいは AI がいちばん知りたい答えは何か。</li>
-                <li class="border-t border-line py-6 text-base">その答えは、もっとまっすぐ言えないか。</li>
-                <li class="border-t border-line py-6 text-base">いましているのは、見つけてもらうことか、すすめてもらうことか。</li>
-            </ul>
-        </div>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">01</p>
-                <h3 itemprop="name" id="geo-optimization" class="font-display text-xl tablet:text-2xl">
-                    <abbr title="Generative Engine Optimization" class="no-underline">GEO</abbr> 生成エンジン最適化
-                </h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base mb-6">
-                    <strong class="font-normal">やること：</strong>サイトの構造と内容の意味づけを整え、AI が無理なく読み取って引用できる状態にします。<br>
-                    <strong class="font-normal">得られるもの：</strong>「答えの器」をつくり、御社の内容が AI の答えの定番の出典になるようにします。
-                </p>
-                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center gap-2 eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">
-                    GEO と SEO は結局どこが違うのか <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">02</p>
-                <h3 itemprop="name" id="software-development" class="font-display text-xl tablet:text-2xl">ソフトウェア開発</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base">
-                    <strong class="font-normal">やること：</strong>性能を要する Web アプリ、モバイルアプリ、SaaS の管理基盤を受託でつくります。<br>
-                    <strong class="font-normal">得られるもの：</strong>コードを書くだけでなく、事業の課題を解き、伸ばしていける資産をつくります。
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">03</p>
-                <h3 id="video-production" class="font-display text-xl tablet:text-2xl">ショート動画制作</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">やること：</strong>TikTok、Reels、Shorts 向けの企画と制作。<br>
-                    <strong class="font-normal">得られるもの：</strong>最初の三秒で掴み、込み入った製品の話を、伝わる映像の言葉に変えます。
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-b border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">04</p>
-                <h3 id="ai-solutions" class="font-display text-xl tablet:text-2xl">AI の組み込みと自動化</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">やること：</strong>問い合わせ対応、業務の自動化、データ分析を AI でつなぎます。<br>
-                    <strong class="font-normal">得られるもの：</strong>繰り返しの仕事を AI に渡し、人はより価値の高い判断に時間を使えるようにします。
-                </p>
-            </div>
-        </article>
-
-        <div class="mt-24 max-w-2xl">
-            <blockquote class="font-display text-2xl tablet:text-3xl leading-snug mb-6">
-                &ldquo;いちばんよい道具は、道具があることを感じさせません。&rdquo;
-            </blockquote>
-            <p class="eyebrow">Technology for Humanity</p>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section id="frequently-asked-questions" class="relative overflow-hidden bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">02 &mdash; Questions</p>
-            <h2 class="mb-16">
-            <span class="display-lead tablet:text-display-sm">Common Questions</span>
-            <span class="display-sub">よくいただく質問</span>
-        </h2>
-        </div>
-
-        <details id="faq-geo-vs-seo" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">GEO と SEO は何が違いますか</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                かいつまむと、SEO は利用者に「見つけてもらう」ためのもので、たいていは検索結果の上位、青いリンクの取り合いです。GEO は AI に「直接すすめてもらう」ためのもので、AI が答えるときの主な出典になることを目指します。片方は入場券の奪い合い、もう片方は主役の座です。
-            </div>
-        </details>
-
-        <details id="faq-cost" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">費用はどのくらいかかりますか</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                内容によって変わります。コーポレートサイトで 15〜50 万台湾ドル、受託の管理システムで 30〜150 万台湾ドルほどが目安です。まずは一度お話しください。無料でご相談に乗り、いちばん割の合う形を一緒に探します。
-            </div>
-        </details>
-
-        <details id="faq-timeline" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">どのくらいの期間がかかりますか</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                規模によります。サイトでおよそ 2〜4 週間、短い動画で 1〜2 週間。ご要望を確かめたうえで、詳しい日程をお渡しします。
-            </div>
-        </details>
-
-        <details id="faq-support" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">納品したら、そこで終わりですか</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                いいえ。ソフトウェアの案件には一年の技術サポートが付きます。その後も保守契約を結べます。技術面の相棒として長くお付き合いしたいと考えています。一度きりの取引にするつもりはありません。
-            </div>
-        </details>
-
-        <details id="faq-start" class="faq-details group border-t border-b border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">最初の一歩は何をすればいいですか</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                <a href="mailto:hello@taux.io" class="underline underline-offset-4 decoration-line hover:decoration-ink transition-colors">hello@taux.io</a> にメールで、
-                考えていることをお知らせください。あとは簡単です。ご要望を伺う → 提案と見積もりを出す → 契約して着手する。それだけです。
-            </div>
-        </details>
-    </div>
-</section>
-
-<!-- Related reading -->
-<section class="bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6">
-        <p class="eyebrow mb-8">03 &mdash; Further reading</p>
-        <div data-cover="sr">
-            <h2 class="sr-only">あわせて読む</h2>
-        </div>
-        <div class="flex flex-wrap gap-x-10 gap-y-4">
-            <a href="/{{ locale }}/geo-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">GEO 入門ガイド</a>
-            <a href="/{{ locale }}/agent-prompting-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">プロンプト設計ガイド</a>
-            <a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">llms.txt とは何か</a>
-            <a href="/{{ locale }}/what-is-prompt-injection" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">プロンプトインジェクションとは</a>
-        </div>
-    </div>
-</section>
-
-<!-- Contact -->
-<section id="contact-us" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/ContactPage">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">04 &mdash; Contact</p>
-            <h2 class="mb-6">
-            <span class="display-lead tablet:text-display-sm">Start a Conversation</span>
-            <span class="display-sub">お話ししませんか</span>
-        </h2>
-        </div>
-
-        <p class="text-lg mb-12 max-w-[42ch] leading-relaxed">
-            困っていること、あるいは突飛な思いつきをお聞かせください。24 時間以内にお返事します。
-        </p>
-
-        <a href="mailto:hello@taux.io" class="btn">メールを送る</a>
     </div>
 </section>
 

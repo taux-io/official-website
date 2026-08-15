@@ -70,6 +70,13 @@ script = "Hant"
   # reads prose. Keep them free of characters HTML escaping touches.
   [locale.strings]
   copyright = "拓思科技股份有限公司 版權所有"
+  # The nav's own label for the overlay. It was the literal `Explore` in
+  # header.html, which is one file rendered five times — so an English word sat
+  # above pages whose own hero button already said 探索服務 / サービスを見る.
+  # Each locale uses its own vocabulary here, matching the wording that locale
+  # already uses for the same action on the home page rather than inventing a
+  # second phrase for one idea.
+  nav_explore = "探索服務"
   org_description = "TauX（拓思科技股份有限公司）協助企業落地 AI First 策略，專注於 GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。"
 
 [[locale]]
@@ -86,6 +93,7 @@ script = "Hans"
   # registered name ever contained a character that differs, this line would
   # keep the registered form and 版權所有 would still convert.
   copyright = "拓思科技股份有限公司 版权所有"
+  nav_explore = "探索服务"
   # 搭建 rather than 建置, matching what the Simplified pages already say about
   # the same service — the glyph converter would have left 建置 standing.
   org_description = "TauX（拓思科技股份有限公司）协助企业落地 AI First 策略，专注于 GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。"
@@ -105,6 +113,7 @@ og     = "ja_JP"
   # is identity in every language — the same rule that kept it out of the
   # English footer. Only the notice around it is Japanese.
   copyright = "拓思科技股份有限公司 無断転載を禁じます"
+  nav_explore = "サービスを見る"
   org_description = "TauX（拓思科技股份有限公司）は、AI First を掛け声で終わらせず、企業が実際に運用できるシステムにします。GEO 生成エンジン最適化、AI エージェント開発、ソフトウェアプラットフォーム構築、法人向け AI 研修を手がけています。"
 
 [[locale]]
@@ -115,6 +124,7 @@ og     = "ko_KR"
 
   [locale.strings]
   copyright = "拓思科技股份有限公司 무단 전재 및 재배포 금지"
+  nav_explore = "서비스 보기"
   org_description = "TauX(拓思科技股份有限公司)는 AI First 전략을 시연이 아니라 실제로 돌아가는 시스템으로 만듭니다. GEO 생성형 엔진 최적화, AI 에이전트 개발, 소프트웨어 플랫폼 구축, 기업 AI 교육을 합니다."
 
 [[locale]]
@@ -125,6 +135,7 @@ script = "Latn"
 
   [locale.strings]
   copyright = "TauX Co., Ltd. All rights reserved."
+  nav_explore = "Explore"
   # TauX Co., Ltd. rather than 拓思科技股份有限公司, following what this locale's
   # own footer already decided. The registered Chinese name is still on every
   # English page — `legalName` in the same node carries it, which is where a

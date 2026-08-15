@@ -1,6 +1,6 @@
 {% include "header.html" %}
 
-<!-- WebPage + FAQPage. The Organization used to be declared here too, with the
+<!-- WebPage. The Organization used to be declared here too, with the
      address and phone the about page's copy lacked and without the @id the
      about page's copy had — two companies as far as a consumer was concerned.
      It now lives in the header and is referenced. -->
@@ -16,51 +16,6 @@
       "url": "https://taux.io/en-US",
       "isPartOf": {"@id": "https://taux.io/#website"},
       "about": {"@id": "https://taux.io/#organization"}
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How is GEO different from SEO?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "SEO is about being found: winning a place among the blue links near the top of a results page. GEO is about being the answer — being the source an AI reaches for and cites when it responds. One gets you into the room; the other has you doing the talking."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What does it cost?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "It depends on scope. A brochure site typically lands between NT$150,000 and NT$500,000; a custom management system between NT$300,000 and NT$1,500,000. The consultation is free, and we would rather size the work properly than quote before we understand it."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How long does a project take?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A website is usually two to four weeks; a short video one to two. Once the requirements are settled you get a dated schedule rather than an estimate."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What happens after the project ships?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Every software project includes a year of technical support. After that there is a maintenance agreement if you want one. We are more use as a long-term technical partner than as a one-off supplier."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do we start?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Email hello@taux.io and tell us what you are trying to do. Then: a conversation about the requirements, a proposal with a number attached, and a start date."
-          }
-        }
-      ]
     }
   ]
 }
@@ -103,214 +58,17 @@
         </div>
 
         <div class="mt-12 flex flex-col mobile:flex-row gap-4">
-            <a href="#our-services" class="btn">See what we do</a>
+            <!-- Opens the overlay rather than jumping down the page. This was
+                 a fragment link into the services section, and that section is
+                 gone: a fragment pointing at an id the page no longer has
+                 scrolls nowhere and says nothing about having failed. The
+                 overlay is where those links live now, and it names the overlay
+                 in `aria-controls`, which is also how script.js finds every
+                 trigger. (The rule that would have caught the stale form is
+                 check-design's `anchor integrity` — it reads this file, so the
+                 old href cannot be quoted here either.) -->
+            <button type="button" class="btn" aria-expanded="false" aria-controls="menuOverlay">See what we do</button>
         </div>
-    </div>
-</section>
-
-<!-- Services. Cards flattened to hairline-separated rows: without word spaces,
-     Chinese leans on rules and numbering to stay scannable, and numbered
-     sections are the native idiom of engineering documentation anyway. -->
-<section id="our-services" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/Service">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">01 &mdash; Services</p>
-            <h2 class="mb-5 max-w-2xl">
-            <span class="display-lead tablet:text-display-sm">Become the Answer</span>
-        </h2>
-        </div>
-        <p class="text-lg max-w-[42ch] mb-20">We take complicated technology and hand back something simple to buy.</p>
-
-        <div class="mb-24">
-            <p class="eyebrow mb-8">Before we start</p>
-            <p class="font-display text-lg tablet:text-2xl mb-2 max-w-prose">Before we build anything, we ask:</p>
-            <ul>
-                <li class="border-t border-line py-6 text-base">What is the answer the reader — or the model — actually came for?</li>
-                <li class="border-t border-line py-6 text-base">Could that answer be said more directly than this?</li>
-                <li class="border-t border-line py-6 text-base">Are we making you findable, or making you the recommendation?</li>
-            </ul>
-        </div>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">01</p>
-                <h3 itemprop="name" id="geo-optimization" class="font-display text-xl tablet:text-2xl">
-                    <abbr title="Generative Engine Optimization" class="no-underline">GEO</abbr> Generative Engine Optimization
-                </h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base mb-6">
-                    <strong class="font-normal">What it is:</strong> structuring a site and its content so a model can read it, understand it and quote it.<br>
-                    <strong class="font-normal">Why it matters:</strong> your content becomes the source an AI reaches for by default, rather than one of many it skims past.
-                </p>
-                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center gap-2 eyebrow hover:underline hover:underline-offset-4 transition-colors duration-200">
-                    So how is GEO different from SEO? <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">02</p>
-                <h3 itemprop="name" id="software-development" class="font-display text-xl tablet:text-2xl">Software platforms</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p itemprop="description" class="leading-relaxed text-base">
-                    <strong class="font-normal">What it is:</strong> custom web applications, apps and SaaS management platforms, built for throughput.<br>
-                    <strong class="font-normal">Why it matters:</strong> not code for its own sake — a digital asset that solves a business problem and holds up when the business grows.
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">03</p>
-                <h3 id="video-production" class="font-display text-xl tablet:text-2xl">Short-form video</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">What it is:</strong> content strategy and production for TikTok, Reels and Shorts.<br>
-                    <strong class="font-normal">Why it matters:</strong> three seconds to earn the next thirty. Complicated products, told in a form people pass on.
-                </p>
-            </div>
-        </article>
-
-        <article class="border-t border-b border-line py-12 grid grid-cols-1 tablet:grid-cols-12 gap-6 tablet:gap-10">
-            <div class="tablet:col-span-4">
-                <p class="eyebrow mb-4">04</p>
-                <h3 id="ai-solutions" class="font-display text-xl tablet:text-2xl">AI integration and automation</h3>
-            </div>
-            <div class="tablet:col-span-8">
-                <p class="leading-relaxed text-base">
-                    <strong class="font-normal">What it is:</strong> support automation, workflow automation and analytics, wired together.<br>
-                    <strong class="font-normal">Why it matters:</strong> the repetitive work moves to the machine, and your team spends its attention on the decisions that need a person.
-                </p>
-            </div>
-        </article>
-
-        <div class="mt-24 max-w-2xl">
-            <blockquote class="font-display text-2xl tablet:text-3xl leading-snug mb-6">
-                &ldquo;The best tool is the one you stop noticing.&rdquo;
-            </blockquote>
-            <p class="eyebrow">Technology for Humanity</p>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section id="frequently-asked-questions" class="relative overflow-hidden bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">02 &mdash; Questions</p>
-            <h2 class="mb-16">
-            <span class="display-lead tablet:text-display-sm">Common Questions</span>
-        </h2>
-        </div>
-
-        <details id="faq-geo-vs-seo" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">How is GEO different from SEO?</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                SEO is about being found — a place among the blue links near the top. GEO is about being the answer the AI gives, and the source it cites for it. One buys you a ticket to the room. The other puts you on stage.
-            </div>
-        </details>
-
-        <details id="faq-cost" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">What does it cost?</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                It depends on scope. A brochure site usually lands between NT$150,000 and NT$500,000; a custom management system between NT$300,000 and NT$1,500,000. The consultation is free — we would rather understand the work before putting a number on it.
-            </div>
-        </details>
-
-        <details id="faq-timeline" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">How long does it take?</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                It depends on size. A website is typically two to four weeks, a short video one to two. Once requirements are settled you get a dated schedule, not an estimate.
-            </div>
-        </details>
-
-        <details id="faq-support" class="faq-details group border-t border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">What happens after it ships?</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                No. Every software project includes a year of technical support, and there is a maintenance agreement after that if you want one. We are more use to you as a long-term technical partner than as a one-off supplier.
-            </div>
-        </details>
-
-        <details id="faq-start" class="faq-details group border-t border-b border-line">
-            <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                <h3 class="font-display text-lg">How do we start?</h3>
-                <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                    <svg fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </span>
-            </summary>
-            <div class="pb-8 text-sm leading-loose max-w-prose">
-                Email <a href="mailto:hello@taux.io" class="underline underline-offset-4 decoration-line hover:decoration-ink transition-colors">hello@taux.io</a>
-                 and tell us what you are trying to do. Then it is: a conversation about requirements &rarr; a proposal with a number attached &rarr; a start date.
-            </div>
-        </details>
-    </div>
-</section>
-
-<!-- Related reading -->
-<section class="bg-surface border-t border-line">
-    <div class="max-w-4xl mx-auto px-6">
-        <p class="eyebrow mb-8">03 &mdash; Further reading</p>
-        <div data-cover="sr">
-            <h2 class="sr-only">Further reading</h2>
-        </div>
-        <div class="flex flex-wrap gap-x-10 gap-y-4">
-            <a href="/{{ locale }}/geo-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">The GEO guide</a>
-            <a href="/{{ locale }}/agent-prompting-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">Prompting guide</a>
-            <a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">What is llms.txt?</a>
-            <a href="/{{ locale }}/what-is-prompt-injection" class="hover:underline hover:underline-offset-4 transition-colors duration-200 text-sm">What is prompt injection?</a>
-        </div>
-    </div>
-</section>
-
-<!-- Contact -->
-<section id="contact-us" class="relative overflow-hidden bg-surface border-t border-line" itemscope itemtype="https://schema.org/ContactPage">
-    <div class="max-w-4xl mx-auto px-6 relative z-10 w-full">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-8">04 &mdash; Contact</p>
-            <h2 class="mb-6">
-            <span class="display-lead tablet:text-display-sm">Start a Conversation</span>
-        </h2>
-        </div>
-
-        <p class="text-lg mb-12 max-w-[42ch] leading-relaxed">
-            Tell us the problem you are stuck on, or the idea nobody has talked you out of yet. We reply within 24 hours.
-        </p>
-
-        <a href="mailto:hello@taux.io" class="btn">Email us</a>
     </div>
 </section>
 
