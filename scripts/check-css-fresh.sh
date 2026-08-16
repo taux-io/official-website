@@ -10,7 +10,15 @@
 
 set -e
 
-OUT="$(mktemp -t styles.XXXXXX).css"
+# THE SUFFIX GOES INSIDE mktemp, NOT AFTER IT.
+#
+# This read `OUT="$(mktemp -t styles.XXXXXX).css"`, which reserved one path and
+# then wrote to a different one — `.css` was appended after mktemp had already
+# returned, so the file actually written was never reserved and never checked
+# for existence. On a shared machine that is a symlink-clobber race (CWE-377,
+# CWE-59), and the trap cleaned up the reserved name while leaking the one that
+# had the real bytes in it.
+OUT="$(mktemp -t styles.XXXXXX.css)"
 trap 'rm -f "$OUT"' EXIT
 
 npx tailwindcss -i ./src/input.css -o "$OUT" --minify >/dev/null 2>&1

@@ -1,0 +1,9 @@
+# Dotfiles are not assets, and Workers Static Assets — unlike Pages — does not
+# exclude them for you. Verified on a throwaway project: /.env and /.DS_Store
+# both answered 200 with their contents.
+#
+# Production builds from a fresh clone, so .gitignore keeps these out of the
+# tree there. The gap this closes is a `wrangler deploy` from a workstation
+# whose static/ picked up a .DS_Store from Finder — gitignored, therefore
+# invisible to `git status` and to review, and published anyway.
+**/.??*

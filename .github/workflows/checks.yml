@@ -17,6 +17,13 @@ on:
   push:
     branches: [main]
 
+# Read-only, written down rather than inherited. The repository default is
+# already `read`, so this changes nothing today — which is the point: a default
+# is a setting somebody else can move, and this job builds and executes code
+# from pull requests.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
