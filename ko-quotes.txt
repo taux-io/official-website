@@ -249,7 +249,6 @@ google-workspace-with-ai.html	''	 '전 은행에 Workspace를 도입해 메일�
 google-workspace-with-ai.html	''	뿐이라면 이 페이지의 결론은 '판단할 수 없다'
 google-workspace-with-ai.html	''	 보였습니다. 부정되는 것은 '사용자에게 얼마나 시간이 남았는지 묻는'
 google-workspace-with-ai.html	''	수, 소요 시간, 재작업률. '빨라진 것 같다'
-index.html	“”	 “중요한 것은 무엇을 말했느냐가 아니라, AI가 무엇을 받아들였느냐입니다.”
 owasp-llm-top-10.html	""	 직접 인젝션은 입력창에 "앞의 모든 지시를 무시하라"
 owasp-llm-top-10.html	""	한을 적용합니다. 프롬프트로 "말하지 마"
 owasp-llm-top-10.html	""	 경우입니다. 사용자는 원래 "죄송하지만 그건 할 수 없습니다"
