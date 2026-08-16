@@ -1,0 +1,66 @@
+name: zone
+
+# WHAT THIS WATCHES, AND WHY IT IS A SEPARATE FILE FROM checks.yml.
+#
+# Everything in checks.yml asserts the artifact a change produces. Nothing in it
+# can see the half of this site's configuration that does not live in this
+# repository: HSTS, the www→apex redirect, and whatever Cloudflare decides to
+# inject at the edge are all zone settings, changed in a dashboard, reviewed by
+# nobody, and observable only against production.
+#
+# That half has already regressed twice by the project's own record — the Web
+# Analytics beacon that broke the CSP, and the managed robots.txt that prepended
+# sixty contradicting lines. Both were found by a person noticing, which is the
+# thing this repository's whole argument is against.
+#
+# ON A SCHEDULE, NOT ON A PULL REQUEST, and the distinction is the point. A pull
+# request has not been deployed, so running this on one would assert the
+# PREVIOUS deploy and report a verdict about code that is not the code under
+# review — the most misleading shape a green check can take. A push to `main`
+# is no better: Cloudflare Workers Builds deploys in parallel with this runner,
+# so it would race the very deploy it means to verify.
+#
+# What this actually answers is "is the live site still configured the way the
+# repository says", and that question has no commit attached to it. So it runs
+# daily, and on demand.
+#
+# ⚠️ IT CAN GO RED WITHOUT ANYBODY HAVING CHANGED ANYTHING. That is not a defect
+# in the check; it is the entire reason it exists.
+
+on:
+  schedule:
+    # 02:00 UTC daily. Nothing depends on the hour — it is off-peak for the
+    # zone's audience (Taiwan, UTC+8) so a failure is not first seen mid-morning.
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+# Read-only. This job asserts production; it has no reason to write anything.
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: install chromium
+        run: npx playwright install --with-deps chromium
+
+      # No build and no local server. `contract` reads the route table from
+      # site.toml and everything else over HTTP, so with BASE_URL pointed at the
+      # origin it never touches dist/ — which is the property that lets this
+      # assert the deployed site rather than a fresh copy of it.
+      #
+      # BASE_URL === ORIGIN is also what unlocks the two assertions that are
+      # skipped everywhere else and printed as NOT ASSERTED: HSTS, and the
+      # www→apex redirect.
+      - name: route contract against production
+        run: BASE_URL=https://taux.io npm run contract
