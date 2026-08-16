@@ -50,12 +50,12 @@
                 no API. Those two are gone rather than repointed, because there
                 is nothing to point them at: adding them back is a job for
                 whoever builds the pages they promised. -->
-                    <h2 class="eyebrow mb-8">05 — Company</h2>
+                    <h2 class="eyebrow mb-8">05 — {{ strings.nav_col_company }}</h2>
                         <!-- Home and GitHub are omitted here on purpose: the brand block above
                         already links both. See templates/_nav-columns.html. -->
                     <ul class="space-y-4">
-                        <li><a href="/{{ locale }}/about" class="footer-link">About</a></li>
-                        <li><a href="/{{ locale }}/building" class="footer-link">Building in Public</a></li>
+                        <li><a href="/{{ locale }}/about" class="footer-link">{{ strings.nav_about }}</a></li>
+                        <li><a href="/{{ locale }}/building" class="footer-link">{{ strings.nav_building }}</a></li>
                     </ul>
                 </div>
 

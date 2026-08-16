@@ -85,6 +85,43 @@ script = "Hant"
   # already uses for the same action on the home page rather than inventing a
   # second phrase for one idea.
   nav_explore = "探索服務"
+
+  # THE TWENTY ROUTE LABELS IN THE OVERLAY AND THE FOOTER.
+  #
+  # `_nav-columns.html` renders one list into both, so these were hard-coded
+  # English on all five locales — the same shape `nav_explore` had, at twenty
+  # times the size. They are shortened from this locale's OWN page titles in the
+  # [[page]] blocks below rather than translated afresh, so the vocabulary is
+  # the one each locale already uses.
+  #
+  # ⚠️ `display-sub` looks like the obvious source and is NOT one: it holds the
+  # page's tagline, not its name (「95% 的人只用 AI 生成內容，5% 的人懂得用 AI
+  # 輔助決策」), which is a sentence rather than a label.
+  #
+  # NAMES ARE NOT HERE. GEO, AI, Workspace AI, OWASP LLM Top 10, TWSE MCP,
+  # GitHub and llms.txt stay literal in the template — identity rather than
+  # prose, the same rule that keeps the registered company name out of this
+  # table. `llms.txt` is also lower-case now: the file is, and every locale's
+  # page title already said so; the menu's `LLMs.txt` was the one place spelling
+  # it differently.
+  nav_col_security = "資安"
+  nav_col_open_source = "開源"
+  nav_col_company = "公司"
+  nav_geo_optimization = "GEO 優化服務"
+  nav_geo_guide = "GEO 入門指南"
+  nav_what_is_mcp = "MCP 是什麼"
+  nav_smart_work = "AI 智能辦公"
+  nav_prompt_guide = "提示詞指南"
+  nav_skills_guide = "Claude Skills 指南"
+  nav_adk_patterns = "ADK 設計模式"
+  nav_dev_workflow = "Agent 開發流程"
+  nav_data_governance = "資料治理"
+  nav_threat_landscape = "全球威脅報告"
+  nav_prompt_security = "提示詞注入"
+  nav_pqc_migration = "PQC 遷移"
+  nav_home = "首頁"
+  nav_about = "關於 TauX"
+  nav_building = "公開打造中"
   org_description = "TauX（拓思科技股份有限公司）協助企業落地 AI First 策略，專注於 GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。"
 
 [[locale]]
@@ -102,6 +139,25 @@ script = "Hans"
   # keep the registered form and 版權所有 would still convert.
   copyright = "拓思科技股份有限公司 版权所有"
   nav_explore = "探索服务"
+
+  nav_col_security = "网络安全"
+  nav_col_open_source = "开源"
+  nav_col_company = "公司"
+  nav_geo_optimization = "GEO 优化服务"
+  nav_geo_guide = "GEO 入门指南"
+  nav_what_is_mcp = "MCP 是什么"
+  nav_smart_work = "AI 智能办公"
+  nav_prompt_guide = "提示词指南"
+  nav_skills_guide = "Claude Skills 指南"
+  nav_adk_patterns = "ADK 设计模式"
+  nav_dev_workflow = "Agent 开发流程"
+  nav_data_governance = "数据治理"
+  nav_threat_landscape = "全球威胁报告"
+  nav_prompt_security = "提示词注入"
+  nav_pqc_migration = "PQC 迁移"
+  nav_home = "首页"
+  nav_about = "关于 TauX"
+  nav_building = "公开打造中"
   # 搭建 rather than 建置, matching what the Simplified pages already say about
   # the same service — the glyph converter would have left 建置 standing.
   org_description = "TauX（拓思科技股份有限公司）协助企业落地 AI First 策略，专注于 GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。"
@@ -122,6 +178,25 @@ og     = "ja_JP"
   # English footer. Only the notice around it is Japanese.
   copyright = "拓思科技股份有限公司 無断転載を禁じます"
   nav_explore = "サービスを見る"
+
+  nav_col_security = "セキュリティ"
+  nav_col_open_source = "オープンソース"
+  nav_col_company = "会社"
+  nav_geo_optimization = "GEO 最適化"
+  nav_geo_guide = "GEO 入門ガイド"
+  nav_what_is_mcp = "MCP とは"
+  nav_smart_work = "AI 実務研修"
+  nav_prompt_guide = "プロンプト設計ガイド"
+  nav_skills_guide = "Claude Skills ガイド"
+  nav_adk_patterns = "ADK 設計パターン"
+  nav_dev_workflow = "Agent 開発ワークフロー"
+  nav_data_governance = "データガバナンス"
+  nav_threat_landscape = "グローバル脅威レポート"
+  nav_prompt_security = "プロンプトインジェクション"
+  nav_pqc_migration = "PQC 移行"
+  nav_home = "ホーム"
+  nav_about = "TauX について"
+  nav_building = "公開しながらつくる"
   org_description = "TauX（拓思科技股份有限公司）は、AI First を掛け声で終わらせず、企業が実際に運用できるシステムにします。GEO 生成エンジン最適化、AI エージェント開発、ソフトウェアプラットフォーム構築、法人向け AI 研修を手がけています。"
 
 [[locale]]
@@ -133,6 +208,25 @@ og     = "ko_KR"
   [locale.strings]
   copyright = "拓思科技股份有限公司 무단 전재 및 재배포 금지"
   nav_explore = "서비스 보기"
+
+  nav_col_security = "보안"
+  nav_col_open_source = "오픈소스"
+  nav_col_company = "회사"
+  nav_geo_optimization = "GEO 최적화"
+  nav_geo_guide = "GEO 입문 가이드"
+  nav_what_is_mcp = "MCP란"
+  nav_smart_work = "AI 실무 교육"
+  nav_prompt_guide = "프롬프트 설계 가이드"
+  nav_skills_guide = "Claude Skills 가이드"
+  nav_adk_patterns = "ADK 설계 패턴"
+  nav_dev_workflow = "Agent 개발 워크플로"
+  nav_data_governance = "데이터 거버넌스"
+  nav_threat_landscape = "글로벌 위협 보고서"
+  nav_prompt_security = "프롬프트 인젝션"
+  nav_pqc_migration = "PQC 이행"
+  nav_home = "홈"
+  nav_about = "TauX 소개"
+  nav_building = "공개하며 만드는 중"
   org_description = "TauX(拓思科技股份有限公司)는 AI First 전략을 시연이 아니라 실제로 돌아가는 시스템으로 만듭니다. GEO 생성형 엔진 최적화, AI 에이전트 개발, 소프트웨어 플랫폼 구축, 기업 AI 교육을 합니다."
 
 [[locale]]
@@ -144,6 +238,25 @@ script = "Latn"
   [locale.strings]
   copyright = "TauX Co., Ltd. All rights reserved."
   nav_explore = "Explore"
+
+  nav_col_security = "Security"
+  nav_col_open_source = "Open Source"
+  nav_col_company = "Company"
+  nav_geo_optimization = "GEO Optimization"
+  nav_geo_guide = "GEO Guide"
+  nav_what_is_mcp = "What is MCP"
+  nav_smart_work = "Smart Work"
+  nav_prompt_guide = "Prompt Guide"
+  nav_skills_guide = "Skills Guide"
+  nav_adk_patterns = "ADK Patterns"
+  nav_dev_workflow = "Dev Workflow"
+  nav_data_governance = "Data Governance"
+  nav_threat_landscape = "Threat Landscape"
+  nav_prompt_security = "Prompt Security"
+  nav_pqc_migration = "PQC Migration"
+  nav_home = "Home"
+  nav_about = "About"
+  nav_building = "Building in Public"
   # TauX Co., Ltd. rather than 拓思科技股份有限公司, following what this locale's
   # own footer already decided. The registered Chinese name is still on every
   # English page — `legalName` in the same node carries it, which is where a
