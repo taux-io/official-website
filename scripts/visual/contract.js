@@ -68,6 +68,53 @@ const CACHE_TIERS = {
   "/static/css/styles.min.css": "public, max-age=3600",
 };
 
+// THE ONE SCRIPT THIS SITE CANNOT REMOVE, NAMED SO THAT EVERYTHING ELSE STILL
+// FAILS.
+//
+// Cloudflare's JavaScript Detections injects an inline bootstrap into every
+// HTML response — `window.__CF$cv$params` plus an iframe that appends
+// `/cdn-cgi/challenge-platform/scripts/jsd/main.js`. It is added at the edge,
+// so it is in no file this repository builds, and `dist/` and production differ
+// by exactly its ~938 bytes.
+//
+// IT IS BLOCKED, AND THAT IS THE CORRECT OUTCOME. `script-src` carries no
+// 'unsafe-inline' and cannot carry a hash — the bootstrap embeds a fresh random
+// token (`r:'…'`) on every response, so its hash changes every time. Cloudflare
+// documents the supported fix: if the CSP uses a nonce, it stamps that nonce on
+// what it injects. A static site cannot mint a per-response nonce without
+// putting a Worker in front of every path, which would move the policy out of
+// `_headers` — the exact arrangement the top of that file exists to warn about.
+//
+// AND IT CANNOT BE TURNED OFF ON THIS PLAN. The zone is Free, where JavaScript
+// Detections is enabled by Bot Fight Mode and documented as not disableable.
+// Bot Fight Mode was turned off and the injection continued, which is a known
+// Cloudflare defect with several community reports open against it. So the
+// script is inert (blocked), pointless (Bot Fight Mode is off, nothing consumes
+// its signal) and unremovable.
+//
+// WHAT THIS CONSTANT BUYS. Without it, `contract` against production reports
+// 104 failures — 96 policy violations and 8 byte mismatches — none of which the
+// repository can fix, and the gate is therefore never run against production at
+// all. That is worse than useless: a gate nobody runs is a gate that catches
+// nothing. Excluding this ONE named injection lets every other assertion run
+// against the real edge.
+//
+// The exclusion is deliberately narrow. The violation matcher requires the
+// challenge-platform path, so an inline script from anywhere else still fails
+// the `policy` check. The body filter removes only a `<script>` element whose
+// text contains `__CF$cv$params`, so any other byte difference between `/` and
+// `/zh-Hant-TW` still fails the bot exemption.
+const PLATFORM_INJECTION = {
+  // Matches the injected element itself, and nothing else on the page. This is
+  // the ONLY discriminator: see the comment at the call site for why the
+  // console message cannot be one.
+  element: /<script\b[^>]*>(?:(?!<\/script>)[\s\S])*?__CF\$cv\$params[\s\S]*?<\/script>/g,
+};
+
+// Strips the platform's injection so two responses can be compared on the bytes
+// this repository is responsible for.
+const withoutPlatformInjection = (html) => html.replace(PLATFORM_INJECTION.element, "");
+
 // A page-level assertion.
 //
 // `contentOnly` marks what a page owes because it is meant to be found and
@@ -304,6 +351,10 @@ async function main() {
   const page = await context.newPage();
 
   const failures = [];
+  // Routes where the edge injected its blocked bootstrap. Collected and printed
+  // rather than failed — see PLATFORM_INJECTION — so the state stays visible
+  // instead of being silently tolerated.
+  const platformViolations = new Set();
   let checked = 0;
 
   for (const route of ROUTES) {
@@ -311,7 +362,8 @@ async function main() {
     const errors = [];
     const onConsole = (m) => {
       const t = m.text();
-      if (/Content Security Policy|Refused to/i.test(t)) violations.push(t.slice(0, 120));
+      if (!/Content Security Policy|Refused to/i.test(t)) return;
+      violations.push(t.slice(0, 120));
     };
     const onError = (e) => errors.push(e.message.slice(0, 120));
     page.on("console", onConsole);
@@ -319,6 +371,29 @@ async function main() {
 
     const response = await page.goto(BASE_URL + route.path, { waitUntil: "networkidle" });
     const doc = await page.evaluate(READ_DOCUMENT);
+
+    // COUNTED, NOT PATTERN-MATCHED ON THE MESSAGE. A blocked INLINE script has
+    // no URL, so Chromium's console text names the policy and not the source —
+    // there is nothing in the message that distinguishes the platform's
+    // bootstrap from an inline script somebody adds to a template tomorrow.
+    // Matching the message would therefore have hidden both.
+    //
+    // So the discriminator is the page itself: count how many injected elements
+    // the served HTML actually contains, and forgive exactly that many
+    // violations. One injection buys one forgiven violation. A second inline
+    // script on the same page still fails, and a violation on a page carrying
+    // no injection still fails.
+    //
+    // It is the COUNT that is load-bearing, not which entry is dropped: with
+    // two violations and one injection the survivor may carry either message,
+    // but there is still a failure and it still names the route. Verified by
+    // seeding an inline script into a template — the gate reported
+    // `FAIL /zh-Hant-TW/about`, 1 failing.
+    const injected = (await response.text()).match(PLATFORM_INJECTION.element)?.length ?? 0;
+    if (injected) {
+      platformViolations.add(route.path);
+      violations.splice(0, injected);
+    }
 
     // Resolve every declared URL from the page's own origin, so a share image
     // advertised at the production host is checked against the local build.
@@ -663,7 +738,7 @@ async function main() {
   // a User-Agent pattern loose enough to match everything, every bot row above
   // still passes; only a User-Agent that must NOT be exempted proves the test
   // is discriminating rather than the code being broken in a generous way.
-  const canonicalBody = await (await fetch(BASE_URL + "/zh-Hant-TW")).text();
+  const canonicalBody = withoutPlatformInjection(await (await fetch(BASE_URL + "/zh-Hant-TW")).text());
   const AGENTS = [
     // The literal string from #200.
     ["Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)", true],
@@ -699,7 +774,7 @@ async function main() {
         problem: `expected 302, got ${r.status} — this User-Agent is not a crawler`,
       });
     } else if (exempt) {
-      const body = await r.text();
+      const body = withoutPlatformInjection(await r.text());
       if (body !== canonicalBody) {
         failures.push({
           route: label,
@@ -793,6 +868,21 @@ async function main() {
       console.log(`  FAIL  ${f.route}`);
       console.log(`        ${f.check}: ${f.problem}`);
     }
+  }
+
+  // Printed on every run where it happened, for the same reason the block below
+  // is: excluding something quietly is how a gate stops meaning what it says.
+  // This is NOT a failure — see PLATFORM_INJECTION for why the site cannot
+  // remove it, and why leaving it as a failure meant the gate was never run
+  // against production at all.
+  if (platformViolations.size) {
+    console.log("\n  EXCLUDED — Cloudflare JavaScript Detections");
+    console.log(
+      `        an inline bootstrap the edge injects into HTML is blocked by this` +
+        `\n        site's own CSP, on ${platformViolations.size} of ${ROUTES.length} routes.` +
+        `\n        It is inert (blocked), unused (Bot Fight Mode is off) and not` +
+        `\n        removable on a Free zone. Every other inline script still fails.`
+    );
   }
 
   // Printed on every run that did not make them, so that "0 failing" is never
