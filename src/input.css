@@ -558,8 +558,25 @@
      text-decoration is not a colour — `transition-colors` here would declare a
      hand-off that never happens, which is the same defect as the no-op hover it
      replaced, one layer down. */
+  /* SENTENCE CASE, NOT CAPS, AND THE SAME LABELS THE FOOTER SHOWS.
+     These are the twenty route labels, and `_nav-columns.html` renders the
+     identical list into both the overlay and the footer. The footer draws them
+     with `.footer-link`, which has no case transform, so the SAME link read as
+     "GEO Optimization" at the bottom of the page and "GEO OPTIMIZATION" in the
+     overlay — one of them harder to read than the other for no reason anybody
+     wrote down.
+
+     All-caps costs the most on exactly the strings this list is full of. Word
+     shape is what makes a familiar label recognisable at a glance, and caps
+     flattens every word to the same rectangle; a two-line wrap like
+     "GEO / OPTIMIZATION" then has to be read rather than recognised. The
+     acronyms that should be capitals — GEO, MCP, OWASP, ADK, PQC, LLM — already
+     are, in the source, because they are written that way.
+
+     Tracking goes to 0 with it. 0.09em belongs to `.eyebrow`, where it opens up
+     12px capitals; on 18–20px sentence case it just pulls the words apart. */
   .menu-link {
-    @apply font-display text-lg tablet:text-xl uppercase tracking-[0.09em] text-ink;
+    @apply font-display text-lg tablet:text-xl tracking-[0] text-ink;
   }
 
   /* Underline, not a brightness step. The ink used to run three alpha levels
