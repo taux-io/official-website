@@ -26,7 +26,27 @@
 </script>
 
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- PINNED AND HASH-VERIFIED. This was `/npm/chart.js` — no version, no
+     integrity, no crossorigin — so whatever the maintainers published to
+     npm's `latest` executed here, in this origin, within jsDelivr's edge
+     TTL, with no commit or deploy by this repository. That the URL floated
+     was measured rather than assumed: the unversioned form returned
+     `max-age=604800, s-maxage=43200`, byte-identical in caching policy to
+     `@latest`, while the pinned form returns `immutable`.
+
+     The chalk/debug incident of September 2025 is this exact shape: a
+     maintainer phished, eighteen packages republished with a
+     browser-resident payload, live for seven to nine hours.
+
+     4.5.1 is what the floating URL resolved to when this was pinned, and
+     the two were compared byte for byte before the change — pinning did
+     not move the version, it removed the ability for it to move on its
+     own. `crossorigin` is required for `integrity` to be enforced on a
+     cross-origin script; without it the browser cannot read the response
+     to check it and fails open. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"
+        integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ"
+        crossorigin="anonymous"></script>
 
 <div class="relative pt-32 pb-24 px-6 overflow-hidden">
     <!-- Background Decor -->

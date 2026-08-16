@@ -123,7 +123,33 @@ export function preferred(header) {
 // reach its answer: a cache stores what a URL returned, not which branch
 // produced it, so a 302 filed without `User-Agent` would be replayed to the
 // next crawler that asked.
+//
+// ⚠️ WHAT ACTUALLY STOPS THE REPLAY TODAY IS NOT THIS HEADER, and the paragraph
+// above read as though it were. Measured: the 302 carries no freshness and 302
+// is not on RFC 9111 §15.1's heuristically-cacheable list, so a conforming
+// shared cache cannot store it at all; the crawler's 200 carries
+// `max-age=0, must-revalidate`, so it is stale on arrival; and Cloudflare does
+// not cache extensionless HTML by default. `Vary` is correct and free, and it
+// is the thing that would matter if any of those three changed — a zone Cache
+// Rule with "Cache Everything" is one click away from making the 302 storable.
+// It is a seatbelt, not the floor.
 const VARY = "Accept-Language, User-Agent";
+
+// Adds to whatever `Vary` the response already carries instead of replacing it.
+//
+// Nothing upstream sets one today — verified against the assets layer, which
+// answers `Accept-Encoding: gzip, br` with a `Content-Encoding` and no `Vary` —
+// so `set` and this are equivalent right now. They stop being equivalent the
+// moment `_headers` or the assets layer grows one, and at that point `set`
+// would drop it silently, which is the failure mode this file is otherwise
+// built to avoid.
+const addVary = (response) => {
+  const existing = response.headers.get("Vary");
+  const merged = new Set(
+    (existing ? `${existing}, ${VARY}` : VARY).split(",").map((v) => v.trim()).filter(Boolean)
+  );
+  response.headers.set("Vary", [...merged].join(", "));
+};
 
 export default {
   async fetch(request, env) {
@@ -146,7 +172,7 @@ export default {
     if (CRAWLERS.test(request.headers.get("user-agent") || "")) {
       const page = await env.ASSETS.fetch(new Request(new URL(CANONICAL, url), request));
       const exempt = new Response(page.body, page);
-      exempt.headers.set("Vary", VARY);
+      addVary(exempt);
       return exempt;
     }
 
@@ -154,7 +180,7 @@ export default {
     const target = preferred(request.headers.get("accept-language"));
 
     const out = new Response(served.body, served);
-    out.headers.set("Vary", VARY);
+    addVary(out);
 
     // THE QUERY STRING COMES ALONG, BECAUSE THE FALLTHROUGH ALREADY DOES.
     //

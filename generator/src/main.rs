@@ -340,6 +340,46 @@ fn contained(out: &Path, rel: &str) -> Result<PathBuf, Box<dyn std::error::Error
     Ok(dest)
 }
 
+/// Escapes the five characters that can leave an HTML attribute or an XML text
+/// node, and NOTHING else.
+///
+/// WHY THIS EXISTS RATHER THAN minijinja's ESCAPER. The URLs below were handed
+/// to templates as `Value::from_safe_string` — marked pre-escaped, escaped by
+/// nothing — and the stated reason was real: minijinja's HTML escaper turns
+/// every `/` into `&#x2f;`, so a canonical URL rendered as
+/// `https:&#x2f;&#x2f;taux.io&#x2f;…`. Correct to a parser, noise to a reader,
+/// and in `<loc>` it is noise a sitemap consumer has to undo.
+///
+/// But "escaping this would look ugly" is a reason to escape it differently,
+/// not to stop escaping it. A `"` in a `canonical` closed the attribute and
+/// everything after it was markup — on `<link rel=canonical>`, on `og:url`, on
+/// `og:image` (which derives from the same field), on the hreflang set and on
+/// the locale switcher, which is five sinks from one row of site.toml. The
+/// audit reproduced it; the CSP does not contain it, because the injection is
+/// attribute-level rather than an inline script.
+///
+/// `/` is safe in both contexts and stays as it is. So does everything else.
+fn escape_markup(raw: &str) -> String {
+    let mut out = String::with_capacity(raw.len());
+    for c in raw.chars() {
+        match c {
+            '&' => out.push_str("&amp;"),
+            '<' => out.push_str("&lt;"),
+            '>' => out.push_str("&gt;"),
+            '"' => out.push_str("&quot;"),
+            '\'' => out.push_str("&#39;"),
+            _ => out.push(c),
+        }
+    }
+    out
+}
+
+/// A URL bound for an HTML attribute. Escaped for that context, then marked
+/// safe so the template engine does not escape it a second time.
+fn url_attr(raw: &str) -> Value {
+    Value::from_safe_string(escape_markup(raw))
+}
+
 fn main() {
     if let Err(e) = run() {
         eprintln!("generate: {e}");
@@ -397,11 +437,17 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     // grounds, because a row quietly clobbered by a later write is the same
     // silent failure in a different direction.
     {
-        let from = root.join("_headers");
-        if from.exists() {
-            fs::copy(&from, out.join("_headers"))?;
+        // `.assetsignore` travels with `_headers` for the same reason: it is host
+        // configuration, it belongs in the repository, and it has to be in the
+        // uploaded directory to have any effect. It cannot simply be placed in
+        // dist/ by hand — the wipe above removes it on every build.
+        for name in ["_headers", ".assetsignore"] {
+            let from = root.join(name);
+            if from.exists() {
+                fs::copy(&from, out.join(name))?;
+            }
         }
-        for reserved in ["_headers", "_redirects", "sitemap.xml"] {
+        for reserved in ["_headers", ".assetsignore", "_redirects", "sitemap.xml"] {
             destinations.insert(PathBuf::from(reserved));
         }
     }
@@ -458,10 +504,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                         // the host they are looking at and onto production, so
                         // the one control that exists to be clicked during
                         // review is the one that cannot be reviewed.
-                        url => Value::from_safe_string(t.canonical.clone()),
-                        path => Value::from_safe_string(
-                            t.canonical.strip_prefix(ORIGIN).unwrap_or("/").to_string()
-                        ),
+                        url => url_attr(&t.canonical),
+                        path => url_attr(t.canonical.strip_prefix(ORIGIN).unwrap_or("/")),
                     }
                 })
             })
@@ -506,16 +550,14 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 alternates => &alternates,
                 title => &text.title,
                 description => &text.description,
-                canonical => Value::from_safe_string(text.canonical.clone()),
+                canonical => url_attr(&text.canonical),
                 // Passed explicitly rather than defaulted in the template because
                 // UndefinedBehavior::Strict makes an absent variable a build error,
                 // and that is the behaviour worth keeping.
                 noindex => page.noindex,
                 year => year,
                 css_version => &css_v,
-                og_image => Value::from_safe_string(
-                    format!("{ORIGIN}/static/og/{}.png", text.slug())
-                ),
+                og_image => url_attr(&format!("{ORIGIN}/static/og/{}.png", text.slug())),
                 date_modified => &page.date_modified,
                 ..match &page.date_published {
                     Some(d) => context! { date_published => d },
@@ -600,11 +642,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             alternates => Vec::<Value>::new(),
             title => &doc.title,
             description => &doc.description,
-            canonical => Value::from_safe_string(doc.canonical.clone()),
+            canonical => url_attr(&doc.canonical),
             noindex => doc.noindex,
             year => year,
             css_version => &css_v,
-            og_image => Value::from_safe_string(format!("{ORIGIN}/static/og/index.png")),
+            og_image => url_attr(&format!("{ORIGIN}/static/og/index.png")),
         })?);
         // VETTED AND COLLISION-CHECKED EXACTLY LIKE A PAGE. It was neither.
         //
@@ -639,7 +681,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     );
     for (loc, lastmod) in &sitemap {
         xml.push_str(&format!(
-            "  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lastmod}</lastmod>\n  </url>\n"
+            "  <url>\n    <loc>{}</loc>\n    <lastmod>{}</lastmod>\n  </url>\n",
+            escape_markup(loc),
+            escape_markup(lastmod)
         ));
     }
     xml.push_str("</urlset>\n");
@@ -792,7 +836,30 @@ fn copy_tree(from: &Path, to: &Path) -> std::io::Result<()> {
     for entry in fs::read_dir(from)? {
         let entry = entry?;
         let dest = to.join(entry.file_name());
-        if entry.file_type()?.is_dir() {
+        // SYMLINKS ARE REFUSED, NOT FOLLOWED.
+        //
+        // `file_type()` does not traverse, so a symlink reports neither a file
+        // nor a directory and used to fall to the `fs::copy` below — which DOES
+        // traverse, and copies the target's bytes. A link committed under
+        // static/ therefore published whatever it pointed at on the build
+        // machine, one arbitrary file per link, straight to the public site.
+        //
+        // Refused rather than skipped: nothing in this repository has ever
+        // needed a symlink in static/, so one appearing is either a mistake or
+        // the thing described above, and both are worth stopping the build for.
+        // Skipping silently would publish a site missing an asset instead.
+        let kind = entry.file_type()?;
+        if kind.is_symlink() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                format!(
+                    "{} is a symlink — static/ is copied verbatim and a link would \
+                     publish whatever it points at on the build machine",
+                    entry.path().display()
+                ),
+            ));
+        }
+        if kind.is_dir() {
             copy_tree(&entry.path(), &dest)?;
         } else {
             fs::copy(entry.path(), dest)?;
@@ -886,6 +953,45 @@ mod tests {
     fn a_path_that_is_already_a_filename_keeps_its_name() {
         let out = page("/404.html", "https://taux.io/404").relative_output(TEST_LOCALE);
         assert_eq!(out, "404.html");
+    }
+
+    // THE URLs THAT WERE MARKED SAFE AND ESCAPED BY NOTHING.
+    //
+    // One `canonical` in site.toml reaches five attribute sinks — the canonical
+    // link, og:url, og:image (via slug), the hreflang set and the switcher — so
+    // a `"` in it closed the attribute on every one of them. Reproduced by the
+    // audit; the CSP does not contain it, because the injection is attribute
+    // level rather than an inline script.
+
+    #[test]
+    fn a_quote_in_a_url_cannot_close_the_attribute() {
+        let out = escape_markup(r#"https://taux.io/x"><script>alert(1)</script>"#);
+        assert!(!out.contains('"'), "{out}");
+        assert!(!out.contains('<'), "{out}");
+        assert_eq!(
+            out,
+            "https://taux.io/x&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;"
+        );
+    }
+
+    // The reason the URLs were left raw in the first place. minijinja's escaper
+    // turns every slash into `&#x2f;`, which is correct and unreadable; this
+    // one leaves them alone, so the fix does not reintroduce the noise it was
+    // avoiding.
+    #[test]
+    fn slashes_and_ordinary_urls_pass_through_untouched() {
+        let url = "https://taux.io/zh-Hant-TW/geo-guide";
+        assert_eq!(escape_markup(url), url);
+    }
+
+    // A bare `&` is legal in a URL and illegal in XML text, so the sitemap was
+    // one query string away from being malformed with nobody at fault.
+    #[test]
+    fn an_ampersand_is_escaped_for_the_sitemap() {
+        assert_eq!(
+            escape_markup("https://taux.io/x?a=1&b=2"),
+            "https://taux.io/x?a=1&amp;b=2"
+        );
     }
 
     // THE GUARD THAT WAS A PREFIX CHECK.

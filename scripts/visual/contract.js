@@ -696,6 +696,30 @@ async function main() {
         problem: `sent to ${location || "(no Location)"}, expected ${want}`,
       });
     }
+
+    // AND THE HEADERS ON THIS RESPONSE, WHICH NOTHING ASSERTED.
+    //
+    // `ROUTES` holds the 100 asset paths and does not contain "/" — verified:
+    // `ROUTES.some(r => r.path === "/")` is false. So the `policy` and
+    // `security headers` checks, which run inside the per-route loop, had never
+    // once looked at a response the Worker produced.
+    //
+    // That is the exact response they most needed to look at. src/worker.js
+    // exists to negotiate language WITHOUT building a response, because
+    // `_headers` applies to assets and not to bodies a Worker constructs — and
+    // its own comment says in as many words that NOTHING CHECKS THAT THE NEXT
+    // PERSON KEEPS THIS PROPERTY. Something does now.
+    checked++;
+    for (const [name, expected] of Object.entries(EXPECTED_HEADERS)) {
+      const got = r.headers.get(name);
+      if (got !== expected) {
+        failures.push({
+          route: label,
+          check: "security headers",
+          problem: `${name}: ${got === null ? "absent" : got} — the Worker must pass through what _headers set`,
+        });
+      }
+    }
   }
 
   // THE QUERY STRING SURVIVES THE NEGOTIATION.
