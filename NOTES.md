@@ -232,6 +232,58 @@ Worker 版本兩個問題都沒有：規則進版本控制，`contract` 對 `wra
 
 契約測試同時斷言 `/` 和 `/geo-guide` 就是為了這個。只測其中一條，兩種常見的錯誤設定各有一種會全綠通過。
 
+### 縮小部署機器上的安裝範圍，量過之後不做
+
+Workers Builds 在跑建置指令之前會自己跑一次 `npm clean-install`，裝完整個
+`package.json`——包含 playwright 那一整棵樹——**而且是在持有部署憑證的那台機器
+上**。稽核把它列為硬化項目，理由是「第三方套件被入侵時，程式碼會在憑證旁邊
+執行」。
+
+**量完之後這條建議撤回，理由不是不重要，是做了沒用。**
+
+把建置真正需要的（tailwindcss、postcss、autoprefixer、wrangler）搬進
+`dependencies`、其餘留在 `devDependencies`，再用 `--omit=dev`：
+
+| | |
+|---|---|
+| 省下的套件 | **4 個**（176 → 172） |
+| 有安裝腳本的套件（全部） | esbuild、fsevents、workerd、wrangler/node_modules/fsevents |
+| 有安裝腳本的套件（`--omit=dev` 後） | **完全一樣** |
+
+**那四個會執行安裝腳本的套件全部來自 `wrangler`**，而部署非它不可
+（`npx wrangler deploy`）。playwright 有四十幾個套件，**一個安裝腳本都沒有**。
+
+所以縮小安裝範圍**完全沒有減少憑證旁邊的程式碼執行面**——它只是少下載一些不
+執行任何東西的檔案。原本那條建議是從「套件多 = 風險大」的直覺來的，而那個直覺
+在這個相依樹上不成立。
+
+⚠️ 真正剩下的殘餘風險是同一條建置指令開頭的 `curl --proto '=https' --tlsv1.2
+-sSf https://sh.rustup.rs | sh`（見上）。那個也移不掉：建置映像沒有 cargo。
+rustup 沒有提供穩定的 checksum 流程，所以能做的只有知道它在那裡。
+
+### fork 的 pull request 會不會觸發 Cloudflare 建置
+
+**維持「Builds for non-production branches」開啟**（Settings → Build →
+Branch control）。
+
+這個問題來自稽核：如果 fork PR 會觸發建置，外部貢獻者就拿到了部署憑證旁邊的
+程式碼執行。兩家的文件都沒有明說 fork 的情況——Cloudflare 說建置由 `push` 事件
+觸發，GitHub 說 `push` 只對**分支**發送，而 `refs/pull/N/head` 不是分支。推理
+上不會，但沒有白紙黑字。
+
+關掉它可以讓這個問題在任何解讀下都不成立，代價是拿掉一個真實訊號：非
+production 建置是**唯一一個在真正的部署環境裡驗證建置**的東西——用那條
+`curl | sh` 的指令、在 Cloudflare 自己的機器上。GitHub Actions 跑的是另一台
+機器、另一套安裝路徑，而這份文件上面已經記過「CI 驗的產物和 Cloudflare 部署的
+產物是同一個 commit 的兩份不同建置，從來沒有比對過」。
+
+維持開啟的三個理由：390 個 commit、124 個 PR **全部來自 `taux-io` 自己的分支，
+零個 fork**；非 production 建置跑的是 `wrangler versions upload`，不導流量、不
+碰 production；而 `main` 現在有分支保護，要進 production 得先過 CI。
+
+想要確定性而不關掉任何東西的話：看 Settings → Build 的建置歷史，確認每一筆的
+來源分支。
+
 ### 幾個必須知道的細節
 
 - **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
