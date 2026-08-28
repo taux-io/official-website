@@ -41,6 +41,15 @@ function readRoutes() {
       path: p.url,
       // Which language this row is, so an auditor can assert the page agrees.
       locale: p.locale,
+      // Whether the page refuses indexing. Carried here because the Markdown
+      // twin is conditional on it — a noindex page gets none, since Markdown
+      // has nowhere to repeat the directive — and `check:md` would otherwise
+      // report the missing twin as a defect. Nothing sets the flag today; the
+      // field exists so that the day something does, one edit is enough.
+      //
+      // This module's own argument, at the top: a seam that narrows the data is
+      // a seam people have to go around.
+      noindex: p.noindex === true,
       name: slug,
       title: p.title,
       description: p.description,

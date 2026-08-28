@@ -77,6 +77,18 @@ jobs:
       - name: llms.txt lists every page
         run: npm run check:llms
 
+      # Every page is published twice now, and NOBODY EVER LOOKS AT THE SECOND
+      # ONE — there is no browser tab open on a `.md`, no screenshot, no reader
+      # to notice. When the twins landed, cargo test was green, ten gates were
+      # green, the contract audit made 1256 assertions and none failed, and the
+      # output was wrong in four ways at once: a truncated H1 on all five locale
+      # homes, twenty-five code samples escaped into backslash noise, dead
+      # fragment links on three quarters of the routes, and an empty body that
+      # would have been written, counted and called a success. A person reading
+      # dist/ found all four. This asks the questions that person asked.
+      - name: Markdown twins hold
+        run: npm run check:md
+
       # The build reads no git, so it cannot invent a date; this asserts every
       # page supplies one, that it parses, and that nothing claims to have been
       # revised in the future or published after it was revised.
