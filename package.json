@@ -7,6 +7,7 @@
     "check:css": "sh scripts/check-css-fresh.sh",
     "check:classes": "node scripts/check-unknown-classes.js",
     "check:llms": "node scripts/check-llms.js",
+    "check:md": "node scripts/check-md.js",
     "check:dates": "node scripts/dates.js --check",
     "check:jsonld": "node scripts/check-jsonld.js",
     "check:entity": "node scripts/check-entity.js",
