@@ -16,6 +16,7 @@ use std::fs;
 use std::path::{Component, Path, PathBuf};
 use std::process;
 
+use htmd::HtmlToMarkdown;
 use minijinja::value::Value;
 use minijinja::{context, Environment, UndefinedBehavior};
 use serde::Deserialize;
@@ -299,6 +300,172 @@ impl Page {
         }
         format!("{locale}/{}.html", self.path.trim_start_matches('/'))
     }
+
+    /// Where this route's Markdown twin lands, or `None` for a route that has
+    /// none.
+    ///
+    /// Deliberately derived from `relative_output` rather than rebuilt beside
+    /// it. The three layouts that function picks between — a locale home is a
+    /// flat file, an error document keeps its literal name, everything else
+    /// takes a locale prefix — are exactly the rules the Markdown has to obey
+    /// too, and a second copy of them is a second thing to keep in step. It has
+    /// already cost this build once: the sitemap and the share cards each
+    /// derived a slug of their own until both were made to read one.
+    ///
+    /// ERROR DOCUMENTS GET NOTHING, which is the whole reason this returns an
+    /// `Option`. A `[[document]]`-shaped route (`path` ending in `.html`) is
+    /// served for a *condition*, not for a URL: nothing links to it, no audit
+    /// walks it, and `robots.txt` deliberately leaves /404 fetchable only so
+    /// that its `noindex` can be read. Handing an answer engine a Markdown
+    /// rendering of the error page invites it to quote one.
+    fn relative_markdown(&self, locale: &str) -> Option<String> {
+        let html = self.relative_output(locale);
+        html.strip_suffix(".html")
+            .filter(|_| !self.path.ends_with(".html"))
+            .map(|stem| format!("{stem}.md"))
+    }
+}
+
+/// Rewrites root-relative `href` and `src` values to absolute ones.
+///
+/// WHY THIS RUNS ON THE HTML AND NOT ON THE MARKDOWN. Rewriting `](/…` after the
+/// fact means re-deciding, from text, which parentheses are a link target — and
+/// the pages carry code blocks, so some of them are not. The attribute is
+/// unambiguous while it is still an attribute.
+///
+/// WHY IT MATTERS AT ALL. The whole point of the `.md` twin is that a model
+/// copies it somewhere else. `/zh-Hant-TW/geo-guide` survives that move as a
+/// link to nothing on whatever host it lands on — silently, and the reader
+/// blames this site. The templates cannot simply be made absolute instead:
+/// `header.html` is one file rendered per language, and the switcher's href
+/// must stay relative or review on a preview URL walks the reviewer onto
+/// production (see the `alternates` context above).
+///
+/// `//host/path` is left alone. It is already absolute; prefixing it produces
+/// `https://taux.io//host/path`, which resolves nowhere.
+fn absolutise(html: &str) -> String {
+    const NEEDLES: [&str; 2] = ["href=\"/", "src=\"/"];
+    let mut out = String::with_capacity(html.len() + 64);
+    let mut rest = html;
+    while let Some((at, needle)) = NEEDLES
+        .iter()
+        .filter_map(|n| rest.find(n).map(|i| (i, *n)))
+        .min_by_key(|(i, _)| *i)
+    {
+        out.push_str(&rest[..at]);
+        let after = &rest[at + needle.len()..];
+        if after.starts_with('/') {
+            out.push_str(needle);
+        } else {
+            // Everything but the `/` the needle ends in, which ORIGIN supplies.
+            out.push_str(&needle[..needle.len() - 1]);
+            out.push_str(ORIGIN);
+            out.push('/');
+        }
+        rest = after;
+    }
+    out.push_str(rest);
+    out
+}
+
+/// The inner HTML of the page's `<main>`, or an error.
+///
+/// FAILING IS THE POINT. Measured before this was written: 100 of 100 rendered
+/// pages carry exactly one `<main>`, so the cut is stable — and a page that
+/// stops carrying one is a template change nobody meant to make. The
+/// alternative, falling back to the whole body, ships a `.md` whose first few
+/// hundred tokens are the navigation and the footer, which is the precise thing
+/// this feature exists to stop, and it ships it silently.
+fn main_content(html: &str) -> Result<&str, Box<dyn std::error::Error>> {
+    let open = html
+        .find("<main")
+        .ok_or("no <main> in the rendered page — the Markdown twin has nothing to cut")?;
+    let body = html[open..]
+        .find('>')
+        .map(|i| open + i + 1)
+        .ok_or("unterminated <main> tag")?;
+    let close = html[body..]
+        .find("</main>")
+        .map(|i| body + i)
+        .ok_or("no </main> in the rendered page")?;
+    Ok(&html[body..close])
+}
+
+/// A rendered page's `<main>`, as Markdown.
+///
+/// The three rules the spec names are all here, and each is one line because
+/// `htmd` already does the hard part:
+///
+///   - `skip_tags` drops the decorative SVG. Seven of geo-guide's nine live
+///     inside `<main>`; converted rather than dropped they are `<path>` noise
+///     occupying the tokens this feature exists to free up. `script`, `style`
+///     and `noscript` go with them for the same reason.
+///   - tables come out as GFM, which `htmd` handles natively — a model reads a
+///     GFM table as a table, and GEO-vs-SEO flattened to prose stops being a
+///     comparison at all.
+///   - links are absolute, via `absolutise` above.
+fn markdown_body(html: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let inner = absolutise(main_content(html)?);
+    let converter = HtmlToMarkdown::builder()
+        .skip_tags(vec!["svg", "script", "style", "noscript"])
+        .build();
+    Ok(converter.convert(&inner)?.trim().to_string())
+}
+
+/// A YAML double-quoted scalar.
+///
+/// Every string in the front matter goes through this rather than only the ones
+/// that look risky today. A title holding a colon, a quote or a backslash ends
+/// the scalar early and produces front matter that parses as something other
+/// than what was written — or does not parse at all — and nothing downstream
+/// would say so.
+fn yaml_scalar(raw: &str) -> String {
+    let mut out = String::with_capacity(raw.len() + 2);
+    out.push('"');
+    for c in raw.chars() {
+        match c {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            _ => out.push(c),
+        }
+    }
+    out.push('"');
+    out
+}
+
+/// The YAML block that opens every `.md`, and the reason it exists.
+///
+/// A `.md` HAS NO `<head>`. Everything the HTML twin declares in one — the
+/// canonical URL, the language, the alternates — has nowhere else to live, so
+/// without this block a model holding the file cannot say where it came from.
+/// `url:` is the field the whole feature turns on: an answer engine quoting
+/// this content needs somewhere to point, and GEO is precisely the argument
+/// that being quoted without a citation is worth little.
+///
+/// `alternates` stands in for hreflang, which Markdown has no form of. It is
+/// omitted rather than written empty when a route exists in one language only —
+/// an empty map advertises nothing and reads like a bug.
+fn front_matter(
+    title: &str,
+    description: &str,
+    canonical: &str,
+    locale: &str,
+    alternates: &BTreeMap<String, String>,
+) -> String {
+    let mut out = String::from("---\n");
+    out.push_str(&format!("title: {}\n", yaml_scalar(title)));
+    out.push_str(&format!("description: {}\n", yaml_scalar(description)));
+    out.push_str(&format!("url: {}\n", yaml_scalar(canonical)));
+    out.push_str(&format!("locale: {}\n", yaml_scalar(locale)));
+    if !alternates.is_empty() {
+        out.push_str("alternates:\n");
+        for (tag, url) in alternates {
+            out.push_str(&format!("  {tag}: {}\n", yaml_scalar(url)));
+        }
+    }
+    out.push_str("---\n\n");
+    out
 }
 
 /// Resolves a site.toml-supplied destination against the output directory, and
@@ -413,6 +580,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     // file that is not there would hide it until someone loaded the site.
     let css_v = css_version(&root.join("static").join("css").join("styles.min.css"))?;
     let mut written = BTreeMap::new();
+    let mut markdown_written = 0usize;
     let mut destinations: HashSet<PathBuf> = HashSet::new();
     let mut sitemap = Vec::new();
 
@@ -607,6 +775,63 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             if let Some(parent) = dest.parent() {
                 fs::create_dir_all(parent)?;
             }
+
+            // THE MARKDOWN TWIN (issue #255), WRITTEN BESIDE THE HTML AND FROM
+            // THE SAME BYTES.
+            //
+            // It is here rather than in a second pass over dist/ for one
+            // reason: a second pass is a second command, and a second command is
+            // a thing someone runs an hour late or not at all. `build:site`
+            // produces both or neither, so the two cannot drift.
+            //
+            // It is NOT a bot exemption and reads no request. Both files are
+            // public and unconditional — anyone, human or crawler, can fetch
+            // either. That is what keeps decision #59 out of this entirely, and
+            // it is why `src/worker.js` needed no change: nothing here decides
+            // anything per reader.
+            if let Some(rel_md) = page.relative_markdown(locale) {
+                let dest_md = contained(&out, &rel_md)?;
+                let rel_md = dest_md.strip_prefix(&out)?.to_path_buf();
+
+                // The same guard the HTML gets, for the same reason. The `.md`
+                // paths are derived from the `.html` ones, so a collision here
+                // implies one there — but "implies" is how the five-locales bug
+                // survived, and this set is what makes an overwrite loud.
+                if !destinations.insert(rel_md.clone()) {
+                    return Err(format!(
+                        "{} in {locale} would overwrite {}",
+                        page.path,
+                        rel_md.display()
+                    )
+                    .into());
+                }
+
+                // Every OTHER language this route exists in. Built from the
+                // page's own table rather than the roster, exactly as the
+                // hreflang set above is: a route not yet translated must not
+                // advertise an alternate it cannot serve.
+                let alternate_urls: BTreeMap<String, String> = page
+                    .locale
+                    .iter()
+                    .filter(|(tag, _)| tag.as_str() != locale)
+                    .map(|(tag, t)| (tag.clone(), t.canonical.clone()))
+                    .collect();
+
+                let markdown = format!(
+                    "{}{}\n",
+                    front_matter(
+                        &text.title,
+                        &text.description,
+                        &text.canonical,
+                        locale,
+                        &alternate_urls,
+                    ),
+                    markdown_body(&html)?,
+                );
+                fs::write(&dest_md, markdown)?;
+                markdown_written += 1;
+            }
+
             fs::write(&dest, html)?;
             // KEYED BY PATH *AND* LOCALE. Keyed by path alone, the second
             // language of a route overwrote the first in this map: 22 files on
@@ -716,6 +941,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         println!("  {path:32} -> {}", file.display());
     }
     println!("\n{} pages written to dist/", written.len());
+    // Counted separately rather than folded into `written`, which would double
+    // the page count printed above it — the one number a person reads to check
+    // the build did what they asked.
+    println!("{markdown_written} Markdown twins written to dist/");
     Ok(())
 }
 
@@ -912,6 +1141,175 @@ mod tests {
             canonical: canonical.to_string(),
             template: None,
         }
+    }
+
+    // ── The Markdown twin of every page (issue #255) ────────────────────────
+    //
+    // These assert the SHAPE OF THE FILE, not how the conversion reaches it.
+    // The conversion itself is `htmd`'s job and is not this repo's to test; what
+    // is this repo's is the three rules the spec names — SVG out, tables as GFM,
+    // links absolute — plus the front matter, which exists because a `.md` has
+    // no `<head>` and therefore nothing else carries the canonical URL.
+
+    #[test]
+    fn a_locale_home_gets_a_flat_markdown_file() {
+        let p = page("/", "https://taux.io/zh-Hant-TW");
+        assert_eq!(
+            p.relative_markdown(TEST_LOCALE).as_deref(),
+            Some("zh-Hant-TW.md")
+        );
+    }
+
+    #[test]
+    fn a_page_gets_a_markdown_sibling_under_its_locale() {
+        let p = page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide");
+        assert_eq!(
+            p.relative_markdown(TEST_LOCALE).as_deref(),
+            Some("zh-Hant-TW/geo-guide.md")
+        );
+    }
+
+    // The host answers an unmatched path with one file chosen before it knows
+    // anything about the reader. That file is not a route, nothing links to it,
+    // and no crawler is being invited to read it as prose.
+    #[test]
+    fn an_error_document_gets_no_markdown() {
+        let p = page("/404.html", "https://taux.io/404");
+        assert_eq!(p.relative_markdown(TEST_LOCALE), None);
+    }
+
+    // A `.md` path must pass the same containment check as its HTML twin, or
+    // the audit that made `relative_output` return a relative path buys nothing
+    // for half the files the build writes.
+    #[test]
+    fn markdown_paths_are_contained_too() {
+        let p = page("/../escaped", "https://taux.io/x");
+        let rel = p.relative_markdown(TEST_LOCALE).unwrap();
+        assert!(contained(Path::new("dist"), &rel).is_err());
+    }
+
+    #[test]
+    fn only_main_survives() {
+        let html = "<body><header>NAV</header><main><p>Body</p></main><footer>FOOT</footer></body>";
+        let md = markdown_body(html).unwrap();
+        assert!(md.contains("Body"));
+        assert!(!md.contains("NAV"));
+        assert!(!md.contains("FOOT"));
+    }
+
+    // Measured: 100 of 100 rendered pages carry a `<main>`. A page that stops
+    // doing so is a template change nobody meant to make, so it fails the build
+    // rather than shipping a `.md` holding the whole chrome.
+    #[test]
+    fn a_page_without_main_fails_the_build() {
+        assert!(markdown_body("<body><p>no main here</p></body>").is_err());
+    }
+
+    // Seven of the nine SVGs on geo-guide live inside `<main>`. They are
+    // decorative icons; converted rather than dropped they are `<path>` noise
+    // occupying the tokens this whole feature exists to free up.
+    #[test]
+    fn decorative_svg_is_dropped() {
+        let html = r#"<main><p>Before</p><svg viewBox="0 0 24 24"><path d="M12 2L2 7"/></svg><p>After</p></main>"#;
+        let md = markdown_body(html).unwrap();
+        assert!(md.contains("Before") && md.contains("After"));
+        assert!(!md.contains("path"));
+        assert!(!md.contains("M12 2L2 7"));
+    }
+
+    // GEO vs SEO is a table, and a model reads a GFM table as a table. Flattened
+    // to prose it stops being a comparison at all.
+    #[test]
+    fn tables_survive_as_gfm() {
+        let html = "<main><table><thead><tr><th>維度</th><th>SEO</th></tr></thead>\
+                    <tbody><tr><td>目標</td><td>排名</td></tr></tbody></table></main>";
+        let md = markdown_body(html).unwrap();
+        let rows: Vec<&str> = md.lines().map(str::trim).collect();
+        // Asserted as GFM's three parts rather than as an exact string: htmd
+        // sizes the separator's dashes to the column and pads the cells, and
+        // pinning that would be testing htmd's layout rather than this repo's
+        // rule. What matters is that a parser still sees a table.
+        assert!(rows[0].starts_with('|') && rows[0].contains("維度") && rows[0].contains("SEO"));
+        assert!(
+            rows[1].starts_with('|')
+                && rows[1].contains("-")
+                && rows[1].chars().all(|c| "|- ".contains(c)),
+            "separator row, got: {}",
+            rows[1]
+        );
+        assert!(rows[2].starts_with('|') && rows[2].contains("目標") && rows[2].contains("排名"));
+    }
+
+    // A model copies this Markdown somewhere else. A root-relative link survives
+    // that move as a dead link, silently, and the reader blames the site.
+    #[test]
+    fn internal_links_become_absolute() {
+        let html = r#"<main><p><a href="/zh-Hant-TW/geo-guide">Guide</a></p></main>"#;
+        let md = markdown_body(html).unwrap();
+        assert!(
+            md.contains("(https://taux.io/zh-Hant-TW/geo-guide)"),
+            "got:\n{md}"
+        );
+    }
+
+    // The link points at the HTML, not at the `.md`. Whoever follows a citation
+    // is a person, and a person should land on the page.
+    #[test]
+    fn absolute_links_are_left_alone() {
+        let html = r#"<main><p><a href="https://example.com/x">X</a></p></main>"#;
+        let md = markdown_body(html).unwrap();
+        assert!(md.contains("(https://example.com/x)"), "got:\n{md}");
+    }
+
+    #[test]
+    fn protocol_relative_urls_are_not_rewritten() {
+        assert_eq!(
+            absolutise(r#"<img src="//cdn.example.com/a.png">"#),
+            r#"<img src="//cdn.example.com/a.png">"#
+        );
+    }
+
+    // `url:` is the reason the front matter exists: an answer engine quoting
+    // this file needs somewhere to point, and a `.md` carries no canonical tag.
+    #[test]
+    fn front_matter_carries_the_canonical_url() {
+        let fm = front_matter(
+            "GEO 完整指南",
+            "指南描述",
+            "https://taux.io/zh-Hant-TW/geo-guide",
+            TEST_LOCALE,
+            &BTreeMap::from([(
+                "en-US".to_string(),
+                "https://taux.io/en-US/geo-guide".to_string(),
+            )]),
+        );
+        assert!(fm.starts_with("---\n"));
+        assert!(fm.ends_with("---\n\n"));
+        assert!(fm.contains("url: \"https://taux.io/zh-Hant-TW/geo-guide\"\n"));
+        assert!(fm.contains("locale: \"zh-Hant-TW\"\n"));
+        assert!(fm.contains("  en-US: \"https://taux.io/en-US/geo-guide\"\n"));
+    }
+
+    // A title holding a quote or a colon would otherwise end the scalar early
+    // and produce front matter that parses as something else — or not at all.
+    #[test]
+    fn front_matter_scalars_are_quoted_and_escaped() {
+        let fm = front_matter(
+            r#"A "quoted": title"#,
+            "d",
+            "https://taux.io/x",
+            TEST_LOCALE,
+            &BTreeMap::new(),
+        );
+        assert!(fm.contains(r#"title: "A \"quoted\": title""#), "got:\n{fm}");
+    }
+
+    // Nothing else declares which language a `.md` is in, and the alternates are
+    // the only thing standing in for hreflang, which Markdown has no form of.
+    #[test]
+    fn a_page_in_one_language_lists_no_alternates() {
+        let fm = front_matter("t", "d", "https://taux.io/x", TEST_LOCALE, &BTreeMap::new());
+        assert!(!fm.contains("alternates:"), "got:\n{fm}");
     }
 
     // Every URL below is already indexed, so these are not style preferences.
