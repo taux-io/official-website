@@ -86,3 +86,36 @@
 # reader's own CJK face (decision #54). The rule for /static/fonts/* outlived
 # the directory by two resets: it matched nothing, cached nothing, and read
 # like evidence that the site still ships a typeface.
+
+# THE MARKDOWN TWINS POINT BACK AT THE HTML THEY WERE MADE FROM (issue #258).
+#
+# `/zh-Hant-TW/geo-guide.md` and `/zh-Hant-TW/geo-guide` are the same content at
+# two URLs, which is duplicate content. Markdown has no `<head>`, so it cannot
+# carry a `<link rel="canonical">`; the HTTP `Link` header is the mechanism for
+# exactly that case and is the one Google documents for non-HTML files.
+#
+# TWO RULES BECAUSE A LOCALE HOME IS ONE SEGMENT AND A PAGE IS TWO. Measured
+# against `wrangler dev` rather than assumed, which is the only reason this
+# file has the second rule: `/:locale/:page.md` matched
+# `/zh-Hant-TW/geo-guide.md` and returned `slug=geo-guide` — a placeholder does
+# stop before a literal suffix — and matched `/zh-Hant-TW.md` not at all. The
+# first version of this block had one rule and would have shipped five locale
+# homes with no canonical and nothing saying so.
+#
+# THEY DO NOT OVERLAP WITH EACH OTHER, which matters more here than usual: the
+# comment at the top of this file records that Cloudflare MERGES every matching
+# rule instead of letting the most specific win, so two rules both setting
+# `Link` would produce one header carrying two canonicals — and a parser takes
+# the first. Verified by fetching both shapes and counting the header.
+#
+# They do overlap `/*`, which is fine and unavoidable: `/*` sets no `Link`, so
+# the merge is of distinct header names rather than of two values for one.
+#
+# No Cache-Control here on purpose. `.md` follows HTML's default; adding a tier
+# is the overlap hazard above for no measured benefit.
+
+/:locale/:page.md
+  Link: <https://taux.io/:locale/:page>; rel="canonical"
+
+/:home.md
+  Link: <https://taux.io/:home>; rel="canonical"
