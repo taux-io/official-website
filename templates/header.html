@@ -8,7 +8,32 @@
     <meta name="description" content="{{ description }}">
     {% if canonical %}
     <link rel="canonical" href="{{ canonical }}">{% endif %}{% if noindex %}
-    <meta name="robots" content="noindex, follow">{% endif %}
+    <meta name="robots" content="noindex, follow">{% endif %}{% if canonical and not noindex %}
+    <!-- The same page as Markdown, for whatever is reading this to be quoted
+         rather than rendered (issue 256).
+
+         THE ISSUE NUMBER IS WRITTEN WITHOUT ITS HASH, and that is not a typo.
+         DESIGN.md's `zero hex` rule reads the templates for colour literals,
+         and a hash followed by three hex digits is exactly what a short colour
+         looks like — so an ordinary issue reference failed the design gate
+         here. Other files in this repository write the hash form freely; this
+         one cannot, and the gate is right to be blunt about it.
+
+         `.md` on the end of any page URL. The rule is announced in llms.txt as
+         well, and a crawler that has read one page will guess the next; this is
+         the only one of the three routes that covers all five languages
+         automatically, so the forty pages outside the canonical locale are
+         found by this line or not at all.
+
+         CONDITIONAL ON `noindex` BECAUSE THE FILE IS CONDITIONAL ON IT. A
+         noindex page gets no twin — Markdown has no `<head>` and no headers of
+         its own in which to repeat the directive — so advertising one here
+         would point at a 404. Nothing sets the flag today; the two conditions
+         are written to agree rather than to be remembered.
+
+         The error document is excluded by `canonical` alone: a [[document]]
+         declares none, which is also why it carries no canonical link above. -->
+    <link rel="alternate" type="text/markdown" href="{{ canonical }}.md">{% endif %}
 {% if alternates %}
     <!-- Every language this route exists in.
 

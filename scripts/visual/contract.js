@@ -829,6 +829,91 @@ async function main() {
     }
   }
 
+  // ── THE MARKDOWN TWINS (issue #258) ──────────────────────────────────────
+  //
+  // A hundred URLs this file had no opinion about until now. They are a second
+  // public representation of every page, and the two things that decide whether
+  // they are safe to expose are both headers — which means this is the only
+  // place either can be asserted, because only here is the site served through
+  // the host emulator with `_headers` actually applied.
+  //
+  // WHY THE CONTENT-TYPE IS COMPARED EXACTLY rather than for presence. The
+  // assets layer derives it from the extension, so nothing in this repository
+  // sets it and nothing would notice it changing. It was measured at
+  // `text/markdown; charset=utf-8` when the twins landed, and a browser was
+  // measured rendering it inline rather than downloading it; both of those are
+  // the reason the choice was kept, so both are worth holding still.
+  //
+  // WHY THE CANONICAL IS ASSERTED AT ALL. `.md` and `.html` are the same words
+  // at two URLs. Markdown cannot carry `<link rel="canonical">`, so the HTTP
+  // `Link` header is the only way to say which one is the page — and `_headers`
+  // says it through two placeholder rules, one for the two-segment routes and
+  // one for the single-segment locale homes. The second rule exists because the
+  // first was measured NOT matching `/zh-Hant-TW.md`; without an assertion the
+  // five most valuable URLs on the site would lose their canonical to a rule
+  // edit and nothing would say so.
+  //
+  // ⚠️ COMPARED AGAINST BASE_URL, NOT ORIGIN, and that is measured rather than
+  // tidy. `_headers` writes `https://taux.io/...` and the response comes back
+  // carrying the host that was asked — `http://127.0.0.1:8099/...` under
+  // `wrangler dev`. Against production the two are the same string, so this
+  // holds either way; hard-coding ORIGIN would fail every local run.
+  const MARKDOWN_TYPE = "text/markdown; charset=utf-8";
+  for (const route of ROUTES) {
+    const url = BASE_URL + route.path + ".md";
+    const r = await fetch(url, { redirect: "manual" });
+
+    checked++;
+    if (r.status !== 200) {
+      failures.push({
+        route: route.path + ".md",
+        check: "markdown twin",
+        problem: `${r.status} — every route has a twin, and the HTML advertises it`,
+      });
+      continue;
+    }
+
+    checked++;
+    const type = r.headers.get("content-type");
+    if (type !== MARKDOWN_TYPE) {
+      failures.push({
+        route: route.path + ".md",
+        check: "markdown twin",
+        problem: `content-type is ${type === null ? "absent" : type}, want ${MARKDOWN_TYPE}`,
+      });
+    }
+
+    checked++;
+    const want = `<${BASE_URL}${route.path}>; rel="canonical"`;
+    const link = r.headers.get("link");
+    if (link !== want) {
+      failures.push({
+        route: route.path + ".md",
+        check: "markdown twin",
+        problem:
+          `Link is ${link === null ? "absent" : link}, want ${want} — ` +
+          `two rules in _headers cover this, and a merge of both would show as two values here`,
+      });
+    }
+  }
+
+  // The HTML must NOT carry the twin's canonical header. Cloudflare merges every
+  // matching rule rather than letting the most specific win, so a `_headers`
+  // pattern one character too loose would put a `Link` on the page itself —
+  // pointing a page at itself is harmless, pointing it at the wrong URL is not,
+  // and neither would be visible to a reader.
+  {
+    checked++;
+    const r = await fetch(BASE_URL + "/zh-Hant-TW/geo-guide", { redirect: "manual" });
+    if (r.headers.get("link") !== null) {
+      failures.push({
+        route: "/zh-Hant-TW/geo-guide",
+        check: "markdown twin",
+        problem: `HTML carries Link: ${r.headers.get("link")} — the .md rules matched a page`,
+      });
+    }
+  }
+
   // Configured at the zone, so only observable from the zone. See AGAINST_ORIGIN.
   const skipped = [];
   if (AGAINST_ORIGIN) {
