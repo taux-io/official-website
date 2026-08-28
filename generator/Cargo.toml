@@ -5,6 +5,7 @@ edition = "2021"
 description = "Renders the site to static HTML."
 
 [dependencies]
+htmd = "0.5.5"
 # Jinja-family templating, so the existing Go templates convert mechanically
 # rather than being rewritten: {{ .Title }} becomes {{ title }}, and a
 # {{ template "header.html" . }} becomes {% include "header.html" %}. The HTML
