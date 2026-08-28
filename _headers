@@ -113,9 +113,42 @@
 #
 # No Cache-Control here on purpose. `.md` follows HTML's default; adding a tier
 # is the overlap hazard above for no measured benefit.
+#
+# ⚠️ THE CONTENT-TYPE IS SET HERE BECAUSE PRODUCTION DROPS THE CHARSET, AND THE
+# ORIGINAL MEASUREMENT MISSED IT.
+#
+# When the twins landed, `wrangler dev` was measured answering
+# `text/markdown; charset=utf-8` and a browser was measured rendering them
+# inline. Both were true of the emulator and neither survived deployment:
+# production answers `text/markdown` with no charset at all — it does the same
+# to HTML (`text/html`, bare) and nobody noticed, because an HTML document
+# carries `<meta charset="UTF-8">` and rescues itself.
+#
+# MARKDOWN HAS NO SUCH IN-BAND DECLARATION. Measured against the deployed site:
+# Chromium decoded every `.md` as Latin-1, so `GEO 生成式引擎優化完整指南` was
+# served to a reader as `GEO ç”Ÿæˆå¼å¼•æ“Žå„ªåŒ–å®Œæ•´æŒ‡å—`. Four locales out of
+# five are CJK; the whole class of file was mojibake in a browser from the hour
+# it shipped.
+#
+# NOTES.md already names this category — the defects only "a browser plus
+# production" can see. The contract audit HAD the assertion that catches it,
+# comparing the Content-Type exactly rather than for presence; it runs against
+# the emulator, where the header was already right. The assertion was never
+# wrong. The environment it ran in could not see the difference.
+#
+# So: run `BASE_URL=https://taux.io npm run contract` after a deploy that
+# touches this block. That is the only place the value is real.
+#
+# Verified locally that this REPLACES rather than merges — one `Content-Type`
+# header comes back, not two, which is the hazard the top of this file opens
+# by naming. Production has to be re-measured after this deploys; the local
+# result cannot prove it, because locally the emulator was already sending the
+# value this line asks for.
 
 /:locale/:page.md
+  Content-Type: text/markdown; charset=utf-8
   Link: <https://taux.io/:locale/:page>; rel="canonical"
 
 /:home.md
+  Content-Type: text/markdown; charset=utf-8
   Link: <https://taux.io/:home>; rel="canonical"
