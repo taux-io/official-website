@@ -443,11 +443,18 @@ fn flatten_heading_breaks(html: &str) -> String {
 }
 
 /// The separator between the two halves of a bilingual heading.
+///
+/// `scripts/check-md.js` holds the same constant and asserts the separated form
+/// is present in all hundred files. Change one and the other goes red, which is
+/// the point of writing it down twice rather than once.
 const HEADING_SEPARATOR: &str = " \u{2014} ";
+
+/// The class prefix that marks the two halves of a bilingual heading.
+const DISPLAY_PREFIX: &str = "display-";
 
 /// Puts that separator between `display-lead` and `display-sub`.
 ///
-/// FOUND BY READING `dist/ja-JP/about.md`, EIGHTEEN LINES IN, with nine
+/// FOUND BY READING `dist/ja-JP/about.md`, FIFTEEN LINES IN, with nine
 /// `check:md` assertions and 1564 production assertions green. Headings are
 /// built from two spans — the English lead and the locale's own words — and CSS
 /// lays them out as two lines. Markdown has no CSS and an ATX heading is one
@@ -472,6 +479,11 @@ const HEADING_SEPARATOR: &str = " \u{2014} ";
 ///
 /// Inserting a text node rather than rewriting the spans keeps this a pass over
 /// markup, like the two beside it, and leaves the attribute layer alone.
+///
+/// ⚠️ THE LINE NUMBER ABOVE WAS WRONG WHEN FIRST WRITTEN — it said eighteen.
+/// The chip is on line thirteen and the glued heading on line fifteen. A
+/// remembered number in a comment whose whole subject is a mis-measurement is
+/// the same defect one layer up.
 fn separate_display_halves(html: &str) -> String {
     let mut out = String::with_capacity(html.len() + 32);
     let mut rest = html;
@@ -486,7 +498,7 @@ fn separate_display_halves(html: &str) -> String {
             break;
         };
         out.push_str(&rest[..at]);
-        out.push_str(&separate_within(&rest[at..end]));
+        out.push_str(&separate_halves_within(&rest[at..end]));
         rest = &rest[end..];
     }
     out.push_str(rest);
@@ -496,36 +508,39 @@ fn separate_display_halves(html: &str) -> String {
 /// The body of the pass above, over one heading.
 ///
 /// A sub with no lead before it is left alone: it is a heading in one language,
-/// and a leading separator would be noise.
-fn separate_within(heading: &str) -> String {
-    let mut out = String::with_capacity(heading.len() + 8);
+/// and a leading separator would be noise. Once a lead has been seen, EVERY sub
+/// after it is separated rather than only the first — no heading carries two
+/// today, and the version that stopped at the first would have glued the second
+/// silently on the day one did.
+fn separate_halves_within(heading: &str) -> String {
+    let mut out = String::with_capacity(heading.len() + HEADING_SEPARATOR.len());
     let mut rest = heading;
     let mut seen_lead = false;
-    while let Some(at) = rest.find("display-") {
-        let kind = &rest[at + 8..];
+    while let Some(at) = rest.find(DISPLAY_PREFIX) {
+        let after = at + DISPLAY_PREFIX.len();
+        let kind = &rest[after..];
         if kind.starts_with("lead") {
             seen_lead = true;
-            out.push_str(&rest[..at + 8]);
+            out.push_str(&rest[..after]);
             rest = kind;
             continue;
         }
         if !kind.starts_with("sub") || !seen_lead {
-            out.push_str(&rest[..at + 8]);
+            out.push_str(&rest[..after]);
             rest = kind;
             continue;
         }
         // Back up to the `<` that opens this span, so the separator lands
         // between the two elements rather than inside the second one.
         let Some(open) = rest[..at].rfind('<') else {
-            out.push_str(&rest[..at + 8]);
+            out.push_str(&rest[..after]);
             rest = kind;
             continue;
         };
         out.push_str(&rest[..open]);
         out.push_str(HEADING_SEPARATOR);
-        out.push_str(&rest[open..at + 8]);
+        out.push_str(&rest[open..after]);
         rest = kind;
-        seen_lead = false;
     }
     out.push_str(rest);
     out
@@ -538,26 +553,75 @@ fn separate_within(heading: &str) -> String {
 /// H1 and reads as a sentence the page is making. Sixty of them, across sixty
 /// files, shipped that way.
 ///
-/// ⚠️ THE ARGUMENT FOR DROPPING THEM WAS PARTLY FALSE AS FIRST MADE. It said
-/// they are English chrome nobody ever translated; ten of the sixty carry
-/// localised text (`GEO 技術觀點`, `GEO の技術メモ`, `GEO 기술 노트`). They go
-/// anyway, but for the surviving reason: a chip is not a sentence, and the front
-/// matter already carries the title and description a citation needs.
+/// ⚠️ THE ARGUMENT FOR DROPPING THEM WAS PARTLY FALSE AS FIRST MADE, AND THE
+/// CORRECTION WAS WRONG TOO. The first version said they are English chrome
+/// nobody ever translated. The second said ten of the sixty carry localised
+/// text. Counted: TWELVE carry CJK (`GEO 技術觀點`, `GEO の技術メモ`,
+/// `GEO 기술 노트`, and their Simplified siblings), and thirteen are non-ASCII
+/// once `Google Cloud Tech — notes` is included for its em dash. They go anyway,
+/// but for the surviving reason: a chip is not a sentence, and the front matter
+/// already carries the title and description a citation needs.
 ///
 /// WHY NOT `skip_tags`. `htmd` skips by tag name, and these are ordinary `<div>`
 /// and `<span>` — the whole page is made of those. The class is the only thing
 /// that identifies them, and only the markup layer can see it.
 ///
+/// ⚠️ THE CLASS IS MATCHED AS A TOKEN, NOT AS A PREFIX OF THE ATTRIBUTE. The
+/// first version looked for the literal `<div class="tag`, which requires
+/// `class` to be the first attribute and `tag` to be its first word. Both are
+/// true of every chip today and neither is a rule anywhere. A template written
+/// `class="mb-6 tag"` would have kept its chip — and `check:md`'s assertion used
+/// the same shape, so the gate would have missed it in the same breath. The
+/// gate now looks for the token on ANY element, which is deliberately wider than
+/// what this drops: if this pass ever stops seeing a chip, the gate still does.
+///
 /// Depth-counted rather than matched to the first close tag. Nothing nests one
 /// inside another today; nothing stops a chip gaining a wrapper tomorrow, and
 /// the failure would be a silently truncated page rather than a build error.
+/// The offset of the next `<name …>` whose `class` attribute carries the token.
+fn find_pill(html: &str, name: &str) -> Option<usize> {
+    let open = format!("<{name}");
+    let mut from = 0usize;
+    while let Some(at) = html[from..].find(&open).map(|i| from + i) {
+        let after = &html[at + open.len()..];
+        // `<div` must open a tag, not be the start of a longer name.
+        if !(after.starts_with('>') || after.starts_with(char::is_whitespace)) {
+            from = at + open.len();
+            continue;
+        }
+        let Some(gt) = after.find('>') else {
+            return None;
+        };
+        if class_has_token(&after[..gt], "tag") {
+            return Some(at);
+        }
+        from = at + open.len() + gt;
+    }
+    None
+}
+
+/// Whether the attribute text of one opening tag carries `token` in its class.
+///
+/// Whitespace-separated, which is what a class attribute is. `tagline` is not
+/// `tag`, and `mb-6 tag` is.
+fn class_has_token(attrs: &str, token: &str) -> bool {
+    let Some(at) = attrs.find("class=\"") else {
+        return false;
+    };
+    let rest = &attrs[at + 7..];
+    let Some(end) = rest.find('"') else {
+        return false;
+    };
+    rest[..end].split_whitespace().any(|word| word == token)
+}
+
 fn drop_tag_pills(html: &str) -> String {
     let mut out = String::with_capacity(html.len());
     let mut rest = html;
     'scan: loop {
         let Some((at, name)) = ["div", "span"]
             .iter()
-            .filter_map(|n| rest.find(&format!("<{n} class=\"tag")).map(|i| (i, *n)))
+            .filter_map(|n| find_pill(rest, n).map(|i| (i, *n)))
             .min_by_key(|(i, _)| *i)
         else {
             break;
@@ -1592,12 +1656,19 @@ mod tests {
     // does not exist. The markup declares itself now (issue 264), so the
     // rescue is gone; the property it protected is not optional, and this is
     // what still asserts it of the conversion itself.
-    // THE THREE BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
+    // THE SEVEN BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
     // positive cases — a bilingual heading that separates, a chip that goes —
     // are asserted over all hundred real files by assertions 9 and 10 there,
     // which is a stronger statement than any synthetic string makes. These are
     // the branches no page exercises today, where the first sign of a mistake
     // would be a silently shortened page rather than a red build.
+    //
+    // ⚠️ THIS COUNT HAS NOW BEEN WRONG TWICE. It said three while four followed
+    // it, and the correction said six while seven followed it. Both were written
+    // by counting the list by eye. `NOTES.md` records the same failure three
+    // times about the gate list, and draws the same conclusion: the list is the
+    // only source, and a number beside it is a second one. Count it, do not
+    // remember it.
 
     #[test]
     fn a_heading_in_one_language_gets_no_separator() {
@@ -1619,8 +1690,35 @@ mod tests {
         // `<span>`, so no chip nests inside its own tag name today. Matching the
         // first close tag would work until one does, and would then eat the rest
         // of the page rather than fail.
-        let html = r#"<p>before</p><div class="tag mb-6"><div class="dot"></div> Label</div><p>after</p>"#;
+        let html =
+            r#"<p>before</p><div class="tag mb-6"><div class="dot"></div> Label</div><p>after</p>"#;
         assert_eq!(drop_tag_pills(html), "<p>before</p><p>after</p>");
+    }
+
+    #[test]
+    fn a_second_sub_after_one_lead_is_separated_too() {
+        let html = concat!(
+            r#"<h1><span class="display-lead">Lead</span>"#,
+            r#"<span class="display-sub">One</span>"#,
+            r#"<span class="display-sub">Two</span></h1>"#
+        );
+        let out = separate_display_halves(html);
+        assert_eq!(out.matches('\u{2014}').count(), 2);
+    }
+
+    #[test]
+    fn a_chip_is_found_however_its_class_is_written() {
+        // `class` need not open the tag and `tag` need not open the class. The
+        // first version of this pass required both, and `check:md` required them
+        // too, so a template written either way would have been missed twice.
+        let html = r#"<p>a</p><div id="x" class="mb-6 tag">Label</div><p>b</p>"#;
+        assert_eq!(drop_tag_pills(html), "<p>a</p><p>b</p>");
+    }
+
+    #[test]
+    fn a_class_that_merely_starts_with_tag_is_not_a_chip() {
+        let html = r#"<div class="tagline">Not a chip</div>"#;
+        assert_eq!(drop_tag_pills(html), html);
     }
 
     #[test]
