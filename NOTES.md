@@ -62,14 +62,15 @@ npm run diff <a> <b>         # 像素比對
 
 ⚠️ **這個數字錯過兩次，而第二次是在這段警告自己裡面。** 第一次它寫「九道」而實際有十道——`check:routes` 落地時沒有進這份清單，於是有人（我）照著這裡數，在 PR 上公開宣告「九道閘門全綠」。**文件與 CI 分歧時，綠的是 CI，錯的是宣告。**
 
-第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。現在是**十四道**——下面的清單有幾項就是幾道，這次多的是 `check:i18n`。改 `checks.yml` 時請一併改這裡。
+第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。**第三次**：清單漏了 `check:md`，總數也還停在十四。它是隨 Markdown 雙生檔（issue #259）加進 `checks.yml` 的，而這段文字沒有跟上——同一種漂移，第三次，寫在專門警告它的段落裡。現在是**十五道**——下面的清單有幾項就是幾道。改 `checks.yml` 時請一併改這裡。
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
-- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是 HSTS 與 www → apex 那兩條，它們才是 zone 設定
+- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
 - **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標，以及依 locale 而定的行長上限
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡
 - **check:classes** —— 沒有任何類別產生不出 CSS
+- **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、殘留標記、連結、程式碼區塊，以及 HTML 有沒有指向它們。沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）

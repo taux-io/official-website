@@ -35,6 +35,13 @@ const EXPECTED_HEADERS = {
 // reaches a version preview URL or the local emulator, because neither is part
 // of what `wrangler deploy` uploads.
 //
+// A THIRD THING JOINED THEM FOR A DIFFERENT REASON, and this paragraph said
+// "two" while the branch held three. The plain-text `charset` IS in this
+// repository — `wrangler dev` simply supplies it whether or not the rule is
+// there, so a local assertion would be green on something it never checked.
+// Hidden by the emulator rather than absent from it; same branch, opposite
+// cause.
+//
 // That is the cost of putting them there, and it is paid here: those assertions
 // can only run against the production origin. The handling is to say so out
 // loud at the end of a run rather than let one report green on assertions it
@@ -914,9 +921,56 @@ async function main() {
     }
   }
 
-  // Configured at the zone, so only observable from the zone. See AGAINST_ORIGIN.
+  // OBSERVABLE ONLY AGAINST PRODUCTION — WHICH IS NO LONGER THE SAME THING AS
+  // "CONFIGURED AT THE ZONE", and this line said the latter. HSTS and the
+  // www→apex redirect are zone settings; the plain-text charset below is a rule
+  // in THIS repository that the emulator hides by supplying the value itself.
+  // Two different reasons, one branch. See AGAINST_ORIGIN.
   const skipped = [];
   if (AGAINST_ORIGIN) {
+    // ── THE PLAIN-TEXT FILES CARRY A CHARSET ─────────────────────────────
+    //
+    // `llms.txt` is 27KB and 208 lines, of which 142 carry non-ASCII — 114 Han,
+    // 132 counting Hangul, and ten English lines holding a `→` or a `—`. This
+    // comment said "142 lines are Chinese", the non-ASCII count under the wrong
+    // name; the ranges are spelt out now because two reviewers then produced two
+    // different CJK figures from two different range sets. It is the file this
+    // site's whole GEO argument is aimed at, and yet production serves it
+    // `text/plain` with no charset, so a browser decodes it as Latin-1 and it
+    // reads `# TauX æ‹“æ€ç§‘æŠ€` to anyone who opens it. `robots.txt` carries
+    // seven non-ASCII lines of its own (`→`, `§`, `—`), which the first reading
+    // of this missed by assuming rather than counting.
+    //
+    // ⚠️ THIS LIVES IN THE ORIGIN BRANCH BECAUSE THE EMULATOR CANNOT SEE IT,
+    // AND THAT WAS MEASURED AFTER THE ASSERTION HAD ALREADY BEEN WRITTEN
+    // SOMEWHERE ELSE. `wrangler dev` adds `; charset=utf-8` to these responses
+    // by itself: deleting the `_headers` rule *before* starting the server
+    // changed nothing locally. So the same assertion sitting in the main body
+    // of this file passes whether or not the rule it exists to protect is
+    // there — green on something it never checked, which is the failure this
+    // file's own header paragraph names.
+    //
+    // That is one layer deeper than the defect it was written for. The `.md`
+    // Content-Type assertion above has the same weakness for the same reason
+    // and is left where it is: moving it is not this change.
+    const TEXT_TYPE = "text/plain; charset=utf-8";
+    for (const file of ["/llms.txt", "/robots.txt", "/static/llms.txt", "/static/robots.txt"]) {
+      checked++;
+      const res = await fetch(BASE_URL + file, { redirect: "manual" });
+      if (res.status !== 200) {
+        failures.push({ route: file, check: "text charset", problem: `${res.status} — expected a served file` });
+        continue;
+      }
+      const type = res.headers.get("content-type");
+      if (type !== TEXT_TYPE) {
+        failures.push({
+          route: file,
+          check: "text charset",
+          problem: `content-type is ${type === null ? "absent" : type}, want ${TEXT_TYPE} — without it a browser reads the CJK as Latin-1`,
+        });
+      }
+    }
+
     checked++;
     const res = await page.request.get(ORIGIN + "/");
     const hsts = res.headers()["strict-transport-security"];
@@ -964,8 +1018,10 @@ async function main() {
 
   } else {
     skipped.push(
-      "hsts and www redirect — configured at the Cloudflare zone, so they are",
-      `not observable from ${BASE_URL}. Run with BASE_URL=${ORIGIN} to assert them.`
+      "hsts, www redirect and the plain-text charset — the first two are zone",
+      "settings, absent here. The third is present and correct here either way:",
+      "wrangler dev supplies the charset production strips, so asserting it",
+      `locally would prove nothing about the rule. Run with BASE_URL=${ORIGIN}.`
     );
   }
 

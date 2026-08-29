@@ -8,6 +8,12 @@ name: zone
 # inject at the edge are all zone settings, changed in a dashboard, reviewed by
 # nobody, and observable only against production.
 #
+# ONE THING THIS JOB NOW WATCHES IS NOT A ZONE SETTING. The `charset` on the
+# plain-text files is a `_headers` rule in this repository — but `wrangler dev`
+# supplies it whether or not the rule is there, so `checks.yml` would be green
+# on a rule it never checked. Hidden by the emulator rather than absent from
+# it, and this is the only job that can tell the difference.
+#
 # That half has already regressed twice by the project's own record — the Web
 # Analytics beacon that broke the CSP, and the managed robots.txt that prepended
 # sixty contradicting lines. Both were found by a person noticing, which is the
