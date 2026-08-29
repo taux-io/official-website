@@ -589,9 +589,7 @@ fn find_pill(html: &str, name: &str) -> Option<usize> {
             from = at + open.len();
             continue;
         }
-        let Some(gt) = after.find('>') else {
-            return None;
-        };
+        let gt = after.find('>')?;
         if class_has_token(&after[..gt], "tag") {
             return Some(at);
         }
