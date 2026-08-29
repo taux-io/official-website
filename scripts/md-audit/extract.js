@@ -48,6 +48,8 @@
 // and divergence is not a bug: drop something the converter keeps and it
 // surfaces as an md-only block; keep something it drops and it surfaces as
 // html-only. Either way a reader sees it, which is the whole design.
+const { ORIGIN } = require("../routes");
+
 const DISCARDED = ["svg", "script", "style", "noscript"];
 
 function withoutDiscarded(region) {
@@ -80,6 +82,10 @@ const BLOCK = new Set([
 // decorative chip is built from, most obviously — is a `text` block, which is
 // the point: a chip has no element of its own, so a scanner that only looked
 // for known block tags would not see the defect this audit was built to find.
+// `<code>`, `<strong>` and `<em>` are what `htmd` writes as backticks and
+// asterisks. Losing one turns an identifier the page is teaching into prose.
+const MARKED = new Set(["code", "strong", "b", "em", "i"]);
+
 const KIND = {
   h1: "heading", h2: "heading", h3: "heading", h4: "heading", h5: "heading",
   h6: "heading", p: "para", li: "item", pre: "code", tr: "row",
@@ -219,30 +225,157 @@ function textOf(node) {
   return node.children.map(textOf).join(separator);
 }
 
+// WHAT THE COMPARISON WOULD OTHERWISE THROW AWAY.
+//
+// The normalisation that makes an HTML block and a Markdown block comparable —
+// strip the markup, keep the words — discards exactly the two things a reader
+// most needs and cannot see: where a link points, and which words the page
+// marked as code or emphasis.
+//
+// ⚠️ MEASURED, IN THE RED PROOF FOR ISSUE 272. Two of the six injected defects
+// went in and never came out: a link redirected to `example.invalid/wrong` and
+// a `**優勢：**` flattened to plain prose. Both were applied to the twin, both
+// changed the file, and NEITHER APPEARED IN THE READER'S INPUT AT ALL — the
+// aligner called both blocks a perfect match, because after stripping `[](…)`
+// and `**` the two sides said the same words. The reader was then blamed for
+// missing something it was never shown.
+//
+// So the destinations and the marked spans travel WITH the block, as part of
+// what the alignment compares but not part of what is displayed. A changed URL
+// or a lost `<code>` now moves the key and surfaces as a difference.
 function collapse(text) {
   return text.replace(/\s+/g, " ").trim();
 }
 
 // The walk. A block is emitted for any element that holds text and has no
 // block-level descendant to hold it instead.
-function blocksOf(node, out) {
+// Where the links in one block point, resolved the way a twin's links are.
+//
+// The rewriting rule is re-derived here rather than borrowed: root-relative
+// against the origin, fragment-only against this page's own URL, anything
+// already absolute left alone. It is stated in the issue that introduced it and
+// is three lines; copying the converter's implementation would put both sides
+// of the comparison behind the same mistake, which is the thing this file exists
+// not to do.
+// WHICH CHARACTERS ARE MARKED, not how the marks are split.
+//
+// `**A**B**C**` and `**ABC**` mark the same words and one converter writes one
+// where another writes the other; comparing run-by-run reported 41 of those as
+// differences. Comparing the marked characters still catches a mark that is
+// GONE — which is the defect (`destress`) this exists for — without reporting a
+// difference nobody could act on.
+function markSignature(marks) {
+  // THE CHARACTERS THAT ARE MARKED, sorted — not the runs, and not their order.
+  //
+  // The two sides split adjacent marks differently: a page with three `<strong>`
+  // spans arrives as two `**…**` runs when the text between them is itself
+  // marked. Comparing runs — sorted or not — reported those splits as
+  // differences, every one a difference in how the same words were divided
+  // rather than in which words were marked.
+  //
+  // ⚠️ NO COUNTS IN THIS PARAGRAPH, DELIBERATELY. The first version carried
+  // three, from three tuning rounds, and a reviewer reproduced none of them:
+  // "123" was 75, "41" was 356, and "sorting whole runs did not help" was worth
+  // exactly one pair. They were remembered rather than measured, and nothing in
+  // the repository can re-derive them — which is what makes them the eighth
+  // wrong number on this line of work. The reason survives; the archaeology of
+  // how many pairs each attempt produced does not belong in a comment.
+  //
+  // WHAT THIS SIGNATURE CANNOT SEE. A mark that is GONE changes it, which is the
+  // defect (`destress`) it exists for. It does NOT see a mark moved to different
+  // words made of the same letters, and — because `<strong>`, `<b>`, `<em>` and
+  // `<i>` are all one family here — it does not see `**x**` downgraded to `*x*`
+  // or the reverse. Both are invisible by construction, not by oversight.
+  const of = (family) =>
+    marks
+      .filter((m) => m.startsWith(family + ":"))
+      .map((m) => m.slice(family.length + 1))
+      .join("")
+      .replace(/\s+/g, "")
+      .split("")
+      .sort()
+      .join("");
+  return `code:${of("code")}|emphasis:${of("emphasis")}`;
+}
+
+// The class attribute, as tokens.
+//
+// ⚠️ THE BLOCKS DID NOT CARRY THIS AT FIRST, and `whitelist.js`'s rule for the
+// dropped decorative chip therefore matched on tag name alone: any `text` block
+// on a `div` or `span`. There are 395 of those in this build, the longest 473
+// characters — an entire cited study on `/en-US/google-workspace-with-ai`.
+// Deleting that paragraph from its twin and re-running produced
+// `89 identical, 1 legal by whitelist, 0 needing judgement`: a whole block of
+// research gone, and the audit reporting a clean page.
+//
+// The whitelist file's own opening says a rule nobody can justify is a rule
+// hiding a defect, and warns that it must not grow to fit the output. The rule
+// was written wider than the warning above it, in the same file.
+function classesOf(attrs) {
+  const found = /class="([^"]*)"/.exec(attrs || "");
+  return found ? found[1].split(/\s+/).filter(Boolean) : [];
+}
+
+function linksIn(node, canonical) {
+  const out = [];
+  (function walk(current) {
+    if (current.text !== undefined) return;
+    if (current.tag === "a") {
+      const href = /href="([^"]*)"/.exec(current.attrs || "");
+      if (href) out.push(absolute(href[1], canonical));
+    }
+    current.children.forEach(walk);
+  })(node);
+  return out.sort();
+}
+
+function absolute(href, canonical) {
+  if (href.startsWith("//")) return href;
+  if (href.startsWith("#")) return canonical + href;
+  if (href.startsWith("/")) return ORIGIN + href;
+  return href;
+}
+
+// The spans the page marked as code, strong or emphasis.
+function marksIn(node) {
+  // A `<pre><code>` IS the block; its `<code>` is not an inline mark. Counting
+  // it made every fenced sample on the site differ, because the Markdown side
+  // sees a fence and reports no inline marks at all.
+  if (node.tag === "pre") return [];
+  const out = [];
+  (function walk(current) {
+    if (current.text !== undefined) return;
+    if (current.tag === "pre") return;
+    if (MARKED.has(current.tag)) {
+      const text = collapse(textOf(current));
+      const family = current.tag === "code" ? "code" : "emphasis";
+      if (text) out.push(`${family}:${text}`);
+    }
+    current.children.forEach(walk);
+  })(node);
+  return out;
+}
+
+function blocksOf(node, out, canonical) {
   for (const child of node.children) {
     // A container's own loose text, alongside its block children. Zero pages
     // carry any today; the first version dropped it with a bare `continue`,
     // which would have removed a sentence from the audit without a trace.
     if (child.text !== undefined) {
       const loose = collapse(decode(child.text));
-      if (loose) out.push({ kind: "text", tag: node.tag, text: loose });
+      if (loose) {
+        out.push({ kind: "text", tag: node.tag, text: loose, classes: [], links: [], marks: [] });
+      }
       continue;
     }
     // A thematic break carries no text but is a block on the Markdown side, so
     // it has to be one here or every `* * *` reads as an insertion.
     if (child.tag === "hr") {
-      out.push({ kind: "rule", tag: "hr", text: "---" });
+      out.push({ kind: "rule", tag: "hr", text: "---", classes: [], links: [], marks: [] });
       continue;
     }
     if (!LEAF.has(child.tag) && hasBlockDescendant(child)) {
-      blocksOf(child, out);
+      blocksOf(child, out, canonical);
       continue;
     }
     const text = collapse(textOf(child));
@@ -252,18 +385,21 @@ function blocksOf(node, out) {
       tag: child.tag,
       level: /^h([1-6])$/.test(child.tag) ? Number(child.tag[1]) : undefined,
       text,
+      classes: classesOf(child.attrs),
+      links: linksIn(child, canonical),
+      marks: marksIn(child),
     });
   }
   return out;
 }
 
-function extract(html) {
+function extract(html, canonical = "") {
   const region = mainRegion(html);
   if (region === null) throw new Error("no <main> in this page");
-  return blocksOf(parse(withoutDiscarded(region)), []);
+  return blocksOf(parse(withoutDiscarded(region)), [], canonical);
 }
 
 // Only what another file calls. The first version exported eleven symbols
 // across the four files and three had a caller — and with no tests, by
 // design, the rest had no consumer at all.
-module.exports = { extract, collapse };
+module.exports = { extract, collapse, markSignature };

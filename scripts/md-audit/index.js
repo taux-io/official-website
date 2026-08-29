@@ -4,6 +4,8 @@
 //   node scripts/md-audit --out .scratch/md-audit     all hundred pages
 //   node scripts/md-audit --route /ja-JP/about        one page, to stdout
 //   node scripts/md-audit --summary                   counts only
+//   node scripts/md-audit --md-root <dir>             twins from elsewhere
+//   node scripts/md-audit --headings                  Pass B input, headings only
 //
 // NOT A GATE, AND DELIBERATELY NOT IN CI. Issue 269 settled this: a one-off
 // investigation is not a rule, and a rule cannot be written before anyone knows
@@ -54,9 +56,10 @@
 const fs = require("fs");
 const path = require("path");
 const { ROUTES } = require("../routes");
-const { extract } = require("./extract");
+const { extract, markSignature } = require("./extract");
 const { blocks } = require("./blocks");
 const { align } = require("./align");
+const { classify } = require("./whitelist");
 
 const DIST = path.join(__dirname, "..", "..", "dist");
 
@@ -68,19 +71,41 @@ function auditable(route) {
   return !route.noindex && fs.existsSync(path.join(DIST, route.path + ".md"));
 }
 
-function auditRoute(route) {
+// `mdRoot` lets the Markdown side come from somewhere other than `dist/`, which
+// is how `inject.js`'s deliberately broken twins get compared against the real
+// page. The HTML always comes from `dist/`: it is the reference, and a harness
+// that could move both sides would be able to prove anything.
+function auditRoute(route, mdRoot = DIST) {
   const html = fs.readFileSync(path.join(DIST, route.path + ".html"), "utf8");
-  const markdown = fs.readFileSync(path.join(DIST, route.path + ".md"), "utf8");
-  return align(extract(html), blocks(markdown));
+  const markdown = fs.readFileSync(path.join(mdRoot, route.path + ".md"), "utf8");
+  return align(extract(html, route.canonical), blocks(markdown));
 }
 
 // One place that knows the four op names. The first version had the cascade in
 // `render` and the counting in `main`, so adding a fifth kind meant remembering
 // to touch both.
+// Pass B's input: every heading in the twin, alone. See READER.md — 1140 of the
+// build's 1300 headings are identical to the page and so never reach Pass A,
+// which is where a hundred and sixty glued ones once lived.
+function headings(route, mdRoot = DIST) {
+  const markdown = fs.readFileSync(path.join(mdRoot, route.path + ".md"), "utf8");
+  return blocks(markdown)
+    .filter((b) => b.kind === "heading")
+    .map((b) => `${route.path}.md:${b.line}  ${b.raw}`);
+}
+
 function tally(ops) {
+  const review = ops.filter((op) => !classify(op).legal).length;
+  const match = ops.filter((o) => o.op === "match").length;
   return {
     pairs: ops.length,
-    match: ops.filter((o) => o.op === "match").length,
+    match,
+    // `legal` and `review` live here rather than at each call site. They were
+    // computed separately in `render` and in `main`, which is the second way of
+    // counting the same thing that `NOTES.md` has recorded going wrong three
+    // times.
+    legal: ops.length - match - review,
+    review,
     diff: ops.filter((o) => o.op === "diff").length,
     htmlOnly: ops.filter((o) => o.op === "html-only").length,
     mdOnly: ops.filter((o) => o.op === "md-only").length,
@@ -98,11 +123,15 @@ function render(route, ops) {
   const counts = tally(ops);
   lines.push(
     `${counts.pairs} pairs — ${counts.match} identical, ` +
-      `${counts.pairs - counts.match} needing judgement`,
+      `${counts.legal} legal by whitelist, ${counts.review} needing judgement`,
     ""
   );
   ops.forEach((op, index) => {
-    if (op.op === "match") return;
+    // The whitelist decides what a reader sees. Everything it claims is a
+    // difference the converter makes on purpose, named in the issue that
+    // introduced it — showing those would teach a reader that most findings are
+    // not findings, which is the fastest way to get real ones waved through.
+    if (classify(op).legal) return;
     // The Markdown line where the reader can open the file, not just the row of
     // this table. An html-only block has no line to point at, so it says which
     // pair it sits between instead.
@@ -111,6 +140,22 @@ function render(route, ops) {
       lines.push(`${at} CHANGED  ${op.html.kind} -> ${op.md.kind}`);
       lines.push(`     HTML: ${shorten(op.html.text, 300)}`);
       lines.push(`     MD:   ${shorten(op.md.text, 300)}`);
+      // WHEN THE WORDS ARE THE SAME, SAY WHAT ISN'T.
+      //
+      // Link destinations and marked spans travel in the alignment key but not
+      // in the displayed text — that is what keeps the table readable. The red
+      // proof for issue 272 then handed a reader a pair whose two lines were
+      // character-for-character identical and expected it to find the
+      // redirected link: the difference was real, was why the pair surfaced at
+      // all, and was the one thing not printed.
+      if (op.html.links.join() !== op.md.links.join()) {
+        lines.push(`     PAGE LINKS: ${op.html.links.join(" ") || "(none)"}`);
+        lines.push(`     TWIN LINKS: ${op.md.links.join(" ") || "(none)"}`);
+      }
+      if (markSignature(op.html.marks) !== markSignature(op.md.marks)) {
+        lines.push(`     PAGE MARKS: ${op.html.marks.join(" | ") || "(none)"}`);
+        lines.push(`     TWIN MARKS: ${op.md.marks.join(" | ") || "(none)"}`);
+      }
     } else if (op.op === "html-only") {
       lines.push(`${at} HTML-ONLY  ${op.html.kind} <${op.html.tag}>`);
       lines.push(`     HTML: ${shorten(op.html.text, 300)}`);
@@ -131,7 +176,9 @@ function main() {
   };
   const onlyRoute = flagValue("--route");
   const out = flagValue("--out");
+  const mdRoot = flagValue("--md-root") || DIST;
   const summaryOnly = args.includes("--summary");
+  const headingsOnly = args.includes("--headings");
 
   const auditableRoutes = ROUTES.filter(auditable);
   const wanted = onlyRoute
@@ -143,10 +190,17 @@ function main() {
     return;
   }
 
-  const totals = { pairs: 0, match: 0, diff: 0, htmlOnly: 0, mdOnly: 0 };
+  if (headingsOnly) {
+    for (const route of wanted) {
+      for (const line of headings(route, mdRoot)) console.log(line);
+    }
+    return;
+  }
+
+  const totals = { pairs: 0, match: 0, legal: 0, review: 0, diff: 0, htmlOnly: 0, mdOnly: 0 };
   const perRoute = [];
   for (const route of wanted) {
-    const ops = auditRoute(route);
+    const ops = auditRoute(route, mdRoot);
     const counts = tally(ops);
     for (const key of Object.keys(totals)) totals[key] += counts[key];
     perRoute.push({ route, ops, counts });
@@ -163,14 +217,26 @@ function main() {
     for (const { route, ops } of perRoute) console.log(render(route, ops));
   }
 
+  // THE SAME BREAKDOWN THE PER-PAGE HEADER USES. The first version counted by
+  // op kind here and by whitelist verdict there, so a reader was handed
+  // "2 legal, 1 needing judgement" above and "1 changed, 2 html-only" below and
+  // had to work out for itself that they described the same three blocks. One
+  // did, and reported the tool as inconsistent — correctly, from what it could
+  // see.
   console.log(
     `\n${perRoute.length} pages, ${totals.pairs} pairs: ` +
-      `${totals.match} identical, ${totals.diff} changed, ` +
-      `${totals.htmlOnly} html-only, ${totals.mdOnly} md-only`
+      `${totals.match} identical, ${totals.legal} legal by whitelist, ` +
+      `${totals.review} needing judgement`
   );
-  const needing = totals.diff + totals.htmlOnly + totals.mdOnly;
-  console.log(`${needing} pairs need a reader's judgement.`);
+  console.log(
+    `by kind: ${totals.diff} changed, ${totals.htmlOnly} html-only, ` +
+      `${totals.mdOnly} md-only`
+  );
+  console.log(`${totals.review} pairs need a reader's judgement.`);
 }
 
 if (require.main === module) main();
-module.exports = { auditRoute, auditable, render };
+// This file is the CLI. Nothing requires it — `md:audit` runs it. The exports
+// that were here had no caller in the repository, only in throwaway scripts,
+// which is the definition the repo uses for a dead export.
+module.exports = { auditRoute, headings };
