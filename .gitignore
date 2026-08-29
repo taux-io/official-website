@@ -42,3 +42,6 @@ dist/
 .agents/
 .claude/
 skills-lock.json
+
+# 稽核工具的輸出（scripts/md-audit）——一次性調查的產物，不進版控
+.scratch/
