@@ -650,6 +650,19 @@
         width: 100%;
         min-height: 400px;
         word-wrap: break-word;
+        /* A `<pre>` now, not a `<div>` of `<br>`s (issue 264), so the newlines
+           in the markup are the line breaks and the element says "this is
+           code" to a screen reader. Two consequences to absorb:
+
+           `pre-wrap` rather than `pre`, because the default would stop the
+           long CJK lines wrapping and put the whole sample behind a horizontal
+           scrollbar — a visible regression for a change that is supposed to be
+           invisible.
+
+           `margin: 0` because a `<pre>` brings a browser default `1em 0` that
+           a `<div>` does not, and the layout around it was spaced without it. */
+        white-space: pre-wrap;
+        margin: 0;
     }
 
     .skills-guide-body .code-window .yaml-key {
@@ -1101,25 +1114,23 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="code-window">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">Fires when the user pastes code or asks for a code review
-                            .</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Role</span><br>
-                        <span class="md-text">You are a strict, senior backend architect.</span><br><br>
-                        <span class="md-h"># Workflow</span><br>
-                        <span class="md-text">When invoked, work through these in order:</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">**Security scan** — look for SQL injection and hard-coded
-                             credentials.</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">**Performance** — flag anything worse than O(N^2).</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">**Report** — present the suggested changes as a Markdown
-                             table.</span><br><br>
-                        <span class="md-h"># Rules</span><br>
-                        <span class="md-text">- Do **not** hand back a full rewrite.</span><br>
-                        <span class="md-text">- Give specific changes and the reasoning behind them.</span>
-                    </div>
+                    <pre class="code-window"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">Fires when the user pastes code or asks for a code review .</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Role</span>
+<span class="md-text">You are a strict, senior backend architect.</span>
+
+<span class="md-h"># Workflow</span>
+<span class="md-text">When invoked, work through these in order:</span>
+<span class="md-list">1.</span> <span class="md-text">**Security scan** — look for SQL injection and hard-coded credentials.</span>
+<span class="md-list">2.</span> <span class="md-text">**Performance** — flag anything worse than O(N^2).</span>
+<span class="md-list">3.</span> <span class="md-text">**Report** — present the suggested changes as a Markdown table.</span>
+
+<span class="md-h"># Rules</span>
+<span class="md-text">- Do **not** hand back a full rewrite.</span>
+<span class="md-text">- Give specific changes and the reasoning behind them.</span></code></pre>
                 </div>
             </div>
         </div>
@@ -1133,23 +1144,22 @@
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">Turns an error log in the conversation into a Linear
-                             issue.</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Objective</span><br>
-                        <span class="md-text">Analyse the error log and create a bug ticket via the `linear` MCP.</span><br><br>
-                        <span class="md-h"># Instructions</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">Extract from the log: the code, the timestamp, the likely cause.</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">Call the `linear_create_issue` tool.</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">Set the title to `[Bug] {error code}`
-                            .</span><br><br>
-                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
-                        <span class="md-text">- If `linear` is missing or the connection fails, **do not apologise**.</span><br>
-                        <span class="md-text">- Fall back: produce the bug report as Markdown for the user to paste in.</span>
-                    </div>
+                    <pre class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">Turns an error log in the conversation into a Linear issue.</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Objective</span>
+<span class="md-text">Analyse the error log and create a bug ticket via the `linear` MCP.</span>
+
+<span class="md-h"># Instructions</span>
+<span class="md-list">1.</span> <span class="md-text">Extract from the log: the code, the timestamp, the likely cause.</span>
+<span class="md-list">2.</span> <span class="md-text">Call the `linear_create_issue` tool.</span>
+<span class="md-list">3.</span> <span class="md-text">Set the title to `[Bug] {error code}` .</span>
+
+<span class="md-h"># Error Handling (Fallbacks)</span>
+<span class="md-text">- If `linear` is missing or the connection fails, **do not apologise**.</span>
+<span class="md-text">- Fall back: produce the bug report as Markdown for the user to paste in.</span></code></pre>
                 </div>
                 <div>
                     <h3>Multiple steps, and what to do when one fails</h3>

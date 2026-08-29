@@ -650,6 +650,19 @@
         width: 100%;
         min-height: 400px;
         word-wrap: break-word;
+        /* A `<pre>` now, not a `<div>` of `<br>`s (issue 264), so the newlines
+           in the markup are the line breaks and the element says "this is
+           code" to a screen reader. Two consequences to absorb:
+
+           `pre-wrap` rather than `pre`, because the default would stop the
+           long CJK lines wrapping and put the whole sample behind a horizontal
+           scrollbar — a visible regression for a change that is supposed to be
+           invisible.
+
+           `margin: 0` because a `<pre>` brings a browser default `1em 0` that
+           a `<div>` does not, and the layout around it was spaced without it. */
+        white-space: pre-wrap;
+        margin: 0;
     }
 
     .skills-guide-body .code-window .yaml-key {
@@ -1097,22 +1110,23 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="code-window">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">利用者がコード片を上げたとき、またはコードレビューを求めたときに起動する。</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Role</span><br>
-                        <span class="md-text">あなたは厳しく、経験を積んだバックエンドの設計者です。</span><br><br>
-                        <span class="md-h"># Workflow</span><br>
-                        <span class="md-text">起動したら、次の手順を順番どおりに実行してください：</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">**セキュリティの確認**：SQL インジェクションや、書き込まれたままのパスワードがないか見る。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">**性能の評価**：計算量が O(N^2) を超える書き方を指摘する。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">**報告を出す**：修正案を Markdown の表で示す。</span><br><br>
-                        <span class="md-h"># Rules</span><br>
-                        <span class="md-text">- 書き直した完全なコードを**渡さないこと**。</span><br>
-                        <span class="md-text">- 具体的な直し方と考え方だけを示すこと。</span>
-                    </div>
+                    <pre class="code-window"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">利用者がコード片を上げたとき、またはコードレビューを求めたときに起動する。</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Role</span>
+<span class="md-text">あなたは厳しく、経験を積んだバックエンドの設計者です。</span>
+
+<span class="md-h"># Workflow</span>
+<span class="md-text">起動したら、次の手順を順番どおりに実行してください：</span>
+<span class="md-list">1.</span> <span class="md-text">**セキュリティの確認**：SQL インジェクションや、書き込まれたままのパスワードがないか見る。</span>
+<span class="md-list">2.</span> <span class="md-text">**性能の評価**：計算量が O(N^2) を超える書き方を指摘する。</span>
+<span class="md-list">3.</span> <span class="md-text">**報告を出す**：修正案を Markdown の表で示す。</span>
+
+<span class="md-h"># Rules</span>
+<span class="md-text">- 書き直した完全なコードを**渡さないこと**。</span>
+<span class="md-text">- 具体的な直し方と考え方だけを示すこと。</span></code></pre>
                 </div>
             </div>
         </div>
@@ -1126,21 +1140,22 @@
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">会話の中のエラーログを、そのまま Linear の課題にする。</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Objective</span><br>
-                        <span class="md-text">エラーログを読み解き、`linear` の MCP を自分から使ってバグ票を立てる。</span><br><br>
-                        <span class="md-h"># Instructions</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">利用者の Error Log から取り出す：コード、時刻、考えられる原因。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">`linear_create_issue` を自分で呼ぶ。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">Title は `[Bug] {エラーコード}` の形にする。</span><br><br>
-                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
-                        <span class="md-text">- `linear` が見つからない、または接続できないとき、**謝らないこと**。</span><br>
-                        <span class="md-text">- そのまま切り替える：Markdown のバグ報告を出し、利用者に手で写してもらう。</span>
-                    </div>
+                    <pre class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">会話の中のエラーログを、そのまま Linear の課題にする。</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Objective</span>
+<span class="md-text">エラーログを読み解き、`linear` の MCP を自分から使ってバグ票を立てる。</span>
+
+<span class="md-h"># Instructions</span>
+<span class="md-list">1.</span> <span class="md-text">利用者の Error Log から取り出す：コード、時刻、考えられる原因。</span>
+<span class="md-list">2.</span> <span class="md-text">`linear_create_issue` を自分で呼ぶ。</span>
+<span class="md-list">3.</span> <span class="md-text">Title は `[Bug] {エラーコード}` の形にする。</span>
+
+<span class="md-h"># Error Handling (Fallbacks)</span>
+<span class="md-text">- `linear` が見つからない、または接続できないとき、**謝らないこと**。</span>
+<span class="md-text">- そのまま切り替える：Markdown のバグ報告を出し、利用者に手で写してもらう。</span></code></pre>
                 </div>
                 <div>
                     <h3>手数の多い流れと、失敗したときの逃げ道</h3>

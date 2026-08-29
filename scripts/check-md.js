@@ -22,7 +22,7 @@
 // success. Every one was found by a person reading `dist/`. A gate that only
 // asked "is the file there" would have passed all four.
 //
-// SEVEN ASSERTIONS, and the last is deliberately the reverse of the first —
+// NINE ASSERTIONS, and the last is deliberately the reverse of the first —
 // the same pairing `check:routes` uses, and for the same reason: an assertion
 // in one direction only describes whatever happened to exist on the day it was
 // written.
@@ -151,9 +151,64 @@ function main() {
       }
     }
 
-    // 7 — the HTML advertises the twin, and names the file that exists.
+    // 7 — EVERY `<pre>` IN `<main>` DECLARES ITSELF AS CODE.
+    //
+    // This is the assertion that replaced a rescue pass in the generator, and
+    // the reason it is worth more than the pass was. `htmd` needs `<pre><code>`
+    // to emit a fenced block; a lone `<pre>` says "keep this whitespace" and
+    // nothing about what the text is, so the converter treats it as prose —
+    // correctly, and catastrophically.
+    //
+    // FORTY-FIVE BLOCKS SHIPPED THAT WAY. `claude plugins install …` sat in the
+    // file as a sentence; a sample CLAUDE.md had its `## Agent behaviour`
+    // promoted into agent-dev-workflow's own heading hierarchy, so a model
+    // reading the outline saw a section that does not exist; and
+    // `--skill=&lt;name&gt;` decoded into running text as markup a renderer can
+    // swallow. Every gate was green, including the seven above it here — they
+    // ask whether HTML survived into the Markdown, never whether something that
+    // should have been code still is.
+    //
+    // Asserted on the HTML rather than by counting fences in the Markdown,
+    // because the HTML is where a person can fix it and the message can name
+    // the file they have to open.
     checked++;
     const html = path.join(DIST, route.path + ".html");
+    if (fs.existsSync(html)) {
+      const source = fs.readFileSync(html, "utf8");
+      const main = (/<main[\s\S]*?<\/main>/.exec(source) || [""])[0];
+
+      // EVERY offender, not the first. The rescue pass this replaced was itself
+      // shipped twice on one page, because a literal match found one of two
+      // samples and left the other escaped in all five locales while every gate
+      // stayed green. Stopping at the first hit rebuilds that exact trap.
+      for (const [, inner] of main.matchAll(/<pre(?:\s[^>]*)?>([\s\S]*?)<\/pre>/g)) {
+        if (!inner.trimStart().startsWith("<code")) {
+          fail(
+            route.path + ".html",
+            "pre without code",
+            `${JSON.stringify(inner.trim().slice(0, 40))} — a <pre> with no <code> converts as prose`
+          );
+        }
+      }
+
+      // AND THE SHAPE THAT WAS RESCUED BY THE OTHER DELETED PASS. `code-window`
+      // was a `<div>` of styled spans until issue 264; nothing about the class
+      // name stops it being one again, and a re-introduced `<div>` would convert
+      // to escaped prose exactly as twenty-five files once did. Without this the
+      // generator's claim that a gate replaced those passes is only half true.
+      for (const [tag] of main.matchAll(/<(\w+)[^>]*class="code-window"/g)) {
+        if (!/^<pre\b/.test(tag)) {
+          fail(
+            route.path + ".html",
+            "code-window is not a pre",
+            `${tag.trim()} — code-window names a code block, and a <div> is not one`
+          );
+        }
+      }
+    }
+
+    // 8 — the HTML advertises the twin, and names the file that exists.
+    checked++;
     if (!fs.existsSync(html)) {
       fail(rel, "advertised", `${route.path}.html is missing — nothing can advertise the twin`);
       continue;
@@ -170,7 +225,7 @@ function main() {
     }
   }
 
-  // 8 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
+  // 9 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
   // that can see a twin left behind by a route that was renamed: the loop above
   // walks the current route table, so a stale file is invisible to it while
   // still being served, still being advertised by nothing, and still being
@@ -202,7 +257,7 @@ function main() {
 
   console.log(
     `\n${found.length} Markdown twins hold, across ${checked} assertions ` +
-      `— front matter, body, markup, links and the HTML that advertises them.`
+      `— front matter, body, markup, links, code blocks and the HTML that advertises them.`
   );
 }
 

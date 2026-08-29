@@ -246,12 +246,12 @@
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-2">Route A — subscribe</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>claude plugins install mattpocock-skills</code></pre>
                     <p class="leading-relaxed">Or, inside a session, <code>/plugin install mattpocock-skills</code>. It is on the official marketplace, so no source to add first, and updates arrive on their own.<strong>The cost: read-only. You cannot edit it.</strong></p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">Route B — editable</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills</code></pre>
                     <p class="leading-relaxed">It asks which skills to install and onto which agents. <strong>Make sure <code>setup-matt-pocock-skills</code></strong> is ticked. The files land in your repo as ordinary files you own, editable however you like. Update it yourself with <code>npx skills update</code>.</p>
                 </div>
                 <div class="border-l border-line pl-6">
@@ -260,7 +260,7 @@
                 </div>
                 <div>
                     <p class="eyebrow mb-2">Trying the beta bucket</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</code></pre>
                     <p class="leading-relaxed">The plugin does not ship these. At the time of writing the in-progress bucket holds <code>loop-me</code>, <code>writing-beats</code>, <code>writing-fragments</code>, <code>writing-shape</code>, <code>claude-handoff</code>, <code>setup-ts-deep-modules</code>. No documentation pages, and liable to change or vanish. There is also a misc bucket outside the plugin: <code>git-guardrails-claude-code</code> (a hook that blocks dangerous git commands), <code>setup-pre-commit</code>, <code>migrate-to-shoehorn</code>, <code>scaffold-exercises</code>.</p>
                 </div>
             </div>
@@ -322,13 +322,13 @@
                 <div>
                     <p class="eyebrow mb-2">One: it does not create your labels</p>
                     <p class="mb-3"><code>triage-labels.md</code> is only a mapping table. On a fresh GitHub repo those labels do not exist, so applying one fails. Create them once yourself:</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>gh label create needs-triage
 gh label create needs-info
 gh label create ready-for-agent
 gh label create ready-for-human
 gh label create wontfix
 gh label create bug
-gh label create enhancement</pre>
+gh label create enhancement</code></pre>
                     <p class="mt-3">To use <code>wayfinder</code>, five more have to exist first (<code>gh</code> fails outright on a label that is not there): <code>wayfinder:map</code>, <code>wayfinder:grilling</code>, <code>wayfinder:prototype</code>, <code>wayfinder:research</code>, <code>wayfinder:task</code>.</p>
                 </div>
                 <div>
@@ -428,7 +428,7 @@ gh label create enhancement</pre>
 
             <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — grill a vague idea into decisions</h3>
             <div class="space-y-6 leading-relaxed">
-                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs I want to add a contract expiry reminder</pre>
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>/grill-with-docs I want to add a contract expiry reminder</code></pre>
                 <p>Start a clean conversation and <strong>turn plan mode off</strong>. Plan mode pushes the agent to produce a plan quickly, which is the opposite of staying in the question.</p>
                 <div>
                     <p class="eyebrow mb-2">What happens</p>
@@ -436,10 +436,10 @@ gh label create enhancement</pre>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">How to answer</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 yes
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>1 yes
 2 the second one
 3 no — our contracts have no partial termination
-4 I do not know</pre>
+4 I do not know</code></pre>
                     <p class="mt-3"><strong>The biggest failure mode is passivity.</strong> Answer "agreed" forty times and you get a plan the agent wrote and you nodded at — it feels productive because it is long. But nothing was actually decided, and the result carries a certainty it did not earn. Being active means this: when a question is pitched shallower than you need, <strong>push back</strong>; when the scope is drifting, <strong>say so</strong>; and when you genuinely do not know, say so — that is a real answer.</p>
                 </div>
                 <div>
@@ -559,7 +559,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — one ticket, one session</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/implement https://github.com/you/repo/issues/12</code></pre>
             <div class="border-l border-line pl-6 mb-8">
                 <p class="eyebrow mb-2">Why the full reference matters</p>
                 <p class="leading-relaxed"><code>/implement #2</code>’s <code>#2</code> resolves against <strong>any numbered list the agent can see</strong> — and in a fresh session that might be a todo file or a checklist rather than the tracker you configured. It resolves confidently and <strong>does not fail closed</strong>, so you will not notice immediately when it is wrong. Pass the full URL or <code>owner/repo#2</code>, and have it read the title back before starting.</p>
@@ -648,7 +648,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — the two-axis review</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/code-review main</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>You must supply the fixed point.</strong> Without one it asks rather than guesses, and it verifies the ref resolves and the diff is non-empty before spawning any sub-agent.
             </p>
@@ -1189,7 +1189,7 @@ gh label create enhancement</pre>
             <p class="leading-relaxed mb-6">
                 This is customisation through the supported route — <strong>edits to a skill file get overwritten; these do not</strong>. Copy the whole block into your <code>CLAUDE.md</code> or <code>AGENTS.md</code>.
             </p>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>## Agent behaviour
 
 - When grilling, ask one question at a time.
 - Do not start implementing without my explicit permission.
@@ -1200,7 +1200,7 @@ gh label create enhancement</pre>
 - When a skill asserts something about another skill's behaviour,
   open that skill's SKILL.md before acting on it.
 - code-review sub-agents must not invoke /code-review or spawn
-  additional agents; perform the review directly.</pre>
+  additional agents; perform the review directly.</code></pre>
             <p class="eyebrow mt-8 mb-3">What each line prevents</p>
             <ul class="space-y-3 leading-relaxed">
                 <li><strong>One question at a time</strong>: restores the single-question rhythm. Recommended for anyone reading slowly, working in a second language, or who needs the scaffolding to focus.</li>

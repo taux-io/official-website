@@ -243,12 +243,12 @@
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-2">路线 A — 订阅</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>claude plugins install mattpocock-skills</code></pre>
                     <p class="leading-relaxed">或在 session 内打 <code>/plugin install mattpocock-skills</code>。已在官方 marketplace，不用先加来源，更新自动到。<strong>代价：唯读，你不能改。</strong></p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">路线 B — 可改版</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills</code></pre>
                     <p class="leading-relaxed">会问你要装哪些 skill、装到哪些 agent 上。<strong>一定要勾 <code>setup-matt-pocock-skills</code>。</strong>文档以「你拥有的普通文档」写进 repo，可随便改；要更新时自己跑 <code>npx skills update</code>。</p>
                 </div>
                 <div class="border-l border-line pl-6">
@@ -257,7 +257,7 @@
                 </div>
                 <div>
                     <p class="eyebrow mb-2">想玩 beta</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</code></pre>
                     <p class="leading-relaxed">plugin 不会给你这些。撰稿时的 in-progress bucket 有 <code>loop-me</code>、<code>writing-beats</code>、<code>writing-fragments</code>、<code>writing-shape</code>、<code>claude-handoff</code>、<code>setup-ts-deep-modules</code>——没有文档页、随时可能改掉或消失。另有一个不在 plugin 内的 misc bucket：<code>git-guardrails-claude-code</code>（用 hook 挡危险 git 指令）、<code>setup-pre-commit</code>、<code>migrate-to-shoehorn</code>、<code>scaffold-exercises</code>。</p>
                 </div>
             </div>
@@ -319,13 +319,13 @@
                 <div>
                     <p class="eyebrow mb-2">一、它不会帮你建 label</p>
                     <p class="mb-3"><code>triage-labels.md</code> 只是「对照表」。全新的 GitHub repo 上那些 label 根本不存在，贴标签就会失败。自己先建一次：</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>gh label create needs-triage
 gh label create needs-info
 gh label create ready-for-agent
 gh label create ready-for-human
 gh label create wontfix
 gh label create bug
-gh label create enhancement</pre>
+gh label create enhancement</code></pre>
                     <p class="mt-3">要用 <code>wayfinder</code> 的话，另外五个也要先建（<code>gh</code> 遇到不存在的 label 是直接失败）：<code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
                 </div>
                 <div>
@@ -425,7 +425,7 @@ gh label create enhancement</pre>
 
             <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — 把模糊的想法烤成决策</h3>
             <div class="space-y-6 leading-relaxed">
-                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs 我想加一个合约到期提醒功能</pre>
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>/grill-with-docs 我想加一个合约到期提醒功能</code></pre>
                 <p>开一个干净的对话，<strong>关掉 plan mode</strong>。plan mode 会催 agent 赶快产出计划，那正好和「保持在提问状态」相反。</p>
                 <div>
                     <p class="eyebrow mb-2">会发生什么</p>
@@ -433,10 +433,10 @@ gh label create enhancement</pre>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">你该怎么回</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 是
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>1 是
 2 选第二个
 3 不要，理由是我们的合约没有部分终止
-4 我不知道</pre>
+4 我不知道</code></pre>
                     <p class="mt-3"><strong>最大的失败模式是被动。</strong>连答四十个「同意」，出来一份 agent 写的、你点头过的计划——感觉很有生产力，因为它很长。但什么都没被真正决定，而结果带着它没赚到的确定性。主动的意思是：问得比你需要的精度还浅时<strong>推回去</strong>；范围在漂时<strong>讲出来</strong>；真的不知道就答「我不知道」，这是真的答案。</p>
                 </div>
                 <div>
@@ -556,7 +556,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — 一票一个 session</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/implement https://github.com/you/repo/issues/12</code></pre>
             <div class="border-l border-line pl-6 mb-8">
                 <p class="eyebrow mb-2">为什么要写完整 reference</p>
                 <p class="leading-relaxed"><code>/implement #2</code> 的 <code>#2</code> 是对<strong>「agent 看得到的任何编号清单」</strong>解析的——在新 session 里那可能是一个 todo 档或 checklist，而不是你设置的 tracker。而且它解析得很自信、<strong>不会 fail-closed</strong>，所以错了你不会马上发现。传完整 URL 或 <code>owner/repo#2</code>，并要它把标题念回来确认再开始。</p>
@@ -645,7 +645,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — 双轴审查</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/code-review main</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>固定点你必须提供</strong>；不给它会问你，不会乱猜，而且会先验证 ref 解得出来、diff 非空，才生 sub-agent。
             </p>
@@ -1186,7 +1186,7 @@ gh label create enhancement</pre>
             <p class="leading-relaxed mb-6">
                 这是「用官方管道客制」的方式——<strong>改 skill 档会被覆盖，这里不会</strong>。整段可以直接复制进你的 <code>CLAUDE.md</code> 或 <code>AGENTS.md</code>。
             </p>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>## Agent behaviour
 
 - When grilling, ask one question at a time.
 - Do not start implementing without my explicit permission.
@@ -1197,7 +1197,7 @@ gh label create enhancement</pre>
 - When a skill asserts something about another skill's behaviour,
   open that skill's SKILL.md before acting on it.
 - code-review sub-agents must not invoke /code-review or spawn
-  additional agents; perform the review directly.</pre>
+  additional agents; perform the review directly.</code></pre>
             <p class="eyebrow mt-8 mb-3">每一行挡的是什么</p>
             <ul class="space-y-3 leading-relaxed">
                 <li><strong>一次一题</strong>：换回单题节奏。读得慢、用第二语言、或需要专注鹰架的人都推荐。</li>

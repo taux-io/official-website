@@ -650,6 +650,19 @@
         width: 100%;
         min-height: 400px;
         word-wrap: break-word;
+        /* A `<pre>` now, not a `<div>` of `<br>`s (issue 264), so the newlines
+           in the markup are the line breaks and the element says "this is
+           code" to a screen reader. Two consequences to absorb:
+
+           `pre-wrap` rather than `pre`, because the default would stop the
+           long CJK lines wrapping and put the whole sample behind a horizontal
+           scrollbar — a visible regression for a change that is supposed to be
+           invisible.
+
+           `margin: 0` because a `<pre>` brings a browser default `1em 0` that
+           a `<div>` does not, and the layout around it was spaced without it. */
+        white-space: pre-wrap;
+        margin: 0;
     }
 
     .skills-guide-body .code-window .yaml-key {
@@ -1103,25 +1116,23 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="code-window">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">當使用者上傳程式碼片段，或要求 Code Review
-                            時觸發。</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Role</span><br>
-                        <span class="md-text">你是一位嚴格且資深的後端架構師。</span><br><br>
-                        <span class="md-h"># Workflow</span><br>
-                        <span class="md-text">被觸發時，請嚴格按順序執行以下步驟：</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">**安全性掃描**：檢查是否有 SQL Injection 或 Hardcoded
-                            密碼。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">**效能評估**：標出時間複雜度超過 O(N^2) 的寫法。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">**產出報告**：以 Markdown
-                            表格呈現修改建議。</span><br><br>
-                        <span class="md-h"># Rules</span><br>
-                        <span class="md-text">- 絕對**不要**直接給出完整重寫的程式碼。</span><br>
-                        <span class="md-text">- 只提供具體的修改指引與思路。</span>
-                    </div>
+                    <pre class="code-window"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">當使用者上傳程式碼片段，或要求 Code Review 時觸發。</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Role</span>
+<span class="md-text">你是一位嚴格且資深的後端架構師。</span>
+
+<span class="md-h"># Workflow</span>
+<span class="md-text">被觸發時，請嚴格按順序執行以下步驟：</span>
+<span class="md-list">1.</span> <span class="md-text">**安全性掃描**：檢查是否有 SQL Injection 或 Hardcoded 密碼。</span>
+<span class="md-list">2.</span> <span class="md-text">**效能評估**：標出時間複雜度超過 O(N^2) 的寫法。</span>
+<span class="md-list">3.</span> <span class="md-text">**產出報告**：以 Markdown 表格呈現修改建議。</span>
+
+<span class="md-h"># Rules</span>
+<span class="md-text">- 絕對**不要**直接給出完整重寫的程式碼。</span>
+<span class="md-text">- 只提供具體的修改指引與思路。</span></code></pre>
                 </div>
             </div>
         </div>
@@ -1135,23 +1146,22 @@
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">協助將對話中的錯誤日誌直接轉換為 Linear
-                            任務。</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Objective</span><br>
-                        <span class="md-text">分析錯誤日誌，並主動使用 `linear` MCP 建立 Bug Ticket。</span><br><br>
-                        <span class="md-h"># Instructions</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">從使用者的 Error Log 中提取：代碼、時間、可能原因。</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">自動呼叫 `linear_create_issue` 工具。</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">將 Title 設定為 `[Bug] {錯誤代碼}`
-                            格式。</span><br><br>
-                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
-                        <span class="md-text">- 若找不到 `linear` 工具或連線失敗，**請勿道歉**。</span><br>
-                        <span class="md-text">- 直接回退：產出 Markdown Bug 報告，請使用者手動複製。</span>
-                    </div>
+                    <pre class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">協助將對話中的錯誤日誌直接轉換為 Linear 任務。</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Objective</span>
+<span class="md-text">分析錯誤日誌，並主動使用 `linear` MCP 建立 Bug Ticket。</span>
+
+<span class="md-h"># Instructions</span>
+<span class="md-list">1.</span> <span class="md-text">從使用者的 Error Log 中提取：代碼、時間、可能原因。</span>
+<span class="md-list">2.</span> <span class="md-text">自動呼叫 `linear_create_issue` 工具。</span>
+<span class="md-list">3.</span> <span class="md-text">將 Title 設定為 `[Bug] {錯誤代碼}` 格式。</span>
+
+<span class="md-h"># Error Handling (Fallbacks)</span>
+<span class="md-text">- 若找不到 `linear` 工具或連線失敗，**請勿道歉**。</span>
+<span class="md-text">- 直接回退：產出 Markdown Bug 報告，請使用者手動複製。</span></code></pre>
                 </div>
                 <div>
                     <h3>多步驟與錯誤回退處理</h3>
