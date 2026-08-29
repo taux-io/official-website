@@ -152,3 +152,45 @@
 /:home.md
   Content-Type: text/markdown; charset=utf-8
   Link: <https://taux.io/:home>; rel="canonical"
+
+# THE SAME MISSING CHARSET, ONE FILE LATER, AND IT WAS SHIPPING TOO.
+#
+# The block above was written for `.md` and stopped there. `llms.txt` is served
+# `text/plain` with no charset by the same production layer that strips it from
+# everything else — so the file this site's whole GEO argument is aimed at read
+# `# TauX æ‹“æ€ç§‘æŠ€` in a browser from the day it was written. Measured
+# against the deployed site, not guessed.
+#
+# THE COUNT, WITH THE RANGES NAMED SO THERE IS ONLY ONE WAY TO DO IT. Of 208
+# lines, 142 carry non-ASCII: 114 carry Han, 132 counting Hangul as well, and
+# the remaining ten are English lines holding a `→` or a `—`.
+#
+# ⚠️ THIS SAID "142 OF ITS 208 LINES ARE CHINESE", which is the non-ASCII count
+# wearing the wrong name. The paragraph below congratulates itself for catching
+# exactly that conflation in robots.txt, three lines after committing it here,
+# and both were labelled "measured". Two reviewers then produced two different
+# CJK figures from two different range sets, which is why the ranges are spelt
+# out above rather than left to whoever counts next.
+#
+# ROBOTS.TXT IS IN HERE TOO, and the first read of this was that it did not need
+# to be. It carries seven non-ASCII lines — `→`, `§`, `—` in the comments — so
+# "it is pure ASCII" was an assumption, and counting took one command. The harm
+# there is only cosmetic, since no crawler reads the prose, but there is no
+# version of "serve half the text files with the wrong charset" that is worth
+# defending.
+#
+# ONE GLOB RATHER THAN FOUR RULES, and that is measured. Cloudflare's `*`
+# crosses directory separators — the comment above the icon rules says so, where
+# it is a hazard — so `/*.txt` reaches `/static/llms.txt` as readily as
+# `/llms.txt`. Verified against `wrangler dev`: all four files, one
+# `Content-Type` header each, and `.md` and HTML untouched.
+
+# WHERE THE GUARD IS, because it is not where you would look. `contract`
+# asserts these four files, but only in its `AGAINST_ORIGIN` branch: measured,
+# `wrangler dev` supplies the charset by itself, so an assertion that ran
+# locally would pass whether or not this rule existed. Run
+# `BASE_URL=https://taux.io npm run contract` after a deploy that touches this
+# block; `zone.yml` also runs it daily.
+
+/*.txt
+  Content-Type: text/plain; charset=utf-8
