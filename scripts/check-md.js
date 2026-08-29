@@ -22,10 +22,18 @@
 // success. Every one was found by a person reading `dist/`. A gate that only
 // asked "is the file there" would have passed all four.
 //
-// NINE ASSERTIONS, and the last is deliberately the reverse of the first —
+// ELEVEN ASSERTIONS, and the last is deliberately the reverse of the first —
 // the same pairing `check:routes` uses, and for the same reason: an assertion
 // in one direction only describes whatever happened to exist on the day it was
 // written.
+//
+// TWO OF THE ELEVEN ARRIVED AFTER A PERSON READ EIGHTEEN LINES. Nine assertions
+// and 1564 production assertions were green when someone opened
+// `dist/ja-JP/about.md` for the first time and found, inside the first page of
+// it, a heading whose two halves had been glued into `with AI AI を` and a
+// decorative pill sitting above it as though it were a sentence. Neither is
+// invisible; nobody had looked. That is the argument for the two below, and
+// for the audit that follows them.
 //
 // This runs offline against `dist/`, in the fast build job. Its two siblings in
 // the audit job — `contract`'s Content-Type and canonical assertions — need a
@@ -64,6 +72,35 @@ const STRUCTURAL_RE = new RegExp(`</?(?:${STRUCTURAL.join("|")})[\\s>/]`, "i");
 // copied elsewhere as a link to nothing — and `mailto:` because seventy of them
 // are the contact address and are absolute already.
 const LINK_RE = /\]\(([^)\s]+)/g;
+
+// The separator that keeps a bilingual heading readable.
+//
+// `<h1>` and friends are built from two spans — `display-lead` carries the
+// English, `display-sub` the locale's own words — laid out as two lines by CSS.
+// Markdown has no CSS, and a Markdown heading is one line, so the two halves
+// arrive touching:
+//
+//     # Empowering Business with AI AI を、企業が本当に使える力に
+//
+// A hundred and sixty headings across eighty files shipped like that. The em
+// dash is what separates them once nothing is laying them out.
+//
+// IT CANNOT BE FIXED BY DROPPING THE ENGLISH HALF, which was the first plan.
+// en-US has no `display-sub` at all — forty of its headings are `display-lead`
+// alone — so dropping the lead leaves twenty English pages with no heading. The
+// measurement that caught this is the reason all five locales get read, not one.
+const HEADING_SEPARATOR = " \u2014 ";
+
+// Text as `htmd` will see it once the markup is gone. Verified against the
+// build: the only tag that ever appears inside these spans is `<br>`, and no
+// HTML entity does — so this is enough, and honest about being enough.
+function flatten(markup) {
+  return markup
+    .replace(/<br[^>]*>/g, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 // A deliberately small front-matter reader rather than a YAML dependency.
 //
@@ -223,9 +260,56 @@ function main() {
     } else if (!fs.existsSync(path.join(DIST, advert[1].replace(ORIGIN, "")))) {
       fail(rel, "advertised", `advertises ${advert[1]}, which is not a file`);
     }
+
+
+    // 9 — A BILINGUAL HEADING KEEPS ITS TWO HALVES APART.
+    //
+    // Found by reading `dist/ja-JP/about.md`, eighteen lines in, with every
+    // other gate green. `htmd` joins two sibling spans with a single space,
+    // which is right for a sentence and wrong for two languages: the reader
+    // gets `with AI AI を`, and the H1 is the strongest signal in a file whose
+    // whole purpose is to be quoted by a model.
+    //
+    // ASSERTED POSITIVELY — the separated form must be present — rather than by
+    // banning the glued form. The negative would pass for a heading that lost a
+    // half entirely, which is the failure mode of the fix that was nearly
+    // shipped instead of this one.
+    checked++;
+    const markup = fs.readFileSync(html, "utf8");
+    const region = (/<main[\s\S]*?<\/main>/.exec(markup) || [""])[0];
+    const lines = body.split("\n");
+    for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
+      const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+      const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+      if (!lead || !sub) continue;
+      const want = flatten(lead[1]) + HEADING_SEPARATOR + flatten(sub[1]);
+      if (!body.includes(want)) {
+        fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
+      }
+    }
+
+    // 10 — NO DECORATIVE PILL SURVIVES AS PROSE.
+    //
+    // `class="tag …"` is the small rounded chip above a heading. On the page it
+    // reads as a chip because it is drawn as one; in Markdown it lands as a bare
+    // line above the H1, indistinguishable from a sentence the page is making.
+    // Sixty of them shipped that way across sixty files.
+    //
+    // NOT ALL OF THEM ARE ENGLISH CHROME, which the decision to drop them
+    // originally assumed: ten carry localised text (`GEO 技術觀點`,
+    // `GEO の技術メモ`, `GEO 기술 노트`). They go anyway — the reason is that a
+    // chip is not a sentence, not that nobody translated it — and the front
+    // matter already carries the title and description a citation needs.
+    checked++;
+    for (const [, , pill] of region.matchAll(/<(div|span)\s+class="tag[\s"][^>]*>([\s\S]*?)<\/\1>/g)) {
+      const text = flatten(pill);
+      if (text && lines.some((line) => line.trim() === text)) {
+        fail(rel, "decorative pill", `${JSON.stringify(text)} stands as its own line — a chip is not a sentence`);
+      }
+    }
   }
 
-  // 9 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
+  // 11 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
   // that can see a twin left behind by a route that was renamed: the loop above
   // walks the current route table, so a stale file is invisible to it while
   // still being served, still being advertised by nothing, and still being
@@ -257,7 +341,8 @@ function main() {
 
   console.log(
     `\n${found.length} Markdown twins hold, across ${checked} assertions ` +
-      `— front matter, body, markup, links, code blocks and the HTML that advertises them.`
+      `— front matter, body, markup, links, code blocks, bilingual headings, ` +
+      `decorative chips, and the HTML that advertises them.`
   );
 }
 

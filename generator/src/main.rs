@@ -442,6 +442,158 @@ fn flatten_heading_breaks(html: &str) -> String {
     out
 }
 
+/// The separator between the two halves of a bilingual heading.
+const HEADING_SEPARATOR: &str = " \u{2014} ";
+
+/// Puts that separator between `display-lead` and `display-sub`.
+///
+/// FOUND BY READING `dist/ja-JP/about.md`, EIGHTEEN LINES IN, with nine
+/// `check:md` assertions and 1564 production assertions green. Headings are
+/// built from two spans — the English lead and the locale's own words — and CSS
+/// lays them out as two lines. Markdown has no CSS and an ATX heading is one
+/// line, so `htmd` joins the siblings with the single space it would use inside
+/// a sentence:
+///
+/// ```text
+///   <h1><span class="display-lead">Empowering Business with AI</span>
+///       <span class="display-sub">AI を、企業が本当に使える力に</span></h1>
+///
+///   # Empowering Business with AI AI を、企業が本当に使える力に
+/// ```
+///
+/// A HUNDRED AND SIXTY HEADINGS ACROSS EIGHTY FILES. Not only the H1 — the same
+/// pair builds the section headings, so the first count taken (eighty, one per
+/// file) was of first headings and was wrong by half.
+///
+/// ⚠️ THE OBVIOUS FIX IS THE WRONG ONE. Dropping the English half and keeping
+/// the local one reads better in four locales and destroys the fifth: en-US has
+/// no `display-sub` at all, so forty of its headings are a lead alone and would
+/// be left with nothing. Measuring one locale would have shipped that.
+///
+/// Inserting a text node rather than rewriting the spans keeps this a pass over
+/// markup, like the two beside it, and leaves the attribute layer alone.
+fn separate_display_halves(html: &str) -> String {
+    let mut out = String::with_capacity(html.len() + 32);
+    let mut rest = html;
+    loop {
+        let Some((at, level)) = (1..=6)
+            .filter_map(|n| rest.find(&format!("<h{n}")).map(|i| (i, n)))
+            .min_by_key(|(i, _)| *i)
+        else {
+            break;
+        };
+        let Some(end) = rest[at..].find(&format!("</h{level}>")).map(|i| at + i) else {
+            break;
+        };
+        out.push_str(&rest[..at]);
+        out.push_str(&separate_within(&rest[at..end]));
+        rest = &rest[end..];
+    }
+    out.push_str(rest);
+    out
+}
+
+/// The body of the pass above, over one heading.
+///
+/// A sub with no lead before it is left alone: it is a heading in one language,
+/// and a leading separator would be noise.
+fn separate_within(heading: &str) -> String {
+    let mut out = String::with_capacity(heading.len() + 8);
+    let mut rest = heading;
+    let mut seen_lead = false;
+    while let Some(at) = rest.find("display-") {
+        let kind = &rest[at + 8..];
+        if kind.starts_with("lead") {
+            seen_lead = true;
+            out.push_str(&rest[..at + 8]);
+            rest = kind;
+            continue;
+        }
+        if !kind.starts_with("sub") || !seen_lead {
+            out.push_str(&rest[..at + 8]);
+            rest = kind;
+            continue;
+        }
+        // Back up to the `<` that opens this span, so the separator lands
+        // between the two elements rather than inside the second one.
+        let Some(open) = rest[..at].rfind('<') else {
+            out.push_str(&rest[..at + 8]);
+            rest = kind;
+            continue;
+        };
+        out.push_str(&rest[..open]);
+        out.push_str(HEADING_SEPARATOR);
+        out.push_str(&rest[open..at + 8]);
+        rest = kind;
+        seen_lead = false;
+    }
+    out.push_str(rest);
+    out
+}
+
+/// Removes the decorative chip that sits above a heading.
+///
+/// `class="tag …"` draws a small rounded pill. On the page its shape says it is
+/// a label; in Markdown there is no shape, so it lands as a bare line above the
+/// H1 and reads as a sentence the page is making. Sixty of them, across sixty
+/// files, shipped that way.
+///
+/// ⚠️ THE ARGUMENT FOR DROPPING THEM WAS PARTLY FALSE AS FIRST MADE. It said
+/// they are English chrome nobody ever translated; ten of the sixty carry
+/// localised text (`GEO 技術觀點`, `GEO の技術メモ`, `GEO 기술 노트`). They go
+/// anyway, but for the surviving reason: a chip is not a sentence, and the front
+/// matter already carries the title and description a citation needs.
+///
+/// WHY NOT `skip_tags`. `htmd` skips by tag name, and these are ordinary `<div>`
+/// and `<span>` — the whole page is made of those. The class is the only thing
+/// that identifies them, and only the markup layer can see it.
+///
+/// Depth-counted rather than matched to the first close tag. Nothing nests one
+/// inside another today; nothing stops a chip gaining a wrapper tomorrow, and
+/// the failure would be a silently truncated page rather than a build error.
+fn drop_tag_pills(html: &str) -> String {
+    let mut out = String::with_capacity(html.len());
+    let mut rest = html;
+    'scan: loop {
+        let Some((at, name)) = ["div", "span"]
+            .iter()
+            .filter_map(|n| rest.find(&format!("<{n} class=\"tag")).map(|i| (i, *n)))
+            .min_by_key(|(i, _)| *i)
+        else {
+            break;
+        };
+        let open = format!("<{name}");
+        let close = format!("</{name}>");
+        let mut depth = 1usize;
+        let mut cursor = at + open.len();
+        loop {
+            let next_open = rest[cursor..].find(&open).map(|i| cursor + i);
+            let Some(next_close) = rest[cursor..].find(&close).map(|i| cursor + i) else {
+                // Unbalanced markup. Leaving the chip in place is a visible
+                // defect; swallowing the rest of the page is not.
+                break 'scan;
+            };
+            match next_open {
+                Some(o) if o < next_close => {
+                    depth += 1;
+                    cursor = o + open.len();
+                }
+                _ => {
+                    depth -= 1;
+                    cursor = next_close + close.len();
+                    if depth == 0 {
+                        break;
+                    }
+                }
+            }
+        }
+        out.push_str(&rest[..at]);
+        rest = &rest[cursor..];
+    }
+    out.push_str(rest);
+    out
+}
+
 /// Rewrites the URLs in `<main>` so that they still resolve once the Markdown
 /// has been copied somewhere else.
 ///
@@ -565,7 +717,11 @@ fn main_content(html: &str) -> Result<&str, Box<dyn std::error::Error>> {
 /// green, which is the shape of silent failure this repository's notes open by
 /// naming.
 fn markdown_body(html: &str, canonical: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let prepared = absolutise(&flatten_heading_breaks(main_content(html)?), canonical);
+    let main = main_content(html)?;
+    let prepared = absolutise(
+        &separate_display_halves(&drop_tag_pills(&flatten_heading_breaks(main))),
+        canonical,
+    );
     let converter = HtmlToMarkdown::builder()
         .skip_tags(vec!["svg", "script", "style", "noscript"])
         .build();
@@ -1436,6 +1592,43 @@ mod tests {
     // does not exist. The markup declares itself now (issue 264), so the
     // rescue is gone; the property it protected is not optional, and this is
     // what still asserts it of the conversion itself.
+    // THE THREE BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
+    // positive cases — a bilingual heading that separates, a chip that goes —
+    // are asserted over all hundred real files by assertions 9 and 10 there,
+    // which is a stronger statement than any synthetic string makes. These are
+    // the branches no page exercises today, where the first sign of a mistake
+    // would be a silently shortened page rather than a red build.
+
+    #[test]
+    fn a_heading_in_one_language_gets_no_separator() {
+        // en-US has forty of these: a lead with no sub after it. A separator
+        // here would be a dangling em dash on twenty English pages.
+        let html = r#"<h2><span class="display-lead">Our Mission</span></h2>"#;
+        assert_eq!(separate_display_halves(html), html);
+    }
+
+    #[test]
+    fn a_sub_with_no_lead_before_it_is_left_alone() {
+        let html = r#"<h2><span class="display-sub">核心使命</span></h2>"#;
+        assert_eq!(separate_display_halves(html), html);
+    }
+
+    #[test]
+    fn a_pill_takes_its_nested_markup_with_it() {
+        // Every chip that carries the little dot is a `<div>` holding a
+        // `<span>`, so no chip nests inside its own tag name today. Matching the
+        // first close tag would work until one does, and would then eat the rest
+        // of the page rather than fail.
+        let html = r#"<p>before</p><div class="tag mb-6"><div class="dot"></div> Label</div><p>after</p>"#;
+        assert_eq!(drop_tag_pills(html), "<p>before</p><p>after</p>");
+    }
+
+    #[test]
+    fn unbalanced_markup_keeps_the_chip_rather_than_swallowing_the_page() {
+        let html = r#"<div class="tag mb-6">Label<p>everything after</p>"#;
+        assert_eq!(drop_tag_pills(html), html);
+    }
+
     #[test]
     fn markdown_inside_a_pre_does_not_become_document_structure() {
         let html = "<main><h2>Real</h2><pre><code>## Fake heading\n- item</code></pre></main>";

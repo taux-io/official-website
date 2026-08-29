@@ -70,7 +70,7 @@ npm run diff <a> <b>         # 像素比對
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡
 - **check:classes** —— 沒有任何類別產生不出 CSS
-- **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、殘留標記、連結、程式碼區塊，以及 HTML 有沒有指向它們。沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西
+- **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、殘留標記、連結、程式碼區塊、雙語標題的兩半有沒有分開、裝飾藥丸有沒有變成內文，以及 HTML 有沒有指向它們。**十一道斷言、1001 條檢查。**沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西。⚠️ 最後兩道是**有人讀了十八行**才加的：九道斷言與 1564 條 production 斷言全綠的時候，`dist/ja-JP/about.md` 的第一頁裡有一個兩半黏在一起的標題（`with AI AI を`，一百六十個）與一個當成句子的裝飾藥丸（六十個）。兩者都不隱蔽，只是沒有人看
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）
