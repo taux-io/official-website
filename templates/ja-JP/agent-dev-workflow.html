@@ -231,12 +231,12 @@
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-2">ルート A — 購読</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">claude plugins install mattpocock-skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>claude plugins install mattpocock-skills</code></pre>
                     <p class="leading-relaxed">または session 内で <code>/plugin install mattpocock-skills</code>と打ちます。すでに公式 marketplace にあるので、ソースを先に追加する必要はなく、更新も自動で届きます。<strong>代償：読み取り専用で、手を入れられません。</strong></p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">ルート B — 手を入れられる版</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills</code></pre>
                     <p class="leading-relaxed">どの skill を入れるか、どの agent に入れるかを聞かれます。<strong>必ずチェックすべきなのは <code>setup-matt-pocock-skills</code>。</strong>ファイルは「自分が所有する普通のファイル」として repo に書き込まれ、自由に変更できます。更新したいときは自分で <code>npx skills update</code>。</p>
                 </div>
                 <div class="border-l border-line pl-6">
@@ -245,7 +245,7 @@
                 </div>
                 <div>
                     <p class="eyebrow mb-2">beta を試したい人へ</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3">npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</pre>
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills --skill=&lt;name&gt;</code></pre>
                     <p class="leading-relaxed">plugin ではこれらは手に入りません。執筆時点の in-progress bucket には <code>loop-me</code>、<code>writing-beats</code>、<code>writing-fragments</code>、<code>writing-shape</code>、<code>claude-handoff</code>、<code>setup-ts-deep-modules</code>があります——ドキュメントページはなく、いつ変わっても消えてもおかしくありません。plugin に入らない misc bucket もあります：<code>git-guardrails-claude-code</code>（hook で危険な git コマンドを止める）、<code>setup-pre-commit</code>、<code>migrate-to-shoehorn</code>、<code>scaffold-exercises</code>。</p>
                 </div>
             </div>
@@ -301,13 +301,13 @@
                 <div>
                     <p class="eyebrow mb-2">一、label は作ってくれません</p>
                     <p class="mb-3"><code>triage-labels.md</code> は「対照表」にすぎません。新しい GitHub repo にはそれらの label がそもそも存在せず、貼ろうとすると失敗します。まず自分で一度作ります：</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">gh label create needs-triage
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>gh label create needs-triage
 gh label create needs-info
 gh label create ready-for-agent
 gh label create ready-for-human
 gh label create wontfix
 gh label create bug
-gh label create enhancement</pre>
+gh label create enhancement</code></pre>
                     <p class="mt-3">使うのが <code>wayfinder</code> なら、あと五つも先に作っておく必要があります（<code>gh</code> は存在しない label に当たると即失敗します）：<code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
                 </div>
                 <div>
@@ -406,7 +406,7 @@ gh label create enhancement</pre>
 
             <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — 曖昧なアイデアを問い詰めて決定に変える</h3>
             <div class="space-y-6 leading-relaxed">
-                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">/grill-with-docs 契約期限リマインダー機能を追加したい</pre>
+                <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>/grill-with-docs 契約期限リマインダー機能を追加したい</code></pre>
                 <p>きれいな会話を一つ開き、<strong>plan mode を切ります</strong>。plan mode は agent に計画を早く出させようとしますが、それは「問いの中に留まる」ことのちょうど逆です。</p>
                 <div>
                     <p class="eyebrow mb-2">何が起きるか</p>
@@ -414,10 +414,10 @@ gh label create enhancement</pre>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">どう答えるか</p>
-                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">1 はい
+                    <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>1 はい
 2 二つ目
 3 いいえ。うちの契約に一部解約はありません
-4 分かりません</pre>
+4 分かりません</code></pre>
                     <p class="mt-3"><strong>最大の失敗モードは受け身です。</strong>「同意」と四十回答えれば、agent が書いてあなたが頷いただけの計画ができます——長いので生産的に感じます。でも実際には何も決まっておらず、結果は自分で稼いでいない確からしさをまとっています。能動的とは、こういうことです。必要な精度より浅く問われたら<strong>押し返す</strong>、範囲が漂っているなら<strong>口に出す</strong>、本当に分からないなら「分かりません」と答える。これは本物の答えです。</p>
                 </div>
                 <div>
@@ -533,7 +533,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — チケット 1 枚に session 1 つ</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/implement https://github.com/you/repo/issues/12</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/implement https://github.com/you/repo/issues/12</code></pre>
             <div class="border-l border-line pl-6 mb-8">
                 <p class="eyebrow mb-2">なぜ完全な reference を書くのか</p>
                 <p class="leading-relaxed"><code>/implement #2</code> の <code>#2</code> は<strong>「agent から見えるあらゆる番号付きリスト」</strong>に対して解決されます——新しい session ではそれが todo ファイルや checklist かもしれず、自分が設定した tracker とは限りません。しかも解決の仕方は自信満々で、<strong>fail-closed になりません</strong>。だから間違っていてもすぐには気づけません。完全な URL か <code>owner/repo#2</code>を渡し、タイトルを読み上げて確認させてから始めさせます。</p>
@@ -620,7 +620,7 @@ gh label create enhancement</pre>
             </div>
 
             <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — 二軸レビュー</h3>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6">/code-review main</pre>
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/code-review main</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>固定点はあなたが与える必要があります</strong>。与えなければ、勝手に推測せずに聞いてきますし、ref が解決すること、diff が空でないことを確かめてから sub-agent を生成します。</p>
             <div class="overflow-x-auto">
@@ -1152,7 +1152,7 @@ gh label create enhancement</pre>
             </div>
             <p class="leading-relaxed mb-6">これは「公式の経路でカスタマイズする」やり方です——<strong>skill のファイルを書き換えると上書きされますが、ここは上書きされません</strong>。全体をそのままコピーして構いません。貼り先は自分の <code>CLAUDE.md</code> か <code>AGENTS.md</code>。
             </p>
-            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm">## Agent behaviour
+            <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>## Agent behaviour
 
 - When grilling, ask one question at a time.
 - Do not start implementing without my explicit permission.
@@ -1163,7 +1163,7 @@ gh label create enhancement</pre>
 - When a skill asserts something about another skill's behaviour,
   open that skill's SKILL.md before acting on it.
 - code-review sub-agents must not invoke /code-review or spawn
-  additional agents; perform the review directly.</pre>
+  additional agents; perform the review directly.</code></pre>
             <p class="eyebrow mt-8 mb-3">各行が防いでいるもの</p>
             <ul class="space-y-3 leading-relaxed">
                 <li><strong>一度に一問</strong>：一問ずつのリズムに戻します。読むのが遅い人、第二言語で読む人、集中の足場が要る人におすすめです。</li>

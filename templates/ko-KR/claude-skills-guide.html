@@ -650,6 +650,19 @@
         width: 100%;
         min-height: 400px;
         word-wrap: break-word;
+        /* A `<pre>` now, not a `<div>` of `<br>`s (issue 264), so the newlines
+           in the markup are the line breaks and the element says "this is
+           code" to a screen reader. Two consequences to absorb:
+
+           `pre-wrap` rather than `pre`, because the default would stop the
+           long CJK lines wrapping and put the whole sample behind a horizontal
+           scrollbar — a visible regression for a change that is supposed to be
+           invisible.
+
+           `margin: 0` because a `<pre>` brings a browser default `1em 0` that
+           a `<div>` does not, and the layout around it was spaced without it. */
+        white-space: pre-wrap;
+        margin: 0;
     }
 
     .skills-guide-body .code-window .yaml-key {
@@ -1097,22 +1110,23 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="code-window">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">사용자가 코드 조각을 올렸을 때, 또는 코드 리뷰를 요청했을 때 켜진다.</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Role</span><br>
-                        <span class="md-text">당신은 엄격하고 경험 많은 백엔드 설계자입니다.</span><br><br>
-                        <span class="md-h"># Workflow</span><br>
-                        <span class="md-text">켜지면 다음 절차를 순서대로 실행하세요:</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">**보안 점검**: SQL 인젝션이나 그대로 박힌 비밀번호가 없는지 본다.</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">**성능 평가**: 계산량이 O(N^2)를 넘는 작성법을 짚는다.</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">**보고서 산출**: 수정안을 Markdown 표로 제시한다.</span><br><br>
-                        <span class="md-h"># Rules</span><br>
-                        <span class="md-text">- 다시 쓴 완전한 코드를 **주지 말 것**.</span><br>
-                        <span class="md-text">- 구체적인 고치는 법과 생각의 갈래만 제시할 것.</span>
-                    </div>
+                    <pre class="code-window"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">strict-pr-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">사용자가 코드 조각을 올렸을 때, 또는 코드 리뷰를 요청했을 때 켜진다.</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Role</span>
+<span class="md-text">당신은 엄격하고 경험 많은 백엔드 설계자입니다.</span>
+
+<span class="md-h"># Workflow</span>
+<span class="md-text">켜지면 다음 절차를 순서대로 실행하세요:</span>
+<span class="md-list">1.</span> <span class="md-text">**보안 점검**: SQL 인젝션이나 그대로 박힌 비밀번호가 없는지 본다.</span>
+<span class="md-list">2.</span> <span class="md-text">**성능 평가**: 계산량이 O(N^2)를 넘는 작성법을 짚는다.</span>
+<span class="md-list">3.</span> <span class="md-text">**보고서 산출**: 수정안을 Markdown 표로 제시한다.</span>
+
+<span class="md-h"># Rules</span>
+<span class="md-text">- 다시 쓴 완전한 코드를 **주지 말 것**.</span>
+<span class="md-text">- 구체적인 고치는 법과 생각의 갈래만 제시할 것.</span></code></pre>
                 </div>
             </div>
         </div>
@@ -1126,21 +1140,22 @@
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <div class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;">
-                        <span class="yaml-val">---</span><br>
-                        <span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span><br>
-                        <span class="yaml-key">description:</span> <span class="yaml-val">대화 속 오류 로그를 그대로 Linear 과제로 만든다.</span><br>
-                        <span class="yaml-val">---</span><br><br>
-                        <span class="md-h"># Objective</span><br>
-                        <span class="md-text">오류 로그를 읽어 내고, `linear` MCP를 스스로 써서 버그 티켓을 세운다.</span><br><br>
-                        <span class="md-h"># Instructions</span><br>
-                        <span class="md-list">1.</span> <span class="md-text">사용자의 Error Log에서 뽑아낸다: 코드, 시각, 있을 수 있는 원인.</span><br>
-                        <span class="md-list">2.</span> <span class="md-text">`linear_create_issue`를 스스로 부른다.</span><br>
-                        <span class="md-list">3.</span> <span class="md-text">Title은 `[Bug] {오류 코드}` 형태로 한다.</span><br><br>
-                        <span class="md-h"># Error Handling (Fallbacks)</span><br>
-                        <span class="md-text">- `linear`를 못 찾거나 연결에 실패했을 때 **사과하지 말 것**.</span><br>
-                        <span class="md-text">- 그대로 바꾼다: Markdown 버그 보고서를 내고 사용자가 손으로 옮기게 한다.</span>
-                    </div>
+                    <pre class="code-window" style="background-color: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); box-shadow: none;"><code><span class="yaml-val">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">linear-bug-reporter</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">대화 속 오류 로그를 그대로 Linear 과제로 만든다.</span>
+<span class="yaml-val">---</span>
+
+<span class="md-h"># Objective</span>
+<span class="md-text">오류 로그를 읽어 내고, `linear` MCP를 스스로 써서 버그 티켓을 세운다.</span>
+
+<span class="md-h"># Instructions</span>
+<span class="md-list">1.</span> <span class="md-text">사용자의 Error Log에서 뽑아낸다: 코드, 시각, 있을 수 있는 원인.</span>
+<span class="md-list">2.</span> <span class="md-text">`linear_create_issue`를 스스로 부른다.</span>
+<span class="md-list">3.</span> <span class="md-text">Title은 `[Bug] {오류 코드}` 형태로 한다.</span>
+
+<span class="md-h"># Error Handling (Fallbacks)</span>
+<span class="md-text">- `linear`를 못 찾거나 연결에 실패했을 때 **사과하지 말 것**.</span>
+<span class="md-text">- 그대로 바꾼다: Markdown 버그 보고서를 내고 사용자가 손으로 옮기게 한다.</span></code></pre>
                 </div>
                 <div>
                     <h3>손이 많이 가는 흐름과, 실패했을 때의 퇴로</h3>

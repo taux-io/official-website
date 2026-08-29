@@ -442,171 +442,6 @@ fn flatten_heading_breaks(html: &str) -> String {
     out
 }
 
-/// Rewrites `div.code-window` as `<pre><code>` so a code sample survives as one.
-///
-/// THE MARKUP IS STYLED, NOT SEMANTIC. Five templates draw their samples with
-/// `<span class="yaml-key">` and `<br>` rather than `<pre><code>`, so nothing in
-/// the document says "this is code" and `htmd` is right to treat it as prose —
-/// which means escaping the Markdown inside it. `# Role` shipped as `\# Role`,
-/// `**安全性掃描**` as `\*\*安全性掃描\*\*`, and the `---` opening a YAML sample
-/// as a thematic break. Twenty-five of the hundred files.
-///
-/// FIXED HERE RATHER THAN IN THE TEMPLATES, deliberately and not permanently.
-/// The honest fix is `<pre><code>` in the five templates — the HTML is
-/// semantically wrong today and a screen reader is told nothing either. That is
-/// an HTML and design change with its own review; this is the generator's
-/// ticket. The cost of doing it here is that the class name is now load-bearing
-/// in two languages, which is a thing to undo when the templates are fixed.
-///
-/// Whitespace is rebuilt rather than preserved: the samples are indented to
-/// their position in the template and some lines wrap mid-`<span>`, neither of
-/// which means anything in the rendered page (HTML collapses it) but both of
-/// which land as literal spaces and breaks inside a `<pre>`. So each
-/// `<br>`-delimited segment is collapsed and trimmed, then rejoined.
-fn fence_code_windows(html: &str) -> String {
-    // The opening tag, WITHOUT its `>`. One of the two samples on
-    // claude-skills-guide carries a `style` attribute after the class, so
-    // matching the whole tag literally found one of them and silently left the
-    // other escaped — which is how this landed a second time on the same page.
-    const OPEN: &str = "<div class=\"code-window\"";
-    const SEGMENT: &str = "\u{0}";
-    let mut out = String::with_capacity(html.len());
-    let mut rest = html;
-    while let Some(at) = rest.find(OPEN) {
-        let Some(body) = rest[at..].find('>').map(|i| at + i + 1) else {
-            break;
-        };
-        let Some(close) = matching_div_close(rest, body) else {
-            break;
-        };
-        let lines: Vec<String> = replace_breaks(&rest[body..close], SEGMENT)
-            .split(SEGMENT)
-            .map(|segment| {
-                strip_tags(segment)
-                    .split_whitespace()
-                    .collect::<Vec<_>>()
-                    .join(" ")
-            })
-            .collect();
-        out.push_str(&rest[..at]);
-        out.push_str("<pre><code>");
-        out.push_str(lines.join("\n").trim_matches('\n'));
-        out.push_str("</code></pre>");
-        rest = &rest[close + "</div>".len()..];
-    }
-    out.push_str(rest);
-    out
-}
-
-/// Wraps a `<pre>` that has no `<code>` in one, so it converts as code.
-///
-/// `htmd` needs the pair. A lone `<pre>` says "preserve this whitespace" and
-/// nothing about what the text is, so the converter treats it as prose — which
-/// is correct, and was catastrophic here.
-///
-/// SIXTY-FIVE `<pre>` ELEMENTS LIVE INSIDE `<main>` ACROSS THE SITE; twenty
-/// carry a `<code>` and converted properly from the first day. The other
-/// forty-five are agent-dev-workflow's, nine per locale, and every one of them
-/// shipped as running prose:
-///
-/// ```text
-///   <pre class="…">claude plugins install mattpocock-skills</pre>
-///
-///   claude plugins install mattpocock-skills   <- a sentence, to any reader
-/// ```
-///
-/// TWO HARMS, AND THE SECOND IS THE ONE THAT MATTERS. A command that reads as
-/// prose can be quoted as prose, which is bad. But one of those blocks is a
-/// sample `CLAUDE.md`, and its `## Agent behaviour` was therefore promoted into
-/// the PAGE'S OWN HEADING HIERARCHY — a model reading the outline of
-/// agent-dev-workflow saw a section that does not exist on it. A third carries
-/// `--skill=&lt;name&gt;`, which outside a fence decodes to `<name>` in running
-/// text and is markup some renderers simply swallow.
-///
-/// FOUND BY GREP, NOT BY A GATE, and that is worth saying plainly. `check:md`
-/// asks whether HTML survived into the Markdown; it has no way to ask whether
-/// something that should have been code still is. This was shipped, reviewed,
-/// and passed 701 assertions.
-///
-/// FIXED HERE FOR THE SAME REASON `fence_code_windows` IS, and with the same
-/// note attached: the honest fix is `<pre><code>` in the templates, where the
-/// document would then say what it means to a screen reader too. Issue 264
-/// carries that.
-fn fence_bare_pre(html: &str) -> String {
-    let mut out = String::with_capacity(html.len() + 64);
-    let mut rest = html;
-    while let Some(at) = rest.find("<pre") {
-        let after = &rest[at + 4..];
-        // `<pre` must start the tag rather than a longer name.
-        if !(after.starts_with('>') || after.starts_with(char::is_whitespace)) {
-            out.push_str(&rest[..at + 4]);
-            rest = after;
-            continue;
-        }
-        let Some(body) = rest[at..].find('>').map(|i| at + i + 1) else {
-            break;
-        };
-        let Some(close) = rest[body..].find("</pre>").map(|i| body + i) else {
-            break;
-        };
-        out.push_str(&rest[..at]);
-        let inner = &rest[body..close];
-        if inner.trim_start().starts_with("<code") {
-            // Already semantic. Passed through whole, because wrapping it again
-            // nests a code block inside a code block.
-            out.push_str(&rest[at..close + "</pre>".len()]);
-        } else {
-            out.push_str("<pre><code>");
-            out.push_str(inner);
-            out.push_str("</code></pre>");
-        }
-        rest = &rest[close + "</pre>".len()..];
-    }
-    out.push_str(rest);
-    out
-}
-
-/// The `</div>` closing the `<div>` whose body starts at `from`, counting nested
-/// opens. `None` if the markup is unbalanced, which leaves the caller to pass
-/// the block through untouched rather than guess where it ended.
-fn matching_div_close(html: &str, from: usize) -> Option<usize> {
-    let mut depth = 1usize;
-    let mut i = from;
-    while i < html.len() {
-        let open = html[i..].find("<div").map(|d| i + d);
-        let close = html[i..].find("</div>").map(|d| i + d)?;
-        match open {
-            Some(o) if o < close => {
-                depth += 1;
-                i = o + 4;
-            }
-            _ => {
-                depth -= 1;
-                if depth == 0 {
-                    return Some(close);
-                }
-                i = close + 6;
-            }
-        }
-    }
-    None
-}
-
-/// Everything outside the angle brackets.
-fn strip_tags(html: &str) -> String {
-    let mut out = String::with_capacity(html.len());
-    let mut rest = html;
-    while let Some(at) = rest.find('<') {
-        out.push_str(&rest[..at]);
-        let Some(gt) = rest[at..].find('>') else {
-            return out;
-        };
-        rest = &rest[at + gt + 1..];
-    }
-    out.push_str(rest);
-    out
-}
-
 /// Rewrites the URLs in `<main>` so that they still resolve once the Markdown
 /// has been copied somewhere else.
 ///
@@ -691,18 +526,36 @@ fn main_content(html: &str) -> Result<&str, Box<dyn std::error::Error>> {
 
 /// A rendered page's `<main>`, as Markdown.
 ///
-/// Five passes, and each is here because the output was read afterwards rather
-/// than reasoned about beforehand:
+/// Three passes, each here because the output was read afterwards rather than
+/// reasoned about beforehand:
 ///
 ///   - headings lose their `<br>`, or the H1 ends at it (`flatten_heading_breaks`)
-///   - `div.code-window` becomes a real code block (`fence_code_windows`)
-///   - a `<pre>` with no `<code>` gets one, or it converts as prose and its
-///     contents join the page's heading hierarchy (`fence_bare_pre`)
 ///   - links become absolute, both `/…` and `#…` (`absolutise`)
 ///   - `skip_tags` drops the decorative SVG — seven of geo-guide's nine live
 ///     inside `<main>`, and converted rather than dropped they are `<path>`
 ///     noise occupying the tokens this feature exists to free up. `script`,
 ///     `style` and `noscript` go with them for the same reason.
+///
+/// THERE WERE FIVE, AND TWO ARE GONE BECAUSE THE MARKUP GOT FIXED INSTEAD.
+/// They rescued code samples the templates had not declared as code — a
+/// `div.code-window` drawn out of styled spans, and a `<pre>` carrying no
+/// `<code>`. Both shapes are gone (issue 264): the templates say `<pre><code>`
+/// now, so `htmd` needs no help and a screen reader is finally told what it is
+/// looking at.
+///
+/// ⚠️ THE COUNT ABOVE WAS "TWO PASSES" AND "THREE ARE GONE", and it was wrong
+/// in both halves — `skip_tags` is a pass and was still bulleted here, and only
+/// two passes went (the other two deletions were their helpers). The paragraph
+/// was also inserted mid-list, which orphaned that bullet below it. Written out
+/// rather than quietly corrected, because a docstring that miscounts what the
+/// function does is the drift this repository's checks exist to catch.
+///
+/// What replaced them is a gate, not nothing. `check:md` asserts that every
+/// `<pre>` inside `<main>` carries a `<code>`, and that `code-window` names a
+/// `<pre>` and never a `<div>` — the two properties those passes papered over,
+/// and papering over the first is how forty-five code blocks shipped as prose
+/// while every gate stayed green. Decision #63 asks for the rule to have
+/// something checking it.
 ///
 /// Tables need no pass: `htmd` emits GFM natively, and a model reads a GFM table
 /// as a table where GEO-vs-SEO flattened to prose stops being a comparison.
@@ -712,12 +565,7 @@ fn main_content(html: &str) -> Result<&str, Box<dyn std::error::Error>> {
 /// green, which is the shape of silent failure this repository's notes open by
 /// naming.
 fn markdown_body(html: &str, canonical: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let prepared = absolutise(
-        &fence_bare_pre(&fence_code_windows(&flatten_heading_breaks(main_content(
-            html,
-        )?))),
-        canonical,
-    );
+    let prepared = absolutise(&flatten_heading_breaks(main_content(html)?), canonical);
     let converter = HtmlToMarkdown::builder()
         .skip_tags(vec!["svg", "script", "style", "noscript"])
         .build();
@@ -1581,62 +1429,16 @@ mod tests {
         assert!(md.contains('\n'), "got:\n{md}");
     }
 
-    // Five templates draw code samples with styled `<span>`s and `<br>`, so
-    // nothing says "this is code" and htmd is right to escape the Markdown
-    // inside. `# Role` shipped as `\# Role` in twenty-five files.
-    #[test]
-    fn a_code_window_becomes_a_code_block() {
-        let html = "<main><div class=\"code-window\">\
-                    <span class=\"md-h\"># Role</span><br>\
-                    <span class=\"md-text\">**bold**</span></div></main>";
-        let md = markdown_body(html, CANON).unwrap();
-        assert!(md.contains("```"), "not fenced:\n{md}");
-        assert!(md.contains("# Role"), "got:\n{md}");
-        assert!(!md.contains("\\#") && !md.contains("\\*"), "escaped:\n{md}");
-    }
-
-    // One of the two samples on claude-skills-guide carries a `style`
-    // attribute. Matching the whole opening tag literally fixed one and left
-    // the other escaped, in all five locales, with every gate green.
-    #[test]
-    fn a_code_window_with_other_attributes_is_found_too() {
-        let html = "<main><div class=\"code-window\" style=\"border: none;\">\
-                    <span># Objective</span></div></main>";
-        let md = markdown_body(html, CANON).unwrap();
-        assert!(md.contains("```"), "not fenced:\n{md}");
-        assert!(!md.contains("\\#"), "escaped:\n{md}");
-    }
-
-    // The samples are indented to their position in the template and some lines
-    // wrap mid-`<span>`. HTML collapses both; a `<pre>` would not.
-    #[test]
-    fn a_code_window_is_dedented_and_unwrapped() {
-        let html = "<main><div class=\"code-window\">\n            \
-                    <span>name:</span> <span>strict-pr-\n            reviewer</span><br>\n            \
-                    <span>done</span></div></main>";
-        let md = markdown_body(html, CANON).unwrap();
-        assert!(md.contains("name: strict-pr- reviewer\ndone"), "got:\n{md}");
-    }
-
-    // A `<pre>` WITHOUT A `<code>` IS NOT A CODE BLOCK TO THE CONVERTER, and
-    // agent-dev-workflow writes nine of them per locale. Forty-five blocks
-    // shipped as running prose: `claude plugins install mattpocock-skills` sat
-    // in the file as a sentence.
-    #[test]
-    fn a_bare_pre_still_becomes_a_code_block() {
-        let html = "<main><pre class=\"bg-ink/5\">claude plugins install x</pre></main>";
-        let md = markdown_body(html, CANON).unwrap();
-        assert!(md.contains("```"), "not fenced:\n{md}");
-        assert!(md.contains("claude plugins install x"), "got:\n{md}");
-    }
-
-    // THE WORST OF IT WAS NOT THE LOST FORMATTING. One of those blocks is a
-    // sample CLAUDE.md, so its `## Agent behaviour` was promoted into the
-    // page's own heading hierarchy — a model reading the outline saw a section
-    // that does not exist. Inside a fence it is text again.
+    // WHY THIS SURVIVED THE RESCUE PASSES IT WAS WRITTEN FOR. One of
+    // agent-dev-workflow's samples is a CLAUDE.md, and while its `<pre>` had no
+    // `<code>` that sample's `## Agent behaviour` was promoted into the page's
+    // own heading hierarchy — a model reading the outline saw a section that
+    // does not exist. The markup declares itself now (issue 264), so the
+    // rescue is gone; the property it protected is not optional, and this is
+    // what still asserts it of the conversion itself.
     #[test]
     fn markdown_inside_a_pre_does_not_become_document_structure() {
-        let html = "<main><h2>Real</h2><pre>## Fake heading\n- item</pre></main>";
+        let html = "<main><h2>Real</h2><pre><code>## Fake heading\n- item</code></pre></main>";
         let md = markdown_body(html, CANON).unwrap();
         // Fence-aware on purpose. A `##` inside a code block is text, and the
         // first version of this assertion could not tell the difference — it
@@ -1653,16 +1455,6 @@ mod tests {
             })
             .collect();
         assert_eq!(headings, vec!["## Real"], "got:\n{md}");
-    }
-
-    // The nine bare ones carry `&lt;name&gt;`, which has to arrive as `<name>`
-    // — raw in a paragraph it is markup some renderers simply swallow.
-    #[test]
-    fn entities_inside_a_pre_decode_into_the_fence() {
-        let html = "<main><pre>npx skills add x --skill=&lt;name&gt;</pre></main>";
-        let md = markdown_body(html, CANON).unwrap();
-        assert!(md.contains("```"), "not fenced:\n{md}");
-        assert!(md.contains("--skill=<name>"), "got:\n{md}");
     }
 
     // Twenty of the sixty-five are already `<pre><code>` and convert correctly.
