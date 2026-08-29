@@ -41,15 +41,29 @@ const CHIP = "tag";
 const RULES = [
   {
     name: "bilingual heading separator",
-    matches: 156,
+    matches: 231,
     why:
-      "Issue 270: `<h1>` is two spans laid out as two lines by CSS. Markdown " +
-      "has no CSS and a heading is one line, so the generator inserts an em " +
-      "dash. The HTML carries no separator, so every such heading differs here.",
+      "Issues 270 and 278: a bilingual heading is two halves, laid out as two " +
+      "lines by CSS. Markdown has no CSS and a heading is one line, so the " +
+      "generator inserts an em dash. The HTML carries no separator, so every " +
+      "such heading differs here.",
     applies: (op) =>
       op.op === "diff" &&
       op.html.kind === "heading" &&
-      op.md.text.split(SEPARATOR).join(" ") === op.html.text &&
+      // ⚠️ THE PAGE JOINS THE HALVES TWO WAYS, and the first version knew one.
+      // The `display-*` shape leaves a space between its spans; the
+      // `class="block"` shape of issue 278 leaves nothing in three of five
+      // locales. A rule that only put a space back left 33 correctly separated
+      // headings looking like defects — the count declared below is what caught
+      // it, which is what the counts are for.
+      // ONLY THE FIRST SEPARATOR IS THE ONE WE INSERTED. Five `pqc-migration`
+      // headings carry an em dash inside their second half — `CBOM — Cryptography
+      // Bill of Materials` — so splitting on every occurrence took the heading
+      // apart at a boundary the page put there itself and failed to reconstruct
+      // it. A reader flagged this shape as a "false boundary" while judging the
+      // glued form, before the fix existed.
+      (op.md.text.replace(SEPARATOR, " ") === op.html.text ||
+        op.md.text.replace(SEPARATOR, "") === op.html.text) &&
       // ⚠️ THE TEXT IS NOT THE WHOLE BLOCK. Links and marks travel in the
       // alignment key precisely because a block can differ while its words do
       // not; a rule that compares only the words would license a heading whose

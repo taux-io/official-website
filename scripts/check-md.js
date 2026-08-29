@@ -100,6 +100,43 @@ const LINK_RE = /\]\(([^)\s]+)/g;
 // measurement that caught this is the reason all five locales get read, not one.
 const HEADING_SEPARATOR = " \u2014 ";
 
+// The two halves of a bilingual heading, whichever way the template builds it.
+//
+// ⚠️ THERE ARE TWO SHAPES AND THE FIRST VERSION KNEW ONLY ONE. Issue 270 fixed
+// `display-lead` + `display-sub`, two sibling spans, and this assertion looked
+// for exactly that pair. The templates also build the same heading a second
+// way — the locale half as the `<h2>`'s own text and the English half in a
+// `class="block"` span:
+//
+//     <h2>プロンプトインジェクション<span class="block …">Prompt Injection</span></h2>
+//
+// SEVENTY-FIVE HEADINGS ACROSS TEN PAGES were built that way and every one of
+// them shipped glued, while twelve assertions and 1101 checks stayed green. The
+// audit in issue 273 found them by READING the twins, not by any gate; Pass A
+// was blind to them too, because the page and the twin agree — the page has no
+// separator either.
+//
+// ⚠️ A SPACE IS NOT A SEPARATOR, and that is a decision rather than an
+// observation. Two of the five locales put a space between the halves
+// (`提示詞注入 Prompt Injection`) and three put nothing (`プロンプトインジェク
+// ションPrompt Injection`). A rule phrased "the halves must not touch" leaves
+// the thirty spaced ones green. But a space is what a sentence puts between its
+// words, so the spaced form reads as one phrase whose second part continues the
+// first — the same defect as `with AI AI を`, only harder to see. The rule is
+// therefore "the halves must be joined by the separator", and it is red on all
+// seventy-five.
+function bilingualHalves(inner) {
+  const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+  const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+  if (lead && sub) return [visibleText(lead[1]), visibleText(sub[1])];
+
+  const block = /<span[^>]*class="block[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+  if (!block) return null;
+  const before = visibleText(inner.slice(0, block.index));
+  if (!before) return null;
+  return [before, visibleText(block[1])];
+}
+
 // Text as `htmd` will see it once the markup is gone. Verified against the
 // build: the only tag that ever appears inside these spans is `<br>`, and no
 // HTML entity does — so this is enough, and honest about being enough.
@@ -335,10 +372,9 @@ function main() {
     const lines = body.split("\n");
     const headings = lines.filter((line) => /^#{1,6} /.test(line));
     for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
-      const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-      const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-      if (!lead || !sub) continue;
-      const want = visibleText(lead[1]) + HEADING_SEPARATOR + visibleText(sub[1]);
+      const halves = bilingualHalves(inner);
+      if (!halves) continue;
+      const want = halves[0] + HEADING_SEPARATOR + halves[1];
       if (!headings.some((line) => line.includes(want))) {
         fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
       }
