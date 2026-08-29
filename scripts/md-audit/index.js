@@ -5,6 +5,7 @@
 //   node scripts/md-audit --route /ja-JP/about        one page, to stdout
 //   node scripts/md-audit --summary                   counts only
 //   node scripts/md-audit --md-root <dir>             twins from elsewhere
+//   node scripts/md-audit --headings                  Pass B input, headings only
 //
 // NOT A GATE, AND DELIBERATELY NOT IN CI. Issue 269 settled this: a one-off
 // investigation is not a rule, and a rule cannot be written before anyone knows
@@ -55,11 +56,10 @@
 const fs = require("fs");
 const path = require("path");
 const { ROUTES } = require("../routes");
-const { extract } = require("./extract");
+const { extract, markSignature } = require("./extract");
 const { blocks } = require("./blocks");
 const { align } = require("./align");
 const { classify } = require("./whitelist");
-const { markSignature } = require("./extract");
 
 const DIST = path.join(__dirname, "..", "..", "dist");
 
@@ -95,9 +95,17 @@ function headings(route, mdRoot = DIST) {
 }
 
 function tally(ops) {
+  const review = ops.filter((op) => !classify(op).legal).length;
+  const match = ops.filter((o) => o.op === "match").length;
   return {
     pairs: ops.length,
-    match: ops.filter((o) => o.op === "match").length,
+    match,
+    // `legal` and `review` live here rather than at each call site. They were
+    // computed separately in `render` and in `main`, which is the second way of
+    // counting the same thing that `NOTES.md` has recorded going wrong three
+    // times.
+    legal: ops.length - match - review,
+    review,
     diff: ops.filter((o) => o.op === "diff").length,
     htmlOnly: ops.filter((o) => o.op === "html-only").length,
     mdOnly: ops.filter((o) => o.op === "md-only").length,
@@ -113,11 +121,9 @@ function shorten(text, width) {
 function render(route, ops) {
   const lines = [`## ${route.path}`, ""];
   const counts = tally(ops);
-  const review = ops.filter((op) => !classify(op).legal).length;
   lines.push(
     `${counts.pairs} pairs — ${counts.match} identical, ` +
-      `${counts.pairs - counts.match - review} legal by whitelist, ` +
-      `${review} needing judgement`,
+      `${counts.legal} legal by whitelist, ${counts.review} needing judgement`,
     ""
   );
   ops.forEach((op, index) => {
@@ -191,7 +197,7 @@ function main() {
     return;
   }
 
-  const totals = { pairs: 0, match: 0, diff: 0, htmlOnly: 0, mdOnly: 0 };
+  const totals = { pairs: 0, match: 0, legal: 0, review: 0, diff: 0, htmlOnly: 0, mdOnly: 0 };
   const perRoute = [];
   for (const route of wanted) {
     const ops = auditRoute(route, mdRoot);
@@ -199,11 +205,6 @@ function main() {
     for (const key of Object.keys(totals)) totals[key] += counts[key];
     perRoute.push({ route, ops, counts });
   }
-
-  const needing = perRoute.reduce(
-    (sum, { ops }) => sum + ops.filter((op) => !classify(op).legal).length,
-    0
-  );
 
   if (out) {
     fs.mkdirSync(out, { recursive: true });
@@ -222,18 +223,20 @@ function main() {
   // had to work out for itself that they described the same three blocks. One
   // did, and reported the tool as inconsistent — correctly, from what it could
   // see.
-  const legal = totals.pairs - totals.match - needing;
   console.log(
     `\n${perRoute.length} pages, ${totals.pairs} pairs: ` +
-      `${totals.match} identical, ${legal} legal by whitelist, ` +
-      `${needing} needing judgement`
+      `${totals.match} identical, ${totals.legal} legal by whitelist, ` +
+      `${totals.review} needing judgement`
   );
   console.log(
     `by kind: ${totals.diff} changed, ${totals.htmlOnly} html-only, ` +
       `${totals.mdOnly} md-only`
   );
-  console.log(`${needing} pairs need a reader's judgement.`);
+  console.log(`${totals.review} pairs need a reader's judgement.`);
 }
 
 if (require.main === module) main();
-module.exports = { auditRoute, auditable, render, headings };
+// This file is the CLI. Nothing requires it — `md:audit` runs it. The exports
+// that were here had no caller in the repository, only in throwaway scripts,
+// which is the definition the repo uses for a dead export.
+module.exports = { auditRoute, headings };

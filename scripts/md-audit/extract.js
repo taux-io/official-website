@@ -269,13 +269,23 @@ function markSignature(marks) {
   //
   // The two sides split adjacent marks differently: a page with three `<strong>`
   // spans arrives as two `**…**` runs when the text between them is itself
-  // marked. Comparing runs reported 41 of those, every one a difference in how
-  // the same words were divided rather than in which words were marked. Sorting
-  // whole runs did not help — the split moves text between them.
+  // marked. Comparing runs — sorted or not — reported those splits as
+  // differences, every one a difference in how the same words were divided
+  // rather than in which words were marked.
   //
-  // A mark that is GONE still changes this, which is the defect (`destress`) the
-  // signature exists for. What it stops noticing is a mark moved to different
-  // words made of the same letters, which nothing in this build does.
+  // ⚠️ NO COUNTS IN THIS PARAGRAPH, DELIBERATELY. The first version carried
+  // three, from three tuning rounds, and a reviewer reproduced none of them:
+  // "123" was 75, "41" was 356, and "sorting whole runs did not help" was worth
+  // exactly one pair. They were remembered rather than measured, and nothing in
+  // the repository can re-derive them — which is what makes them the eighth
+  // wrong number on this line of work. The reason survives; the archaeology of
+  // how many pairs each attempt produced does not belong in a comment.
+  //
+  // WHAT THIS SIGNATURE CANNOT SEE. A mark that is GONE changes it, which is the
+  // defect (`destress`) it exists for. It does NOT see a mark moved to different
+  // words made of the same letters, and — because `<strong>`, `<b>`, `<em>` and
+  // `<i>` are all one family here — it does not see `**x**` downgraded to `*x*`
+  // or the reverse. Both are invisible by construction, not by oversight.
   const of = (family) =>
     marks
       .filter((m) => m.startsWith(family + ":"))
@@ -286,6 +296,24 @@ function markSignature(marks) {
       .sort()
       .join("");
   return `code:${of("code")}|emphasis:${of("emphasis")}`;
+}
+
+// The class attribute, as tokens.
+//
+// ⚠️ THE BLOCKS DID NOT CARRY THIS AT FIRST, and `whitelist.js`'s rule for the
+// dropped decorative chip therefore matched on tag name alone: any `text` block
+// on a `div` or `span`. There are 395 of those in this build, the longest 473
+// characters — an entire cited study on `/en-US/google-workspace-with-ai`.
+// Deleting that paragraph from its twin and re-running produced
+// `89 identical, 1 legal by whitelist, 0 needing judgement`: a whole block of
+// research gone, and the audit reporting a clean page.
+//
+// The whitelist file's own opening says a rule nobody can justify is a rule
+// hiding a defect, and warns that it must not grow to fit the output. The rule
+// was written wider than the warning above it, in the same file.
+function classesOf(attrs) {
+  const found = /class="([^"]*)"/.exec(attrs || "");
+  return found ? found[1].split(/\s+/).filter(Boolean) : [];
 }
 
 function linksIn(node, canonical) {
@@ -311,8 +339,8 @@ function absolute(href, canonical) {
 // The spans the page marked as code, strong or emphasis.
 function marksIn(node) {
   // A `<pre><code>` IS the block; its `<code>` is not an inline mark. Counting
-  // it produced 123 mismatches on the first run, because the Markdown side sees
-  // a fence and reports no inline marks at all.
+  // it made every fenced sample on the site differ, because the Markdown side
+  // sees a fence and reports no inline marks at all.
   if (node.tag === "pre") return [];
   const out = [];
   (function walk(current) {
@@ -335,13 +363,15 @@ function blocksOf(node, out, canonical) {
     // which would have removed a sentence from the audit without a trace.
     if (child.text !== undefined) {
       const loose = collapse(decode(child.text));
-      if (loose) out.push({ kind: "text", tag: node.tag, text: loose, links: [], marks: [] });
+      if (loose) {
+        out.push({ kind: "text", tag: node.tag, text: loose, classes: [], links: [], marks: [] });
+      }
       continue;
     }
     // A thematic break carries no text but is a block on the Markdown side, so
     // it has to be one here or every `* * *` reads as an insertion.
     if (child.tag === "hr") {
-      out.push({ kind: "rule", tag: "hr", text: "---", links: [], marks: [] });
+      out.push({ kind: "rule", tag: "hr", text: "---", classes: [], links: [], marks: [] });
       continue;
     }
     if (!LEAF.has(child.tag) && hasBlockDescendant(child)) {
@@ -355,6 +385,7 @@ function blocksOf(node, out, canonical) {
       tag: child.tag,
       level: /^h([1-6])$/.test(child.tag) ? Number(child.tag[1]) : undefined,
       text,
+      classes: classesOf(child.attrs),
       links: linksIn(child, canonical),
       marks: marksIn(child),
     });

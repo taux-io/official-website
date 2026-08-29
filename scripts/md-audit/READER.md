@@ -3,9 +3,9 @@
 What a reader is given, what it must answer, and what it is allowed to call
 fine. Issue 272 produced this; issue 273 runs it over all hundred pages.
 
-A reader is an assertion made of prose. `check:md`'s twelve assertions were each
-proved red before they were kept, because an assertion that has never failed
-describes nothing — and prose cannot be read to find out what it checks, so it
+A reader is an assertion made of prose. Every assertion in `check:md` was proved
+red before it was kept, because an assertion that has never failed describes
+nothing — and prose cannot be read to find out what it checks, so it
 needs the same treatment more, not less. The red proof for this recipe is at the
 bottom, with the classes it caught and the ones it did not.
 
@@ -79,7 +79,14 @@ recognise a variant that slipped through rather than treating it as a finding:
 ## Pass B — reading the twin alone
 
 You are given every heading in one Markdown twin, in order, with its line
-number. No HTML. Answer one question per heading:
+number, from `node scripts/md-audit --route <path> --headings`. No HTML.
+
+**Sharding.** There are 1300 headings across the hundred pages; the largest page
+has 49 and the median has 12. One reader per page is the unit — a heading only
+makes sense beside the headings around it, and a page is small enough that
+nothing needs splitting further.
+
+Answer one question per heading:
 
 > Read on its own, is this a heading — or two things run together?
 
@@ -98,22 +105,51 @@ term inside the local language, or for being long.
 
 ## Output format
 
-One line per item. Never a summary paragraph, never "everything looks fine".
+**Every page opens with its own line, before any items** — including a page with
+no items at all. A reader that reports only problems is indistinguishable from a
+reader that did not read: the two produce identical output when there is nothing
+to find, and one of them is lying.
+
+```
+PAGE <page>.md  <n> pairs, <n> legal by whitelist, <n> judged, <n> findings
+```
+
+⚠️ THE FIRST VERSION OF THIS SECTION SAID "every page gets a record" AND THEN
+SPECIFIED A FORMAT THAT COULD NOT PRODUCE ONE. It was "one line per item", and
+after the whitelist most pages have zero items — ninety of the hundred do — so
+ninety pages would have produced nothing at all. The per-page line above is the
+record; the items below it are the findings.
+
+Then one line per item:
 
 ```
 <page>.md:<line>  OK
 <page>.md:<line>  FINDING  <one sentence: what is wrong>
-                  PAGE: <the HTML text, quoted>
-                  TWIN: <the Markdown text, quoted>
+                  PAGE:  <the HTML text, quoted>
+                  TWIN:  <the Markdown text, quoted>
+                  KIND:  conversion | source | whitelist-gap
+                  GATE:  mechanical | judgement
 ```
-
-Every page gets a record, including pages with nothing wrong. A reader that
-reports only problems is indistinguishable from a reader that did not read: the
-two produce identical output when there is nothing to find, and one of them is
-lying. Issue 273 requires the per-page record for exactly this reason.
 
 Quote the text. A finding without the two quoted sides cannot be checked by
 anyone who was not the reader.
+
+**KIND** — which of three things this is. Issue 273 sorts every finding into
+these and cannot do it after the fact:
+
+- `conversion` — the twin misrepresents the page. This is what the audit is for.
+- `source` — the page itself is wrong and the twin copied it faithfully. Record
+  it and move on; fixing the page is out of scope, and a twin that reproduces a
+  bad page is doing its job.
+- `whitelist-gap` — a difference that IS deliberate but no rule in
+  `whitelist.js` claims. Not a defect in the twin; a defect in the whitelist.
+
+**GATE** — could a program decide this, or does it need a reader?
+
+- `mechanical` — a rule could be written: an exact string, a count, a missing
+  element. These become new assertions in `check:md`, which is where the
+  findings of this audit are supposed to end up.
+- `judgement` — it took reading to see. It stays a reader's job.
 
 ## Red proof
 
