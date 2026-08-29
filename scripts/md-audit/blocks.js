@@ -145,6 +145,45 @@ function visible(raw, kind) {
   return collapse(text);
 }
 
+// The same two things the HTML side carries: where links point, and which spans
+// the twin marks as code or emphasis. See the note in `extract.js` — the red
+// proof for issue 272 put a redirected link and a flattened `**…**` into a twin
+// and neither reached a reader, because stripping `[](…)` and `**` made both
+// sides say the same words.
+function linksIn(raw, kind) {
+  if (kind === "code") return [];
+  return [...raw.matchAll(/\]\(([^)\s]+)/g)].map((m) => m[1]).sort();
+}
+
+// NESTED MARKS. `**一定要勾 `x`。**` is a `<code>` inside a `<strong>`. The HTML
+// walk records the outer span's TEXT — backticks are markup, not characters the
+// page shows — while a regex over the Markdown captures the backticks with it.
+// Forty blocks differed by exactly those characters and nothing else.
+// ⚠️ BACKTICKS AND ASTERISKS ONLY. The first version of this line also stripped
+// `_`, and `<user_input>` — an XML tag the page is teaching — became
+// `<userinput>` on fifteen pages. That is the SECOND time an underscore rule
+// has corrupted an identifier in this file: `visible()` did it to
+// `linear_create_issue` and carries a warning about it eight lines below. The
+// warning was there and the same mistake was made anyway, in a helper written
+// to fix a different one.
+const bare = (text) => collapse(text.replace(/[`*]/g, ""));
+
+function marksIn(raw, kind) {
+  if (kind === "code") return [];
+  const out = [];
+  for (const [, inner] of raw.matchAll(/`([^`]+)`/g)) out.push(`code:${bare(inner)}`);
+  const withoutStrong = raw.replace(/\*\*(?!\s)([\s\S]*?)(?<!\s)\*\*/g, (whole, inner) => {
+    out.push(`emphasis:${bare(inner)}`);
+    return " ";
+  });
+  // `htmd` writes `<em>` as a single asterisk. Matched after the double ones are
+  // taken out, or `**bold**` reads as an empty emphasis on each side of it.
+  for (const [, inner] of withoutStrong.matchAll(/\*(?!\s)([^*]+?)(?<!\s)\*/g)) {
+    out.push(`emphasis:${bare(inner)}`);
+  }
+  return out;
+}
+
 // Strips the front matter and returns the body's blocks.
 function blocks(markdown) {
   let body = markdown;
@@ -159,7 +198,15 @@ function blocks(markdown) {
   return split(body, offset)
     .map(({ raw, line }) => {
       const { kind, level } = classify(raw);
-      return { kind, level, raw, line, text: visible(raw, kind) };
+      return {
+        kind,
+        level,
+        raw,
+        line,
+        text: visible(raw, kind),
+        links: linksIn(raw, kind),
+        marks: marksIn(raw, kind),
+      };
     })
     .filter((block) => block.kind !== "delimiter");
 }

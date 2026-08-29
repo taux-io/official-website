@@ -72,8 +72,20 @@ function pairAdjacent(ops) {
   return out;
 }
 
+// THE KEY IS NOT THE TEXT ALONE. A link's destination and a marked span are
+// invisible in the words — that is what markup is for — so two blocks can read
+// identically while one points somewhere else or has lost the backticks around
+// an identifier. Both were injected in the red proof and both aligned as perfect
+// matches, so no reader was ever shown them. They travel in the key; they are
+// still not shown in the table, which stays readable.
+const { markSignature } = require("./extract");
+
+function keyOf(block) {
+  return [block.text, block.links.join(","), markSignature(block.marks)].join("\u0000");
+}
+
 function align(htmlBlocks, mdBlocks) {
-  return pairAdjacent(lcs(htmlBlocks, mdBlocks, (b) => b.text));
+  return pairAdjacent(lcs(htmlBlocks, mdBlocks, keyOf));
 }
 
 module.exports = { align };
