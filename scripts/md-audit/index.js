@@ -9,7 +9,12 @@
 // investigation is not a rule, and a rule cannot be written before anyone knows
 // what the defects look like. What this produces is the input to that reading;
 // whichever findings turn out to be mechanical become assertions in `check:md`
-// afterwards, where the eleven that already exist live.
+// afterwards, alongside the ones already there.
+//
+// ⚠️ THAT SENTENCE USED TO SAY "the eleven that already exist". There were
+// twelve, and `NOTES.md` says in as many words that the count lives in
+// `check-md.js` and only there. Writing it here made a second source and it had
+// already drifted by the time anyone read it.
 //
 // WHAT IT CAN AND CANNOT SEE — the honest half of the design, and the half that
 // was measured rather than assumed.
@@ -32,11 +37,12 @@
 // faithful conversion of a chip; that it should not have been converted at all
 // is a judgement about what belongs in a Markdown twin, not a fidelity failure.
 //
-// So the numbers this tool now reports on the FIXED build — 156 heading
-// differences and 60 html-only chips — are not defects found. They are the
-// deliberate differences issue 270 introduced, showing up exactly as they
-// should, and they belong in the reader's whitelist rather than in a finding
-// list.
+// So the differences this tool reports on the FIXED build where the two sides
+// disagree BY DESIGN — the heading separator issue 270 introduced, and the
+// chips it drops — are not defects found. They belong in the reader's
+// whitelist, not in a finding list. Their counts are what a run prints; they
+// are not written down here, because a count in a comment is a second source
+// and this file has already been wrong once that way.
 //
 // ISSUE 271's ACCEPTANCE CRITERION SAID THIS TOOL WOULD INDEPENDENTLY MEASURE
 // THOSE TWO DEFECTS. It cannot, and the criterion was wrong when it was
@@ -54,10 +60,31 @@ const { align } = require("./align");
 
 const DIST = path.join(__dirname, "..", "..", "dist");
 
+// A route with no `.md` twin has nothing to audit. `noindex` pages are not
+// published as Markdown at all, so walking the whole route table without this
+// would die on `ENOENT` at the first one. There are none today, which is
+// exactly why it would have gone unnoticed until the day there was.
+function auditable(route) {
+  return !route.noindex && fs.existsSync(path.join(DIST, route.path + ".md"));
+}
+
 function auditRoute(route) {
   const html = fs.readFileSync(path.join(DIST, route.path + ".html"), "utf8");
   const markdown = fs.readFileSync(path.join(DIST, route.path + ".md"), "utf8");
   return align(extract(html), blocks(markdown));
+}
+
+// One place that knows the four op names. The first version had the cascade in
+// `render` and the counting in `main`, so adding a fifth kind meant remembering
+// to touch both.
+function tally(ops) {
+  return {
+    pairs: ops.length,
+    match: ops.filter((o) => o.op === "match").length,
+    diff: ops.filter((o) => o.op === "diff").length,
+    htmlOnly: ops.filter((o) => o.op === "html-only").length,
+    mdOnly: ops.filter((o) => o.op === "md-only").length,
+  };
 }
 
 function shorten(text, width) {
@@ -68,11 +95,18 @@ function shorten(text, width) {
 // look at eight thousand identical pairs stops looking at any of them.
 function render(route, ops) {
   const lines = [`## ${route.path}`, ""];
-  const matched = ops.filter((o) => o.op === "match").length;
-  lines.push(`${ops.length} pairs — ${matched} identical, ${ops.length - matched} needing judgement`, "");
+  const counts = tally(ops);
+  lines.push(
+    `${counts.pairs} pairs — ${counts.match} identical, ` +
+      `${counts.pairs - counts.match} needing judgement`,
+    ""
+  );
   ops.forEach((op, index) => {
     if (op.op === "match") return;
-    const at = `[${index}]`;
+    // The Markdown line where the reader can open the file, not just the row of
+    // this table. An html-only block has no line to point at, so it says which
+    // pair it sits between instead.
+    const at = op.md ? `${route.path}.md:${op.md.line}` : `[pair ${index}]`;
     if (op.op === "diff") {
       lines.push(`${at} CHANGED  ${op.html.kind} -> ${op.md.kind}`);
       lines.push(`     HTML: ${shorten(op.html.text, 300)}`);
@@ -91,17 +125,20 @@ function render(route, ops) {
 
 function main() {
   const args = process.argv.slice(2);
-  const value = (flag) => {
+  const flagValue = (flag) => {
     const at = args.indexOf(flag);
     return at === -1 ? null : args[at + 1];
   };
-  const one = value("--route");
-  const out = value("--out");
+  const onlyRoute = flagValue("--route");
+  const out = flagValue("--out");
   const summaryOnly = args.includes("--summary");
 
-  const wanted = one ? ROUTES.filter((r) => r.path === one) : ROUTES;
-  if (one && !wanted.length) {
-    console.error(`no route ${one}`);
+  const auditableRoutes = ROUTES.filter(auditable);
+  const wanted = onlyRoute
+    ? auditableRoutes.filter((r) => r.path === onlyRoute)
+    : auditableRoutes;
+  if (onlyRoute && !wanted.length) {
+    console.error(`no auditable route ${onlyRoute}`);
     process.exitCode = 1;
     return;
   }
@@ -110,13 +147,7 @@ function main() {
   const perRoute = [];
   for (const route of wanted) {
     const ops = auditRoute(route);
-    const counts = {
-      pairs: ops.length,
-      match: ops.filter((o) => o.op === "match").length,
-      diff: ops.filter((o) => o.op === "diff").length,
-      htmlOnly: ops.filter((o) => o.op === "html-only").length,
-      mdOnly: ops.filter((o) => o.op === "md-only").length,
-    };
+    const counts = tally(ops);
     for (const key of Object.keys(totals)) totals[key] += counts[key];
     perRoute.push({ route, ops, counts });
   }
@@ -142,4 +173,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { auditRoute, render };
+module.exports = { auditRoute, auditable, render };

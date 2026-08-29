@@ -19,14 +19,45 @@
 //
 // ⚠️ THIS IS A SCANNER, NOT AN HTML PARSER, and the difference matters at the
 // edges. It knows the void elements it has seen in this build and treats an
-// unclosed non-void tag as an error rather than guessing. That is deliberate —
-// a lenient parser recovers silently, and silent recovery in an auditing tool
-// is the failure mode the tool exists to find.
+// unclosed non-void tag as an error rather than guessing.
+//
+// ⚠️ THAT SENTENCE WAS FALSE WHEN FIRST WRITTEN, and false about the very thing
+// the paragraph was boasting of. The unwind below took `lastIndexOf` and reset
+// the stack to it — silent recovery, in a tool whose comment two lines up said
+// silent recovery is the failure it exists to find. It was firing on five
+// pages: `agent-dev-workflow`'s JSON-LD contains the literal `<fixed-point>`,
+// which the scanner read as an opening tag and only survived because `</script>`
+// happened to unwind past it. Removing the discarded elements' CONTENTS first
+// (see below) takes that input away, so the strictness is now real and an
+// unbalanced tag throws.
 
-// Dropped before anything else, contents and all. The same four the converter
-// skips — matched here because a decorative SVG's `<title>` and a script's body
-// are text that never reaches a reader, not because the converter says so.
-const DISCARDED = new Set(["svg", "script", "style", "noscript"]);
+// Removed from the source text — opening tag, contents and closing tag —
+// before a single tag is scanned.
+//
+// ⚠️ THE FIRST VERSION ONLY SKIPPED THEIR TEXT, so the scanner still parsed
+// what was inside them. Every page's `<main>` carries JSON-LD, and prose about
+// prompting carries `<fixed-point>` and `<name>` inside it; those were being
+// read as markup.
+//
+// ⚠️ AND THE FIRST VERSION'S COMMENT NAMED THE CONVERTER'S LIST. It said "the
+// same four the converter skips", which is the coupling this whole file exists
+// to avoid: if that list is ever wrong, both sides drop the same thing and the
+// diff stays empty. The list here is chosen for what these elements ARE — a
+// decorative SVG's `<title>`, a script's source, a stylesheet — none of which
+// is text a reader is shown. IT IS ALLOWED TO DIVERGE from the converter's,
+// and divergence is not a bug: drop something the converter keeps and it
+// surfaces as an md-only block; keep something it drops and it surfaces as
+// html-only. Either way a reader sees it, which is the whole design.
+const DISCARDED = ["svg", "script", "style", "noscript"];
+
+function withoutDiscarded(region) {
+  let text = region;
+  for (const tag of DISCARDED) {
+    const pattern = new RegExp(`<${tag}\\b[^>]*>[\\s\\S]*?</${tag}>`, "gi");
+    text = text.replace(pattern, "");
+  }
+  return text;
+}
 
 // Elements that close themselves. Anything outside this set is expected to have
 // an end tag; see the warning above about why that is not leniency.
@@ -57,19 +88,34 @@ const KIND = {
 };
 
 const ENTITIES = {
-  amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ",
-  mdash: "—", ndash: "–", hellip: "…", rsquo: "’",
-  lsquo: "‘", ldquo: "“", rdquo: "”", times: "×",
-  copy: "©", tau: "τ",
+  amp: "&", lt: "<", gt: ">", mdash: "—", tau: "τ",
 };
 
-// MEASURED, NOT GUESSED. The named entities this build actually contains are
-// `&copy;` (101), `&mdash;` (85), `&gt;` (82), `&lt;` (80), `&tau;` (5) and
-// `&amp;` (4). `&tau;` and `&copy;` were missing from the first version, so the
-// company's own name — the Greek letter the company is named after — compared
-// unequal on eleven pages, and the tool reported a defect that was its own.
-// An unknown entity is left as written rather than dropped, so the next one
-// shows up as a difference instead of vanishing.
+// MEASURED IN THE REGION THIS TOOL ACTUALLY READS — inside `<main>`, after the
+// discarded elements are removed — because that is the only region any of this
+// applies to:
+//
+//     &mdash;  85 across 20 pages
+//     &gt;     82 across 20 pages
+//     &lt;     80 across 20 pages
+//     &tau;     5 across  5 pages
+//     &amp;     4 across  2 pages
+//
+// Nothing else appears. No `&quot;`, `&nbsp;` or `&apos;` — they are absent, so
+// they are not here.
+//
+// ⚠️ THIS LIST HAS NOW BEEN WRONG THREE TIMES, EACH TIME FROM NOT MEASURING.
+// First it lacked `&tau;`, so the Greek letter the company is named after
+// compared unequal. Then the comment claimed eleven pages when it was five, and
+// added `&copy;` on the strength of 101 occurrences — every one in the footer,
+// zero inside `<main>`, an entry that could never fire. Then, correcting THAT,
+// `&mdash;` was deleted along with the unused ones without being counted: it is
+// the most common entity here, and `01 &mdash; Vendor Figures` went straight
+// into the audit as a difference the page does not have.
+//
+// The rule the three mistakes share: a number about a region has to be counted
+// in that region. An unknown entity is left as written rather than dropped, so
+// the next one to arrive shows up as a difference instead of vanishing.
 
 function decode(text) {
   return text.replace(/&(#x?[0-9a-fA-F]+|[a-zA-Z]+);/g, (whole, body) => {
@@ -77,7 +123,10 @@ function decode(text) {
       const code = body[1] === "x" || body[1] === "X"
         ? parseInt(body.slice(2), 16)
         : parseInt(body.slice(1), 10);
-      return Number.isFinite(code) ? String.fromCodePoint(code) : whole;
+      // Out of Unicode range throws rather than returning a character, and a
+      // crash in an auditing tool reads as "the page is fine".
+      if (!Number.isFinite(code) || code < 0 || code > 0x10ffff) return whole;
+      return String.fromCodePoint(code);
     }
     return body in ENTITIES ? ENTITIES[body] : whole;
   });
@@ -99,7 +148,9 @@ function mainRegion(html) {
 function parse(region) {
   const root = { tag: "#root", children: [] };
   const stack = [root];
-  const pattern = /<\/?([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^>'"])*)>/g;
+  // `-` and `:` belong in a tag name. Without them `<fixed-point>` scanned as
+  // `<fixed>` and the rest of the name fell into the attribute text.
+  const pattern = /<\/?([a-zA-Z][a-zA-Z0-9:-]*)((?:"[^"]*"|'[^']*'|[^>'"])*)>/g;
   let cursor = 0;
   let match;
   while ((match = pattern.exec(region))) {
@@ -116,11 +167,15 @@ function parse(region) {
     const closing = match[0][1] === "/";
     const selfClosing = match[2].trimEnd().endsWith("/");
     if (closing) {
-      // Find the matching open on the stack. An end tag with no open is
-      // reported rather than ignored.
-      const at = stack.map((n) => n.tag).lastIndexOf(tag);
-      if (at <= 0) throw new Error(`</${tag}> with no matching open tag`);
-      stack.length = at;
+      // STRICT. The end tag must close the element that is actually open. A
+      // `lastIndexOf` unwind would recover from unbalanced markup by discarding
+      // whatever sat between — silently, and an auditing tool that silently
+      // discards page content is worse than one that stops.
+      const open = stack[stack.length - 1];
+      if (stack.length === 1 || open.tag !== tag) {
+        throw new Error(`</${tag}> closes <${open.tag}>`);
+      }
+      stack.pop();
       continue;
     }
     const node = { tag, attrs: match[2], children: [] };
@@ -147,7 +202,7 @@ const LEAF = new Set(["tr", "pre"]);
 function hasBlockDescendant(node) {
   if (LEAF.has(node.tag)) return false;
   return node.children.some(
-    (c) => c.tag && !DISCARDED.has(c.tag) && (BLOCK.has(c.tag) || hasBlockDescendant(c))
+    (c) => c.tag && (BLOCK.has(c.tag) || hasBlockDescendant(c))
   );
 }
 
@@ -156,7 +211,6 @@ function hasBlockDescendant(node) {
 // two statements.
 function textOf(node) {
   if (node.text !== undefined) return decode(node.text);
-  if (DISCARDED.has(node.tag)) return "";
   if (node.tag === "br") return " ";
   // Cells are joined with a space. Minified markup puts no whitespace between
   // `</td>` and `<td>`, so concatenating produced `0101提示詞注入` out of three
@@ -173,8 +227,14 @@ function collapse(text) {
 // block-level descendant to hold it instead.
 function blocksOf(node, out) {
   for (const child of node.children) {
-    if (child.text !== undefined) continue;
-    if (DISCARDED.has(child.tag)) continue;
+    // A container's own loose text, alongside its block children. Zero pages
+    // carry any today; the first version dropped it with a bare `continue`,
+    // which would have removed a sentence from the audit without a trace.
+    if (child.text !== undefined) {
+      const loose = collapse(decode(child.text));
+      if (loose) out.push({ kind: "text", tag: node.tag, text: loose });
+      continue;
+    }
     // A thematic break carries no text but is a block on the Markdown side, so
     // it has to be one here or every `* * *` reads as an insertion.
     if (child.tag === "hr") {
@@ -200,7 +260,10 @@ function blocksOf(node, out) {
 function extract(html) {
   const region = mainRegion(html);
   if (region === null) throw new Error("no <main> in this page");
-  return blocksOf(parse(region), []);
+  return blocksOf(parse(withoutDiscarded(region)), []);
 }
 
-module.exports = { extract, mainRegion, collapse, decode };
+// Only what another file calls. The first version exported eleven symbols
+// across the four files and three had a caller — and with no tests, by
+// design, the rest had no consumer at all.
+module.exports = { extract, collapse };

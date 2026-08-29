@@ -44,13 +44,26 @@ function lcs(left, right, key) {
 // not two that vanished and appeared. Reporting it as a pair is what lets a
 // reader answer "are these the same sentence?" instead of guessing which
 // orphan belongs to which.
+//
+// BOTH ORDERS. The first version paired only html-only → md-only, so whether a
+// changed block was reported as one pair or two orphans depended on which side
+// the alignment happened to walk first — the same finding wearing two different
+// shapes depending on nothing the reader can see.
 function pairAdjacent(ops) {
   const out = [];
   for (let i = 0; i < ops.length; i++) {
     const here = ops[i];
     const next = ops[i + 1];
-    if (here.op === "html-only" && next && next.op === "md-only") {
-      out.push({ op: "diff", html: here.html, md: next.md });
+    const changed =
+      next &&
+      ((here.op === "html-only" && next.op === "md-only") ||
+        (here.op === "md-only" && next.op === "html-only"));
+    if (changed) {
+      out.push({
+        op: "diff",
+        html: here.html || next.html,
+        md: here.md || next.md,
+      });
       i++;
       continue;
     }
@@ -63,4 +76,4 @@ function align(htmlBlocks, mdBlocks) {
   return pairAdjacent(lcs(htmlBlocks, mdBlocks, (b) => b.text));
 }
 
-module.exports = { align, lcs, pairAdjacent };
+module.exports = { align };
