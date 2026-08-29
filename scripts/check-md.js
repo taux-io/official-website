@@ -22,10 +22,23 @@
 // success. Every one was found by a person reading `dist/`. A gate that only
 // asked "is the file there" would have passed all four.
 //
-// NINE ASSERTIONS, and the last is deliberately the reverse of the first —
+// ELEVEN ASSERTIONS, and the last is deliberately the reverse of the first —
 // the same pairing `check:routes` uses, and for the same reason: an assertion
 // in one direction only describes whatever happened to exist on the day it was
 // written.
+//
+// THREE OF THE TWELVE ARRIVED AFTER A PERSON READ FIFTEEN LINES — two from the
+// reading and the third from the review it triggered. Nine assertions here and
+// 1564 production assertions in `contract` were green when
+// someone opened `dist/ja-JP/about.md` for the first time and found, in its
+// first fifteen lines, a decorative chip standing as a sentence (line thirteen)
+// and a heading whose two halves had been glued into `with AI AI を` (line
+// fifteen). Neither is invisible; nobody had looked. That is the argument for
+// the three below, and for the audit that follows them.
+//
+// ⚠️ THAT SENTENCE SAID EIGHTEEN LINES WHEN IT WAS FIRST WRITTEN, from memory
+// rather than from the file. A remembered number inside a paragraph about a
+// mis-measurement is the same defect one layer up.
 //
 // This runs offline against `dist/`, in the fast build job. Its two siblings in
 // the audit job — `contract`'s Content-Type and canonical assertions — need a
@@ -64,6 +77,80 @@ const STRUCTURAL_RE = new RegExp(`</?(?:${STRUCTURAL.join("|")})[\\s>/]`, "i");
 // copied elsewhere as a link to nothing — and `mailto:` because seventy of them
 // are the contact address and are absolute already.
 const LINK_RE = /\]\(([^)\s]+)/g;
+
+// The separator that keeps a bilingual heading readable.
+//
+// `<h1>` and friends are built from two spans — `display-lead` carries the
+// English, `display-sub` the locale's own words — laid out as two lines by CSS.
+// Markdown has no CSS, and a Markdown heading is one line, so the two halves
+// arrive touching:
+//
+//     # Empowering Business with AI AI を、企業が本当に使える力に
+//
+// A hundred and sixty headings across eighty files shipped like that — not
+// eighty, which was the first count and was of first headings only: the same
+// pair of spans builds the section headings too.
+//
+// `generator/src/main.rs` holds the same constant. Change one and this goes
+// red, which is the point of writing it down twice rather than once.
+//
+// IT CANNOT BE FIXED BY DROPPING THE ENGLISH HALF, which was the first plan.
+// en-US has no `display-sub` at all — forty of its headings are `display-lead`
+// alone — so dropping the lead leaves twenty English pages with no heading. The
+// measurement that caught this is the reason all five locales get read, not one.
+const HEADING_SEPARATOR = " \u2014 ";
+
+// Text as `htmd` will see it once the markup is gone. Verified against the
+// build: the only tag that ever appears inside these spans is `<br>`, and no
+// HTML entity does — so this is enough, and honest about being enough.
+// The visible text of every decorative chip in one `<main>`.
+//
+// A scanner rather than one regular expression, because the chips that carry the
+// little dot hold a nested element of the same name — and a non-greedy `(.*?)`
+// stops at the inner close tag, capturing nothing the assertion could match.
+// THAT VERSION WAS WRITTEN, AND IT REPORTED SIXTY CHIPS AS ZERO: a green gate
+// over broken output, which is the exact failure the assertion below exists to
+// catch. It was caught only by re-running it against the pre-fix build.
+//
+// Deliberately wider than the generator's own pass: any element name, `class`
+// anywhere in the tag, `tag` as a whitespace-separated token.
+function chips(region) {
+  const found = [];
+  const opening = /<([a-z][a-z0-9]*)\b([^>]*?)\/?>/g;
+  let tag;
+  while ((tag = opening.exec(region))) {
+    const [, name, attrs] = tag;
+    const classes = /class="([^"]*)"/.exec(attrs);
+    if (!classes || !classes[1].split(/\s+/).includes("tag")) continue;
+    const start = opening.lastIndex;
+    let depth = 1;
+    let cursor = start;
+    let end = -1;
+    while (depth > 0) {
+      const close = region.indexOf(`</${name}>`, cursor);
+      if (close === -1) break;
+      const nested = region.indexOf(`<${name}`, cursor);
+      if (nested !== -1 && nested < close) {
+        depth++;
+        cursor = nested + name.length + 1;
+      } else {
+        depth--;
+        cursor = close + name.length + 3;
+        end = close;
+      }
+    }
+    if (end !== -1) found.push(region.slice(start, end));
+  }
+  return found;
+}
+
+function visibleText(markup) {
+  return markup
+    .replace(/<br[^>]*>/g, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 // A deliberately small front-matter reader rather than a YAML dependency.
 //
@@ -223,9 +310,96 @@ function main() {
     } else if (!fs.existsSync(path.join(DIST, advert[1].replace(ORIGIN, "")))) {
       fail(rel, "advertised", `advertises ${advert[1]}, which is not a file`);
     }
+
+
+    // 9 — A BILINGUAL HEADING KEEPS ITS TWO HALVES APART.
+    //
+    // Found by reading `dist/ja-JP/about.md`, eighteen lines in, with every
+    // other gate green. `htmd` joins two sibling spans with a single space,
+    // which is right for a sentence and wrong for two languages: the reader
+    // gets `with AI AI を`, and the H1 is the strongest signal in a file whose
+    // whole purpose is to be quoted by a model.
+    //
+    // ASSERTED POSITIVELY — the separated form must be present — rather than by
+    // banning the glued form. The negative would pass for a heading that lost a
+    // half entirely, which is the failure mode of the fix that was nearly
+    // shipped instead of this one.
+    //
+    // MATCHED AGAINST HEADING LINES, not against the whole body. A substring
+    // search over the file would be satisfied by the same words appearing in a
+    // paragraph, which is the shape of an assertion that passes for the wrong
+    // reason and then never fails.
+    checked++;
+    const markup = fs.readFileSync(html, "utf8");
+    const region = (/<main[\s\S]*?<\/main>/.exec(markup) || [""])[0];
+    const lines = body.split("\n");
+    const headings = lines.filter((line) => /^#{1,6} /.test(line));
+    for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
+      const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+      const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+      if (!lead || !sub) continue;
+      const want = visibleText(lead[1]) + HEADING_SEPARATOR + visibleText(sub[1]);
+      if (!headings.some((line) => line.includes(want))) {
+        fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
+      }
+    }
+
+    // 10 — NO DECORATIVE PILL SURVIVES AS PROSE.
+    //
+    // `class="tag …"` is the small rounded chip above a heading. On the page it
+    // reads as a chip because it is drawn as one; in Markdown it lands as a bare
+    // line above the H1, indistinguishable from a sentence the page is making.
+    // Sixty of them shipped that way across sixty files.
+    //
+    // NOT ALL OF THEM ARE ENGLISH CHROME, which the decision to drop them
+    // originally assumed, and the correction was wrong too — it said ten. Twelve
+    // carry CJK (`GEO 技術觀點`, `GEO の技術メモ`, `GEO 기술 노트` and their
+    // Simplified siblings) and thirteen are non-ASCII once `Google Cloud Tech —
+    // notes` is counted for its em dash. They go anyway — the reason is that a
+    // chip is not a sentence, not that nobody translated it — and the front
+    // matter already carries the title and description a citation needs.
+    //
+    // ⚠️ DELIBERATELY WIDER THAN THE PASS IT GUARDS. The first version of both
+    // sides looked for the literal `<div class="tag`, which requires `class` to
+    // open the tag and `tag` to open the class. Neither is a rule; both merely
+    // happen to hold. A chip written `class="mb-6 tag"` would have survived the
+    // generator AND been invisible here, because the gate was checking the same
+    // narrow shape the fix was — a measurement taking its definition from the
+    // thing it measures, which is how `wrangler dev`'s own `charset` kept a
+    // charset assertion green for a rule that did not exist. So: any element,
+    // `class` anywhere in the tag, `tag` as a whitespace-separated token. If the
+    // generator ever stops seeing a chip, this still does.
+    checked++;
+    for (const pill of chips(region)) {
+      const text = visibleText(pill);
+      if (text && lines.some((line) => line.trim() === text)) {
+        fail(rel, "decorative pill", `${JSON.stringify(text)} stands as its own line — a chip is not a sentence`);
+      }
+    }
+
+    // 11 — THE TWIN HAS A HEADING AT ALL.
+    //
+    // ADDED BY REVIEW, NOT BY THE READING, and it guards the failure the fix
+    // above was nearly written to cause. The first plan for the glued heading
+    // was to drop the English half and keep the local one. It reads better in
+    // four locales and destroys the fifth: en-US has no `display-sub`, so forty
+    // of its headings are a lead alone and twenty pages would have lost their
+    // title outright.
+    //
+    // NOTHING WOULD HAVE SAID SO. Assertion 9 skips a heading that has only one
+    // half, which is every en-US heading, and no other assertion here has an
+    // opinion about headings — a title-less page clears `BODY_FLOOR` easily.
+    // The measurement caught it; a measurement is not a gate.
+    //
+    // At least one, not exactly one: eighty-five files carry a single `#` and
+    // the remaining fifteen carry two, four or seven. Counted, not assumed.
+    checked++;
+    if (!headings.some((line) => line.startsWith("# "))) {
+      fail(rel, "no heading", "the Markdown has no H1 — the strongest signal a model reads is missing");
+    }
   }
 
-  // 9 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
+  // 12 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
   // that can see a twin left behind by a route that was renamed: the loop above
   // walks the current route table, so a stale file is invisible to it while
   // still being served, still being advertised by nothing, and still being
@@ -257,7 +431,8 @@ function main() {
 
   console.log(
     `\n${found.length} Markdown twins hold, across ${checked} assertions ` +
-      `— front matter, body, markup, links, code blocks and the HTML that advertises them.`
+      `— front matter, body, headings, markup, links, code blocks, bilingual ` +
+      `headings, decorative chips, and the HTML that advertises them.`
   );
 }
 
