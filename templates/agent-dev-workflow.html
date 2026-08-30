@@ -1048,7 +1048,20 @@ gh label create enhancement</code></pre>
 
             <div class="space-y-12">
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">案例 B — 生產環境偶發 500</h3>
+                    <!-- A-D, renumbered from B-C-D-E. The heading above promises four
+                         complete cases and the list opened at B, so a reader looking for A
+                         found nothing. All five locales had the same off-by-one.
+
+                         Renumbering was chosen over inventing a fifth case (there are four)
+                         and over dropping the letters (they are the only handle a reader has
+                         when scanning back to one). An earlier version of this comment
+                         claimed the prose refers back to the letters — it does not; grep
+                         finds them in these four h3s and nowhere else, in any locale.
+
+                         Comment kept here only. The four locale copies carry the same
+                         renumbering with no comment: the fact is about all five files at
+                         once, and five copies of it is five things to keep true. -->
+                    <h3 class="font-display text-lg font-bold mb-3">案例 A — 生產環境偶發 500</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>處境</strong>：客戶回報「有時候按送出會噴 500」，你自己重現不出來。</p>
                         <ol class="space-y-2">
@@ -1065,7 +1078,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">案例 C — 接手一個沒人整理過的 legacy repo</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 B — 接手一個沒人整理過的 legacy repo</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>處境</strong>：你剛加入一個八年的專案，或接手一個 vibe-coded 的 repo。沒有 ADR、沒有領域語言、沒有設計原則。</p>
                         <ol class="space-y-2">
@@ -1084,7 +1097,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">案例 D — 綠地大專案</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 C — 綠地大專案</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>處境</strong>：要從零做一個新產品模組，路線完全不清楚，明顯不是一場對話能談完的。</p>
                         <ol class="space-y-2">
@@ -1100,7 +1113,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">案例 E — 完全不是程式的決策</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">案例 D — 完全不是程式的決策</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>處境</strong>：你在想一個商業決定——要不要做一條新產品線、一份提案怎麼定價、一篇文章的論證骨架。</p>
                         <ol class="space-y-2">

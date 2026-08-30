@@ -142,6 +142,12 @@ const TERMS = {
   数位: "数字",
   智慧: "智能",
   人工智慧: "人工智能",
+  // 智慧财产权 must come before 智慧财产, and both must land on 知识产权 — the
+  // mainland term already carries 权, so mapping only the shorter key left the
+  // 权 of 智慧財產權 dangling and produced 知识产权权. That typo shipped on three
+  // lines of zh-Hans-CN/what-is-llms-txt and into its .md twin. ORDER in
+  // hans.js sorts longest key first, so the pair is unambiguous.
+  智慧财产权: "知识产权",
   智慧财产: "知识产权",
   影片: "视频",
   短影片: "短视频",

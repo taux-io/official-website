@@ -22,7 +22,7 @@
 // success. Every one was found by a person reading `dist/`. A gate that only
 // asked "is the file there" would have passed all four.
 //
-// TWELVE ASSERTIONS, and the last is deliberately the reverse of the first —
+// THIRTEEN ASSERTIONS, and the last is deliberately the reverse of the first —
 // the same pairing `check:routes` uses, and for the same reason: an assertion
 // in one direction only describes whatever happened to exist on the day it was
 // written.
@@ -512,6 +512,49 @@ function main() {
     if (!headings.some((line) => line.startsWith("# "))) {
       fail(rel, "no heading", "the Markdown has no H1 — the strongest signal a model reads is missing");
     }
+
+    // 13 — A LETTERED RUN OF HEADINGS STARTS AT A AND SKIPS NOTHING.
+    //
+    // `agent-dev-workflow` said "four complete cases" and then lettered them
+    // B, C, D, E, in all five locales. Nobody noticed for as long as the page
+    // has existed. It is not a conversion defect — the HTML says B too — so
+    // every assertion above it was green and the audit's Pass A, which only
+    // compares the two sides, was green as well. A reader found it.
+    //
+    // MACHINE-CHECKABLE, which is the only reason it is here rather than in a
+    // reader's recipe. A letter used as an ordinal is not a judgement call: a
+    // run that goes B C D E is wrong however good the prose is.
+    //
+    // A RUN, NOT A SINGLE HEADING. Two or more headings at the same level that
+    // share the same text before the letter — "Scenario", "案例", "사례" — are
+    // one run. One heading with a letter in it is a sentence, not an
+    // enumeration, and is left alone; requiring a lone `A` would fail on any
+    // page that names a grade or a variant.
+    //
+    // Measured on the current build: five runs (the five locales of that one
+    // page), zero failing. Proved red by re-lettering a twin B-E, which fails
+    // all five. Two is the floor because a single-item "run" cannot be told
+    // from prose, not because a two-item list matters more than a ten-item one.
+    checked++;
+    const runs = new Map();
+    for (const line of headings) {
+      const m = /^(#{1,6})\s+(.*)$/.exec(line);
+      const letter = /(?:^|\s)([A-Z])(?=\s*[—\-:.、])/.exec(m[2]);
+      if (!letter) continue;
+      const key = m[1] + "\u0000" + m[2].slice(0, letter.index).trim();
+      if (!runs.has(key)) runs.set(key, []);
+      runs.get(key).push(letter[1]);
+    }
+    for (const [key, letters] of runs) {
+      if (letters.length < 2) continue;
+      const want = letters.map((_, i) => String.fromCharCode(65 + i));
+      if (letters.join("") === want.join("")) continue;
+      fail(
+        rel,
+        "lettered run",
+        `"${key.split("\u0000")[1]}" is lettered ${letters.join(" ")} — a lettered run has to read ${want.join(" ")}`
+      );
+    }
   }
 
   // 12 — AND NOTHING ELSE. The reverse of the first assertion, and the only one
@@ -547,7 +590,8 @@ function main() {
   console.log(
     `\n${found.length} Markdown twins hold, across ${checked} assertions ` +
       `— front matter, body, headings, markup, links, code blocks, headings ` +
-      `built from two parts, decorative chips, and the HTML that advertises them.`
+      `built from two parts, decorative chips, lettered runs, and the HTML ` +
+      `that advertises them.`
   );
 }
 
