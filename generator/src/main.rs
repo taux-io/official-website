@@ -531,7 +531,13 @@ fn separate_display_halves(html: &str) -> String {
 /// of classes this pass did, so the fix and its gate were blind together. Found
 /// by the audit in issue 273, by a reader looking at the twins.
 fn separate_halves_within(heading: &str) -> String {
-    separate_number_badge(&separate_block_halves(&separate_display_halves_within(
+    // BADGE FIRST. It writes a separator right after the number, and the block
+    // pass refuses to add a second one when it already sees one there. The
+    // other order puts the block pass first, so its guard has nothing to see
+    // yet and a badge followed straight by a block half comes out `1 —  — X`.
+    // The test for that failed with the passes the other way round, which is
+    // why the order is written down rather than left to read like an accident.
+    separate_block_halves(&separate_number_badge(&separate_display_halves_within(
         heading,
     )))
 }
@@ -557,18 +563,39 @@ fn separate_halves_within(heading: &str) -> String {
 /// Measured: fifty such elements in this build, every one leading its heading,
 /// and no other digit-only element in any heading at all.
 ///
-/// ⚠️ SEPARATED, NOT DROPPED — and dropping was the obvious answer. Half the
-/// badges are the ONLY number their heading has (`01` before `Tool Wrapper`),
-/// so dropping loses which pattern is which. The other half sit before a title
-/// that already spells the number (`1` before `第 1 部`), where dropping loses
-/// nothing. One rule has to serve both, and keeping is the half that is
-/// recoverable. The duplication the second half now shows is the page's own,
-/// and is tracked separately.
+/// ⚠️ WHAT IT CANNOT SEE, since a rule that only lists what it catches is half
+/// a rule. A roman numeral, a spelled-out `One`, a `1.` with its stop, digits
+/// wrapped twice (`<span><span>1</span></span>`), or an icon sitting before the
+/// number all fall outside it and are left glued. And it cannot tell a section
+/// number from any other bare numeral: a heading opening `<span>2024</span> in
+/// review` would be separated as though the year were a badge. Zero of each in
+/// this build; none of that is checked on every run, only measured once.
+///
+/// ⚠️ SEPARATED, NOT DROPPED — and dropping was the obvious answer. FORTY of
+/// the fifty badges are the ONLY number their heading has (`01` before `Tool
+/// Wrapper`, `1` before `What is llms.txt?`), so dropping loses which section
+/// is which. The other TEN sit before a title that already says the number
+/// (`Part one`, `第 1 部`, `1부`), where dropping loses nothing. One rule has to
+/// serve both, and keeping is the side that is recoverable.
+///
+/// ⚠️ THIS PARAGRAPH SAID "25 + 25" AND "half … the other half", from three
+/// page families counted as two. Measured: `adk-skill-patterns` 25,
+/// `what-is-llms-txt` 15, `agent-prompting-guide` 10 — so 40 / 10, not 25 / 25.
+/// Tenth wrong number on this line of work, in the sentence that argues for the
+/// decision, one paragraph after a comment congratulating itself for counting
+/// the ninth. A first attempt to re-count it was wrong too: testing whether the
+/// title contains a DIGIT gives 44 / 6, because `Part one` and `第一部分` spell
+/// the number out.
 ///
 /// The separated form is this site's own convention rather than an invention:
 /// pages that write their number as literal text already write `01 — 一句話`.
 fn separate_number_badge(heading: &str) -> String {
-    let Some(open) = heading.find('>').map(|i| i + 1) else {
+    // `end_of_tag`, not a bare `find('>')`. The helper exists eight lines above
+    // `has_text_outside_tags` precisely because an attribute value can hold a
+    // `>` — Tailwind writes `[&>svg]:` — and the comment there says so. Writing
+    // the bare search anyway, in the same file, is how the warning stops being
+    // one.
+    let Some(open) = end_of_tag(&heading[1..]).map(|i| i + 2) else {
         return heading.to_string();
     };
     let rest = &heading[open..];
@@ -576,7 +603,7 @@ fn separate_number_badge(heading: &str) -> String {
     if !trimmed.starts_with('<') {
         return heading.to_string();
     }
-    let Some(close) = trimmed.find('>') else {
+    let Some(close) = end_of_tag(&trimmed[1..]).map(|i| i + 1) else {
         return heading.to_string();
     };
     let name: String = trimmed[1..]
@@ -679,7 +706,15 @@ fn separate_block_halves(heading: &str) -> String {
     let mut out = String::with_capacity(heading.len() + HEADING_SEPARATOR.len());
     let mut rest = heading;
     while let Some(at) = find_block_half(rest) {
-        if has_text_outside_tags(&rest[..at]) {
+        // ⚠️ NOT IF A SEPARATOR IS ALREADY THERE. The badge pass writes one
+        // immediately before whatever follows the number, so a heading that is
+        // a badge followed straight by a block half would get two — `1 —  — X`.
+        // No page carries that shape; it is one line to make impossible and the
+        // pipeline order alone is not an argument.
+        let already = rest[..at]
+            .trim_end()
+            .ends_with(HEADING_SEPARATOR.trim_end());
+        if !already && has_text_outside_tags(&rest[..at]) {
             out.push_str(&rest[..at]);
             out.push_str(HEADING_SEPARATOR);
         } else {
@@ -1863,7 +1898,7 @@ mod tests {
     // does not exist. The markup declares itself now (issue 264), so the
     // rescue is gone; the property it protected is not optional, and this is
     // what still asserts it of the conversion itself.
-    // THE FIFTEEN BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
+    // THE SEVENTEEN BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
     // positive cases — a bilingual heading that separates, a chip that goes —
     // are asserted over all hundred real files by assertions 9 and 10 there,
     // which is a stronger statement than any synthetic string makes. These are
@@ -1900,6 +1935,24 @@ mod tests {
         let html =
             r#"<p>before</p><div class="tag mb-6"><div class="dot"></div> Label</div><p>after</p>"#;
         assert_eq!(drop_tag_pills(html), "<p>before</p><p>after</p>");
+    }
+
+    #[test]
+    fn a_badge_straight_before_a_block_half_gets_one_separator_not_two() {
+        let html = concat!(
+            r#"<h2><span class="w-12 h-12">1</span>"#,
+            r#"<span class="block">English</span></h2>"#
+        );
+        assert_eq!(separate_display_halves(html).matches('\u{2014}').count(), 1);
+    }
+
+    #[test]
+    fn a_greater_than_in_the_headings_own_attributes_does_not_hide_the_badge() {
+        // The `<h2>` itself can carry `[&>svg]:` in a class. A bare `find('>')`
+        // would treat that as the end of the opening tag and start reading the
+        // badge from the middle of an attribute.
+        let html = r#"<h2 class="[&>svg]:w-4"><span class="w-12 h-12">1</span> Title</h2>"#;
+        assert!(separate_display_halves(html).contains("\u{2014}"));
     }
 
     #[test]

@@ -146,17 +146,42 @@ function headingParts(inner) {
   // all `<span>`, and NO other digit-only element in any heading, so the rule
   // costs no false positives and cannot be undone by renaming a utility class.
   //
+  // ⚠️ WHAT IT CANNOT SEE. A roman numeral, a spelled-out `One`, a `1.` with
+  // its stop, digits wrapped twice, or an icon before the number are all left
+  // glued — and a heading opening `<span>2024</span> in review` would be
+  // separated as though the year were a badge. Zero of each today, measured
+  // once and not re-measured on every run.
+  //
   // The separated form is the site's own convention, not an invention: pages
   // that write their number as literal text already write `01 — 一句話`.
+  // ⚠️ COLLECTED, NOT RETURNED EARLY — and the first version returned early.
+  // A heading with a badge exited before the two language-half checks ran, so
+  // `<span>1</span><span class="display-lead">Alpha</span><span
+  // class="display-sub">Beta</span>` reported one part and `## 1 — AlphaBeta`
+  // passed with the halves glued. FOURTH time on this line of work that a fix
+  // and its gate went blind together, two lines under the comment boasting
+  // that this one could not. No page carries that shape today; the case was
+  // constructed because issue 281 asked for one, and it was already true.
+  // A BADGE IS A PREFIX CLAIM, NOT A PAIR. Its "other half" is the whole rest
+  // of the heading, which may itself be two parts — so comparing it as one flat
+  // string demands `1 — AlphaBeta` and rejects the correct `1 — Alpha — Beta`.
+  // What the badge actually requires is that the number be followed by the
+  // separator; everything after it is the other constructs' business.
+  const parts = [];
   const badge = /^\s*<([a-z][a-z0-9]*)\b[^>]*>\s*(\d+)\s*<\/\1>/i.exec(inner);
+  let body = inner;
   if (badge) {
     const rest = visibleText(inner.slice(badge[0].length));
-    if (rest) return [[badge[2], rest]];
+    if (rest) parts.push([badge[2], null]);
+    body = inner.slice(badge[0].length);
   }
 
-  const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-  const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-  if (lead && sub) return [[visibleText(lead[1]), visibleText(sub[1])]];
+  const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(body);
+  const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(body);
+  if (lead && sub) {
+    parts.push([visibleText(lead[1]), visibleText(sub[1])]);
+    return parts;
+  }
 
   // EVERY second half, on ANY element, matched by class TOKEN.
   //
@@ -171,19 +196,18 @@ function headingParts(inner) {
   //
   // This is the third time a fix and its gate have been blinded by sharing one
   // narrow definition. The second is written out in assertion 10 below.
-  const halves = [];
   let before = "";
-  for (const tag of inner.matchAll(/<([a-z][a-z0-9]*)\b([^>]*)>/gi)) {
+  for (const tag of body.matchAll(/<([a-z][a-z0-9]*)\b([^>]*)>/gi)) {
     const classes = /class="([^"]*)"/.exec(tag[2]);
     if (!classes || !classes[1].split(/\s+/).includes("block")) continue;
-    const head = visibleText(inner.slice(before.length, tag.index));
+    const head = visibleText(body.slice(before.length, tag.index));
     if (!head) continue;
-    const closing = new RegExp(`<\\/${tag[1]}>`, "i").exec(inner.slice(tag.index));
-    const end = closing ? tag.index + closing.index : inner.length;
-    halves.push([head, visibleText(inner.slice(tag.index + tag[0].length, end))]);
-    before = inner.slice(0, end);
+    const closing = new RegExp(`<\\/${tag[1]}>`, "i").exec(body.slice(tag.index));
+    const end = closing ? tag.index + closing.index : body.length;
+    parts.push([head, visibleText(body.slice(tag.index + tag[0].length, end))]);
+    before = body.slice(0, end);
   }
-  return halves.length ? halves : null;
+  return parts.length ? parts : null;
 }
 
 // Text as `htmd` will see it once the markup is gone. Verified against the
@@ -422,9 +446,15 @@ function main() {
     const headings = lines.filter((line) => /^#{1,6} /.test(line));
     for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
       for (const [first, second] of headingParts(inner) || []) {
-        const want = first + HEADING_SEPARATOR + second;
-        if (!headings.some((line) => line.includes(want))) {
-          fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
+        // `second === null` is the badge: assert the number opens a heading and
+        // is followed by the separator, not that it is followed by any
+        // particular text.
+        const want = second === null ? first + HEADING_SEPARATOR : first + HEADING_SEPARATOR + second;
+        const found = headings.some((line) =>
+          second === null ? line.replace(/^#{1,6} /, "").startsWith(want) : line.includes(want)
+        );
+        if (!found) {
+          fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two parts of this heading are touching`);
         }
       }
     }
@@ -516,8 +546,8 @@ function main() {
 
   console.log(
     `\n${found.length} Markdown twins hold, across ${checked} assertions ` +
-      `— front matter, body, headings, markup, links, code blocks, bilingual ` +
-      `headings, decorative chips, and the HTML that advertises them.`
+      `— front matter, body, headings, markup, links, code blocks, headings ` +
+      `built from two parts, decorative chips, and the HTML that advertises them.`
   );
 }
 
