@@ -190,7 +190,12 @@
              silently on different content the moment the ranking moved. The
              number changes between editions; the topic does not. Same reason
              the URL carries no year. -->
-        <section id="overview" class="border-t border-line pt-16">
+        <!-- No "OWASP name" column here. The other locales use it for the English
+     original beside their own translation; in English the two are the same
+     string, so the column printed every risk name twice — on the page in a
+     tablet-width column, and in the Markdown twin on every row. Same reason
+     the headings on this page carry no second half. Issue 282. -->
+<section id="overview" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
                 <h2 class="font-display text-2xl font-bold mb-6">The ten at a glance</h2>
@@ -201,59 +206,48 @@
                         <tr class="border-b border-line">
                             <th class="py-3 pr-4 font-bold text-sm">#</th>
                             <th class="py-3 pr-4 font-bold text-sm">Risk</th>
-                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">OWASP name</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM01</td>
                             <td class="py-4 pr-4"><a href="#prompt-injection" class="font-bold">Prompt Injection</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM02</td>
                             <td class="py-4 pr-4"><a href="#sensitive-information-disclosure" class="font-bold">Sensitive Information Disclosure</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM03</td>
                             <td class="py-4 pr-4"><a href="#excessive-agency" class="font-bold">Excessive Agency</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM04</td>
                             <td class="py-4 pr-4"><a href="#supply-chain" class="font-bold">Supply Chain</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM05</td>
                             <td class="py-4 pr-4"><a href="#data-and-model-poisoning" class="font-bold">Data and Model Poisoning</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM06</td>
                             <td class="py-4 pr-4"><a href="#unbounded-consumption" class="font-bold">Unbounded Consumption</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM07</td>
                             <td class="py-4 pr-4"><a href="#misinformation" class="font-bold">Misinformation</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM08</td>
                             <td class="py-4 pr-4"><a href="#hidden-context-exposure" class="font-bold">Hidden Context Exposure</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 pr-4 font-sans font-semibold">LLM09</td>
                             <td class="py-4 pr-4"><a href="#vector-and-embedding-weaknesses" class="font-bold">Vector and Embedding Weaknesses</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
                         </tr>
                         <tr>
                             <td class="py-4 pr-4 font-sans font-semibold">LLM10</td>
                             <td class="py-4 pr-4"><a href="#improper-output-handling" class="font-bold">Improper Output Handling</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
                         </tr>
                     </tbody>
                 </table>
@@ -267,7 +261,7 @@
         <section id="prompt-injection" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM01</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Prompt Injection <span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Prompt Injection</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -302,7 +296,7 @@
         <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM02</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Sensitive Information Disclosure <span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Sensitive Information Disclosure</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -333,7 +327,7 @@
         <section id="excessive-agency" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM03</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Excessive Agency <span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Excessive Agency</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -368,7 +362,7 @@
         <section id="supply-chain" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM04</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Supply Chain <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Supply Chain</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -397,7 +391,7 @@
         <section id="data-and-model-poisoning" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM05</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Data and Model Poisoning <span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Data and Model Poisoning</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -428,7 +422,7 @@
         <section id="unbounded-consumption" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM06</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Unbounded Consumption <span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Unbounded Consumption</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -461,7 +455,7 @@
         <section id="misinformation" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM07</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Misinformation <span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Misinformation</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -494,7 +488,7 @@
         <section id="hidden-context-exposure" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM08</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Hidden Context Exposure <span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Hidden Context Exposure</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -529,7 +523,7 @@
         <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM09</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Vector and Embedding Weaknesses <span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Vector and Embedding Weaknesses</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -560,7 +554,7 @@
         <section id="improper-output-handling" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">LLM10</p>
-                <h2 class="font-display text-2xl font-bold mb-6">Improper Output Handling <span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+                <h2 class="font-display text-2xl font-bold mb-6">Improper Output Handling</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
