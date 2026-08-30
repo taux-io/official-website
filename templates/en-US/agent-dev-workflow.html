@@ -1051,7 +1051,15 @@ gh label create enhancement</code></pre>
 
             <div class="space-y-12">
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">Scenario B — intermittent 500s in production</h3>
+                    <!-- Lettered A-D, and the letters are the only thing that changed here.
+                         They ran B-E in all five locales under a heading promising four
+                         complete scenarios, so the page opened at B and a reader looking
+                         for A found nothing. Renumbering was chosen over inventing a
+                         fifth scenario (the four are the four we have) and over dropping
+                         the letters (they are how the prose refers back to a case).
+                         The letters live only in these four h3s -- verified by grep
+                         across all five locales -- so nothing else needed touching. -->
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario A — intermittent 500s in production</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>The situation.</strong> A customer reports that submitting sometimes returns a 500, and you cannot reproduce it.</p>
                         <ol class="space-y-2">
@@ -1068,7 +1076,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">Scenario C — inheriting a legacy repo nobody tidied</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario B — inheriting a legacy repo nobody tidied</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>The situation.</strong> You have joined an eight-year-old project, or inherited a vibe-coded repo. No ADRs, no domain language, no design principles.</p>
                         <ol class="space-y-2">
@@ -1087,7 +1095,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">Scenario D — a large greenfield project</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario C — a large greenfield project</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>The situation.</strong> A new product module from nothing, with no clear route, and obviously more than one conversation can settle.</p>
                         <ol class="space-y-2">
@@ -1103,7 +1111,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">Scenario E — a decision that is not about code at all</h3>
+                    <h3 class="font-display text-lg font-bold mb-3">Scenario D — a decision that is not about code at all</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>The situation.</strong> A business decision — whether to start a product line, how to price a proposal, the argument structure of an article.</p>
                         <ol class="space-y-2">
