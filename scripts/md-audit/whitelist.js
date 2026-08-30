@@ -47,13 +47,18 @@ const CHIP = "tag";
 
 const RULES = [
   {
-    name: "bilingual heading separator",
-    matches: 231,
+    // ⚠️ RENAMED FROM "bilingual heading separator". Issue 281 added a third
+    // shape — a number badge before a title — which is not bilingual at all.
+    // A rule whose name describes only some of what it claims is a rule nobody
+    // can check against its own reason.
+    name: "heading part separator",
+    matches: 281,
     why:
-      "Issues 270 and 278: a bilingual heading is two halves, laid out as two " +
-      "lines by CSS. Markdown has no CSS and a heading is one line, so the " +
-      "generator inserts an em dash. The HTML carries no separator, so every " +
-      "such heading differs here.",
+      "Issues 270, 278 and 281: a heading can be built from two parts — two " +
+      "language halves, or a section number and a title — laid out as two " +
+      "lines or a circle by CSS. Markdown has neither, so the generator writes " +
+      "an em dash between them. The HTML carries no separator, so every such " +
+      "heading differs here.",
     applies: (op) =>
       op.op === "diff" &&
       op.html.kind === "heading" &&

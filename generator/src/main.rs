@@ -531,7 +531,81 @@ fn separate_display_halves(html: &str) -> String {
 /// of classes this pass did, so the fix and its gate were blind together. Found
 /// by the audit in issue 273, by a reader looking at the twins.
 fn separate_halves_within(heading: &str) -> String {
-    separate_block_halves(&separate_display_halves_within(heading))
+    separate_number_badge(&separate_block_halves(&separate_display_halves_within(
+        heading,
+    )))
+}
+
+/// The number badge: a heading's first element holding nothing but digits.
+///
+/// The templates draw a section number as a circle — `<span class="w-12 h-12
+/// …">1</span>` before the title. Markdown has no circle, so it arrives as a
+/// bare numeral touching the words after it:
+///
+/// ```text
+///   ## 1 Part one: the basics
+///   ## 1 第 1 部：基礎（Prompting 101）
+/// ```
+///
+/// FIFTY HEADINGS ACROSS FIFTEEN PAGES.
+///
+/// ⚠️ IDENTIFIED BY WHAT IT IS, NOT BY WHAT IT WEARS. The two passes above this
+/// one match a class — `display-`, then a `block` token — and the first version
+/// of each was narrow enough that a template rewrite would have escaped the fix
+/// AND its gate together. That happened twice. A badge is instead "the first
+/// element whose text is only digits", which no class rename can undo.
+/// Measured: fifty such elements in this build, every one leading its heading,
+/// and no other digit-only element in any heading at all.
+///
+/// ⚠️ SEPARATED, NOT DROPPED — and dropping was the obvious answer. Half the
+/// badges are the ONLY number their heading has (`01` before `Tool Wrapper`),
+/// so dropping loses which pattern is which. The other half sit before a title
+/// that already spells the number (`1` before `第 1 部`), where dropping loses
+/// nothing. One rule has to serve both, and keeping is the half that is
+/// recoverable. The duplication the second half now shows is the page's own,
+/// and is tracked separately.
+///
+/// The separated form is this site's own convention rather than an invention:
+/// pages that write their number as literal text already write `01 — 一句話`.
+fn separate_number_badge(heading: &str) -> String {
+    let Some(open) = heading.find('>').map(|i| i + 1) else {
+        return heading.to_string();
+    };
+    let rest = &heading[open..];
+    let trimmed = rest.trim_start();
+    if !trimmed.starts_with('<') {
+        return heading.to_string();
+    }
+    let Some(close) = trimmed.find('>') else {
+        return heading.to_string();
+    };
+    let name: String = trimmed[1..]
+        .chars()
+        .take_while(|c| c.is_ascii_alphanumeric())
+        .collect();
+    if name.is_empty() {
+        return heading.to_string();
+    }
+    let after = &trimmed[close + 1..];
+    let end_tag = format!("</{name}>");
+    let Some(end) = after.find(&end_tag) else {
+        return heading.to_string();
+    };
+    if after[..end].trim().is_empty() || !after[..end].trim().chars().all(|c| c.is_ascii_digit()) {
+        return heading.to_string();
+    }
+    let tail = &after[end + end_tag.len()..];
+    if !has_text_outside_tags(tail) {
+        return heading.to_string();
+    }
+    let mut out = String::with_capacity(heading.len() + HEADING_SEPARATOR.len());
+    out.push_str(&heading[..open]);
+    out.push_str(&trimmed[..close + 1]);
+    out.push_str(&after[..end]);
+    out.push_str(&end_tag);
+    out.push_str(HEADING_SEPARATOR);
+    out.push_str(tail);
+    out
 }
 
 /// Whether markup holds any text of its own, tags not counted.
@@ -1789,7 +1863,7 @@ mod tests {
     // does not exist. The markup declares itself now (issue 264), so the
     // rescue is gone; the property it protected is not optional, and this is
     // what still asserts it of the conversion itself.
-    // THE TWELVE BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
+    // THE FIFTEEN BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
     // positive cases — a bilingual heading that separates, a chip that goes —
     // are asserted over all hundred real files by assertions 9 and 10 there,
     // which is a stronger statement than any synthetic string makes. These are
@@ -1826,6 +1900,27 @@ mod tests {
         let html =
             r#"<p>before</p><div class="tag mb-6"><div class="dot"></div> Label</div><p>after</p>"#;
         assert_eq!(drop_tag_pills(html), "<p>before</p><p>after</p>");
+    }
+
+    #[test]
+    fn a_number_that_is_not_the_first_element_is_not_a_badge() {
+        // Zero headings carry one. A numeral inside the title is part of the
+        // title, and separating it would cut a sentence in half.
+        let html = r#"<h2>Step<span class="w-12 h-12">1</span></h2>"#;
+        assert_eq!(separate_display_halves(html), html);
+    }
+
+    #[test]
+    fn a_badge_with_no_title_after_it_is_left_alone() {
+        let html = r#"<h2><span class="w-12 h-12">1</span></h2>"#;
+        assert_eq!(separate_display_halves(html), html);
+    }
+
+    #[test]
+    fn an_element_holding_digits_and_letters_is_not_a_badge() {
+        // `1a` is a label the page wrote, not a section number the template drew.
+        let html = r#"<h2><span class="w-12 h-12">1a</span> Title</h2>"#;
+        assert_eq!(separate_display_halves(html), html);
     }
 
     #[test]

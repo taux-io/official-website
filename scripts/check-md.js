@@ -132,7 +132,28 @@ const HEADING_SEPARATOR = " \u2014 ";
 // are forty-five. It is the sentence that argues for the decision, so it
 // understated the risk it was weighing by a third. Ninth wrong number on this
 // line of work; counted this time.
-function bilingualHalves(inner) {
+function headingParts(inner) {
+  // A NUMBER BADGE IS A PART TOO (issue 281). The templates draw a section
+  // number as a circle: `<span class="w-12 h-12 …">1</span>` before the title.
+  // In Markdown there is no circle, so it lands as a bare numeral touching the
+  // words after it — `## 1 Part one: the basics`.
+  //
+  // ⚠️ IDENTIFIED BY WHAT IT IS, NOT BY WHAT IT WEARS. Every earlier version of
+  // this file matched a class: `class="tag`, then `class="block`, and both were
+  // narrow enough that a template rewrite would have escaped the fix and the
+  // gate together — twice. A badge is the heading's first element whose text is
+  // nothing but digits. Measured: fifty of those in this build, all leading,
+  // all `<span>`, and NO other digit-only element in any heading, so the rule
+  // costs no false positives and cannot be undone by renaming a utility class.
+  //
+  // The separated form is the site's own convention, not an invention: pages
+  // that write their number as literal text already write `01 — 一句話`.
+  const badge = /^\s*<([a-z][a-z0-9]*)\b[^>]*>\s*(\d+)\s*<\/\1>/i.exec(inner);
+  if (badge) {
+    const rest = visibleText(inner.slice(badge[0].length));
+    if (rest) return [[badge[2], rest]];
+  }
+
   const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
   const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
   if (lead && sub) return [[visibleText(lead[1]), visibleText(sub[1])]];
@@ -377,7 +398,7 @@ function main() {
     }
 
 
-    // 9 — A BILINGUAL HEADING KEEPS ITS TWO HALVES APART.
+    // 9 — A HEADING BUILT FROM TWO PARTS KEEPS THEM APART.
     //
     // Found by reading `dist/ja-JP/about.md`, eighteen lines in, with every
     // other gate green. `htmd` joins two sibling spans with a single space,
@@ -400,7 +421,7 @@ function main() {
     const lines = body.split("\n");
     const headings = lines.filter((line) => /^#{1,6} /.test(line));
     for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
-      for (const [first, second] of bilingualHalves(inner) || []) {
+      for (const [first, second] of headingParts(inner) || []) {
         const want = first + HEADING_SEPARATOR + second;
         if (!headings.some((line) => line.includes(want))) {
           fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
