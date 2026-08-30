@@ -95,7 +95,7 @@ function headings(route, mdRoot = DIST) {
 }
 
 function tally(ops) {
-  const review = ops.filter((op) => !classify(op).legal).length;
+  const review = ops.filter((op, index) => !classify(op, { ops, index }).legal).length;
   const match = ops.filter((o) => o.op === "match").length;
   return {
     pairs: ops.length,
@@ -131,7 +131,7 @@ function render(route, ops) {
     // difference the converter makes on purpose, named in the issue that
     // introduced it — showing those would teach a reader that most findings are
     // not findings, which is the fastest way to get real ones waved through.
-    if (classify(op).legal) return;
+    if (classify(op, { ops, index }).legal) return;
     // The Markdown line where the reader can open the file, not just the row of
     // this table. An html-only block has no line to point at, so it says which
     // pair it sits between instead.
@@ -241,7 +241,8 @@ function main() {
   const drift = [];
   for (const rule of RULES) {
     const actual = perRoute.reduce(
-      (sum, { ops }) => sum + ops.filter((op) => classify(op).rule === rule.name).length,
+      (sum, { ops }) =>
+        sum + ops.filter((op, index) => classify(op, { ops, index }).rule === rule.name).length,
       0
     );
     if (actual !== rule.matches) drift.push(`${rule.name}: declares ${rule.matches}, matches ${actual}`);

@@ -28,7 +28,8 @@
     "build:icons": "node scripts/assets/build-icons.js",
     "build:og": "node scripts/assets/build-og.js",
     "build:assets": "npm run build:icons && npm run build:logo && npm run build:og",
-    "build:logo": "node scripts/assets/build-logo.js"
+    "build:logo": "node scripts/assets/build-logo.js",
+    "md:prove": "node scripts/md-audit/prove-whitelist.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
