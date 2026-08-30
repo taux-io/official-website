@@ -22,7 +22,7 @@
 // success. Every one was found by a person reading `dist/`. A gate that only
 // asked "is the file there" would have passed all four.
 //
-// ELEVEN ASSERTIONS, and the last is deliberately the reverse of the first —
+// TWELVE ASSERTIONS, and the last is deliberately the reverse of the first —
 // the same pairing `check:routes` uses, and for the same reason: an assertion
 // in one direction only describes whatever happened to exist on the day it was
 // written.
@@ -99,6 +99,71 @@ const LINK_RE = /\]\(([^)\s]+)/g;
 // alone — so dropping the lead leaves twenty English pages with no heading. The
 // measurement that caught this is the reason all five locales get read, not one.
 const HEADING_SEPARATOR = " \u2014 ";
+
+// The two halves of a bilingual heading, whichever way the template builds it.
+//
+// ⚠️ THERE ARE TWO SHAPES AND THE FIRST VERSION KNEW ONLY ONE. Issue 270 fixed
+// `display-lead` + `display-sub`, two sibling spans, and this assertion looked
+// for exactly that pair. The templates also build the same heading a second
+// way — the locale half as the `<h2>`'s own text and the English half in a
+// `class="block"` span:
+//
+//     <h2>プロンプトインジェクション<span class="block …">Prompt Injection</span></h2>
+//
+// SEVENTY-FIVE HEADINGS ACROSS TEN PAGES were built that way and every one of
+// them shipped glued, while twelve assertions and 1101 checks stayed green. The
+// audit in issue 273 found them by READING the twins, not by any gate; Pass A
+// was blind to them too, because the page and the twin agree — the page has no
+// separator either.
+//
+// ⚠️ A SPACE IS NOT A SEPARATOR, and that is a decision rather than an
+// observation. THREE of the five locales put a space between the halves
+// (`提示詞注入 Prompt Injection` — en-US, zh-Hans-CN, zh-Hant-TW, 45 headings)
+// and two put nothing (`プロンプトインジェクションPrompt Injection` — ja-JP,
+// ko-KR, 30). A rule phrased "the halves must not touch" would leave the
+// FORTY-FIVE spaced ones green. But a space is what a sentence puts between its
+// words, so the spaced form reads as one phrase whose second part continues the
+// first — the same defect as `with AI AI を`, only harder to see. The rule is
+// therefore "the halves must be joined by the separator", and it is red on all
+// seventy-five.
+//
+// ⚠️ THIS PARAGRAPH HAD THE SPLIT BACKWARDS IN THREE FILES AT ONCE — "two
+// locales space, three none", and "the thirty spaced ones" when the spaced ones
+// are forty-five. It is the sentence that argues for the decision, so it
+// understated the risk it was weighing by a third. Ninth wrong number on this
+// line of work; counted this time.
+function bilingualHalves(inner) {
+  const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+  const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
+  if (lead && sub) return [[visibleText(lead[1]), visibleText(sub[1])]];
+
+  // EVERY second half, on ANY element, matched by class TOKEN.
+  //
+  // ⚠️ THE FIRST VERSION GOT ALL THREE WRONG. It took the first `class="block`
+  // it found, on a `<span>` only, with `class` required to open the tag and
+  // `block` to open the class. The generator meanwhile separated every such
+  // element regardless of tag name — so a heading with two of them had its
+  // second half checked by nobody, and `class="text-base block"` would have
+  // escaped the fix AND the gate together. The templates already carry fifty
+  // `<strong class="block …">` outside headings; one moving inside would have
+  // been silent.
+  //
+  // This is the third time a fix and its gate have been blinded by sharing one
+  // narrow definition. The second is written out in assertion 10 below.
+  const halves = [];
+  let before = "";
+  for (const tag of inner.matchAll(/<([a-z][a-z0-9]*)\b([^>]*)>/gi)) {
+    const classes = /class="([^"]*)"/.exec(tag[2]);
+    if (!classes || !classes[1].split(/\s+/).includes("block")) continue;
+    const head = visibleText(inner.slice(before.length, tag.index));
+    if (!head) continue;
+    const closing = new RegExp(`<\\/${tag[1]}>`, "i").exec(inner.slice(tag.index));
+    const end = closing ? tag.index + closing.index : inner.length;
+    halves.push([head, visibleText(inner.slice(tag.index + tag[0].length, end))]);
+    before = inner.slice(0, end);
+  }
+  return halves.length ? halves : null;
+}
 
 // Text as `htmd` will see it once the markup is gone. Verified against the
 // build: the only tag that ever appears inside these spans is `<br>`, and no
@@ -335,12 +400,11 @@ function main() {
     const lines = body.split("\n");
     const headings = lines.filter((line) => /^#{1,6} /.test(line));
     for (const [, , inner] of region.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
-      const lead = /<span[^>]*class="display-lead[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-      const sub = /<span[^>]*class="display-sub[^"]*"[^>]*>([\s\S]*?)<\/span>/.exec(inner);
-      if (!lead || !sub) continue;
-      const want = visibleText(lead[1]) + HEADING_SEPARATOR + visibleText(sub[1]);
-      if (!headings.some((line) => line.includes(want))) {
-        fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
+      for (const [first, second] of bilingualHalves(inner) || []) {
+        const want = first + HEADING_SEPARATOR + second;
+        if (!headings.some((line) => line.includes(want))) {
+          fail(rel, "glued heading", `${JSON.stringify(want)} is not in the Markdown — the two halves of a bilingual heading are touching`);
+        }
       }
     }
 
