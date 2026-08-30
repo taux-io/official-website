@@ -1048,14 +1048,19 @@ gh label create enhancement</code></pre>
 
             <div class="space-y-12">
                 <div>
-                    <!-- Lettered A-D, and the letters are the only thing that changed here.
-                         They ran B-E in all five locales under a heading promising four
-                         complete scenarios, so the page opened at B and a reader looking
-                         for A found nothing. Renumbering was chosen over inventing a
-                         fifth scenario (the four are the four we have) and over dropping
-                         the letters (they are how the prose refers back to a case).
-                         The letters live only in these four h3s -- verified by grep
-                         across all five locales -- so nothing else needed touching. -->
+                    <!-- A-D, renumbered from B-C-D-E. The heading above promises four
+                         complete cases and the list opened at B, so a reader looking for A
+                         found nothing. All five locales had the same off-by-one.
+
+                         Renumbering was chosen over inventing a fifth case (there are four)
+                         and over dropping the letters (they are the only handle a reader has
+                         when scanning back to one). An earlier version of this comment
+                         claimed the prose refers back to the letters — it does not; grep
+                         finds them in these four h3s and nowhere else, in any locale.
+
+                         Comment kept here only. The four locale copies carry the same
+                         renumbering with no comment: the fact is about all five files at
+                         once, and five copies of it is five things to keep true. -->
                     <h3 class="font-display text-lg font-bold mb-3">案例 A — 生產環境偶發 500</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>處境</strong>：客戶回報「有時候按送出會噴 500」，你自己重現不出來。</p>
