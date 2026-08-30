@@ -59,7 +59,7 @@ const { ROUTES } = require("../routes");
 const { extract, markSignature } = require("./extract");
 const { blocks } = require("./blocks");
 const { align } = require("./align");
-const { classify } = require("./whitelist");
+const { classify, RULES } = require("./whitelist");
 
 const DIST = path.join(__dirname, "..", "..", "dist");
 
@@ -233,6 +233,26 @@ function main() {
       `${totals.mdOnly} md-only`
   );
   console.log(`${totals.review} pairs need a reader's judgement.`);
+
+  // The whitelist's declared counts, checked. Each rule states how many pairs
+  // it claims in the current build; a rule that widens or narrows silently is a
+  // rule nobody would notice, which is how one of them came to silence 395
+  // blocks of real content.
+  const drift = [];
+  for (const rule of RULES) {
+    const actual = perRoute.reduce(
+      (sum, { ops }) => sum + ops.filter((op) => classify(op).rule === rule.name).length,
+      0
+    );
+    if (actual !== rule.matches) drift.push(`${rule.name}: declares ${rule.matches}, matches ${actual}`);
+  }
+  if (drift.length) {
+    console.log(`\nWHITELIST DRIFT — ${drift.length} rule(s) no longer match what they declare:`);
+    for (const line of drift) console.log(`  ${line}`);
+    process.exitCode = 1;
+    return;
+  }
+  console.log(`${RULES.length} whitelist rules match the counts they declare.`);
 }
 
 if (require.main === module) main();

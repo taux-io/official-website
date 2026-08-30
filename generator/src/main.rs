@@ -452,8 +452,8 @@ const HEADING_SEPARATOR: &str = " \u{2014} ";
 /// The class prefix that marks the two halves of a bilingual heading.
 const DISPLAY_PREFIX: &str = "display-";
 
-/// The class of the second half in the OTHER bilingual-heading shape.
-const BLOCK_HALF: &str = "class=\"block";
+/// The class token that marks the second half in the OTHER heading shape.
+const BLOCK_HALF: &str = "block";
 
 /// Puts that separator between `display-lead` and `display-sub`.
 ///
@@ -542,51 +542,111 @@ fn separate_halves_within(heading: &str) -> String {
 /// been given a leading em dash: the same defect pointing the other way. No page
 /// carries one, so nothing would have said so; the test did, on its first run.
 fn has_text_outside_tags(markup: &str) -> bool {
-    let mut inside = false;
-    for ch in markup.chars() {
-        match ch {
-            '<' => inside = true,
-            '>' => inside = false,
-            c if !inside && !c.is_whitespace() => return true,
+    let mut rest = markup;
+    loop {
+        // A `<` only opens a tag when a name or a slash follows it. These pages
+        // teach prompt injection, so their prose carries `<fixed-point>` and
+        // `<name>` as literal text — and an attribute value can carry `>`
+        // (Tailwind writes `[&>svg]:…`), which would otherwise end a tag early
+        // and let the attribute string count as visible words.
+        let Some(at) = rest.find('<') else {
+            return rest.chars().any(|c| !c.is_whitespace());
+        };
+        if rest[..at].chars().any(|c| !c.is_whitespace()) {
+            return true;
+        }
+        let after = &rest[at + 1..];
+        if !after.starts_with(|c: char| c.is_ascii_alphabetic() || c == '/') {
+            return true;
+        }
+        let Some(gt) = end_of_tag(after) else {
+            return false;
+        };
+        rest = &after[gt + 1..];
+    }
+}
+
+/// The offset of the `>` that ends an opening tag, skipping quoted values.
+fn end_of_tag(after: &str) -> Option<usize> {
+    let mut quote = None;
+    for (at, ch) in after.char_indices() {
+        match (quote, ch) {
+            (None, '"') | (None, '\'') => quote = Some(ch),
+            (Some(q), c) if c == q => quote = None,
+            (None, '>') => return Some(at),
             _ => {}
         }
     }
-    false
+    None
 }
 
-/// The `class="block"` shape: text, then a span carrying the other half.
+/// The second shape: text, then an element carrying the other half.
 ///
-/// The separator goes before the span's opening `<`, so whatever whitespace the
-/// template happens to leave collapses around it. Two locales write a space
-/// there and three write nothing; both end up with the same separator, which is
+/// The separator goes before that element's opening `<`, so whatever whitespace
+/// the template happens to leave collapses around it. Three locales write a
+/// space there (en-US, zh-Hans-CN, zh-Hant-TW — 45 headings) and two write
+/// nothing (ja-JP, ko-KR — 30); both end up with the same separator, which is
 /// the point — a space is what a sentence puts between words, not what marks a
 /// boundary between languages.
 ///
-/// A span with nothing before it is left alone: that is a heading in one
+/// An element with no text before it is left alone: that is a heading in one
 /// language whose only content happens to be wrapped.
+///
+/// ⚠️ MATCHED AS A CLASS TOKEN, ON ANY ELEMENT, and the first version did
+/// neither. It looked for the literal `class="block`, which requires `class` to
+/// open the tag and `block` to open the class, and it accepted any element only
+/// by accident of matching an attribute rather than a tag. `class="text-base
+/// block"` would have escaped it — AND escaped `check:md`, because the
+/// assertion was written to the same narrow shape. That is the third time on
+/// this line of work that a fix and its gate were blinded together by sharing a
+/// definition; the second time is quoted in `check-md.js`'s tenth assertion,
+/// which this version was written directly beneath.
 fn separate_block_halves(heading: &str) -> String {
     let mut out = String::with_capacity(heading.len() + HEADING_SEPARATOR.len());
     let mut rest = heading;
-    while let Some(at) = rest.find(BLOCK_HALF) {
-        let Some(open) = rest[..at].rfind('<') else {
-            out.push_str(&rest[..at + BLOCK_HALF.len()]);
-            rest = &rest[at + BLOCK_HALF.len()..];
-            continue;
-        };
-        if !has_text_outside_tags(&rest[..open]) {
-            out.push_str(&rest[..at + BLOCK_HALF.len()]);
-            rest = &rest[at + BLOCK_HALF.len()..];
-            continue;
+    while let Some(at) = find_block_half(rest) {
+        if has_text_outside_tags(&rest[..at]) {
+            out.push_str(&rest[..at]);
+            out.push_str(HEADING_SEPARATOR);
+        } else {
+            out.push_str(&rest[..at]);
         }
-        out.push_str(&rest[..open]);
-        out.push_str(HEADING_SEPARATOR);
-        out.push_str(&rest[open..at + BLOCK_HALF.len()]);
-        rest = &rest[at + BLOCK_HALF.len()..];
+        let step = rest[at..]
+            .find('>')
+            .map(|i| at + i + 1)
+            .unwrap_or(rest.len());
+        out.push_str(&rest[at..step]);
+        rest = &rest[step..];
     }
     out.push_str(rest);
     out
 }
 
+/// The offset of the next opening tag whose class carries the `block` token.
+fn find_block_half(heading: &str) -> Option<usize> {
+    let mut from = 0usize;
+    while let Some(at) = heading[from..].find('<').map(|i| from + i) {
+        let after = &heading[at + 1..];
+        if !after.starts_with(|c: char| c.is_ascii_alphabetic()) {
+            from = at + 1;
+            continue;
+        }
+        let gt = after.find('>')?;
+        if class_has_token(&after[..gt], BLOCK_HALF) {
+            return Some(at);
+        }
+        from = at + 1 + gt;
+    }
+    None
+}
+
+/// The `display-lead` / `display-sub` shape (issue 270).
+///
+/// A sub with no lead before it is left alone: it is a heading in one language,
+/// and a leading separator would be noise. Once a lead has been seen, EVERY sub
+/// after it is separated rather than only the first — no heading carries two
+/// today, and the version that stopped at the first would have glued the second
+/// silently on the day one did.
 fn separate_display_halves_within(heading: &str) -> String {
     let mut out = String::with_capacity(heading.len() + HEADING_SEPARATOR.len());
     let mut rest = heading;
@@ -1729,7 +1789,7 @@ mod tests {
     // does not exist. The markup declares itself now (issue 264), so the
     // rescue is gone; the property it protected is not optional, and this is
     // what still asserts it of the conversion itself.
-    // THE TEN BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
+    // THE TWELVE BELOW COVER WHAT `check:md` CANNOT REACH, and only that. The
     // positive cases — a bilingual heading that separates, a chip that goes —
     // are asserted over all hundred real files by assertions 9 and 10 there,
     // which is a stronger statement than any synthetic string makes. These are
@@ -1769,6 +1829,28 @@ mod tests {
     }
 
     #[test]
+    fn a_literal_angle_bracket_before_the_span_still_counts_as_text() {
+        // The pages teach prompt injection, so `<fixed-point>` appears as prose.
+        let html = r#"<h2>&lt;name&gt; の話<span class="block">On names</span></h2>"#;
+        assert!(separate_display_halves(html).contains("\u{2014}"));
+    }
+
+    #[test]
+    fn a_greater_than_inside_an_attribute_is_not_the_end_of_the_tag() {
+        // Tailwind writes `[&>svg]:` in a class. Ending the tag there would let
+        // the attribute string count as visible words and produce a leading
+        // separator on a heading that has no first half.
+        let html = r#"<h2><i class="[&>svg]:w-4"></i><span class="block">Only half</span></h2>"#;
+        assert_eq!(separate_display_halves(html), html);
+    }
+
+    #[test]
+    fn the_class_token_is_matched_on_any_element_not_just_a_span() {
+        let html = r#"<h2>治理<strong class="text-base block">Governance</strong></h2>"#;
+        assert!(separate_display_halves(html).contains("\u{2014}"));
+    }
+
+    #[test]
     fn a_block_span_with_nothing_before_it_gets_no_separator() {
         // A heading whose whole content happens to be wrapped. Zero pages carry
         // one; a leading em dash would be the same defect pointing the other way.
@@ -1783,16 +1865,6 @@ mod tests {
             r#"<span class="block">Again</span></h2>"#
         );
         assert_eq!(separate_display_halves(html).matches('\u{2014}').count(), 2);
-    }
-
-    #[test]
-    fn a_class_that_merely_starts_with_block_is_still_the_second_half() {
-        // `block` is a Tailwind display utility, so the attribute reads
-        // `class="block text-base …"`. Matching the attribute's opening is what
-        // the templates give; nothing here needs a token match, and a comment
-        // saying otherwise would claim more than the code does.
-        let html = r#"<h2>治理<span class="block text-base font-normal">Governance</span></h2>"#;
-        assert!(separate_display_halves(html).contains("\u{2014}"));
     }
 
     #[test]
