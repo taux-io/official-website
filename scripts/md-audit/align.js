@@ -49,27 +49,97 @@ function lcs(left, right, key) {
 // changed block was reported as one pair or two orphans depended on which side
 // the alignment happened to walk first — the same finding wearing two different
 // shapes depending on nothing the reader can see.
+//
+// ⚠️ THE PARTNER IS CHOSEN BY KIND FIRST, and the version before this one had
+// no opinion at all: it paired the LAST deletion with the FIRST insertion,
+// whatever the two were. Four pages open with an `<h1>` whose halves the twin
+// separates, followed by a `<p>` the converter splits in two. LCS emits the
+// deletions together and then the insertions together:
+//
+//   html-only h1   html-only p   md-only heading   md-only para   md-only para
+//
+// Pairing only across the seam gave `diff(p → heading)` — a paragraph reported
+// as having turned into a heading — and left the `<h1>` an orphan. Both blocks
+// were intact; the tool had matched them to the wrong partners, and sixteen
+// pairs reached a reader looking like losses. The whitelist could not rescue
+// them either: its separator rule wants a heading on the HTML side and was
+// being shown a paragraph.
+//
+// ⚠️ THE FIX IS NOT TO WHITELIST THAT SHAPE, which is what issue 279 asked for.
+// A rule saying "a heading paired with a paragraph is legal" would silence the
+// tool's own mis-pairing and, with it, every real case of a heading demoted to
+// prose. The shape is not a difference between the page and the twin at all.
+//
+// ⚠️ NOR IS THE FIX TO ZIP THE RUNS INDEX FOR INDEX. That was tried and
+// measured: 38 pairs needing judgement became 126, and the chip rule fell from
+// 60 matches to 12, because a dropped chip is an `html-only` block by
+// definition and zipping married sixty of them to whatever insertion happened
+// to follow. Kind is the narrowest thing that separates the two situations, so
+// kind is what is used, and everything the old rule paired it still pairs.
 function pairAdjacent(ops) {
   const out = [];
-  for (let i = 0; i < ops.length; i++) {
-    const here = ops[i];
-    const next = ops[i + 1];
-    const changed =
-      next &&
-      ((here.op === "html-only" && next.op === "md-only") ||
-        (here.op === "md-only" && next.op === "html-only"));
-    if (changed) {
-      out.push({
-        op: "diff",
-        html: here.html || next.html,
-        md: here.md || next.md,
-      });
-      i++;
+  let i = 0;
+  while (i < ops.length) {
+    const runEnd = (op, from) => {
+      let to = from;
+      while (to < ops.length && ops[to].op === op) to++;
+      return to;
+    };
+    const deletions = runEnd("html-only", i);
+    const insertions = runEnd("md-only", deletions);
+    if (deletions > i && insertions > deletions) {
+      seam(out, ops.slice(i, deletions), ops.slice(deletions, insertions));
+      i = insertions;
       continue;
     }
-    out.push(here);
+    // LCS may walk the insertions first. Same seam, same treatment — which side
+    // it emitted first is not a fact about the document.
+    const inserted = runEnd("md-only", i);
+    const deleted = runEnd("html-only", inserted);
+    if (inserted > i && deleted > inserted) {
+      seam(out, ops.slice(inserted, deleted), ops.slice(i, inserted));
+      i = deleted;
+      continue;
+    }
+    out.push(ops[i++]);
   }
   return out;
+}
+
+// One seam: a run of deletions against a run of insertions.
+//
+// First, blocks of the same kind, in the order they appear. A heading that lost
+// its separator is still a heading on both sides, and that is the whole signal
+// needed to keep it away from the paragraph below it.
+//
+// Then the leftovers get the old rule — the last remaining deletion with the
+// first remaining insertion, once — because a quote whose attribution the twin
+// folds in really does change kind (`cite` becomes part of a `quote`), and
+// pairing it is what lets a reader see the two halves side by side instead of
+// guessing which orphan belongs to which. Anything still unclaimed stays an
+// orphan.
+function seam(out, htmlOps, mdOps) {
+  const pairs = [];
+  const html = [...htmlOps];
+  const md = [...mdOps];
+  for (let a = 0; a < html.length; a++) {
+    const b = md.findIndex((op) => op && op.md.kind === html[a].html.kind);
+    if (b === -1) continue;
+    pairs.push({ at: a, op: { op: "diff", html: html[a].html, md: md[b].md } });
+    html[a] = null;
+    md[b] = null;
+  }
+  const lastHtml = html.map((op, at) => (op ? at : -1)).filter((at) => at !== -1).pop();
+  const firstMd = md.findIndex((op) => op);
+  if (lastHtml !== undefined && firstMd !== -1) {
+    pairs.push({ at: lastHtml, op: { op: "diff", html: html[lastHtml].html, md: md[firstMd].md } });
+    html[lastHtml] = null;
+    md[firstMd] = null;
+  }
+  // Emitted in the page's order, so the table still reads top to bottom.
+  pairs.sort((x, y) => x.at - y.at).forEach((p) => out.push(p.op));
+  html.filter(Boolean).forEach((op) => out.push(op));
+  md.filter(Boolean).forEach((op) => out.push(op));
 }
 
 // THE KEY IS NOT THE TEXT ALONE. A link's destination and a marked span are

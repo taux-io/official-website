@@ -97,6 +97,54 @@ nothing in the repository can re-derive them. They have been removed rather than
 corrected: a number that cannot be re-derived does not belong in a comment, and
 this was the eighth wrong number on this line of work.
 
+## Issue 279: the whitelist's own rules, and a mis-pairing that looked like one
+
+Two rules were added — a paragraph `htmd` splits at a line break, and a pull
+quote whose body and `<cite>` it folds into one blockquote. A whitelist rule is
+the one part of this tool whose job is to make something INVISIBLE, so each was
+proved against defects shaped like the thing it forgives.
+
+`prove-whitelist.js` (`npm run md:prove`) is that proof, and unlike the table
+above it re-runs. Nine cases, all shown to a reader:
+
+| rule | a defect that could have hidden behind it |
+|---|---|
+| split | a word dropped from the tail half · the tail deleted outright · the halves swapped · a link appearing in the tail · the tail gaining emphasis · a third paragraph from nowhere |
+| merge | the quote body cut out of the blockquote · the attribution changed · a word changed inside the quote |
+
+The proof was itself proved red: deleting the split rule's reconstruction check
+turns two of the nine to `SWALLOWED` and exits non-zero.
+
+**Two of the nine injections were no-ops on the first run** — they assumed each
+paragraph was one line, and the twins wrap at the source's hard line breaks. A
+no-op injection audits clean, which reads exactly like a rule correctly refusing
+it, and the first run of this proof reported both as passes. Every case now
+asserts the file changed before it audits anything. That is the second time on
+this line of work that an injector failed silently and the proof reported the
+result anyway; the first is recorded above.
+
+**THE THIRD SHAPE WAS NOT A WHITELIST GAP AND NO RULE WAS WRITTEN FOR IT.**
+Issue 279 asked for three rules. Sixteen of the thirty-eight pairs were four
+pages whose `<h1>` was reported as an orphan while the paragraph below it was
+reported as having become a heading. Both blocks were intact. `pairAdjacent`
+paired the LAST deletion in a run with the FIRST insertion, so it married the
+wrong two. A rule saying "a heading paired with a paragraph is legal" would have
+silenced the tool's own mistake and, with it, every real case of a heading
+demoted to prose. Pairing by kind first costs a few lines and the shape stops
+existing.
+
+Zipping the runs index for index was tried first and measured: 38 pairs needing
+judgement became 126, and the chip rule fell from 60 matches to 12, because a
+dropped chip is an `html-only` block by definition and zipping married sixty of
+them to whatever insertion followed. Kind is what separates the two situations,
+so kind is what is used.
+
+Re-running the six classes above against the new pairing: unchanged. Five shown
+by Pass A, `unseparate` still a Pass B catch.
+
+    38 pairs needing judgement  ->  0
+    262 / 60 / 20 / 10 / 0, each rule checked against what it declares
+
 ## What this does not prove
 
 - **Six classes, not all classes.** A defect shaped unlike these six has not been

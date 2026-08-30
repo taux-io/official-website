@@ -33,6 +33,8 @@
 // had just caught a widening rule, which it had not: a person had. `tally()`
 // in `index.js` now checks them on every run and says so.
 
+const { markSignature } = require("./extract");
+
 const ORIGIN = "https://taux.io";
 
 // The em dash the generator inserts between the two halves of a bilingual
@@ -52,7 +54,7 @@ const RULES = [
     // A rule whose name describes only some of what it claims is a rule nobody
     // can check against its own reason.
     name: "heading part separator",
-    matches: 258,
+    matches: 262,
     why:
       "Issues 270, 278, 281, 282 and 284: a heading can be built from two " +
       "parts — two " +
@@ -100,6 +102,57 @@ const RULES = [
       (op.html.classes || []).includes(CHIP),
   },
   {
+    // Issue 279. `htmd` ends a paragraph where the page had only a `<br>` or a
+    // nested block, so one `<p>` arrives as two. Ten of them in this build, all
+    // on `claude-skills-guide`, all in the lead paragraph and the MCP
+    // comparison — the two places that put two sentences in one `<p>` and rely
+    // on the line break to separate them.
+    //
+    // NARROWED TO EXACT RECONSTRUCTION. The rule refuses unless the page's
+    // paragraph is character for character the twin's pieces joined by one
+    // space, with the same links and the same marks in the same order. A word
+    // dropped at the seam, a link that moved between the halves, a third
+    // paragraph that came from nowhere — none of those reconstruct, and all of
+    // them stay a reader's problem.
+    //
+    // WHAT IT CANNOT SEE: whether splitting there was a good idea. The twin now
+    // says two things where the page said one, and if the page's sentence
+    // depended on being one paragraph — a list introduced by a colon, say —
+    // this rule calls that legal and nobody is told. It is a fidelity rule, not
+    // a readability one; Pass B is where that question belongs.
+    name: "paragraph split at a line break",
+    matches: 20,
+    why:
+      "Issue 279: `htmd` turns a `<p>` that contains a line break into two " +
+      "Markdown paragraphs. No text is lost — the page's paragraph is exactly " +
+      "the twin's pieces joined by a space — so the twin reads the same and " +
+      "the tool sees one changed block followed by one that appeared.",
+    applies: (op, at) => splitRun(op, at) !== null,
+  },
+  {
+    // Issue 279. A pull quote is a `<p>` and a `<cite>` in the page; `htmd`
+    // folds both into one `>` blockquote, so the body has no counterpart and
+    // the attribution appears to have grown a whole paragraph. Ten pairs, the
+    // same quote on the five locales of `geo-guide`.
+    //
+    // NARROWED TO THE `<cite>` TAG AND EXACT RECONSTRUCTION. Only a `cite`
+    // becoming a `quote` qualifies, and only when the twin's blockquote is the
+    // orphaned paragraph and the cite joined by one space. A paragraph that
+    // merely vanished next to a quote does not reconstruct and is still shown.
+    //
+    // WHAT IT CANNOT SEE: that the attribution belongs to that quote. It checks
+    // that the characters line up, not that the page meant them to. Two
+    // adjacent quotes whose bodies were swapped would reconstruct just as well.
+    name: "quote and attribution merged",
+    matches: 10,
+    why:
+      "Issue 279: the page marks a pull quote as a paragraph plus a `<cite>`. " +
+      "Markdown has one blockquote for both, so the converter joins them. The " +
+      "tool sees the body with no partner and the attribution apparently " +
+      "replaced by the whole quote.",
+    applies: (op, at) => mergedQuote(op, at) !== null,
+  },
+  {
     name: "link rewritten absolute",
     matches: 0,
     why:
@@ -143,10 +196,84 @@ function sameMarks(op) {
 }
 
 // A difference is legal when a rule claims it. Everything else goes to a reader.
-function classify(op) {
+//
+// ⚠️ A RULE CAN SEE ITS NEIGHBOURS, and until issue 279 it could not. Two of
+// the transformations below are not visible in one op: a paragraph split in two
+// is a changed block AND the block that appeared after it, and a folded quote
+// is a changed block AND the orphan beside it. A rule shown only one half has
+// to either guess or refuse, and the first draft of this file guessed — it
+// matched any `md-only` paragraph whose text was a suffix of anything, which is
+// a licence to delete the first half of any paragraph on the site.
+//
+// `at` is `{ ops, index }`: the whole list and where this op sits in it. Rules
+// that do not need it ignore it, and the three that predate this change take
+// exactly the argument they always took.
+function classify(op, at = { ops: [op], index: 0 }) {
   if (op.op === "match") return { legal: true, rule: "identical" };
-  const rule = RULES.find((r) => r.applies(op));
+  const rule = RULES.find((r) => r.applies(op, at));
   return rule ? { legal: true, rule: rule.name } : { legal: false, rule: null };
+}
+
+// The joiner. `htmd` ends a paragraph at a line break and the page's own markup
+// left a space there, so the two pieces rejoin with exactly one space. Not a
+// regex over whitespace: a rule that normalised whitespace away would also
+// forgive a paragraph that lost a newline in the middle of a code sample.
+const JOIN = " ";
+
+// A split paragraph, seen from either half: returns the [anchor, ...pieces] ops
+// when this op belongs to one, and null when it does not.
+//
+// FROM EITHER HALF, because both halves are classified and each has to reach
+// the same verdict on its own. A version that only understood the anchor would
+// report the tail as a block that appeared from nowhere — the exact noise this
+// rule exists to remove — and one that only understood the tail would leave the
+// anchor looking like a paragraph that lost its second half.
+function splitRun(op, { ops, index }) {
+  let anchor = index;
+  while (anchor >= 0 && ops[anchor].op === "md-only") anchor--;
+  if (anchor < 0) return null;
+  const head = ops[anchor];
+  if (!head || head.op !== "diff") return null;
+  if (head.html.kind !== "para" || head.md.kind !== "para") return null;
+  const pieces = [];
+  for (let k = anchor + 1; k < ops.length && ops[k].op === "md-only"; k++) {
+    if (ops[k].md.kind !== "para") return null;
+    pieces.push(ops[k]);
+  }
+  if (!pieces.length) return null;
+  if (index !== anchor && !pieces.includes(op)) return null;
+  const rejoined = [head.md, ...pieces.map((p) => p.md)].map((b) => b.text).join(JOIN);
+  if (rejoined !== head.html.text) return null;
+  const links = [head.md, ...pieces.map((p) => p.md)].flatMap((b) => b.links);
+  const marks = [head.md, ...pieces.map((p) => p.md)].flatMap((b) => b.marks);
+  if (links.join(",") !== head.html.links.join(",")) return null;
+  if (markSignature(marks) !== markSignature(head.html.marks)) return null;
+  return [head, ...pieces];
+}
+
+// A pull quote whose body and attribution the converter folded into one
+// blockquote, seen from either half.
+function mergedQuote(op, { ops, index }) {
+  const pairing = (fold, body) =>
+    fold &&
+    body &&
+    fold.op === "diff" &&
+    fold.html.tag === "cite" &&
+    fold.md.kind === "quote" &&
+    body.op === "html-only" &&
+    body.html.kind === "para" &&
+    `${body.html.text}${JOIN}${fold.html.text}` === fold.md.text &&
+    [...body.html.links, ...fold.html.links].join(",") === fold.md.links.join(",") &&
+    markSignature([...body.html.marks, ...fold.html.marks]) === markSignature(fold.md.marks)
+      ? [fold, body]
+      : null;
+  // The two sit next to each other; which comes first is the seam's business.
+  return (
+    pairing(op, ops[index + 1]) ||
+    pairing(op, ops[index - 1]) ||
+    pairing(ops[index - 1], op) ||
+    pairing(ops[index + 1], op)
+  );
 }
 
 // Only what another file requires. `RULES` is here because the counts beside

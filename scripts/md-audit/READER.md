@@ -105,6 +105,23 @@ somewhere else.
 Do not report a heading merely for being bilingual, for containing an English
 term inside the local language, or for being long.
 
+**A lettered or numbered run that skips or starts late is NOT a Pass B class.**
+Do not report it. Three readers saw `agent-dev-workflow` letter its four cases
+B, C, D, E under a heading promising four; two called it a FINDING and one said
+it fell outside the pass. All three were reasonable, because this file had not
+said — so it says now.
+
+The reason it is excluded is not that it does not matter. It is that a program
+can decide it, and one now does: `check:md` assertion 13 fails a run of headings
+whose letters do not read A, B, C, … A reader asked to check something a gate
+already checks produces a second opinion on a settled question, and the ninety
+pages where the answer is "fine" are ninety chances to stop reading carefully.
+
+The dividing line for this pass: report what needs a person to have read the
+words. A letter out of sequence needs nobody. **This is the same line `GATE:`
+draws below** — anything you would mark `GATE: mechanical` is a candidate for an
+assertion rather than a finding, and once it has one, it leaves the pass.
+
 ## Output format
 
 **Every page opens with its own line, before any items** — including a page with
