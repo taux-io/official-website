@@ -49,11 +49,13 @@ recognise a variant that slipped through rather than treating it as a finding:
 1. **Markdown notation itself.** `#` for headings, `**` for bold, `` ` `` for
    code, `[text](url)` for links, `|` for tables, `>` for quotes. A backslash
    before punctuation (`1\.`) is Markdown escaping, not a typo.
-2. **The bilingual heading separator.** The page builds a heading from two
-   spans and lays them out as two lines with CSS. Markdown has no CSS and a
-   heading is one line, so the generator writes ` — ` between them. The HTML
-   carries no separator, so every such heading differs by exactly that string.
-   (Issue 270.)
+2. **The heading part separator.** A heading can be built from two parts — two
+   language halves, or a section number drawn as a circle and a title. CSS lays
+   them out as two lines or a badge; Markdown has neither, so the generator
+   writes ` — ` between them. The HTML carries no separator, so every such
+   heading differs by exactly that string. `## 01 — Tool Wrapper` and
+   `## 提示詞注入 — Prompt Injection` are both correct output, not findings.
+   (Issues 270, 278, 281.)
 3. **Decorative chips dropped.** `class="tag"` draws a rounded pill above a
    heading. In Markdown there is no shape, so it would land as a bare line
    reading like a sentence the page is making. The generator drops it, so the
