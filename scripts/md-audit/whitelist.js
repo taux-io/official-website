@@ -52,7 +52,7 @@ const RULES = [
     // A rule whose name describes only some of what it claims is a rule nobody
     // can check against its own reason.
     name: "heading part separator",
-    matches: 281,
+    matches: 270,
     why:
       "Issues 270, 278 and 281: a heading can be built from two parts — two " +
       "language halves, or a section number and a title — laid out as two " +
