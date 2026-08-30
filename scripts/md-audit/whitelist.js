@@ -53,6 +53,18 @@ const RULES = [
     // shape — a number badge before a title — which is not bilingual at all.
     // A rule whose name describes only some of what it claims is a rule nobody
     // can check against its own reason.
+    // WHAT IT CANNOT SEE: whether the two parts belong together. It checks that
+    // removing one separator reproduces the page's characters, which is also
+    // true of a heading whose halves were swapped before the separator went in.
+    // Nothing here reads the words.
+    //
+    // ⚠️ 258 UNTIL ISSUE 279, and the four that joined are not new headings.
+    // They are the `<h1>`s of the four `claude-skills-guide` locales, which
+    // this rule had always been entitled to and never saw: `pairAdjacent` was
+    // handing it the paragraph below them. The pairing fix in `align.js` is
+    // what moved the number. Issue 279's acceptance criterion asked for this
+    // count to stay put, and it was written before anyone knew the cause of
+    // the shape the same ticket was fixing.
     name: "heading part separator",
     matches: 262,
     why:
@@ -89,6 +101,12 @@ const RULES = [
       sameMarks(op),
   },
   {
+    // WHAT IT CANNOT SEE: what the chip said. It drops any block carrying the
+    // class, so a chip that had been edited to hold a real sentence would go
+    // with the rest and nobody would be told. The class is the whole of the
+    // rule's evidence, which is the narrowest it can be and still not be the
+    // blindfold described at the top of this file — but it is not the same as
+    // reading the block.
     name: "decorative chip dropped",
     matches: 60,
     why:
@@ -110,10 +128,18 @@ const RULES = [
     //
     // NARROWED TO EXACT RECONSTRUCTION. The rule refuses unless the page's
     // paragraph is character for character the twin's pieces joined by one
-    // space, with the same links and the same marks in the same order. A word
-    // dropped at the seam, a link that moved between the halves, a third
-    // paragraph that came from nowhere — none of those reconstruct, and all of
-    // them stay a reader's problem.
+    // space, with the same links in the same order and the same marked
+    // characters. A word dropped at the seam, a link that moved between the
+    // halves, a third paragraph that came from nowhere — none of those
+    // reconstruct, and all of them stay a reader's problem.
+    //
+    // ⚠️ THAT SENTENCE SAID "the same marks in the same order". It is
+    // `markSignature` that compares them, and its own comment says it sorts —
+    // "the characters that are marked, sorted, not the runs and not their
+    // order". The comment claimed a guarantee the call does not make. The
+    // comparison is deliberately order-blind, because the two sides split
+    // adjacent marked runs differently; what it catches is a mark that was
+    // dropped or added, which is the defect.
     //
     // WHAT IT CANNOT SEE: whether splitting there was a good idea. The twin now
     // says two things where the page said one, and if the page's sentence
@@ -153,6 +179,10 @@ const RULES = [
     applies: (op, at) => mergedQuote(op, at) !== null,
   },
   {
+    // WHAT IT CANNOT SEE: whether the absolute URL resolves to anything. It
+    // compares the twin's href against the page's href put through the same
+    // rewrite, so a link the page had already broken stays broken and matches.
+    // `check:jsonld` and the contract audit are what look at destinations.
     name: "link rewritten absolute",
     matches: 0,
     why:
@@ -165,6 +195,14 @@ const RULES = [
       "one that starts matching is a signal the resolution has drifted.",
     applies: (op) =>
       op.op === "diff" &&
+      // ⚠️ AND STILL THE SAME KIND OF BLOCK. Without this the rule reads "the
+      // words and the marks match, so the only difference must be the links" —
+      // which stopped being true the moment `keyOf` learned about headings.
+      // A paragraph promoted to a heading in the twin keeps every word, every
+      // mark and every link, so this rule claimed it and no reader saw it. It
+      // was caught by `prove-whitelist.js`, one case after the two the same
+      // change was written to expose.
+      op.html.kind === op.md.kind &&
       op.html.text === op.md.text &&
       sameMarks(op) &&
       op.html.links.length === op.md.links.length &&
@@ -191,8 +229,14 @@ function sameLinks(op) {
   return op.html.links.join(",") === op.md.links.join(",");
 }
 
+// ⚠️ ONE NOTION OF "THE SAME MARKS", and there were two. This compared
+// `marks.join(",")` — order-sensitive — while `keyOf` in `align.js` and the two
+// rules added by issue 279 all compare `markSignature`, which sorts. A rule
+// stricter than the key that decided to show it in the first place refuses
+// pairs the alignment had already called equal; the answer to "are these the
+// same marks?" cannot depend on which rule is asking.
 function sameMarks(op) {
-  return op.html.marks.join(",") === op.md.marks.join(",");
+  return markSignature(op.html.marks) === markSignature(op.md.marks);
 }
 
 // A difference is legal when a rule claims it. Everything else goes to a reader.
@@ -241,7 +285,6 @@ function splitRun(op, { ops, index }) {
     pieces.push(ops[k]);
   }
   if (!pieces.length) return null;
-  if (index !== anchor && !pieces.includes(op)) return null;
   const rejoined = [head.md, ...pieces.map((p) => p.md)].map((b) => b.text).join(JOIN);
   if (rejoined !== head.html.text) return null;
   const links = [head.md, ...pieces.map((p) => p.md)].flatMap((b) => b.links);

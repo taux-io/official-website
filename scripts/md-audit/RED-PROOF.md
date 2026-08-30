@@ -105,15 +105,39 @@ the one part of this tool whose job is to make something INVISIBLE, so each was
 proved against defects shaped like the thing it forgives.
 
 `prove-whitelist.js` (`npm run md:prove`) is that proof, and unlike the table
-above it re-runs. Nine cases, all shown to a reader:
+above it re-runs. Twelve cases, all shown to a reader:
 
 | rule | a defect that could have hidden behind it |
 |---|---|
+| alignment | the H1 demoted to prose · an H2 quietly becoming an H3 · a paragraph promoted to a heading |
 | split | a word dropped from the tail half · the tail deleted outright · the halves swapped · a link appearing in the tail · the tail gaining emphasis · a third paragraph from nowhere |
 | merge | the quote body cut out of the blockquote · the attribution changed · a word changed inside the quote |
 
 The proof was itself proved red: deleting the split rule's reconstruction check
 turns two of the nine to `SWALLOWED` and exits non-zero.
+
+**Three more cases came from a reviewer asking why the pairing fix had no
+injected case of its own**, and they found a hole older and wider than the one
+that prompted them. `keyOf` said nothing about what a block IS, so a heading
+whose `#` had gone missing aligned against the paragraph it had become as a
+perfect match. Demoting the `<h1>` of `claude-skills-guide` in its twin reported
+the page clean, title and all.
+
+| case | before | after |
+|---|---|---|
+| the H1 demoted to prose | swallowed | shown |
+| an H2 quietly becomes an H3 | swallowed | shown |
+| a paragraph promoted to a heading | swallowed | shown |
+
+The third of those stayed swallowed after the key was fixed, by a rule three
+issues older: `link rewritten absolute` asked for the same words, the same marks
+and the same links, and never asked whether it was still the same kind of block.
+A promoted paragraph satisfies all three. It now checks kind.
+
+The whole `kind` in the key was tried first and is too blunt — 0 pairs needing
+judgement became 370 and the absolute-link rule went from 0 matches to 230.
+Heading-or-not plus the level is the narrow version, and its measured cost is
+none: 0 pairs before, 0 after, five rule counts unchanged.
 
 **Two of the nine injections were no-ops on the first run** — they assumed each
 paragraph was one line, and the twins wrap at the source's hard line breaks. A

@@ -68,14 +68,31 @@ function lcs(left, right, key) {
 // ⚠️ THE FIX IS NOT TO WHITELIST THAT SHAPE, which is what issue 279 asked for.
 // A rule saying "a heading paired with a paragraph is legal" would silence the
 // tool's own mis-pairing and, with it, every real case of a heading demoted to
-// prose. The shape is not a difference between the page and the twin at all.
+// prose that reaches this point. The shape is not a difference between the page
+// and the twin at all.
+//
+// ⚠️ THAT SENTENCE USED TO END AT "demoted to prose", crediting this file with
+// seeing a defect it was blind to — the alignment key had no opinion about what
+// a block was, so a demoted heading matched its own paragraph and never reached
+// a rule at all. `keyOf` below is where that was fixed.
+//
+// ⚠️ THERE IS NO MIRROR CASE, and this function used to carry one — a second
+// branch for a run of insertions followed by a run of deletions, commented "LCS
+// may walk the insertions first". It cannot. The table is monotone, so an
+// `md-only` is never immediately followed by an `html-only`; brute force over
+// every pair of sequences up to length five from a three-symbol alphabet
+// (1048576 pairs) produces the shape zero times, and instrumenting the branch
+// across all hundred pages hit it zero times. Nine lines of code and a comment
+// asserting a behaviour that does not exist, which is worse than no comment:
+// somebody would have maintained it.
 //
 // ⚠️ NOR IS THE FIX TO ZIP THE RUNS INDEX FOR INDEX. That was tried and
-// measured: 38 pairs needing judgement became 126, and the chip rule fell from
-// 60 matches to 12, because a dropped chip is an `html-only` block by
-// definition and zipping married sixty of them to whatever insertion happened
-// to follow. Kind is the narrowest thing that separates the two situations, so
-// kind is what is used, and everything the old rule paired it still pairs.
+// measured against this tree: 0 pairs needing judgement become 106, and three
+// of the five rules stop matching what they declare — the chip rule falls from
+// 60 to 12, because a dropped chip is an `html-only` block by definition and
+// zipping married sixty of them to whatever insertion happened to follow.
+// Kind is the narrowest thing that separates the two situations, so kind is
+// what is used, and everything the old rule paired it still pairs.
 function pairAdjacent(ops) {
   const out = [];
   let i = 0;
@@ -90,15 +107,6 @@ function pairAdjacent(ops) {
     if (deletions > i && insertions > deletions) {
       seam(out, ops.slice(i, deletions), ops.slice(deletions, insertions));
       i = insertions;
-      continue;
-    }
-    // LCS may walk the insertions first. Same seam, same treatment — which side
-    // it emitted first is not a fact about the document.
-    const inserted = runEnd("md-only", i);
-    const deleted = runEnd("html-only", inserted);
-    if (inserted > i && deleted > inserted) {
-      seam(out, ops.slice(inserted, deleted), ops.slice(i, inserted));
-      i = deleted;
       continue;
     }
     out.push(ops[i++]);
@@ -148,10 +156,35 @@ function seam(out, htmlOps, mdOps) {
 // an identifier. Both were injected in the red proof and both aligned as perfect
 // matches, so no reader was ever shown them. They travel in the key; they are
 // still not shown in the table, which stays readable.
+//
+// ⚠️ AND NEITHER IS IT THE WORDS PLUS THE MARKUP INSIDE THEM. Until issue 279
+// the key said nothing about what a block IS, so a heading whose `#` had gone
+// missing aligned against the paragraph it had become as a PERFECT MATCH: same
+// text, same links, same marks. Demoting the `<h1>` of `claude-skills-guide` in
+// its twin and re-running reported the page clean, with its title turned into
+// prose. The same held for a heading that quietly changed level.
+//
+// This was found by a reviewer asking why the pairing fix above had no injected
+// case of its own, and the comment beside that fix was wrong in the direction
+// that flatters: it said a whitelist rule would have silenced "every real case
+// of a heading demoted to prose", which assumed this tool could see one.
+//
+// ⚠️ THE WHOLE `kind` WAS TRIED FIRST AND IS TOO BLUNT: 0 pairs needing
+// judgement became 370, and the absolute-link rule went from 0 matches to 230,
+// because `text` and `para` are different kinds for reasons a reader would
+// never act on. Heading-or-not, plus the level when it is one, is the
+// distinction that carries meaning. Measured cost of the narrow version: none —
+// 0 pairs needing judgement before and after, and all five rule counts
+// unchanged.
 const { markSignature } = require("./extract");
 
 function keyOf(block) {
-  return [block.text, block.links.join(","), markSignature(block.marks)].join("\u0000");
+  return [
+    block.kind === "heading" ? `h${block.level}` : "",
+    block.text,
+    block.links.join(","),
+    markSignature(block.marks),
+  ].join("\u0000");
 }
 
 function align(htmlBlocks, mdBlocks) {

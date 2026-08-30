@@ -118,9 +118,15 @@ already checks produces a second opinion on a settled question, and the ninety
 pages where the answer is "fine" are ninety chances to stop reading carefully.
 
 The dividing line for this pass: report what needs a person to have read the
-words. A letter out of sequence needs nobody. **This is the same line `GATE:`
-draws below** — anything you would mark `GATE: mechanical` is a candidate for an
-assertion rather than a finding, and once it has one, it leaves the pass.
+words. A letter out of sequence needs nobody.
+
+That line is narrower than it sounds, and it is NOT "mark it `GATE: mechanical`
+and skip it". A finding can be mechanical in hindsight and still need a reader
+to notice it the first time — the hundred and sixty glued headings were as
+mechanical as a letter out of sequence, and no assertion existed until somebody
+read fifteen lines and wrote one. **A class leaves this pass when an assertion
+exists, not when one could.** Today exactly one class has left: lettered runs,
+via `check:md` assertion 13.
 
 ## Output format
 

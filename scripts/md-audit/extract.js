@@ -260,10 +260,16 @@ function collapse(text) {
 // WHICH CHARACTERS ARE MARKED, not how the marks are split.
 //
 // `**A**B**C**` and `**ABC**` mark the same words and one converter writes one
-// where another writes the other; comparing run-by-run reported 41 of those as
+// where another writes the other; comparing run-by-run reports 351 of those as
 // differences. Comparing the marked characters still catches a mark that is
 // GONE — which is the defect (`destress`) this exists for — without reporting a
 // difference nobody could act on.
+//
+// ⚠️ THAT NUMBER SAID 41 AND WAS NEVER MEASURED. `RED-PROOF.md` already
+// recorded it as one of four remembered numbers a reviewer reproduced as
+// something else, and then left it standing in the code. Re-derived here: count
+// the pairs whose `markSignature` agrees and whose mark runs do not. 351 of
+// 8000 pairs today, which is why it is written beside how to get it.
 function markSignature(marks) {
   // THE CHARACTERS THAT ARE MARKED, sorted — not the runs, and not their order.
   //
