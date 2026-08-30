@@ -55,13 +55,17 @@
         <section id="prompting-101" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">01</span> &mdash; Prompting 101</p>
-                <!-- The circle before this heading already carries the section number,
-                     so the title does not repeat it. It used to: the badge said 1 and the
-                     title said "Part one", which reads as one redundancy on the page and
-                     as two numbers in the Markdown twin once issue 281 separated the
-                     badge from the title (`## 1 — 第 1 部：基礎`). Issue 284. -->
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">1</span>
+                <!-- No number on this heading. The section already carries one: the
+                     eyebrow directly above reads "01 — Prompting 101". A circled numeral used to sit
+                     here as well, and the title said the number a third time — three
+                     sources for one section number, which the Markdown twin printed as an
+                     eyebrow and then "## 1 — 基礎（Prompting 101）" two lines later.
+                
+                     This is why the page differs from adk-skill-patterns, which keeps its
+                     circled numerals: there the numeral is the ONLY place the section
+                     number appears, so dropping it would lose which pattern is which.
+                     Here the eyebrow already says it. Issues 281, 284. -->
+                <h2 class="font-display text-3xl font-bold mb-2">
                 基礎（Prompting 101）
             </h2>
             </div>
@@ -131,8 +135,7 @@
         <section id="agent-prompting" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent Prompting</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 text-2xl">2</span>
+                <h2 class="font-display text-3xl font-bold mb-2">
                 エージェント向け（Prompting for Agents）
             </h2>
             </div>

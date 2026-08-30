@@ -52,9 +52,10 @@ const RULES = [
     // A rule whose name describes only some of what it claims is a rule nobody
     // can check against its own reason.
     name: "heading part separator",
-    matches: 270,
+    matches: 258,
     why:
-      "Issues 270, 278 and 281: a heading can be built from two parts — two " +
+      "Issues 270, 278, 281, 282 and 284: a heading can be built from two " +
+      "parts — two " +
       "language halves, or a section number and a title — laid out as two " +
       "lines or a circle by CSS. Markdown has neither, so the generator writes " +
       "an em dash between them. The HTML carries no separator, so every such " +
