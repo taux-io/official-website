@@ -292,7 +292,7 @@ breakpoints:
 | 字級 — `display-lg` 56 → 64px | ⬜ | ② |
 | 字級 — `tailwind.config.js` 與本檔名稱對齊 | ⬜ | ② |
 | 規則 25 `two plates`（含 `scripts/plates.js`） | ✅ | ② |
-| 規則 26 `accent carries interaction` | ⬜ | ② |
+| 規則 26 `accent carries interaction` | ✅ | ② |
 | 規則 27 `scale jump` | ⬜ | ② |
 | 規則 28 `no card wall` | ⬜ | ③ |
 | **OG 卡 — kicker 17 → 12px（唯一沒過的印刷規則）** | ✅ | ② |
@@ -362,11 +362,33 @@ Cool Gray 會讓最低那一階掉到 4.07，低於 AA 的 4.5。**這與 v4 踩
 
 ### 副墨版 Cobalt
 
-`{colors.primary}` `#2148B8`（**7.48:1**）承載**所有**互動：連結、CTA、focus ring。參考站列 Cobalt 給 technology、knowledge、cities——與本站對得上，而且它是參考站自己的 one-ink 預設。
+`{colors.primary}` `#2148B8`（**7.48:1**）。參考站列 Cobalt 給 technology、knowledge、cities——與本站對得上，而且它是參考站自己的 one-ink 預設。
 
-**副墨版只有一個角色，而角色要在排版之前指定。** 參考站的原話：give the dominant and accent plates separate content roles before composing; never use the second ink merely to decorate。本站的角色是**互動**——藍色不是裝飾，它是互動的唯一記號，拿掉它互動元素沒有任何標記。**這是本站第四次面對「要不要第二個強調色」，而這次終於有一條規則而不只是一句話**：規則 26 `accent carries interaction`。
+⚠️ **這一段一度寫「承載所有互動：連結、CTA、focus ring」，而三項裡有兩項是假的**（決策 #109）。實測全站 Cobalt 只有**兩個**用途：
 
-⚠️ **`{colors.primary-focus}` `#0071e3` 移除。** 在兩塊版的上限下，第三個藍是第三塊版。focus ring 改用 `{colors.primary}` 本身，靠**環寬與 offset** 區分，不靠色相。**代價：失去 v4 那個專用的 focus 色，而 focus ring 與連結色從此同色**——鍵盤使用者要靠形狀分辨聚焦，不能靠顏色。這是明知的，寫在這裡而不是留給下一個人發現。
+| 文件曾經說 | 實測 |
+|---|---|
+| 連結 | ❌ **`a` 的顏色宣告 0 個**。連結繼承 `{colors.ink}`，靠底線標記 |
+| CTA | ✅ `.btn` 的底色，`src/input.css:412` |
+| focus ring | ❌ `src/input.css:292` 是 `outline: 2px solid var(--ink)` |
+
+加上 15 個 `<button>` 上的 `text-primary`，就是全部。**這句話從 v4 寫到 v5，跨兩次品牌重置，沒有任何東西讀它**——直到規則 26 把它變成閘門的那一天，它才第一次被對照。
+
+**副墨版只有一個角色，而角色要在排版之前指定。** 參考站的原話：give the dominant and accent plates separate content roles before composing; never use the second ink merely to decorate。本站的角色是**互動**——藍色不是裝飾。
+
+⚠️ **但它不是「互動的唯一記號」，而那句話寫了兩版。** 實測 `zh-Hant-TW` 的 160 個 `<a>`：**112 個沒有任何標記 class**，36 個 `underline`，11 個 `hover:underline`，1 個 `underline underline-offset-2`（元件規則另外用 `@apply underline underline-offset-4` 補一部分）。**連結從來沒有藍過。**
+
+**標記連結的是底線，不是顏色，而那比較好**：WCAG 1.4.1 要求資訊不得只靠顏色傳達，所以一個只用藍色標記連結的站本來就不合格。**程式這邊做得比文件說的對**，所以改的是文件（決策 #109）。
+
+規則 26 `accent carries interaction` 守的是**反方向**：Cobalt 不得出現在不能點的東西上。它不要求所有互動都是 Cobalt——那會把底線標記的 112 個連結全部判紅。**這是本站第四次面對「要不要第二個強調色」，而這次終於有一條規則而不只是一句話**：規則 26 `accent carries interaction`。
+
+⚠️ **`{colors.primary-focus}` `#0071e3` 移除。** 在兩塊版的上限下，第三個藍是第三塊版。
+
+⚠️ **這一段原本接著寫「focus ring 改用 `{colors.primary}`，代價是 focus ring 與連結同色，鍵盤使用者要靠形狀分辨聚焦」，並標為「v5 讓可用性變差的唯一一處」。那個代價是虛構的**（決策 #109）：focus ring 從來不是 Cobalt，`src/input.css:292` 寫的是 `outline: 2px solid var(--ink)`，**在紙上 11.97:1，比 Cobalt 的 7.48 更高**。移除 `primary-focus` 沒有改變任何人看到的東西。
+
+⚠️ **而 `--primary-focus` 實測是零使用者**：只有它自己的宣告，加上 `tailwind.config.js` 把它暴露成一個沒有人寫過的 Tailwind 顏色。**一個 token、一個顏色出口、零個呼叫點，而文件為它寫了一整段代價分析。**
+
+**寫下一個沒發生的代價，比不寫代價更糟**：它讓下一個人以為那個權衡做過了。
 
 `{colors.on-primary}` `#FAFAF7`——**從墨版裡挖空，看到的是紙**。這個值等於 `{colors.canvas}` 是推導的結果，不是巧合。⚠️ v4 說這兩個 token 要分開命名，理由是「表面變了」與「藍底上的字變了」不該是同一次改動。**那個理由現在反過來了**：在墨版模型下，紙變了，挖空看到的東西**就是**跟著變。名字保留（改起來不划算），但它現在是 `canvas` 的別名而不是獨立值——**任何時候這兩個值不相等，那是 bug 不是設計**。
 
@@ -637,7 +659,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 23 | surface is painted once | ✅ | 格式塔盤點 |
 | 24 | section gap scale | ✅ | 格式塔盤點 |
 | **25** | **two plates** | ✅ | **v5** |
-| **26** | **accent carries interaction** | ⬜ | **v5** |
+| **26** | **accent carries interaction** | ✅ | **v5** |
 | **27** | **scale jump** | ⬜ | **v5** |
 | **28** | **no card wall** | ⬜ | **v5** |
 | **29** | **og geometry** | ⬜ | **v5** |
@@ -645,7 +667,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **31** | **declared surfaces** | ⬜ | **v5** |
 | **32** | **density scale** | ✅ | **v5** |
 
-**27 條啟用，5 條待實作。** `scripts/check-design.js` 的 `RULES` 陣列今天有 27 個 `name:`，與這張表打勾的 27 列一致——**這是這份文件第一次把兩邊對過**，而先前三次漂移（表停在 21、CI 註解停在 15、圓角計數停在 86）都是因為沒有人對。
+**28 條啟用，4 條待實作。** `scripts/check-design.js` 的 `RULES` 陣列今天有 28 個 `name:`，與這張表打勾的 28 列一致——**這是這份文件第一次把兩邊對過**，而先前三次漂移（表停在 21、CI 註解停在 15、圓角計數停在 86）都是因為沒有人對。
 
 ⚠️ **第 1 條改名了：`zero hex` → `zero literal colour`。** 它的 summary 一直寫著「colour values belong to the tokens in `src/input.css`, not the templates」，而實作只比對 `#rrggbb`——**`rgb()` / `rgba()` / `hsl()` / `hsla()` 一律看不見**。實測 **25 個字面色**從那個縫隙走過去，全在 `claude-skills-guide.html` 的五份 locale 副本裡。**規則的名字與它的說明差了一整個顏色語法家族**，而說明是對的那一邊，所以加寬實作、改掉名字。
 
@@ -657,7 +679,13 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 **25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
 
-**26 `accent carries interaction`** — Cobalt 只能出現在互動元素上（`<a>`、`<button>`、`CONTROL_TAGS`、`.btn`）。**非互動元素塗藍色一律紅。** 這條把 v4 的一句散文變成閘門。
+**26 `accent carries interaction`** ✅ — Cobalt 只能出現在能點的東西上，**或在能點的東西裡面**。判準是位置不是名單：`<a>`、`<button>`、`<label>`、`<summary>`、`CONTROL_TAGS`、`.btn`、`.tag`，以及它們的後代——`<button>` 裡的 `<span class="text-primary">` 是那顆按鈕的記號的一部分，不是第二次用副墨版。跟規則 23 同一個形狀。
+
+**它守的是單向的。** Cobalt 不得塗在不能點的東西上；它**不**要求所有互動都是 Cobalt——那會把 112 個靠底線標記的連結全部判紅。
+
+⚠️ **這條規則是綠著上線的，所以用注入證明過它會紅**：作者 CSS 的 `.probe-decorative { color: var(--primary) }` → 紅；模板 `<div class="text-primary">` → 紅。**一條沒被看過紅燈的規則，跟一條不可能紅的規則從外面看一樣。**
+
+⚠️ **把這句散文變成閘門的那一刻，才發現它三分之二是假的**（決策 #109）。
 
 **27 `scale jump`** — 刻度上的最大字級 ÷ 最小字級落在 5–12。⚠️ 讀的是**刻度**（`tailwind.config.js` 的 `fontSize`），不是任一斷點上量到的值——否則手機的 `text-4xl` 36px 會讓它紅（36/12 = 3.0×）。
 
@@ -834,6 +862,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 94 | 規則 31 `declared surfaces`：**檢查缺席** | 深色模式、`forced-colors`、`@media print`、`::selection`／`caret-color`／`accent-color`、`theme-color`——**五個位置全站都是 0 個宣告**。⚠️ **沒有宣告不等於沒有顏色，是用瀏覽器或作業系統的預設**，那是五個逃出兩塊版的表面。規則 25 掃樣式表裡出現過的顏色，**掃不到應該出現而沒有出現的**，所以這條的判準是清單不是模式。**本檔 32 條規則裡只有這一條在檢查該寫的有沒有寫** |
 | 95 | 深色模式：**不做**，而且要明文宣告 | 墨版模型的答案是紙就是紙，反轉會讓 `#FAFAF7` 變成一個沒有名字的深色表面。⚠️ **但 `static/taux-logo-light.png` 與 `taux-logo-dark.png` 兩個檔案都在，而 `templates/`、`src/`、`generator/` 裡 0 個使用者**——兩個 logo 變體暗示兩個表面，而本站只有一個。**留著的死檔案會讓下一個人以為深色模式是待辦** |
 | 96 | 規則 32：alpha 到達的密度階要有名字 | 實測 2 個實例：`bg-ink/5` 與 `::-webkit-scrollbar-thumb:hover` 的 `rgb(var(--ink-rgb) / 0.35)`，**兩個都沒有名字**。⚠️ **這條依賴規則 25 的未決問題**：alpha 階算不算合法密度階。答案是「算」的話這條是配套（要具名），是「不算」的話這條變成禁止。**兩個實例都要改，只是改法不同** |
+| 109 | ⚠️ **副墨版那段散文三分之二是假的，而它跨了兩次品牌重置** | 文件從 v4 起寫「Cobalt 承載所有互動：連結、CTA、focus ring」，實測**只有 CTA 成立**：`a` 的顏色宣告 **0 個**（連結繼承 ink、靠底線標記，160 個 `<a>` 裡 112 個連底線 class 都沒有，其餘由元件規則 `@apply`），focus ring 是 `outline: 2px solid var(--ink)`（**11.97:1，比 Cobalt 的 7.48 更高**）。全站 Cobalt 只有 `.btn` 底色與 15 個 `<button>` 的 `text-primary`。**改文件不改程式**：底線標記連結是 WCAG 1.4.1 要的（資訊不得只靠顏色），ink 的 focus ring 對比更高——**程式做得比文件說的對**。⚠️ 連帶作廢決策 #79 的代價欄：它寫「focus ring 與連結同色，鍵盤使用者要靠形狀分辨聚焦」並標為「v5 讓可用性變差的唯一一處」，**而那個代價從未發生，因為前提是假的**；`--primary-focus` 實測**零使用者**。**寫下一個沒發生的代價，比不寫代價更糟——它讓下一個人以為那個權衡做過了。** 這三件全部是規則 26 把散文變成閘門的那一刻才浮出來的：**一句沒有東西讀的規則，跟一句錯的規則，從外面看一樣** |
 | 105 | **alpha 算合法密度階**，而規則 25 與 32 是同一個答案的兩半 | (a) 參考站自己就是這樣定義密度的；(b) **`--ink-rgb / 0.12` 算繪後是 `#E2E2E0`，與 `hairline` token 完全相同**——同一階兩條路到達；(c) 禁止的代價是 186 個呼叫點。所以 **25 問「這是哪一塊版」、32 問「這一階在刻度上嗎」**。共用的解析器住在 `scripts/plates.js`：先把 `var()` 展開、疊到紙上算出**算繪後**的顏色，再反解 `C = a·P + (1−a)·S`。**反解是關鍵**——具名的 `#4C5054` 與 alpha 的 `/0.86` 都落在 ink@86.1%，實測三個通道分歧 < 0.005 |
 | 106 | 密度刻度是 `{0, .05, .12, .2, .35, .72, .86, 1}`，而 `0.06` 併進 `0.05` | 八階全部量自真的顏色。`0.06` 是 `.btn-quiet:hover` 的單一使用者，在紙上是 `#EEEEEC` 對 `0.05` 的 `#F0F0EE`——**差 2 級，肉眼分不出**。**一把梯子上有一階分不出它的鄰居，就是決策 #52 的論點從反方向到達**，所以併進有 185 個呼叫點的那一階。安靜按鈕的階梯仍然成立：hover `0.05`、active `0.12`，對上大聲版的 `0.12` 與 `0.2` |
 | 107 | ⚠️ **容忍值訂寬了 12 倍，讓規則 32 第一次跑就是綠的** | `COVERAGE_TOLERANCE` 憑感覺訂 `0.01`，而 `0.05` 與 `0.06` 正好相距 `0.01`——**閘門把那個不在刻度上的 `0.06` 吸附到 `0.05`，回報乾淨**。實測量化誤差最大只有 **0.0008**（`0.05` 解出 `0.0492`、`0.86` 解出 `0.8608`）。改成 `0.004`：是誤差的 5 倍，也在最窄的階距內 2.5 倍。**一條吸收得比它該吸收的多的規則，是一條會同意任何輸入的規則**——這個 repo 記過同一類（`build-og.js` 那支不可能觸發的字體斷言） |
