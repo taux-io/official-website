@@ -1511,15 +1511,48 @@ function ruleOgScaleJump(files) {
 // sites of `bg-ink/5` unchecked, which is the larger half.
 const COLOUR_PROP = /^(?:color|background|background-color|border|border-color|border-(?:top|right|bottom|left)-color|outline-color|fill|stroke|text-decoration-color|box-shadow|caret-color|accent-color)$/;
 
+// A TOKEN IS A COLOUR TOO, AND SKIPPING IT LEFT THE ONE CONDITIONAL PATH OPEN.
+//
+// The three colour rules each began by skipping every `--*` declaration. It
+// looked harmless — a plate token holds bare channels (`48 52 58`), which
+// `stepsIn` cannot read anyway, so the skip and the regex agreed and nothing
+// was ever reported. What that hid is the only place this site changes a colour
+// conditionally: `--line-rgb` is redefined inside `@media (prefers-contrast:
+// more)`, and a third ink written there was invisible to `two plates`.
+//
+// Measured, with the same Terracotta decision #108 used as its proof: as
+// `.probe { color: #C65F38 }` the gate goes red; as `--line-rgb: 198 95 56`
+// inside the media block it printed `31 of 31`. Decision #108's injection only
+// ever walked the colour-property road, so the token road was never tested —
+// the rule could not have gone red there and nothing said so.
+const CHANNEL_TOKEN = /^--[a-z0-9-]+-rgb$/;
+const BARE_CHANNELS = /^\s*\d{1,3}\s+\d{1,3}\s+\d{1,3}\s*$/;
+
+// Every declaration that carries a colour, token or not, with the value in a
+// form `plates.stepsIn` can read. Tokens are wrapped because they hold channels
+// without the `rgb()` around them.
+function colourBearing(declarations) {
+  const out = [];
+  for (const d of declarations) {
+    if (CHANNEL_TOKEN.test(d.prop)) {
+      if (!BARE_CHANNELS.test(d.value)) continue;
+      out.push({ d, value: `rgb(${d.value.trim()})` });
+      continue;
+    }
+    if (d.prop.startsWith("--")) continue;
+    if (!COLOUR_PROP.test(d.prop)) continue;
+    out.push({ d, value: d.value });
+  }
+  return out;
+}
+
 function ruleDensityScale(files) {
   const sheet = stylesheet.read();
   const found = [];
   const ladder = [...plates.DENSITY_SCALE].join(", ");
 
-  for (const d of sheet.declarations) {
-    if (d.prop.startsWith("--")) continue;
-    if (!COLOUR_PROP.test(d.prop)) continue;
-    for (const step of plates.stepsIn(d.value, sheet)) {
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    for (const step of plates.stepsIn(value, sheet)) {
       if (step.plate === null) continue;
       if (plates.onScale(step.coverage) !== null) continue;
       found.push({
@@ -1575,10 +1608,8 @@ function ruleTwoPlates(files) {
   const sheet = stylesheet.read();
   const found = [];
 
-  for (const d of sheet.declarations) {
-    if (d.prop.startsWith("--")) continue;
-    if (!COLOUR_PROP.test(d.prop)) continue;
-    for (const step of plates.stepsIn(d.value, sheet)) {
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    for (const step of plates.stepsIn(value, sheet)) {
       if (step.plate !== null) continue;
       found.push({
         file: d.file,
@@ -1638,10 +1669,16 @@ function ruleAccentCarriesInteraction(files) {
   const sheet = stylesheet.read();
   const found = [];
 
-  for (const d of sheet.declarations) {
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    // A TOKEN DEFINES A COLOUR; IT DOES NOT APPLY ONE, and this is the one
+    // place the three colour rules must diverge. `two plates` and `density
+    // scale` ask what colours exist, so a token is exactly what they need to
+    // see. This rule asks WHERE a colour lands, and `--primary-rgb: 33 72 184`
+    // lands nowhere — there is no element in a definition to click. Reading
+    // tokens here reported `:root` for owning the accent at all, which is the
+    // rule inverted: it would demand the site not declare its own plate.
     if (d.prop.startsWith("--")) continue;
-    if (!COLOUR_PROP.test(d.prop)) continue;
-    if (!plates.stepsIn(d.value, sheet).some((s) => s.plate === "primary")) continue;
+    if (!plates.stepsIn(value, sheet).some((s) => s.plate === "primary")) continue;
     if (INTERACTIVE_SELECTOR.test(d.selector)) continue;
     found.push({
       file: d.file,
@@ -1653,7 +1690,7 @@ function ruleAccentCarriesInteraction(files) {
   for (const { rel, html } of files) {
     for (const node of parseElements(html)) {
       for (const c of node.classes) {
-        const hit = plates.utilityCoverage(c) || (/(?:^|:)(?:bg|text|border|ring|outline|decoration|fill|stroke|divide)-primary(?:-[a-z]+)?$/.test(c) ? { plate: "primary" } : null);
+        const hit = plates.utilityCoverage(c) || plates.plateUtility(c);
         if (!hit || hit.plate !== "primary") continue;
         if (isInteractiveNode(node)) continue;
         found.push({
