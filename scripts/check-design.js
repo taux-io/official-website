@@ -113,10 +113,22 @@ const lineOf = (text, index) => text.slice(0, index).split("\n").length;
 //
 // Fragment hrefs go too: `#contact-us` is not a colour, and `#abc` would
 // otherwise be indistinguishable from one.
+// THE ONE PLACE A TEMPLATE MUST CARRY A LITERAL COLOUR.
+//
+// `zero literal colour` exists because a colour written in a template is a
+// colour that cannot follow the tokens. `<meta name="theme-color">` is the
+// exception that proves it: HTML metadata has no token mechanism at all, so the
+// substrate has to be spelled out there or the address bar goes uncoloured.
+//
+// This is a carve-out by POSITION, not a list — the same shape rule 23 uses for
+// the surface. Any other literal in any other attribute still fails. And the
+// literal is not left unwatched: `theme colour agrees` (rule 33) compares it to
+// the manifest, which is the failure this pair actually has a history of.
 function maskNonColourHashes(html) {
   return html
     .replace(/&#x?[0-9a-fA-F]+;/g, (m) => " ".repeat(m.length))
-    .replace(/href="#[^"]*"/g, (m) => " ".repeat(m.length));
+    .replace(/href="#[^"]*"/g, (m) => " ".repeat(m.length))
+    .replace(/<meta[^>]*name="theme-color"[^>]*>/g, (m) => " ".repeat(m.length));
 }
 
 // Every opening tag with its attributes, so a rule can ask what kind of element
@@ -1717,6 +1729,110 @@ function ruleScaleJump() {
   ];
 }
 
+
+// RULE 31 — declared surfaces.
+//
+// Three places where NOT declaring a colour is itself a colour decision, made
+// by the browser instead of by this vocabulary. Rule 25 scans the colours the
+// stylesheet contains; it cannot see the ones that should be there and are not,
+// so this is the only rule in the file that checks for absence.
+//
+// WHY ONLY THREE, WHEN THE CHAPTER NAMES FIVE. Two of the five — the
+// forced-colors block and the print stylesheet — are deliberately NOT here.
+// Presence is not their fix: an empty `@media print {}` would satisfy a
+// presence check while printing exactly as badly as no block at all. That is
+// rule 28's defect (decision #112), and writing it twice on purpose would be
+// worse than writing it once by accident. Those two are implemented and
+// verified by hand, and recorded in DESIGN.md as ungated.
+//
+// `accent-color` is absent for a different reason: it styles checkboxes, radios
+// and ranges, and this site has zero of all three. A rule guarding a property
+// with no possible subject guards nothing.
+const DECLARED_SURFACES = [
+  {
+    prop: "color-scheme",
+    where: ":root",
+    why: "without it a dark-themed OS renders the UA's own widgets dark — nine <select>, three <input>, the scrollbar and the initial canvas — against paper",
+  },
+  {
+    prop: "background",
+    where: "::selection",
+    why: "an undeclared selection highlight is the OS blue, which is a third plate appearing on every drag across the text",
+  },
+  {
+    prop: "caret-color",
+    where: "input",
+    why: "an undeclared caret is the OS accent, and this site has three text inputs to show it in",
+  },
+];
+
+function ruleDeclaredSurfaces() {
+  const sheet = stylesheet.read();
+  const found = [];
+  for (const want of DECLARED_SURFACES) {
+    const hit = sheet.declarations.some(
+      (d) => d.prop === want.prop && d.selector.includes(want.where)
+    );
+    if (hit) continue;
+    found.push({
+      file: stylesheet.INPUT_CSS,
+      line: 1,
+      detail: `${want.where} declares no ${want.prop} — ${want.why}`,
+    });
+  }
+  return found;
+}
+
+
+// RULE 33 — theme colour agrees.
+//
+// The browser address bar on a phone is coloured from <meta name="theme-color">;
+// an installed PWA reads `theme_color` from the manifest instead. Two consumers,
+// two places, and the site needs both — so this is not duplication, it is a pair
+// that can drift.
+//
+// PRESENCE IS NOT THE RISK HERE, AND THAT IS WHY THIS IS A SEPARATE RULE from
+// `declared surfaces`. The manifest already carried a theme colour through two
+// brand resets — #000000, from the black era, live in production and read by
+// every Android install (decision #99). It was declared the whole time. What it
+// was not, was equal to the surface. Checking that something is declared would
+// have called that clean.
+function ruleThemeColourAgrees(files) {
+  const manifest = path.join(ROOT, "static", "site.webmanifest");
+  if (!fs.existsSync(manifest)) return [];
+  let declared;
+  try {
+    declared = JSON.parse(fs.readFileSync(manifest, "utf8")).theme_color;
+  } catch (err) {
+    return [{ file: path.join("static", "site.webmanifest"), line: 1, detail: `will not parse: ${err.message}` }];
+  }
+  if (!declared) return [];
+
+  const found = [];
+  let seen = 0;
+  for (const { rel, html } of files) {
+    for (const m of html.matchAll(/<meta[^>]*name="theme-color"[^>]*>/g)) {
+      seen++;
+      const content = /content="([^"]*)"/.exec(m[0]);
+      const value = content ? content[1].trim() : "";
+      if (value.toLowerCase() === String(declared).trim().toLowerCase()) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, m.index),
+        detail: `theme-color is ${value || "(empty)"} but the manifest says ${declared} — the address bar and the installed app would paint different surfaces`,
+      });
+    }
+  }
+  if (!seen) {
+    found.push({
+      file: path.join("templates", "header.html"),
+      line: 1,
+      detail: `no <meta name="theme-color"> anywhere, so a phone browser colours its address bar itself — the manifest's ${declared} only applies once the site is installed`,
+    });
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1920,6 +2036,20 @@ const RULES = [
     turnedOnBy: "v5 — the reference set's 5-12x jump, asked of the pages",
     run: ruleScaleJump,
     summary: "the declared type ladder's largest step is 5-12 times its smallest",
+  },
+  {
+    name: "declared surfaces",
+    enabled: true,
+    turnedOnBy: "v5 — the only rule here that checks for absence",
+    run: ruleDeclaredSurfaces,
+    summary: "the three places where saying nothing hands the colour to the browser are declared",
+  },
+  {
+    name: "theme colour agrees",
+    enabled: true,
+    turnedOnBy: "v5 — the manifest carried a black theme colour through two resets while declared the whole time",
+    run: ruleThemeColourAgrees,
+    summary: "the meta theme-color and the manifest's theme_color are the same surface",
   },
 ];
 
