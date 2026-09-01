@@ -22,7 +22,21 @@ const STATIC = path.join(__dirname, "..", "..", "static");
 // recoloured white, and the icon becomes a white square.
 const SOURCE = path.join(STATIC, "brand", "icon-master.png");
 
-// --surface-deep. Matches the page the icon links to.
+// A DELIBERATE BLACK, NOT THE SITE'S SURFACE.
+//
+// This read "--surface-deep. Matches the page the icon links to", and that
+// stopped being true two brand resets ago: --surface-deep does not exist, and
+// the page has been light since decision #54 and is paper (#FAFAF7) since v5.
+// The icon stayed black through both without anyone deciding it should.
+//
+// It is kept black because a favicon does not live on this site's surface — it
+// lives on browser chrome, a bookmark bar and a home screen, none of which we
+// choose. A dense mark reads on all of them; paper-on-paper reads on none. The
+// rule above still holds for the reason it was written: the background has to
+// be opaque. What changed is that this is now a choice rather than an
+// inherited value, so a future surface change does not silently make it wrong
+// again. DESIGN.md's rule 31 (`declared surfaces`) names the icon as one of
+// the places a colour escapes the two-plate model on purpose.
 const BACKGROUND = "#000000";
 
 const TARGETS = [

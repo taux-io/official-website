@@ -284,11 +284,11 @@ breakpoints:
 |---|---|---|
 | 本文件（來源、不採用表、決策 #74–#88） | ✅ | ⓪ |
 | 字級名稱錯位修正（文件側） | ✅ | ⓪ |
-| Token — 表面改 `#fafaf7` | ⬜ | ① |
-| Token — 三階墨色改 Charcoal 密度階 | ⬜ | ① |
-| Token — `primary` 改 Cobalt、`primary-focus` 移除 | ⬜ | ① |
-| Token — `hairline` 改主墨版 12% | ⬜ | ① |
-| Token — `on-primary` 改為由 `canvas` 推導 | ⬜ | ① |
+| Token — 表面改 `#fafaf7` | ✅ | ① |
+| Token — 三階墨色改 Charcoal 密度階（並改名 `--ink-86` / `--ink-72`） | ✅ | ① |
+| Token — `primary` 改 Cobalt；`primary-focus` 指向 `primary` | ✅ | ① |
+| Token — `hairline` 改主墨版 12%（含 `prefers-contrast` 的 56% 階） | ✅ | ① |
+| Token — `on-primary` 寫成 `var(--surface-rgb)` | ✅ | ① |
 | 字級 — `display-lg` 56 → 64px | ⬜ | ② |
 | 字級 — `tailwind.config.js` 與本檔名稱對齊 | ⬜ | ② |
 | 規則 25 `two plates` | ⬜ | ② |
@@ -298,11 +298,17 @@ breakpoints:
 | **OG 卡 — kicker 17 → 12px（唯一沒過的印刷規則）** | ✅ | ② |
 | **規則 29 `og geometry`（邊距＋主體佔版，今天已綠）** | ⬜ | ② |
 | **規則 30 `og scale jump`** | ✅ | ② |
+| **`site.webmanifest` 的 `theme_color` / `background_color`（黑底時代殘留）** | ✅ | ① |
 | **規則 31 `declared surfaces`（深色／高對比／列印／`::selection`／`theme-color`）** | ⬜ | ③ |
+| **focus ring 改靠環寬與 offset 區分（決策 #79 的後半）** | ⬜ | ③ |
 | **規則 32 `plate steps are named`（alpha 密度階要有名字）** | ⬜ | ③ |
 | 衍生資產 — 100 張分享卡重生 | ✅（v5 首次，因 kicker 改動） | ② |
 
-⚠️ **階段 ① 是一次不可分割的改動。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。**先改表面不改墨色，會得到一組沒有算過對比的顏色**，而 `contrast` 閘門會在那一刻紅掉 24,435 個元素裡的一部分。分票的時候不要拆。
+✅ **階段 ① 已落地，一次改完沒有拆。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。先改表面不改墨色會得到一組沒有算過對比的顏色。
+
+**實測結果：`contrast` 走過 101 條路由的 24,003 個文字元素，0 個低於 AA、0 個低於 1.5:1。`geometry` 808 個組合 0 失敗。** ⚠️ 這裡先前寫「24,435 個元素」，那是階段 ① 之前的計數；**這一版寫的是這次跑出來的數字**。
+
+⚠️ **`hairline` 那個洞不存在，而且是查出來的不是猜的。** `scripts/visual/contrast.js:35` 自己列著它看不見的東西：`/404`（不是 `[[page]]`）、**border colours**、pseudo elements、SVG fill/stroke。**1.24:1 的髮絲線不會被當成文字讀**，所以那個顧慮從一開始就沒有對象。
 
 ---
 
@@ -816,6 +822,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 94 | 規則 31 `declared surfaces`：**檢查缺席** | 深色模式、`forced-colors`、`@media print`、`::selection`／`caret-color`／`accent-color`、`theme-color`——**五個位置全站都是 0 個宣告**。⚠️ **沒有宣告不等於沒有顏色，是用瀏覽器或作業系統的預設**，那是五個逃出兩塊版的表面。規則 25 掃樣式表裡出現過的顏色，**掃不到應該出現而沒有出現的**，所以這條的判準是清單不是模式。**本檔 32 條規則裡只有這一條在檢查該寫的有沒有寫** |
 | 95 | 深色模式：**不做**，而且要明文宣告 | 墨版模型的答案是紙就是紙，反轉會讓 `#FAFAF7` 變成一個沒有名字的深色表面。⚠️ **但 `static/taux-logo-light.png` 與 `taux-logo-dark.png` 兩個檔案都在，而 `templates/`、`src/`、`generator/` 裡 0 個使用者**——兩個 logo 變體暗示兩個表面，而本站只有一個。**留著的死檔案會讓下一個人以為深色模式是待辦** |
 | 96 | 規則 32：alpha 到達的密度階要有名字 | 實測 2 個實例：`bg-ink/5` 與 `::-webkit-scrollbar-thumb:hover` 的 `rgb(var(--ink-rgb) / 0.35)`，**兩個都沒有名字**。⚠️ **這條依賴規則 25 的未決問題**：alpha 階算不算合法密度階。答案是「算」的話這條是配套（要具名），是「不算」的話這條變成禁止。**兩個實例都要改，只是改法不同** |
+| 99 | 三個烤死舊表面的資產，兩個處理一個保留 | 拷問階段 ① 的時候查出來的，**都不是這次改動造成的，是現況就錯**。⚠️ `static/site.webmanifest` 的 `theme_color: #000000` 與 `background_color: #0a0a0b` 是**黑底時代殘留，兩次改版沒跟上**，而它線上生效（`templates/header.html:81` 掛著它，Android PWA 啟動畫面用它）——改成 `#fafaf7`。⚠️ `build-icons.js` 的 `BACKGROUND = "#000000"` 註解寫「`--surface-deep`. Matches the page the icon links to」，而 `--surface-deep` 不存在、頁面從 #54 起就不是黑的——**顏色保留，註解改寫**：favicon 不住在本站的表面上，它住在瀏覽器工具列與桌面，那些不是我們選的，紙印在紙上讀不出來。**保留的理由從「繼承來的值」換成「決定」**，這樣下次換表面不會再靜默地讓它錯。`brand/logo-on-light.png` 的白底不動——那是 Google 知識面板的表面，同樣不是我們選的 |
+| 100 | `--primary-focus` 這張票只指向 `--primary`，幾何區分另開票 | 決策 #79 說移除並改靠**環寬與 offset** 區分，那是兩件事：拿掉一個顏色（符合兩塊版）與改變鍵盤使用者看到的東西（無障礙表面）。**混在 22 個 token 的改動裡一起過，等於讓一個 a11y 改動搭便車。** 這張票寫成 `--primary-focus-rgb: var(--primary-rgb)`，token 名字留著、顏色少一個；環寬與 offset 排階段 ③ |
+| 101 | token 改名的爆炸半徑是量的，不是估的 | 決策 #77 說改名會動到「每一個使用者」，**實測不是**：`--ink-muted-80` 在 `src/input.css` 3 處、`tailwind.config.js` 1 處、**模板 0 處**。模板用的是 Tailwind 的角色名 `ink-muted` / `ink-soft`，那一層**不必改也不該改**——它們編碼的是角色不是數字，說謊的只有 custom property 的名字。**四個編輯，不是一場遷移。** 估「每一個使用者」而不去數，正是本檔開場反對的東西 |
 | 98 | 卡的字級改成具名匯出，而不是留在模板字串裡 | 規則 30 要斷言的東西原本沒有對外介面。**regex 版本會漏掉標題**（寫成 `${cond ? long : short}px`），而且**模板一重排就靜默轉綠**——一條會在真的壞掉時說沒事的規則比沒有規則糟。`build-og.js` 現在匯出 `TYPE_SCALE`，CSS 由它產生。⚠️ **同一次改動把 `main()` 包進 `require.main === module`**：它先前無條件執行，`require` 這個檔會開 Chromium 重寫 100 張 PNG。**這與 `routes.js` 是同一個形狀**（規則 19「單一路由表」）：一份資料一個來源，其他東西讀它 |
 | 97 | `@media print` 是缺口，而且是最諷刺的那個 | 參考站是**印刷規範**，而本站按 Cmd+P 印出來的東西**不受這份文件管**（`@media print` 全站 0 個）。**這是唯一一個參考站的主場，而本站在那裡是空的。** 沒有立刻補，因為列印樣式要先決定印什麼（導覽、footer、locale 切換器要不要印），那是內容決定不是顏色決定 |
 
