@@ -116,7 +116,11 @@ module.exports = {
         xl: ["1.5rem", { lineHeight: "1.4", letterSpacing: "0" }],
         "display-sm": ["2.125rem", { lineHeight: "1.18", letterSpacing: "-0.011em", fontWeight: "600" }],
         "display-md": ["2.5rem", { lineHeight: "1.1", letterSpacing: "0", fontWeight: "600" }],
-        "display-lg": ["3.5rem", { lineHeight: "1.07", letterSpacing: "-0.005em", fontWeight: "600" }],
+        // 4rem, NOT 3.5. The reference set asks the largest text to be 5-12 times the
+        // microcopy, and this ladder's smallest step is the 0.75rem eyebrow: 3.5/0.75
+        // is 4.67x, under the floor. 4rem is 5.33x — inside, with room, and a round
+        // rem. 3.75rem would sit exactly on 5.00x and fall out on the next nudge.
+        "display-lg": ["4rem", { lineHeight: "1.07", letterSpacing: "-0.005em", fontWeight: "600" }],
       },
       maxWidth: {
         // 68ch is the reading measure for the long-form pages; CJK runs denser
