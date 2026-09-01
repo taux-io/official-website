@@ -460,8 +460,14 @@
     content: "→";
   }
 
+  /* 0.05, NOT 0.06. The two render #F0F0EE and #EEEEEC on paper — two levels
+     apart, which nobody can see, and a scale carrying a step indistinguishable
+     from its neighbour is decision #52's argument arriving from the other
+     direction. Merged into the value with 185 callers rather than the one with
+     this single caller. The quiet ladder still reads: hover 0.05, active 0.12,
+     against the loud one's 0.12 and 0.2. */
   .btn-quiet:hover {
-    background-color: rgb(var(--ink-rgb) / 0.06);
+    background-color: rgb(var(--ink-rgb) / 0.05);
   }
 
   /* The wordmark and the hamburger are controls without a component class —
