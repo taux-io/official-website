@@ -32,6 +32,7 @@
 const fs = require("fs");
 const path = require("path");
 const stylesheet = require("./stylesheet");
+const plates = require("./plates");
 const { PAGES, DOCUMENTS, isLatin } = require("./routes");
 
 // The language the error document speaks; the generator holds the same constant
@@ -1481,6 +1482,120 @@ function ruleOgScaleJump(files) {
   return found;
 }
 
+
+// RULE 32 — density scale.
+//
+// DESIGN.md v5 says a lighter colour is the same plate laid down thinner, not a
+// new ink. That makes coverage a scale, and this site already polices two other
+// scales the same way: `tracking scale` and `radius scale` each hold a closed
+// Set and reject anything outside it. This is the third of that shape.
+//
+// WHERE COVERAGE CAN ENTER, AND IT IS NOT ONE PLACE. An author reaches a step
+// through a declaration (`rgb(var(--ink-rgb) / 0.12)`), through a solid token
+// whose value IS that step (`--line-rgb`), or through a Tailwind utility whose
+// slash carries it (`bg-ink/5`). The first two arrive as CSS and come from
+// stylesheet.read(); the third is a class string in a template and never
+// becomes author CSS at all. Reading only the CSS would leave the 185 call
+// sites of `bg-ink/5` unchecked, which is the larger half.
+const COLOUR_PROP = /^(?:color|background|background-color|border|border-color|border-(?:top|right|bottom|left)-color|outline-color|fill|stroke|text-decoration-color|box-shadow|caret-color|accent-color)$/;
+
+function ruleDensityScale(files) {
+  const sheet = stylesheet.read();
+  const found = [];
+  const ladder = [...plates.DENSITY_SCALE].join(", ");
+
+  for (const d of sheet.declarations) {
+    if (d.prop.startsWith("--")) continue;
+    if (!COLOUR_PROP.test(d.prop)) continue;
+    for (const step of plates.stepsIn(d.value, sheet)) {
+      if (step.plate === null) continue;
+      if (plates.onScale(step.coverage) !== null) continue;
+      found.push({
+        file: d.file,
+        line: d.line,
+        detail: `${d.selector} lays ${step.plate} at ${(step.coverage * 100).toFixed(1)}% — not a step on the scale (${ladder})`,
+      });
+    }
+  }
+
+  const utilities = [];
+  for (const a of sheet.applied) utilities.push({ file: a.file, line: a.line, name: a.utility, where: a.selector });
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        utilities.push({ file: rel, line: html.slice(0, node.index).split("\n").length, name: c, where: `<${node.tag || "element"}>` });
+      }
+    }
+  }
+  for (const u of utilities) {
+    const hit = plates.utilityCoverage(u.name);
+    if (!hit) continue;
+    if (plates.onScale(hit.coverage) !== null) continue;
+    found.push({
+      file: u.file,
+      line: u.line,
+      detail: `${u.name} lays ${hit.plate} at ${(hit.coverage * 100).toFixed(0)}% — not a step on the scale (${ladder})`,
+    });
+  }
+  return found;
+}
+
+
+// RULE 25 — two plates.
+//
+// DESIGN.md v5 counts two printing plates and one paper. Every colour this site
+// ships has to be one of them, at some coverage; a colour that no single plate
+// explains is a third ink, and the whole model rests on there not being one.
+//
+// TWO ROADS IN, AND ONLY ONE OF THEM IS CSS. A declaration can name a colour
+// outright, and stylesheet.read() sees those. A template class can name one
+// too: tailwind.config.js declares this site's palette under `extend`, extend
+// adds rather than replaces, and `bg-red-500` therefore compiles — verified by
+// building it, not assumed. That road never becomes author CSS, so the
+// declaration half alone would have left the wider door open.
+//
+// WHAT THIS RULE CANNOT SEE, said plainly because the neighbouring rules are
+// what cover it: it does not notice that a colour was hand-written. The literal
+// `rgba(25,25,24,0.06)` this site carried for three brand resets solves cleanly
+// to ink at 6.6% and passes here. Rule 1 catches the syntax and rule 32 catches
+// the coverage. Three rules, three different failures, none of them redundant.
+function ruleTwoPlates(files) {
+  const sheet = stylesheet.read();
+  const found = [];
+
+  for (const d of sheet.declarations) {
+    if (d.prop.startsWith("--")) continue;
+    if (!COLOUR_PROP.test(d.prop)) continue;
+    for (const step of plates.stepsIn(d.value, sheet)) {
+      if (step.plate !== null) continue;
+      found.push({
+        file: d.file,
+        line: d.line,
+        detail: `${d.selector} paints ${step.text} — no coverage of the ink or the accent over this paper produces it, so it is a third plate`,
+      });
+    }
+  }
+
+  const utilities = [];
+  for (const a of sheet.applied) utilities.push({ file: a.file, line: a.line, name: a.utility });
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        utilities.push({ file: rel, line: html.slice(0, node.index).split("\n").length, name: c });
+      }
+    }
+  }
+  for (const u of utilities) {
+    if (!plates.foreignColourUtility(u.name)) continue;
+    found.push({
+      file: u.file,
+      line: u.line,
+      detail: `${u.name} reaches Tailwind's own palette — this vocabulary has two plates and that is not one of them`,
+    });
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1656,6 +1771,20 @@ const RULES = [
     turnedOnBy: "v5 — the reference set's 5-12x jump, on the one carrier with a fixed frame",
     run: ruleOgScaleJump,
     summary: "the share card's largest step is 5-12 times its smallest, in both title branches",
+  },
+  {
+    name: "density scale",
+    enabled: true,
+    turnedOnBy: "v5 — a lighter colour is the same plate laid thinner, so coverage is a scale",
+    run: ruleDensityScale,
+    summary: "every coverage a colour lands on is one of the declared density steps",
+  },
+  {
+    name: "two plates",
+    enabled: true,
+    turnedOnBy: "v5 — the ink model's one structural claim, and the only rule that can disprove it",
+    run: ruleTwoPlates,
+    summary: "every colour is the paper, the ink or the accent at some coverage; there is no third",
   },
 ];
 
