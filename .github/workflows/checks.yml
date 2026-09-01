@@ -224,6 +224,23 @@ jobs:
       - name: geometry holds
         run: npm run geometry
 
+      # The share cards are the only thing this site ships with a fixed frame,
+      # and the reference set's proportional rules — 5-9% outer margin, a
+      # dominant subject at 45-80% — are unmeasurable on a page for the reason
+      # DESIGN.md gives: the denominator is whatever viewport is looking. On a
+      # 1200x630 card the denominator is a constant, so the same rules become a
+      # gate.
+      #
+      # It reads the committed PNGs rather than build-og.js. The margin is
+      # computable from the source, but the ink box is not: nothing in the
+      # recipe says how much of the card a balanced three-line title covers.
+      # Reading the source would check the half that was never in doubt.
+      #
+      # It needs no server, so it does not care that this job runs one — it is
+      # here because the assets it reads are large and the fast job stays fast.
+      - name: card geometry
+        run: npm run cards
+
       # sameAs asserts "these are the same entity", so a dead profile URL is an
       # identity claim about nothing. Lives in this job rather than the one
       # above because it is the only entity rule that leaves the machine, and
