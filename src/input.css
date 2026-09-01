@@ -255,6 +255,35 @@
     color: var(--ink);
   }
 
+  /* WHAT NOT DECLARING A COLOUR DECLARES.
+     
+     Three properties where silence is not neutrality — the browser picks, and
+     what it picks is a colour this vocabulary never chose. Rule 31 checks these
+     three because for each of them the declaration IS the whole fix.
+     
+     color-scheme is the correct way to say "this site has no dark mode"
+     (decision #95). Omitting it is not the same thing: on a dark-themed OS the
+     UA paints its own widgets dark — the nine <select>, the three <input>, the
+     scrollbar and the canvas behind the page — and they land as dark objects on
+     paper. One line, and it is the line that makes the decision real.
+     
+     The selection highlight and the caret both default to the OS accent, which
+     on this substrate is a third plate appearing every time someone drags across
+     a paragraph. Both are set from the ink at declared density steps, so rule 32
+     reads them like any other colour. */
+  :root {
+    color-scheme: light;
+  }
+
+  ::selection {
+    background: rgb(var(--ink-rgb) / 0.12);
+    color: var(--ink);
+  }
+
+  input {
+    caret-color: var(--primary);
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -846,6 +875,65 @@
 
   #menuOverlay {
     background-color: var(--surface) !important;
+  }
+}
+
+/* WHEN THE OPERATING SYSTEM TAKES THE PLATES AWAY.
+   
+   In forced-colors mode the OS replaces every colour with its own, and the
+   two-plate model simply does not apply — that is not a failure to guard
+   against, it is the user asking for something this vocabulary does not get a
+   vote on. What DOES break is anything whose only mark was a background:
+   backgrounds are flattened, and the inline code chip's sole distinction is
+   `bg-ink/5` — eleven chips and sixteen table rows lose the one thing that
+   separated them from prose.
+   
+   So the fix is not to keep a colour. It is to re-carry the distinction in
+   something forced-colors preserves: a border. CanvasText is the OS's own text
+   colour, so the chip stays legible in whatever palette the user chose.
+   
+   NOT GATED, AND SAID SO OUT LOUD. There is no rule watching this block,
+   deliberately: an empty `@media (forced-colors: active) {}` would satisfy any
+   presence check while fixing nothing, which is rule 28's defect (decision
+   #112). It was verified by hand with a forced-colors emulation and is recorded
+   in DESIGN.md under "沒有東西檢查的事". */
+@media (forced-colors: active) {
+  code:not(pre code) {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* THE REFERENCE SET'S HOME GROUND, AND THE SITE WAS EMPTY IN IT.
+   
+   v5's reference is a print specification, and this site shipped with no print
+   stylesheet at all — decision #97 records that as the most ironic gap in the
+   whole migration. What comes out of Cmd+P was not covered by any of it.
+   
+   The minimum that makes a printed page correct: drop the things that only work
+   on a screen. The navigation is a fixed bar that would print as a stripe across
+   the first page; the footer is site-wide plumbing; the locale switcher offers
+   four links that a sheet of paper cannot follow. The reading column and the
+   type scale are already print-appropriate — editorial leading and a 68ch
+   measure were chosen for reading, and paper is where that argument started.
+   
+   The eleven <details> need nothing: rule 7 (`collapsible ships open`) already
+   guarantees they ship expanded.
+   
+   NOT GATED, for the same reason as the block above. */
+@media print {
+  nav,
+  footer,
+  .locale-switcher {
+    display: none;
+  }
+
+  /* !important because `main` carries `pt-16` as a utility class, and a class
+     selector outranks this type selector however late it appears. The 64px was
+     making room for the fixed navigation, which is hidden two rules up — left
+     alone it prints as an empty band across the top of the first sheet. Caught
+     by the forced-media check, not by reading the cascade. */
+  main {
+    padding-top: 0 !important;
   }
 }
 

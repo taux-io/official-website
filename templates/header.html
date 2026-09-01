@@ -79,6 +79,14 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="manifest" href="/static/site.webmanifest">
+    <!-- THE SAME SURFACE, TOLD TO A DIFFERENT READER. The manifest above is
+         read once the site is installed; this is what a phone browser colours
+         its address bar from before that ever happens, which is almost every
+         visit. Both must be the substrate, and `theme colour agrees` compares
+         them — the manifest carried the black era's surface through two brand
+         resets while being declared the whole time, so checking that a theme
+         colour exists would have called that clean. -->
+    <meta name="theme-color" content="#fafaf7">
 
     <!-- Fonts: D-DIN and Roboto Mono, self-hosted, Latin only. CJK renders from
          NOTHING IS PRELOADED because nothing is downloaded. The face is SF Pro
