@@ -24,6 +24,29 @@ const OUT_DIR = path.join(ROOT, "static", "og");
 const WIDTH = 1200;
 const HEIGHT = 630;
 
+// The card's type scale, named so something outside this file can read it.
+// It used to live inline in the CARD template literal, which meant DESIGN.md's
+// rule 30 (`og scale jump`) had nothing to assert against but a regex over a
+// template string — a test that breaks on a reformat and stays green on a real
+// change. The page's scale is declared in tailwind.config.js the same way and
+// read by rule 27; this is the card's half of the same arrangement.
+//
+// `kicker` is the page's `eyebrow` step. The two carry the same role — small,
+// uppercase, 0.09em — and there is no reason for the card to hold a size the
+// page does not.
+const TYPE_SCALE = {
+  mark: 26,
+  kicker: 12,
+  desc: 23,
+  title: { short: 80, long: 62 },
+};
+
+// Above this many characters the title drops to the smaller step. DESIGN.md
+// decision #93 records the branch as a known defect rather than a design: it
+// makes a card's type size depend on how long its title happens to be, which
+// is why the same page's card is set at 80px in one locale and 62px in another.
+const TITLE_LONG_THRESHOLD = 34;
+
 // Routes come from the shared table, which reads site.toml. Parsing it here a
 // second time is how a card and the tag pointing at it could drift apart.
 function routes() {
@@ -98,12 +121,12 @@ const CARD = (item, fontCss, tokenCss) => `
     position: relative; overflow: hidden;
   }
   .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
-  .mark { font-family: "SF Pro Display", system-ui, -apple-system, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: 0.09em; text-transform: uppercase; }
-  .kicker { font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif; font-weight: 400; font-size: 17px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
+  .mark { font-family: "SF Pro Display", system-ui, -apple-system, sans-serif; font-weight: 700; font-size: ${TYPE_SCALE.mark}px; letter-spacing: 0.09em; text-transform: uppercase; }
+  .kicker { font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif; font-weight: 400; font-size: ${TYPE_SCALE.kicker}px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
   h1 {
     position: relative; z-index: 1;
     font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif;
-    font-size: ${item.title.length > 34 ? 62 : 80}px;
+    font-size: ${item.title.length > TITLE_LONG_THRESHOLD ? TYPE_SCALE.title.long : TYPE_SCALE.title.short}px;
     font-weight: 600; line-height: 1.07; letter-spacing: -0.005em;
     max-width: 940px;
     /* Balanced rather than greedy. The home card set its title in three lines
@@ -116,7 +139,7 @@ const CARD = (item, fontCss, tokenCss) => `
   }
   p {
     position: relative; z-index: 1;
-    color: rgb(var(--ink-rgb)); font-size: 23px; line-height: 1.55; max-width: 820px;
+    color: rgb(var(--ink-rgb)); font-size: ${TYPE_SCALE.desc}px; line-height: 1.55; max-width: 820px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
   .rule { position: relative; z-index: 1; height: 1px; background: rgb(var(--line-rgb)); margin-bottom: 28px; }
@@ -206,7 +229,14 @@ async function main() {
   console.log(`\n${items.length} cards written to static/og/`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Only build when invoked directly. `check-design.js` imports TYPE_SCALE from
+// here, and an unguarded call meant importing the scale launched Chromium and
+// rewrote 100 PNGs as a side effect of running a lint.
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+module.exports = { TYPE_SCALE, TITLE_LONG_THRESHOLD, WIDTH, HEIGHT };

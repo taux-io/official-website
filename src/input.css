@@ -30,7 +30,7 @@
      changed across all three is that there is exactly one — the alternating
      light/dark tile system this vocabulary is built on is NOT adopted (see
      DESIGN.md decision #54), so there is no second surface to alternate with. */
-  --surface-rgb: 255 255 255;
+  --surface-rgb: 250 250 247;
 
   /* THREE INKS, and every one of them was computed against the surface rather
      than copied from the reference.
@@ -45,9 +45,9 @@
      clears AA on both white (4.95) and the parchment tint (4.55). A reference
      site's measured value is not automatically a value this site can use, and
      the way to tell them apart is to compute it. */
-  --ink-rgb: 29 29 31;
-  --ink-muted-80-rgb: 51 51 51;
-  --ink-muted-48-rgb: 112 112 112;
+  --ink-rgb: 48 52 58;
+  --ink-86-rgb: 76 80 84;
+  --ink-72-rgb: 105 107 111;
 
   /* ACTION BLUE. The single accent, and the only one.
      
@@ -56,18 +56,18 @@
      a texture-legibility device — a dimension to separate structure from noise.
      Blue is not decoration: it is the only mark an interactive element gets.
      Remove it and links, CTAs and the focus ring have no signal at all. */
-  --on-primary-rgb: 255 255 255;
-  --primary-rgb: 0 102 204;
-  --primary-focus-rgb: 0 113 227;
+  --on-primary-rgb: var(--surface-rgb);
+  --primary-rgb: 33 72 184;
+  --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT. #e0e0e0 on white, the same role the dark hairline had
      on black: dividers and edges, never decoration. */
-  --line-rgb: 224 224 224;
+  --line-rgb: 226 226 224;
 
   --surface: rgb(var(--surface-rgb));
   --ink: rgb(var(--ink-rgb));
-  --ink-muted-80: rgb(var(--ink-muted-80-rgb));
-  --ink-muted-48: rgb(var(--ink-muted-48-rgb));
+  --ink-86: rgb(var(--ink-86-rgb));
+  --ink-72: rgb(var(--ink-72-rgb));
   --on-primary: rgb(var(--on-primary-rgb));
   --primary: rgb(var(--primary-rgb));
   --line: rgb(var(--line-rgb));
@@ -852,7 +852,7 @@
      white is already 16.83:1. (This read "the ink is pure white at 21:1",
      which was true of the black-surface version and of nothing since.) */
   :root {
-    --line-rgb: 138 138 138;
+    --line-rgb: 137 139 141;
   }
 }
 

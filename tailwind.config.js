@@ -29,8 +29,8 @@ module.exports = {
         surface: "rgb(var(--surface-rgb) / <alpha-value>)",
         ink: {
           DEFAULT: "rgb(var(--ink-rgb) / <alpha-value>)",
-          muted: "rgb(var(--ink-muted-80-rgb) / <alpha-value>)",
-          soft: "rgb(var(--ink-muted-48-rgb) / <alpha-value>)",
+          muted: "rgb(var(--ink-86-rgb) / <alpha-value>)",
+          soft: "rgb(var(--ink-72-rgb) / <alpha-value>)",
         },
         primary: {
           DEFAULT: "rgb(var(--primary-rgb) / <alpha-value>)",
