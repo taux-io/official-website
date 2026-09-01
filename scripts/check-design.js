@@ -1596,6 +1596,65 @@ function ruleTwoPlates(files) {
   return found;
 }
 
+
+// RULE 26 — accent carries interaction.
+//
+// DESIGN.md has said since v4 that the accent plate is not decoration: it is
+// the only mark an interactive element gets, and a blue thing that cannot be
+// clicked spends that mark on nothing. It said it in prose for two brand
+// resets, which is the same as not saying it.
+//
+// INTERACTIVE IS A POSITION, NOT A LIST. An element qualifies by being a link,
+// a button, one of the form controls, or by carrying a component class that
+// makes it one — and an element inside one of those inherits the standing,
+// because a `<span class="text-primary">` in a button is part of the button's
+// mark, not a second use of the plate. That is the shape rule 23 uses for the
+// surface: a legal case is described by where it sits, so no exemption list is
+// needed and none is kept.
+const INTERACTIVE_TAGS = new Set(["a", "button", "label", "summary", ...CONTROL_TAGS]);
+const INTERACTIVE_SELECTOR = /(^|[\s,>~+([])(a|button|input|select|textarea|label|summary)([\s,:.\[)]|$)|\.(btn|tag)\b|:(hover|active|focus|focus-visible|focus-within)\b|\[aria-(current|expanded|selected)/;
+
+function isInteractiveNode(node) {
+  if (INTERACTIVE_TAGS.has(node.tag)) return true;
+  if (node.classes.some((c) => CONTROL_CLASSES.includes(c))) return true;
+  return (node.ancestors || []).some(
+    (a) => INTERACTIVE_TAGS.has(a.tag) || a.classes.some((c) => CONTROL_CLASSES.includes(c))
+  );
+}
+
+function ruleAccentCarriesInteraction(files) {
+  const sheet = stylesheet.read();
+  const found = [];
+
+  for (const d of sheet.declarations) {
+    if (d.prop.startsWith("--")) continue;
+    if (!COLOUR_PROP.test(d.prop)) continue;
+    if (!plates.stepsIn(d.value, sheet).some((s) => s.plate === "primary")) continue;
+    if (INTERACTIVE_SELECTOR.test(d.selector)) continue;
+    found.push({
+      file: d.file,
+      line: d.line,
+      detail: `${d.selector} paints the accent, and nothing in that selector can be clicked — the accent is the mark interaction gets, not a colour`,
+    });
+  }
+
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        const hit = plates.utilityCoverage(c) || (/(?:^|:)(?:bg|text|border|ring|outline|decoration|fill|stroke|divide)-primary(?:-[a-z]+)?$/.test(c) ? { plate: "primary" } : null);
+        if (!hit || hit.plate !== "primary") continue;
+        if (isInteractiveNode(node)) continue;
+        found.push({
+          file: rel,
+          line: html.slice(0, node.index).split("\n").length,
+          detail: `<${node.tag}> carries ${c} but is not interactive and sits inside nothing that is`,
+        });
+      }
+    }
+  }
+  return found;
+}
+
 const RULES = [
   {
     name: "easing scale",
@@ -1785,6 +1844,13 @@ const RULES = [
     turnedOnBy: "v5 — the ink model's one structural claim, and the only rule that can disprove it",
     run: ruleTwoPlates,
     summary: "every colour is the paper, the ink or the accent at some coverage; there is no third",
+  },
+  {
+    name: "accent carries interaction",
+    enabled: true,
+    turnedOnBy: "v5 — prose since v4 that nothing read",
+    run: ruleAccentCarriesInteraction,
+    summary: "the accent plate appears only on something that can be clicked, or inside it",
   },
 ];
 
