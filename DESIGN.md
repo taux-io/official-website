@@ -290,7 +290,7 @@ breakpoints:
 | Token — `hairline` 改主墨版 12%（含 `prefers-contrast` 的 56% 階） | ✅ | ① |
 | Token — `on-primary` 寫成 `var(--surface-rgb)` | ✅ | ① |
 | 字級 — `display-lg` 56 → 64px（`3.5rem` → `4rem`） | ✅ | ② |
-| 字級 — `tailwind.config.js` 與本檔名稱對齊 | ⬜ | ② |
+| 字級 — `tailwind.config.js` 與本檔名稱對齊 | ✅（縮小成成立的範圍，決策 #121） | ② |
 | 規則 25 `two plates`（含 `scripts/plates.js`） | ✅ | ② |
 | 規則 26 `accent carries interaction` | ✅ | ② |
 | 規則 27 `scale jump` | ✅ | ② |
@@ -301,7 +301,7 @@ breakpoints:
 | **`site.webmanifest` 的 `theme_color` / `background_color`（黑底時代殘留）** | ✅ | ① |
 | **規則 31 `declared surfaces` ＋ 規則 33 `theme colour agrees`** | ✅ | ③ |
 | **五個宣告落地（`color-scheme`／`::selection`／`caret-color`／`forced-colors`／`@media print`）** | ✅ | ③ |
-| **focus ring 改靠環寬與 offset 區分（決策 #79 的後半）** | ⬜ | ③ |
+| ~~focus ring 改靠環寬與 offset 區分（決策 #79 的後半）~~ | ❌ 關掉（決策 #120） | — |
 | **規則 32 `density scale`** | ✅ | ② |
 | 衍生資產 — 100 張分享卡重生 | ✅（v5 首次，因 kicker 改動） | ② |
 
@@ -459,7 +459,15 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 
 ## 字級與字距刻度
 
-⚠️ **這張表的名字是 `tailwind.config.js` 宣告的名字**，不是 v4 那組錯位一格的名字。對照見決策 #87。
+⚠️ **這張表的名字有五列是 `tailwind.config.js` 宣告的名字，四列不是**（決策 #121）。⚠️ 這一行原本無條件寫「這張表的名字是 config 宣告的名字」，而那只對五列成立：
+
+| | |
+|---|---|
+| 兩邊同名 | `display-lg`、`display-md`、`display-sm`、`caption`、`eyebrow` |
+| **只在本檔** | `display-sub`、`lead`、`body`、`body-strong` —— 它們是**角色名**，由 `src/input.css` 的元件類別畫出來，不是 Tailwind 的 fontSize 鍵 |
+| **只在 config** | `nav`、`button`、`base`、`lg`、`xl` —— 其中 **`nav` 是 `0.75rem`，與 `eyebrow` 並列全站最小**，而級距規則（27）取的就是最小值 |
+
+**修表不改程式**：四個角色名是刻意的（v4 起就用它們描述角色），config 那五個是實作細節。⚠️ **但下面那句「最小的那一階有兩個名字」指的就是 `eyebrow` 與 `nav`，而 `nav` 從來沒出現在這張表上**——級距的分母有一半是隱形的。決策 #87 修的是錯位，這一條修的是**表的涵蓋範圍**。
 
 | Token | 字級 | 字重 | 行高 | 字距 |
 |---|---|---|---|---|
@@ -772,6 +780,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 - **`forced-colors` 區塊真的修好了東西沒有。** 它把行內 `code` 只靠 `bg-ink/5` 傳達的區別換成 `1px solid CanvasText`，因為高對比模式會抹平背景，而那層底是 11 個 chip 與 16 個表格列**唯一的記號**。⚠️ **刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。**手動驗過**：`forcedColors: 'active'` 下 border-width 從 `0px` 變 `1px`。
 - **`@media print` 印出來對不對。** 它藏掉 nav、footer、`.locale-switcher`，並把 `main` 的 `pt-16` 歸零。⚠️ 同樣刻意不寫成規則。**手動驗過**：`media: 'print'` 下三者 `display: none`、`main` 的 `padding-top` 是 `0px`。⚠️ **那個歸零一開始是壞的**——`main { padding-top: 0 }` 是型別選擇器，輸給 `pt-16` 這個 class，導覽藏掉之後頂端留了 64px 的空洞。**是模擬驗證抓到的，不是讀串接順序讀出來的。**
+- **focus ring 還在不在、夠不夠粗。** 現況是 `outline: 2px solid var(--ink)` 加 `outline-offset: 2px`，對紙 **11.97:1**（WCAG 非文字門檻的四倍），而 offset 讓環畫在元素外面的紙上、不壓在藍色按鈕上。⚠️ **32 條規則沒有一條在看它**：`contrast` 明文看不見 border 與 outline 的顏色。⚠️ **刻意不寫成規則**——存在檢查對它無效（`outline: 1px solid` 也會通過「有宣告」而那不到 2px），要真的守住得同時斷言粗細、offset 與對比三件事，那是一條會過度指定的規則。**記下來比寫錯好**（決策 #120）。
 - **等權重的重複區塊。** 參考站的 hard avoid 列 card grids 與 never distribute objects evenly like a template，而**能抓到它的判準抓到的就是網格本身**——21 個 `grid-cols-*` 元素，禁掉沒有替代方案。⚠️ 規則 28 曾經是這條的候選，判準是「每格同時帶邊框＋圓角＋內距」，實測**全站 0 個**——不是因為沒有等權重區塊，是因為這個站不用那個簽名表達（決策 #112）。
 - **語氣。** 「不得有促銷語言、口號、宣言」是 v5 從參考站搬過來最完整的一條內容規則，而**沒有任何機械判準抓得到它**。`check:md` 抓格式，抓不到一句話是不是在賣東西。五個 locale 乘以 100 條路由，這一條靠人。
 - **留白 25–55%。** 參考站的核心比例之一，網頁上分母不存在（版面高度由內容決定）。**寫成規則會是一條永遠不紅的規則**，所以不寫。
@@ -925,6 +934,8 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 114 | 規則 33 `theme colour agrees` 獨立成一條，因為風險是漂移不是缺席 | manifest 的 `theme_color` **一直都有宣告**——它帶著黑底時代的值跨過兩次品牌重置，線上生效、每個 Android 安裝都讀得到（決策 #99）。**一條檢查「有沒有宣告」的規則會說它是乾淨的。** 兩者餵不同的消費者：`<meta>` 給未安裝的手機瀏覽器網址列（絕大多數訪客），manifest 給已安裝的 PWA——不是重複，是可以漂移的一對。⚠️ **這也讓 `<meta name="theme-color">` 成為規則 1 唯一放行的字面色**，判準是位置不是名單（跟規則 23 同形狀）：HTML metadata 沒有 token 機制，表面只能拼出來。**而那個字面色不是沒人看——規則 33 就是看它的那個** |
 | 116 | ⚠️ **條件式 token 是規則 25／32 的盲區，而規則 25 的整個主張就是「沒有第三塊版」** | 三條顏色規則都以 `if (d.prop.startsWith("--")) continue;` 開頭。看起來無害——墨版 token 存的是裸通道（`48 52 58`），`stepsIn` 的 regex 讀不到，跳過與讀不到互相印證，所以從來沒有東西被報告過。**它藏起來的是本站唯一一條有條件改顏色的路徑**：`--line-rgb` 在 `@media (prefers-contrast: more)` 裡被重新定義。**實測，用決策 #108 當紅燈證明的同一個 Terracotta**：寫成 `.probe { color: #C65F38 }` 閘門紅，寫成 `--line-rgb: 198 95 56` 放進那個 media 區塊，印「31 of 31」。⚠️ **決策 #108 的注入證明只走過「顏色屬性」那條路，token 那條從來沒被試過**——那條規則在那裡不可能紅，而沒有任何東西說得出這件事。修法是讓 token 的裸通道被包成 `rgb(...)` 再交給 `stepsIn`。**打開之後第一個紅的不是注入，是 repo 裡真的存在的違規**：`prefers-contrast` 的 56% 階不在刻度上。⚠️ **規則 26 在這裡與另外兩條分歧，而那是對的**：token 是**定義**不是**塗抹**，`--primary-rgb: 33 72 184` 沒有元素可以點；讀進去之後它報告 `:root` 擁有副墨版，那是把規則整個反過來——變成要求本站不得宣告自己的墨版 |
 | 117 | 規則 26 內嵌的第三份工具類別清單漏了七個前綴 | 它自己寫著 `bg\|text\|border\|ring\|outline\|decoration\|fill\|stroke\|divide`，而 `plates.js` 的 `COLOUR_PREFIX` 還有 `from\|via\|to\|accent\|caret\|placeholder\|shadow`。**實測：`from-primary` 掛在一個非互動的 `<section>` 上，閘門印「31 of 31」。** 抄第三份清單的成本不是重複，是**兩份清單只有一份會被維護**。改成 `plates.plateUtility()`，一份清單所有人讀 |
+| 121 | 字級表的「名字都對齊 config」縮小到成立的五列 | 兩軸審查的 Spec 那軸報過（九列裡三列成立），實測是**五列**：`display-lg`／`display-md`／`display-sm`／`caption`／`eyebrow` 兩邊同名。⚠️ **四個只在本檔**（`display-sub`、`lead`、`body`、`body-strong`）——它們是**角色名**，由 `src/input.css` 的元件類別畫出來，不是 Tailwind 的 fontSize 鍵；**五個只在 config**（`nav`、`button`、`base`、`lg`、`xl`）。**修表不改程式**：角色名是刻意的，config 的實作鍵不必全部進表。⚠️ **但 `nav` 是 `0.75rem`，與 `eyebrow` 並列全站最小，而規則 27 取的就是最小值**——那句「最小的那一階有兩個名字」指的正是它，而它從來沒出現在這張表上。**級距的分母有一半是隱形的**，而規則讀刻度不讀表，所以閘門是對的、表是不完整的。決策 #87 修的是錯位，這一條修的是涵蓋範圍 |
+| 120 | ❌ **決策 #79 的後半關掉，而現況比它想改成的樣子更好** | #79 想把 focus ring 從 Cobalt 改成「Cobalt 加環寬與 offset 區分」，而 **focus ring 從來不是 Cobalt**（決策 #109）——那個改動的起點不存在。實測現況 `outline: 2px solid var(--ink)` ＋ `outline-offset: 2px`：對紙 **11.97:1**，是 WCAG 非文字對比門檻 3:1 的**四倍**；`2px` 已經滿足 2.4.11 Focus Appearance 的最小面積；`offset: 2px` 讓環畫在元素**外面的紙上**，所以「ink 環壓在 Cobalt 按鈕上只有 1.60:1」這個算出來的數字**不適用**。⚠️ **執行這張票會讓事情變糟**：把環改成 Cobalt 是 `11.97 → 7.48`，為一個從未發生的問題降低對比。⚠️ **關掉不是刪掉**——那一列標 ❌ 並指向這條，因為刪掉會讓下一個人重新提一次同樣的票。⚠️ 決策 #79 整條保留，代價欄仍標「虛構」：**留著錯的那一半有價值，它記著一個沒發生的代價被寫下來、然後被當真了兩個版本**；刪掉就只剩結論，下一個人學不到那個教訓 |
 | 119 | 卡片清單改由路由表推出，雙向比對 | `cards.js` 先前 `readdir` 掃 `static/og`，**量到什麼算什麼**。實測刪掉一張卡：閘門印「99 share cards checked」「0 failing」，而那一頁宣告的 `og:image` 是 404。⚠️ **一條看不見缺席的閘門，而它就坐在規則 31 `declared surfaces`（本檔唯一一條檢查缺席的規則）旁邊。** 這也違反規則 19 `single route table` 的原則：`site.toml` 的唯一 JS 讀者是 `routes.js`，而 `build-og.js` 就是從同一個 `name` 推出每張卡的路徑——`readdir` 是一份已經有來源的清單的第二個來源。⚠️ **雙向報，因為只讀路由表會拿一個洞換另一個洞**：退役路由留下的孤兒卡在目錄走訪下至少看得見，只讀表就完全隱形。**寫之前先量過：100 張要求、100 張在磁碟、0 缺席、0 孤兒**——所以這條規則是綠著上線的，兩個方向各注入一次證明它會紅。摘要行現在自己說出差異（「99 張檢查過（路由表宣告 100 張）」），數字對不上一眼看得到 |
 | 118 | ⚠️ **兩軸審查在 32 道閘門全綠時找到八處文件漂移，而沒有一處會讓任何閘門紅** | `f719e1a...HEAD` 的 Standards 與 Spec 兩軸各自獨立跑，找到的東西沒有一個是程式邏輯錯（除了 #116 那個洞）。⚠️ **`NOTES.md` 的閘門總數第四次沒跟上**——`cards` 隨規則 29 加進 `checks.yml`，而那段文字**整段都在記前三次同樣的漂移**，結尾寫著「改 `checks.yml` 時請一併改這裡」。現在是十六道，清單有幾項就是幾道。⚠️ **`src/input.css` 的四段 token 註解在陳述 v5 已推翻的事實**：`ONE SURFACE. Pure white.`、`THREE INKS`（與兩塊墨版模型直接矛盾）、`ACTION BLUE ... 拿掉它，連結、CTA、focus ring 就沒有任何記號`（正是 #109 量出來是假的那句，只是活在 CSS 裡而 PR #292 沒改到）、`ONE HAIRLINE WEIGHT. #e0e0e0 on white`。**四段全部重寫，不是改數字。** ⚠️ **`prefers-contrast` 那段註解自己記著它上一次過期，而它又過期了**——第一次寫「the ink is pure white at 21:1」（黑底版），第二次寫「#1d1d1f on white is already 16.83:1」（v4）。**兩次都活下來，因為註解不會紅。** ⚠️ 其餘四處在本檔內：計數段自己寫錯兩個數字（在一段講「數目要對」的文字裡）、遷移表頭停在第一天、決策 #79 與 #96 沒有標推翻、`hairline` 的驗證狀態三處說法並存。**這一整批的共同點是沒有任何機械判準讀得到它們**，而本檔開場反對的正是這個 |
 | 115 | ⚠️ 列印的 `padding-top` 歸零一開始是壞的，模擬驗證才抓到 | 寫的是 `main { padding-top: 0 }`，而 `main` 帶著 `pt-16` 這個 utility class——**class 選擇器贏過型別選擇器**，歸零沒有生效。導覽是 fixed 的、列印時藏掉，那 64px 本來是給它讓位的，於是印出來的第一頁頂端是一條空帶。改成 `!important`（`prefers-reduced-motion` 區塊已經是這個寫法）。**這是讀串接順序讀不出來、只有跑過才知道的東西**，而這個區塊刻意沒有閘門——**沒有閘門不等於不驗證**，那正是「手動驗過」這四個字要撐住的 |
