@@ -23,7 +23,6 @@
 #
 # A changed line means a mark changed or the text inside it did. A new line
 # means a passage nobody has proofread yet.
-about.html	''	O로 옮기는 것입니다. 자체 '답변 컨테이너'
 adk-skill-patterns.html	""	 방아쇠 when: 사용자가 "FastAPI"
 adk-skill-patterns.html	""	자가 "FastAPI" 또는 "API endpoint"
 adk-skill-patterns.html	""	 "사이트 만들어 줘"
