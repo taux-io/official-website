@@ -24,44 +24,76 @@
    would take all of them with it.
    =========================================================================== */
 :root {
-  /* ONE SURFACE. Pure white.
+  /* ONE SUBSTRATE, AND IT IS PAPER RATHER THAN WHITE.
      
-     It was pure black three hours ago, and near-black before that. What has not
-     changed across all three is that there is exactly one — the alternating
-     light/dark tile system this vocabulary is built on is NOT adopted (see
-     DESIGN.md decision #54), so there is no second surface to alternate with. */
+     #FAFAF7. It was pure white before v5 and pure black before that; what has
+     not changed across all three is that there is exactly one. The alternating
+     light/dark tile system is not adopted (decision #54), so there is no second
+     surface to alternate with.
+     
+     The five levels between this and #ffffff are the whole point: v5's
+     reference asks that the paper stay visible rather than reading as a digital
+     wash (decision #75). None of the three papers it offers is pure white, and
+     the one chosen is the only one where the lightest ink step still clears AA
+     — Cool Gray puts it at 4.07. */
   --surface-rgb: 250 250 247;
 
-  /* THREE INKS, and every one of them was computed against the surface rather
-     than copied from the reference.
+  /* ONE PLATE AT THREE DENSITIES — NOT THREE INKS.
      
-     #1d1d1f  16.83:1  headings and body
-     #333333  12.63:1  secondary
-     #707070   4.95:1  captions and meta
+     This block read "THREE INKS" until v5, and that phrasing is what the plate
+     model replaced: a lighter colour is the same plate laid down thinner, not a
+     new ink (decision #76). Charcoal #30343A at three coverages, each computed
+     against this paper rather than copied from the reference:
      
-     THE THIRD ONE IS NOT THE REFERENCE'S VALUE. The analysis specifies #7a7a7a,
-     which measures 4.29:1 on white — under the 4.5 AA floor, so the contrast
-     audit would have gone red on its first run. #707070 is the only value that
-     clears AA on both white (4.95) and the parchment tint (4.55). A reference
-     site's measured value is not automatically a value this site can use, and
-     the way to tell them apart is to compute it. */
+     100%  #30343A  11.97:1  headings and body
+      86%  #4C5054   7.78:1  secondary
+      72%  #696B6F   5.11:1  captions and meta
+     
+     THE NAMES ENCODE COVERAGE, NOT OPACITY. They were `-80` and `-48` before
+     v5, from a system where the number was an alpha; carrying those names onto
+     coverages would leave a token called `-80` holding 86% (decision #77).
+     
+     72% IS THE ONLY STEP WITH NO CHOICE IN IT. 64% computes to 4.06:1, under
+     the AA floor of 4.5, so 72 is the first integer coverage that clears it.
+     The other two can move up; this one cannot move down. */
   --ink-rgb: 48 52 58;
   --ink-86-rgb: 76 80 84;
   --ink-72-rgb: 105 107 111;
 
-  /* ACTION BLUE. The single accent, and the only one.
+  /* THE ACCENT PLATE. Cobalt #2148B8, 7.48:1 on this paper.
      
-     This site has now had this argument three times: phosphor arrived, phosphor
-     left, and now blue arrives. The difference is what it carries. phosphor was
-     a texture-legibility device — a dimension to separate structure from noise.
-     Blue is not decoration: it is the only mark an interactive element gets.
-     Remove it and links, CTAs and the focus ring have no signal at all. */
+     Second of the two plates, and it has one assigned role: interaction. The
+     reference asks that an accent be given a content role before composing and
+     never scattered as decoration, and rule 26 (`accent carries interaction`)
+     enforces the half that is checkable — the accent may not appear on anything
+     that cannot be clicked.
+     
+     WHAT IT DOES NOT DO, because this comment claimed otherwise for two brand
+     resets: it does not carry links, and it does not carry the focus ring.
+     Measured (decision #109) — there are zero `a` colour declarations on this
+     site, links are marked by an underline, and the focus ring is
+     `outline: 2px solid var(--ink)` at 11.97:1. Marking links by underline
+     rather than by hue is what WCAG 1.4.1 asks for; an ink focus ring outscores
+     a Cobalt one. The code was right and the prose was wrong.
+     
+     `--on-primary-rgb` is the substrate by derivation, not by coincidence: text
+     knocked out of a plate shows the paper behind it, so the two values are the
+     same value and any drift between them is a bug (decision #80).
+     
+     `--primary-focus-rgb` points at the accent because a third blue would be a
+     third plate. It has no callers (decision #109) and is kept only so the
+     Tailwind colour it backs does not dangle. */
   --on-primary-rgb: var(--surface-rgb);
   --primary-rgb: 33 72 184;
   --primary-focus-rgb: var(--primary-rgb);
 
-  /* ONE HAIRLINE WEIGHT. #e0e0e0 on white, the same role the dark hairline had
-     on black: dividers and edges, never decoration. */
+  /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
+     
+     #E2E2E0 — the ink plate at 12% coverage over this paper, which is why rule
+     32 reads it as a step on the density ladder like any other colour. The
+     reference draws rules with the plate itself; before v5 this was #e0e0e0,
+     picked rather than computed (decision #82). Dividers and edges, never
+     decoration. */
   --line-rgb: 226 226 224;
 
   --surface: rgb(var(--surface-rgb));
@@ -942,9 +974,20 @@
      contrast, and it is what carries the structure here: this vocabulary has no
      cards, no fills and no shadows, so a rule that cannot be seen takes the
      layout with it. Lifted rather than made opaque — there is only one weight
-     now, so there is only one value to move. The ink needs nothing: #1d1d1f on
-     white is already 16.83:1. (This read "the ink is pure white at 21:1",
-     which was true of the black-surface version and of nothing since.) */
+     now, so there is only one value to move.
+     
+     137 139 141 IS THE INK AT 56% COVERAGE, not a grey chosen by eye. It is a
+     step on the density ladder like every other colour here, and rule 32 reads
+     it as one — but only since the colour rules stopped skipping `--*`
+     declarations, which is how the one conditional colour path on this site
+     went unguarded (decision #116).
+     
+     The ink itself needs nothing: #30343A on this paper is already 11.97:1.
+     
+     THIS SENTENCE HAS NOW BEEN WRONG TWICE. It first read "the ink is pure
+     white at 21:1", true of the black-surface version and of nothing since;
+     then "#1d1d1f on white is already 16.83:1", true of v4 and of nothing
+     since. Both survived because a comment cannot go red. */
   :root {
     --line-rgb: 137 139 141;
   }
