@@ -128,7 +128,7 @@ function maskNonColourHashes(html) {
   return html
     .replace(/&#x?[0-9a-fA-F]+;/g, (m) => " ".repeat(m.length))
     .replace(/href="#[^"]*"/g, (m) => " ".repeat(m.length))
-    .replace(/<meta[^>]*name="theme-color"[^>]*>/g, (m) => " ".repeat(m.length));
+    .replace(/(<meta[^>]*name="theme-color"[^>]*content=")([^"]*)/g, (m, head, value) => head + " ".repeat(value.length));
 }
 
 // Every opening tag with its attributes, so a rule can ask what kind of element
@@ -1434,6 +1434,12 @@ function ruleWeightLadder(files) {
 }
 
 
+// The reference set's one type rule, shared by the two ladders that answer to
+// it: the pages' scale (rule 27) and the card's (rule 30). They read different
+// files on purpose; the bounds are the same number and were written twice.
+const TYPE_LADDER_MIN = 5;
+const TYPE_LADDER_MAX = 12;
+
 // RULE 30 — og scale jump.
 //
 // DESIGN.md's reference set asks for one dramatic scale jump: the largest text
@@ -1456,9 +1462,8 @@ function ruleWeightLadder(files) {
 // BOTH BRANCHES. The title has two steps and the long one is the one 59 of the
 // 100 cards take, so checking only the nominal size would report a ratio that
 // most cards do not have.
-function ruleOgScaleJump(files) {
-  void files;
-  const rel = path.join("scripts", "assets", "build-og.js");
+function ruleOgScaleJump() {
+  const rel = path.join("scripts", "assets", "og-card.js");
   const abs = path.join(ROOT, rel);
   if (!fs.existsSync(abs)) return [];
   const src = fs.readFileSync(abs, "utf8");
@@ -1473,22 +1478,23 @@ function ruleOgScaleJump(files) {
   } catch (err) {
     return [{ file: rel, line: 1, detail: `the card's type scale is not importable: ${err.message}` }];
   }
-  if (!scale) return [{ file: rel, line: 1, detail: "build-og.js exports no TYPE_SCALE for this rule to read" }];
+  if (!scale) return [{ file: rel, line: 1, detail: "og-card.js exports no TYPE_SCALE for this rule to read" }];
 
-  const support = Object.entries(scale).filter(([, v]) => typeof v === "number");
+  const nonTitle = Object.entries(scale).filter(([, v]) => typeof v === "number");
   const found = [];
   for (const [branch, title] of Object.entries(scale.title || {})) {
-    const sizes = [...support, [`title.${branch}`, title]];
+    const sizes = [...nonTitle, [`title.${branch}`, title]];
     const max = sizes.reduce((a, b) => (a[1] >= b[1] ? a : b));
     const min = sizes.reduce((a, b) => (a[1] <= b[1] ? a : b));
     const ratio = max[1] / min[1];
-    if (ratio >= 5 && ratio <= 12) continue;
+    if (ratio >= TYPE_LADDER_MIN && ratio <= TYPE_LADDER_MAX) continue;
     found.push({
       file: rel,
       line: lineOfKey(min[0].includes(".") ? "title" : min[0]),
       detail:
         `${branch} title: ${max[0]} ${max[1]}px over ${min[0]} ${min[1]}px is ${ratio.toFixed(2)}x, ` +
-        `outside the 5-12x jump — ${min[0]} would have to be ${(max[1] / 12).toFixed(0)}-${(max[1] / 5).toFixed(0)}px`,
+        `outside the ${TYPE_LADDER_MIN}-${TYPE_LADDER_MAX}x jump — ${min[0]} would have to be ` +
+        `${(max[1] / TYPE_LADDER_MAX).toFixed(0)}-${(max[1] / TYPE_LADDER_MIN).toFixed(0)}px`,
     });
   }
   return found;
@@ -1546,6 +1552,39 @@ function colourBearing(declarations) {
   return out;
 }
 
+// ONE CENSUS, THREE VERDICTS.
+//
+// Rules 25, 26 and 32 each ask a different question about the same colour —
+// which plate, where it lands, which step — and decision #105 is right that
+// those are three failures rather than one. What was not right is that each of
+// them rebuilt the walk: `sheet.applied` plus `parseElements` over 107
+// templates, copied verbatim into two rules and hand-rolled a third time in the
+// accent rule, which is how that copy lost `from|via|to` (decision #117) and how
+// the `--*` skip ended up in all three (decision #116). Both defects are the
+// same shape, and PR 297 fixed them one level too shallow: the predicates were
+// shared, the enumeration was not.
+//
+// LINE NUMBERS ARE LAZY, AND THAT IS THE WHOLE PERFORMANCE STORY. Computing
+// `html.slice(0, index).split("\n").length` eagerly is O(n²) per file, and it
+// was being paid for every class token before any filter: measured 43,345
+// tokens across 107 templates, of which 185 (0.43%) are colour utilities. Two
+// rules doing it twice was 1.79s of a 2.03s run. The line is now a function the
+// caller invokes only inside `found.push`.
+function colourUtilities(files, sheet) {
+  const out = [];
+  for (const a of sheet.applied) {
+    out.push({ file: a.file, line: () => a.line, name: a.utility, node: null });
+  }
+  for (const { rel, html } of files) {
+    for (const node of parseElements(html)) {
+      for (const c of node.classes) {
+        out.push({ file: rel, line: () => lineOf(html, node.index), name: c, node });
+      }
+    }
+  }
+  return out;
+}
+
 function ruleDensityScale(files) {
   const sheet = stylesheet.read();
   const found = [];
@@ -1563,22 +1602,13 @@ function ruleDensityScale(files) {
     }
   }
 
-  const utilities = [];
-  for (const a of sheet.applied) utilities.push({ file: a.file, line: a.line, name: a.utility, where: a.selector });
-  for (const { rel, html } of files) {
-    for (const node of parseElements(html)) {
-      for (const c of node.classes) {
-        utilities.push({ file: rel, line: html.slice(0, node.index).split("\n").length, name: c, where: `<${node.tag || "element"}>` });
-      }
-    }
-  }
-  for (const u of utilities) {
-    const hit = plates.utilityCoverage(u.name);
-    if (!hit) continue;
+  for (const u of colourUtilities(files, sheet)) {
+    const hit = plates.plateUtility(u.name);
+    if (!hit || hit.coverage === null) continue;
     if (plates.onScale(hit.coverage) !== null) continue;
     found.push({
       file: u.file,
-      line: u.line,
+      line: u.line(),
       detail: `${u.name} lays ${hit.plate} at ${(hit.coverage * 100).toFixed(0)}% — not a step on the scale (${ladder})`,
     });
   }
@@ -1619,20 +1649,11 @@ function ruleTwoPlates(files) {
     }
   }
 
-  const utilities = [];
-  for (const a of sheet.applied) utilities.push({ file: a.file, line: a.line, name: a.utility });
-  for (const { rel, html } of files) {
-    for (const node of parseElements(html)) {
-      for (const c of node.classes) {
-        utilities.push({ file: rel, line: html.slice(0, node.index).split("\n").length, name: c });
-      }
-    }
-  }
-  for (const u of utilities) {
+  for (const u of colourUtilities(files, sheet)) {
     if (!plates.foreignColourUtility(u.name)) continue;
     found.push({
       file: u.file,
-      line: u.line,
+      line: u.line(),
       detail: `${u.name} reaches Tailwind's own palette — this vocabulary has two plates and that is not one of them`,
     });
   }
@@ -1687,19 +1708,18 @@ function ruleAccentCarriesInteraction(files) {
     });
   }
 
-  for (const { rel, html } of files) {
-    for (const node of parseElements(html)) {
-      for (const c of node.classes) {
-        const hit = plates.utilityCoverage(c) || plates.plateUtility(c);
-        if (!hit || hit.plate !== "primary") continue;
-        if (isInteractiveNode(node)) continue;
-        found.push({
-          file: rel,
-          line: html.slice(0, node.index).split("\n").length,
-          detail: `<${node.tag}> carries ${c} but is not interactive and sits inside nothing that is`,
-        });
-      }
-    }
+  for (const u of colourUtilities(files, sheet)) {
+    const hit = plates.plateUtility(u.name);
+    if (!hit || hit.plate !== "primary") continue;
+    // A utility reached through `@apply` has no element to judge, and a
+    // component class is not a place — `sheet.applied` entries carry no node.
+    if (!u.node) continue;
+    if (isInteractiveNode(u.node)) continue;
+    found.push({
+      file: u.file,
+      line: u.line(),
+      detail: `<${u.node.tag}> carries ${u.name} but is not interactive and sits inside nothing that is`,
+    });
   }
   return found;
 }
@@ -1724,8 +1744,6 @@ function ruleAccentCarriesInteraction(files) {
 // its root inflated to 17px once already (the reading-measure note in DESIGN.md
 // records what that cost), and a rule that converted to px would have quietly
 // moved with it.
-const TYPE_LADDER_MIN = 5;
-const TYPE_LADDER_MAX = 12;
 
 function ruleScaleJump() {
   const config = path.join(ROOT, "tailwind.config.js");

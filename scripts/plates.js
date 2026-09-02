@@ -30,8 +30,6 @@
 // (`zero literal colour`) reading syntax, and it is why the three colour rules
 // do not subsume one another.
 
-const SUBSTRATE_TOKEN = "surface-rgb";
-
 // Every plate this vocabulary has. The substrate is listed because a colour may
 // legitimately BE the paper, but it is not an ink: DESIGN.md counts two plates,
 // and paper is what they are printed on.
@@ -166,16 +164,7 @@ function stepsIn(value, sheet) {
   return out;
 }
 
-// A Tailwind colour utility carries its coverage in the class name — `bg-ink/5`
-// is ink at five percent. The base is safe by construction: tailwind.config.js
-// exposes only plate-backed colours, so nothing here can name a third ink. The
-// slash is the part a person types freely, and the part this checks.
-const UTILITY = /^(?:[a-z-]+:)*(?:bg|text|border|divide|ring|outline|decoration|from|via|to|fill|stroke)-(surface|ink|primary|line)(?:-[a-z]+)?\/(\d{1,3})$/;
 
-function utilityCoverage(className) {
-  const m = UTILITY.exec(className);
-  return m ? { plate: m[1], coverage: Number(m[2]) / 100 } : null;
-}
 
 // TAILWIND'S OWN PALETTE IS STILL REACHABLE, AND THAT IS THE OTHER ROAD TO A
 // THIRD INK. tailwind.config.js declares this site's colours under `extend`,
@@ -212,12 +201,24 @@ function foreignColourUtility(className) {
 // `from-primary` onto a plain <div>, which the gate passed. One list, read by
 // everything that needs it.
 const PLATE_UTILITY = new RegExp(
-  `^(?:[a-z-]+:)*(?:${COLOUR_PREFIX})-(surface|ink|primary|line)(?:-[a-z]+)?(?:\\/\\d{1,3})?$`
+  `^(?:[a-z-]+:)*(?:${COLOUR_PREFIX})-(surface|ink|primary|line)(?:-[a-z]+)?(?:\\/(\\d{1,3}))?$`
 );
 
+// `null` coverage means the utility names a plate without a density — `text-ink`
+// is the plate at full strength through the token, not a step someone chose.
+// Callers that police the ladder skip those; callers that police placement do
+// not care either way.
+//
+// THIS USED TO BE TWO REGEXES. `utilityCoverage` matched the same plate group
+// over a subset of the prefixes and demanded the slash; every class it matched,
+// this one matched too, so `utilityCoverage(c) || plateUtility(c)` was only ever
+// the second call. Two patterns over the same vocabulary is how rule 26's copy
+// came to be missing `from|via|to` (decision #117), twelve lines under a comment
+// promising one list.
 function plateUtility(className) {
   const m = PLATE_UTILITY.exec(className);
-  return m ? { plate: m[1] } : null;
+  if (!m) return null;
+  return { plate: m[1], coverage: m[2] === undefined ? null : Number(m[2]) / 100 };
 }
 
 function onScale(coverage) {
@@ -227,4 +228,4 @@ function onScale(coverage) {
   return null;
 }
 
-module.exports = { stepsIn, utilityCoverage, foreignColourUtility, plateUtility, onScale, DENSITY_SCALE, PLATE_TOKENS, SUBSTRATE_TOKEN };
+module.exports = { stepsIn, plateUtility, foreignColourUtility, onScale, DENSITY_SCALE };

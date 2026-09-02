@@ -20,32 +20,7 @@ const stylesheet = require("../stylesheet");
 const { ROUTES, LOCALES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
-const OUT_DIR = path.join(ROOT, "static", "og");
-const WIDTH = 1200;
-const HEIGHT = 630;
-
-// The card's type scale, named so something outside this file can read it.
-// It used to live inline in the CARD template literal, which meant DESIGN.md's
-// rule 30 (`og scale jump`) had nothing to assert against but a regex over a
-// template string — a test that breaks on a reformat and stays green on a real
-// change. The page's scale is declared in tailwind.config.js the same way and
-// read by rule 27; this is the card's half of the same arrangement.
-//
-// `kicker` is the page's `eyebrow` step. The two carry the same role — small,
-// uppercase, 0.09em — and there is no reason for the card to hold a size the
-// page does not.
-const TYPE_SCALE = {
-  mark: 26,
-  kicker: 12,
-  desc: 23,
-  title: { short: 80, long: 62 },
-};
-
-// Above this many characters the title drops to the smaller step. DESIGN.md
-// decision #93 records the branch as a known defect rather than a design: it
-// makes a card's type size depend on how long its title happens to be, which
-// is why the same page's card is set at 80px in one locale and 62px in another.
-const TITLE_LONG_THRESHOLD = 34;
+const { WIDTH, HEIGHT, OUT_DIR, TYPE_SCALE, TITLE_LONG_THRESHOLD } = require("./og-card");
 
 // Routes come from the shared table, which reads site.toml. Parsing it here a
 // second time is how a card and the tag pointing at it could drift apart.
@@ -229,14 +204,12 @@ async function main() {
   console.log(`\n${items.length} cards written to static/og/`);
 }
 
-// Only build when invoked directly. `check-design.js` imports TYPE_SCALE from
-// here, and an unguarded call meant importing the scale launched Chromium and
-// rewrote 100 PNGs as a side effect of running a lint.
+// The guard stays even though nothing imports this any more: the gates read
+// og-card.js now, and a build script that rewrites 100 PNGs on require is a
+// hazard whether or not something currently requires it.
 if (require.main === module) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);
   });
 }
-
-module.exports = { TYPE_SCALE, TITLE_LONG_THRESHOLD, WIDTH, HEIGHT };
