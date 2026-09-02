@@ -1,17 +1,19 @@
-<!-- The four topic nav columns, rendered by both the header overlay and the footer.
-     They were duplicated for a long time and had drifted: the footer's Company
-     column had lost Home and GitHub, so the two halves of the same site
-     disagreed about what the site contains and nothing noticed.
+<!-- The four topic nav columns. ONE CALLER NOW: the header overlay.
 
-     Only the four topic columns live here. The Company column does NOT, and that
-     is deliberate rather than an oversight: the footer's brand block already
-     carries a TauX wordmark linking to / and a GitHub icon, so the footer's
-     Company column omits both on purpose. Unifying the two taxonomies wholesale
-     re-adds them and the footer ends up linking github.com/taux-io twice. What
-     looked like drift was a decision nobody had written down.
+     They used to render in the footer as well, and the two copies had drifted —
+     the footer's Company column had lost Home and GitHub, so the two halves of
+     the same site disagreed about what the site contains and nothing noticed.
+     The footer's copy is gone entirely: the menu is the only navigation, so
+     there is no second taxonomy left to drift from this one.
 
-     The caller supplies link_class and list_space through a with-block; the four
-     columns below are identical by construction, which is the point.
+     Only the four topic columns live here; the Company column is written inline
+     in header.html beside the include. That split predates the removal and is
+     worth leaving alone — the four below are identical by construction, and a
+     fifth column with a different link set inside the same file would end that.
+
+     The caller still supplies link_class and list_space through a with-block.
+     A single caller does not make the seam pointless: it is what let the footer
+     be deleted without touching a single link.
 
      Note for whoever edits this comment: minijinja parses its tags inside HTML
      comments too, so writing a literal with-tag here opens a block that is
