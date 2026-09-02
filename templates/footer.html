@@ -3,12 +3,15 @@
 
 <footer class="relative z-10 border-t border-line pt-24 pb-10">
     <div class="max-w-6xl mx-auto px-6">
-        <!-- Brand sits above the columns rather than inside the grid.
+        <!-- The brand block is now the whole upper footer.
 
-             With it as a sixth cell the content columns fell to roughly 122px
-             at 1024px and the longer labels wrapped. Lifting it out keeps every
-             topic column at a readable width and costs one row of height on a
-             surface nobody is short of. -->
+             It was lifted out of the link grid when that grid existed, because
+             as a sixth cell it squeezed the topic columns to roughly 122px at
+             1024px and the longer labels wrapped. The grid is gone; the reason
+             to keep the block where it is has simply changed to there being
+             nothing left to sit beside. max-w-xs stays: the paragraph reads at
+             that measure, and widening it to fill the row would only make one
+             sentence span 1152px. -->
         <div class="mb-16 max-w-xs">
             <a href="/{{ locale }}" class="block font-display text-2xl uppercase tracking-[0.09em] mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
             <p class="text-sm leading-relaxed mb-8">
@@ -28,39 +31,32 @@
                 </div>
         </div>
 
-        <!-- TWO COLUMNS FROM THE NARROWEST WIDTH, NOT ONE.
-             The first column step used to be `tablet:` (768px), so a phone got
-             `grid-cols-1` and all five columns stacked: measured at 375x812,
-             the link grid alone was 1256px and the whole footer 1836px — 67% of
-             a 2749px page, against a 913px hero. On a page whose job is one
-             statement (decision: the home page is a statement, not a doorway)
-             the navigation outweighed the thing it navigates away from.
-             Two columns at 375px halve that without touching the type, the
-             gaps, or the number of links — the vocabulary is unchanged, only
-             the width at which it starts. -->
-        <div class="grid grid-cols-2 laptop:grid-cols-5 gap-12 mb-20">
-{% with link_class = "footer-link", list_space = "space-y-4" %}{% include "_nav-columns.html" %}{% endwith %}
-                <div>
-                <!-- One destination, one label, and the label is what the page is.
+        <!-- NO LINK COLUMNS HERE. The menu overlay is the only navigation.
 
-                /building used to be the target of three links — API, Blog and
-                Careers — and it is none of those. It is a placeholder that
-                says "Building in Public". A visitor clicking Careers got a
-                page with no jobs on it; a visitor clicking API got a page with
-                no API. Those two are gone rather than repointed, because there
-                is nothing to point them at: adding them back is a job for
-                whoever builds the pages they promised. -->
-                    <h2 class="eyebrow mb-8">05 — {{ strings.nav_col_company }}</h2>
-                        <!-- Home and GitHub are omitted here on purpose: the brand block above
-                        already links both. See templates/_nav-columns.html. -->
-                    <ul class="space-y-4">
-                        <li><a href="/{{ locale }}/about" class="footer-link">{{ strings.nav_about }}</a></li>
-                        <li><a href="/{{ locale }}/building" class="footer-link">{{ strings.nav_building }}</a></li>
-                    </ul>
-                </div>
+             The footer used to close every page with a five-column grid of
+             eighteen links — the sixteen in the four topic columns the header
+             overlay also renders, plus Company's /about and /building. Two copies of one taxonomy, one of
+             them reachable from the button in the header on every page and the
+             other only by scrolling past the end of the article.
 
-        </div>
+             Removing the copy leaves the overlay as the single place the site
+             describes its own shape, so the two can no longer disagree — which
+             they had, twice, in ways nothing caught until someone read both.
 
+             Measured on /zh-Hant-TW/what-is-mcp, the footer goes 1468px -> 500px
+             at 375x812 and 912px -> 456px at 1440x900. The home page loses 41%
+             of its total height at 375 (2344 -> 1376); an article loses 10%
+             (9762 -> 8794). The grid was most of the footer, not a strip on it.
+
+             What stays below is what the footer is actually for: the brand
+             block above (wordmark, GitHub, Facebook), the locale switcher, and
+             the legal pair. Company's two links, /about and /building, are in
+             the overlay's own Company column, so nothing lost its only route.
+
+             _nav-columns.html now has exactly one caller, header.html. It stays
+             a partial rather than being folded back in: the header renders it
+             inside an overlay with its own list spacing, and the with-block
+             that supplies link_class is the seam that kept it reusable. -->
         <div class="border-t border-line pt-8 flex flex-col tablet:flex-row justify-between items-center gap-4">
             <p class="eyebrow">&copy; {{ year }} {{ strings.copyright }}</p>
             <div class="flex gap-8 items-center">
