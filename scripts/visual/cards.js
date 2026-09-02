@@ -30,6 +30,7 @@ const path = require("path");
 const sharp = require("sharp");
 
 const { WIDTH, HEIGHT, OUT_DIR: CARDS } = require("../assets/og-card");
+const { ROUTES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
 
@@ -46,14 +47,44 @@ const SUBJECT_MAX_PERCENT = 80;
 // levels away — an order of magnitude outside this.
 const PAPER_TOLERANCE = 2;
 
-function pngFiles(dir) {
-  const out = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...pngFiles(p));
-    else if (entry.name.endsWith(".png")) out.push(p);
+// THE ROUTE TABLE SAYS WHICH CARDS EXIST; THE DIRECTORY ONLY SAYS WHAT IS THERE.
+//
+// This walked `static/og` and measured whatever it found, which meant a missing
+// card was a card it never looked for: delete one and the gate counts 99,
+// reports `0 failing`, and the page it belonged to advertises an og:image that
+// 404s. A gate that cannot see an absence is the defect rule 31 exists for, and
+// this file had it while sitting next to it.
+//
+// `site.toml`'s only JS reader is `routes.js` (rule 19, `single route table`),
+// and `build-og.js` derives every card's path from the same `name`. Reading the
+// directory instead was a second source for a list that already has one.
+//
+// BOTH DIRECTIONS, because reading only the table would trade one blind spot for
+// another: a card left behind by a retired route would become invisible where
+// the directory walk at least saw it. Measured before writing this: 100 wanted,
+// 100 on disk, 0 missing, 0 orphaned.
+function cardInventory() {
+  const wanted = new Map();
+  for (const r of ROUTES) {
+    if (r.standalone) continue;
+    wanted.set(`${r.name}.png`, path.join(CARDS, `${r.name}.png`));
   }
-  return out;
+
+  const onDisk = new Set();
+  const walk = (dir, prefix = "") => {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) walk(path.join(dir, entry.name), `${prefix}${entry.name}/`);
+      else if (entry.name.endsWith(".png")) onDisk.add(`${prefix}${entry.name}`);
+    }
+  };
+  walk(CARDS);
+
+  return {
+    present: [...wanted].filter(([slug]) => onDisk.has(slug)).map(([, file]) => file),
+    missing: [...wanted.keys()].filter((slug) => !onDisk.has(slug)),
+    orphaned: [...onDisk].filter((slug) => !wanted.has(slug)),
+  };
 }
 
 // The substrate is read from the image's own corner rather than from a token,
@@ -118,8 +149,20 @@ async function main() {
     console.log("no share cards to check");
     return;
   }
-  const files = pngFiles(CARDS);
   const failures = [];
+  const { present: files, missing, orphaned } = cardInventory();
+  for (const slug of missing) {
+    failures.push({
+      where: path.join("static", "og", slug),
+      detail: "the route table declares this card and it is not on disk — the page advertises an og:image that 404s",
+    });
+  }
+  for (const slug of orphaned) {
+    failures.push({
+      where: path.join("static", "og", slug),
+      detail: "no route declares this card — a retired route left it behind, and nothing ships it",
+    });
+  }
 
   // libvips decodes on its own threadpool; awaiting one card at a time left it
   // idle between images. Measured 475ms sequential against 67ms batched.
@@ -152,7 +195,7 @@ async function main() {
     }
   }
 
-  console.log(`\n${files.length} share cards checked for outer margin and ink box`);
+  console.log(`\n${files.length} share cards checked for outer margin and ink box (${ROUTES.filter((r) => !r.standalone).length} declared by the route table)`);
   if (!failures.length) {
     console.log("\n0 failing");
     return;
