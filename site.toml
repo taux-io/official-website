@@ -272,13 +272,13 @@ date_modified = "2026-08-09"
   # The claim leads and the keyword follows. "GEO" is the highest-value term this
   # site ranks for and the new lead line does not contain it, so dropping it from
   # the title to make room would trade measured traffic for a slogan. Both fit.
-  title       = "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎優化"
+  title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎優化"
   description = "拓思科技（TauX）協助企業把 AI 變成能用的系統，而不是一場展示：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
   canonical   = "https://taux.io/zh-Hant-TW"
 
   [page.locale.zh-Hans-CN]
   template    = "zh-Hans-CN/index.html"
-  title       = "拓思科技股份有限公司｜TauX - Empower Your Business with AI｜GEO 生成式引擎优化"
+  title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎优化"
   description = "拓思科技（TauX）协助企业把 AI 变成能用的系统，而不是一场展示：GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。总部位于高雄，服务全台企业。"
   canonical   = "https://taux.io/zh-Hans-CN"
 
@@ -296,7 +296,7 @@ date_modified = "2026-08-09"
 
   [page.locale.en-US]
   template    = "en-US/index.html"
-  title       = "TauX — Empower Your Business with AI | Generative Engine Optimization"
+  title       = "TauX — AI that earns its place | Generative Engine Optimization"
   description = "TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, software platforms, short-form video and AI automation, from Kaohsiung, Taiwan."
   canonical   = "https://taux.io/en-US"
 
@@ -895,7 +895,7 @@ date_modified = "2026-07-26"
 
   [page.locale.en-US]
   template    = "en-US/about.html"
-  title       = "About TauX | Empowering business with AI through GEO"
+  title       = "About TauX | A technology company in Kaohsiung"
   description = "TauX turns AI into something a business can actually run on, not a demo. Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we ship."
   canonical   = "https://taux.io/en-US/about"
 
