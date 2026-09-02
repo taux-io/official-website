@@ -46,16 +46,24 @@ const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary
 //   0.12  the hairline, .btn:hover, .btn-quiet:active       18 declarations
 //   0.2   .btn:active                                        1
 //   0.35  the scrollbar thumb under the pointer              1
+//   0.56  --line-rgb under prefers-contrast: more            1
 //   0.72  --ink-72, captions and meta                       named
 //   0.86  --ink-86, secondary text                          named
 //   1     solid ink or solid Cobalt                         43
+//
+// 0.56 WAS MISSING FOR AS LONG AS TOKENS WERE INVISIBLE. The migration table
+// asked for it by name — 「`hairline` 改主墨版 12%（含 `prefers-contrast` 的
+// 56% 階）」 — and the value shipped, but the three colour rules all opened by
+// skipping `--*` declarations, so the one step this site reaches only inside a
+// media query was never offered to the ladder. It is on the list now because
+// the rules can finally see it, not because anything about the design changed.
 //
 // 0.06 IS ABSENT ON PURPOSE. It was `.btn-quiet:hover`, and on paper it renders
 // #EEEEEC against 0.05's #F0F0EE — two levels apart, which nobody can see. A
 // scale with a step in it that cannot be distinguished from its neighbour is
 // decision #52's argument arriving from the other direction, so the two were
 // merged into the one with 185 callers rather than the one with a single caller.
-const DENSITY_SCALE = new Set([0, 0.05, 0.12, 0.2, 0.35, 0.72, 0.86, 1]);
+const DENSITY_SCALE = new Set([0, 0.05, 0.12, 0.2, 0.35, 0.56, 0.72, 0.86, 1]);
 
 // 8-bit channels quantise coverage, so a step never solves to exactly itself.
 // MEASURED, ACROSS EVERY STEP ON THE LADDER: the largest disagreement is 0.0008
@@ -193,6 +201,25 @@ function foreignColourUtility(className) {
   return FOREIGN_UTILITY.test(className) ? className : null;
 }
 
+// Which plate a Tailwind colour utility applies, coverage aside. `bg-ink/5` and
+// `text-primary` and `from-primary` are all the same question — this site's
+// palette is the only one the config exposes under these names, so the plate is
+// whatever follows the prefix.
+//
+// IT SHARES `COLOUR_PREFIX` WITH THE FOREIGN-HUE CHECK ON PURPOSE. Rule 26 used
+// to carry its own inlined prefix list, and that copy was missing
+// `from|via|to|accent|caret|placeholder|shadow` — verified by injecting
+// `from-primary` onto a plain <div>, which the gate passed. One list, read by
+// everything that needs it.
+const PLATE_UTILITY = new RegExp(
+  `^(?:[a-z-]+:)*(?:${COLOUR_PREFIX})-(surface|ink|primary|line)(?:-[a-z]+)?(?:\\/\\d{1,3})?$`
+);
+
+function plateUtility(className) {
+  const m = PLATE_UTILITY.exec(className);
+  return m ? { plate: m[1] } : null;
+}
+
 function onScale(coverage) {
   for (const step of DENSITY_SCALE) {
     if (Math.abs(coverage - step) <= COVERAGE_TOLERANCE) return step;
@@ -200,4 +227,4 @@ function onScale(coverage) {
   return null;
 }
 
-module.exports = { stepsIn, utilityCoverage, foreignColourUtility, onScale, DENSITY_SCALE, PLATE_TOKENS, SUBSTRATE_TOKEN };
+module.exports = { stepsIn, utilityCoverage, foreignColourUtility, plateUtility, onScale, DENSITY_SCALE, PLATE_TOKENS, SUBSTRATE_TOKEN };
