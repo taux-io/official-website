@@ -300,4 +300,19 @@ function read() {
   };
 }
 
-module.exports = { read, INPUT_CSS };
+// MEMOISED BECAUSE IT TAKES NO ARGUMENTS AND NOTHING MUTATES BETWEEN CALLERS.
+//
+// Each call re-reads src/input.css, walks templates/ twice and hands sixteen
+// sources to postcss — 15.8ms cold, 3.4ms warm. check-design.js reached ten
+// calls as the colour rules landed, one per rule that needed CSS, and every one
+// of them parsed the same bytes into the same tree. The gate is a single
+// short-lived process; a file changing mid-run would mean the run was already
+// reading two different versions of the site.
+let cached = null;
+
+function readOnce() {
+  if (!cached) cached = read();
+  return cached;
+}
+
+module.exports = { read: readOnce, INPUT_CSS };
