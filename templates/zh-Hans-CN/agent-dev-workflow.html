@@ -43,25 +43,25 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-24 pb-20 px-6 overflow-hidden">
+<article class="relative pt-2 pb-0 px-6 overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-16">
-            <div class="tag mb-6">
+        <header class="band mb-0">
+            <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 AI Engineering
             </div>
-            <h1 class="mb-6">
-                <span class="display-lead">Ship with skills, not vibes</span>
+            <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">Ship with skills, not vibes</span>
                 <span class="display-sub">把 25 支 skill 串成一条开发流程</span>
             </h1>
-            <p class="text-lg mb-8 max-w-prose">
+            <p class="text-base tablet:text-lg mb-5 max-w-prose">
                 这不是工具箱清单，是<strong>一条主干流程加几条匝道</strong>。从一个模糊的想法走到 commit，中间每一步该打什么、该在哪里停下来、以及哪些地方会安静地坏掉。
             </p>
         </header>
     </div>
 </article>
 
-<div class="py-24">
+<div class="pt-2 pb-4">
     <div class="max-w-prose mx-auto px-6 relative">
 
         <nav data-section-index aria-label="章节索引" class="hidden desktop:block absolute top-0 -start-56 w-48 h-full">
@@ -86,7 +86,7 @@
             </div>
         </nav>
 
-    <div class="space-y-32">
+    <div class="space-y-12 tablet:space-y-16">
 
         <!-- ==================================================================
              01 · Concepts.
@@ -97,9 +97,9 @@
              This site has one accent and colour was never allowed to be the only
              carrier of meaning anyway. Every role below is a word.
              ================================================================== -->
-        <section id="concepts" class="border-t border-line pt-16">
+        <section id="concepts" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">01</p>
+                <p class="eyebrow mb-3 font-sans">01</p>
                 <h2 class="mb-6">先建立三个底层观念</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -111,7 +111,7 @@
                 </p>
             </div>
 
-            <h3 class="mt-14 mb-4">一、谁能叫它</h3>
+            <h3 class="mt-8 mb-4">一、谁能叫它</h3>
             <p class="leading-relaxed mb-6">这是整个 pack <strong>唯一的分类轴线</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -124,24 +124,24 @@
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">谁能触发</td>
-                            <td class="py-4 pe-4">只有人类打出名字。其他 skill 也不能叫它</td>
-                            <td class="py-4">你可以打，agent 也会自己判断后抓来用</td>
+                            <td class="py-3 pe-4 font-semibold">谁能触发</td>
+                            <td class="py-3 pe-4">只有人类打出名字。其他 skill 也不能叫它</td>
+                            <td class="py-3">你可以打，agent 也会自己判断后抓来用</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">设置</td>
-                            <td class="py-4 pe-4"><code>disable-model-invocation: true</code></td>
-                            <td class="py-4">两者都不设</td>
+                            <td class="py-3 pe-4 font-semibold">设置</td>
+                            <td class="py-3 pe-4"><code>disable-model-invocation: true</code></td>
+                            <td class="py-3">两者都不设</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">description 写给谁</td>
-                            <td class="py-4 pe-4">人类（slash command 清单）</td>
-                            <td class="py-4">模型（含大量触发语句）</td>
+                            <td class="py-3 pe-4 font-semibold">description 写给谁</td>
+                            <td class="py-3 pe-4">人类（slash command 清单）</td>
+                            <td class="py-3">模型（含大量触发语句）</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-semibold">定位</td>
-                            <td class="py-4 pe-4"><strong>编排者</strong>：决定流程怎么走</td>
-                            <td class="py-4"><strong>纪律库</strong>：可重复使用的方法论</td>
+                            <td class="py-3 pe-4 font-semibold">定位</td>
+                            <td class="py-3 pe-4"><strong>编排者</strong>：决定流程怎么走</td>
+                            <td class="py-3"><strong>纪律库</strong>：可重复使用的方法论</td>
                         </tr>
                     </tbody>
                 </table>
@@ -158,7 +158,7 @@
                 规则本身：user-invoked 可以调用 model-invoked，但<strong>永远不能调用另一个 user-invoked</strong>。
             </p>
 
-            <h3 class="mt-14 mb-4">二、四种角色</h3>
+            <h3 class="mt-8 mb-4">二、四种角色</h3>
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">主干</p>
@@ -182,7 +182,7 @@
                 </div>
             </div>
 
-            <h3 class="mt-14 mb-4">三、Phase boundary</h3>
+            <h3 class="mt-8 mb-4">三、Phase boundary</h3>
             <p class="leading-relaxed mb-6">
                 一个 session 里的一块工作叫 <strong>phase</strong>（访谈、实作、QA…）。「我的 context 该怎么办」这个问题<strong>只在两个 phase 之间才成立</strong>。phase 中间没得选，只有继续，或把剩下的丢给 subagent。
             </p>
@@ -197,29 +197,29 @@
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">1</td>
-                            <td class="py-4 pe-4 font-semibold">继续</td>
-                            <td class="py-4">下一个 phase 需要这个 phase 的原话，或你的 smart zone 还有余裕。这是唯一保住一手数据的选项，所以<strong>先排除它</strong>再考虑别的</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">1</td>
+                            <td class="py-3 pe-4 font-semibold">继续</td>
+                            <td class="py-3">下一个 phase 需要这个 phase 的原话，或你的 smart zone 还有余裕。这是唯一保住一手数据的选项，所以<strong>先排除它</strong>再考虑别的</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">2</td>
-                            <td class="py-4 pe-4 font-semibold">clear</td>
-                            <td class="py-4">后面的东西全部可丢。最便宜，但判断错了就是单向</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">2</td>
+                            <td class="py-3 pe-4 font-semibold">clear</td>
+                            <td class="py-3">后面的东西全部可丢。最便宜，但判断错了就是单向</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">3</td>
-                            <td class="py-4 pe-4 font-semibold">handoff</td>
-                            <td class="py-4">有东西要<strong>搬家</strong>：换 harness、换目录、给同事、把中途发现的支线分出去</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">3</td>
+                            <td class="py-3 pe-4 font-semibold">handoff</td>
+                            <td class="py-3">有东西要<strong>搬家</strong>：换 harness、换目录、给同事、把中途发现的支线分出去</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">4</td>
-                            <td class="py-4 pe-4 font-semibold">subagent</td>
-                            <td class="py-4">任务范围够紧，可以你人不在也跑得完</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">4</td>
+                            <td class="py-3 pe-4 font-semibold">subagent</td>
+                            <td class="py-3">任务范围够紧，可以你人不在也跑得完</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-sans font-semibold">5</td>
-                            <td class="py-4 pe-4 font-semibold">compact</td>
-                            <td class="py-4">以上都不是。它是保底而不是首选，但实务上落点最多</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">5</td>
+                            <td class="py-3 pe-4 font-semibold">compact</td>
+                            <td class="py-3">以上都不是。它是保底而不是首选，但实务上落点最多</td>
                         </tr>
                     </tbody>
                 </table>
@@ -232,12 +232,12 @@
         <!-- ==================================================================
              02 · Install
              ================================================================== -->
-        <section id="install" class="border-t border-line pt-16">
+        <section id="install" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">02</p>
+                <p class="eyebrow mb-3 font-sans">02</p>
                 <h2 class="mb-6">安装：两条路，选一条</h2>
             </div>
-            <p class="leading-relaxed mb-8">
+            <p class="leading-relaxed mb-5">
                 两种安装方式代表两种哲学。<strong>装两次会让你每个 skill 都有两份。</strong>
             </p>
             <div class="space-y-8">
@@ -266,9 +266,9 @@
         <!-- ==================================================================
              03 · Setup
              ================================================================== -->
-        <section id="setup" class="border-t border-line pt-16">
+        <section id="setup" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">03</p>
+                <p class="eyebrow mb-3 font-sans">03</p>
                 <h2 class="mb-6">前置设置，每个 repo 跑一次</h2>
             </div>
             <p class="leading-relaxed mb-6">
@@ -285,19 +285,19 @@
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">Issue tracker</td>
-                            <td class="py-4 pe-4">依你的 git remote 猜</td>
-                            <td class="py-4">每次都问——这是唯一真正的选择</td>
+                            <td class="py-3 pe-4 font-semibold">Issue tracker</td>
+                            <td class="py-3 pe-4">依你的 git remote 猜</td>
+                            <td class="py-3">每次都问——这是唯一真正的选择</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">Triage 标签</td>
-                            <td class="py-4 pe-4">沿用五个标准名</td>
-                            <td class="py-4">只有装了 triage 才问</td>
+                            <td class="py-3 pe-4 font-semibold">Triage 标签</td>
+                            <td class="py-3 pe-4">沿用五个标准名</td>
+                            <td class="py-3">只有装了 triage 才问</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-semibold">Domain 文档配置</td>
-                            <td class="py-4 pe-4">单一 context：root 一份 <code>CONTEXT.md</code> 加 <code>docs/adr/</code></td>
-                            <td class="py-4">只有侦测到 monorepo 信号才问</td>
+                            <td class="py-3 pe-4 font-semibold">Domain 文档配置</td>
+                            <td class="py-3 pe-4">单一 context：root 一份 <code>CONTEXT.md</code> 加 <code>docs/adr/</code></td>
+                            <td class="py-3">只有侦测到 monorepo 信号才问</td>
                         </tr>
                     </tbody>
                 </table>
@@ -314,7 +314,7 @@
                 </p>
             </div>
 
-            <h3 class="mt-14 mb-4">三个一定要知道的坑</h3>
+            <h3 class="mt-8 mb-4">三个一定要知道的坑</h3>
             <div class="space-y-8 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">一、它不会帮你建 label</p>
@@ -338,7 +338,7 @@ gh label create enhancement</code></pre>
                 </div>
             </div>
 
-            <h3 class="mt-14 mb-4">判断它成功了</h3>
+            <h3 class="mt-8 mb-4">判断它成功了</h3>
             <ul class="space-y-3 leading-relaxed">
                 <li><code>docs/agents/issue-tracker.md</code> 与 <code>domain.md</code> 存在（装了 triage 还有 <code>triage-labels.md</code>）</li>
                 <li>你的 harness <strong>真的会读的那个</strong>指令档里出现 <code>## Agent skills</code></li>
@@ -353,12 +353,12 @@ gh label create enhancement</code></pre>
              is gone. A filter that hides rows is a scroll-reveal by another name,
              and the whole table is 25 rows.
              ================================================================== -->
-        <section id="map" class="border-t border-line pt-16">
+        <section id="map" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">04</p>
+                <p class="eyebrow mb-3 font-sans">04</p>
                 <h2 class="mb-6">全套 25 支地图</h2>
             </div>
-            <p class="leading-relaxed mb-8">
+            <p class="leading-relaxed mb-5">
                 「硬依赖」那一栏是实战重点——<strong>依赖没装，skill 会安静地退化成一场即兴表演。</strong>
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -373,31 +373,31 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">setup-matt-pocock-skills</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">前置</td><td class="py-4 pe-4">每 repo 跑一次，设置 tracker、label 与文档配置</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">ask-matt</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">路由器</td><td class="py-4 pe-4">描述你的处境，它告诉你该打哪一串</td><td class="py-4 hidden tablet:table-cell">只认得本 pack 的 skill</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">grilling</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">原语</td><td class="py-4 pe-4">一轮一轮的访谈引擎，其他 grilling 全建在它上面</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">grill-me</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">无状态访谈，不需 repo、主题不必是程序</td><td class="py-4 hidden tablet:table-cell">grilling</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">grill-with-docs</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">主干头</td><td class="py-4 pe-4">同样的访谈，加上读 codebase、写 <code>CONTEXT.md</code> 与 ADR</td><td class="py-4 hidden tablet:table-cell">grilling、domain-modeling</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">wayfinder</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">匝道</td><td class="py-4 pe-4">一个 session 装不下的大工程，画成 decision ticket 地图</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">to-spec</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">主干</td><td class="py-4 pe-4">把对话收敛成一份 spec 并发到 tracker，不再访谈</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">to-tickets</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">主干</td><td class="py-4 pe-4">把 spec 或对话切成 tracer-bullet ticket 并声明阻塞边</td><td class="py-4 hidden tablet:table-cell">tracker</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">implement</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">主干</td><td class="py-4 pe-4">照 ticket 做，内部驱动 tdd，收尾跑 code-review，commit</td><td class="py-4 hidden tablet:table-cell">tracker（若来自 ticket）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">tdd</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">引擎</td><td class="py-4 pe-4">red-green，只在<strong>事先同意的 seam</strong> 上写测试</td><td class="py-4 hidden tablet:table-cell">codebase-design</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">code-review</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">主干尾</td><td class="py-4 pe-4">对某个固定点的 diff 做 Standards 与 Spec 双轴审查</td><td class="py-4 hidden tablet:table-cell">tracker（Spec 轴）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">triage</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">匝道</td><td class="py-4 pe-4"><strong>别人</strong>丢进来的 issue 走状态机</td><td class="py-4 hidden tablet:table-cell">tracker、label</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">improve-codebase-architecture</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">匝道</td><td class="py-4 pe-4">扫 codebase 找「加深模块」的机会，出 HTML 报告</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">prototype</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">用丢弃式代码回答<strong>一个</strong>设计问题</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">diagnosing-bugs</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">难 bug 与性能回归的六阶段诊断，先有 red loop 才能猜</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">research</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">背景 agent 读一手来源，留下一份带引用的 markdown</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">resolving-merge-conflicts</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">逐 hunk 依「意图」解冲突，跑检查，完成 merge，绝不放弃</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">wizard</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">产生一支交互 bash script，带人类走只有人能做的步骤</td><td class="py-4 hidden tablet:table-cell">跑时用 <code>gh</code></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">codebase-design</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">词汇层</td><td class="py-4 pe-4">模块、界面、depth、seam 的精确用词与四条原则</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">domain-modeling</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">词汇层</td><td class="py-4 pe-4">主动建立与磨利领域语言，实时写进 <code>CONTEXT.md</code> 与 ADR</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">handoff</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">把当前对话压成一份可携的交接文档</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">teach</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">把当前目录变成跨 session 的教学工作区</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">to-questionnaire</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">把「只有别人知道」的决策变成一份问卷</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">wait-what</td><td class="py-4 pe-4 whitespace-nowrap">User</td><td class="py-4 pe-4 whitespace-nowrap">独立</td><td class="py-4 pe-4">刚刚那段话没听懂时打它，agent 重讲一次</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                        <tr><td class="py-4 pe-4 font-semibold">writing-for-agents</td><td class="py-4 pe-4 whitespace-nowrap">Model</td><td class="py-4 pe-4 whitespace-nowrap">词汇层</td><td class="py-4 pe-4">写给 agent 看的文档（skill、指令档、spec、prompt）的准则</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">setup-matt-pocock-skills</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">前置</td><td class="py-3 pe-4">每 repo 跑一次，设置 tracker、label 与文档配置</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">ask-matt</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">路由器</td><td class="py-3 pe-4">描述你的处境，它告诉你该打哪一串</td><td class="py-3 hidden tablet:table-cell">只认得本 pack 的 skill</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">grilling</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">原语</td><td class="py-3 pe-4">一轮一轮的访谈引擎，其他 grilling 全建在它上面</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">grill-me</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">无状态访谈，不需 repo、主题不必是程序</td><td class="py-3 hidden tablet:table-cell">grilling</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">grill-with-docs</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">主干头</td><td class="py-3 pe-4">同样的访谈，加上读 codebase、写 <code>CONTEXT.md</code> 与 ADR</td><td class="py-3 hidden tablet:table-cell">grilling、domain-modeling</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">wayfinder</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">匝道</td><td class="py-3 pe-4">一个 session 装不下的大工程，画成 decision ticket 地图</td><td class="py-3 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">to-spec</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">主干</td><td class="py-3 pe-4">把对话收敛成一份 spec 并发到 tracker，不再访谈</td><td class="py-3 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">to-tickets</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">主干</td><td class="py-3 pe-4">把 spec 或对话切成 tracer-bullet ticket 并声明阻塞边</td><td class="py-3 hidden tablet:table-cell">tracker</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">implement</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">主干</td><td class="py-3 pe-4">照 ticket 做，内部驱动 tdd，收尾跑 code-review，commit</td><td class="py-3 hidden tablet:table-cell">tracker（若来自 ticket）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">tdd</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">引擎</td><td class="py-3 pe-4">red-green，只在<strong>事先同意的 seam</strong> 上写测试</td><td class="py-3 hidden tablet:table-cell">codebase-design</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">code-review</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">主干尾</td><td class="py-3 pe-4">对某个固定点的 diff 做 Standards 与 Spec 双轴审查</td><td class="py-3 hidden tablet:table-cell">tracker（Spec 轴）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">triage</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">匝道</td><td class="py-3 pe-4"><strong>别人</strong>丢进来的 issue 走状态机</td><td class="py-3 hidden tablet:table-cell">tracker、label</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">improve-codebase-architecture</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">匝道</td><td class="py-3 pe-4">扫 codebase 找「加深模块」的机会，出 HTML 报告</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">prototype</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">用丢弃式代码回答<strong>一个</strong>设计问题</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">diagnosing-bugs</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">难 bug 与性能回归的六阶段诊断，先有 red loop 才能猜</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">research</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">背景 agent 读一手来源，留下一份带引用的 markdown</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">resolving-merge-conflicts</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">逐 hunk 依「意图」解冲突，跑检查，完成 merge，绝不放弃</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">wizard</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">产生一支交互 bash script，带人类走只有人能做的步骤</td><td class="py-3 hidden tablet:table-cell">跑时用 <code>gh</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">codebase-design</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">词汇层</td><td class="py-3 pe-4">模块、界面、depth、seam 的精确用词与四条原则</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">domain-modeling</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">词汇层</td><td class="py-3 pe-4">主动建立与磨利领域语言，实时写进 <code>CONTEXT.md</code> 与 ADR</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">handoff</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">把当前对话压成一份可携的交接文档</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">teach</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">把当前目录变成跨 session 的教学工作区</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">to-questionnaire</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">把「只有别人知道」的决策变成一份问卷</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">wait-what</td><td class="py-3 pe-4 whitespace-nowrap">User</td><td class="py-3 pe-4 whitespace-nowrap">独立</td><td class="py-3 pe-4">刚刚那段话没听懂时打它，agent 重讲一次</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                        <tr><td class="py-3 pe-4 font-semibold">writing-for-agents</td><td class="py-3 pe-4 whitespace-nowrap">Model</td><td class="py-3 pe-4 whitespace-nowrap">词汇层</td><td class="py-3 pe-4">写给 agent 看的文档（skill、指令档、spec、prompt）的准则</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -413,12 +413,12 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              05 · The main flow, seven steps.
              ================================================================== -->
-        <section id="main-flow" class="border-t border-line pt-16">
+        <section id="main-flow" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">05</p>
+                <p class="eyebrow mb-3 font-sans">05</p>
                 <h2 class="mb-6">主干七步，逐步实作</h2>
             </div>
-            <div class="border-s border-line ps-6 mb-10">
+            <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-2">贯穿案例</p>
                 <p class="leading-relaxed">内部工具 repo（Next.js 加 Postgres），要加「合约到期提醒」——列出 30 天内到期的合约、寄信给负责人、后台显示红点。跨 schema、API、UI 与寄信，够广，值得走完整流程。</p>
             </div>
@@ -453,9 +453,9 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4">一个<strong>术语</strong>——这项目自己的用词</td><td class="py-4"><code>CONTEXT.md</code>，<strong>当场写入</strong>，不是最后批量产出</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">一个<strong>难以逆转、没有 context 会觉得意外、真的有取舍</strong>的决定</td><td class="py-4"><code>docs/adr/</code> 下的一份 ADR</td></tr>
-                        <tr><td class="py-4 pe-4">其他所有你决定的事</td><td class="py-4">只在对话里，别的地方没有</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">一个<strong>术语</strong>——这项目自己的用词</td><td class="py-3"><code>CONTEXT.md</code>，<strong>当场写入</strong>，不是最后批量产出</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">一个<strong>难以逆转、没有 context 会觉得意外、真的有取舍</strong>的决定</td><td class="py-3"><code>docs/adr/</code> 下的一份 ADR</td></tr>
+                        <tr><td class="py-3 pe-4">其他所有你决定的事</td><td class="py-3">只在对话里，别的地方没有</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -492,10 +492,10 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4">什么都还没决定</td><td class="py-4">先 <code>grill-with-docs</code></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">决定了，而且<strong>一个 context window 做得完</strong></td><td class="py-4">直接 <code>implement</code>，<strong>跳过 spec</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">决定了，工作要跨好几个 session</td><td class="py-4"><code>/to-spec</code>，然后 <code>/to-tickets</code></td></tr>
-                        <tr><td class="py-4 pe-4">刚清空一张 wayfinder 地图</td><td class="py-4"><code>/to-spec #&lt;map_issue&gt;</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">什么都还没决定</td><td class="py-3">先 <code>grill-with-docs</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">决定了，而且<strong>一个 context window 做得完</strong></td><td class="py-3">直接 <code>implement</code>，<strong>跳过 spec</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">决定了，工作要跨好几个 session</td><td class="py-3"><code>/to-spec</code>，然后 <code>/to-tickets</code></td></tr>
+                        <tr><td class="py-3 pe-4">刚清空一张 wayfinder 地图</td><td class="py-3"><code>/to-spec #&lt;map_issue&gt;</code></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -521,9 +521,9 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">一张票交付</td><td class="py-4 pe-4">改动的<strong>一层</strong>（全部 schema 一张、全部 API 一张）</td><td class="py-4">穿过<strong>所有层</strong>的一条细路</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">落地后</td><td class="py-4 pe-4">每层都到位前什么都不能动</td><td class="py-4">自己就能 demo</td></tr>
-                        <tr><td class="py-4 pe-4 font-semibold">验收条件</td><td class="py-4 pe-4">必须伸手到别张票拥有的工作</td><td class="py-4">只评自己拥有的东西</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">一张票交付</td><td class="py-3 pe-4">改动的<strong>一层</strong>（全部 schema 一张、全部 API 一张）</td><td class="py-3">穿过<strong>所有层</strong>的一条细路</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">落地后</td><td class="py-3 pe-4">每层都到位前什么都不能动</td><td class="py-3">自己就能 demo</td></tr>
+                        <tr><td class="py-3 pe-4 font-semibold">验收条件</td><td class="py-3 pe-4">必须伸手到别张票拥有的工作</td><td class="py-3">只评自己拥有的东西</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -586,11 +586,11 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4">跑完了，但票还开着、验收条件还没打勾</td><td class="py-4"><strong>正确且预期。</strong>implement 没有收尾步骤，它停在 commit。<strong>票要你自己关</strong>——这在依赖链上咬最凶：frontier 的定义是「阻塞者全关」，没人关就永远没有票变成可做</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">能不能一次做完所有票、平行跑？</td><td class="py-4"><strong>不行。</strong>同一 checkout 并行跑多个 implement 比「不支持」更糟：有实地回报一个下午内出现 amend 打到另一个 session 的 commit、stash 消失、commit 落到错的 branch。社区 workaround 是 worktree，但 stash 仍共用</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">能不能开 PR？</td><td class="py-4">没有内置。它 commit 到当前 branch，也不会帮你开 branch。有人在调用时覆写</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">code-review 说看不到我的改动</td><td class="py-4">它审 <code>diff &lt;fixed-point&gt;...HEAD</code>，<strong>排除 staged 与 working tree</strong>。implement 在 commit 前跑 review，所以除非已有中途 commit，那个 diff 里没东西。<strong>先 commit 再 review</strong></td></tr>
-                        <tr><td class="py-4 pe-4">一张票烧掉 150k token</td><td class="py-4">通常是票太大而不是用错。一个 run 含探索 codebase、每个 seam 的 red-green、完整套件、review，超过 100k token 是正常的。<strong>杠杆在上游</strong>：把票调到一个新窗口装得下。单张票一直爆就拆它，不要调高 effort</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">跑完了，但票还开着、验收条件还没打勾</td><td class="py-3"><strong>正确且预期。</strong>implement 没有收尾步骤，它停在 commit。<strong>票要你自己关</strong>——这在依赖链上咬最凶：frontier 的定义是「阻塞者全关」，没人关就永远没有票变成可做</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">能不能一次做完所有票、平行跑？</td><td class="py-3"><strong>不行。</strong>同一 checkout 并行跑多个 implement 比「不支持」更糟：有实地回报一个下午内出现 amend 打到另一个 session 的 commit、stash 消失、commit 落到错的 branch。社区 workaround 是 worktree，但 stash 仍共用</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">能不能开 PR？</td><td class="py-3">没有内置。它 commit 到当前 branch，也不会帮你开 branch。有人在调用时覆写</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">code-review 说看不到我的改动</td><td class="py-3">它审 <code>diff &lt;fixed-point&gt;...HEAD</code>，<strong>排除 staged 与 working tree</strong>。implement 在 commit 前跑 review，所以除非已有中途 commit，那个 diff 里没东西。<strong>先 commit 再 review</strong></td></tr>
+                        <tr><td class="py-3 pe-4">一张票烧掉 150k token</td><td class="py-3">通常是票太大而不是用错。一个 run 含探索 codebase、每个 seam 的 red-green、完整套件、review，超过 100k token 是正常的。<strong>杠杆在上游</strong>：把票调到一个新窗口装得下。单张票一直爆就拆它，不要调高 effort</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -625,9 +625,9 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Implementation-coupled</td><td class="py-4">你改一个内部函数名字、行为没变，测试却坏了。mock 自己的内部协作者、断言调用次数、用数据库查询验证而不是用界面</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Tautological</td><td class="py-4">期望值是「照程序的算法」算出来的，所以测试必然通过。<strong>期望值必须来自别的地方</strong>：已知良好的字面值、手算的范例、spec</td></tr>
-                        <tr><td class="py-4 pe-4 font-semibold">Horizontal slicing</td><td class="py-4">一批测试在任何实作之前就落地了</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Implementation-coupled</td><td class="py-3">你改一个内部函数名字、行为没变，测试却坏了。mock 自己的内部协作者、断言调用次数、用数据库查询验证而不是用界面</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Tautological</td><td class="py-3">期望值是「照程序的算法」算出来的，所以测试必然通过。<strong>期望值必须来自别的地方</strong>：已知良好的字面值、手算的范例、spec</td></tr>
+                        <tr><td class="py-3 pe-4 font-semibold">Horizontal slicing</td><td class="py-3">一批测试在任何实作之前就落地了</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -659,10 +659,10 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">问题</td><td class="py-4 pe-4">做得对不对？</td><td class="py-4">做的是对的东西吗？</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">读什么</td><td class="py-4 pe-4">repo 自己记载的规范，加内置 smell 基准</td><td class="py-4">源头的 issue 或 spec</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">报什么</td><td class="py-4 pe-4">明文违规（可以是硬性的）加 smell（永远是判断题）</td><td class="py-4">缺漏或部分实作的需求、范围蔓延、实作错的需求</td></tr>
-                        <tr><td class="py-4 pe-4 font-semibold">每个发现必须引用</td><td class="py-4 pe-4">规范档加条目，或 smell 名称加 hunk</td><td class="py-4">spec 的那一行</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">问题</td><td class="py-3 pe-4">做得对不对？</td><td class="py-3">做的是对的东西吗？</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">读什么</td><td class="py-3 pe-4">repo 自己记载的规范，加内置 smell 基准</td><td class="py-3">源头的 issue 或 spec</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">报什么</td><td class="py-3 pe-4">明文违规（可以是硬性的）加 smell（永远是判断题）</td><td class="py-3">缺漏或部分实作的需求、范围蔓延、实作错的需求</td></tr>
+                        <tr><td class="py-3 pe-4 font-semibold">每个发现必须引用</td><td class="py-3 pe-4">规范档加条目，或 smell 名称加 hunk</td><td class="py-3">spec 的那一行</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -716,12 +716,12 @@ gh label create enhancement</code></pre>
              06 · Situation index. The source used a colour chip per role; the
              role is the eyebrow here.
              ================================================================== -->
-        <section id="situations" class="border-t border-line pt-16">
+        <section id="situations" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">06</p>
+                <p class="eyebrow mb-3 font-sans">06</p>
                 <h2 class="mb-6">情境索引，什么时候抓哪一支</h2>
             </div>
-            <p class="leading-relaxed mb-10">
+            <p class="leading-relaxed mb-6">
                 主干以外的 skill 都是「特定情况才岔出去」。这里按<strong>你的处境</strong>排列。
             </p>
 
@@ -780,11 +780,11 @@ gh label create enhancement</code></pre>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">进 Phase 2</td><td class="py-4">一个具名指令，<strong>已经跑过</strong>，输出也贴出来（已屏蔽敏感值），能在这个 bug 上变红</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">进 Phase 3</td><td class="py-4">repro 已重现<strong>且</strong>已最小化——剩下的每个元素都是承重的</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">进 Phase 4</td><td class="py-4">3 到 5 个排序过、可否证的假设，各自陈述预测，在测试任何一个之前先给你看</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">进 Phase 5</td><td class="py-4">探针对应到特定预测，一次一个变量，每条 debug log 带可 grep 的标签</td></tr>
-                                <tr><td class="py-4 pe-4 font-semibold">完成</td><td class="py-4">原始 repro 不再重现、仪器全部移除、<strong>猜对的那个假设写进 commit message</strong></td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">进 Phase 2</td><td class="py-3">一个具名指令，<strong>已经跑过</strong>，输出也贴出来（已屏蔽敏感值），能在这个 bug 上变红</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">进 Phase 3</td><td class="py-3">repro 已重现<strong>且</strong>已最小化——剩下的每个元素都是承重的</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">进 Phase 4</td><td class="py-3">3 到 5 个排序过、可否证的假设，各自陈述预测，在测试任何一个之前先给你看</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">进 Phase 5</td><td class="py-3">探针对应到特定预测，一次一个变量，每条 debug log 带可 grep 的标签</td></tr>
+                                <tr><td class="py-3 pe-4 font-semibold">完成</td><td class="py-3">原始 repro 不再重现、仪器全部移除、<strong>猜对的那个假设写进 commit message</strong></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -821,10 +821,10 @@ gh label create enhancement</code></pre>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">例行保养</td><td class="py-4">每几天、或有空档就跑，防止功能之间结构腐烂</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">大工程之前</td><td class="py-4">把它指向 spec：「我们怎么让这个改动变容易？」<strong>这是最有效的 prompt</strong></td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Brownfield 审计</td><td class="py-4">对大型、无结构、vibe-coded 的 repo 跑，看清它实际是什么形状</td></tr>
-                                <tr><td class="py-4 pe-4 font-semibold">Legacy 测试工作</td><td class="py-4">先用它找出缺少的 seam，再去对难测的程序写测试</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">例行保养</td><td class="py-3">每几天、或有空档就跑，防止功能之间结构腐烂</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">大工程之前</td><td class="py-3">把它指向 spec：「我们怎么让这个改动变容易？」<strong>这是最有效的 prompt</strong></td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Brownfield 审计</td><td class="py-3">对大型、无结构、vibe-coded 的 repo 跑，看清它实际是什么形状</td></tr>
+                                <tr><td class="py-3 pe-4 font-semibold">Legacy 测试工作</td><td class="py-3">先用它找出缺少的 seam，再去对难测的程序写测试</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -865,10 +865,10 @@ gh label create enhancement</code></pre>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">grilling</td><td class="py-4 pe-4 whitespace-nowrap">HITL</td><td class="py-4">默认。问题可以靠谈清楚</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">prototype</td><td class="py-4 pe-4 whitespace-nowrap">HITL</td><td class="py-4">「这该长怎样」——谈不出来的问题，产物从票上连出去当 asset</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">research</td><td class="py-4 pe-4 whitespace-nowrap">AFK</td><td class="py-4">工作目录之外的事实卡住决策。画地图时就发射、并行烧完</td></tr>
-                                <tr><td class="py-4 pe-4 font-semibold">task</td><td class="py-4 pe-4 whitespace-nowrap">两者皆可</td><td class="py-4">没有东西要决定，但<strong>手动工作</strong>卡住一个决定——开权限、注册服务、搬数据让形状看得见</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">grilling</td><td class="py-3 pe-4 whitespace-nowrap">HITL</td><td class="py-3">默认。问题可以靠谈清楚</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">prototype</td><td class="py-3 pe-4 whitespace-nowrap">HITL</td><td class="py-3">「这该长怎样」——谈不出来的问题，产物从票上连出去当 asset</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">research</td><td class="py-3 pe-4 whitespace-nowrap">AFK</td><td class="py-3">工作目录之外的事实卡住决策。画地图时就发射、并行烧完</td></tr>
+                                <tr><td class="py-3 pe-4 font-semibold">task</td><td class="py-3 pe-4 whitespace-nowrap">两者皆可</td><td class="py-3">没有东西要决定，但<strong>手动工作</strong>卡住一个决定——开权限、注册服务、搬数据让形状看得见</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -928,13 +928,13 @@ gh label create enhancement</code></pre>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm align-top">
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">MISSION.md</td><td class="py-4">你为什么学这个。其他一切挂在它上面；缺它，它第一件事就是访谈你到它存在</td></tr>
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">RESOURCES.md</td><td class="py-4">经过挑选的来源，分 Knowledge 与 Wisdom（社区）</td></tr>
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">lessons/</td><td class="py-4">编号课程——教学的主要单位</td></tr>
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">reference/</td><td class="py-4">压缩的小抄、算法、词汇表：你<strong>真的会回来翻</strong>的文档</td></tr>
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">learning-records/</td><td class="py-4">ADR 风格的「你已明确学会什么」，用来决定接下来教什么</td></tr>
-                                    <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">assets/</td><td class="py-4">可重用组件——第一个是共用 stylesheet——让课程看起来像同一门课</td></tr>
-                                    <tr><td class="py-4 pe-4 font-semibold">NOTES.md</td><td class="py-4">你陈述的教学偏好</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">MISSION.md</td><td class="py-3">你为什么学这个。其他一切挂在它上面；缺它，它第一件事就是访谈你到它存在</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">RESOURCES.md</td><td class="py-3">经过挑选的来源，分 Knowledge 与 Wisdom（社区）</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">lessons/</td><td class="py-3">编号课程——教学的主要单位</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">reference/</td><td class="py-3">压缩的小抄、算法、词汇表：你<strong>真的会回来翻</strong>的文档</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">learning-records/</td><td class="py-3">ADR 风格的「你已明确学会什么」，用来决定接下来教什么</td></tr>
+                                    <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">assets/</td><td class="py-3">可重用组件——第一个是共用 stylesheet——让课程看起来像同一门课</td></tr>
+                                    <tr><td class="py-3 pe-4 font-semibold">NOTES.md</td><td class="py-3">你陈述的教学偏好</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -970,13 +970,13 @@ gh label create enhancement</code></pre>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Module</td><td class="py-4 pe-4">任何有界面与实作的东西。<strong>刻意与规模无关</strong>——一个函数、一个 class、一个 package、跨层的一个切片</td><td class="py-4 hidden tablet:table-cell">unit、component、service</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Interface</td><td class="py-4 pe-4">调用者为了正确使用它必须知道的<strong>一切</strong>：类型签章，加上不变式、顺序约束、错误模式、必需设置、性能特性</td><td class="py-4 hidden tablet:table-cell">API、signature</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Depth</td><td class="py-4 pe-4">界面上的杠杆。<strong>深</strong>：小界面后面大量行为。<strong>浅</strong>：界面几乎和实作一样复杂</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Seam</td><td class="py-4 pe-4">一个你可以改变行为却不需在那里编辑的地方。它是界面的<strong>位置</strong></td><td class="py-4 hidden tablet:table-cell">boundary</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Adapter</td><td class="py-4 pe-4">在某个 seam 上满足某界面的具体东西。命名的是<strong>角色不是材质</strong></td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                                <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Leverage</td><td class="py-4 pe-4">调用者从 depth 拿到的：每学一单位界面得到更多能力</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
-                                <tr><td class="py-4 pe-4 font-semibold">Locality</td><td class="py-4 pe-4">维护者从 depth 拿到的：改动、bug、验证集中在一处</td><td class="py-4 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Module</td><td class="py-3 pe-4">任何有界面与实作的东西。<strong>刻意与规模无关</strong>——一个函数、一个 class、一个 package、跨层的一个切片</td><td class="py-3 hidden tablet:table-cell">unit、component、service</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Interface</td><td class="py-3 pe-4">调用者为了正确使用它必须知道的<strong>一切</strong>：类型签章，加上不变式、顺序约束、错误模式、必需设置、性能特性</td><td class="py-3 hidden tablet:table-cell">API、signature</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Depth</td><td class="py-3 pe-4">界面上的杠杆。<strong>深</strong>：小界面后面大量行为。<strong>浅</strong>：界面几乎和实作一样复杂</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Seam</td><td class="py-3 pe-4">一个你可以改变行为却不需在那里编辑的地方。它是界面的<strong>位置</strong></td><td class="py-3 hidden tablet:table-cell">boundary</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Adapter</td><td class="py-3 pe-4">在某个 seam 上满足某界面的具体东西。命名的是<strong>角色不是材质</strong></td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                                <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Leverage</td><td class="py-3 pe-4">调用者从 depth 拿到的：每学一单位界面得到更多能力</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
+                                <tr><td class="py-3 pe-4 font-semibold">Locality</td><td class="py-3 pe-4">维护者从 depth 拿到的：改动、bug、验证集中在一处</td><td class="py-3 hidden tablet:table-cell">—</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1039,12 +1039,12 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              07 · Scenarios
              ================================================================== -->
-        <section id="scenarios" class="border-t border-line pt-16">
+        <section id="scenarios" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">07</p>
+                <p class="eyebrow mb-3 font-sans">07</p>
                 <h2 class="mb-6">四个完整剧本</h2>
             </div>
-            <p class="leading-relaxed mb-10">主干案例在 <a href="#main-flow" class="underline">第 05 节</a>。这里是另外四个最常见的处境。</p>
+            <p class="leading-relaxed mb-6">主干案例在 <a href="#main-flow" class="underline">第 05 节</a>。这里是另外四个最常见的处境。</p>
 
             <div class="space-y-12">
                 <div>
@@ -1119,12 +1119,12 @@ gh label create enhancement</code></pre>
              08 · Pitfalls. The source used a red "高" chip; severity is a word
              in its own column here.
              ================================================================== -->
-        <section id="pitfalls" class="border-t border-line pt-16">
+        <section id="pitfalls" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">08</p>
+                <p class="eyebrow mb-3 font-sans">08</p>
                 <h2 class="mb-6">已知坑总表</h2>
             </div>
-            <p class="leading-relaxed mb-8">
+            <p class="leading-relaxed mb-5">
                 依「你会先看到的症状」排列。<strong>严重</strong>代表会浪费你钱或时间。
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -1138,38 +1138,38 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4">agent 说某些 skill 没安装</td><td class="py-4 pe-4 hidden tablet:table-cell">ask-matt 等</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">user-invoked skill 不进模型的清单。<strong>它们有装，照打</strong>。权威是 <code>.claude-plugin/plugin.json</code></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4"><code>gh</code> 说 label 不存在</td><td class="py-4 pe-4 hidden tablet:table-cell">triage、wayfinder</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">setup <strong>不会</strong>建 label，自己 <code>gh label create</code> 一次</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">访谈一次丢出全部问题、没有建议答案</td><td class="py-4 pe-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">grilling 或 domain-modeling 没加载。<strong>问 agent「你载了哪些 skill」</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">访谈很好但 <code>CONTEXT.md</code> 没变</td><td class="py-4 pe-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">domain-modeling 没载。点名叫它</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4"><code>CONTEXT.md</code> 膨胀成 500 行以上</td><td class="py-4 pe-4 hidden tablet:table-cell">domain-modeling</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">它吸收了实作细节。直接下令精简并移除实作细节</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">读 spec 一直被截断</td><td class="py-4 pe-4 hidden tablet:table-cell">to-spec → to-tickets</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">两步之间<strong>不要 clear 或 compact</strong>，同一个窗口跑完</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">三行的改动切出 12 张票</td><td class="py-4 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">质询步骤叫它合并。真的很小就直接 implement，别用这支</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">切出来一层一张票</td><td class="py-4 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">逐票问「做完能 demo 什么」，答不出行为的就是水平切片</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">没建成 sub-issue、blocked-by 只写在内文</td><td class="py-4 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">已知未修。事后自己用 <code>gh issue create --parent</code>、<code>--add-sub-issue</code>、<code>--blocked-by</code></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">验收条件在动工前就通过</td><td class="py-4 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">对每条问「什么观察会证明它为假」，并确认它在起始 commit 是红的</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4"><code>/implement #2</code> 做了完全无关的事</td><td class="py-4 pe-4 hidden tablet:table-cell">implement</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4"><code>#2</code> 是对「任何看得到的编号清单」解析。<strong>传完整 URL，并要它念回标题</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">跑完票还开着、验收条件没打勾</td><td class="py-4 pe-4 hidden tablet:table-cell">implement</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">预期行为，它没有收尾步骤。<strong>手动关票</strong>，依赖链才会往前走</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">code-review 说看不到我的改动</td><td class="py-4 pe-4 hidden tablet:table-cell">implement、code-review</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">它 diff 到 HEAD，排除未 commit 的。<strong>先 commit 再 review</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">平行跑好几个 implement 出现诡异 git 状况</td><td class="py-4 pe-4 hidden tablet:table-cell">implement</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">同一 checkout 不支持。用 worktree，但 stash 仍共用</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">和内置的 code-review 撞名</td><td class="py-4 pe-4 hidden tablet:table-cell">code-review</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">移除内置的那个，或 fork 成新名字</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">review 的 sub-agent 又生出更多 agent</td><td class="py-4 pe-4 hidden tablet:table-cell">code-review</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">已知未修，有一次到 50 个以上。<strong>无人看管跑时盯 agent 数</strong>；fork 上加一行禁止再生成</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">review 每次跑都找到新问题</td><td class="py-4 pe-4 hidden tablet:table-cell">code-review</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">没有收敛保证。当成线索清单，处理有明文规则背书的，然后<strong>停手</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">research 烧掉 450k token</td><td class="py-4 pe-4 hidden tablet:table-cell">research</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">nesting bug（issue 530），它会生出第二个自己。<strong>调用后检查背景任务列表</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">只想要一句答案，它跑去建重现情境</td><td class="py-4 pe-4 hidden tablet:table-cell">diagnosing-bugs</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">讲「直接回答，不要诊断」，或关掉它的 model invocation</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">它先写实作才写测试</td><td class="py-4 pe-4 hidden tablet:table-cell">tdd</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">会发生，skill 带着这件事一起活。某个切片要严格就盯着跑</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">它先写浏览器测试然后鬼打墙</td><td class="py-4 pe-4 hidden tablet:table-cell">tdd</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">在 repo 的指令档声明：browser 测试在行为可运作之后才写</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">架构报告开起来没样式没图</td><td class="py-4 pe-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">外部 CDN 被挡。要它用 inline CSS 加手写 SVG</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">它烤我一小时而不给我选项</td><td class="py-4 pe-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">调用时讲「不要烤我，直接给报告」</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">对词汇层说「开始」烧掉 100k token</td><td class="py-4 pe-4 hidden tablet:table-cell">codebase-design</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">它没有流程。<strong>点名一个 driver skill，让它坐在下面</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">wayfinder 的 agent 开始写正式代码</td><td class="py-4 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">Notes 可覆写「规划不执行」，而 Notes 是 agent 写的。<strong>先读 Notes</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">27 张票做到第 13 张全部不合理</td><td class="py-4 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">范围缩到一个有界 epic，并积极 prototype</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">grilling 每个问题三段落、很累</td><td class="py-4 pe-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">降 reasoning effort 加全域指令档一句白话指示。<strong>未解决</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">handoff 文档不见了</td><td class="py-4 pe-4 hidden tablet:table-cell">handoff</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">暂存目录会被清。<strong>问它路径，需要就自己复制到耐久位置</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">课程被写到全域 skill 目录</td><td class="py-4 pe-4 hidden tablet:table-cell">teach</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4">issue 377。<strong>明确讲出目录名，第一课落在哪先确认</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">小考正确答案永远是 A</td><td class="py-4 pe-4 hidden tablet:table-cell">teach</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">已知未修（33 次全中）。把位置当无意义，或要一个 render 时洗牌的组件</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4">wizard 打错字想回上一步</td><td class="py-4 pe-4 hidden tablet:table-cell">wizard</td><td class="py-4 pe-4 whitespace-nowrap">—</td><td class="py-4">没有回上一步。中断重跑（已存的值会当默认）；方向键有 bug，用 backspace</td></tr>
-                        <tr><td class="py-4 pe-4">我改了 <code>SKILL.md</code>，更新后不见了</td><td class="py-4 pe-4 hidden tablet:table-cell">全部</td><td class="py-4 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-4"><code>npx skills update</code> 会覆盖、plugin 唯读。<strong>长期行为写进你自己的指令档</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">agent 说某些 skill 没安装</td><td class="py-3 pe-4 hidden tablet:table-cell">ask-matt 等</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">user-invoked skill 不进模型的清单。<strong>它们有装，照打</strong>。权威是 <code>.claude-plugin/plugin.json</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4"><code>gh</code> 说 label 不存在</td><td class="py-3 pe-4 hidden tablet:table-cell">triage、wayfinder</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">setup <strong>不会</strong>建 label，自己 <code>gh label create</code> 一次</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">访谈一次丢出全部问题、没有建议答案</td><td class="py-3 pe-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">grilling 或 domain-modeling 没加载。<strong>问 agent「你载了哪些 skill」</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">访谈很好但 <code>CONTEXT.md</code> 没变</td><td class="py-3 pe-4 hidden tablet:table-cell">grill-with-docs</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">domain-modeling 没载。点名叫它</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4"><code>CONTEXT.md</code> 膨胀成 500 行以上</td><td class="py-3 pe-4 hidden tablet:table-cell">domain-modeling</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">它吸收了实作细节。直接下令精简并移除实作细节</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">读 spec 一直被截断</td><td class="py-3 pe-4 hidden tablet:table-cell">to-spec → to-tickets</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">两步之间<strong>不要 clear 或 compact</strong>，同一个窗口跑完</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">三行的改动切出 12 张票</td><td class="py-3 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">质询步骤叫它合并。真的很小就直接 implement，别用这支</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">切出来一层一张票</td><td class="py-3 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">逐票问「做完能 demo 什么」，答不出行为的就是水平切片</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">没建成 sub-issue、blocked-by 只写在内文</td><td class="py-3 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">已知未修。事后自己用 <code>gh issue create --parent</code>、<code>--add-sub-issue</code>、<code>--blocked-by</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">验收条件在动工前就通过</td><td class="py-3 pe-4 hidden tablet:table-cell">to-tickets</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">对每条问「什么观察会证明它为假」，并确认它在起始 commit 是红的</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4"><code>/implement #2</code> 做了完全无关的事</td><td class="py-3 pe-4 hidden tablet:table-cell">implement</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3"><code>#2</code> 是对「任何看得到的编号清单」解析。<strong>传完整 URL，并要它念回标题</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">跑完票还开着、验收条件没打勾</td><td class="py-3 pe-4 hidden tablet:table-cell">implement</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">预期行为，它没有收尾步骤。<strong>手动关票</strong>，依赖链才会往前走</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">code-review 说看不到我的改动</td><td class="py-3 pe-4 hidden tablet:table-cell">implement、code-review</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">它 diff 到 HEAD，排除未 commit 的。<strong>先 commit 再 review</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">平行跑好几个 implement 出现诡异 git 状况</td><td class="py-3 pe-4 hidden tablet:table-cell">implement</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">同一 checkout 不支持。用 worktree，但 stash 仍共用</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">和内置的 code-review 撞名</td><td class="py-3 pe-4 hidden tablet:table-cell">code-review</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">移除内置的那个，或 fork 成新名字</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">review 的 sub-agent 又生出更多 agent</td><td class="py-3 pe-4 hidden tablet:table-cell">code-review</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">已知未修，有一次到 50 个以上。<strong>无人看管跑时盯 agent 数</strong>；fork 上加一行禁止再生成</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">review 每次跑都找到新问题</td><td class="py-3 pe-4 hidden tablet:table-cell">code-review</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">没有收敛保证。当成线索清单，处理有明文规则背书的，然后<strong>停手</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">research 烧掉 450k token</td><td class="py-3 pe-4 hidden tablet:table-cell">research</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">nesting bug（issue 530），它会生出第二个自己。<strong>调用后检查背景任务列表</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">只想要一句答案，它跑去建重现情境</td><td class="py-3 pe-4 hidden tablet:table-cell">diagnosing-bugs</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">讲「直接回答，不要诊断」，或关掉它的 model invocation</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">它先写实作才写测试</td><td class="py-3 pe-4 hidden tablet:table-cell">tdd</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">会发生，skill 带着这件事一起活。某个切片要严格就盯着跑</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">它先写浏览器测试然后鬼打墙</td><td class="py-3 pe-4 hidden tablet:table-cell">tdd</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">在 repo 的指令档声明：browser 测试在行为可运作之后才写</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">架构报告开起来没样式没图</td><td class="py-3 pe-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">外部 CDN 被挡。要它用 inline CSS 加手写 SVG</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">它烤我一小时而不给我选项</td><td class="py-3 pe-4 hidden tablet:table-cell">improve-codebase-architecture</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">调用时讲「不要烤我，直接给报告」</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">对词汇层说「开始」烧掉 100k token</td><td class="py-3 pe-4 hidden tablet:table-cell">codebase-design</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">它没有流程。<strong>点名一个 driver skill，让它坐在下面</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">wayfinder 的 agent 开始写正式代码</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">Notes 可覆写「规划不执行」，而 Notes 是 agent 写的。<strong>先读 Notes</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">27 张票做到第 13 张全部不合理</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">范围缩到一个有界 epic，并积极 prototype</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">grilling 每个问题三段落、很累</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">降 reasoning effort 加全域指令档一句白话指示。<strong>未解决</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">handoff 文档不见了</td><td class="py-3 pe-4 hidden tablet:table-cell">handoff</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">暂存目录会被清。<strong>问它路径，需要就自己复制到耐久位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">课程被写到全域 skill 目录</td><td class="py-3 pe-4 hidden tablet:table-cell">teach</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">issue 377。<strong>明确讲出目录名，第一课落在哪先确认</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">小考正确答案永远是 A</td><td class="py-3 pe-4 hidden tablet:table-cell">teach</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">已知未修（33 次全中）。把位置当无意义，或要一个 render 时洗牌的组件</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">wizard 打错字想回上一步</td><td class="py-3 pe-4 hidden tablet:table-cell">wizard</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">没有回上一步。中断重跑（已存的值会当默认）；方向键有 bug，用 backspace</td></tr>
+                        <tr><td class="py-3 pe-4">我改了 <code>SKILL.md</code>，更新后不见了</td><td class="py-3 pe-4 hidden tablet:table-cell">全部</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3"><code>npx skills update</code> 会覆盖、plugin 唯读。<strong>长期行为写进你自己的指令档</strong></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1178,9 +1178,9 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              09 · CLAUDE.md
              ================================================================== -->
-        <section id="claude-md" class="border-t border-line pt-16">
+        <section id="claude-md" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">09</p>
+                <p class="eyebrow mb-3 font-sans">09</p>
                 <h2 class="mb-6">建议放进你自己的指令档</h2>
             </div>
             <p class="leading-relaxed mb-6">
@@ -1212,12 +1212,12 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              10 · Vocabulary
              ================================================================== -->
-        <section id="vocabulary" class="border-t border-line pt-16">
+        <section id="vocabulary" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">10</p>
+                <p class="eyebrow mb-3 font-sans">10</p>
                 <h2 class="mb-6">核心词汇</h2>
             </div>
-            <p class="leading-relaxed mb-8">
+            <p class="leading-relaxed mb-5">
                 这些词是整套 skill 的共用语言。<strong>看不懂它们，skill 的输出你就读不懂。</strong>
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -1229,30 +1229,30 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Seam</td><td class="py-4">你可以改变行为却不需要在那里编辑的地方。测试住在 seam 上。它是界面的<strong>位置</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Pre-agreed seam</td><td class="py-4">在写任何程序之前就谈好的 seam。这是测试耐久的原因——底下的实作可以重写而测试不动</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Tracer bullet</td><td class="py-4">穿过所有层的一条细但完整的路，落地当下就能单独 demo</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Vertical / horizontal slice</td><td class="py-4">垂直是一条路穿所有层（对）；水平是一次一层（错，最常见的失败）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Deep / shallow module</td><td class="py-4">深是小界面后面大量行为；浅是界面几乎和实作一样复杂</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Deletion test</td><td class="py-4">想像删掉这个模块：复杂度<strong>集中</strong>到更小的界面后（值得留）还是<strong>散开</strong>到调用者（那是 pass-through）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Locality / Leverage</td><td class="py-4">Locality 是维护者得到的（改动集中在一处）；Leverage 是调用者得到的（每学一单位界面得到更多能力）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Design tree / Frontier / Round</td><td class="py-4">设计树是决定挂着决定；frontier 是前置条件都已解决的决定集合；一 round 是把整个 frontier 一次问完</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Grillable / ungrillable</td><td class="py-4">谈得出来的问题，相对于需要有东西可反应的问题（后者去 prototype）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Fog of war</td><td class="py-4">wayfinder 地图上「看得出要来、但还无法精确表述」的决定</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Decision ticket</td><td class="py-4">wayfinder 的单位：握着一个问题（解决后产出决定），<strong>不是</strong>一块要执行的搭建切片</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Destination</td><td class="py-4">一整张 wayfinder 地图的终点样貌。画地图的第一个动作就是命名它</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Spec / Ticket</td><td class="py-4">spec 是目的地与固定它的决策（保留）；ticket 是抵达的执行步骤（用完即丢）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Primary / secondary source</td><td class="py-4">一手是对话本身、commit、官方文档、源代码；二手是任何摘要。<strong>冲突时一手为准</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Context pointer</td><td class="py-4">在 context 里、指名 context 外材料、并编码「何时去拿」的引用</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Progressive disclosure</td><td class="py-4">把只有某条分支需要的参考移到 pointer 后面，让主档保持可读</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Context load / Cognitive load</td><td class="py-4">前者是永远加载的材料在模型窗口上的成本；后者是「有哪些文档、何时该用」在<strong>你</strong>身上的成本</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">No-op</td><td class="py-4">删掉之后 agent 行为不变的那一行文字。付了 context 却没改变任何行为</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Leading word</td><td class="py-4">模型预训练里已有的压缩概念（tight、red、tracer bullet），agent 拿它来思考</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Storage strength / fluency</td><td class="py-4">长期保留，相对于当下的回想感（后者读的时候像精通、一周后就没了）</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Smart zone / dumb zone</td><td class="py-4">context window 还有余裕，相对于已经满到质量下降</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">HITL / AFK</td><td class="py-4">人类在循环里（必须靠活的交换解决），相对于你人不在也跑得完</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-semibold">Phase boundary</td><td class="py-4">两块工作之间；唯一该问「我的 context 怎么办」的地方</td></tr>
-                        <tr><td class="py-4 pe-4 font-semibold">Expand–migrate–contract</td><td class="py-4">宽重构的三段式：新形式加在旧的旁边、分批搬调用点、没有调用者才删旧的</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Seam</td><td class="py-3">你可以改变行为却不需要在那里编辑的地方。测试住在 seam 上。它是界面的<strong>位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Pre-agreed seam</td><td class="py-3">在写任何程序之前就谈好的 seam。这是测试耐久的原因——底下的实作可以重写而测试不动</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Tracer bullet</td><td class="py-3">穿过所有层的一条细但完整的路，落地当下就能单独 demo</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Vertical / horizontal slice</td><td class="py-3">垂直是一条路穿所有层（对）；水平是一次一层（错，最常见的失败）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Deep / shallow module</td><td class="py-3">深是小界面后面大量行为；浅是界面几乎和实作一样复杂</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Deletion test</td><td class="py-3">想像删掉这个模块：复杂度<strong>集中</strong>到更小的界面后（值得留）还是<strong>散开</strong>到调用者（那是 pass-through）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Locality / Leverage</td><td class="py-3">Locality 是维护者得到的（改动集中在一处）；Leverage 是调用者得到的（每学一单位界面得到更多能力）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Design tree / Frontier / Round</td><td class="py-3">设计树是决定挂着决定；frontier 是前置条件都已解决的决定集合；一 round 是把整个 frontier 一次问完</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Grillable / ungrillable</td><td class="py-3">谈得出来的问题，相对于需要有东西可反应的问题（后者去 prototype）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Fog of war</td><td class="py-3">wayfinder 地图上「看得出要来、但还无法精确表述」的决定</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Decision ticket</td><td class="py-3">wayfinder 的单位：握着一个问题（解决后产出决定），<strong>不是</strong>一块要执行的搭建切片</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Destination</td><td class="py-3">一整张 wayfinder 地图的终点样貌。画地图的第一个动作就是命名它</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Spec / Ticket</td><td class="py-3">spec 是目的地与固定它的决策（保留）；ticket 是抵达的执行步骤（用完即丢）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Primary / secondary source</td><td class="py-3">一手是对话本身、commit、官方文档、源代码；二手是任何摘要。<strong>冲突时一手为准</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Context pointer</td><td class="py-3">在 context 里、指名 context 外材料、并编码「何时去拿」的引用</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Progressive disclosure</td><td class="py-3">把只有某条分支需要的参考移到 pointer 后面，让主档保持可读</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Context load / Cognitive load</td><td class="py-3">前者是永远加载的材料在模型窗口上的成本；后者是「有哪些文档、何时该用」在<strong>你</strong>身上的成本</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">No-op</td><td class="py-3">删掉之后 agent 行为不变的那一行文字。付了 context 却没改变任何行为</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Leading word</td><td class="py-3">模型预训练里已有的压缩概念（tight、red、tracer bullet），agent 拿它来思考</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Storage strength / fluency</td><td class="py-3">长期保留，相对于当下的回想感（后者读的时候像精通、一周后就没了）</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Smart zone / dumb zone</td><td class="py-3">context window 还有余裕，相对于已经满到质量下降</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">HITL / AFK</td><td class="py-3">人类在循环里（必须靠活的交换解决），相对于你人不在也跑得完</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-semibold">Phase boundary</td><td class="py-3">两块工作之间；唯一该问「我的 context 怎么办」的地方</td></tr>
+                        <tr><td class="py-3 pe-4 font-semibold">Expand–migrate–contract</td><td class="py-3">宽重构的三段式：新形式加在旧的旁边、分批搬调用点、没有调用者才删旧的</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1261,12 +1261,12 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              11 · Antipatterns
              ================================================================== -->
-        <section id="antipatterns" class="border-t border-line pt-16">
+        <section id="antipatterns" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">11</p>
+                <p class="eyebrow mb-3 font-sans">11</p>
                 <h2 class="mb-6">七种反模式</h2>
             </div>
-            <p class="leading-relaxed mb-8">这套东西最常被用坏的方式。</p>
+            <p class="leading-relaxed mb-5">这套东西最常被用坏的方式。</p>
             <ol class="space-y-6 leading-relaxed">
                 <li><strong>被动 grilling。</strong>连答四十个「同意」，出来一份 agent 写的、你点头过的计划。<strong>一场你完全没推回去的 session，是一场你不需要的 session。</strong></li>
                 <li><strong>在 to-spec 和 to-tickets 之间 clear 或 compact。</strong>你烤出来的东西绝大部分只在那个 context window 里。这一刀下去，spec 会安静地漏掉你真正决定的东西。</li>
@@ -1285,12 +1285,12 @@ gh label create enhancement</code></pre>
         <!-- ==================================================================
              12 · 14-day plan
              ================================================================== -->
-        <section id="plan" class="border-t border-line pt-16">
+        <section id="plan" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">12</p>
+                <p class="eyebrow mb-3 font-sans">12</p>
                 <h2 class="mb-6">14 天学习计划</h2>
             </div>
-            <p class="leading-relaxed mb-8">每天约 30 到 60 分钟，<strong>用你自己真实的项目</strong>。</p>
+            <p class="leading-relaxed mb-5">每天约 30 到 60 分钟，<strong>用你自己真实的项目</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
                     <thead>
@@ -1301,20 +1301,20 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">01</td><td class="py-4 pe-4">读 <a href="#concepts" class="underline">三个底层观念</a>；装 plugin 或 skills.sh（<strong>选一</strong>）；在一个 repo 跑 setup；建好 label</td><td class="py-4"><code>docs/agents/</code> 三个文档存在，指令档有 <code>## Agent skills</code></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">02</td><td class="py-4 pe-4"><code>/grill-me</code> 烤一个<strong>非程序</strong>的决定。刻意练习「推回去」</td><td class="py-4">至少推回三次；能对一个不在场的人辩护每个选择</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">03</td><td class="py-4 pe-4"><code>/grill-with-docs</code> 对你现有 repo 做一次小功能的访谈</td><td class="py-4"><code>CONTEXT.md</code> 在过程中逐条长出来；ADR 0 到 1 份</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">04</td><td class="py-4 pe-4">同一对话接 <code>/to-spec</code>。认真看 seam 与 out-of-scope 两节</td><td class="py-4">spec 里每个决定你都记得自己做过</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">05</td><td class="py-4 pe-4">同一窗口接 <code>/to-tickets</code>。在质询步骤逐票问「能 demo 什么」</td><td class="py-4">每票能 demo 行为；最上面那张没有阻塞者</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">06</td><td class="py-4 pe-4"><code>/implement</code> 做第一张票（<strong>完整 URL</strong>），全程看 trace</td><td class="py-4">trace 里看得到 <code>tdd</code> 调用；走到 commit</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">07</td><td class="py-4 pe-4">新 session 跑 <code>/code-review main</code>。逐条追引用</td><td class="py-4">两块分开的报告；<strong>你至少驳掉一个发现</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">08</td><td class="py-4 pe-4">读 <code>codebase-design</code> 的词汇表，把它当字典而不是流程</td><td class="py-4">你的设计对话里不再出现 component、service、boundary</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">09</td><td class="py-4 pe-4">遇到一个「谈不出来」的问题，跑 <code>/prototype</code></td><td class="py-4">一个可分享的 HTML 档或几个结构上不同意的变体；答案一行</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">10</td><td class="py-4 pe-4">对一个真的 bug 跑 <code>/diagnosing-bugs</code>。盯紧 Phase 1 的 gate</td><td class="py-4"><strong>先看到红的指令输出，才看到第一个理论</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">11</td><td class="py-4 pe-4"><code>/improve-codebase-architecture</code>（记得说「先给报告」），挑一个 Strong 候选</td><td class="py-4">HTML 报告；一个候选被烤成一个决定</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">12</td><td class="py-4 pe-4"><code>/handoff</code> 练一次「分叉」：主对话留着，开一个平行 session</td><td class="py-4">原 session 还在原地；新 agent 直接开工不用你重讲</td></tr>
-                        <tr class="border-b border-line"><td class="py-4 pe-4 font-sans font-semibold">13</td><td class="py-4 pe-4">练 <code>/wait-what</code> 与 <code>/to-questionnaire</code>；把 <a href="#claude-md" class="underline">第 09 节</a> 写进指令档</td><td class="py-4">重讲是「更短且更清楚」；问卷可以直接寄出去</td></tr>
-                        <tr><td class="py-4 pe-4 font-sans font-semibold">14</td><td class="py-4 pe-4">挑一件真的太大的工作跑 <code>/wayfinder</code>，范围缩到一个有界 epic</td><td class="py-4">destination 在任何票之前就写下来；每张开着的票读起来都是一个问题</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">01</td><td class="py-3 pe-4">读 <a href="#concepts" class="underline">三个底层观念</a>；装 plugin 或 skills.sh（<strong>选一</strong>）；在一个 repo 跑 setup；建好 label</td><td class="py-3"><code>docs/agents/</code> 三个文档存在，指令档有 <code>## Agent skills</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">02</td><td class="py-3 pe-4"><code>/grill-me</code> 烤一个<strong>非程序</strong>的决定。刻意练习「推回去」</td><td class="py-3">至少推回三次；能对一个不在场的人辩护每个选择</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">03</td><td class="py-3 pe-4"><code>/grill-with-docs</code> 对你现有 repo 做一次小功能的访谈</td><td class="py-3"><code>CONTEXT.md</code> 在过程中逐条长出来；ADR 0 到 1 份</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">04</td><td class="py-3 pe-4">同一对话接 <code>/to-spec</code>。认真看 seam 与 out-of-scope 两节</td><td class="py-3">spec 里每个决定你都记得自己做过</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">05</td><td class="py-3 pe-4">同一窗口接 <code>/to-tickets</code>。在质询步骤逐票问「能 demo 什么」</td><td class="py-3">每票能 demo 行为；最上面那张没有阻塞者</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">06</td><td class="py-3 pe-4"><code>/implement</code> 做第一张票（<strong>完整 URL</strong>），全程看 trace</td><td class="py-3">trace 里看得到 <code>tdd</code> 调用；走到 commit</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">07</td><td class="py-3 pe-4">新 session 跑 <code>/code-review main</code>。逐条追引用</td><td class="py-3">两块分开的报告；<strong>你至少驳掉一个发现</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">08</td><td class="py-3 pe-4">读 <code>codebase-design</code> 的词汇表，把它当字典而不是流程</td><td class="py-3">你的设计对话里不再出现 component、service、boundary</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">09</td><td class="py-3 pe-4">遇到一个「谈不出来」的问题，跑 <code>/prototype</code></td><td class="py-3">一个可分享的 HTML 档或几个结构上不同意的变体；答案一行</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">10</td><td class="py-3 pe-4">对一个真的 bug 跑 <code>/diagnosing-bugs</code>。盯紧 Phase 1 的 gate</td><td class="py-3"><strong>先看到红的指令输出，才看到第一个理论</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">11</td><td class="py-3 pe-4"><code>/improve-codebase-architecture</code>（记得说「先给报告」），挑一个 Strong 候选</td><td class="py-3">HTML 报告；一个候选被烤成一个决定</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">12</td><td class="py-3 pe-4"><code>/handoff</code> 练一次「分叉」：主对话留着，开一个平行 session</td><td class="py-3">原 session 还在原地；新 agent 直接开工不用你重讲</td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">13</td><td class="py-3 pe-4">练 <code>/wait-what</code> 与 <code>/to-questionnaire</code>；把 <a href="#claude-md" class="underline">第 09 节</a> 写进指令档</td><td class="py-3">重讲是「更短且更清楚」；问卷可以直接寄出去</td></tr>
+                        <tr><td class="py-3 pe-4 font-sans font-semibold">14</td><td class="py-3 pe-4">挑一件真的太大的工作跑 <code>/wayfinder</code>，范围缩到一个有界 epic</td><td class="py-3">destination 在任何票之前就写下来；每张开着的票读起来都是一个问题</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1330,9 +1330,9 @@ gh label create enhancement</code></pre>
              grouping is carried by headings and the comments moved out of the
              block into the line beside each command.
              ================================================================== -->
-        <section id="cheatsheet" class="border-t border-line pt-16">
+        <section id="cheatsheet" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">13</p>
+                <p class="eyebrow mb-3 font-sans">13</p>
                 <h2 class="mb-6">一页速查</h2>
             </div>
             <div class="space-y-8">
@@ -1391,9 +1391,9 @@ gh label create enhancement</code></pre>
              Source. Named in section 01 as well; repeated here because this is
              where a reader who skipped to the end will look for it.
              ================================================================== -->
-        <section id="source" class="border-t border-line pt-16">
+        <section id="source" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">出处</p>
+                <p class="eyebrow mb-3 font-sans">出处</p>
                 <h2 class="mb-6">这篇教学依据什么写成</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -1413,11 +1413,11 @@ gh label create enhancement</code></pre>
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
                 <h2 class="mb-6">想把这条流程接进你自己的团队？</h2>
             </div>
-            <p class="mb-10 max-w-[42ch] text-lg">
+            <p class="mb-6 max-w-[42ch] text-lg">
                 工具是公开的，难的是接到你既有的 tracker、规范与交付节奏上。那部分我们做过。
             </p>
             <div class="flex flex-col mobile:flex-row gap-4">

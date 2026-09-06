@@ -57,7 +57,7 @@ agent-dev-workflow.html	    안에서 한 덩어리의 작업을 <strong>
 agent-dev-workflow.html	··  <strong>phase</strong>라
 agent-dev-workflow.html	   를 어떻게 할까'라는 물음은 <strong>
 agent-dev-workflow.html	   g>이것부터 배제한 다음에</strong> 다
-agent-dev-workflow.html	   ass="py-4">무언가를 <strong>
+agent-dev-workflow.html	   ass="py-3">무언가를 <strong>
 agent-dev-workflow.html	·· 언가를 <strong>이사</strong>해
 agent-dev-workflow.html	    <code>handoff</code> 자
 agent-dev-workflow.html	   니다. 이것이 사 주는 것은 <strong>
@@ -121,8 +121,8 @@ agent-dev-workflow.html	   rill-with-docs</code> 다
 agent-dev-workflow.html	   docs</code> 다음에 <code>
 agent-dev-workflow.html	·· code>implement</code>로
 agent-dev-workflow.html	   >. 각 라운드는 그 시점의 <strong>
-agent-dev-workflow.html	   ="py-4 pe-4">하나 <strong>
-agent-dev-workflow.html	   ="py-4 pe-4">하나 <strong>
+agent-dev-workflow.html	   ="py-3 pe-4">하나 <strong>
+agent-dev-workflow.html	   ="py-3 pe-4">하나 <strong>
 agent-dev-workflow.html	   실제로 트레이드오프가 있는</strong> 결
 agent-dev-workflow.html	   code>docs/adr/</code> 아
 agent-dev-workflow.html	   말고, 같은 대화에서 그대로 <code>
@@ -134,8 +134,8 @@ agent-dev-workflow.html	   쓰기 전에, 이 기능을 어떤 <strong>
 agent-dev-workflow.html	·· ong>가장 높은 seam</strong>을
 agent-dev-workflow.html	·· 됩니다: <code>tdd</code>는
 agent-dev-workflow.html	·· de>code-review</code>는
-agent-dev-workflow.html	   class="py-4">먼저 <code>
-agent-dev-workflow.html	   lass="py-4">곧바로 <code>
+agent-dev-workflow.html	   class="py-3">먼저 <code>
+agent-dev-workflow.html	   lass="py-3">곧바로 <code>
 agent-dev-workflow.html	   pec</code>, 그다음 <code>
 agent-dev-workflow.html	   eady-for-agent</code> 라
 agent-dev-workflow.html	   de>/to-tickets</code> 실
@@ -144,8 +144,8 @@ agent-dev-workflow.html	   rill-with-docs</code> 쪽
 agent-dev-workflow.html	·· <code>/to-spec</code>과
 agent-dev-workflow.html	   de>/to-tickets</code> 사
 agent-dev-workflow.html	   de>, 같은 창에서. 또는 <code>
-agent-dev-workflow.html	   "py-4 pe-4">변경의 <strong>
-agent-dev-workflow.html	   y-4">가느다란 길 하나가 <strong>
+agent-dev-workflow.html	   "py-3 pe-4">변경의 <strong>
+agent-dev-workflow.html	   y-3">가느다란 길 하나가 <strong>
 agent-dev-workflow.html	··  <strong>모든 계층</strong>을
 agent-dev-workflow.html	   elector). 평균적으로 <strong>
 agent-dev-workflow.html	   demo 할 수 있는가?"</strong> 답
@@ -170,7 +170,7 @@ agent-dev-workflow.html	·· de>code-review</code>를
 agent-dev-workflow.html	   다음 commit 하는 곳은 <strong>
 agent-dev-workflow.html	   여는 일은 결코 없습니다.</strong> 인
 agent-dev-workflow.html	   <strong>안 됩니다.</strong> 같
-agent-dev-workflow.html	   s="py-4">검토 대상은 <code>
+agent-dev-workflow.html	   s="py-3">검토 대상은 <code>
 agent-dev-workflow.html	   ">내장된 그 review를 <strong>
 agent-dev-workflow.html	   rong>일부러 쓰지 않는</strong> 사
 agent-dev-workflow.html	   n에서 고정점을 상대로 따로 <code>
@@ -250,7 +250,7 @@ agent-dev-workflow.html	·· 금 정확히 말할 수 있는가</strong>이
 agent-dev-workflow.html	·· 졸업시키지 않습니다. 지도는<strong>
 agent-dev-workflow.html	·· g> 저장소가 아니라 색인</strong>이
 agent-dev-workflow.html	·· 맡았다는 표시입니다. 티켓은<strong>
-agent-dev-workflow.html	·· y-4">결정할 것은 없지만<strong>
+agent-dev-workflow.html	·· y-3">결정할 것은 없지만<strong>
 agent-dev-workflow.html	   만<strong> 수작업이</strong> 하
 agent-dev-workflow.html	·· 한 유형입니다. 존재 이유는<strong>
 agent-dev-workflow.html	   <code>research</code> 티
@@ -373,7 +373,7 @@ agent-dev-workflow.html	·· condary source</strong>입
 agent-dev-workflow.html	   ng>입니다. router와 <code>
 agent-dev-workflow.html	   <code>SKILL.md</code> 파
 agent-dev-workflow.html	   <code>SKILL.md</code> 파
-agent-dev-workflow.html	   d mb-10">본류 사례는 <a href="#main-flow" class="underline">
+agent-dev-workflow.html	   ed mb-6">본류 사례는 <a href="#main-flow" class="underline">
 agent-dev-workflow.html	·· underline">05절</a>에
 agent-dev-workflow.html	   이 됩니까. 재현되지 않으면 <code>
 agent-dev-workflow.html	··  이 bug에서 빨간 명령</strong>입
@@ -412,12 +412,12 @@ agent-dev-workflow.html	   h label create</code> 명
 agent-dev-workflow.html	    pe-4">인터뷰는 좋은데 <code>
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
-agent-dev-workflow.html	   y-4">두 단계 사이에서는 <strong>
+agent-dev-workflow.html	   y-3">두 단계 사이에서는 <strong>
 agent-dev-workflow.html	   정 사항입니다. 나중에 직접 <code>
 agent-dev-workflow.html	   >/implement #2</code> 명
-agent-dev-workflow.html	·· py-4"><code>#2</code>라
+agent-dev-workflow.html	·· py-3"><code>#2</code>라
 agent-dev-workflow.html	   뒷받침하는 것만 처리한 다음 <strong>
-agent-dev-workflow.html	   y-4 pe-4">직접 고친 <code>
+agent-dev-workflow.html	   y-3 pe-4">직접 고친 <code>
 agent-dev-workflow.html	·· <code>SKILL.md</code>가
 agent-dev-workflow.html	    skills update</code> 명
 agent-dev-workflow.html	   다. 붙여 넣을 곳은 자신의 <code>
@@ -452,7 +452,7 @@ agent-dev-workflow.html	·· ode> 파일을 고치기. </strong>업
 agent-dev-workflow.html	   장은 그 반대입니다. 그렇게 <strong>
 agent-dev-workflow.html	·· rong>절차를 넘겨받는 </strong>식
 agent-dev-workflow.html	   분에서 60분 정도, 대상은 <strong>
-agent-dev-workflow.html	   ="py-4 pe-4">그냥 <a href="#concepts" class="underline">
+agent-dev-workflow.html	   ="py-3 pe-4">그냥 <a href="#concepts" class="underline">
 agent-dev-workflow.html	·· e">세 가지 밑바탕 개념</a>을
 agent-dev-workflow.html	   e>docs/agents/</code> 아
 agent-dev-workflow.html	   세 개가 있음. 지시 파일에 <code>
@@ -464,17 +464,17 @@ agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	   -4">같은 대화에서 이어서 <code>
 agent-dev-workflow.html	   e-4">같은 창에서 이어서 <code>
 agent-dev-workflow.html	   ode>/implement</code> 명
-agent-dev-workflow.html	   py-4">trace 안에서 <code>
+agent-dev-workflow.html	   py-3">trace 안에서 <code>
 agent-dev-workflow.html	    안에서 <code>tdd</code> 호
 agent-dev-workflow.html	   -4">새 session에서 <code>
 agent-dev-workflow.html	·· de-review main</code>을
-agent-dev-workflow.html	   ="py-4 pe-4">그냥 <code>
+agent-dev-workflow.html	   ="py-3 pe-4">그냥 <code>
 agent-dev-workflow.html	   odebase-design</code> 용
 agent-dev-workflow.html	   ' 질문을 만나면 돌릴 것은 <code>
 agent-dev-workflow.html	   e-4">진짜 bug 하나에 <code>
 agent-dev-workflow.html	·· iagnosing-bugs</code>를
 agent-dev-workflow.html	   <code>/handoff</code> 명
-agent-dev-workflow.html	   -4 pe-4">연습할 것은 <code>
+agent-dev-workflow.html	   -3 pe-4">연습할 것은 <code>
 agent-dev-workflow.html	   ode>/wait-what</code> 및
 agent-dev-workflow.html	   ire</code>. 그리고 <a href="#claude-md" class="underline">
 agent-dev-workflow.html	   underline">09절</a> 내
@@ -671,11 +671,11 @@ pqc-migration.html	·· 제 상태를 다시 확인한 날</strong>이
 pqc-migration.html	   ">112비트 강도 알고리즘 <span class="font-sans">
 pqc-migration.html	   ont-sans">2030</span> 이
 pqc-migration.html	   ont-sans">2035</span> 이
-pqc-migration.html	   py-4 pe-4">회원국은 <span class="font-sans">
+pqc-migration.html	   py-3 pe-4">회원국은 <span class="font-sans">
 pqc-migration.html	·· ont-sans">2026</span>년
 pqc-migration.html	    기반 시설의 고위험 영역은 <span class="font-sans">
 pqc-migration.html	·· ont-sans">2030</span>년
-pqc-migration.html	   ="py-4 pe-4">단기 <span class="font-sans">
+pqc-migration.html	   ="py-3 pe-4">단기 <span class="font-sans">
 pqc-migration.html	   ans">2026–2027</span> 거
 pqc-migration.html	   호 민첩성의 기초<br>중기 <span class="font-sans">
 pqc-migration.html	   ans">2027–2029</span> 시
@@ -787,7 +787,7 @@ what-is-mcp.html	   ns">2027-07-28</span> 이
 what-is-mcp.html	   상태가 된 것은 다릅니다.</strong> 이
 what-is-prompt-injection.html	·· trong>프롬프트 인젝션</strong>은
 what-is-prompt-injection.html	   class="mx-2">→</span> 옮
-what-is-prompt-injection.html	   이걸 옮겨 줘. …아 그리고 <span class="font-semibold border-t border-line pt-6 px-1 py-0.5">
+what-is-prompt-injection.html	   이걸 옮겨 줘. …아 그리고 <span class="font-semibold border-t border-line pt-3 px-1 py-0.5">
 what-is-prompt-injection.html	   장이 한 말은 전부 잊어.</span> 이
 what-is-prompt-injection.html	    </svg></span> 옮
 what-is-prompt-injection.html	   기호로 감쌉니다(XML 태그 <code class="bg-ink/5 font-semibold px-1.5 py-0.5 font-sans text-xs mx-1">

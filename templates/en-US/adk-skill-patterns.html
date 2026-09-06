@@ -15,12 +15,12 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-24 pb-20 px-6 overflow-hidden">
+<article class="relative pt-2 pb-0 px-6 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-16">
-            <div class="tag mb-6">
+        <header class="band mb-0">
+            <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2 animate-pulse"></span>
                 Google Cloud Tech — notes
             </div>
@@ -28,14 +28,14 @@
      because Chinese has no upper case; on an English page the lead IS the
      content. `heading structure` asks for `display-sub` only from non-Latin
      locales (decision #56). -->
-    <h1 class="mb-6">
-            <span class="display-lead">Five Skill Patterns</span>
+    <h1 class="mb-4">
+            <span class="display-lead text-display-sm tablet:text-display-md">Five Skill Patterns</span>
         </h1>
-            <p class="text-lg mb-8 max-w-prose mx-auto">
+            <p class="text-base tablet:text-lg mb-5 max-w-prose mx-auto">
                 Drawn from Google Cloud's "5 Agent Skill Design Patterns Every ADK Developer Should Know"
             </p>
 
-            <div class="border-t border-line pt-6 p-8 border-s border-line text-start">
+            <div class="border-t border-line pt-4 pb-2 ps-6 border-s border-line text-start">
                 <h3 class="mb-2">Why patterns at all?</h3>
                 <p class="leading-relaxed">
                     It is easy to assume that getting the YAML in <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> right is the job. That part is only the shell.
@@ -58,13 +58,13 @@
 </article>
 
 <!-- Content -->
-<div class="py-24">
-    <div class="max-w-prose mx-auto px-6 space-y-32">
+<div class="pt-2 pb-4">
+    <div class="max-w-prose mx-auto px-6 space-y-12 tablet:space-y-16">
 
         <!-- Pattern Overview -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">01</p>
+                <p class="eyebrow mb-3 font-sans">01</p>
                 <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center me-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
@@ -84,34 +84,34 @@
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
-                            <td class="py-4 px-4 font-sans font-semibold">01</td>
-                            <td class="py-4 px-4 font-semibold">Tool Wrapper</td>
-                            <td class="py-4 px-4">Load the expert knowledge only when it is needed</td>
-                            <td class="py-4 px-4 hidden tablet:table-cell">Working with a specific framework or library</td>
+                            <td class="py-3 px-4 font-sans font-semibold">01</td>
+                            <td class="py-3 px-4 font-semibold">Tool Wrapper</td>
+                            <td class="py-3 px-4">Load the expert knowledge only when it is needed</td>
+                            <td class="py-3 px-4 hidden tablet:table-cell">Working with a specific framework or library</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 px-4 font-sans font-semibold">02</td>
-                            <td class="py-4 px-4 font-semibold">Generator</td>
-                            <td class="py-4 px-4">A template guarantees the shape of the output</td>
-                            <td class="py-4 px-4 hidden tablet:table-cell">Reports, documentation, API docs</td>
+                            <td class="py-3 px-4 font-sans font-semibold">02</td>
+                            <td class="py-3 px-4 font-semibold">Generator</td>
+                            <td class="py-3 px-4">A template guarantees the shape of the output</td>
+                            <td class="py-3 px-4 hidden tablet:table-cell">Reports, documentation, API docs</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 px-4 font-sans font-semibold">03</td>
-                            <td class="py-4 px-4 font-semibold">Reviewer</td>
-                            <td class="py-4 px-4">A checklist stands between the work and done</td>
-                            <td class="py-4 px-4 hidden tablet:table-cell">Code review, security audits</td>
+                            <td class="py-3 px-4 font-sans font-semibold">03</td>
+                            <td class="py-3 px-4 font-semibold">Reviewer</td>
+                            <td class="py-3 px-4">A checklist stands between the work and done</td>
+                            <td class="py-3 px-4 hidden tablet:table-cell">Code review, security audits</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 px-4 font-sans font-semibold">04</td>
-                            <td class="py-4 px-4 font-semibold">Inversion</td>
-                            <td class="py-4 px-4">Ask enough questions before starting</td>
-                            <td class="py-4 px-4 hidden tablet:table-cell">Tasks where the requirement is still vague</td>
+                            <td class="py-3 px-4 font-sans font-semibold">04</td>
+                            <td class="py-3 px-4 font-semibold">Inversion</td>
+                            <td class="py-3 px-4">Ask enough questions before starting</td>
+                            <td class="py-3 px-4 hidden tablet:table-cell">Tasks where the requirement is still vague</td>
                         </tr>
                         <tr>
-                            <td class="py-4 px-4 font-sans font-semibold">05</td>
-                            <td class="py-4 px-4 font-semibold">Pipeline</td>
-                            <td class="py-4 px-4">A strict multi-step pipeline</td>
-                            <td class="py-4 px-4 hidden tablet:table-cell">Deployments, approvals, complex workflows</td>
+                            <td class="py-3 px-4 font-sans font-semibold">05</td>
+                            <td class="py-3 px-4 font-semibold">Pipeline</td>
+                            <td class="py-3 px-4">A strict multi-step pipeline</td>
+                            <td class="py-3 px-4 hidden tablet:table-cell">Deployments, approvals, complex workflows</td>
                         </tr>
                     </tbody>
                 </table>
@@ -119,9 +119,9 @@
         </section>
 
         <!-- Pattern 1: Tool Wrapper -->
-        <section id="tool-wrapper" class="border-t border-line pt-16">
+        <section id="tool-wrapper" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool wrapper</p>
+                <p class="eyebrow mb-3"><span class="font-sans">02</span> &mdash; Tool wrapper</p>
                 <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 font-sans text-lg">01</span>
                 Tool Wrapper
@@ -174,9 +174,9 @@
         </section>
 
         <!-- Pattern 2: Generator -->
-        <section id="generator" class="border-t border-line pt-16">
+        <section id="generator" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Generator</p>
+                <p class="eyebrow mb-3"><span class="font-sans">03</span> &mdash; Generator</p>
                 <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 font-sans text-lg">02</span>
                 Generator
@@ -235,9 +235,9 @@
         </section>
 
         <!-- Pattern 3: Reviewer -->
-        <section id="reviewer" class="border-t border-line pt-16">
+        <section id="reviewer" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Reviewer</p>
+                <p class="eyebrow mb-3"><span class="font-sans">04</span> &mdash; Reviewer</p>
                 <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 font-sans text-lg">03</span>
                 Reviewer
@@ -288,9 +288,9 @@
         </section>
 
         <!-- Pattern 4: Inversion -->
-        <section id="inversion" class="border-t border-line pt-16">
+        <section id="inversion" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Inversion</p>
+                <p class="eyebrow mb-3"><span class="font-sans">05</span> &mdash; Inversion</p>
                 <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 font-sans text-lg">04</span>
                 Inversion
@@ -349,9 +349,9 @@
         </section>
 
         <!-- Pattern 5: Pipeline -->
-        <section id="pipeline" class="border-t border-line pt-16">
+        <section id="pipeline" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Pipeline</p>
+                <p class="eyebrow mb-3"><span class="font-sans">06</span> &mdash; Pipeline</p>
                 <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 font-sans text-lg">05</span>
                 Pipeline
@@ -419,9 +419,9 @@
         </section>
 
         <!-- Key Concepts -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">07</p>
+                <p class="eyebrow mb-3 font-sans">07</p>
                 <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center me-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
@@ -461,8 +461,8 @@
         </section>
 
         <!-- Related Links -->
-        <section class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-sans">08</p>
+        <section class="border-t border-line pt-10">
+            <p class="eyebrow mb-3 font-sans">08</p>
             <h3 class="mb-6">Further reading</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">

@@ -15,16 +15,16 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6">
+<div class="relative pt-2 pb-0 px-6">
     <article class="max-w-4xl mx-auto relative z-10">
 
-        <header class="band mb-20">
-            <div class="tag mb-6">AI 기술 노트</div>
-            <h1 class="mb-8">
-                <span class="display-lead">Model Context Protocol</span>
+        <header class="band mb-0">
+            <div class="tag mb-4">AI 기술 노트</div>
+            <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">Model Context Protocol</span>
                 <span class="display-sub">MCP는 무엇을 풀려는 것인가</span>
             </h1>
-            <p class="text-lg max-w-prose leading-relaxed">
+            <p class="text-base tablet:text-lg max-w-prose leading-relaxed">
                 MCP는 <strong>공통 배선 규격</strong>입니다. AI 애플리케이션을 바깥의 데이터와 도구에 잇기 위한 것입니다. 여기서는 세 가지 역할, 제공되는 세 종류, 그리고 2026년 개정이 무엇을 뒤집었는지를 평이하게 설명합니다.
             </p>
             <p class="font-sans text-eyebrow uppercase mt-8">
@@ -33,11 +33,11 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="what">01 — 한마디로</h2>
+                <h2 class="eyebrow mb-3" id="what">01 — 한마디로</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 어떤 AI 애플리케이션에서든 같은 방식으로 어떤 데이터 원본에도 이을 수 있게 한다. 그것이 MCP입니다.
             </p>
             <p class="max-w-prose leading-relaxed">
@@ -46,14 +46,14 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="why">02 — 왜 필요한가</h2>
+                <h2 class="eyebrow mb-3" id="why">02 — 왜 필요한가</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-8">
+            <p class="max-w-prose leading-relaxed mb-5">
                 AI 애플리케이션이 4개, 잇고 싶은 곳이 5개 있다고 합시다. Google Drive, GitHub, 데이터베이스, Slack, 사내 API.
             </p>
-            <div class="border border-line p-8 mb-8">
+            <div class="border border-line p-5 mb-6">
                 <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
                     <div>
                         <p class="eyebrow mb-4">공통 규격이 없을 때</p>
@@ -73,15 +73,15 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="roles">03 — 세 가지 역할</h2>
+                <h2 class="eyebrow mb-3" id="roles">03 — 세 가지 역할</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 MCP에는 세 가지 역할이 있습니다. <strong>헷갈리는 것은 대개 앞의 둘</strong>입니다. 'MCP 클라이언트'라고 말할 때 머릿속에 떠오르는 것은 보통 Claude Desktop이지만, 그것은 호스트입니다.
             </p>
 
-            <figure class="mb-10">
+            <figure class="mb-6">
               <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP의 세 가지 역할</title>
@@ -154,14 +154,14 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="primitives">04 — 서버가 내놓는 것</h2>
+                <h2 class="eyebrow mb-3" id="primitives">04 — 서버가 내놓는 것</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-4">
                 서버가 내놓는 것은 세 종류. 그 차이는 <strong>'읽기' 대 '쓰기'가 아닙니다</strong>. 거기가 가장 흔한 착각입니다.
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 진짜 차이는 <strong>누가 쓸지 정하는가</strong>입니다. 다음 세 장면에서 답은 각각 다릅니다.
             </p>
 
@@ -178,7 +178,7 @@
                     </button>
                 </div>
 
-                <section data-panel="resource" class="p-8">
+                <section data-panel="resource" class="">
                     <p class="eyebrow mb-4">답: <strong>Resource</strong> — 정하는 쪽은 앱</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         문서를 대화로 끌어다 놓거나, 호스트가 '이 질문에는 이 파일이 필요하다'고 판단하는 경우. 정하는 것은 <strong>앱</strong>이지 모델이 아닙니다. 모델은 그 내용을 받았을 뿐입니다.
@@ -188,7 +188,7 @@
                     </p>
                 </section>
 
-                <section data-panel="tool" class="p-8">
+                <section data-panel="tool" class="">
                     <p class="eyebrow mb-4">답: <strong>Tool</strong> — 정하는 쪽은 모델</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         "이 버그를 티켓으로 만들어 줘"라고 하면, 어떤 기능을 어떤 인자로 부를지는 모델이 스스로 정합니다. 정하는 것은 <strong>모델</strong>입니다.
@@ -198,7 +198,7 @@
                     </p>
                 </section>
 
-                <section data-panel="prompt" class="p-8">
+                <section data-panel="prompt" class="">
                     <p class="eyebrow mb-4">답: <strong>Prompt</strong> — 정하는 쪽은 사용자</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         메뉴에서 '코드 리뷰'를 고르거나 슬래시 명령을 칩니다. 정하는 것은 <strong>당신</strong>입니다. 모델이 알아서 쓰러 가지 않습니다.
@@ -215,9 +215,9 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="transport">05 — 어떻게 나르는가</h2>
+                <h2 class="eyebrow mb-3" id="transport">05 — 어떻게 나르는가</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 표준은 둘입니다. <strong>stdio</strong>는 서버를 자식 프로세스로 띄우고 표준 입출력으로 주고받습니다. <strong>Streamable HTTP</strong>는 메시지 하나가 HTTP POST 한 번이 됩니다. <strong>이것은 '어떻게 나르는가'의 차이지 '어디에 있는가'의 차이가 아닙니다.</strong> 내 기계에서 도는 서버도 Streamable HTTP를 말할 수 있습니다.
@@ -228,21 +228,21 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="whats-new">06 — 이 판에서 바뀐 것</h2>
+                <h2 class="eyebrow mb-3" id="whats-new">06 — 이 판에서 바뀐 것</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 서버는 이제 아무것도 기억하지 않습니다.
             </p>
             <p class="max-w-prose leading-relaxed mb-6">
                 <span class="font-sans">2026-07-28</span>은 MCP가 나온 이래 가장 큰 개정이며 하위 호환을 깨는 변경입니다. 전에는 클라이언트가 서버와 악수해 연결을 만들고, 그 뒤로 서로를 기억했습니다. <strong>지금은 악수도, 연결 단계도 없습니다.</strong> 모든 요청이 스스로 버전과 신원을 지고 오며, 서버는 처리하고 나면 잊습니다.
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 방향도 바뀌었습니다. <strong>서버가 되물어 오는 일은 없습니다.</strong> "이게 필요하다"고 돌려주고 그 요청은 거기서 끝납니다. 답을 얻은 클라이언트가 <strong>다시 한 번 보냅니다</strong>.
             </p>
 
-            <div class="border-s border-line ps-6 mb-10">
+            <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-4">다른 데서 이런 것을 보면 그 자료는 낡은 것</p>
                 <ul class="font-sans text-sm space-y-2">
                     <li>├─ <code>initialize</code> 악수</li>
@@ -255,7 +255,7 @@
             <p class="max-w-prose leading-relaxed mb-6">
                 세 번째는 오해되기 쉬우니 분명히 적습니다. '서버가 이제 아무것도 요구할 수 없다'는 뜻이 아닙니다. <strong>사라진 것은 '스스로 보내는' 장치이지, 요구를 낼 능력이 아닙니다.</strong> 전에는 서버가 요청을 곧바로 밀어 넣을 수 있었습니다. 지금은 응답 안에서 "이게 필요하다"고 말하고 끝내며, 나머지는 클라이언트가 이어받습니다.
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 그래서 '서버가 클라이언트에 무언가를 구하는' 기능은 <strong>모두 남아 있습니다. 지나는 길이 바뀌었을 뿐입니다.</strong> <strong>Elicitation</strong>(사용자에게 정보 하나를 구함)도 <strong>Sampling</strong>(호스트의 모델을 빌림. 방향이 직관과 반대라 특히 오해가 많습니다)도 마찬가지입니다.
             </p>
 
@@ -265,17 +265,17 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="version">07 — 이 페이지가 가리키는 판</h2>
+                <h2 class="eyebrow mb-3" id="version">07 — 이 페이지가 가리키는 판</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP의 버전은 <strong>날짜 그 자체</strong>입니다. 가리키는 것은 '마지막으로 호환을 깨는 변경을 한 날'이지 릴리스 주기가 아닙니다. 그래서 손에 든 MCP 자료는 대응하는 날짜만 보면 얼마나 새것인지 알 수 있습니다. <strong>이 페이지에서 가져갈 값어치가 가장 큰 것이 이 한 가지입니다.</strong>
             </p>
-            <p class="font-sans text-sm mb-10">
+            <p class="font-sans text-sm mb-6">
                 2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span>2026-07-28</span>
             </p>
-            <div class="border border-line p-8">
+            <div class="border border-line p-5">
                 <p class="eyebrow mb-4">날짜에 매인 서술</p>
                 <ul class="text-sm space-y-3 leading-relaxed">
                     <li>앞 절 「이 판에서 바뀐 것」은 <span class="font-sans">2026-07-28</span>에 대해서만 성립합니다.</li>

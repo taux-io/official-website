@@ -15,16 +15,16 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6">
+<div class="relative pt-2 pb-0 px-6">
     <article class="max-w-4xl mx-auto relative z-10">
 
-        <header class="band mb-20">
-            <div class="tag mb-6">AI の技術メモ</div>
-            <h1 class="mb-8">
-                <span class="display-lead">Model Context Protocol</span>
+        <header class="band mb-0">
+            <div class="tag mb-4">AI の技術メモ</div>
+            <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">Model Context Protocol</span>
                 <span class="display-sub">MCP は何を解こうとしているのか</span>
             </h1>
-            <p class="text-lg max-w-prose leading-relaxed">
+            <p class="text-base tablet:text-lg max-w-prose leading-relaxed">
                 MCP は<strong>共通の配線規格</strong>です。AI アプリケーションを、外部のデータやツールにつなぐためのものです。ここでは三つの役割、提供される三種類のもの、そして 2026 年の改訂で何がひっくり返ったのかを、平たく説明します。
             </p>
             <p class="font-sans text-eyebrow uppercase mt-8">
@@ -33,11 +33,11 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="what">01 — ひとことで</h2>
+                <h2 class="eyebrow mb-3" id="what">01 — ひとことで</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 どの AI アプリケーションからでも、同じやり方でどのデータ源にもつなげる。それが MCP です。
             </p>
             <p class="max-w-prose leading-relaxed">
@@ -46,14 +46,14 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="why">02 — なぜ要るのか</h2>
+                <h2 class="eyebrow mb-3" id="why">02 — なぜ要るのか</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-8">
+            <p class="max-w-prose leading-relaxed mb-5">
                 AI アプリケーションが 4 つ、つなぎたい先が 5 つあるとします。Google Drive、GitHub、データベース、Slack、社内 API。
             </p>
-            <div class="border border-line p-8 mb-8">
+            <div class="border border-line p-5 mb-6">
                 <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
                     <div>
                         <p class="eyebrow mb-4">共通の規格がない場合</p>
@@ -73,15 +73,15 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="roles">03 — 三つの役割</h2>
+                <h2 class="eyebrow mb-3" id="roles">03 — 三つの役割</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 MCP には三つの役割があります。<strong>取り違えられるのは、たいてい最初の二つ</strong>です。「MCP クライアント」と言うとき、頭に浮かんでいるのはたいてい Claude Desktop ですが、あれはホストです。
             </p>
 
-            <figure class="mb-10">
+            <figure class="mb-6">
               <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP の三つの役割</title>
@@ -154,14 +154,14 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="primitives">04 — サーバが出すもの</h2>
+                <h2 class="eyebrow mb-3" id="primitives">04 — サーバが出すもの</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-4">
                 サーバが出すものは三種類。その違いは<strong>「読み」対「書き」ではありません</strong>。そこがいちばんよくある取り違えです。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 ほんとうの違いは<strong>誰が使うと決めるか</strong>です。次の三つの場面で、答えはそれぞれ違います。
             </p>
 
@@ -178,7 +178,7 @@
                     </button>
                 </div>
 
-                <section data-panel="resource" class="p-8">
+                <section data-panel="resource" class="">
                     <p class="eyebrow mb-4">答え：<strong>Resource</strong> — 決めるのはアプリ</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         書類を会話にドラッグする、あるいはホストが「この質問にはこのファイルが要る」と判断する。決めているのは<strong>アプリ</strong>で、モデルではありません。モデルは中身を受け取っただけです。
@@ -188,7 +188,7 @@
                     </p>
                 </section>
 
-                <section data-panel="tool" class="p-8">
+                <section data-panel="tool" class="">
                     <p class="eyebrow mb-4">答え：<strong>Tool</strong> — 決めるのはモデル</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         「このバグをチケットにして」と言えば、どの機能をどんな引数で呼ぶかはモデルが自分で決めます。決めているのは<strong>モデル</strong>です。
@@ -198,7 +198,7 @@
                     </p>
                 </section>
 
-                <section data-panel="prompt" class="p-8">
+                <section data-panel="prompt" class="">
                     <p class="eyebrow mb-4">答え：<strong>Prompt</strong> — 決めるのは利用者</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         メニューから「コードレビュー」を選ぶ、スラッシュコマンドを打つ。決めているのは<strong>あなた</strong>です。モデルが勝手に使いにいくことはありません。
@@ -215,9 +215,9 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="transport">05 — どう運ぶか</h2>
+                <h2 class="eyebrow mb-3" id="transport">05 — どう運ぶか</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 標準は二つ。<strong>stdio</strong> はサーバを子プロセスとして起動し、標準入出力でやり取りします。<strong>Streamable HTTP</strong> は一つのメッセージが一回の HTTP POST になります。<strong>これは「どう運ぶか」の違いであって、「どこにあるか」の違いではありません。</strong>手元で動くサーバでも Streamable HTTP は話せます。
@@ -228,21 +228,21 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="whats-new">06 — この版で変わったこと</h2>
+                <h2 class="eyebrow mb-3" id="whats-new">06 — この版で変わったこと</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 サーバは、もう何も覚えていません。
             </p>
             <p class="max-w-prose leading-relaxed mb-6">
                 <span class="font-sans">2026-07-28</span> は MCP が世に出てから最も大きな改訂で、後方互換を壊すものです。以前はクライアントがサーバと握手して接続を張り、その後は互いを覚えていました。<strong>いまは握手も、接続の段階もありません。</strong>すべての要求が自分でバージョンと身元を運び、サーバは処理し終えたら忘れます。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 向きも変わりました。<strong>サーバのほうから問い返してくることはありません。</strong>「これが要る」と返して、その要求はそこで終わります。答えを得たクライアントが<strong>もう一度出し直します</strong>。
             </p>
 
-            <div class="border-s border-line ps-6 mb-10">
+            <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-4">よそでこれらを見かけたら、その資料は古い</p>
                 <ul class="font-sans text-sm space-y-2">
                     <li>├─ <code>initialize</code> の握手</li>
@@ -255,7 +255,7 @@
             <p class="max-w-prose leading-relaxed mb-6">
                 三つ目は誤解されやすいので、はっきり書きます。「サーバはもう何も要求できなくなった」という意味ではありません。<strong>なくなったのは「自分から送りつける」という仕組みのほうで、要求を出す能力ではありません。</strong>以前はサーバが要求を直接押し込めました。いまは応答の中で「これが要る」と述べて終わり、あとはクライアントが引き取ります。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 ですから「サーバがクライアントに何かを求める」機能は<strong>すべて残っています。通り道が変わっただけです。</strong><strong>Elicitation</strong>（利用者に一つ情報を求める）も <strong>Sampling</strong>（ホストのモデルを借りる。向きが直感と逆なので、とりわけ誤解されます）も同じです。
             </p>
 
@@ -265,17 +265,17 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="version">07 — このページが指す版</h2>
+                <h2 class="eyebrow mb-3" id="version">07 — このページが指す版</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP のバージョンは<strong>日付そのもの</strong>です。示しているのは「最後に互換を壊す変更をした日」であって、リリースの周期ではありません。だから手元の MCP の資料は、対応する日付を見ればどれだけ新しいかがわかります。<strong>このページから持ち帰る価値がいちばん高いのは、この一点です。</strong>
             </p>
-            <p class="font-sans text-sm mb-10">
+            <p class="font-sans text-sm mb-6">
                 2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span>2026-07-28</span>
             </p>
-            <div class="border border-line p-8">
+            <div class="border border-line p-5">
                 <p class="eyebrow mb-4">日付に依存する記述</p>
                 <ul class="text-sm space-y-3 leading-relaxed">
                     <li>前節「この版で変わったこと」は <span class="font-sans">2026-07-28</span> についてのみ成り立ちます。</li>

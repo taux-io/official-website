@@ -54,18 +54,18 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-24 pb-20 px-6 overflow-hidden">
+<article class="relative pt-2 pb-0 px-6 overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-16">
-            <div class="tag mb-6">
+        <header class="band mb-0">
+            <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 AI Security Lab
             </div>
-            <h1 class="mb-6">
-                <span class="display-lead">OWASP LLM Top 10</span>
+            <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">OWASP LLM Top 10</span>
                 <span class="display-sub">LLM アプリの十大セキュリティリスク · 2026 版</span>
             </h1>
-            <p class="text-lg mb-8 max-w-prose">十のリスクを一つずつ。定義、実際の攻撃面、そして防ぎ方。企業が AI のリスク棚卸しをするときの最初の対照表です。</p>
+            <p class="text-base tablet:text-lg mb-5 max-w-prose">十のリスクを一つずつ。定義、実際の攻撃面、そして防ぎ方。企業が AI のリスク棚卸しをするときの最初の対照表です。</p>
         </header>
 
         <!-- The same step response as the homepage, drawn once and left still.
@@ -74,7 +74,7 @@
     </div>
 </article>
 
-<div class="py-24">
+<div class="pt-2 pb-4">
     <div class="max-w-prose mx-auto px-6 relative">
 
         <!-- Section index.
@@ -83,7 +83,7 @@
              to know where you are, not a widget that has to run before the page
              is navigable — with no script it still lists and still jumps.
 
-             Sits outside the space-y-32 stack rather than inside it: space-y
+             Sits outside the space-y-12 tablet:space-y-16 stack rather than inside it: space-y
              adds a top margin to every element after the first, and an absolute
              child still counts as an element, so putting it in the stack would
              push the whole page down by eight rem.
@@ -111,7 +111,7 @@
             </div>
         </nav>
 
-    <div class="space-y-32">
+    <div class="space-y-12 tablet:space-y-16">
 
         <!-- Version status.
 
@@ -120,9 +120,9 @@
              is that replacement: what it used to say — "2026 exists, we have
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
-        <section id="version-status" class="border-t border-line pt-16">
+        <section id="version-status" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">00</p>
+                <p class="eyebrow mb-3 font-sans">00</p>
                 <h2 class="mb-6">2025 → 2026 で変わったこと</h2>
             </div>
             <div class="border-s border-line ps-6 leading-relaxed">
@@ -175,9 +175,9 @@
              silently on different content the moment the ranking moved. The
              number changes between editions; the topic does not. Same reason
              the URL carries no year. -->
-        <section id="overview" class="border-t border-line pt-16">
+        <section id="overview" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">01</p>
+                <p class="eyebrow mb-3 font-sans">01</p>
                 <h2 class="mb-6">十条をひと目で</h2>
             </div>
             <div class="overflow-x-auto" tabindex="0">
@@ -191,54 +191,54 @@
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM01</td>
-                            <td class="py-4 pe-4"><a href="#prompt-injection" class="font-semibold">プロンプトインジェクション</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Prompt Injection</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-3 pe-4"><a href="#prompt-injection" class="font-semibold">プロンプトインジェクション</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Prompt Injection</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM02</td>
-                            <td class="py-4 pe-4"><a href="#sensitive-information-disclosure" class="font-semibold">機微情報の漏えい</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Sensitive Information Disclosure</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-3 pe-4"><a href="#sensitive-information-disclosure" class="font-semibold">機微情報の漏えい</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Sensitive Information Disclosure</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM03</td>
-                            <td class="py-4 pe-4"><a href="#excessive-agency" class="font-semibold">過剰な権限</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Excessive Agency</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-3 pe-4"><a href="#excessive-agency" class="font-semibold">過剰な権限</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Excessive Agency</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM04</td>
-                            <td class="py-4 pe-4"><a href="#supply-chain" class="font-semibold">サプライチェーン</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Supply Chain</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-3 pe-4"><a href="#supply-chain" class="font-semibold">サプライチェーン</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Supply Chain</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM05</td>
-                            <td class="py-4 pe-4"><a href="#data-and-model-poisoning" class="font-semibold">データとモデルの汚染</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Data and Model Poisoning</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-3 pe-4"><a href="#data-and-model-poisoning" class="font-semibold">データとモデルの汚染</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Data and Model Poisoning</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM06</td>
-                            <td class="py-4 pe-4"><a href="#unbounded-consumption" class="font-semibold">際限のない消費</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Unbounded Consumption</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-3 pe-4"><a href="#unbounded-consumption" class="font-semibold">際限のない消費</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Unbounded Consumption</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM07</td>
-                            <td class="py-4 pe-4"><a href="#misinformation" class="font-semibold">誤情報</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Misinformation</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-3 pe-4"><a href="#misinformation" class="font-semibold">誤情報</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Misinformation</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM08</td>
-                            <td class="py-4 pe-4"><a href="#hidden-context-exposure" class="font-semibold">隠し文脈の露出</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Hidden Context Exposure</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-3 pe-4"><a href="#hidden-context-exposure" class="font-semibold">隠し文脈の露出</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Hidden Context Exposure</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM09</td>
-                            <td class="py-4 pe-4"><a href="#vector-and-embedding-weaknesses" class="font-semibold">ベクトルと埋め込みの弱点</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-3 pe-4"><a href="#vector-and-embedding-weaknesses" class="font-semibold">ベクトルと埋め込みの弱点</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Vector and Embedding Weaknesses</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM10</td>
-                            <td class="py-4 pe-4"><a href="#improper-output-handling" class="font-semibold">出力処理の不備</a></td>
-                            <td class="py-4 hidden tablet:table-cell">Improper Output Handling</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-3 pe-4"><a href="#improper-output-handling" class="font-semibold">出力処理の不備</a></td>
+                            <td class="py-3 hidden tablet:table-cell">Improper Output Handling</td>
                         </tr>
                     </tbody>
                 </table>
@@ -249,9 +249,9 @@
              prompt injection out in full here would put it in direct
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
-        <section id="prompt-injection" class="border-t border-line pt-16">
+        <section id="prompt-injection" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <p class="eyebrow mb-3 font-sans">LLM01</p>
                 <h2 class="mb-6">プロンプトインジェクション<span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -282,9 +282,9 @@
             </div>
         </section>
 
-        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <p class="eyebrow mb-3 font-sans">LLM02</p>
                 <h2 class="mb-6">機微情報の漏えい<span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -313,9 +313,9 @@
             </div>
         </section>
 
-        <section id="excessive-agency" class="border-t border-line pt-16">
+        <section id="excessive-agency" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <p class="eyebrow mb-3 font-sans">LLM03</p>
                 <h2 class="mb-6">過剰な権限<span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -347,9 +347,9 @@
             </div>
         </section>
 
-        <section id="supply-chain" class="border-t border-line pt-16">
+        <section id="supply-chain" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <p class="eyebrow mb-3 font-sans">LLM04</p>
                 <h2 class="mb-6">サプライチェーン<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -376,9 +376,9 @@
             </div>
         </section>
 
-        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+        <section id="data-and-model-poisoning" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <p class="eyebrow mb-3 font-sans">LLM05</p>
                 <h2 class="mb-6">データとモデルの汚染<span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -407,9 +407,9 @@
             </div>
         </section>
 
-        <section id="unbounded-consumption" class="border-t border-line pt-16">
+        <section id="unbounded-consumption" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <p class="eyebrow mb-3 font-sans">LLM06</p>
                 <h2 class="mb-6">際限のない消費<span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -439,9 +439,9 @@
             </div>
         </section>
 
-        <section id="misinformation" class="border-t border-line pt-16">
+        <section id="misinformation" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <p class="eyebrow mb-3 font-sans">LLM07</p>
                 <h2 class="mb-6">誤情報<span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -470,9 +470,9 @@
             </div>
         </section>
 
-        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+        <section id="hidden-context-exposure" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <p class="eyebrow mb-3 font-sans">LLM08</p>
                 <h2 class="mb-6">隠し文脈の露出<span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -504,9 +504,9 @@
             </div>
         </section>
 
-        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <p class="eyebrow mb-3 font-sans">LLM09</p>
                 <h2 class="mb-6">ベクトルと埋め込みの弱点<span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -535,9 +535,9 @@
             </div>
         </section>
 
-        <section id="improper-output-handling" class="border-t border-line pt-16">
+        <section id="improper-output-handling" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <p class="eyebrow mb-3 font-sans">LLM10</p>
                 <h2 class="mb-6">出力処理の不備<span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -570,17 +570,17 @@
         </section>
 
         <!-- Source -->
-        <section id="source" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-sans">出典</p>
+        <section id="source" class="border-t border-line pt-10">
+            <p class="eyebrow mb-3 font-sans">出典</p>
             <p class="leading-relaxed">十条の名称、順序、範囲は OWASP GenAI Security Project が公表した<a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 版の文書（ライセンス CC BY-SA 4.0）から。順位の決め方と事故データの数字も同じ文書によります。このページの整理、訳語、防ぎ方は TauX が書いたもので、OWASP の立場を示すものではありません。</p>
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
                 <h2 class="mb-6">自社の LLM アプリが心配な方へ</h2>
             </div>
-            <p class="mb-10 max-w-[42ch] text-lg">TauX Security Lab では LLM のセキュリティ検査とレッドチーム演習を行い、この十条に沿って一つずつ棚卸しします。</p>
+            <p class="mb-6 max-w-[42ch] text-lg">TauX Security Lab では LLM のセキュリティ検査とレッドチーム演習を行い、この十条に沿って一つずつ棚卸しします。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">セキュリティ相談を予約する</a>
                 <a href="/{{ locale }}" class="btn-quiet">サービスの詳細</a>

@@ -43,10 +43,10 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-24 pb-20 px-6 overflow-hidden">
+<article class="relative pt-2 pb-0 px-6 overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-16">
-            <div class="tag mb-6">
+        <header class="band mb-0">
+            <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 Data Governance
             </div>
@@ -54,10 +54,10 @@
      because Chinese has no upper case; on an English page the lead IS the
      content. `heading structure` asks for `display-sub` only from non-Latin
      locales (decision #56). -->
-    <h1 class="mb-6">
-                <span class="display-lead">Post-Quantum Migration</span>
+    <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">Post-Quantum Migration</span>
             </h1>
-            <p class="text-lg mb-8 max-w-prose">
+            <p class="text-base tablet:text-lg mb-5 max-w-prose">
                 A five-step path from governance to supply chain, mapped to the FSC's seven strategies, with the US, EU and Taiwan timelines and where each comes from.
             </p>
         </header>
@@ -65,7 +65,7 @@
     </div>
 </article>
 
-<div class="py-24">
+<div class="pt-2 pb-4">
     <div class="max-w-prose mx-auto px-6 relative">
 
         <!-- Section index. Same component as /owasp-llm-top-10: real anchors,
@@ -90,7 +90,7 @@
             </div>
         </nav>
 
-    <div class="space-y-32">
+    <div class="space-y-12 tablet:space-y-16">
 
         <!-- Why now.
 
@@ -101,9 +101,9 @@
              case on a contested prediction is one contradicting headline away
              from losing the reader. The regulatory dates do not depend on any
              prediction being right. -->
-        <section id="why-now" class="border-t border-line pt-16">
+        <section id="why-now" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">00</p>
+                <p class="eyebrow mb-3 font-sans">00</p>
                 <h2 class="mb-6">Why now</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -132,12 +132,12 @@
         </section>
 
         <!-- Overview: also the table of contents on small screens. -->
-        <section id="overview" class="border-t border-line pt-16">
+        <section id="overview" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">01</p>
+                <p class="eyebrow mb-3 font-sans">01</p>
                 <h2 class="mb-6">The five steps</h2>
             </div>
-            <p class="leading-relaxed mb-8">
+            <p class="leading-relaxed mb-5">
                 Each step is mapped to one of the seven strategies in the FSC's PQC migration guidance for the financial sector. Outside finance there is no local statutory deadline in Taiwan yet, but the sequence holds — and if you sell to a financial institution you are already inside that guidance's scope.
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -151,29 +151,29 @@
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">00</td>
-                            <td class="py-4 pe-4"><a href="#governance" class="font-semibold">Governance</a></td>
-                            <td class="py-4 hidden tablet:table-cell">① PQC policy and governance</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">00</td>
+                            <td class="py-3 pe-4"><a href="#governance" class="font-semibold">Governance</a></td>
+                            <td class="py-3 hidden tablet:table-cell">① PQC policy and governance</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">01</td>
-                            <td class="py-4 pe-4"><a href="#cbom" class="font-semibold">Inventory the cryptography (CBOM)</a></td>
-                            <td class="py-4 hidden tablet:table-cell">② Inventory cryptographic use, build the register</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">01</td>
+                            <td class="py-3 pe-4"><a href="#cbom" class="font-semibold">Inventory the cryptography (CBOM)</a></td>
+                            <td class="py-3 hidden tablet:table-cell">② Inventory cryptographic use, build the register</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">02</td>
-                            <td class="py-4 pe-4"><a href="#risk-assessment" class="font-semibold">Risk assessment and compliance mapping</a></td>
-                            <td class="py-4 hidden tablet:table-cell">⑤ Prioritise migration by risk</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">02</td>
+                            <td class="py-3 pe-4"><a href="#risk-assessment" class="font-semibold">Risk assessment and compliance mapping</a></td>
+                            <td class="py-3 hidden tablet:table-cell">⑤ Prioritise migration by risk</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">03</td>
-                            <td class="py-4 pe-4"><a href="#crypto-agility" class="font-semibold">Build crypto-agility</a></td>
-                            <td class="py-4 hidden tablet:table-cell">③ Improve crypto-agility, remove anti-patterns</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">03</td>
+                            <td class="py-3 pe-4"><a href="#crypto-agility" class="font-semibold">Build crypto-agility</a></td>
+                            <td class="py-3 hidden tablet:table-cell">③ Improve crypto-agility, remove anti-patterns</td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-sans font-semibold">04</td>
-                            <td class="py-4 pe-4"><a href="#supply-chain" class="font-semibold">Quantum-safe supply chain</a></td>
-                            <td class="py-4 hidden tablet:table-cell">⑥ Update procurement and supply-chain requirements</td>
+                            <td class="py-3 pe-4 font-sans font-semibold">04</td>
+                            <td class="py-3 pe-4"><a href="#supply-chain" class="font-semibold">Quantum-safe supply chain</a></td>
+                            <td class="py-3 hidden tablet:table-cell">⑥ Update procurement and supply-chain requirements</td>
                         </tr>
                     </tbody>
                 </table>
@@ -183,9 +183,9 @@
             </p>
         </section>
 
-        <section id="governance" class="border-t border-line pt-16">
+        <section id="governance" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Step 00</p>
+                <p class="eyebrow mb-3 font-sans">Step 00</p>
                 <!-- Four of the five step headings here carry a second half; the fifth
                      (Governance) did not, because in English it was the same word twice.
                      The other locales use that half for the English term beside their own;
@@ -218,9 +218,9 @@
             </div>
         </section>
 
-        <section id="cbom" class="border-t border-line pt-16">
+        <section id="cbom" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Step 01</p>
+                <p class="eyebrow mb-3 font-sans">Step 01</p>
                 <h2 class="mb-6">Inventory the cryptography <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -252,9 +252,9 @@
             </div>
         </section>
 
-        <section id="risk-assessment" class="border-t border-line pt-16">
+        <section id="risk-assessment" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Step 02</p>
+                <p class="eyebrow mb-3 font-sans">Step 02</p>
                 <h2 class="mb-6">Risk assessment and compliance mapping <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -276,9 +276,9 @@
             </div>
         </section>
 
-        <section id="crypto-agility" class="border-t border-line pt-16">
+        <section id="crypto-agility" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Step 03</p>
+                <p class="eyebrow mb-3 font-sans">Step 03</p>
                 <h2 class="mb-6">Build crypto-agility</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -310,9 +310,9 @@
             </div>
         </section>
 
-        <section id="supply-chain" class="border-t border-line pt-16">
+        <section id="supply-chain" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Step 04</p>
+                <p class="eyebrow mb-3 font-sans">Step 04</p>
                 <h2 class="mb-6">Quantum-safe supply chain</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -342,9 +342,9 @@
              can watch it: regulatory change does not live in this repository.
              The verification date and the convention around date_modified are
              the only defence, and they depend on a person. -->
-        <section id="regulatory-timeline" class="border-t border-line pt-16">
+        <section id="regulatory-timeline" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Regulatory timelines</p>
+                <p class="eyebrow mb-3 font-sans">Regulatory timelines</p>
                 <h2 class="mb-6">Where the rules stand</h2>
             </div>
             <div class="border-s border-line ps-6 leading-relaxed mb-8">
@@ -364,28 +364,28 @@
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">United States</td>
-                            <td class="py-4 pe-4">112-bit-strength algorithms deprecated after <span class="font-sans">2030</span>, disallowed after <span class="font-sans">2035</span></td>
-                            <td class="py-4">NIST IR 8547, <strong>still a public draft</strong>. Both years are widely quoted as settled; they are not yet final</td>
+                            <td class="py-3 pe-4 font-semibold">United States</td>
+                            <td class="py-3 pe-4">112-bit-strength algorithms deprecated after <span class="font-sans">2030</span>, disallowed after <span class="font-sans">2035</span></td>
+                            <td class="py-3">NIST IR 8547, <strong>still a public draft</strong>. Both years are widely quoted as settled; they are not yet final</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">European Union</td>
-                            <td class="py-4 pe-4">Member states to begin by end <span class="font-sans">2026</span>; high-risk critical-infrastructure scenarios by end <span class="font-sans">2030</span> by then</td>
-                            <td class="py-4">Commission Recommendation (EU) 2024/1101, issued 2024-04-11</td>
+                            <td class="py-3 pe-4 font-semibold">European Union</td>
+                            <td class="py-3 pe-4">Member states to begin by end <span class="font-sans">2026</span>; high-risk critical-infrastructure scenarios by end <span class="font-sans">2030</span> by then</td>
+                            <td class="py-3">Commission Recommendation (EU) 2024/1101, issued 2024-04-11</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-semibold">Taiwan<br><span class="font-normal">financial sector</span></td>
-                            <td class="py-4 pe-4">
+                            <td class="py-3 pe-4 font-semibold">Taiwan<br><span class="font-normal">financial sector</span></td>
+                            <td class="py-3 pe-4">
                                 Near term <span class="font-sans">2026–2027</span>: governance, inventory method, CBOM, agility foundations<br>
                                 Medium <span class="font-sans">2027–2029</span>: pilots, infrastructure upgrades, shared testing<br>
                                 Long term <span class="font-sans">to 2035</span>: migrate high-risk, high-criticality systems first
                             </td>
-                            <td class="py-4">FSC PQC Migration Reference Guidance for the Financial Sector, issued 2026-06-18. Applies to financial institutions <strong>and significant suppliers</strong>; it is <strong>guidance, not a mandate</strong></td>
+                            <td class="py-3">FSC PQC Migration Reference Guidance for the Financial Sector, issued 2026-06-18. Applies to financial institutions <strong>and significant suppliers</strong>; it is <strong>guidance, not a mandate</strong></td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-semibold">Taiwan<br><span class="font-normal">all sectors</span></td>
-                            <td class="py-4 pe-4"><strong>No completion deadline set</strong></td>
-                            <td class="py-4">PQC Migration Guidance from the Administration for Digital Industries (moda) and the post-quantum security industry alliance, issued 2025-04-16. Covers PKI, secure chips, digital signatures, network equipment and zero-trust identity</td>
+                            <td class="py-3 pe-4 font-semibold">Taiwan<br><span class="font-normal">all sectors</span></td>
+                            <td class="py-3 pe-4"><strong>No completion deadline set</strong></td>
+                            <td class="py-3">PQC Migration Guidance from the Administration for Digital Industries (moda) and the post-quantum security industry alliance, issued 2025-04-16. Covers PKI, secure chips, digital signatures, network equipment and zero-trust identity</td>
                         </tr>
                     </tbody>
                 </table>
@@ -396,9 +396,9 @@
             </p>
         </section>
 
-        <section id="standards" class="border-t border-line pt-16">
+        <section id="standards" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">Standards status</p>
+                <p class="eyebrow mb-3 font-sans">Standards status</p>
                 <h2 class="mb-6">What is standardised and what is not</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -426,8 +426,8 @@
         </section>
 
         <!-- Source -->
-        <section id="source" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-sans">Sources</p>
+        <section id="source" class="border-t border-line pt-10">
+            <p class="eyebrow mb-3 font-sans">Sources</p>
             <p class="leading-relaxed">
                 Regulatory timelines and standards status are taken from
                 <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>,
@@ -440,11 +440,11 @@
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
                 <h2 class="mb-6">Not sure what cryptography you are running?</h2>
             </div>
-            <p class="mb-10 max-w-[42ch] text-lg">
+            <p class="mb-6 max-w-[42ch] text-lg">
                 Most organisations stall at step one. A CBOM inventory is the same capability as data governance — start by telling us what your asset catalogue looks like today.
             </p>
             <div class="flex flex-col mobile:flex-row gap-4">
