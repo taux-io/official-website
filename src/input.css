@@ -808,8 +808,11 @@
      THE GATE NEVER MEASURED THESE: geometry's touch probe read `a.btn` and the
      form controls, not a plain anchor, so the 26px was green and would have
      stayed green at 12. The probe reads chrome anchors now. */
+  /* nowrap and a 44px width floor: a label never wraps, and at 320px the
+     Japanese footer row squeezed 利用規約 onto two lines, 42px wide — the
+     probe's first catch after the nav token grew. The row wraps instead. */
   .footer-link {
-    @apply block text-sm text-ink py-3;
+    @apply block text-sm text-ink py-3 whitespace-nowrap min-w-11;
   }
 
   @media (hover: hover) {
