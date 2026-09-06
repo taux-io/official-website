@@ -1813,6 +1813,118 @@ function ruleDeclaredSurfaces() {
 }
 
 
+// RULE 36 — tags nest.
+//
+// THE DIV COUNT WAS RIGHT AND THE PAGE WAS BROKEN. A layout sweep left
+// /geo-guide with one `</div>` too many in the middle and one too few at the
+// end: the totals matched, so nothing noticed, and the reading column closed
+// two sections early. Those two sections rendered at x=0 across the full
+// 1280px window with the rest of the page in a 680px column beside them.
+//
+// EVERY GATE WAS GREEN. `check:classes` reads class names, `check:design` read
+// attributes, `check:md` reads the converted Markdown (htmd re-balances as it
+// parses), `contrast` and `geometry` measure what the browser rendered — and
+// the browser silently repairs mis-nesting, which is exactly why the damage is
+// visual rather than fatal. Reported by a person looking at the page.
+//
+// Comments and the contents of <script>/<style> are removed first: minijinja
+// tags and JS both contain `<` and `>`. Void and self-closing elements are
+// skipped, and SVG's own void elements are named because this site draws
+// icons inline.
+const VOID_ELEMENTS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
+  "param", "source", "track", "wbr",
+  "path", "circle", "rect", "line", "polygon", "polyline", "ellipse", "use", "stop",
+]);
+
+// A page as the generator assembles it: `{% include %}` resolved, with a map
+// from every offset back to the file and line the byte came from. Without this
+// the rule reads header.html as a document that opens <html> and never closes
+// it, which is not a defect — it is half a shell. Nesting is a property of the
+// composed page, so the composed page is what gets checked, and the finding
+// still points at the file an author would open.
+const INCLUDE = /\{%-?\s*include\s*"([^"]+)"\s*-?%\}/;
+
+function compose(rel, byRel, depth = 0) {
+  const file = byRel.get(rel);
+  if (!file || depth > 4) return { text: "", map: [] };
+  let text = "";
+  const map = [];
+  let rest = file.html;
+  let line = 1;
+  for (;;) {
+    const m = INCLUDE.exec(rest);
+    const head = m ? rest.slice(0, m.index) : rest;
+    if (head) {
+      map.push({ start: text.length, end: text.length + head.length, rel, line });
+      text += head;
+      line += head.split("\n").length - 1;
+    }
+    if (!m) break;
+    const inner = compose(path.join("templates", m[1]), byRel, depth + 1);
+    for (const seg of inner.map) {
+      map.push({ start: text.length + seg.start, end: text.length + seg.end, rel: seg.rel, line: seg.line });
+    }
+    text += inner.text;
+    rest = rest.slice(m.index + m[0].length);
+  }
+  return { text, map };
+}
+
+function ruleTagsNest(files) {
+  const byRel = new Map(files.map((f) => [f.rel, f]));
+  const PARTIAL = /(^|[\\/])(header\.html|footer\.html|_)/;
+  const found = [];
+  for (const { rel } of files) {
+    if (PARTIAL.test(rel)) continue;
+    const page = compose(rel, byRel);
+    // Offsets shift when comments and scripts go, so they are blanked rather
+    // than deleted: same length, same map, nothing left to parse.
+    const blank = (m) => " ".repeat(m.length);
+    const src = page.text
+      .replace(/<!--[\s\S]*?-->/g, blank)
+      .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/g, blank);
+    const where = (offset) => {
+      const seg = page.map.find((s) => offset >= s.start && offset < s.end);
+      if (!seg) return { file: rel, line: 0 };
+      return { file: seg.rel, line: seg.line + page.text.slice(seg.start, offset).split("\n").length - 1 };
+    };
+    const stack = [];
+    for (const m of src.matchAll(/<(\/?)([a-zA-Z][a-zA-Z0-9]*)\b([^>]*?)(\/?)>/g)) {
+      const [, closing, raw, , selfClosing] = m;
+      const tag = raw.toLowerCase();
+      if (VOID_ELEMENTS.has(tag) || selfClosing) continue;
+      if (!closing) {
+        stack.push({ tag, at: m.index });
+        continue;
+      }
+      const top = stack[stack.length - 1];
+      if (!top) {
+        found.push({ ...where(m.index), detail: `</${tag}> closes nothing that is open (in ${rel})` });
+        continue;
+      }
+      if (top.tag === tag) {
+        stack.pop();
+        continue;
+      }
+      const opened = where(top.at);
+      found.push({
+        ...where(m.index),
+        detail:
+          `</${tag}> closes <${top.tag}> opened at ${opened.file}:${opened.line} — the tags cross, ` +
+          `so the browser repairs the tree and the layout lands somewhere nobody wrote (in ${rel})`,
+      });
+      const at = stack.map((e) => e.tag).lastIndexOf(tag);
+      if (at !== -1) stack.length = at;
+    }
+    for (const { tag, at } of stack) {
+      found.push({ ...where(at), detail: `<${tag}> is never closed (in ${rel})` });
+    }
+  }
+  return found;
+}
+
+
 // RULE 34 — state pairs keep contrast.
 //
 // `contrast` walks every route and measures every text element — at rest.
@@ -2211,6 +2323,13 @@ const RULES = [
     turnedOnBy: "v5 — the manifest carried a black theme colour through two resets while declared the whole time",
     run: ruleThemeColourAgrees,
     summary: "the meta theme-color and the manifest's theme_color are the same surface",
+  },
+  {
+    name: "tags nest",
+    enabled: true,
+    turnedOnBy: "v5.3 — /geo-guide shipped with balanced div counts and crossed tags; sixteen gates called it clean",
+    run: ruleTagsNest,
+    summary: "every closing tag closes the element that is actually open; counts matching is not nesting",
   },
   {
     name: "state pairs keep contrast",
