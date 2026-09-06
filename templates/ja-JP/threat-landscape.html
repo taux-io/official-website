@@ -44,7 +44,7 @@
     <div class="max-w-4xl mx-auto relative z-10">
         <header class="band mb-16">
             <div class="tag mb-6">
-                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 Security
             </div>
             <h1 class="mb-6">
@@ -60,7 +60,7 @@
 <div class="py-24">
     <div class="max-w-prose mx-auto px-6 relative">
 
-        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+        <nav data-section-index aria-label="セクション索引" class="hidden desktop:block absolute top-0 -start-56 w-48 h-full">
             <div class="sticky top-24">
                 <p class="eyebrow mb-5">目次</p>
                 <ul>
@@ -85,12 +85,12 @@
         <section id="how-to-read" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">00</p>
-                <h2 class="font-display text-2xl font-bold mb-6">数字より先に、読み方</h2>
+                <h2 class="mb-6">数字より先に、読み方</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>見る値打ちはありますが、これは全数調査ではありません。<strong>脅威レポートのデータは、ベンダー自身の製品テレメトリとインシデント対応の案件から来ます</strong>。母集団はその顧客環境——EDR（エンドポイントの検知と対応）を導入している、たいていは予算のある組織です。</p>
                 <p>数字が捏造だという話ではありません。どの数字にも三つの限界がついて回るという話です。<strong>どんな環境で測ったか、何で測ったか、その道具に何が見えているか</strong>。この三つを飛ばすと、「EDR のある環境で見えた姿」を「世界の姿」だと思い込むことになります。</p>
-                <div class="border-l border-line pl-6">
+                <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">使うときの目安</p>
                     <p>この種のレポートは<strong>攻撃手法と傾向の情報</strong>として使ってください。実際に対応した案件から来ている、いちばん確かな部分です。<strong>避けたいのは</strong>その割合を自分の組織のリスク確率の土台にすることです。それには自分の環境のデータが要ります。</p>
                 </div>
@@ -100,48 +100,48 @@
         <section id="numbers" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
-                <h2 class="font-display text-2xl font-bold mb-6">八つの数字</h2>
+                <h2 class="mb-6">八つの数字</h2>
             </div>
             <p class="leading-relaxed mb-8">以下の数字はすべて CrowdStrike 2026 グローバル脅威レポートの公開ページから。対象は 2025 年の観測データです。</p>
             <div class="overflow-x-auto" tabindex="0">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-start border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">数字</th>
-                            <th scope="col" class="py-3 font-bold text-sm">意味</th>
+                            <th scope="col" class="py-3 pe-4 font-semibold text-sm">数字</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">意味</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
                             <td class="py-4"><a href="#speed" >eCrime の breakout time の最短</a>——記録された最短値であって、平均ではありません</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+65%</td>
                             <td class="py-4"><a href="#speed" >breakout の速さの前年比</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">82%</td>
                             <td class="py-4"><a href="#malware-free" >2025 年の検知のうち、悪意あるファイルを伴わないもの</a>（malware-free）</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+89%</td>
                             <td class="py-4"><a href="#ai" >AI を使う攻撃者による攻撃の増加</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">90+</td>
                             <td class="py-4"><a href="#ai" >組織で、正規の AI ツールが悪用され</a>不正な指示の生成に使われた</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+550%</td>
                             <td class="py-4"><a href="#ai" >ChatGPT が犯罪フォーラムで言及された回数</a>ほかのどのモデルより多い</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">40%</td>
                             <td class="py-4"><a href="#nation-state" >中国系の攻撃者が突いた脆弱性のうち、エッジ機器を狙ったもの</a></td>
                         </tr>
                         <tr>
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+266%</td>
                             <td class="py-4"><a href="#nation-state" >国家が背後にいる相手によるクラウド経由の侵入の増加</a></td>
                         </tr>
                     </tbody>
@@ -152,7 +152,7 @@
         <section id="speed" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">02</p>
-                <h2 class="font-display text-2xl font-bold mb-6">速さ：27 秒と +65%</h2>
+                <h2 class="mb-6">速さ：27 秒と +65%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -172,7 +172,7 @@
         <section id="malware-free" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">03</p>
-                <h2 class="font-display text-2xl font-bold mb-6">ファイルを置かない攻撃：82%</h2>
+                <h2 class="mb-6">ファイルを置かない攻撃：82%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -188,7 +188,7 @@
                     </ol>
                     <p class="mt-4">ですからこの割合が確かに描いているのはしているのは<strong>「EDR のある環境で何が見えるか」</strong>であって、世界全体の攻撃の内訳にそのまま広げることはできません。</p>
                 </div>
-                <div class="border-l border-line pl-6">
+                <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">ただし、実務の結論は変わりません</p>
                     <p>本当の割合が 82% でも別の数字でも、向きははっきりしています。<strong>ファイルの特徴を中心に据えたウイルス対策では、検知の大半をつかまえられません</strong>。この結論は、あの割合が正確でなくても成り立ちます。</p>
                 </div>
@@ -198,7 +198,7 @@
         <section id="ai" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">04</p>
-                <h2 class="font-display text-2xl font-bold mb-6">AI を使う攻撃：+89%、90 以上、+550%</h2>
+                <h2 class="mb-6">AI を使う攻撃：+89%、90 以上、+550%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -214,14 +214,14 @@
                     </p>
                 </div>
                 <p class="text-sm border-t border-line pt-4 max-w-prose">
-                    <span class="eyebrow mr-3">関連</span>自社で動かす LLM アプリをどう守るかは<a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a>を。とくにプロンプトインジェクションと、権限を渡しすぎる話の二つ。</p>
+                    <span class="eyebrow me-3">関連</span>自社で動かす LLM アプリをどう守るかは<a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a>を。とくにプロンプトインジェクションと、権限を渡しすぎる話の二つ。</p>
             </div>
         </section>
 
         <section id="nation-state" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">05</p>
-                <h2 class="font-display text-2xl font-bold mb-6">国家が背後にいる相手：40% と +266%</h2>
+                <h2 class="mb-6">国家が背後にいる相手：40% と +266%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -239,7 +239,7 @@
         <section id="what-it-means" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">06</p>
-                <h2 class="font-display text-2xl font-bold mb-6">守る側にとって何を意味するか</h2>
+                <h2 class="mb-6">守る側にとって何を意味するか</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>上の限界をすべて差し引いても、残る方向はそのまま成り立ちます。どれも、特定の割合が正確であることに依存していないからです。</p>
@@ -249,7 +249,7 @@
                     <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>エッジ機器を棚卸しに入れること。</strong>どの資産台帳にも載っていないことが多く、それこそが狙われる理由です。</span></li>
                     <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>自分で入れた AI ツールが新しい攻撃面です。</strong>レポートの「正規の AI ツールが悪用された」90 余りの組織が使っていたのは、自分たちで買ったものです。</span></li>
                 </ol>
-                <p class="border-l border-line pl-6">この四つは、どれも数字が正確であることを必要としません。<strong>割合が正確かどうかでレポートの値打ちが決まるなら、そのレポートはたいてい判断には使えません。</strong>
+                <p class="border-s border-line ps-6">この四つは、どれも数字が正確であることを必要としません。<strong>割合が正確かどうかでレポートの値打ちが決まるなら、そのレポートはたいてい判断には使えません。</strong>
                 </p>
             </div>
         </section>
@@ -259,7 +259,7 @@
         <section id="source" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">出典と限界</p>
-                <h2 class="font-display text-2xl font-bold mb-6">この数字はどこから来たか</h2>
+                <h2 class="mb-6">この数字はどこから来たか</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>すべて<a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="underline">CrowdStrike 2026 Global Threat Report</a>の公開ページから。<strong>確認日 2026-08-06</strong>。対象は 2025 年の観測データで、著作権は CrowdStrike にあります。</p>
@@ -271,7 +271,7 @@
         <!-- CTA -->
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
-                <h2 class="font-display text-3xl font-bold mb-6">この傾向が自分の環境に何を意味するのか</h2>
+                <h2 class="mb-6">この傾向が自分の環境に何を意味するのか</h2>
             </div>
             <p class="mb-10 max-w-[42ch] text-lg">レポートが語るのは世界の姿です。要るのは自分の資産台帳と、露出している面。そこは棚卸しから始まります。</p>
             <div class="flex flex-col mobile:flex-row gap-4">

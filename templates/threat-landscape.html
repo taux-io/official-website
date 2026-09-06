@@ -44,7 +44,7 @@
     <div class="max-w-4xl mx-auto relative z-10">
         <header class="band mb-16">
             <div class="tag mb-6">
-                <span class="w-2 h-2 bg-ink rounded-full mr-2"></span>
+                <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 Security
             </div>
             <h1 class="mb-6">
@@ -62,7 +62,7 @@
 <div class="py-24">
     <div class="max-w-prose mx-auto px-6 relative">
 
-        <nav data-section-index aria-label="章節索引" class="hidden desktop:block absolute top-0 -left-56 w-48 h-full">
+        <nav data-section-index aria-label="章節索引" class="hidden desktop:block absolute top-0 -start-56 w-48 h-full">
             <div class="sticky top-24">
                 <p class="eyebrow mb-5">目錄</p>
                 <ul>
@@ -87,7 +87,7 @@
         <section id="how-to-read" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">00</p>
-                <h2 class="font-display text-2xl font-bold mb-6">先講怎麼讀，再看數字</h2>
+                <h2 class="mb-6">先講怎麼讀，再看數字</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>
@@ -96,7 +96,7 @@
                 <p>
                     這不是說數字造假。是說每一個數字都帶著三個限制：<strong>在什麼樣的環境裡量的、用什麼工具量的、那個工具看得見什麼</strong>。忽略這三件事，就會把「有 EDR 的環境裡看到的樣子」當成「全世界的樣子」。
                 </p>
-                <div class="border-l border-line pl-6">
+                <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">實用的判準</p>
                     <p>
                         把這類報告當成<strong>攻擊手法與趨勢的情報</strong>來用——那是它真正紮實的部分，因為那來自實際處理過的案件。<strong>不要</strong>把它的百分比當成自己組織風險機率的統計基礎，那需要的是你自己環境的資料。
@@ -108,50 +108,50 @@
         <section id="numbers" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
-                <h2 class="font-display text-2xl font-bold mb-6">八組數據</h2>
+                <h2 class="mb-6">八組數據</h2>
             </div>
             <p class="leading-relaxed mb-8">
                 以下數字均取自 CrowdStrike 2026 全球威脅報告的公開頁面。報告涵蓋的是 2025 年的觀測資料。
             </p>
             <div class="overflow-x-auto" tabindex="0">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-start border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">數字</th>
-                            <th scope="col" class="py-3 font-bold text-sm">意義</th>
+                            <th scope="col" class="py-3 pe-4 font-semibold text-sm">數字</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">意義</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">27 秒</td>
                             <td class="py-4"><a href="#speed" >最快的 eCrime breakout time</a>——記錄到的最快值，不是平均</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+65%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+65%</td>
                             <td class="py-4"><a href="#speed" >平均 breakout 速度年增幅</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">82%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">82%</td>
                             <td class="py-4"><a href="#malware-free" >2025 年的偵測為無惡意檔案</a>（malware-free）</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+89%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+89%</td>
                             <td class="py-4"><a href="#ai" >AI 加持的攻擊者所發動的攻擊增幅</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">90+</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">90+</td>
                             <td class="py-4"><a href="#ai" >組織的合法 AI 工具被濫用</a>來產生惡意指令</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+550%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+550%</td>
                             <td class="py-4"><a href="#ai" >ChatGPT 在犯罪論壇被提及的次數</a>高於其他任何模型</td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">40%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">40%</td>
                             <td class="py-4"><a href="#nation-state" >中國系攻擊者利用的漏洞針對邊緣裝置</a></td>
                         </tr>
                         <tr>
-                            <td class="py-4 pr-4 font-sans font-semibold whitespace-nowrap">+266%</td>
+                            <td class="py-4 pe-4 font-sans font-semibold whitespace-nowrap">+266%</td>
                             <td class="py-4"><a href="#nation-state" >國家級行為者的雲端導向入侵增幅</a></td>
                         </tr>
                     </tbody>
@@ -162,7 +162,7 @@
         <section id="speed" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">02</p>
-                <h2 class="font-display text-2xl font-bold mb-6">速度：27 秒與 +65%</h2>
+                <h2 class="mb-6">速度：27 秒與 +65%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -186,7 +186,7 @@
         <section id="malware-free" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">03</p>
-                <h2 class="font-display text-2xl font-bold mb-6">無檔案攻擊：82%</h2>
+                <h2 class="mb-6">無檔案攻擊：82%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -206,7 +206,7 @@
                         所以這個比例可靠地描述了<strong>「在有 EDR 的環境裡會看到什麼」</strong>，但不能直接外推成全世界的攻擊組成。
                     </p>
                 </div>
-                <div class="border-l border-line pl-6">
+                <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">但實務結論不受影響</p>
                     <p>
                         不管真實比例是 82% 還是別的數字，方向是明確的：<strong>以檔案特徵為中心的防毒，覆蓋不到大部分的偵測</strong>。這個結論不需要那個百分比精確才成立。
@@ -218,7 +218,7 @@
         <section id="ai" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">04</p>
-                <h2 class="font-display text-2xl font-bold mb-6">AI 加持的攻擊：+89%、90+、+550%</h2>
+                <h2 class="mb-6">AI 加持的攻擊：+89%、90+、+550%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -240,7 +240,7 @@
                     </p>
                 </div>
                 <p class="text-sm border-t border-line pt-4 max-w-prose">
-                    <span class="eyebrow mr-3">延伸</span>
+                    <span class="eyebrow me-3">延伸</span>
                     企業自己部署的 LLM 應用要怎麼防，見
                     <a href="/{{ locale }}/owasp-llm-top-10" class="underline">OWASP LLM Top 10</a>——尤其是提示詞注入與過度代理權那兩條。
                 </p>
@@ -250,7 +250,7 @@
         <section id="nation-state" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">05</p>
-                <h2 class="font-display text-2xl font-bold mb-6">國家級行為者：40% 與 +266%</h2>
+                <h2 class="mb-6">國家級行為者：40% 與 +266%</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -272,7 +272,7 @@
         <section id="what-it-means" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">06</p>
-                <h2 class="font-display text-2xl font-bold mb-6">對防守方的意義</h2>
+                <h2 class="mb-6">對防守方的意義</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>
@@ -284,7 +284,7 @@
                     <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>邊緣裝置要進盤點。</strong>它們常常不在任何一張資產清單上，而那正是它們被選中的原因。</span></li>
                     <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>你自己導入的 AI 工具是新的攻擊面。</strong>報告裡「合法 AI 工具被濫用」那 90 多個組織，用的是他們自己買的東西。</span></li>
                 </ol>
-                <p class="border-l border-line pl-6">
+                <p class="border-s border-line ps-6">
                     這四點沒有一項需要那些數字準確才成立。<strong>如果一份報告的價值取決於它的百分比是否精確，那它多半不值得拿來做決策。</strong>
                 </p>
             </div>
@@ -295,7 +295,7 @@
         <section id="source" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">來源與限制</p>
-                <h2 class="font-display text-2xl font-bold mb-6">這些數字從哪裡來</h2>
+                <h2 class="mb-6">這些數字從哪裡來</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>
@@ -315,7 +315,7 @@
         <!-- CTA -->
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
-                <h2 class="font-display text-3xl font-bold mb-6">想知道這些趨勢對你的環境代表什麼？</h2>
+                <h2 class="mb-6">想知道這些趨勢對你的環境代表什麼？</h2>
             </div>
             <p class="mb-10 max-w-[42ch] text-lg">
                 報告講的是全球樣態，你需要的是自己的資產清單與暴露面。那從盤點開始。

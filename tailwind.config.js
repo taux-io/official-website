@@ -114,7 +114,13 @@ module.exports = {
         // more it closes up.
         eyebrow: ["0.75rem", { lineHeight: "2", letterSpacing: "0.09em", fontWeight: "600" }],
         caption: ["0.875rem", { lineHeight: "1.43", letterSpacing: "0", fontWeight: "400" }],
-        nav: ["0.75rem", { lineHeight: "1", letterSpacing: "0", fontWeight: "400" }],
+        // 14px, NOT 12. The bar's one control (Explore), the switcher's summary
+        // and the menu's close button rendered 12px upper case — the eyebrow's
+        // size, which is a label's size. better-typography starts menus at 14px
+        // and keeps 12 for the floor. Tracked and 600 like the eyebrow, so the
+        // Latin signature keeps its carrier; the eyebrow stays 12px and is the
+        // ladder's smallest step alone now (rule 27 reads the minimum, 64/12).
+        nav: ["0.875rem", { lineHeight: "1", letterSpacing: "0.09em", fontWeight: "600" }],
         button: ["1.0625rem", { lineHeight: "1.2", letterSpacing: "-0.022em", fontWeight: "600" }],
         // Body is 17px and the leading floor is 1.47. The editorial leading is
         // part of the brand — DESIGN.md forbids going below it.

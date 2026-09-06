@@ -54,7 +54,10 @@ function stripVariants(candidate) {
 // Utilities are what Tailwind generates. Anything that does not look like one
 // is markup vocabulary, not a candidate — checking it would only produce noise.
 const LOOKS_LIKE_UTILITY =
-  /^-?(bg|text|border|rounded|p|px|py|pt|pb|pl|pr|m|mx|my|mt|mb|ml|mr|w|h|min-w|min-h|max-w|max-h|gap|space|flex|grid|col|row|items|justify|self|place|order|inset|top|bottom|left|right|z|opacity|shadow|ring|outline|font|leading|tracking|align|whitespace|break|list|object|overflow|position|absolute|relative|fixed|sticky|static|block|inline|hidden|table|transition|duration|delay|ease|animate|transform|translate|rotate|scale|skew|origin|cursor|select|pointer|resize|fill|stroke|divide|backdrop|blur|filter|antialiased|sr|not-sr|uppercase|lowercase|capitalize|truncate|underline|decoration|indent|aspect|container|columns|float|clear|isolate|visible|invisible|collapse|basis|grow|shrink|content|group|peer)(-|$)/;
+  // ms/me/ps/pe/start/end ARE UTILITIES. They were not in this list, so the
+  // logical migration (decision #139) could have shipped 3,000 paddings that
+  // generated nothing, and this gate would have said every class resolves.
+  /^-?(bg|text|border|rounded|p|px|py|pt|pb|pl|pr|ps|pe|m|mx|my|mt|mb|ml|mr|ms|me|start|end|scroll-ms|scroll-me|scroll-ps|scroll-pe|w|h|min-w|min-h|max-w|max-h|gap|space|flex|grid|col|row|items|justify|self|place|order|inset|top|bottom|left|right|z|opacity|shadow|ring|outline|font|leading|tracking|align|whitespace|break|list|object|overflow|position|absolute|relative|fixed|sticky|static|block|inline|hidden|table|transition|duration|delay|ease|animate|transform|translate|rotate|scale|skew|origin|cursor|select|pointer|resize|fill|stroke|divide|backdrop|blur|filter|antialiased|sr|not-sr|uppercase|lowercase|capitalize|truncate|underline|decoration|indent|aspect|container|columns|float|clear|isolate|visible|invisible|collapse|basis|grow|shrink|content|group|peer)(-|$)/;
 
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
