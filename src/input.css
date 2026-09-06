@@ -530,7 +530,7 @@
   .band {
     display: flex;
     flex-direction: column;
-    padding-block: 0.5rem 1rem;
+    padding-block: 0 1rem;
   }
 
   @media (min-width: 768px) {
@@ -870,7 +870,7 @@
      the second line. The letter-spacing is set after the @apply so it wins
      over text-lg's 0.011em, which is a Latin lead's tracking, not CJK's. */
   .display-sub {
-    @apply block font-sans normal-case text-lg tablet:text-xl mt-3 text-ink;
+    @apply block font-sans normal-case text-lg tablet:text-xl mt-2 text-ink;
     font-weight: 400;
     letter-spacing: 0;
     text-wrap: pretty;

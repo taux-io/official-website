@@ -577,7 +577,7 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 
 `.band` 先前 `min-height: 100svh` 加垂直置中：375×812 的手機上 hero 恰好 812px，h1 在 y=417，**第一段正文在 y=1,324–1,421——一頁只有句子的頁面，讀者要滑 1.6 屏才看到第一句**（決策 #141）。決策 #44 曾為同一個理由拿掉十五個 86vh 區塊，#53／#54 又以「章節前的停頓」為名每頁放回一個；本站沒有影像可以停頓。
 
-現在 `.band` 是內容高度，上下 padding 手機 8／16px、tablet 以上 48px；hero 的引言在手機上是 17px（`text-base tablet:text-lg`）；長文頁的 h1 是 34 → 40px（首頁保留 40 → 64，決策 #142）。**實測第一段正文距頁頂（375×812）：`what-is-mcp` 544px、`geo-guide` 464px、`threat-landscape` 444px；最緊的是 ja-JP 的 `ai-smart-work` 775px。** `geometry` 的 `first-paragraph` 探針守著：每條路由在三種手機高度下，第一段正文（hero 的摘要不算，hero 裡的第二段算；投影片頁具名豁免）的第一行必須在第一屏內。它上線前對舊建置跑過：**303 個組合裡 240 個紅**，最遠的一頁 2,729px。
+現在 `.band` 是內容高度，上下 padding 手機 8／16px、tablet 以上 48px；hero 的引言在手機上是 17px（`text-base tablet:text-lg`）；長文頁的 h1 是 34 → 40px（首頁保留 40 → 64，決策 #142）。**實測第一段正文距頁頂（375×812）：`what-is-mcp` 544px、`geo-guide` 464px、`threat-landscape` 444px；最緊的是 ja-JP 的 `ai-smart-work` 731px（CI 的字面下 815 → 再收 40px）。** `geometry` 的 `first-paragraph` 探針守著：每條路由在三種手機高度下，第一段正文（hero 的摘要不算，hero 裡的第二段算；投影片頁具名豁免）的第一行必須在第一屏內。它上線前對舊建置跑過：**303 個組合裡 240 個紅**，最遠的一頁 2,729px。
 
 ⚠️ **CI 的字面比本機寬**（決策 #136 記過一次），所以 37px 的餘裕不算多；這條探針在 CI 紅了就是它在做事。
 
