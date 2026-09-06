@@ -32,6 +32,15 @@ function initMenu() {
     ).filter((t) => t !== closeBtn);
     let lastFocused = null;
 
+    // EVERYTHING BEHIND THE DIALOG GOES INERT WHILE IT IS OPEN. aria-modal
+    // hides the page from a screen reader's reading order but does nothing for
+    // Tab: after the last overlay link, focus walked out into the article under
+    // the sheet, invisibly. inert on the bar, the article and the footer is the
+    // trap — nothing to loop, nothing to count. The overlay itself is never in
+    // this list, and the order in open()/close() matters: lift the overlay's
+    // inert before focusing into it, and lift the page's before focusing back.
+    const behind = () => document.querySelectorAll('.site-nav, main, footer');
+
     const isOpen = () => overlay.classList.contains('opacity-100');
 
     function setHamburgerBars(open) {
@@ -43,7 +52,10 @@ function initMenu() {
         bars[1].classList.toggle('opacity-0', open);
         bars[2].classList.toggle('-rotate-45', open);
         bars[2].classList.toggle('-translate-y-2', open);
-        hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        // The two names come from the locale's own strings via data-*; the
+        // literals that stood here shipped English on all five languages.
+        const { labelOpen, labelClose } = hamburger.dataset;
+        hamburger.setAttribute('aria-label', open ? (labelClose || 'Close menu') : (labelOpen || 'Open menu'));
     }
 
     function open() {
@@ -53,6 +65,7 @@ function initMenu() {
         // button never receives focus and a keyboard user opens the menu into
         // nothing.
         overlay.removeAttribute('inert');
+        behind().forEach(el => el.setAttribute('inert', ''));
         overlay.classList.remove('opacity-0', 'pointer-events-none');
         overlay.classList.add('opacity-100');
         document.body.classList.add('overflow-hidden');
@@ -67,6 +80,7 @@ function initMenu() {
         document.body.classList.remove('overflow-hidden');
         triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
         setHamburgerBars(false);
+        behind().forEach(el => el.removeAttribute('inert'));
         // Return focus to whatever opened it, so keyboard users do not land
         // back at the top of the document.
         if (lastFocused && document.contains(lastFocused)) lastFocused.focus();
@@ -101,7 +115,7 @@ function initMenu() {
 
 // Hide Nav on Scroll
 function initScrollNavigation() {
-    const nav = document.querySelector('nav[aria-label="Main Navigation"]');
+    const nav = document.querySelector('nav.site-nav');
     if (!nav) return;
     let lastScrollY = window.scrollY;
 

@@ -122,6 +122,21 @@ script = "Hant"
   nav_home = "首頁"
   nav_about = "關於 TauX"
   nav_building = "公開打造中"
+  # CHROME STRINGS THAT WERE ENGLISH ON EVERY LOCALE. The two legal links, the
+  # menu button's accessible names, the landmark names and the skip link were
+  # literals in header.html and footer.html — one file rendered five times, the
+  # same shape `nav_explore` had. A screen reader on the Japanese page announced
+  # "Main Navigation" and "Open menu"; nothing gated it because no gate reads
+  # accessible names. `nav_menu_close` is both the close button's visible text
+  # and its aria-label, so the two cannot disagree.
+  nav_privacy = "隱私權政策"
+  nav_terms = "服務條款"
+  nav_menu_open = "開啟選單"
+  nav_menu_close = "關閉選單"
+  nav_menu = "網站選單"
+  nav_main = "主導覽"
+  nav_home_link = "TauX 首頁"
+  skip_to_content = "跳到主要內容"
   org_description = "TauX（拓思科技股份有限公司）協助企業落地 AI First 策略，專注於 GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。"
 
 [[locale]]
@@ -158,6 +173,21 @@ script = "Hans"
   nav_home = "首页"
   nav_about = "关于 TauX"
   nav_building = "公开打造中"
+  # CHROME STRINGS THAT WERE ENGLISH ON EVERY LOCALE. The two legal links, the
+  # menu button's accessible names, the landmark names and the skip link were
+  # literals in header.html and footer.html — one file rendered five times, the
+  # same shape `nav_explore` had. A screen reader on the Japanese page announced
+  # "Main Navigation" and "Open menu"; nothing gated it because no gate reads
+  # accessible names. `nav_menu_close` is both the close button's visible text
+  # and its aria-label, so the two cannot disagree.
+  nav_privacy = "隐私权政策"
+  nav_terms = "服务条款"
+  nav_menu_open = "打开菜单"
+  nav_menu_close = "关闭菜单"
+  nav_menu = "网站菜单"
+  nav_main = "主导航"
+  nav_home_link = "TauX 首页"
+  skip_to_content = "跳到主要内容"
   # 搭建 rather than 建置, matching what the Simplified pages already say about
   # the same service — the glyph converter would have left 建置 standing.
   org_description = "TauX（拓思科技股份有限公司）协助企业落地 AI First 策略，专注于 GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。"
@@ -197,6 +227,21 @@ og     = "ja_JP"
   nav_home = "ホーム"
   nav_about = "TauX について"
   nav_building = "公開しながらつくる"
+  # CHROME STRINGS THAT WERE ENGLISH ON EVERY LOCALE. The two legal links, the
+  # menu button's accessible names, the landmark names and the skip link were
+  # literals in header.html and footer.html — one file rendered five times, the
+  # same shape `nav_explore` had. A screen reader on the Japanese page announced
+  # "Main Navigation" and "Open menu"; nothing gated it because no gate reads
+  # accessible names. `nav_menu_close` is both the close button's visible text
+  # and its aria-label, so the two cannot disagree.
+  nav_privacy = "プライバシーポリシー"
+  nav_terms = "利用規約"
+  nav_menu_open = "メニューを開く"
+  nav_menu_close = "メニューを閉じる"
+  nav_menu = "サイトメニュー"
+  nav_main = "メインナビゲーション"
+  nav_home_link = "TauX ホーム"
+  skip_to_content = "本文へ移動"
   org_description = "TauX（拓思科技股份有限公司）は、AI First を掛け声で終わらせず、企業が実際に運用できるシステムにします。GEO 生成エンジン最適化、AI エージェント開発、ソフトウェアプラットフォーム構築、法人向け AI 研修を手がけています。"
 
 [[locale]]
@@ -227,6 +272,21 @@ og     = "ko_KR"
   nav_home = "홈"
   nav_about = "TauX 소개"
   nav_building = "공개하며 만드는 중"
+  # CHROME STRINGS THAT WERE ENGLISH ON EVERY LOCALE. The two legal links, the
+  # menu button's accessible names, the landmark names and the skip link were
+  # literals in header.html and footer.html — one file rendered five times, the
+  # same shape `nav_explore` had. A screen reader on the Japanese page announced
+  # "Main Navigation" and "Open menu"; nothing gated it because no gate reads
+  # accessible names. `nav_menu_close` is both the close button's visible text
+  # and its aria-label, so the two cannot disagree.
+  nav_privacy = "개인정보 처리방침"
+  nav_terms = "이용약관"
+  nav_menu_open = "메뉴 열기"
+  nav_menu_close = "메뉴 닫기"
+  nav_menu = "사이트 메뉴"
+  nav_main = "주 내비게이션"
+  nav_home_link = "TauX 홈"
+  skip_to_content = "본문으로 건너뛰기"
   org_description = "TauX(拓思科技股份有限公司)는 AI First 전략을 시연이 아니라 실제로 돌아가는 시스템으로 만듭니다. GEO 생성형 엔진 최적화, AI 에이전트 개발, 소프트웨어 플랫폼 구축, 기업 AI 교육을 합니다."
 
 [[locale]]
@@ -257,6 +317,21 @@ script = "Latn"
   nav_home = "Home"
   nav_about = "About"
   nav_building = "Building in Public"
+  # CHROME STRINGS THAT WERE ENGLISH ON EVERY LOCALE. The two legal links, the
+  # menu button's accessible names, the landmark names and the skip link were
+  # literals in header.html and footer.html — one file rendered five times, the
+  # same shape `nav_explore` had. A screen reader on the Japanese page announced
+  # "Main Navigation" and "Open menu"; nothing gated it because no gate reads
+  # accessible names. `nav_menu_close` is both the close button's visible text
+  # and its aria-label, so the two cannot disagree.
+  nav_privacy = "Privacy Policy"
+  nav_terms = "Terms of Service"
+  nav_menu_open = "Open menu"
+  nav_menu_close = "Close menu"
+  nav_menu = "Site menu"
+  nav_main = "Main navigation"
+  nav_home_link = "TauX home"
+  skip_to_content = "Skip to content"
   # TauX Co., Ltd. rather than 拓思科技股份有限公司, following what this locale's
   # own footer already decided. The registered Chinese name is still on every
   # English page — `legalName` in the same node carries it, which is where a

@@ -82,7 +82,7 @@
             </p>
 
             <figure class="mb-10">
-              <div class="overflow-x-auto">
+              <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP의 세 가지 역할</title>
                     <desc id="arch-desc">호스트 안에 클라이언트가 셋 있고 각각 서버 하나에 연결됩니다. 앞의 두 서버는 로컬, 세 번째는 원격입니다. 데이터베이스는 서버 바깥에 그려져 서버가 데이터 앞에 선 중개임을 보여 줍니다.</desc>
@@ -285,11 +285,11 @@
             </div>
         </section>
 
-        <nav class="border-t border-line pt-10">
-            <p class="eyebrow mb-6">다음에 읽기</p>
+        <nav class="border-t border-line pt-10" aria-labelledby="next-reading">
+            <p class="eyebrow mb-6" id="next-reading">다음에 읽기</p>
             <ul class="space-y-4">
-                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">실제로 써서 무언가 하려면 → Claude Skills 실전 가이드</a></li>
-                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">AI 시대의 또 하나의 서식 → llms.txt란 무엇인가</a></li>
+                <li><a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center min-h-11">실제로 써서 무언가 하려면 → Claude Skills 실전 가이드</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center min-h-11">AI 시대의 또 하나의 서식 → llms.txt란 무엇인가</a></li>
             </ul>
         </nav>
 

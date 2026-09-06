@@ -67,7 +67,7 @@ npm run diff <a> <b>         # 像素比對
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
 - **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
-- **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標，以及依 locale 而定的行長上限
+- **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標（含 chrome 裡的普通 `<a>`：語言切換器、章節 rail、footer、skip link——探針原本只量 `a.btn` 與表單控制項，12px 高的下拉連結因此一直是綠的），以及依 locale 而定的行長上限
 - **cards** —— 100 張 OG 分享卡的外邊距（5–9% 版寬）、墨跡外框（45–80% 版面）與尺寸（1200×630）。**唯一一道讀產出物而不讀原始碼的設計閘門**：邊距從 `build-og.js` 的 `padding` 算得出來，墨跡外框算不出來——原始碼裡沒有任何東西說得出一個平衡斷行的三行標題會蓋掉多少版面（DESIGN.md 決策 #111）
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡

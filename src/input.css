@@ -131,7 +131,12 @@
      menu — went with the brand reset: the reference site's vocabulary has no
      motion chapter, and a scale with two steps and no rule about which is
      which is how a third one arrives. Everything is critically damped. */
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  /* (0.2, 0, 0, 1), NOT (0.4, 0, 0.2, 1). better-ui names this exact pair as
+     the one that is "not" the other: the second reference set (jakubkrehel's
+     better-*, decision #123) prescribes the curve wherever it prescribes an
+     interaction, and the easing is a token so the swap is one line and the
+     `easing scale` rule stays green. Still one curve, still critically damped. */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
 }
 
@@ -333,12 +338,10 @@
      hairline with the token collapse while this rule kept applying 0.35 to the
      same token — over a black track that composites to rgb(20,20,22), darker
      than rest, so the thumb faded exactly when the pointer reached it. */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--ink-rgb) / 0.35);
-  }
-
-  a {
-    @apply transition-colors duration-200;
+  @media (hover: hover) {
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(var(--ink-rgb) / 0.35);
+    }
   }
 
   /* Keyboard focus. Two controls carried focus:outline-none, which removes the
@@ -353,6 +356,57 @@
     outline: 2px solid var(--ink);
     outline-offset: 2px;
     border-radius: 0;
+  }
+
+  /* A LINK IN PROSE IS UNDERLINED, AND THE UNDERLINE COMES FROM THE FONT.
+
+     137 anchors inside paragraphs, list items and table cells carried no
+     underline and no class at all — the same ink, the same weight as the words
+     beside them (better-layout: a control styled like the static text next to
+     it does not read as a control; WCAG 1.4.1: not by colour alone, and here
+     not by anything). DESIGN.md already says the underline is this vocabulary's
+     mark for a link; this is the rule that makes that true for links nobody
+     marked by hand. `:where()` so a `.btn` inside a <li> keeps its own
+     no-underline through ordinary specificity.
+
+     Position and thickness from the font's own metrics rather than the
+     browser's guess, skip-ink so descenders are not crossed (better-typography,
+     "underlines from the font"). */
+  :where(main :is(p, li, td, th, dt, dd, blockquote, cite, figcaption) a:not(.btn):not(.btn-quiet)) {
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    text-decoration-thickness: from-font;
+    text-decoration-skip-ink: auto;
+  }
+
+  /* The skip link: offscreen until it has focus, then pinned under the bar.
+     Logical inset so it mirrors under dir="rtl". */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: -999px;
+    top: 0.5rem;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    /* 44px: it is a control, and geometry's probe measured it at 41 on its
+       first run — offscreen, but a box is a box. */
+    min-height: 44px;
+    padding: 0 1rem;
+    background-color: var(--surface);
+    color: var(--ink);
+    text-decoration-line: underline;
+  }
+
+  .skip-link:focus {
+    inset-inline-start: 1rem;
+  }
+
+  /* The bar is fixed and 64px tall, so a fragment jump would land the heading
+     under it. 5rem clears the bar with the same 16px the layout uses elsewhere.
+     Scoped to <main>: the overlay and footer have ids too, and nothing jumps
+     to those. */
+  main [id] {
+    scroll-margin-top: 5rem;
   }
 }
 
@@ -477,7 +531,10 @@
        has decided. It was also the only 500ms on the site — 22 transitions run
        at 200ms and 17 at 300ms — and DESIGN.md records the reference site's
        measured baseline as .15s with a single easing. */
-    transition: background-color 0.2s var(--ease-standard);
+    /* scale as well as colour: the press below shrinks the control, and a
+       transition is what lets a release mid-press come back smoothly rather
+       than snap (better-ui, "interruptible animations"). */
+    transition: background-color 0.2s var(--ease-standard), scale 0.15s var(--ease-standard);
   }
 
 
@@ -485,8 +542,23 @@
     content: "→";
   }
 
-  .btn:hover {
-    background-color: rgb(var(--ink-rgb) / 0.12);
+  /* THE HOVER USED TO ERASE THE LABEL. This was `rgb(var(--ink-rgb) / 0.12)` —
+     a 12% wash inherited from the black era, when the button was transparent
+     with a hairline and the wash was the lift. On paper it is #E2E2E0, and the
+     label stayed `--on-primary`, which is the paper: 1.24:1, measured, on
+     every primary call to action on every route, for as long as the button has
+     been blue. `contrast` never saw it because it reads resting colours; rule
+     34 (`state pairs keep contrast`) reads this pair now and went red on the
+     old value before it went green on this one.
+
+     Solid ink, not a darker Cobalt: the plate model has no "Cobalt over ink",
+     and the accent lightened is the accent thinned, which reads as disabled.
+     Paper on ink is 11.97:1. Hover only where hover exists — on touch the
+     state latches after a tap and holds (better-accessibility). */
+  @media (hover: hover) {
+    .btn:hover {
+      background-color: var(--ink);
+    }
   }
 
   /* The quieter of the two. DESIGN.md defines one button and says a section
@@ -514,7 +586,7 @@
        as separate strings without anyone reading the second. Half a fix, twice
        asserted as a whole one. */
     transition: background-color 0.2s var(--ease-standard),
-      color 0.2s var(--ease-standard);
+      color 0.2s var(--ease-standard), scale 0.15s var(--ease-standard);
   }
 
   .btn-quiet::after {
@@ -527,8 +599,10 @@
      direction. Merged into the value with 185 callers rather than the one with
      this single caller. The quiet ladder still reads: hover 0.05, active 0.12,
      against the loud one's 0.12 and 0.2. */
-  .btn-quiet:hover {
-    background-color: rgb(var(--ink-rgb) / 0.05);
+  @media (hover: hover) {
+    .btn-quiet:hover {
+      background-color: rgb(var(--ink-rgb) / 0.05);
+    }
   }
 
   /* The wordmark and the hamburger are controls without a component class —
@@ -548,8 +622,10 @@
            flex items-center transition-opacity duration-200;
   }
 
-  .wordmark:hover {
-    opacity: 0.7;
+  @media (hover: hover) {
+    .wordmark:hover {
+      opacity: 0.7;
+    }
   }
 
   /* Pull quote: a hairline rule rather than a coloured bar, no quotation
@@ -581,7 +657,12 @@
     @apply inline-flex items-center px-3 py-1 font-display text-eyebrow uppercase;
     color: var(--ink);
     border: 1px solid var(--line);
-    border-radius: var(--radius-control);
+    /* xs, NOT the pill. A tag cannot be clicked, and it wore the exact shape
+       of the one thing on this site that can — a bordered 9999px capsule beside
+       a filled one. better-layout calls that a badge collecting dead clicks.
+       5px is the first rectangular step, so the scale's `xs` finally has a
+       user, and the pill is left to controls alone. */
+    border-radius: var(--radius-xs);
   }
 
   /* Navigation.
@@ -602,9 +683,14 @@
     @apply absolute left-0 -bottom-1 w-full h-px bg-ink scale-x-0 origin-right transition-transform duration-300;
   }
 
-  .nav-link:hover::after,
   .nav-link[aria-expanded="true"]::after {
     @apply scale-x-100 origin-left;
+  }
+
+  @media (hover: hover) {
+    .nav-link:hover::after {
+      @apply scale-x-100 origin-left;
+    }
   }
 
   /* The colour half of this rule is gone entirely, open state included. With
@@ -651,8 +737,10 @@
      of those rules into a no-op that still carried a transition. An underline
      is the vocabulary's own device for "this is a link" and it is the only
      differentiation left that does not reintroduce a second ink. */
-  .menu-link:hover {
-    @apply underline underline-offset-4;
+  @media (hover: hover) {
+    .menu-link:hover {
+      @apply underline underline-offset-4;
+    }
   }
 
   /* The two-line heading.
@@ -713,12 +801,35 @@
      contact details below another screen of links. 44px is written for primary
      controls; a dense reference list at the very bottom of a page is the case
      it is least about. Recorded in DESIGN.md rather than left implicit. */
+  /* py-3, not py-1.5. The 26px this used to be was argued from four columns
+     of these in the footer; the columns are gone (#302) and what remains are
+     the two legal links and the switcher's list — a handful of controls, each
+     of which a thumb has to land on. 20px of line plus 24px of padding is 44.
+     THE GATE NEVER MEASURED THESE: geometry's touch probe read `a.btn` and the
+     form controls, not a plain anchor, so the 26px was green and would have
+     stayed green at 12. The probe reads chrome anchors now. */
+  /* nowrap and a 44px width floor: a label never wraps, and at 320px the
+     Japanese footer row squeezed 利用規約 onto two lines, 42px wide — the
+     probe's first catch after the nav token grew. The row wraps instead. */
   .footer-link {
-    @apply block text-sm text-ink py-1.5;
+    @apply block text-sm text-ink py-3 whitespace-nowrap min-w-11;
   }
 
-  .footer-link:hover {
-    @apply underline underline-offset-4;
+  @media (hover: hover) {
+    .footer-link:hover {
+      @apply underline underline-offset-4;
+    }
+  }
+
+  /* The switcher's entries, both copies. .nav-link is 12px on a line-height of
+     1 with no padding — a 12px target, under WCAG 2.5.8's 24px floor and half
+     the 44 this site asks of everything else. The class carries the type; the
+     height is set here once for both lists rather than as utilities on two
+     with-blocks that would drift. */
+  .locale-switcher li a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   /* Section index — the sticky rail beside a long-form page.
@@ -738,13 +849,20 @@
      that same mechanism wearing a different name. */
   /* The border colour DOES still change — hairline to ink when the section
      becomes current — so this one keeps its transition. */
+  /* 44px rows. py-1 on 12px text made a 24px row, exactly the WCAG floor with
+     nothing to spare; the rail is desktop-only but a pointer still has to land.
+     Thirteen entries at 44px is 572px, inside the 900px viewport the walk uses
+     once the sticky offset is paid. */
   .section-index-link {
-    @apply block border-l border-line pl-3 py-1 text-xs text-ink
+    @apply flex items-center border-l border-line pl-3 text-xs text-ink
            transition-colors duration-200;
+    min-height: 44px;
   }
 
-  .section-index-link:hover {
-    @apply underline underline-offset-4;
+  @media (hover: hover) {
+    .section-index-link:hover {
+      @apply underline underline-offset-4;
+    }
   }
 
   /* The current section is marked by a WHITE left edge against the hairline
@@ -797,15 +915,25 @@
   .menu-surface {
     background-color: var(--surface);
     transition: opacity 0.3s var(--ease-standard);
+    /* A wheel or a flick that reaches the end of the menu must not scroll the
+       article underneath it. */
+    overscroll-behavior: contain;
   }
 
+  /* The press: solid ink and 0.96. better-ui's one exact number for a press
+     is scale(0.96) — never lower — and it is the static cue the background
+     already carries plus a tactile one. The 0.2 wash this used to be had the
+     same 1.45:1 label as the hover (rule 34). On touch there is no hover, so
+     this is the only feedback a thumb gets: Cobalt to ink, and a shrink. */
   .btn:active {
-    background-color: rgb(var(--ink-rgb) / 0.2);
+    background-color: var(--ink);
+    scale: 0.96;
     transition-duration: 0.075s;
   }
 
   .btn-quiet:active {
     background-color: rgb(var(--ink-rgb) / 0.12);
+    scale: 0.96;
     transition-duration: 0.075s;
   }
 
@@ -822,10 +950,9 @@
 
 @layer utilities {
   /* Disclosure rows sit directly on the surface; the hairline above each one
-     is the only separator. */
-  .faq-details {
-    @apply transition-colors duration-300;
-  }
+     is the only separator. The `transition-colors` that stood here transitioned
+     nothing — no colour on a row ever changes — and better-ui asks that only
+     what changes be named. */
 
   /* A disclosure row is a touch target. These measured 424x27 — wide enough to
      hit with a mouse and under the 44px floor on the axis a thumb actually has

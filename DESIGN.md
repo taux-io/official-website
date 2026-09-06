@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: TauX-design-system
-description: 拓思科技官網的設計語彙。暖白紙表面、Charcoal 主墨版三階密度、Cobalt 副墨版承載所有互動。兩塊墨版是上限，樣式表裡每個顏色都必須是其中一版的密度階或表面本身。SF Pro 句首大寫標題配中文副標，章節以只放標題的區塊分隔，正文連續。沒有照片、沒有網點、沒有第三個顏色。
+description: 拓思科技官網的設計語彙。暖白紙表面、Charcoal 主墨版三階密度、Cobalt 副墨版承載所有互動。兩塊墨版是上限，樣式表裡每個顏色都必須是其中一版的密度階或表面本身。SF Pro 句首大寫標題配中文副標，章節以只放標題的區塊分隔，正文連續。沒有照片、沒有網點、沒有第三個顏色。互動由第二參考集（jakubkrehel/skills 的 better-*）管：狀態對的對比、hover 只在有 hover 的裝置、44px 的 chrome 連結、正文連結一律底線。
 
 colors:
   # 表面（紙）。不計為墨版。
@@ -121,6 +121,17 @@ breakpoints:
 決策 #53 把裁決規則從「本站現行規則為準」反轉回「參考站為準」，本次維持。新檔沒有涵蓋的地方，才由本站推導補位。
 
 ⚠️ **這一版的「沒有涵蓋」比前兩版大得多。** 印刷規範不談斷點、不談 hover、不談 focus ring、不談圓角、不談五個 locale。**推導補位這次不是補洞，是撐住半份文件**——凡是由本站推導的段落都標了「〔推導〕」，因為它們的權威等級低於參考站直接給的。
+
+### 第二參考集：jakubkrehel/skills（better-*），只管互動與可及性
+
+v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writing,typography,colors,ui,interface}`（`skills-lock.json` 記為 `jakubkrehel/skills`）。**它不取代 mono-color，兩者管的東西不同**：mono-color 是印刷品，對 hover、focus、觸控目標、鍵盤一個字都沒有；better-* 對紙色、墨版、圓角、字體堆疊也不置喙——它自己寫著 keep the project's tokens, density and component library。
+
+**裁決規則，第三層**：
+1. better-* 的**升級觸發項**（escalation triggers：對比、觸控目標、焦點、鍵盤路徑、hover 閘控）不管本站規則怎麼寫都算失敗——better-interface 的原話是 a trigger is a failure whatever the style guide says。
+2. better-* 給了**精確值**的地方照抄（按下 `scale(0.96)`、`cubic-bezier(0.2, 0, 0, 1)`、44px、underline from-font）。
+3. 其餘保留本站 token；「密度、圓角、語氣的差異不是 finding」也是它的原話。
+
+**第一次拿它對照本站，找到四件全站每頁都有、而 34 道閘門全綠的事**（決策 #124–#128）：主要 CTA 一被滑過字就消失（1.24:1）、正文 137 個連結與字無異、選單開著時 Tab 會跑進頁面、語言下拉的連結 12px 高。**四件都在「閘門看不見的地方」**：狀態、位置、鍵盤、普通的 `<a>`。這是本檔第五次寫「綠的閘門在說謊」，而這次是兩條新規則與一根加寬的探針把它們納進來。
 
 ### 這次換掉了什麼
 
@@ -305,9 +316,27 @@ breakpoints:
 | **規則 32 `density scale`** | ✅ | ② |
 | 衍生資產 — 100 張分享卡重生 | ✅（v5 首次，因 kicker 改動） | ② |
 
+**v5.1（better-*）分三個 PR，只在有視覺決策點的地方切**（NOTES.md 的切票規則）：
+
+| 章節 | 狀態 | PR |
+|---|---|---|
+| `.btn` hover／active 對比、規則 34 | ✅ | A |
+| hover 閘控（flag ＋ media）、規則 35、表格列 hover 移除 | ✅ | A |
+| 正文連結底線基底 | ✅ | A |
+| 選單 inert 範圍、`overscroll-behavior` | ✅ | A |
+| chrome 連結 44px、探針加量普通 `<a>` | ✅ | A |
+| skip link、`main#main`、`scroll-margin-top` | ✅ | A |
+| chrome 字串進 strings、tagline 刪除 | ✅ | A |
+| SVG／th／scroller／transition-all 掃過 | ✅ | A |
+| `.tag` 圓角 xs、easing 換值、按下 0.96 | ✅ | A |
+| 標題字級對齊刻度（h2 34／h3 24／h4 21）、標題 600、`display-sub` 21/24 | ⏳ | B |
+| `nav` token 14px；控制項字級離開 `eyebrow` | ⏳ | B |
+| `text-wrap`、`tabular-nums`、引號、eyebrow 原文、數字磚 | ⏳ | B |
+| 物理方向 utility → logical（3,740 處） | ⏳ | C |
+
 ✅ **階段 ① 已落地，一次改完沒有拆。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。先改表面不改墨色會得到一組沒有算過對比的顏色。
 
-**實測結果：`contrast` 走過 101 條路由的 24,003 個文字元素，0 個低於 AA、0 個低於 1.5:1。`geometry` 808 個組合 0 失敗。** ⚠️ 這裡先前寫「24,435 個元素」，那是階段 ① 之前的計數；**這一版寫的是這次跑出來的數字**。
+**實測結果：`contrast` 走過 101 條路由的 24,003 個文字元素，0 個低於 AA、0 個低於 1.5:1。`geometry` 808 個組合 0 失敗。** ⚠️ 這裡先前寫「24,435 個元素」，那是階段 ① 之前的計數；**這一版寫的是這次跑出來的數字**。⚠️ **v5.1 跑出來是 21,680**，少的 2,323 個不是這次改掉的：#302 把 footer 的五欄連結格拿掉（約 23 個文字元素 × 100 條路由），這個數字沒有跟著改——**同一種漂移，這次在數字改掉之前先寫下來源**。
 
 ⚠️ **`hairline` 那個洞不存在，而且是查出來的不是猜的。** `scripts/visual/contrast.js:35` 自己列著它看不見的東西：`/404`（不是 `[[page]]`）、**border colours**、pseudo elements、SVG fill/stroke。**1.24:1 的髮絲線不會被當成文字讀**，所以那個顧慮從一開始就沒有對象。
 
@@ -596,6 +625,17 @@ google-workspace-with-ai.html  6 個 12 欄網格
 
 背景 `{colors.primary}` Cobalt、文字 `{colors.on-primary}`（＝紙）、圓角 `{rounded.full}`、字體 `body-strong`。**主要 CTA 只有這一種。**
 
+四個狀態，每一對都量過（決策 #124、#133）：
+
+| 狀態 | 底 | 字 | 對比 | 其他 |
+|---|---|---|---|---|
+| rest | Cobalt | 紙 | 7.48 | — |
+| hover（只在 `(hover: hover)`） | 主墨版 100% | 紙 | 11.97 | — |
+| active | 主墨版 100% | 紙 | 11.97 | `scale: 0.96`，75ms |
+| focus-visible | 不變 | 不變 | — | 2px 墨環，offset 2px，畫在紙上 |
+
+`button-utility` 同形：hover 5%、active 12% 加 `scale: 0.96`。
+
 ### `button-utility` — 緊湊矩形
 
 背景透明、1px `{colors.hairline}` 邊框、文字 `{colors.ink}`、圓角 `{rounded.sm}` 8px。次要動作用。
@@ -604,9 +644,27 @@ google-workspace-with-ai.html  6 個 12 欄網格
 
 單層，貼齊頂端，紙底、1px 髮絲線收邊。**不做雙層、不做 frosted `backdrop-filter`。**
 
+**第一個可聚焦的東西是 skip link**（`.skip-link`，決策 #129）：離屏，Tab 到它才出現，Enter 跳到 `main#main`。放在 `<nav>` 裡而不是 `<body>` 開頭，因為 Markdown 雙生檔只切 `<main>`，放在外面就不會漏進 `.md`。錨點目標帶 `scroll-margin-top: 5rem`，不會被 64px 的固定列蓋住。
+
+**選單開著時，`nav`、`main`、`footer` 全部 `inert`**（決策 #127）。`aria-modal` 只管螢幕閱讀器的讀取順序，管不了 Tab；沒有這一條，最後一個連結之後焦點會走進紙下面的文章。關閉時先解除再把焦點還給觸發它的按鈕。
+
+導覽列上所有的可及性名稱（landmark 名、開關選單、關閉、字標的 aria-label、skip link 文字）都是 `site.toml` 的 `[locale.strings]`，不是模板裡的英文（決策 #130）。
+
 ### `footer`
 
-紙底、`{colors.ink-86}` 文字、髮絲線分隔。
+紙底、`{colors.ink-86}` 文字、髮絲線分隔。剩下的東西：字標、GitHub、Facebook、語言切換器、隱私與條款兩個連結、版權。**那句英文 tagline 刪掉了**（決策 #130）：它是促銷語、五個 locale 都是英文、而且講的不是本站做的事。
+
+### chrome 連結 — 44px
+
+不在正文裡的 `<a>`（`.footer-link`、`.locale-switcher li a`、`.section-index-link`、延伸閱讀的清單、字標）**全部 ≥ 44px 高**（決策 #128）。正文裡的行內連結不算，那是 WCAG 2.5.8 的 inline 例外。`geometry` 的觸控探針現在量它們。
+
+### 正文連結 — 底線，度量取自字體
+
+`main` 裡 `p / li / td / th / dt / dd / blockquote / cite / figcaption` 中的 `<a>` 一律底線（決策 #126），`text-underline-position: from-font`、`text-decoration-thickness: from-font`、`skip-ink`。**137 個連結先前沒有任何標記**，與旁邊的字同色同重。底線是這套語彙唯一的連結記號，這條基底規則讓它對沒人標的連結也成立。
+
+### `tag`
+
+不能點的標籤。eyebrow 字級、髮絲框、**圓角 `{rounded.xs}` 5px**——不是 pill（決策 #132）。它先前穿著與按鈕一模一樣的 9999px 膠囊，而它不能點；閘門甚至把它列在控制項名單裡。這也是六階圓角裡 `xs` 的第一個使用者。
 
 ### 404
 
@@ -618,7 +676,9 @@ google-workspace-with-ai.html  6 個 12 欄網格
 
 〔推導〕**參考站是靜態印刷品，完全沒有動態。** 全章保留 v4。
 
-- **easing 只有一種**（規則 11）。
+- **easing 只有一種**（規則 11），值是 **`cubic-bezier(0.2, 0, 0, 1)`**（決策 #123）：better-ui 點名這組不等於 `(0.4, 0, 0.2, 1)`，而它是 token，換值一行。
+- **按下是 `scale(0.96)`**，永遠 0.96（規則 12 的另一半，決策 #133）。
+- **`:hover` 只在 `@media (hover: hover)` 裡**（規則 35）：觸控裝置上 hover 會黏在點過的東西上。作者 CSS 由規則守，`hover:` utility 由 `tailwind.config.js` 的 `future.hoverOnlyWhenSupported` 守，而那個 flag 也由規則 35 讀。**不能點的東西沒有 hover**：85 個表格列的 `hover:bg-ink/5` 拿掉了。
 - **沒有陰影、沒有漸層、沒有模糊。** 這一條在 v5 有了新的理由：參考站的 hard avoid 明文列出 gradients、glossy mockups、3D depth、cinematic lighting、lens blur、hard shadows。**v4 的理由是「沒有影像就沒有陰影」，v5 是參考站直接禁止。** 同一條規則，依據換了，而且變強了。
 - **沒有捲動揭示**（規則 2）。
 - **按下回饋保留**：每個有 `:hover` 的元件也要有 `:active`，且寫在其後（規則 12）。
@@ -697,8 +757,10 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **31** | **declared surfaces** | ✅ | **v5** |
 | **33** | **theme colour agrees** | ✅ | **v5** |
 | **32** | **density scale** | ✅ | **v5** |
+| **34** | **state pairs keep contrast** | ✅ | **v5.1** |
+| **35** | **hover is guarded** | ✅ | **v5.1** |
 
-**32 條啟用，0 條待實作，1 條退掉。**
+**34 條啟用，0 條待實作，1 條退掉。** ⚠️ v5.1 之前這裡寫 32：`check:design` 現在印「33 of 33」，加上 `cards` 那一條是 34。
 
 ⚠️ **啟用的 32 條不住在同一個地方，而這是本檔第一次有這種情況。** `scripts/check-design.js` 的 `RULES` 陣列有 **31 個 `name:`**（`check:design` 印「31 of 31」），第 32 條是規則 29 `og geometry`，住在 `scripts/visual/cards.js`（`npm run cards`）——它讀產出物不讀原始碼，見決策 #111。**兩個數字都對，而把「31 of 31」讀成「全部規則」會漏掉一條。** ⚠️ 這一段自己寫錯過一次：它寫「啟用的 30 條」與「把『29 of 29』讀成」，兩個都是規則 29、31、33 落地之前的數字——**在一段講「數目要對」的文字裡面**，由兩軸審查抓到，不是由任何閘門。
 
@@ -712,11 +774,15 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ### 八條新規則要檢查什麼
 
+（v5.1 加了兩條，寫在這一節的最後；標題的「八」是 v5 的數字，留著是為了讓「新」有時間座標。）
+
 **25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
 
 **26 `accent carries interaction`** ✅ — Cobalt 只能出現在能點的東西上，**或在能點的東西裡面**。判準是位置不是名單：`<a>`、`<button>`、`<label>`、`<summary>`、`CONTROL_TAGS`、`.btn`、`.tag`，以及它們的後代——`<button>` 裡的 `<span class="text-primary">` 是那顆按鈕的記號的一部分，不是第二次用副墨版。跟規則 23 同一個形狀。
 
 **它守的是單向的。** Cobalt 不得塗在不能點的東西上；它**不**要求所有互動都是 Cobalt——那會把 112 個靠底線標記的連結全部判紅。
+
+⚠️ **副墨版上的字，在 hover 的那一瞬間曾經不見**（決策 #124）。`.btn:hover` 從黑底時代留下 `rgb(ink / 0.12)` 當底色——那時按鈕是透明加髮絲框，洗色是「抬起」——而字色是 `on-primary`＝紙。紙上 12% 的墨是 `#E2E2E0`，紙字在它上面 **1.24:1**；`:active` 的 0.2 是 **1.45:1**。它在墨版上、在密度刻度上、在 built CSS 裡、在每一頁的主要 CTA 上，而 `contrast` 只量靜止的顏色。**現在 hover 與 active 的底都是主墨版 100%**（紙字 11.97:1），由規則 34 `state pairs keep contrast` 守著——它上線前先對舊樣式表跑過一次，只紅那兩條。
 
 ⚠️ **這條規則是綠著上線的，所以用注入證明過它會紅**：作者 CSS 的 `.probe-decorative { color: var(--primary) }` → 紅；模板 `<div class="text-primary">` → 紅。**一條沒被看過紅燈的規則，跟一條不可能紅的規則從外面看一樣。**
 
@@ -776,11 +842,17 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **這一段先前寫「今天實測 2 個實例」，那個數字是錯的。** 真正的數字是 `bg-ink/5` **185 個**、`bg-surface/90` **1 個**、`src/input.css` **6 處** `rgb(var(--x) / N)`，另有 **25 個字面 `rgba()`**（見規則 1）。**寫 2 的時候數的是「我當時想得到的例子」，不是量出來的東西**——本檔開場反對的就是這個。
 
+**34 `state pairs keep contrast`** ✅ — 每一條 `:hover` / `:active` / `:focus-visible` 規則若設了底色，把它疊到紙上，對這條規則自己（或它的基底規則）宣告的字色算對比，**低於 4.5 就紅**。用 `plates.rendered()` 疊，所以 `/ 0.12` 與同一個顏色的具名 token 量出來相同。基底規則沒宣告字色的跳過——那時字色來自元件外面，是 `contrast` 靜止量的範圍。**上線前先對舊樣式表跑**：紅 `.btn:hover` 1.24 與 `.btn:active` 1.45，其餘 0 條。
+
+**35 `hover is guarded`** ✅ — 作者 CSS 裡每一條含 `:hover` 的規則都要在 `@media (hover: hover)` 裡（`stylesheet.js` 現在記錄每條規則的祖先 at-rule），**而且** `tailwind.config.js` 的 `future.hoverOnlyWhenSupported` 必須是 `true`——那個 flag 守著 63 個 `hover:`／`group-hover:` utility，而一個 flag 是一次「順手簡化」就會消失的東西。上線前對舊樣式表跑：紅 8 條。
+
 ### 沒有東西檢查的事
+
+- **inert 的範圍對不對、skip link 有沒有作用。** 兩者都是「存在檢查無效」的形狀（決策 #113 的判準）：`inert` 屬性在 markup 上有沒有，說不出腳本開關的順序對不對；`.skip-link` 這個 class 在不在，說不出它是不是第一個 Tab stop。**用 Playwright 手動驗過**：開啟後 40 次 Tab 全在 overlay 內、Escape 把焦點還給漢堡、第一次 Tab 落在 skip link 且 x=16、Enter 之後 `location.hash` 是 `#main`。腳本在 PR 說明裡，不在 repo。
 
 - **`forced-colors` 區塊真的修好了東西沒有。** 它把行內 `code` 只靠 `bg-ink/5` 傳達的區別換成 `1px solid CanvasText`，因為高對比模式會抹平背景，而那層底是 11 個 chip 與 16 個表格列**唯一的記號**。⚠️ **刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。**手動驗過**：`forcedColors: 'active'` 下 border-width 從 `0px` 變 `1px`。
 - **`@media print` 印出來對不對。** 它藏掉 nav、footer、`.locale-switcher`，並把 `main` 的 `pt-16` 歸零。⚠️ 同樣刻意不寫成規則。**手動驗過**：`media: 'print'` 下三者 `display: none`、`main` 的 `padding-top` 是 `0px`。⚠️ **那個歸零一開始是壞的**——`main { padding-top: 0 }` 是型別選擇器，輸給 `pt-16` 這個 class，導覽藏掉之後頂端留了 64px 的空洞。**是模擬驗證抓到的，不是讀串接順序讀出來的。**
-- **focus ring 還在不在、夠不夠粗。** 現況是 `outline: 2px solid var(--ink)` 加 `outline-offset: 2px`，對紙 **11.97:1**（WCAG 非文字門檻的四倍），而 offset 讓環畫在元素外面的紙上、不壓在藍色按鈕上。⚠️ **32 條規則沒有一條在看它**：`contrast` 明文看不見 border 與 outline 的顏色。⚠️ **刻意不寫成規則**——存在檢查對它無效（`outline: 1px solid` 也會通過「有宣告」而那不到 2px），要真的守住得同時斷言粗細、offset 與對比三件事，那是一條會過度指定的規則。**記下來比寫錯好**（決策 #120）。
+- **focus ring 還在不在、夠不夠粗。** 現況是 `outline: 2px solid var(--ink)` 加 `outline-offset: 2px`，對紙 **11.97:1**（WCAG 非文字門檻的四倍），而 offset 讓環畫在元素外面的紙上、不壓在藍色按鈕上。⚠️ **34 條規則沒有一條在看它**：`contrast` 明文看不見 border 與 outline 的顏色。⚠️ **刻意不寫成規則**——存在檢查對它無效（`outline: 1px solid` 也會通過「有宣告」而那不到 2px），要真的守住得同時斷言粗細、offset 與對比三件事，那是一條會過度指定的規則。**記下來比寫錯好**（決策 #120）。
 - **等權重的重複區塊。** 參考站的 hard avoid 列 card grids 與 never distribute objects evenly like a template，而**能抓到它的判準抓到的就是網格本身**——21 個 `grid-cols-*` 元素，禁掉沒有替代方案。⚠️ 規則 28 曾經是這條的候選，判準是「每格同時帶邊框＋圓角＋內距」，實測**全站 0 個**——不是因為沒有等權重區塊，是因為這個站不用那個簽名表達（決策 #112）。
 - **語氣。** 「不得有促銷語言、口號、宣言」是 v5 從參考站搬過來最完整的一條內容規則，而**沒有任何機械判準抓得到它**。`check:md` 抓格式，抓不到一句話是不是在賣東西。五個 locale 乘以 100 條路由，這一條靠人。
 - **留白 25–55%。** 參考站的核心比例之一，網頁上分母不存在（版面高度由內容決定）。**寫成規則會是一條永遠不紅的規則**，所以不寫。
@@ -819,6 +891,10 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **墨跡外框 / ink box** | 一張卡上所有非表面像素的外接矩形。**「主體佔版面」量的是這個，不是深色像素比例**——純文字卡的深色像素永遠到不了門檻 |
 | **微字 / microcopy** | 一個載體上最小的字級。**它是級距規則的分母**：頁面上是 `eyebrow` 12px，卡上今天是 kicker 17px |
 | **檢查缺席的規則** | 判斷「該寫的有沒有寫」而不是「寫的有沒有違規」。本檔只有規則 31 一條，判準是清單不是模式 |
+| **狀態對 / state pair** | 一個狀態規則設的底，與它自己或基底規則設的字，疊到紙上之後的那一對。`contrast` 量靜止，規則 34 量這個 |
+| **chrome 連結 / chrome anchor** | 不在正文裡的 `<a>`：導覽、切換器、rail、footer、skip link。它們是控制項，要 44px；正文裡的行內連結不是 |
+| **升級觸發項 / escalation trigger** | better-interface 列的那幾類（對比、觸控目標、焦點、鍵盤、hover 閘控）：命中就是失敗，不管本站規則怎麼寫 |
+| **第二參考集** | jakubkrehel/skills 的 better-*。管互動與可及性，不管紙、墨、圓角、字體 |
 
 ---
 
@@ -957,6 +1033,23 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 97 | `@media print` 是缺口，而且是最諷刺的那個 | 參考站是**印刷規範**，而本站按 Cmd+P 印出來的東西**不受這份文件管**（`@media print` 全站 0 個）。**這是唯一一個參考站的主場，而本站在那裡是空的。** 沒有立刻補，因為列印樣式要先決定印什麼（導覽、footer、locale 切換器要不要印），那是內容決定不是顏色決定 |
 
 ---
+### v5.1 新增（better-*）
+
+| # | 決策 | 依據 / 代價 |
+|---|---|---|
+| 122 | 加入第二參考集 jakubkrehel/skills，三層裁決 | mono-color 對互動一字未提，v5 那半份「推導」在 hover、focus、觸控目標上沒有任何參考。better-* 自己劃了界（keep the project's tokens），所以不是第四次品牌重置，是補上印刷規範沒有的那一章。**代價：兩份參考集，衝突要靠這裡寫的三層規則裁，而沒有東西檢查裁得對不對** |
+| 123 | `--ease-standard` 換成 `cubic-bezier(0.2, 0, 0, 1)` | better-ui 點名「(0.2, 0, 0, 1) 不是 (0.4, 0, 0.2, 1)」，使用者選擇換。一個 token 一行，規則 11 讀 token 所以照樣綠。**代價：每一個 200ms 的轉場曲線都變了，而沒有東西量得出「感覺」** |
+| 124 | **`.btn` 的 hover 與 active 底色改主墨版 100%，並寫規則 34** | 舊值 `ink/0.12` 與 `ink/0.2` 是黑底時代透明按鈕的「抬起」，換成藍底之後字色仍是紙：**1.24:1 與 1.45:1，每頁的主要 CTA，跨 v4 與 v5**。它在墨版上、在刻度上、`contrast` 全綠——因為 `contrast` 只量靜止。不取「較深的 Cobalt」：墨版模型沒有「Cobalt 疊墨」，Cobalt 變淡是變薄，讀起來像 disabled。**代價：hover 從藍變成炭黑，是色相的變化不是明度的；better-colors 的 solid hover 慣例是同色相深一階，本站的模型給不出那一階** |
+| 125 | **hover 只在 `(hover: hover)`，寫規則 35；靜態表格列的 hover 拿掉** | 全站 0 個 hover media query，85 個 `<tr>` 帶 `hover:bg-ink/5`——一列資料在手機上點過之後會一直亮著。utility 那半由 `future.hoverOnlyWhenSupported` 一次閘控（Tailwind 用 `(hover: hover) and (pointer: fine)`），作者 CSS 那半逐條包。**規則 35 同時讀那個 flag**：不讀的話，關掉 flag 的那一天 63 個 utility 全部回到黏住，而規則綠。**代價：`stylesheet.js` 多記一個 `conditions` 欄位；表格列失去 hover 反白，而那反白本來就在暗示一個不存在的互動** |
+| 126 | **正文連結一律底線，度量從字體取** | 137 個 `<a>`（zh 41）沒有底線、沒有 class、與旁邊的字同色同重——決策 #109 說「連結靠底線標記」，而那對 137 個不成立。`:where(main :is(p, li, td, …) a)` 零 specificity，`.btn` 在 `<li>` 裡照樣不畫線。`from-font` 是 better-typography 的原話。**代價：36 個手寫的 `underline` class 變成多餘的，留著沒關係但會漂** |
+| 127 | **選單開著時 `nav`／`main`／`footer` 全部 inert** | `aria-modal` 管螢幕閱讀器不管 Tab；實測 overlay 最後一個連結之後焦點落進紙下面的文章。better-accessibility 的原話是 modals set inert on the background content。順序寫在腳本裡：先解 overlay 的 inert 再聚焦進去，先解頁面的 inert 再把焦點還回去。**代價：腳本多兩行；沒有閘門守順序，Playwright 手驗** |
+| 128 | **chrome 連結 44px，觸控探針加量普通 `<a>`** | `geometry` 的觸控探針只量 `a.btn, .btn-quiet, button, input, select, textarea, summary`——語言下拉的 `.nav-link` 是 12px 字、行高 1、無 padding，**12px 高，綠的**；rail 24px，footer 26px。探針加 `nav a, footer a, .locale-switcher a, [data-section-index] a` 之後**第一次跑就紅了兩個沒料到的**：skip link 41px（離屏但盒子還在）與 footer 字標 320×32——這就是「先讓它紅」的證據。**代價：rail 13 條 × 44px = 572px，比先前高一倍；正文行內連結不量，那是 2.5.8 的 inline 例外** |
+| 129 | skip link、`main#main`、`scroll-margin-top` | 三個都是 0 個。skip link 放在 `<nav>` 裡而不是 `<body>` 開頭，因為 Markdown 雙生檔只切 `<main>`——放外面不會漏，放裡面才會。**代價：`main [id]` 的 5rem 對每個錨點生效，包含不從導覽跳到的** |
+| 130 | **chrome 的字串進 `[locale.strings]`，頁尾 tagline 刪除** | Privacy Policy、Terms of Service、Open/Close menu、Site menu、Main Navigation、TauX Homepage、Close——七個字串在 header/footer 裡寫死英文，五個 locale 都是；日文頁的螢幕閱讀器唸 Main Navigation。與 `nav_explore` 同一個形狀（issue #241）。tagline 那句 Pioneering the future of work… 是促銷語（違反 v5 唯一的內容規則）、五個 locale 都英文、而且講的是 AI agents 與 data governance 不是 GEO——使用者選擇刪。**代價：`site.toml` 多 40 行；`nav_menu_close` 同時是可見文字與 aria-label，兩者從此不會不一致，也從此不能不一致** |
+| 131 | SVG `aria-hidden` 320 個、`<th scope>` 394 個、`overflow-x-auto` 的 `tabindex="0"` 170 個、`transition-all` 25 個移除 | 全部是 sed，全部是 better-accessibility／better-ui 的表列項。SVG 沒有 `aria-hidden` 時螢幕閱讀器逐個唸「圖片」；`<th>` 沒有 scope；寬表格的捲動容器鍵盤搆不到。**代價：`tabindex="0"` 的容器沒有可及性名稱，焦點環會停在一個沒名字的框上——better-accessibility 會要 `role="region"` 加名字，而名字要五種語言，留給內容工作** |
+| 132 | `.tag` 圓角改 `xs`，從 `CONTROL_CLASSES` 移除 | 不能點的標籤穿著 `.btn` 的 9999px 膠囊；better-layout：a non-clickable badge shaped exactly like the buttons beside it collects dead clicks。`xs` 從此有使用者（v5 寫「三階沒有使用者」）。**代價：規則 26 對 `.tag` 從寬鬆變嚴格——`.tag` 裡的 Cobalt 現在會紅，今天 0 個** |
+| 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
+
 ## 附註：這一版尚未涵蓋
 
 **參考站給了、本站沒有對象的：**

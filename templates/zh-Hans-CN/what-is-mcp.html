@@ -82,7 +82,7 @@
             </p>
 
             <figure class="mb-10">
-              <div class="overflow-x-auto">
+              <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP 的三个角色</title>
                     <desc id="arch-desc">Host 内含三个 client，每个 client 各自连到一个 server。前两个 server 在本机，第三个在远程。数据库画在 server 外侧，表示 server 是数据前面的中介。</desc>
@@ -285,11 +285,11 @@
             </div>
         </section>
 
-        <nav class="border-t border-line pt-10">
-            <p class="eyebrow mb-6">接下来</p>
+        <nav class="border-t border-line pt-10" aria-labelledby="next-reading">
+            <p class="eyebrow mb-6" id="next-reading">接下来</p>
             <ul class="space-y-4">
-                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">想知道怎么实际用它做事 → Claude Skills 实战指南</a></li>
-                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">另一个 AI 时代的新标准 → LLMs.txt 是什么</a></li>
+                <li><a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center min-h-11">想知道怎么实际用它做事 → Claude Skills 实战指南</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center min-h-11">另一个 AI 时代的新标准 → LLMs.txt 是什么</a></li>
             </ul>
         </nav>
 

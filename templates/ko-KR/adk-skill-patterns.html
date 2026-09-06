@@ -64,47 +64,47 @@
                 <p class="eyebrow mb-8 font-sans">01</p>
                 <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 </span>
                 다섯 가지, 한눈에
             </h2>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 px-4 font-bold text-sm">#</th>
-                            <th class="py-3 px-4 font-bold text-sm">패턴</th>
-                            <th class="py-3 px-4 font-bold text-sm">한마디로</th>
-                            <th class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">어울리는 상황</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">#</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">패턴</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">한마디로</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">어울리는 상황</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">01</td>
                             <td class="py-4 px-4 font-bold">Tool Wrapper</td>
                             <td class="py-4 px-4">필요할 때만 전문 지식을 불러온다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">특정 프레임워크·라이브러리 대응</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">02</td>
                             <td class="py-4 px-4 font-bold">Generator</td>
                             <td class="py-4 px-4">템플릿으로 출력 형태를 맞춘다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">리포트, 문서, API 명세 생성</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">03</td>
                             <td class="py-4 px-4 font-bold">Reviewer</td>
                             <td class="py-4 px-4">체크리스트로 품질을 본다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">코드 리뷰, 보안 감사</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">04</td>
                             <td class="py-4 px-4 font-bold">Inversion</td>
                             <td class="py-4 px-4">충분히 묻고 나서 손대기</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">요구가 흐릿한 일</td>
                         </tr>
-                        <tr class="hover:bg-ink/5 transition-colors">
+                        <tr>
                             <td class="py-4 px-4 font-sans font-semibold">05</td>
                             <td class="py-4 px-4 font-bold">Pipeline</td>
                             <td class="py-4 px-4">단계를 무너뜨리지 않는 파이프라인</td>
@@ -143,7 +143,7 @@
                         사용자가 그 프레임워크를 꺼냈을 때만 <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code>에서 해당 관례를 불러옵니다.
                     </p>
                     <!-- Code Example -->
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -162,7 +162,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
                     <p class="text-sm">컨텍스트를 어지럽히지 않습니다. 관계 있을 때만 전문 지식을 넣으므로 엉뚱한 정보에 끌려가지 않습니다.</p>
@@ -196,7 +196,7 @@
                     <p class="mb-4">
                         미리 템플릿을 두고(<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code>에 둡니다), 처음부터 짜게 하는 대신 빈칸을 채우게 합니다.
                     </p>
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -223,7 +223,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
                     <p class="text-sm">형태와 내용을 떼어 놓습니다. 모델은 내용에 집중하고, 형태는 템플릿이 지킵니다.</p>
@@ -276,7 +276,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
                     <p class="text-sm">만드는 갈래와 보는 갈래를 나눕니다. 한쪽이 손을 움직이고 다른 쪽이 검사합니다 — 코드의 PR 리뷰와 같은 모양입니다.</p>
@@ -311,7 +311,7 @@
                         <strong>행동을 뒤집습니다.</strong> 실행자가 아니라 먼저 듣는 쪽을 시킵니다.
                         건너뛸 수 없는 관문(non-negotiable gates)을 두고, 필요한 조건이 갖춰질 때까지 착수시키지 않습니다.
                     </p>
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -337,7 +337,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
                     <p class="text-sm">먼저 물으면 지어내 메우는 일이 줄어듭니다. 손에 든 정보가 갖춰질수록 나오는 것이 좋아집니다.</p>
@@ -407,7 +407,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
                     <p class="text-sm">읽을 수 없는 문장 생성을, 제어되고 되풀이할 수 있고 나중에 따라갈 수 있는 상태 기계로 바꿉니다.</p>
@@ -421,7 +421,7 @@
                 <p class="eyebrow mb-8 font-sans">07</p>
                 <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                 </span>
                 짚어 둘 것
             </h2>
@@ -429,7 +429,7 @@
             <div class="space-y-4 ml-4 tablet:ml-14">
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">Progressive Disclosure(단계적으로 열기)</h4>
@@ -438,7 +438,7 @@
                 </div>
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">형태와 내용을 나눈다</h4>
@@ -447,7 +447,7 @@
                 </div>
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">섞어 쓴다</h4>
@@ -462,13 +462,13 @@
             <p class="eyebrow mb-8 font-sans">08</p>
             <h3 class="font-bold mb-6 font-display text-xl">함께 읽기</h3>
             <div class="flex flex-wrap gap-3">
-                <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     프롬프트 설계 가이드 <span class="ml-2">→</span>
                 </a>
-                <a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     Claude Skills 실전 가이드 <span class="ml-2">→</span>
                 </a>
-                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     GEO 입문 가이드 <span class="ml-2">→</span>
                 </a>
             </div>

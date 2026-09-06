@@ -269,7 +269,15 @@ function measureControlsInPage({ radius, minTarget }) {
       out.push({ detail: `"${label}" (.${cls}) — border-radius ${actual}px, expected ${expected}px` });
     }
   }
-  const touchable = "a.btn, .btn-quiet, button, input, select, textarea, summary";
+  // PLAIN ANCHORS IN THE CHROME ARE MEASURED TOO. This read `a.btn` and the
+  // form controls only, so the locale switcher's entries — 12px of text on a
+  // line-height of 1, no padding — and the section rail's 24px rows were never
+  // put in front of the floor. Twelve pixels was green. Prose links stay out:
+  // an inline link is WCAG 2.5.8's inline exception, and its height is the
+  // line's. Chrome links are not inline; they are the controls a thumb aims at.
+  const touchable =
+    "a.btn, .btn-quiet, button, input, select, textarea, summary, " +
+    "nav a, footer a, .locale-switcher a, [data-section-index] a";
   for (const el of document.querySelectorAll(touchable)) {
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) continue;

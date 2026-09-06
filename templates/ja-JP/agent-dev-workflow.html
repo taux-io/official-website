@@ -107,13 +107,13 @@
 
             <h3 class="font-display text-xl font-bold mt-14 mb-4">一、誰が呼び出せるか</h3>
             <p class="leading-relaxed mb-6">これは、この pack <strong>唯一の分類軸です</strong>。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
-                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Model-invoked</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -177,13 +177,13 @@
 
             <h3 class="font-display text-xl font-bold mt-14 mb-4">三、Phase boundary</h3>
             <p class="leading-relaxed mb-6">一つの session の中の一区切りの作業を <strong>phase</strong>と呼びます（インタビュー、実装、QA…）。「自分の context をどうするか」という問いが<strong>成立するのは二つの phase のあいだだけです</strong>。phase の途中に選択肢はなく、続けるか、残りを subagent に投げるかしかありません。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">優先順位</th>
-                            <th class="py-3 pr-4 font-bold text-sm">選択肢</th>
-                            <th class="py-3 font-bold text-sm">選ぶタイミング</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">優先順位</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">選択肢</th>
+                            <th scope="col" class="py-3 font-bold text-sm">選ぶタイミング</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -262,13 +262,13 @@
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> は、すべての engineering skill の<strong>前提条件であり、フローの一ステップではありません</strong>。
             </p>
-            <div class="overflow-x-auto mb-8">
+            <div class="overflow-x-auto mb-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">決定事項</th>
-                            <th class="py-3 pr-4 font-bold text-sm">先に提案してくるもの</th>
-                            <th class="py-3 font-bold text-sm">実際に聞かれる条件</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">決定事項</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">先に提案してくるもの</th>
+                            <th scope="col" class="py-3 font-bold text-sm">実際に聞かれる条件</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -342,15 +342,15 @@ gh label create enhancement</code></pre>
             </div>
             <p class="leading-relaxed mb-8">「ハード依存」の列が実戦での要点です——<strong>依存が入っていなければ、skill は静かにただの即興へと退化します。</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼び出し元</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">役割</th>
-                            <th class="py-3 pr-4 font-bold text-sm">一言で</th>
-                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">ハード依存</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼び出し元</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">役割</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">一言で</th>
+                            <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">ハード依存</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -425,12 +425,12 @@ gh label create enhancement</code></pre>
                     <p>「一枚の長いフォームか、三ページか」「このインタラクションはどんな感じであるべきか」——こうした問いは<strong>話しても出てきません</strong>。反応できる何かが要ります。ぶつかったら、いったん止めて prototype を作り、見てから一行で答える。ungrillable な問いを押して話し続けるのが session の爆発する主因です。agent は言い換えて聞き続け、あなたは推測を重ね、範囲は不確かさを埋めるために膨らみます。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">何が片づいたか</th>
-                            <th class="py-3 font-bold text-sm">どこに残るか</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">何が片づいたか</th>
+                            <th scope="col" class="py-3 font-bold text-sm">どこに残るか</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -462,12 +462,12 @@ gh label create enhancement</code></pre>
                     <p>一文字も書く前に、この機能をどの <strong>seam</strong>（テストが振る舞いを観察する公開の境界）の上でテストすべきかを草案にして、あなたに聞いてきます。新しく開くより既存の seam を好み、取れるかぎり<strong>いちばん高い</strong>ところの seam を取ります。理想の数は変更全体で一つだけです。この「事前に合意した seam」は下流へそのまま伝わります：<code>tdd</code> は事前に合意した seam の上にだけテストを書き、<code>code-review</code> は合意していない seam が使われていないかを確認します。<strong>だからこのやり取りは真面目に答えてください。実装の段階に先送りしないこと。</strong></p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">いまどこにいるか</th>
-                            <th class="py-3 font-bold text-sm">何を走らせるか</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">いまどこにいるか</th>
+                            <th scope="col" class="py-3 font-bold text-sm">何を走らせるか</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -490,13 +490,13 @@ gh label create enhancement</code></pre>
 
             <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — tracer bullet に切り分ける</h3>
             <p class="leading-relaxed mb-6"><code>/to-tickets</code>、同じウィンドウで。あるいは <code>/to-tickets #&lt;spec_issue&gt;</code>。計画が会話の中にあるだけで spec になっていなくても構いません。会話をそのまま読みます。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">水平スライス（誤）</th>
-                            <th class="py-3 font-bold text-sm">垂直スライス（正）</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">水平スライス（誤）</th>
+                            <th scope="col" class="py-3 font-bold text-sm">垂直スライス（正）</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -554,12 +554,12 @@ gh label create enhancement</code></pre>
                     <p><strong>計画を開き直すことは決してありません。</strong>インタビューもなく、確認のラウンドもなく、別のやり方を提案することもありません。上流で決まったものが入力であり、その仕事はそれを一つの commit に変えることだけです。これこそが、「新しい agent に『これをやって』と打つ」こととの違いです——後者は作りながら設計をやり直します。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
-                            <th class="py-3 font-bold text-sm">説明</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th scope="col" class="py-3 font-bold text-sm">説明</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -591,12 +591,12 @@ gh label create enhancement</code></pre>
                     <p>ルールは絶対です：<strong>確認していない seam には、テストを書かない。</strong>チェーン全体では seam を <code>to-spec</code> の段階で合意しておきます。単独で呼び出したときは、その場で直接聞いてきます。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">アンチパターン</th>
-                            <th class="py-3 font-bold text-sm">現れ方</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">アンチパターン</th>
+                            <th scope="col" class="py-3 font-bold text-sm">現れ方</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -623,13 +623,13 @@ gh label create enhancement</code></pre>
             <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/code-review main</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>固定点はあなたが与える必要があります</strong>。与えなければ、勝手に推測せずに聞いてきますし、ref が解決すること、diff が空でないことを確かめてから sub-agent を生成します。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
-                            <th class="py-3 font-bold text-sm">Spec</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Spec</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -740,12 +740,12 @@ gh label create enhancement</code></pre>
                         <li>differential loop（同じ入力で、旧版と新版を突き合わせる）</li>
                         <li>human-in-the-loop の bash script、最後の手段</li>
                     </ol>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
-                                    <th class="py-3 font-bold text-sm">真でなければならないこと</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">真でなければならないこと</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -781,12 +781,12 @@ gh label create enhancement</code></pre>
                         <p><strong>フィルターは二つ</strong>：<em>deletion test</em>——このモジュールを削除したと想像したとき、複雑さはより小さなインターフェースの背後に<strong>集約</strong>されるのか、それとも各呼び出し側へ<strong>拡散</strong>するのか。「集約」になるケースだけがカードになります。また、領域を指定しない限り、直近の commit 履歴を先に読み、スキャンを<strong>いま動いている</strong>パスへ寄せます——誰も触っていないコードの深化は、あなたが永遠に実行しないリファクタリングです。</p>
                         <p>強度ラベルは三段階：<strong>Strong</strong>（deletion test を明確に通過し、摩擦も実在する。真剣に見る価値あり）、<strong>Worth exploring</strong>（筋は通るが、見返りはコードがこの先どこへ向かうかに左右される）、<strong>Speculative</strong>（網羅性のために挙げてあるだけで、大半は安心して無視できる）。</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">場面</th>
-                                    <th class="py-3 font-bold text-sm">使い方</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">場面</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">使い方</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -824,13 +824,13 @@ gh label create enhancement</code></pre>
                         <p><strong>地図に載る四つのもの</strong>：<em>Destination</em>——行き着いた先がどんな姿か。それを<strong>どのチケットよりも先に名付けます</strong>。<em>Decisions so far</em>——クローズしたチケット一枚につき一行、それぞれ詳細が実際に住んでいる場所へリンクします。<em>Not yet specified</em>、つまり<strong>戦争の霧</strong>——来ることは見えていても、まだ正確に言い表せない決定です。判定基準は<strong>その問いをいま正確に言えるかどうか</strong>であって、答えられるかどうかではありません。<em>Out of scope</em>——目的地の外だと判断した作業です。クローズし、決して卒業させません。地図は<strong>保管場所ではなく索引</strong>であり、決定はそれ自身のチケットの中にだけ生きています。</p>
                         <p><strong>Frontier</strong> は「開いていて、ブロックされておらず、まだ引き受けられていない」チケットのことです。session は作業を始める前にチケットを自分に assign して引き受けるので、assignee がそのまま引き受けの印です。チケットは<strong>常に名前で呼び、裸の番号は使いません</strong>——issue 番号がずらりと並んだ壁は、文章の中では読めません。</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">タイプ</th>
-                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">モード</th>
-                                    <th class="py-3 font-bold text-sm">使いどころ</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">タイプ</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">モード</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">使いどころ</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -888,12 +888,12 @@ gh label create enhancement</code></pre>
                     <div class="space-y-4 leading-relaxed">
                         <p>これを実行したディレクトリを常設の学習ワークスペースに変え、一連の<strong>自前のスタイルを持つ短い HTML レッスン</strong>で、複数の session にまたがって一つの主題を教えます。</p>
                         <p><strong>モデルがすでに知っていることからは教えません。</strong>parametric knowledge は信用できないものとして扱われます：教える前に、まず信頼度の高い資料を探し、資料ファイルに記録し、どのレッスンでもそれを引用します。そして<strong>状態を持ちます</strong>——mission、資料、レッスン、学習ログはすべてファイルとしてディレクトリの中に住んでいます：</p>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto" tabindex="0">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-line">
-                                        <th class="py-3 pr-4 font-bold text-sm">パス</th>
-                                        <th class="py-3 font-bold text-sm">入るもの</th>
+                                        <th scope="col" class="py-3 pr-4 font-bold text-sm">パス</th>
+                                        <th scope="col" class="py-3 font-bold text-sm">入るもの</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm align-top">
@@ -929,13 +929,13 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">語彙層 — codebase-design</p>
                     <h3 class="font-display text-lg font-bold mb-3">モジュールはどんな形であるべきか</h3>
                     <p class="leading-relaxed mb-6">これはモジュールを設計するときに使う言葉を固定し、一つひとつを正確に定義して、<strong>ゆるい代替語を禁じます</strong>。そして、そこから導かれるいくつかの原則を述べます。</p>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">用語</th>
-                                    <th class="py-3 pr-4 font-bold text-sm">意味</th>
-                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">使わない語</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">用語</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">意味</th>
+                                    <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">使わない語</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -1094,14 +1094,14 @@ gh label create enhancement</code></pre>
                 <h2 class="font-display text-2xl font-bold mb-6">既知の落とし穴一覧</h2>
             </div>
             <p class="leading-relaxed mb-8">「最初に目にする症状」の順に並べています。<strong>重大</strong>は、お金か時間を無駄にするという意味です。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">症状</th>
-                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">どの skill</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">重大</th>
-                            <th class="py-3 font-bold text-sm">対処法</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症状</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">どの skill</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">重大</th>
+                            <th scope="col" class="py-3 font-bold text-sm">対処法</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1185,12 +1185,12 @@ gh label create enhancement</code></pre>
             </div>
             <p class="leading-relaxed mb-8">これらの語は skill 群に共通する言語です。<strong>意味が取れなければ、skill の出力も読めません。</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">用語</th>
-                            <th class="py-3 font-bold text-sm">語義</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">用語</th>
+                            <th scope="col" class="py-3 font-bold text-sm">語義</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1256,13 +1256,13 @@ gh label create enhancement</code></pre>
                 <h2 class="font-display text-2xl font-bold mb-6">14 日間の学習プラン</h2>
             </div>
             <p class="leading-relaxed mb-8">1 日あたり 30 分から 60 分ほど、対象は<strong>自分の本物のプロジェクト</strong>。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">日</th>
-                            <th class="py-3 pr-4 font-bold text-sm">やること</th>
-                            <th class="py-3 font-bold text-sm">合格の目安</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">日</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">やること</th>
+                            <th scope="col" class="py-3 font-bold text-sm">合格の目安</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">

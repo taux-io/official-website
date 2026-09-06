@@ -1,5 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // hover: variants compile under `@media (hover: hover) and (pointer: fine)`.
+  // On touch, :hover latches after a tap and holds until the next tap
+  // elsewhere, so a row or link reads as stuck-selected. better-accessibility
+  // asks for hover styling to be gated; this flag gates every `hover:` utility
+  // in one place, and rule 35 (`hover is guarded`) holds the authored CSS to
+  // the same query.
+  future: { hoverOnlyWhenSupported: true },
   content: ["./templates/**/*.html", "./static/js/**/*.js"],
   theme: {
     // Six steps, and they REPLACE Tailwind's defaults rather than sitting

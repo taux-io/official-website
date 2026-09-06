@@ -113,13 +113,13 @@
 
             <h3 class="font-display text-xl font-bold mt-14 mb-4">一、誰能叫它</h3>
             <p class="leading-relaxed mb-6">這是整個 pack <strong>唯一的分類軸線</strong>。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
-                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Model-invoked</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -186,13 +186,13 @@
             <p class="leading-relaxed mb-6">
                 一個 session 裡的一塊工作叫 <strong>phase</strong>（訪談、實作、QA…）。「我的 context 該怎麼辦」這個問題<strong>只在兩個 phase 之間才成立</strong>。phase 中間沒得選，只有繼續，或把剩下的丟給 subagent。
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">順位</th>
-                            <th class="py-3 pr-4 font-bold text-sm">選項</th>
-                            <th class="py-3 font-bold text-sm">什麼時候選</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">順位</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">選項</th>
+                            <th scope="col" class="py-3 font-bold text-sm">什麼時候選</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -274,13 +274,13 @@
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> 是所有 engineering skill 的<strong>前置條件，不是流程的一步</strong>。
             </p>
-            <div class="overflow-x-auto mb-8">
+            <div class="overflow-x-auto mb-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">決策</th>
-                            <th class="py-3 pr-4 font-bold text-sm">它會先提議</th>
-                            <th class="py-3 font-bold text-sm">什麼時候才真的問你</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">決策</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">它會先提議</th>
+                            <th scope="col" class="py-3 font-bold text-sm">什麼時候才真的問你</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -361,15 +361,15 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 「硬依賴」那一欄是實戰重點——<strong>依賴沒裝，skill 會安靜地退化成一場即興表演。</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼叫權</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">角色</th>
-                            <th class="py-3 pr-4 font-bold text-sm">一句話</th>
-                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">硬依賴</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼叫權</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">角色</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">一句話</th>
+                            <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">硬依賴</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -444,12 +444,12 @@ gh label create enhancement</code></pre>
                     <p>「一張長表單還是三頁？」「這個互動應該是什麼感覺？」——這種問題<strong>談不出來</strong>，需要有東西可以反應。碰到就停下來去做 prototype，看完回來一行回答。在 ungrillable 的問題上硬談，是 session 爆炸的主因：agent 一直換句話問，你一直猜，範圍膨脹來填補不確定性。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">解決了什麼</th>
-                            <th class="py-3 font-bold text-sm">落在哪</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">解決了什麼</th>
+                            <th scope="col" class="py-3 font-bold text-sm">落在哪</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -483,12 +483,12 @@ gh label create enhancement</code></pre>
                     <p>寫任何一個字之前，它會先草擬這個功能要在哪些 <strong>seam</strong>（測試觀察行為的公開邊界）上被測，然後拿來問你。它偏好已存在的 seam 而不是新開一個，並取它能取到的<strong>最高</strong>的 seam——理想的數字是整個改動只有一個。這個「事先同意的 seam」會一路往下傳：<code>tdd</code> 只在事先同意的 seam 上寫測試，<code>code-review</code> 會檢查有沒有用了沒同意過的 seam。<strong>所以這段對話要認真回，不要拖到實作階段。</strong></p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">你在哪</th>
-                            <th class="py-3 font-bold text-sm">跑什麼</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">你在哪</th>
+                            <th scope="col" class="py-3 font-bold text-sm">跑什麼</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -511,13 +511,13 @@ gh label create enhancement</code></pre>
 
             <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — 切成 tracer bullet</h3>
             <p class="leading-relaxed mb-6"><code>/to-tickets</code>，同一個窗口，或 <code>/to-tickets #&lt;spec_issue&gt;</code>。計畫只在對話裡、沒寫成 spec 也行，它直接讀對話。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">水平切片（錯）</th>
-                            <th class="py-3 font-bold text-sm">垂直切片（對）</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">水平切片（錯）</th>
+                            <th scope="col" class="py-3 font-bold text-sm">垂直切片（對）</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -577,12 +577,12 @@ gh label create enhancement</code></pre>
                     <p><strong>它從不重開計畫。</strong>沒有訪談、沒有澄清回合、不會提議另一種做法。上游決定的東西就是輸入，它的工作就是把它變成一個 commit。這正是它和「對一個新 agent 打『做這個』」的差別——後者會邊做邊重新設計。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">症狀</th>
-                            <th class="py-3 font-bold text-sm">說明</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症狀</th>
+                            <th scope="col" class="py-3 font-bold text-sm">說明</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -616,12 +616,12 @@ gh label create enhancement</code></pre>
                     <p>規則是絕對的：<strong>沒有確認過的 seam，不寫測試。</strong>完整鏈路裡 seam 在 <code>to-spec</code> 就談好；單獨呼叫時它直接問你。</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">反模式</th>
-                            <th class="py-3 font-bold text-sm">徵兆</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">反模式</th>
+                            <th scope="col" class="py-3 font-bold text-sm">徵兆</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -649,13 +649,13 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>固定點你必須提供</strong>；不給它會問你，不會亂猜，而且會先驗證 ref 解得出來、diff 非空，才生 sub-agent。
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
-                            <th class="py-3 font-bold text-sm">Spec</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Spec</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -771,12 +771,12 @@ gh label create enhancement</code></pre>
                         <li>differential loop（同輸入，舊版對新版）</li>
                         <li>human-in-the-loop 的 bash script，最後手段</li>
                     </ol>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
-                                    <th class="py-3 font-bold text-sm">必須為真</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">必須為真</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -812,12 +812,12 @@ gh label create enhancement</code></pre>
                         <p><strong>兩道過濾器</strong>：<em>deletion test</em>——想像刪掉這個模組，複雜度會<strong>集中</strong>到一個更小的介面後面，還是<strong>散開</strong>到各個呼叫者身上？只有「集中」的案例拿到卡片。另外除非你指定區域，它先讀最近的 commit 歷史，把掃描偏向<strong>正在變動</strong>的路徑——沒人碰的程式碼裡的加深，是你永遠不會兌現的重構。</p>
                         <p>強度標章三階：<strong>Strong</strong>（deletion test 清楚通過、摩擦真實，認真看）、<strong>Worth exploring</strong>（說得通，但報酬取決於程式碼接下來要去哪）、<strong>Speculative</strong>（為完整性列出，大部分可以安心忽略）。</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">情境</th>
-                                    <th class="py-3 font-bold text-sm">怎麼用</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">情境</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">怎麼用</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -855,13 +855,13 @@ gh label create enhancement</code></pre>
                         <p><strong>地圖上的四樣東西</strong>：<em>Destination</em>——走到盡頭是什麼樣子，<strong>在任何票存在之前先命名</strong>；<em>Decisions so far</em>——每張關閉的票一行，各自連到細節真正住的地方；<em>Not yet specified</em>，也就是<strong>戰爭迷霧</strong>——你看得出要來、但還無法精確表述的決定，判準是<strong>你現在能不能精確說出那個問題</strong>，不是你能不能回答它；<em>Out of scope</em>——判定在目的地之外的工作，關掉、永不畢業。地圖是<strong>索引不是儲存</strong>，決定只活在它自己的票裡。</p>
                         <p><strong>Frontier</strong> 是「開著、沒被阻塞、沒被認領」的票。session 在做任何工作之前先把票 assign 給自己來認領，所以 assignee 就是認領。票<strong>全程用名字稱呼，不用裸的編號</strong>——一牆的 issue 編號在敘述裡沒法讀。</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">類型</th>
-                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">模式</th>
-                                    <th class="py-3 font-bold text-sm">什麼時候用</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">類型</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">模式</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">什麼時候用</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -919,12 +919,12 @@ gh label create enhancement</code></pre>
                     <div class="space-y-4 leading-relaxed">
                         <p>它把你執行它的那個目錄變成常設教學工作區，用一系列<strong>自帶樣式的短 HTML 課程</strong>跨多個 session 教你一個主題。</p>
                         <p><strong>它不從模型已知的東西教。</strong>parametric knowledge 被當成不可信：教之前它先去找高信任資源、記進資源檔、並在每一課裡引用。它是<strong>有狀態的</strong>——mission、資源、課程、學習紀錄全部以檔案形式住在目錄裡：</p>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto" tabindex="0">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-line">
-                                        <th class="py-3 pr-4 font-bold text-sm">路徑</th>
-                                        <th class="py-3 font-bold text-sm">放什麼</th>
+                                        <th scope="col" class="py-3 pr-4 font-bold text-sm">路徑</th>
+                                        <th scope="col" class="py-3 font-bold text-sm">放什麼</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm align-top">
@@ -960,13 +960,13 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">詞彙層 — codebase-design</p>
                     <h3 class="font-display text-lg font-bold mb-3">模組該長什麼形狀</h3>
                     <p class="leading-relaxed mb-6">它固定你設計模組時用的字，精確定義每一個、<strong>禁掉鬆散替代品</strong>，並陳述由它們推出的幾條原則。</p>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">詞</th>
-                                    <th class="py-3 pr-4 font-bold text-sm">意思</th>
-                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">別說</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">詞</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">意思</th>
+                                    <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">別說</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -1140,14 +1140,14 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 依「你會先看到的症狀」排列。<strong>嚴重</strong>代表會浪費你錢或時間。
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">症狀</th>
-                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">哪一支</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">嚴重</th>
-                            <th class="py-3 font-bold text-sm">解法</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症狀</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">哪一支</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">嚴重</th>
+                            <th scope="col" class="py-3 font-bold text-sm">解法</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1233,12 +1233,12 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 這些詞是整套 skill 的共用語言。<strong>看不懂它們，skill 的輸出你就讀不懂。</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">詞</th>
-                            <th class="py-3 font-bold text-sm">定義</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">詞</th>
+                            <th scope="col" class="py-3 font-bold text-sm">定義</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1304,13 +1304,13 @@ gh label create enhancement</code></pre>
                 <h2 class="font-display text-2xl font-bold mb-6">14 天學習計畫</h2>
             </div>
             <p class="leading-relaxed mb-8">每天約 30 到 60 分鐘，<strong>用你自己真實的專案</strong>。</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">天</th>
-                            <th class="py-3 pr-4 font-bold text-sm">做什麼</th>
-                            <th class="py-3 font-bold text-sm">怎麼算過關</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">天</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">做什麼</th>
+                            <th scope="col" class="py-3 font-bold text-sm">怎麼算過關</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">

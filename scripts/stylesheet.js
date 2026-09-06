@@ -82,6 +82,19 @@ function isConditional(node) {
   return false;
 }
 
+// The conditional at-rules a rule sits inside, outermost first, as their
+// params: `["(hover: hover)"]`. Rule 35 (`hover is guarded`) asks whether a
+// :hover rule is wrapped in the media query that makes hover mean hover; the
+// rule object carried no trace of its ancestors before this, so the question
+// could not be asked of it.
+function conditionsOf(node) {
+  const out = [];
+  for (let p = node.parent; p; p = p.parent) {
+    if (p.type === "atrule" && CONDITIONAL_AT_RULES.has(p.name)) out.unshift(`${p.name} ${p.params}`.trim());
+  }
+  return out;
+}
+
 function collectTokens(roots) {
   const tokens = new Map();
   for (const { root } of roots) {
@@ -238,6 +251,7 @@ function read() {
         file: src.file,
         line,
         origin: src.origin,
+        conditions: conditionsOf(node),
         declarations: [],
         applied: [],
       };
