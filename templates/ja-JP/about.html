@@ -35,8 +35,8 @@
 }
 </script>
 
-<section class="band relative overflow-hidden">
-    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
         <!-- Hero -->
         <span class="tag mb-4 inline-block">Who Builds This</span>
         <h1 class="mb-6">
@@ -54,16 +54,14 @@
         <p class="text-sm max-w-[42ch] leading-relaxed font-sans">
             社名はギリシャ文字 <strong class="font-sans">τ</strong> に由来します。Tau は制御工学と物理学における<strong>時定数</strong>——システムが外部の変化に反応し、新しい安定状態へ移るまでにかかる時間です。TauX が扱うのは、企業が AI に適応するときの時定数です。適応するかどうかではなく、どれだけ時間がかかるか。
         </p>
-    </div>
 </section>
 
-<section class="relative overflow-hidden border-t border-line">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+<section>
         <!-- Content Grid -->
-        <div class="grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16 mb-6">
+        <div class="space-y-6 mb-6">
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">Our Mission</span>
                     <span class="display-sub">私たちの使命</span>
                 </h2>
@@ -74,7 +72,7 @@
             </div>
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">What We Build With</span>
                     <span class="display-sub">技術の基盤</span>
                 </h2>
@@ -88,7 +86,7 @@
         <!-- Contact Info -->
         <div class="border-t border-line pt-8">
             <div class="cover" data-cover>
-                <h2 class="mb-6">
+                <h2>
                 <span class="display-lead text-display-sm">Find Us</span>
                 <span class="display-sub">お問い合わせ</span>
             </h2>
@@ -120,7 +118,8 @@
                  English twin romanises it and this reads it in Japanese kanji. -->
             <p class="mt-6">台湾 高雄市岡山区文賢路 57 号 2 階</p>
         </div>
-    </div>
 </section>
+
+</div>
 
 {% include "footer.html" %}

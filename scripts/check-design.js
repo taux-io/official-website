@@ -279,59 +279,27 @@ function ruleNoLiteralColour(files) {
 // section carrying `border-t border-line` twice AND both `pt-8` and `pt-16`,
 // where which padding won depended on the order of the generated CSS rather
 // than on anything an author wrote.
+// v5.3 (decision #147): THE COLUMN SPACES ITS SECTIONS, AND A SECTION CARRIES
+// NOTHING OF ITS OWN. No hairline between sections — the heading is the
+// boundary — and no top padding or margin: the parent's `space-y` is the one
+// place the rhythm is declared. The rule below now reports a <section> that
+// brings its own divider or vertical offset; the pt-16/pt-12 ladder it used
+// to police is gone with the dividers it measured from.
+const SECTION_OWN_RHYTHM = /^(?:[a-z-]+:)*(?:border-t|border-line|pt-\d+|mt-\d+|py-\d+|my-\d+|space-y-\d+)$/;
+
 function ruleSectionGapScale(files) {
-  // pt-10 / pt-8 since v5.2 (decision #141): with the cover's own 96px gone,
-  // 40px is the whole gap between a section rule and its heading, 32 nested.
-  const ALLOWED = new Set(["pt-10", "pt-8"]);
   const found = [];
   for (const { rel, html } of files) {
     for (const m of html.matchAll(/<section\b([^>]*)>/g)) {
       const cls = /class="([^"]*)"/.exec(m[1]);
       if (!cls) continue;
-      const classes = cls[1].split(/\s+/).filter(Boolean);
-      // Stripped on BOTH sides. Matching `border-t` un-stripped while stripping
-      // the padding let a section whose hairline is responsive (`tablet:border-t`)
-      // escape the rule entirely, which is the opposite of what a rule about
-      // that hairline should do.
-      const bare = classes.map(stripVariants);
-      if (!bare.includes("border-t") || !bare.includes("border-line")) continue;
-      // GROUPED BY BREAKPOINT, NOT LUMPED TOGETHER. `pt-12 tablet:pt-16` is one
-      // padding per breakpoint and the cascade picks between them
-      // deterministically — that is NOT the ambiguity this rule is about. An
-      // earlier version stripped the variants before counting, so it would have
-      // reported that pair as "the winner is decided by the generated CSS",
-      // which is false, and this same change adopts exactly that pattern on the
-      // home page. The real defect is two paddings at the SAME breakpoint,
-      // which is what `class="pt-8 … pt-16"` was.
-      const byBreakpoint = new Map();
-      for (const c of classes) {
-        const bareC = stripVariants(c);
-        if (!/^pt-\d/.test(bareC)) continue;
-        const at = c.slice(0, c.length - bareC.length) || "base";
-        if (!byBreakpoint.has(at)) byBreakpoint.set(at, []);
-        byBreakpoint.get(at).push(bareC);
-      }
-      // No `pt` at all is the cover case: the cover block supplies the gap.
-      // Verified rather than assumed — every such section today opens with one.
-      if (byBreakpoint.size === 0) continue;
-      for (const [at, values] of byBreakpoint) {
-        const where = at === "base" ? "" : ` at ${at.replace(/:$/, "")}`;
-        if (values.length > 1) {
-          found.push({
-            file: rel,
-            line: lineOf(html, m.index),
-            detail: `two top paddings on one section${where} (${values.join(" ")}) — same breakpoint, so the winner is decided by the generated CSS rather than by this attribute`,
-          });
-          continue;
-        }
-        if (!ALLOWED.has(values[0])) {
-          found.push({
-            file: rel,
-            line: lineOf(html, m.index),
-            detail: `${values[0]}${where} after a section rule — the scale is pt-10 top-level, pt-8 nested, or none when a cover supplies the gap`,
-          });
-        }
-      }
+      const own = cls[1].split(/\s+/).filter((c) => SECTION_OWN_RHYTHM.test(c));
+      if (!own.length) continue;
+      found.push({
+        file: rel,
+        line: lineOf(html, m.index),
+        detail: `<section> carries ${own.join(" ")} — sections bring no divider and no vertical offset of their own; the column's space-y is the rhythm`,
+      });
     }
   }
   return found;
@@ -2060,7 +2028,7 @@ const RULES = [
     enabled: true,
     turnedOnBy: "the Gestalt pass — proximity finally has a written ratio",
     run: ruleSectionGapScale,
-    summary: "the gap after a section rule is pt-10 top-level or pt-8 nested; the cover adds none",
+    summary: "a section carries no divider and no top padding or margin; the column's space-y is the rhythm",
   },
   {
     name: "surface is painted once",

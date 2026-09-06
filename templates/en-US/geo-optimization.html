@@ -59,10 +59,8 @@
 }
 </script>
 
-<div class="relative pt-2 pb-0 px-6 overflow-hidden">
-
-    <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-0">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+    <header class="band">
             <span class="tag mb-4">GEO Service</span>
             <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
      because Chinese has no upper case; on an English page the lead IS the
@@ -76,22 +74,17 @@
             </p>
         </header>
 
-    </div>
-</div>
-
 <!-- What the work is -->
-<div class="relative overflow-hidden py-6 px-6 border-t border-line">
-    <div class="max-w-4xl mx-auto relative z-10 w-full">
-        <section class="mb-8 relative">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-6 relative z-10">
+                <h2 class="mb-0 relative z-10">
                 <span class="display-lead text-display-sm">What We Do</span>
             </h2>
             </div>
             <p class="text-lg leading-relaxed mb-6 max-w-[42ch] relative z-10">
                 GEO is not SEO under a new name. It asks a different question: when a language model goes to answer someone, can your content be retrieved, understood, and quoted without the model having to guess?
             </p>
-            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8 mt-8 relative z-10">
+            <div class="space-y-6 mt-8 relative z-10">
                 <div class="border-t border-line pt-6">
                     <h3 class="mb-3">Structured data</h3>
                     <p class="text-sm leading-relaxed">
@@ -118,15 +111,11 @@
                 </div>
             </div>
         </section>
-    </div>
-</div>
 
 <!-- How it runs -->
-<div class="relative overflow-hidden py-6 px-6 border-t border-line">
-    <div class="max-w-4xl mx-auto relative z-10 w-full">
-        <section class="space-y-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-4">
+                <h2>
                 <span class="display-lead text-display-sm">How the Work Runs</span>
             </h2>
             </div>
@@ -164,15 +153,11 @@
                 </div>
             </div>
         </section>
-    </div>
-</div>
 
 <!-- Deliverables and price -->
-<div class="relative overflow-hidden py-6 px-6 border-t border-line">
-    <div class="max-w-4xl mx-auto relative z-10 w-full">
-        <section class="mb-8">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-4">
+                <h2>
                 <span class="display-lead text-display-sm">What You Get</span>
             </h2>
             </div>
@@ -185,9 +170,9 @@
             </ul>
         </section>
 
-        <section class="mb-8">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-4">
+                <h2>
                 <span class="display-lead text-display-sm">What It Costs</span>
             </h2>
             </div>
@@ -203,9 +188,9 @@
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-8">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-6">
+                <h2>
                 <span class="display-lead text-display-sm">Ready to Start</span>
             </h2>
             </div>
@@ -215,14 +200,14 @@
             <a href="mailto:hello@taux.io" class="btn">Book a GEO consultation</a>
         </section>
 
-        <section class="border-t border-line pt-8 mt-8">
+        <section>
             <p>
                 Still working out what GEO is? Start with the
                 <a href="/{{ locale }}/geo-guide" class="underline">GEO guide</a>
                 — it walks through doing this yourself.
             </p>
         </section>
-    </div>
+
 </div>
 
 {% include "footer.html" %}
