@@ -337,7 +337,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 | 標題字級對齊刻度（h2 34／h3 24／h4 21）、標題 600、`display-sub` 21/24 | ✅ | B |
 | `nav` token 14px；控制項字級離開 `eyebrow` | ✅ | B |
 | `text-wrap`、`tabular-nums`、引號、eyebrow 原文、數字磚 | ✅ | B |
-| 物理方向 utility → logical（3,740 處） | ⏳ | C |
+| 物理方向 utility → logical（3,740 處） | ✅ | C |
 
 ✅ **階段 ① 已落地，一次改完沒有拆。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。先改表面不改墨色會得到一組沒有算過對比的顏色。
 
@@ -625,6 +625,16 @@ google-workspace-with-ai.html  6 個 12 欄網格
 | **巢狀**子 section | `pt-12`（**48px**） | 20 |
 
 組內間距是 `space-y-6`（24px）與 `gap-4`（16px），所以**組間比組內約 2.7:1**。由 `section gap scale`（規則 24）執行。
+
+### 方向用 logical properties，不用 left／right
+
+〔推導〕better-layout：`margin-inline-start` 不是 `margin-left`，`text-align: start` 不是 `left`——版面在 `dir="rtl"` 下自己鏡射，而不是靠第二套宣告（決策 #139）。本站沒有 RTL locale，**這條是為了「翻譯會長出來的字」以外的另一個方向**：一個未來的 locale 不該要求重寫 3,740 個 class。
+
+實測 v5.1 之前：`pr-*` 2,225、`mr-*` 395、`border-l` 325、`pl-*` 250、`ml-*` 205、`text-left` 180、`left-*` 115、`border-r` 30、`right-*` 15——**全站 3,740 處，0 個 logical**。全部換成 `pe／me／border-s／ps／ms／text-start／start／border-e／end`，`src/input.css` 與投影片頁的內嵌樣式同步（`padding-inline-start`、`border-inline-start`、`inset-inline-*`）。
+
+⚠️ **兩個刻意留物理的地方**：`transform-origin` 沒有 logical 關鍵字，導覽底線的 `origin-left／right` 留著；投影片的 `left: 50%` 配 `translateX(-50%)` 是置中，與方向無關。
+
+⚠️ **Tailwind 3.4.19 沒有的四個**：`text-start`、`border-s`、`border-s-2`、`border-e`（它有 logical 的 margin、padding、inset、圓角與邊框**顏色**，沒有邊框**寬度**與文字對齊）。宣告在 `src/input.css` 的 `@layer utilities`，所以 `tablet:border-e` 這種變體照樣長得出來。**先量再寫**：一版帶 `@apply origin-end` 的樣式表讓 `build:css` 整個失敗，而 `check:classes` 只報了這四個名字——因為它的「像不像 utility」清單裡沒有 `ms／me／ps／pe／start／end`，**3,000 個 padding 換成它看不見的名字時它會說全部 resolve**（決策 #140）。
 
 ### 斷點
 
@@ -1069,6 +1079,8 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 136 | `nav` token 12 → 14px，控制項字級離開 `eyebrow` | Explore、切換器 summary、關閉鈕穿 `.eyebrow`（12px，標籤的字級）；better-typography 給選單 14px 起、12 是地板。`nav` 改 14／600／0.09em 並進字級表；三個控制項改用 `.nav-link`。`eyebrow` 從此獨佔最小階，規則 27 的分母不再有兩個名字（決策 #121 記的那個隱形分母消失）。**代價：導覽列的 Explore 大了 2px、變粗；`.nav-link` 的 `transition-colors` 一併改成 `transition-opacity`——它從來只變 opacity。⚠️ 切換器 summary 變寬之後，ja-JP 的 footer 那一列在 320px 擠到 利用規約 折成兩行、42px 寬——geometry 抓到的；`.footer-link` 改 `whitespace-nowrap min-w-11`，那一列改 `flex-wrap`，控制項寧可換行也不折自己的字** |
 | 137 | `.display-sub` 21／24，行高由 token 給 | 實際是 20 → 28px（`text-[1.75rem]`，不在刻度上）配手寫 1.15；表寫 24／1.4。CJK 填滿 em box，1.15 的兩行副標之間沒有空氣，better-typography 對會換行的字要 1.4。改 `text-lg tablet:text-xl`，`text-wrap: pretty`。**代價：tablet 以上副標小了 4px** |
 | 138 | 引號、eyebrow 原文、`text-wrap`、`tabular-nums` | 6 個檔裡 9 處 blockquote 直引號：zh-Hant 改「『』」、zh-Hans 與 en 改 “ ”，**ko 不改**——`ko-quotes.txt` 記錄的 `""` 是韓文直接引述的既定決定（PR #237）。10 個 eyebrow 原文（×5 locale）是 Title Case 且縮寫被改壞（`What Is Geo`、`Geo Vs Seo`）：CSS 本來就 uppercase，畫面看不出來，但 `.md` 雙生檔與螢幕閱讀器讀的是原文——改成自然寫法、縮寫大寫。h1–h6 `text-wrap: balance`，`.display-sub` `pretty`，`table` 與數字磚 `tabular-nums`。**代價：`check:ko` 的 spacing ledger 重錄一次——變的只是記錄裡的 `font-bold` 字串，777 個決定本身不變** |
+| 139 | **物理方向 utility 全部換 logical，3,740 處** | better-layout「Before you finish」表的第一列。一支腳本對 `class="…"` 裡的 token 做映射（變體前綴與負號保留），`src/input.css` 三處與投影片內嵌樣式（五份 md5 相同）手改。`transform-origin` 與置中用的 `left: 50%` 留物理，理由寫在版面章。**代價：diff 動到 75 個檔、3,740 行，而畫面一個像素都不該變——geometry 808 組不夠當證據，截圖比對才是**。⚠️ **比對抓到一個真的變化，而 34 道閘門全綠**：`<table class="text-start">` 的 `<th>` 全部置中了。Chromium 的 UA 樣式給 th `text-align: -internal-center`——父層是 `start`（初始值，也就是這次宣告的值）時置中，其他值時繼承；`text-left` 不是初始值所以 th 跟著它，`text-start` 是所以 th 回到置中。27 張表的欄標題左右移了 13px，沒有規則讀得到「UA 樣式在這個關鍵字上有例外」。基底加 `th { text-align: inherit }`。**同一份建置連截兩次，57 張裡 10–15 張本來就不一樣**（`<details>` 與 nav 隱藏的時序），所以比對要看的是「兩次都穩定、卻在 B→C 之間變」的那些 |
+| 140 | **`check:classes` 看不見 `ms／me／ps／pe／start／end`** | 它先用一張「像不像 utility」的前綴表過濾候選，表裡沒有這六個——所以 3,000 個 padding 換成 `pe-4` 時，即使 Tailwind 一個都沒產出，這道閘門也會印「every utility class resolves」。實測是真的：這一版第一次 `build:css` 因 `@apply origin-end` 整個失敗，舊的 `styles.min.css` 留在原地，`check:classes` 只報 `border-s`、`text-start` 這四個（它們的前綴 `border`／`text` 在表上），`check:css` 還說 up to date。前綴補進表，四個 Tailwind 沒有的 utility 寫進 `@layer utilities`。**一道閘門的過濾器就是它的盲區，這是本檔第三次記這種形狀（規則 1 的 rgba、探針的普通 `<a>`）** |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋

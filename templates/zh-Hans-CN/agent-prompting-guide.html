@@ -25,7 +25,7 @@
         </h1>
             <p class="text-lg mb-8 max-w-prose">Prompt Engineering 实战指南</p>
 
-            <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
+            <div class="border-t border-line pt-6 p-8 border-s border-line text-start">
                 <h3 class="mb-2">导言：为什么你的 AI 总是不懂你？</h3>
                 <p class="mb-4">
                     其实不是 AI 笨，是我们「交办工作」的方式不够清楚。Prompt Engineering（提示工程）就像是在用白话文写程序。
@@ -69,12 +69,12 @@
                 基础篇 (Prompting 101)
             </h2>
             </div>
-            <p class="mb-8 ml-16">适合场景：写作、分析文档、单次问答、数据提取。</p>
+            <p class="mb-8 ms-16">适合场景：写作、分析文档、单次问答、数据提取。</p>
 
-            <div class="space-y-10 ml-4 tablet:ml-16">
+            <div class="space-y-10 ms-4 tablet:ms-16">
                 <!-- Point 1 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">1. 给它一个「身分」与「任务」 (Context & Role)</h3>
                     <p class="mb-3">不要只丢一句话给 AI，你要像导演一样设置角色。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
@@ -90,24 +90,24 @@
                         </span>
                     </div>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 如果不说这是车祸报告，AI 可能会以为是滑雪意外。明确定义身分，AI 就不会瞎猜。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 如果不说这是车祸报告，AI 可能会以为是滑雪意外。明确定义身分，AI 就不会瞎猜。
                     </p>
                 </div>
 
                 <!-- Point 2 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">2. 提供「参考书」 (Background Data)</h3>
                     <p class="mb-3">如果是固定不变的信息（如标准表格、法规），请放在最前面 (System Prompt)。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>为什么？</strong> 让 AI 专注填写内容，不用重新学习格式。就像给实习生「员工手册」。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>小技巧：</strong> 善用 XML 标签（如 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;内容&lt;/form&gt;</code>）。AI 喜欢结构化数据。</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>为什么？</strong> 让 AI 专注填写内容，不用重新学习格式。就像给实习生「员工手册」。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>小技巧：</strong> 善用 XML 标签（如 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;内容&lt;/form&gt;</code>）。AI 喜欢结构化数据。</li>
                     </ul>
                 </div>
 
                 <!-- Point 3 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">3. 下达「步骤指令」 (Step-by-Step Instructions)</h3>
                     <p class="mb-3">不要只求结果，要规定过程。人类怎么思考，就叫 AI 照着做。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
@@ -115,17 +115,17 @@
                         <span>「第一步：检查表格勾选框。第二步：解读现场图。第三步：做出结论。」</span>
                     </div>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 强迫 AI 把思考过程写出来 (Show its work)，准确率会大幅提升。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 强迫 AI 把思考过程写出来 (Show its work)，准确率会大幅提升。
                     </p>
                 </div>
 
                 <!-- Point 4 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">4. 规定「输出格式」 (Output Formatting)</h3>
                     <p class="mb-3">告诉 AI：「请用 JSON 格式输出」或「请把结论包在 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 标签里」。</p>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 这样你可以直接拿程序去抓取结果，不用人工复制粘贴。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 这样你可以直接拿程序去抓取结果，不用人工复制粘贴。
                     </p>
                 </div>
             </div>
@@ -139,11 +139,11 @@
                 高级篇 (Prompting for Agents)
             </h2>
             </div>
-            <p class="mb-8 ml-16">适合场景：使用工具、上网搜索、写程序、多步骤复杂任务。</p>
+            <p class="mb-8 ms-16">适合场景：使用工具、上网搜索、写程序、多步骤复杂任务。</p>
 
-            <div class="space-y-10 ml-4 tablet:ml-16">
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+            <div class="space-y-10 ms-4 tablet:ms-16">
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">1. 什么是代理人 (Agent)？</h3>
                     <p>基础篇 AI 像「问答机」。代理人则像「独立员工」，在循环 (Loop) 里工作：<br>
                         <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">使用工具 → 观察结果 → 思考下一步 → 再使用工具</span><br>
@@ -151,44 +151,44 @@
                     </p>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">2. 何时该用代理人？</h3>
                     <p class="mb-3">杀鸡焉用牛刀。适合任务复杂、路径不固定的场景。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
+                    <ul class="list-none space-y-2 ms-2 text-sm">
                         <li class="flex items-start">
-                            <span class="mr-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
+                            <span class="me-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
                             <strong>适用：</strong>做市场调查（不知道要搜索几次才能找到答案）。
                         </li>
                         <li class="flex items-start">
-                            <span class="mr-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
+                            <span class="me-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
                             <strong>不适用：</strong>已有确切 SOP 的固定流程，或简单任务。
                         </li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">3. 关键心法：像代理人一样思考</h3>
                     <p class="mb-3">问自己：「如果我是刚毕业的实习生，给我这些工具，我会不会不知所措？」</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>工具设计要清楚：</strong>名称简单准确，不要重叠。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>给原则，不要给脚本：</strong>范例：「简单问题搜 5 次，复杂搜 10 次」或「找到答案就停止」。</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>工具设计要清楚：</strong>名称简单准确，不要重叠。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>给原则，不要给脚本：</strong>范例：「简单问题搜 5 次，复杂搜 10 次」或「找到答案就停止」。</li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">4. 让它「先想再做」 (Plan & Guide Thinking)</h3>
                     <p class="mb-3">现在的模型可以边做边想。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>指令技巧：</strong>要求调用工具前先规划：「我要搜什么关键字？找什么来源？」</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>检查机制：</strong>拿到结果后评估：「数据可信吗？需要验证吗？」</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>指令技巧：</strong>要求调用工具前先规划：「我要搜什么关键字？找什么来源？」</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>检查机制：</strong>拿到结果后评估：「数据可信吗？需要验证吗？」</li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">5. 如何测试？ (Evaluation)</h3>
                     <p>从小开始。手动测试几个案例，观察日志 (Logs)。<br>
                         看看它调用了什么工具？有没有鬼打墙？这比只看最终答案更能优化指令。</p>
@@ -201,10 +201,10 @@
             <h3 class="mb-6">延伸阅读</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
-                    GEO 入门指南 <span class="ml-2">→</span>
+                    GEO 入门指南 <span class="ms-2">→</span>
                 </a>
                 <a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
-                    什么是 LLMs.txt？ <span class="ml-2">→</span>
+                    什么是 LLMs.txt？ <span class="ms-2">→</span>
                 </a>
             </div>
         </section>

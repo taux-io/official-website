@@ -26,6 +26,9 @@ adk-skill-patterns.html	   ong>행동을 뒤집습니다.</strong> 실
 adk-skill-patterns.html	    스킬을 <strong>
 adk-skill-patterns.html	·· 너뜨릴 수 없는 파이프라인</strong>으
 adk-skill-patterns.html	·· t-xs">SKILL.md</code>는
+adk-skill-patterns.html	    프롬프트 설계 가이드 <span class="ms-2">
+adk-skill-patterns.html	   e Skills 실전 가이드 <span class="ms-2">
+adk-skill-patterns.html	    GEO 입문 가이드 <span class="ms-2">
 agent-dev-workflow.html	   "font-sans">01</span> 세
 agent-dev-workflow.html	   "font-sans">02</span> 설
 agent-dev-workflow.html	   "font-sans">03</span> 사
@@ -118,8 +121,8 @@ agent-dev-workflow.html	   rill-with-docs</code> 다
 agent-dev-workflow.html	   docs</code> 다음에 <code>
 agent-dev-workflow.html	·· code>implement</code>로
 agent-dev-workflow.html	   >. 각 라운드는 그 시점의 <strong>
-agent-dev-workflow.html	   ="py-4 pr-4">하나 <strong>
-agent-dev-workflow.html	   ="py-4 pr-4">하나 <strong>
+agent-dev-workflow.html	   ="py-4 pe-4">하나 <strong>
+agent-dev-workflow.html	   ="py-4 pe-4">하나 <strong>
 agent-dev-workflow.html	   실제로 트레이드오프가 있는</strong> 결
 agent-dev-workflow.html	   code>docs/adr/</code> 아
 agent-dev-workflow.html	   말고, 같은 대화에서 그대로 <code>
@@ -141,7 +144,7 @@ agent-dev-workflow.html	   rill-with-docs</code> 쪽
 agent-dev-workflow.html	·· <code>/to-spec</code>과
 agent-dev-workflow.html	   de>/to-tickets</code> 사
 agent-dev-workflow.html	   de>, 같은 창에서. 또는 <code>
-agent-dev-workflow.html	   "py-4 pr-4">변경의 <strong>
+agent-dev-workflow.html	   "py-4 pe-4">변경의 <strong>
 agent-dev-workflow.html	   y-4">가느다란 길 하나가 <strong>
 agent-dev-workflow.html	··  <strong>모든 계층</strong>을
 agent-dev-workflow.html	   elector). 평균적으로 <strong>
@@ -403,10 +406,10 @@ agent-dev-workflow.html	   ong> 같은 대화 안에서</strong> 마
 agent-dev-workflow.html	   </strong> 마지막으로 <code>
 agent-dev-workflow.html	·· 니다. <strong>심각</strong>은
 agent-dev-workflow.html	   다</strong>. 기준은 <code>
-agent-dev-workflow.html	   pr-4"><code>gh</code> 명
+agent-dev-workflow.html	   pe-4"><code>gh</code> 명
 agent-dev-workflow.html	   니다</strong>. 직접 <code>
 agent-dev-workflow.html	   h label create</code> 명
-agent-dev-workflow.html	    pr-4">인터뷰는 좋은데 <code>
+agent-dev-workflow.html	    pe-4">인터뷰는 좋은데 <code>
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	   y-4">두 단계 사이에서는 <strong>
@@ -414,7 +417,7 @@ agent-dev-workflow.html	   정 사항입니다. 나중에 직접 <code>
 agent-dev-workflow.html	   >/implement #2</code> 명
 agent-dev-workflow.html	·· py-4"><code>#2</code>라
 agent-dev-workflow.html	   뒷받침하는 것만 처리한 다음 <strong>
-agent-dev-workflow.html	   y-4 pr-4">직접 고친 <code>
+agent-dev-workflow.html	   y-4 pe-4">직접 고친 <code>
 agent-dev-workflow.html	·· <code>SKILL.md</code>가
 agent-dev-workflow.html	    skills update</code> 명
 agent-dev-workflow.html	   다. 붙여 넣을 곳은 자신의 <code>
@@ -449,7 +452,7 @@ agent-dev-workflow.html	·· ode> 파일을 고치기. </strong>업
 agent-dev-workflow.html	   장은 그 반대입니다. 그렇게 <strong>
 agent-dev-workflow.html	·· rong>절차를 넘겨받는 </strong>식
 agent-dev-workflow.html	   분에서 60분 정도, 대상은 <strong>
-agent-dev-workflow.html	   ="py-4 pr-4">그냥 <a href="#concepts" class="underline">
+agent-dev-workflow.html	   ="py-4 pe-4">그냥 <a href="#concepts" class="underline">
 agent-dev-workflow.html	·· e">세 가지 밑바탕 개념</a>을
 agent-dev-workflow.html	   e>docs/agents/</code> 아
 agent-dev-workflow.html	   세 개가 있음. 지시 파일에 <code>
@@ -459,19 +462,19 @@ agent-dev-workflow.html	·· strong>코드가 아닌 </strong>결
 agent-dev-workflow.html	   rill-with-docs</code> 명
 agent-dev-workflow.html	   ode>CONTEXT.md</code> 파
 agent-dev-workflow.html	   -4">같은 대화에서 이어서 <code>
-agent-dev-workflow.html	   r-4">같은 창에서 이어서 <code>
+agent-dev-workflow.html	   e-4">같은 창에서 이어서 <code>
 agent-dev-workflow.html	   ode>/implement</code> 명
 agent-dev-workflow.html	   py-4">trace 안에서 <code>
 agent-dev-workflow.html	    안에서 <code>tdd</code> 호
 agent-dev-workflow.html	   -4">새 session에서 <code>
 agent-dev-workflow.html	·· de-review main</code>을
-agent-dev-workflow.html	   ="py-4 pr-4">그냥 <code>
+agent-dev-workflow.html	   ="py-4 pe-4">그냥 <code>
 agent-dev-workflow.html	   odebase-design</code> 용
 agent-dev-workflow.html	   ' 질문을 만나면 돌릴 것은 <code>
-agent-dev-workflow.html	   r-4">진짜 bug 하나에 <code>
+agent-dev-workflow.html	   e-4">진짜 bug 하나에 <code>
 agent-dev-workflow.html	·· iagnosing-bugs</code>를
 agent-dev-workflow.html	   <code>/handoff</code> 명
-agent-dev-workflow.html	   -4 pr-4">연습할 것은 <code>
+agent-dev-workflow.html	   -4 pe-4">연습할 것은 <code>
 agent-dev-workflow.html	   ode>/wait-what</code> 및
 agent-dev-workflow.html	   ire</code>. 그리고 <a href="#claude-md" class="underline">
 agent-dev-workflow.html	   underline">09절</a> 내
@@ -500,6 +503,8 @@ agent-prompting-guide.html	   rong>도구는 분명하게.</strong> 이
 agent-prompting-guide.html	   본이 아니라 원칙을 준다.</strong> 예
 agent-prompting-guide.html	   ><strong>쓰는 법.</strong> 도
 agent-prompting-guide.html	   <strong>점검 장치.</strong> 결
+agent-prompting-guide.html	    GEO 입문 가이드 <span class="ms-2">
+agent-prompting-guide.html	    llms.txt란 무엇인가 <span class="ms-2">
 claude-skills-guide.html	   <strong>듣는 지점:</strong> 한
 claude-skills-guide.html	   Skill이 없는 MCP:</strong> 도
 claude-skills-guide.html	   Skill이 있는 MCP:</strong> 기
@@ -611,14 +616,14 @@ owasp-llm-top-10.html	   니며, 하류에 결과를 미치는 <strong>
 owasp-llm-top-10.html	·· 치는 <strong>행위자</strong>가
 owasp-llm-top-10.html	   는 데이터로 다루고, 권한을 <strong>
 owasp-llm-top-10.html	   strong>모델 바깥에서</strong> 강
-owasp-llm-top-10.html	·· r-3">왜 아직 1위인가</span>사
+owasp-llm-top-10.html	·· e-3">왜 아직 1위인가</span>사
 owasp-llm-top-10.html	   지지만, OWASP는 그것을 <strong>
 owasp-llm-top-10.html	·· strong>막아 낸 결과</strong>이
 owasp-llm-top-10.html	·· </span><span>검색<strong>
 owasp-llm-top-10.html	   색<strong>하기 전에</strong> 사
 owasp-llm-top-10.html	    가장 무거운 이동입니다.</strong> 투
 owasp-llm-top-10.html	    6위로, 네 계단 상승.</strong> 실
-owasp-llm-top-10.html	··  mr-3">2026 변동</span>두
+owasp-llm-top-10.html	··  me-3">2026 변동</span>두
 owasp-llm-top-10.html	   an>두 계단 상승. 그리고 <strong>
 owasp-llm-top-10.html	   않으려던 지시와 운영 정보가 <strong>
 owasp-llm-top-10.html	    정책 집행, 내용 거르기의 <strong>
@@ -651,7 +656,7 @@ pqc-migration.html	    <p>암호 민첩성이란 <strong>
 pqc-migration.html	·· 리즘을 바꿀 수 있는 능력</strong>입
 pqc-migration.html	    <p>왜냐하면 <strong>
 pqc-migration.html	   에 둔 것은 급해서가 아니라 <strong>
-pqc-migration.html	··  mr-3">과도기의 방식</span>실
+pqc-migration.html	··  me-3">과도기의 방식</span>실
 pqc-migration.html	   무에서는 많은 시스템이 먼저 <strong>
 pqc-migration.html	    지침이 대상으로 삼는 것은 <strong>
 pqc-migration.html	·· 기관과 그 중요 공급업체'</strong>입
@@ -666,11 +671,11 @@ pqc-migration.html	·· 제 상태를 다시 확인한 날</strong>이
 pqc-migration.html	   ">112비트 강도 알고리즘 <span class="font-sans">
 pqc-migration.html	   ont-sans">2030</span> 이
 pqc-migration.html	   ont-sans">2035</span> 이
-pqc-migration.html	   py-4 pr-4">회원국은 <span class="font-sans">
+pqc-migration.html	   py-4 pe-4">회원국은 <span class="font-sans">
 pqc-migration.html	·· ont-sans">2026</span>년
 pqc-migration.html	    기반 시설의 고위험 영역은 <span class="font-sans">
 pqc-migration.html	·· ont-sans">2030</span>년
-pqc-migration.html	   ="py-4 pr-4">단기 <span class="font-sans">
+pqc-migration.html	   ="py-4 pe-4">단기 <span class="font-sans">
 pqc-migration.html	   ans">2026–2027</span> 거
 pqc-migration.html	   호 민첩성의 기초<br>중기 <span class="font-sans">
 pqc-migration.html	   ans">2027–2029</span> 시
@@ -706,7 +711,7 @@ threat-landscape.html	   p>'AI를 썼다'는 구분의 <strong>
 threat-landscape.html	   >'+550%'가 재는 것은 <strong>
 threat-landscape.html	·· ng>포럼에서의 언급 횟수</strong>입
 threat-landscape.html	    문제는 모델 자체가 아니라 <strong>
-threat-landscape.html	·· ebrow mr-3">관련</span>사
+threat-landscape.html	·· ebrow me-3">관련</span>사
 threat-landscape.html	   LLM 앱을 어떻게 지킬지는 <a href="/{{ locale }}/owasp-llm-top-10" class="underline">
 threat-landscape.html	·· ASP LLM Top 10</a>를
 threat-landscape.html	   자가 노린 취약점의 40%가 <strong>
