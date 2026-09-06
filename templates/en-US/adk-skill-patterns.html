@@ -36,7 +36,7 @@
             </p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
-                <h3 class="text-lg font-bold mb-2">Why patterns at all?</h3>
+                <h3 class="mb-2">Why patterns at all?</h3>
                 <p class="leading-relaxed">
                     It is easy to assume that getting the YAML in <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code> right is the job. That part is only the shell.
                     The real work is <strong>designing what goes inside</strong>: how do you stop an agent skipping steps, guessing, or returning something shaped differently every time?
@@ -65,7 +65,7 @@
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
-                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 </span>
@@ -76,40 +76,40 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">#</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">Pattern</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">In one line</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">Use it for</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">#</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">Pattern</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">In one line</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm hidden tablet:table-cell">Use it for</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">01</td>
-                            <td class="py-4 px-4 font-bold">Tool Wrapper</td>
+                            <td class="py-4 px-4 font-semibold">Tool Wrapper</td>
                             <td class="py-4 px-4">Load the expert knowledge only when it is needed</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">Working with a specific framework or library</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">02</td>
-                            <td class="py-4 px-4 font-bold">Generator</td>
+                            <td class="py-4 px-4 font-semibold">Generator</td>
                             <td class="py-4 px-4">A template guarantees the shape of the output</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">Reports, documentation, API docs</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">03</td>
-                            <td class="py-4 px-4 font-bold">Reviewer</td>
+                            <td class="py-4 px-4 font-semibold">Reviewer</td>
                             <td class="py-4 px-4">A checklist stands between the work and done</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">Code review, security audits</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">04</td>
-                            <td class="py-4 px-4 font-bold">Inversion</td>
+                            <td class="py-4 px-4 font-semibold">Inversion</td>
                             <td class="py-4 px-4">Ask enough questions before starting</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">Tasks where the requirement is still vague</td>
                         </tr>
                         <tr>
                             <td class="py-4 px-4 font-sans font-semibold">05</td>
-                            <td class="py-4 px-4 font-bold">Pipeline</td>
+                            <td class="py-4 px-4 font-semibold">Pipeline</td>
                             <td class="py-4 px-4">A strict multi-step pipeline</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">Deployments, approvals, complex workflows</td>
                         </tr>
@@ -121,8 +121,8 @@
         <!-- Pattern 1: Tool Wrapper -->
         <section id="tool-wrapper" class="border-t border-line pt-16">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool Wrapper</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool wrapper</p>
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">01</span>
                 Tool Wrapper
             </h2>
@@ -132,7 +132,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The problem</h3>
+                    <h3 class="mb-2">The problem</h3>
                     <p>
                         Put every framework document — FastAPI conventions, React rules, the SQL style guide — into the system prompt and you pay for all of it on every turn, while the model's attention spreads across things this task does not need.
                     </p>
@@ -140,7 +140,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The pattern</h3>
+                    <h3 class="mb-2">The pattern</h3>
                     <p class="mb-4">
                         In <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code>  declare a trigger.
                         When the agent notices the user mention a framework, it pulls the matching conventions from <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> at that moment, and not before.
@@ -164,7 +164,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Why it works
                     </p>
@@ -177,7 +177,7 @@
         <section id="generator" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Generator</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">02</span>
                 Generator
             </h2>
@@ -187,7 +187,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The problem</h3>
+                    <h3 class="mb-2">The problem</h3>
                     <p>
                         Ask a model to write a report freehand and the shape changes every time — a table of contents on Tuesday, none on Wednesday; three sections once, thirty the next.
                     </p>
@@ -195,7 +195,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The pattern</h3>
+                    <h3 class="mb-2">The pattern</h3>
                     <p class="mb-4">
                         Write the template up front (in <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code>) and have the agent fill it in rather than construct a document from nothing.
                     </p>
@@ -225,7 +225,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Why it works
                     </p>
@@ -238,7 +238,7 @@
         <section id="reviewer" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Reviewer</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">03</span>
                 Reviewer
             </h2>
@@ -248,7 +248,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The problem</h3>
+                    <h3 class="mb-2">The problem</h3>
                     <p>
                         What comes back looks right and has a hole in it — an unhandled edge case, a missing security check, a team convention nobody wrote down.
                     </p>
@@ -256,7 +256,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The pattern</h3>
+                    <h3 class="mb-2">The pattern</h3>
                     <p class="mb-4">
                         A separate reviewer skill that loads its own checklist from <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code>,
                         verifies against it item by item, and reports findings grouped by severity.
@@ -278,7 +278,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Why it works
                     </p>
@@ -291,7 +291,7 @@
         <section id="inversion" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Inversion</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">04</span>
                 Inversion
             </h2>
@@ -301,7 +301,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The problem</h3>
+                    <h3 class="mb-2">The problem</h3>
                     <p>
                         "Build me a website" arrives, and the agent starts writing React. What comes out bears little relation to what was wanted, because the default instinct is to act rather than to find out.
                     </p>
@@ -309,7 +309,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The pattern</h3>
+                    <h3 class="mb-2">The pattern</h3>
                     <p class="mb-4">
                         <strong>Invert the behaviour</strong>: make it an interviewer before it is an implementer.
                         Non-negotiable gates: no work starts until every parameter it needs has been collected.
@@ -339,7 +339,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Why it works
                     </p>
@@ -352,7 +352,7 @@
         <section id="pipeline" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Pipeline</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">05</span>
                 Pipeline
             </h2>
@@ -362,7 +362,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The problem</h3>
+                    <h3 class="mb-2">The problem</h3>
                     <p>
                         A complex task has stages, and a model will skip one, merge two, or lose the important middle step — most often when the context is already long.
                     </p>
@@ -370,7 +370,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">The pattern</h3>
+                    <h3 class="mb-2">The pattern</h3>
                     <p class="mb-4">
                         Design the skill as a <strong>strict pipeline</strong>: named phases,
                         with a gate between each. The agent finishes the current phase and gets a human confirmation before the next one opens.
@@ -379,7 +379,7 @@
                     <!-- Pipeline Visual -->
                     <div class="flex flex-col tablet:flex-row items-center gap-3 tablet:gap-0 my-6">
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 1</div>
+                            <div class="font-semibold text-sm">Phase 1</div>
                             <div class="text-xs mt-1">Research</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
@@ -388,7 +388,7 @@
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 2</div>
+                            <div class="font-semibold text-sm">Phase 2</div>
                             <div class="text-xs mt-1">Plan</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
@@ -397,19 +397,19 @@
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 3</div>
+                            <div class="font-semibold text-sm">Phase 3</div>
                             <div class="text-xs mt-1">Execute</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Done</div>
+                            <div class="font-semibold text-sm">Done</div>
                             <div class="text-xs mt-1">Verify</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Why it works
                     </p>
@@ -422,7 +422,7 @@
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">07</p>
-                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                 </span>
@@ -435,7 +435,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">Progressive disclosure</h4>
+                        <h4 class="mb-1">Progressive disclosure</h4>
                         <p class="text-sm">ADK's SkillToolset loads instructions and context at the moment they are needed — cheaper, and more focused.</p>
                     </div>
                 </div>
@@ -444,7 +444,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">Format apart from content</h4>
+                        <h4 class="mb-1">Format apart from content</h4>
                         <p class="text-sm"><code class="bg-ink/5 font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code> gives you a standard shell; these patterns are what decides how the agent thinks and acts inside it.</p>
                     </div>
                 </div>
@@ -453,7 +453,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">They compose</h4>
+                        <h4 class="mb-1">They compose</h4>
                         <p class="text-sm">Mix them. Put a reviewer at the end of a pipeline; put inversion in front of a generator to collect its parameters first.</p>
                     </div>
                 </div>
@@ -463,7 +463,7 @@
         <!-- Related Links -->
         <section class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-sans">08</p>
-            <h3 class="font-bold mb-6 font-display text-xl">Further reading</h3>
+            <h3 class="mb-6">Further reading</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     Prompting guide <span class="ml-2">→</span>

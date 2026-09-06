@@ -286,10 +286,49 @@
      on the scale, and it applied to every heading regardless of size — the
      opposite of a scale whose whole point is that tracking changes with size.
      The display tokens carry their own. */
+  /* THE LADDER, BY LEVEL. h2 34 / h3 24 / h4 21, with the h1 lead at 40→64 in
+     .display-lead. Before this, 355 h2s carried `text-3xl` or `text-2xl` —
+     Tailwind's own 30 and 24, neither a step on the declared scale — 20 of them
+     wore `.display-lead`, which is 36px on a phone: the same size as the h1
+     above them. better-typography asks that heading sizes descend with level
+     and come from the scale; the size now comes from the element, and the
+     templates carry spacing and layout utilities only.
+
+     600, NOT 700. DESIGN.md's ladder gives display and emphasis 600 and names
+     no role for 700, while this line said 700 and 850 headings said `font-bold`
+     over it. The tokens already carried 600 (text-display-*); the utility won.
+     Now nothing says 700. `text-wrap: balance` on the levels that wrap to two
+     lines; long-form paragraphs deliberately get neither balance nor pretty. */
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--ink);
+    text-wrap: balance;
+  }
+
+  h2 {
+    @apply text-display-sm;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+
+  /* Preflight makes <strong> `bolder`, which from 400 is 700 — the weight the
+     ladder has no role for. Inline emphasis is 600 (DESIGN.md 字重階梯), and a
+     table heading is emphasis, not display. */
+  strong, b, th {
+    font-weight: 600;
+  }
+
+  /* Digits share a width inside a table, so a column of figures lines up and a
+     value that changes does not shift its neighbours (better-typography). */
+  table {
+    font-variant-numeric: tabular-nums;
   }
 
   /* WHAT NOT DECLARING A COLOUR DECLARES.
@@ -673,9 +712,12 @@
      carried entirely by the Latin elements, and the nav is where most of them
      are. Condensed also buys back the width the tracking costs: the same items
      set in the regular face would overrun the container. */
+  /* transition-opacity, not -colors: the only thing a nav link changes is its
+     opacity on press. A colour transition on a colour that never changes was a
+     hand-off that never happened (better-ui: transition only what changes). */
   .nav-link {
     @apply font-display text-nav uppercase text-ink relative
-           transition-colors duration-200 bg-transparent cursor-pointer;
+           transition-opacity duration-200 bg-transparent cursor-pointer;
   }
 
   .nav-link::after {
@@ -766,16 +808,25 @@
   /* SENTENCE CASE. The previous vocabulary set this in all caps and had a rule
      enforcing it; this one never shouts, and the rule is reversed rather than
      deleted — `sentence case display` now fails if the transform comes back. */
+  /* 40 → 64, both steps on the ladder. The phone size was `text-4xl`,
+     Tailwind's 36px — not a declared step, and the size the h2 leads shared. */
   .display-lead {
-    @apply block font-display text-4xl tablet:text-display-lg;
+    @apply block font-display text-display-md tablet:text-display-lg;
     color: var(--ink);
   }
 
+  /* 21 → 24 with the tokens' own leading (1.48 / 1.4). This was 20px → an
+     arbitrary 28px at a hand-set 1.15 — DESIGN.md's table said 24px/1.4 the
+     whole time, and neither number was true. CJK fills its em box, and a sub
+     that wraps to two lines at 1.15 has no air between them; better-typography
+     asks 1.4 of anything that can wrap. `pretty` keeps a lone last word off
+     the second line. The letter-spacing is set after the @apply so it wins
+     over text-lg's 0.011em, which is a Latin lead's tracking, not CJK's. */
   .display-sub {
-    @apply block font-sans normal-case text-xl tablet:text-[1.75rem] mt-3 text-ink;
+    @apply block font-sans normal-case text-lg tablet:text-xl mt-3 text-ink;
     font-weight: 400;
     letter-spacing: 0;
-    line-height: 1.15;
+    text-wrap: pretty;
   }
 
   /* Eyebrow label — section numbers, column headings, kickers.
@@ -808,8 +859,11 @@
      THE GATE NEVER MEASURED THESE: geometry's touch probe read `a.btn` and the
      form controls, not a plain anchor, so the 26px was green and would have
      stayed green at 12. The probe reads chrome anchors now. */
+  /* nowrap and a 44px width floor: a label never wraps, and at 320px the
+     Japanese footer row squeezed 利用規約 onto two lines, 42px wide — the
+     probe's first catch after the nav token grew. The row wraps instead. */
   .footer-link {
-    @apply block text-sm text-ink py-3;
+    @apply block text-sm text-ink py-3 whitespace-nowrap min-w-11;
   }
 
   @media (hover: hover) {
@@ -851,7 +905,7 @@
      Thirteen entries at 44px is 572px, inside the 900px viewport the walk uses
      once the sticky offset is paid. */
   .section-index-link {
-    @apply flex items-center border-l border-line pl-3 text-xs text-ink
+    @apply flex items-center border-l border-line pl-3 text-sm text-ink
            transition-colors duration-200;
     min-height: 44px;
   }

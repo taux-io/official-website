@@ -26,7 +26,7 @@
             <p class="text-lg mb-8 max-w-prose">Prompt Engineering 实战指南</p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
-                <h3 class="text-lg font-bold mb-2">导言：为什么你的 AI 总是不懂你？</h3>
+                <h3 class="mb-2">导言：为什么你的 AI 总是不懂你？</h3>
                 <p class="mb-4">
                     其实不是 AI 笨，是我们「交办工作」的方式不够清楚。Prompt Engineering（提示工程）就像是在用白话文写程序。
                     核心在于给出清晰的指令、必要的背景，并告诉 AI 该怎么排列组合这些信息。
@@ -65,7 +65,7 @@
                      circled numerals: there the numeral is the ONLY place the section
                      number appears, so dropping it would lose which pattern is which.
                      Here the eyebrow already says it. Issues 281, 284. -->
-                <h2 class="font-display text-3xl font-bold mb-2">
+                <h2 class="mb-2">
                 基础篇 (Prompting 101)
             </h2>
             </div>
@@ -75,15 +75,15 @@
                 <!-- Point 1 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">1. 给它一个「身分」与「任务」 (Context & Role)</h3>
+                    <h3 class="mb-2">1. 给它一个「身分」与「任务」 (Context & Role)</h3>
                     <p class="mb-3">不要只丢一句话给 AI，你要像导演一样设置角色。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
-                        <span class="font-bold block mb-2 flex items-center gap-1">
+                        <span class="font-semibold block mb-2 flex items-center gap-1">
                             <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg> 错误示范：「这是什么？」
                         </span>
-                        <span class="font-bold block flex items-center gap-1">
+                        <span class="font-semibold block flex items-center gap-1">
                             <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg> 正确示范：「你是一间瑞典保险公司的理赔专员。你的任务是阅读车祸报告并判断谁有过失。」
@@ -97,7 +97,7 @@
                 <!-- Point 2 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">2. 提供「参考书」 (Background Data)</h3>
+                    <h3 class="mb-2">2. 提供「参考书」 (Background Data)</h3>
                     <p class="mb-3">如果是固定不变的信息（如标准表格、法规），请放在最前面 (System Prompt)。</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>为什么？</strong> 让 AI 专注填写内容，不用重新学习格式。就像给实习生「员工手册」。</li>
@@ -108,7 +108,7 @@
                 <!-- Point 3 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">3. 下达「步骤指令」 (Step-by-Step Instructions)</h3>
+                    <h3 class="mb-2">3. 下达「步骤指令」 (Step-by-Step Instructions)</h3>
                     <p class="mb-3">不要只求结果，要规定过程。人类怎么思考，就叫 AI 照着做。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
                         <strong class="font-semibold mb-1 block">指令写法：</strong>
@@ -122,7 +122,7 @@
                 <!-- Point 4 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">4. 规定「输出格式」 (Output Formatting)</h3>
+                    <h3 class="mb-2">4. 规定「输出格式」 (Output Formatting)</h3>
                     <p class="mb-3">告诉 AI：「请用 JSON 格式输出」或「请把结论包在 <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> 标签里」。</p>
                     <p class="text-sm flex items-start">
                         <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 这样你可以直接拿程序去抓取结果，不用人工复制粘贴。
@@ -134,8 +134,8 @@
         <!-- Part 2: Agents -->
         <section id="agent-prompting" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent Prompting</p>
-                <h2 class="font-display text-3xl font-bold mb-2">
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent prompting</p>
+                <h2 class="mb-2">
                 高级篇 (Prompting for Agents)
             </h2>
             </div>
@@ -144,7 +144,7 @@
             <div class="space-y-10 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">1. 什么是代理人 (Agent)？</h3>
+                    <h3 class="mb-2">1. 什么是代理人 (Agent)？</h3>
                     <p>基础篇 AI 像「问答机」。代理人则像「独立员工」，在循环 (Loop) 里工作：<br>
                         <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">使用工具 → 观察结果 → 思考下一步 → 再使用工具</span><br>
                         <span class="inline-block mt-2 text-sm">直到完成任务。</span>
@@ -153,7 +153,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">2. 何时该用代理人？</h3>
+                    <h3 class="mb-2">2. 何时该用代理人？</h3>
                     <p class="mb-3">杀鸡焉用牛刀。适合任务复杂、路径不固定的场景。</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start">
@@ -169,7 +169,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">3. 关键心法：像代理人一样思考</h3>
+                    <h3 class="mb-2">3. 关键心法：像代理人一样思考</h3>
                     <p class="mb-3">问自己：「如果我是刚毕业的实习生，给我这些工具，我会不会不知所措？」</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>工具设计要清楚：</strong>名称简单准确，不要重叠。</li>
@@ -179,7 +179,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">4. 让它「先想再做」 (Plan & Guide Thinking)</h3>
+                    <h3 class="mb-2">4. 让它「先想再做」 (Plan & Guide Thinking)</h3>
                     <p class="mb-3">现在的模型可以边做边想。</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>指令技巧：</strong>要求调用工具前先规划：「我要搜什么关键字？找什么来源？」</li>
@@ -189,7 +189,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">5. 如何测试？ (Evaluation)</h3>
+                    <h3 class="mb-2">5. 如何测试？ (Evaluation)</h3>
                     <p>从小开始。手动测试几个案例，观察日志 (Logs)。<br>
                         看看它调用了什么工具？有没有鬼打墙？这比只看最终答案更能优化指令。</p>
                 </div>
@@ -198,7 +198,7 @@
 
         <!-- Related Links -->
         <section class="mt-16 pt-12 border-t border-line">
-            <h3 class="font-bold mb-6 font-display text-xl">延伸阅读</h3>
+            <h3 class="mb-6">延伸阅读</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     GEO 入门指南 <span class="ml-2">→</span>

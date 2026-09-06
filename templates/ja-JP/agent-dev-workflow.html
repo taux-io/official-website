@@ -98,22 +98,22 @@
         <section id="concepts" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
-                <h2 class="font-display text-2xl font-bold mb-6">まず押さえる三つの土台</h2>
+                <h2 class="mb-6">まず押さえる三つの土台</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>本ページが扱うのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT ライセンス）の <strong>1.2.3</strong> 版、公開済みの 25 個の skill です。<strong>この skill 群は TauX の作品ではありません</strong>。このチュートリアルが TauX のものです。以下の判定基準、落とし穴、シナリオはすべて、公式ドキュメントと issue を読み込んだうえで書き起こした日本語の教材であり、翻訳でも転載でもありません。</p>
                 <p>この三つを先に理解しておかないと、後に出てくる skill はどれも使い方を誤ります。</p>
             </div>
 
-            <h3 class="font-display text-xl font-bold mt-14 mb-4">一、誰が呼び出せるか</h3>
+            <h3 class="mt-14 mb-4">一、誰が呼び出せるか</h3>
             <p class="leading-relaxed mb-6">これは、この pack <strong>唯一の分類軸です</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">User-invoked</th>
-                            <th scope="col" class="py-3 font-bold text-sm">Model-invoked</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">User-invoked</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">Model-invoked</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -151,7 +151,7 @@
             <p class="leading-relaxed mt-6">ルール自体はこうです：user-invoked は model-invoked を呼べますが、<strong>別の user-invoked を呼ぶことは決してできません</strong>。
             </p>
 
-            <h3 class="font-display text-xl font-bold mt-14 mb-4">二、四つの役割</h3>
+            <h3 class="mt-14 mb-4">二、四つの役割</h3>
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">本流</p>
@@ -175,15 +175,15 @@
                 </div>
             </div>
 
-            <h3 class="font-display text-xl font-bold mt-14 mb-4">三、Phase boundary</h3>
+            <h3 class="mt-14 mb-4">三、Phase boundary</h3>
             <p class="leading-relaxed mb-6">一つの session の中の一区切りの作業を <strong>phase</strong>と呼びます（インタビュー、実装、QA…）。「自分の context をどうするか」という問いが<strong>成立するのは二つの phase のあいだだけです</strong>。phase の途中に選択肢はなく、続けるか、残りを subagent に投げるかしかありません。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">優先順位</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">選択肢</th>
-                            <th scope="col" class="py-3 font-bold text-sm">選ぶタイミング</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">優先順位</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">選択肢</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">選ぶタイミング</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -224,7 +224,7 @@
         <section id="install" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">02</p>
-                <h2 class="font-display text-2xl font-bold mb-6">インストール：二つの道から一つを選ぶ</h2>
+                <h2 class="mb-6">インストール：二つの道から一つを選ぶ</h2>
             </div>
             <p class="leading-relaxed mb-8">二つのインストール方法は、二つの哲学を表します。<strong>両方入れると、すべての skill が二重になります。</strong>
             </p>
@@ -257,7 +257,7 @@
         <section id="setup" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">03</p>
-                <h2 class="font-display text-2xl font-bold mb-6">前準備、repo ごとに一度</h2>
+                <h2 class="mb-6">前準備、repo ごとに一度</h2>
             </div>
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> は、すべての engineering skill の<strong>前提条件であり、フローの一ステップではありません</strong>。
@@ -266,9 +266,9 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">決定事項</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">先に提案してくるもの</th>
-                            <th scope="col" class="py-3 font-bold text-sm">実際に聞かれる条件</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">決定事項</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">先に提案してくるもの</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">実際に聞かれる条件</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -296,7 +296,7 @@
                 <p>「Other」もプレースホルダーではありません——Jira、Linear、Azure DevOps が動くのはこれのおかげです：自分が作業フローを説明すると、その言葉をそのまま <code>docs/agents/issue-tracker.md</code>に書き込み、下流の skill はその文章どおりに動きます。だからこそ<strong>この一式は GitHub に縛られていません</strong>し、tracker を変えるために skill ファイルを書き換える必要も永遠にありません。</p>
             </div>
 
-            <h3 class="font-display text-xl font-bold mt-14 mb-4">必ず知っておきたい三つの落とし穴</h3>
+            <h3 class="mt-14 mb-4">必ず知っておきたい三つの落とし穴</h3>
             <div class="space-y-8 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">一、label は作ってくれません</p>
@@ -320,7 +320,7 @@ gh label create enhancement</code></pre>
                 </div>
             </div>
 
-            <h3 class="font-display text-xl font-bold mt-14 mb-4">成功したかどうかの見分け方</h3>
+            <h3 class="mt-14 mb-4">成功したかどうかの見分け方</h3>
             <ul class="space-y-3 leading-relaxed">
                 <li><code>docs/agents/issue-tracker.md</code> と <code>domain.md</code> が存在します（triage を入れていれば <code>triage-labels.md</code>）</li>
                 <li>自分の harness <strong>が本当に読む</strong>指示ファイルに次の見出しがあります： <code>## Agent skills</code></li>
@@ -338,7 +338,7 @@ gh label create enhancement</code></pre>
         <section id="map" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">04</p>
-                <h2 class="font-display text-2xl font-bold mb-6">25 個の skill、全体の地図</h2>
+                <h2 class="mb-6">25 個の skill、全体の地図</h2>
             </div>
             <p class="leading-relaxed mb-8">「ハード依存」の列が実戦での要点です——<strong>依存が入っていなければ、skill は静かにただの即興へと退化します。</strong>
             </p>
@@ -346,11 +346,11 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Skill</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">呼び出し元</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">役割</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">一言で</th>
-                            <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">ハード依存</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">Skill</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm whitespace-nowrap">呼び出し元</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm whitespace-nowrap">役割</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">一言で</th>
+                            <th scope="col" class="py-3 font-semibold text-sm hidden tablet:table-cell">ハード依存</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -397,14 +397,14 @@ gh label create enhancement</code></pre>
         <section id="main-flow" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">05</p>
-                <h2 class="font-display text-2xl font-bold mb-6">本流の七ステップ、順を追って</h2>
+                <h2 class="mb-6">本流の七ステップ、順を追って</h2>
             </div>
             <div class="border-l border-line pl-6 mb-10">
                 <p class="eyebrow mb-2">通しの事例</p>
                 <p class="leading-relaxed">社内ツールの repo（Next.js と Postgres）に「契約期限リマインダー」を足したい——30 日以内に期限が来る契約を一覧し、担当者にメールを送り、管理画面に赤い点を出す。schema、API、UI、メール送信にまたがり、幅として十分で、フル工程を通す価値があります。</p>
             </div>
 
-            <h3 id="step-1" class="font-display text-xl font-bold mb-4">Step 1 — 曖昧なアイデアを問い詰めて決定に変える</h3>
+            <h3 id="step-1" class="font-display text-xl font-semibold mb-4">Step 1 — 曖昧なアイデアを問い詰めて決定に変える</h3>
             <div class="space-y-6 leading-relaxed">
                 <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>/grill-with-docs 契約期限リマインダー機能を追加したい</code></pre>
                 <p>きれいな会話を一つ開き、<strong>plan mode を切ります</strong>。plan mode は agent に計画を早く出させようとしますが、それは「問いの中に留まる」ことのちょうど逆です。</p>
@@ -429,8 +429,8 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">何が片づいたか</th>
-                            <th scope="col" class="py-3 font-bold text-sm">どこに残るか</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">何が片づいたか</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">どこに残るか</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -449,7 +449,7 @@ gh label create enhancement</code></pre>
             </p>
             <p class="leading-relaxed mt-6">このステップでは<strong>手持ちで最良のモデル</strong>を使います。grilling が食うのはモデル自身の「システムはどう壊れるか」という直感です。実装の段階はむしろ context を食うので、もっと安いモデルで構いません。</p>
 
-            <h3 id="step-2" class="font-display text-xl font-bold mt-14 mb-4">Step 2 — 決まったことを、生き延びる文書に変える</h3>
+            <h3 id="step-2" class="font-display text-xl font-semibold mt-14 mb-4">Step 2 — 決まったことを、生き延びる文書に変える</h3>
             <div class="space-y-6 leading-relaxed">
                 <p><code>/to-spec</code>、<strong>同じ会話の中で。新しい会話を開かないこと</strong>。</p>
                 <p>これは<strong>あなたにインタビューしません</strong>。ここまで来れば決めるべきことは決まっているので、これは「総合」です——会話、codebase、<code>CONTEXT.md</code> と ADR から整理します。</p>
@@ -466,8 +466,8 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">いまどこにいるか</th>
-                            <th scope="col" class="py-3 font-bold text-sm">何を走らせるか</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">いまどこにいるか</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">何を走らせるか</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -488,15 +488,15 @@ gh label create enhancement</code></pre>
                 </ul>
             </div>
 
-            <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — tracer bullet に切り分ける</h3>
+            <h3 id="step-3" class="font-display text-xl font-semibold mt-14 mb-4">Step 3 — tracer bullet に切り分ける</h3>
             <p class="leading-relaxed mb-6"><code>/to-tickets</code>、同じウィンドウで。あるいは <code>/to-tickets #&lt;spec_issue&gt;</code>。計画が会話の中にあるだけで spec になっていなくても構いません。会話をそのまま読みます。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">水平スライス（誤）</th>
-                            <th scope="col" class="py-3 font-bold text-sm">垂直スライス（正）</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">水平スライス（誤）</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">垂直スライス（正）</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -532,7 +532,7 @@ gh label create enhancement</code></pre>
                 </ul>
             </div>
 
-            <h3 id="step-4" class="font-display text-xl font-bold mt-14 mb-4">Step 4 — チケット 1 枚に session 1 つ</h3>
+            <h3 id="step-4" class="font-display text-xl font-semibold mt-14 mb-4">Step 4 — チケット 1 枚に session 1 つ</h3>
             <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/implement https://github.com/you/repo/issues/12</code></pre>
             <div class="border-l border-line pl-6 mb-8">
                 <p class="eyebrow mb-2">なぜ完全な reference を書くのか</p>
@@ -558,8 +558,8 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症状</th>
-                            <th scope="col" class="py-3 font-bold text-sm">説明</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">症状</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">説明</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -573,7 +573,7 @@ gh label create enhancement</code></pre>
             </div>
             <p class="leading-relaxed mt-6">組み込みのあの review を<strong>あえて使わない</strong>人もいます——コードを書いた agent が自分のコードを審査すれば、自分の解法をひいきします。きれいな session で固定点に対して別途 <code>code-review</code> を走らせるのは、理にかなった代替策です。</p>
 
-            <h3 id="step-5" class="font-display text-xl font-bold mt-14 mb-4">Step 5 — red-green エンジン</h3>
+            <h3 id="step-5" class="font-display text-xl font-semibold mt-14 mb-4">Step 5 — red-green エンジン</h3>
             <p class="leading-relaxed mb-6">
                 <code>tdd</code> は<strong>参考資料であって、ドライバーではありません</strong>：ループのルールを握っているだけで、session を回すのは別の誰かです（あなた、または <code>implement</code>）。
             </p>
@@ -595,8 +595,8 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">アンチパターン</th>
-                            <th scope="col" class="py-3 font-bold text-sm">現れ方</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">アンチパターン</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">現れ方</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -619,7 +619,7 @@ gh label create enhancement</code></pre>
                 </ul>
             </div>
 
-            <h3 id="step-6" class="font-display text-xl font-bold mt-14 mb-4">Step 6 — 二軸レビュー</h3>
+            <h3 id="step-6" class="font-display text-xl font-semibold mt-14 mb-4">Step 6 — 二軸レビュー</h3>
             <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-6"><code>/code-review main</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>固定点はあなたが与える必要があります</strong>。与えなければ、勝手に推測せずに聞いてきますし、ref が解決すること、diff が空でないことを確かめてから sub-agent を生成します。</p>
@@ -627,9 +627,9 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Standards</th>
-                            <th scope="col" class="py-3 font-bold text-sm">Spec</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">Standards</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">Spec</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -656,7 +656,7 @@ gh label create enhancement</code></pre>
                 </ul>
             </div>
 
-            <h3 id="step-7" class="font-display text-xl font-bold mt-14 mb-4">Step 7 — 締めくくりとループ</h3>
+            <h3 id="step-7" class="font-display text-xl font-semibold mt-14 mb-4">Step 7 — 締めくくりとループ</h3>
             <p class="leading-relaxed mb-4">チケット一枚のループ：</p>
             <ol class="space-y-2 leading-relaxed mb-8">
                 <li>clear context</li>
@@ -690,14 +690,14 @@ gh label create enhancement</code></pre>
         <section id="situations" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">06</p>
-                <h2 class="font-display text-2xl font-bold mb-6">状況別インデックス、どんなときにどれを取るか</h2>
+                <h2 class="mb-6">状況別インデックス、どんなときにどれを取るか</h2>
             </div>
             <p class="leading-relaxed mb-10">本流以外の skill は、どれも「特定の状況でだけ逸れていく」ものです。ここでは<strong>あなたの状況</strong>で並べます。</p>
 
             <div class="space-y-12">
                 <div>
                     <p class="eyebrow mb-2">単独 — prototype</p>
-                    <h3 class="font-display text-lg font-bold mb-3">この問題は議論では決着しない</h3>
+                    <h3 class="mb-3">この問題は議論では決着しない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>これが書くのは<strong>一つの問いに答えるための使い捨てのコード</strong>です。問いが先に来て、あとに来るすべての形を決めます。間違った問いに答える prototype は、どれだけ見栄えがよくても純粋な無駄です。「使い捨て」は、<strong>どう書くか</strong>への制約であって、「必ず破棄する」という約束ではありません：テストなし、動く以上のエラー処理なし、抽象化なし、永続化なし。</p>
                         <p>二つの分岐で、返ってくるものは大きく違います。「このロジックや状態モデルは正しく感じられるか？」には<strong>共有できる単一の HTML ファイル</strong>が返ってきます——state panel、free-play ボタン、タブ式のナビゲーションを備え、すべて領域の言葉でラベルづけしてあるので、デザイナーや領域の専門家にそのまま渡して自分で感じてもらえます。裏のロジックは DOM に触れないきれいな純モジュールで、検証できたらそのまま本番のコードへ引き上げられます。「これはどう見えるべきか？」には<strong>同じ route 上に並ぶ、大きく異なる複数の UI バリアント</strong>が返ってきます。フローティングの下部バーで切り替えます。バリアントが食い違うべき場所は色ではありません。<strong>構造</strong>です——軽く調整しただけの card grid が三つ並んでも、それは壁紙であって prototype ではありません。</p>
@@ -709,7 +709,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — research</p>
-                    <h3 class="font-display text-lg font-bold mb-3">外部の事実が判断を止めている</h3>
+                    <h3 class="mb-3">外部の事実が判断を止めている</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>それが素材にするのは<strong>一次資料</strong>だけです（公式ドキュメント、ソースコード、仕様、ファーストパーティの API）。どの主張も、答えを持っているその出所まで遡ります。<strong>会話の中では答えてくれません</strong>——出力は一つのファイルで、どの主張にもリンクが付きます。決め手は、読む部分をどこで走らせるかです。<strong>バックグラウンド agent</strong>。</p>
                         <p><strong>research は委任した足仕事であって、外注した思考ではありません。</strong></p>
@@ -721,7 +721,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — diagnosing-bugs</p>
-                    <h3 class="font-display text-lg font-bold mb-3">何かが壊れた、理由が分からない</h3>
+                    <h3 class="mb-3">何かが壊れた、理由が分からない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>六つのフェーズ：repro を作る、最小化する、仮説に順位をつける、プローブを仕込む、リグレッションテスト付きで直す、片づける。</p>
                         <p><strong>「タイト」なフィードバックループができるまで、agent に理論を立てさせません。</strong>名前の付いたコマンドが一つ、<strong>すでに一度走らせてある</strong>、この bug では赤で、直せば緑になる。bug 報告を渡された coding agent の既定の振る舞いはコードを読んで推測することですが、この skill はそれを塞ぎます。<strong>赤にできるコマンドがなければ、Phase 2 はありません。</strong>その gate こそが、この skill の価値のすべてです。</p>
@@ -744,8 +744,8 @@ gh label create enhancement</code></pre>
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Gate</th>
-                                    <th scope="col" class="py-3 font-bold text-sm">真でなければならないこと</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm">Gate</th>
+                                    <th scope="col" class="py-3 font-semibold text-sm">真でなければならないこと</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -764,7 +764,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — resolving-merge-conflicts</p>
-                    <h3 class="font-display text-lg font-bold mb-3">merge か rebase の衝突で詰まっている</h3>
+                    <h3 class="mb-3">merge か rebase の衝突で詰まっている</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>これは<strong>衝突をテキストの問題として扱うことを拒みます</strong>。hunk に手を触れる前に、両側を<strong>一次資料</strong>まで遡ります——commit message、PR、元の issue——ですから、選んでいるのは<strong>二つの意図</strong>の間であって、二つのテキストの塊の間ではありません。両立できるところでは両方を残します。本当に両立しないときは、この merge の明示された目標に合うほうを選び、そのトレードオフを言葉にします。衝突を取り繕うために新しい振る舞いを発明することはありませんし、<strong>途中で投げ出しません</strong>：merge は必ず完了した commit まで運ばれます。</p>
                         <p>repo 自身の自動化された検査を見つけ出し、commit の前に走らせもします——merge は git のなかで、「二つの branch を同時に満たしているのに、どちらの側のテストも通らない」ものが最も生まれやすい場所だからです。</p>
@@ -774,7 +774,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">合流路 — improve-codebase-architecture</p>
-                    <h3 class="font-display text-lg font-bold mb-3">codebase が腐っていく</h3>
+                    <h3 class="mb-3">codebase が腐っていく</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>codebase をスキャンして<strong>深化の機会</strong>——浅いモジュール（インターフェースが、それが隠しているものとほぼ同じくらい複雑なモジュール）を深いモジュールに変えられる箇所——を洗い出し、HTML レポートにまとめ、選んだ候補に対して grilling を行います。</p>
                         <p><strong>コードは決して変更しません。</strong>run 全体が生み出すのは「HTML ファイル 1 つと対話 1 回」です。リファクタリングそのものは後で別の session で、通常の構築フローに乗せます。これが、<strong>リファクタリングツールではなく点検である</strong>ということの意味であり、「まだ手を付ける準備ができていない」codebase に対して走らせる価値がある理由でもあります。</p>
@@ -785,8 +785,8 @@ gh label create enhancement</code></pre>
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">場面</th>
-                                    <th scope="col" class="py-3 font-bold text-sm">使い方</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm">場面</th>
+                                    <th scope="col" class="py-3 font-semibold text-sm">使い方</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -804,7 +804,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">合流路 — triage</p>
-                    <h3 class="font-display text-lg font-bold mb-3">他人から issue が大量に投げ込まれる</h3>
+                    <h3 class="mb-3">他人から issue が大量に投げ込まれる</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>自分が作成していない issue にだけ使います。</strong>生の bug 報告、外から来た feature request、突然現れた外部の PR。<code>to-tickets</code> が産出するチケットは構造上すでに agent-ready であり、それらに triage を走らせても、うまくいって無駄骨です。この skill は<strong>提案して待ちます</strong>：分類と状態の判断を理由とともに伝え、指示があるまで何も適用しません。</p>
                         <p>triage された項目はどれも、最終的に<strong>分類の役割ちょうど一つと状態の役割ちょうど一つ</strong>を持って終わります。分類は二つ、bug と enhancement。状態は五つ：<code>needs-triage</code>（評価が必要なもの）、<code>needs-info</code>（報告者待ち。返信があれば needs-triage に戻る）、<code>ready-for-agent</code>（完全に仕様化され、agent brief が付いている）、<code>ready-for-human</code>（同じ brief に「なぜ委譲できないか」を加えたもの）、<code>wontfix</code>（クローズ、理由は記録済み）。</p>
@@ -816,7 +816,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">合流路 — wayfinder</p>
-                    <h3 class="font-display text-lg font-bold mb-3">この案件は session 一つに収まらない</h3>
+                    <h3 class="mb-3">この案件は session 一つに収まらない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>この skill が引き受けるのは、<strong>agent session 一つには収まらないほど大きな</strong>案件です——<strong>目的地</strong>は言えるのに、まだ経路が見えない。それを tracker 上の共有された一枚の<strong>地図</strong>として描きます。地図は decision チケットで構成され、一度に一枚ずつ解いて経路がはっきりするまで進めます。</p>
                         <p><strong>計画はしますが、実行はしません。</strong>各チケットは「解決すると決定が出る」問いを一つ抱えているのであって、実行すべき構築の一片ではありません。地図が完成したと言えるのは：<strong>誰かがこれを作り始める前に、決めるべきことが何も残っていない状態です。</strong>このルールは agent が最もよく破ります。</p>
@@ -828,9 +828,9 @@ gh label create enhancement</code></pre>
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">タイプ</th>
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">モード</th>
-                                    <th scope="col" class="py-3 font-bold text-sm">使いどころ</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm">タイプ</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm whitespace-nowrap">モード</th>
+                                    <th scope="col" class="py-3 font-semibold text-sm">使いどころ</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -850,7 +850,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — handoff</p>
-                    <h3 class="font-display text-lg font-bold mb-3">何かを移す必要がある</h3>
+                    <h3 class="mb-3">何かを移す必要がある</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>現在の会話を一つの<strong>引き継ぎドキュメント</strong>に圧縮します——ワークスペースではなく OS の一時ディレクトリに書き出される markdown ファイルで、まっさらな agent がそれを読めばそのまま引き継げます。</p>
                         <p><strong>これが買っているのは可搬性であって、圧縮ではありません。</strong>そのぶん、聞こえるよりずっと狭い用途になります：ファイルが要るのは、仕事が<strong>動く</strong>ときだけです。トリガーは四つ——harness を替える、別のディレクトリや repo に移る、仕事を同僚に渡す、phase の途中で見つかった支線を分岐させる。</p>
@@ -862,7 +862,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — to-questionnaire</p>
-                    <h3 class="font-display text-lg font-bold mb-3">答えは他人の頭の中にある</h3>
+                    <h3 class="mb-3">答えは他人の頭の中にある</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>自分ひとりでは決められない決定を、一通の<strong>質問票</strong>に変えて、足りないピースを握っている人に渡します。</p>
                         <p><strong>それが問い詰めるのは「今回の送付」であって、主題ではありません。</strong>主題についてあなたを問い詰めても、ここでは意味がありません——主題を知らないことこそが、他人に書いて送る理由なのですから。そこで、必ず答えられる二つのことだけを尋ねます：<strong>誰に宛てるのか</strong>（相手の役割、専門、あなたとの関係。これで語り口と、ドキュメントがどれだけ context を自前で持つべきかが決まります）と<strong>何を持ち帰る必要があるのか</strong>（自分では決着させられない具体的な決定や事実。これが成果物を測るチェックリストになります）。そのあとはすべて起草です。</p>
@@ -873,7 +873,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — wait-what</p>
-                    <h3 class="font-display text-lg font-bold mb-3">いまの説明が腑に落ちない</h3>
+                    <h3 class="mb-3">いまの説明が腑に落ちない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>agent が、いま言ったばかりのことを<strong>もう一度売り込み直します</strong>：足りなかった context を補い、平易な言葉で書き、あなたのプロジェクトの <code>CONTEXT.md</code> にある語彙を使います。</p>
                         <p><strong>この skill はたった三行で、それは未完成の草稿ではなく設計です。</strong>冗長さと戦う skill は、長くなることで失敗します：四百行の「簡潔にせよ」を読んでも、モデルはやはり冗長になります。モデルが読み取るのは、訴えの中身ではなく分量だからです。</p>
@@ -884,7 +884,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — teach</p>
-                    <h3 class="font-display text-lg font-bold mb-3">何日もかけて何かを学びたい</h3>
+                    <h3 class="mb-3">何日もかけて何かを学びたい</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>これを実行したディレクトリを常設の学習ワークスペースに変え、一連の<strong>自前のスタイルを持つ短い HTML レッスン</strong>で、複数の session にまたがって一つの主題を教えます。</p>
                         <p><strong>モデルがすでに知っていることからは教えません。</strong>parametric knowledge は信用できないものとして扱われます：教える前に、まず信頼度の高い資料を探し、資料ファイルに記録し、どのレッスンでもそれを引用します。そして<strong>状態を持ちます</strong>——mission、資料、レッスン、学習ログはすべてファイルとしてディレクトリの中に住んでいます：</p>
@@ -892,8 +892,8 @@ gh label create enhancement</code></pre>
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-line">
-                                        <th scope="col" class="py-3 pr-4 font-bold text-sm">パス</th>
-                                        <th scope="col" class="py-3 font-bold text-sm">入るもの</th>
+                                        <th scope="col" class="py-3 pr-4 font-semibold text-sm">パス</th>
+                                        <th scope="col" class="py-3 font-semibold text-sm">入るもの</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm align-top">
@@ -915,7 +915,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — wizard</p>
-                    <h3 class="font-display text-lg font-bold mb-3">人間にしかできない手作業の手順がある</h3>
+                    <h3 class="mb-3">人間にしかできない手作業の手順がある</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>それは<strong>対話型 bash script</strong>を生成し、人間を一歩ずつ手作業の手順に沿って導きます——サードパーティサービスをつなぐ、一度きりの移行を走らせる、プロジェクトを状態 A から状態 B へ移す。</p>
                         <p><strong>agent が script を書きますが、それを実行することは決してありません。</strong>実行するのは自分のマシンの上です。ですから wizard は、それに従って進める手順書ではありません——それは<strong>プロセスを駆動し、状態を保持するプログラム</strong>であり、あなたの担当はクリックとペースト、そして Enter を押すことです。Stage は「一つの画面に一つの集中したタスク」で、script は stage の間でターミナルをクリアします。</p>
@@ -927,15 +927,15 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">語彙層 — codebase-design</p>
-                    <h3 class="font-display text-lg font-bold mb-3">モジュールはどんな形であるべきか</h3>
+                    <h3 class="mb-3">モジュールはどんな形であるべきか</h3>
                     <p class="leading-relaxed mb-6">これはモジュールを設計するときに使う言葉を固定し、一つひとつを正確に定義して、<strong>ゆるい代替語を禁じます</strong>。そして、そこから導かれるいくつかの原則を述べます。</p>
                     <div class="overflow-x-auto" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">用語</th>
-                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">意味</th>
-                                    <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">使わない語</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm">用語</th>
+                                    <th scope="col" class="py-3 pr-4 font-semibold text-sm">意味</th>
+                                    <th scope="col" class="py-3 font-semibold text-sm hidden tablet:table-cell">使わない語</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -958,7 +958,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">語彙層 — domain-modeling</p>
-                    <h3 class="font-display text-lg font-bold mb-3">言葉がぶつかっている</h3>
+                    <h3 class="mb-3">言葉がぶつかっている</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>これは設計を進めるのと同時に、プロジェクトの <strong>ubiquitous language</strong>を作り上げ、磨いていきます——用語集と衝突する言い回しに異議を唱え、曖昧な言葉を使ったときに正確な言葉を引き出し、具体的なシナリオで一つの関係を境界がはっきりするまで圧力テストします。</p>
                         <p><strong>これは能動的な規律であって、受動的なものではありません。</strong>ただ <code>CONTEXT.md</code> を読んで語彙を借りるのは、どの skill にもできる一行の習慣です。これは<strong>モデルを変えている</strong>ときに使うものです。これが、<strong>あなたを中断させる</strong>理由です：用語が決着したその瞬間に、会話の途中で <code>CONTEXT.md</code>へ書き込みます——バッチ版は一回の session の<strong>要約</strong>であるのに対し、リアルタイム版はその session の<strong>実際の成果物</strong>。</p>
@@ -971,7 +971,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">語彙層 — writing-for-agents</p>
-                    <h3 class="font-display text-lg font-bold mb-3">agent に読ませる文書を書きたい</h3>
+                    <h3 class="mb-3">agent に読ませる文書を書きたい</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>skill、指示ファイル、spec、runtime prompt、README——agent が読むものならすべてです。包装は違っても、書き方は同じです。</p>
                         <p><strong>この skill の既定の動きは削除であって、説明ではありません。</strong>agent に別の agent 向けの指示を書かせると、字数の大半はモデルがすでに知っていることの説明に消えます。<strong>そのどの一行も no-op です</strong>：context の対価を払いながら、行動を何ひとつ変えていません。この参考資料はそれを見つけ出すためのレンズです。だからこの skill が値を返す相手は、白紙のファイルだけではありません。<strong>すでに手元にある文書</strong>に対しても、少なくとも同じだけの価値を生みます。</p>
@@ -983,7 +983,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">単独 — grill-me</p>
-                    <h3 class="font-display text-lg font-bold mb-3">アイデアはあるが、まだ形になっていない</h3>
+                    <h3 class="mb-3">アイデアはあるが、まだ形になっていない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>この skill が手に取るのは<strong>ゆるいアイデア</strong>です。それを材料にインタビューし、あなたがそれに踏み切れるようになるまで続きます。練り上げた計画がなくても始められます——<strong>その計画を作ることこそが、この session の目的です</strong>。そしてこの skill は<strong>無状態</strong>です。ファイルも書かず、作業場も残しません。残るのは、頭の中にある、より鋭くなった版だけです。題材はコードでなくてよく、repo も要りません。</p>
                         <p><strong>plan mode は切ってください。</strong>これは agent に早く計画を出せと急かすもので、「問いの中に留まる」ことの正反対です。</p>
@@ -994,7 +994,7 @@ gh label create enhancement</code></pre>
 
                 <div>
                     <p class="eyebrow mb-2">ルーター — ask-matt</p>
-                    <h3 class="font-display text-lg font-bold mb-3">どれを使えばいいのか分からない</h3>
+                    <h3 class="mb-3">どれを使えばいいのか分からない</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>これは<strong>勧めて、そこで止まります</strong>。grill もせず、spec も書かず、ファイルも開かず、名指ししたばかりの skill を代わりに起動することもしません——手に入るのは「次に何を打つか」だけで、打つのはあなたです。渡してくる思考の単位は <strong>flow</strong>：単一の skill ではなく、skill を<strong>貫く</strong>一本の道筋のことです。</p>
                         <p><strong>知っておくべき正直な限界。</strong>これは<strong>手書き</strong>の地図で、repo に遅れますし、この pack の skill しか知りません。しかも<strong>「skill の半分は入っていない」と言ってきます</strong>——既知で未修正です。routing される skill の大半は user-invoked で、harness はそれらを agent に注入する一覧に載せません。agent はその一覧を完全なものとして扱い、存在しないと報告します。<strong>それらは入っています。</strong></p>
@@ -1011,13 +1011,13 @@ gh label create enhancement</code></pre>
         <section id="scenarios" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">07</p>
-                <h2 class="font-display text-2xl font-bold mb-6">四つの完全なシナリオ</h2>
+                <h2 class="mb-6">四つの完全なシナリオ</h2>
             </div>
             <p class="leading-relaxed mb-10">本流のシナリオは <a href="#main-flow" class="underline">第 05 節</a>にあります。ここでは、それ以外で最もよくある四つの状況を挙げます。</p>
 
             <div class="space-y-12">
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">シナリオ A — 本番環境で断続的に出る 500</h3>
+                    <h3 class="mb-3">シナリオ A — 本番環境で断続的に出る 500</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>状況</strong>：顧客から「ときどき送信すると 500 が返る」と報告があり、自分では再現できません。</p>
                         <ol class="space-y-2">
@@ -1034,7 +1034,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">シナリオ B — 誰も片づけていない legacy repo を引き継ぐ</h3>
+                    <h3 class="mb-3">シナリオ B — 誰も片づけていない legacy repo を引き継ぐ</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>状況</strong>：八年目のプロジェクトに入ったばかり、あるいは vibe-coded な repo を引き継いだところです。ADR もなく、領域言語もなく、設計原則もありません。</p>
                         <ol class="space-y-2">
@@ -1053,7 +1053,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">シナリオ C — 大規模なグリーンフィールド案件</h3>
+                    <h3 class="mb-3">シナリオ C — 大規模なグリーンフィールド案件</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>状況</strong>：新しいプロダクトモジュールをゼロから作る。道すじはまったく見えておらず、一回の対話で話しきれるものでないのは明らかです。</p>
                         <ol class="space-y-2">
@@ -1069,7 +1069,7 @@ gh label create enhancement</code></pre>
                 </div>
 
                 <div>
-                    <h3 class="font-display text-lg font-bold mb-3">シナリオ D — コードとまったく関係のない意思決定</h3>
+                    <h3 class="mb-3">シナリオ D — コードとまったく関係のない意思決定</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>状況</strong>：ビジネス上の判断を考えている——新しい製品ラインを立ち上げるか、提案の価格をどう決めるか、記事の論証の骨組みをどう組むか。</p>
                         <ol class="space-y-2">
@@ -1091,17 +1091,17 @@ gh label create enhancement</code></pre>
         <section id="pitfalls" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">08</p>
-                <h2 class="font-display text-2xl font-bold mb-6">既知の落とし穴一覧</h2>
+                <h2 class="mb-6">既知の落とし穴一覧</h2>
             </div>
             <p class="leading-relaxed mb-8">「最初に目にする症状」の順に並べています。<strong>重大</strong>は、お金か時間を無駄にするという意味です。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">症状</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">どの skill</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">重大</th>
-                            <th scope="col" class="py-3 font-bold text-sm">対処法</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">症状</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm hidden tablet:table-cell">どの skill</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm whitespace-nowrap">重大</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">対処法</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1148,7 +1148,7 @@ gh label create enhancement</code></pre>
         <section id="claude-md" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">09</p>
-                <h2 class="font-display text-2xl font-bold mb-6">自分の指示ファイルに入れるとよいもの</h2>
+                <h2 class="mb-6">自分の指示ファイルに入れるとよいもの</h2>
             </div>
             <p class="leading-relaxed mb-6">これは「公式の経路でカスタマイズする」やり方です——<strong>skill のファイルを書き換えると上書きされますが、ここは上書きされません</strong>。全体をそのままコピーして構いません。貼り先は自分の <code>CLAUDE.md</code> か <code>AGENTS.md</code>。
             </p>
@@ -1181,7 +1181,7 @@ gh label create enhancement</code></pre>
         <section id="vocabulary" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">10</p>
-                <h2 class="font-display text-2xl font-bold mb-6">中核の用語</h2>
+                <h2 class="mb-6">中核の用語</h2>
             </div>
             <p class="leading-relaxed mb-8">これらの語は skill 群に共通する言語です。<strong>意味が取れなければ、skill の出力も読めません。</strong>
             </p>
@@ -1189,8 +1189,8 @@ gh label create enhancement</code></pre>
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">用語</th>
-                            <th scope="col" class="py-3 font-bold text-sm">語義</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">用語</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">語義</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1229,7 +1229,7 @@ gh label create enhancement</code></pre>
         <section id="antipatterns" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">11</p>
-                <h2 class="font-display text-2xl font-bold mb-6">七つのアンチパターン</h2>
+                <h2 class="mb-6">七つのアンチパターン</h2>
             </div>
             <p class="leading-relaxed mb-8">この仕組みが最もよく壊れる使われ方です。</p>
             <ol class="space-y-6 leading-relaxed">
@@ -1253,16 +1253,16 @@ gh label create enhancement</code></pre>
         <section id="plan" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">12</p>
-                <h2 class="font-display text-2xl font-bold mb-6">14 日間の学習プラン</h2>
+                <h2 class="mb-6">14 日間の学習プラン</h2>
             </div>
             <p class="leading-relaxed mb-8">1 日あたり 30 分から 60 分ほど、対象は<strong>自分の本物のプロジェクト</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">日</th>
-                            <th scope="col" class="py-3 pr-4 font-bold text-sm">やること</th>
-                            <th scope="col" class="py-3 font-bold text-sm">合格の目安</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">日</th>
+                            <th scope="col" class="py-3 pr-4 font-semibold text-sm">やること</th>
+                            <th scope="col" class="py-3 font-semibold text-sm">合格の目安</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1296,7 +1296,7 @@ gh label create enhancement</code></pre>
         <section id="cheatsheet" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">13</p>
-                <h2 class="font-display text-2xl font-bold mb-6">1 ページのチートシート</h2>
+                <h2 class="mb-6">1 ページのチートシート</h2>
             </div>
             <div class="space-y-8">
                 <div>
@@ -1357,7 +1357,7 @@ gh label create enhancement</code></pre>
         <section id="source" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">出典</p>
-                <h2 class="font-display text-2xl font-bold mb-6">このチュートリアルは何にもとづいて書かれたか</h2>
+                <h2 class="mb-6">このチュートリアルは何にもとづいて書かれたか</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <p>もとにしたのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>1.2.3 版</strong>（公開済みの 25 個の skill）です。その repo の <code>README.md</code>、<code>CONTEXT.md</code>、25 本の公式 skill ドキュメント、<code>.claude-plugin/plugin.json</code> と <code>CHANGELOG.md</code> を読んだうえで整理し、書き直しました。この repo は <strong>MIT</strong> ライセンスで公開されています。</p>
@@ -1373,7 +1373,7 @@ gh label create enhancement</code></pre>
         <!-- CTA -->
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
-                <h2 class="font-display text-3xl font-bold mb-6">このワークフローを自分のチームに組み込みたい方へ</h2>
+                <h2 class="mb-6">このワークフローを自分のチームに組み込みたい方へ</h2>
             </div>
             <p class="mb-10 max-w-[42ch] text-lg">ツールは公開されています。難しいのは、すでにある tracker、規範、納品のリズムにつなぎ込むところです。そこは私たちがやってきました。</p>
             <div class="flex flex-col mobile:flex-row gap-4">

@@ -15,7 +15,7 @@
         <div class="mb-16 max-w-xs">
             <!-- inline-flex with a 44px floor: the block form measured 320x32 the first
                  time the touch probe looked at a footer anchor. -->
-            <a href="/{{ locale }}" class="inline-flex items-center min-h-11 font-display text-2xl uppercase tracking-[0.09em] mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
+            <a href="/{{ locale }}" class="inline-flex items-center min-h-11 font-display text-xl uppercase tracking-[0.09em] mb-6 transition-opacity duration-200 hover:opacity-70">TauX</a>
             <div class="flex gap-5">
                 <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-w-11 min-h-11 transition-opacity duration-200 hover:opacity-70 active:opacity-[0.55]" aria-label="GitHub">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -58,7 +58,11 @@
              that supplies link_class is the seam that kept it reusable. -->
         <div class="border-t border-line pt-8 flex flex-col tablet:flex-row justify-between items-center gap-4">
             <p class="eyebrow">&copy; {{ year }} {{ strings.copyright }}</p>
-            <div class="flex gap-8 items-center">
+            <!-- flex-wrap: three controls in five languages do not fit one
+                 320px row (プライバシーポリシー alone is ten characters), and
+                 a control that cannot fit must wrap to the next line rather
+                 than break its own label. -->
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 items-center">
 {% with link_class = "footer-link", list_class = "absolute bottom-full left-0 mb-2 bg-surface border border-line p-4 space-y-1 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
                 <a href="/{{ locale }}/privacy-policy" class="footer-link">{{ strings.nav_privacy }}</a>
                 <a href="/{{ locale }}/terms-of-service" class="footer-link">{{ strings.nav_terms }}</a>

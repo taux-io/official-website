@@ -67,6 +67,11 @@ typography:
     fontWeight: 600
     lineHeight: 2.0
     letterSpacing: 0.09em
+  nav:
+    fontSize: 14px
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: 0.09em
 
 rounded:
   none: 0px
@@ -329,9 +334,9 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 | chrome 字串進 strings、tagline 刪除 | ✅ | A |
 | SVG／th／scroller／transition-all 掃過 | ✅ | A |
 | `.tag` 圓角 xs、easing 換值、按下 0.96 | ✅ | A |
-| 標題字級對齊刻度（h2 34／h3 24／h4 21）、標題 600、`display-sub` 21/24 | ⏳ | B |
-| `nav` token 14px；控制項字級離開 `eyebrow` | ⏳ | B |
-| `text-wrap`、`tabular-nums`、引號、eyebrow 原文、數字磚 | ⏳ | B |
+| 標題字級對齊刻度（h2 34／h3 24／h4 21）、標題 600、`display-sub` 21/24 | ✅ | B |
+| `nav` token 14px；控制項字級離開 `eyebrow` | ✅ | B |
+| `text-wrap`、`tabular-nums`、引號、eyebrow 原文、數字磚 | ✅ | B |
 | 物理方向 utility → logical（3,740 處） | ⏳ | C |
 
 ✅ **階段 ① 已落地，一次改完沒有拆。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。先改表面不改墨色會得到一組沒有算過對比的顏色。
@@ -484,6 +489,8 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 
 **300 / 400 / 600 / 700，刻意沒有 500。** 內文永遠 400，行內強調 600，display 600。由 `weight ladder`（規則 21）守著。
 
+⚠️ **700 與 300 在刻度上，但沒有角色，而 v5.1 之前 700 有 1,649 個使用者**（決策 #135）：`font-bold` 850 個在標題上、其餘在 `<td>`／`<strong>`／`<span>`，加上 `src/input.css` 的 `h1–h6 { font-weight: 700 }` 與 Preflight 給 `<strong>` 的 `bolder`。三條路都寫成 600 了：基底 `h1–h6`、`strong, b, th`，模板 `font-bold` 全部改 `font-semibold`。**刻度不動**——規則 21 讀的是「有沒有 500」，700 留在刻度上是為了讓一個回來的 `font-bold` 是綠的而不是紅的，這一格記下它今天是 0 個使用者。
+
 ---
 
 ## 字級與字距刻度
@@ -494,21 +501,29 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 |---|---|
 | 兩邊同名 | `display-lg`、`display-md`、`display-sm`、`caption`、`eyebrow` |
 | **只在本檔** | `display-sub`、`lead`、`body`、`body-strong` —— 它們是**角色名**，由 `src/input.css` 的元件類別畫出來，不是 Tailwind 的 fontSize 鍵 |
-| **只在 config** | `nav`、`button`、`base`、`lg`、`xl` —— 其中 **`nav` 是 `0.75rem`，與 `eyebrow` 並列全站最小**，而級距規則（27）取的就是最小值 |
+| **只在 config** | `button`、`base`、`lg`、`xl` —— `nav` 進表了（v5.1，決策 #136），而且它不再是 `0.75rem`：14px，`eyebrow` 從此是刻度上唯一的最小階，級距規則（27）的分母只剩它一個 |
 
 **修表不改程式**：四個角色名是刻意的（v4 起就用它們描述角色），config 那五個是實作細節。⚠️ **但下面那句「最小的那一階有兩個名字」指的就是 `eyebrow` 與 `nav`，而 `nav` 從來沒出現在這張表上**——級距的分母有一半是隱形的。決策 #87 修的是錯位，這一條修的是**表的涵蓋範圍**。
 
-| Token | 字級 | 字重 | 行高 | 字距 |
-|---|---|---|---|---|
-| `display-lg` | **64px** ✅ | 600 | 1.07 | −0.005em |
-| `display-md` | 40px | 600 | 1.1 | 0 |
-| `display-sm` | 34px | 600 | 1.18 | −0.011em |
-| `display-sub` | 24px | 400 | 1.4 | 0 |
-| `lead` | 21px | 400 | 1.48 | 0.011em |
-| `body` | 17px | 400 | **1.47** | −0.022em |
-| `body-strong` | 17px | 600 | 1.47 | −0.022em |
-| `caption` | 14px | 400 | 1.43 | 0 |
-| `eyebrow` | 12px | 600 | 2.0 | 0.09em |
+**v5.1 加了「元素」欄**（決策 #134）：字級由元素決定，模板上的標題不再帶尺寸 utility。⚠️ 在此之前 `display-sub` 這一列寫 24px／1.4，**實際是 20px → 手機外 `text-[1.75rem]`（28px），行高手寫 1.15**——表與程式漂了一整版沒人對。現在的值是程式的值。
+
+| Token | 元素 | 字級 | 字重 | 行高 | 字距 |
+|---|---|---|---|---|---|
+| `display-lg` | `h1 .display-lead`（tablet 以上） | **64px** ✅ | 600 | 1.07 | −0.005em |
+| `display-md` | `h1 .display-lead`（手機）；數字磚 | 40px | 600 | 1.1 | 0 |
+| `display-sm` | **`h2`**（含雙語 h2 的拉丁行，所有寬度） | 34px | 600 | 1.18 | −0.011em |
+| `display-sub` | `h1 .display-sub`（tablet 以上）＝ `xl` | 24px | 400 | 1.4 | 0 |
+| `xl` | **`h3`**；hero 引言 | 24px | 600／400 | 1.4 | 0 |
+| `lead` ＝ `lg` | **`h4`**；`.display-sub`（手機）；`.menu-link` | 21px | 600／400 | 1.48 | 0.011em |
+| `body` | `p`、`li`、`td` | 17px | 400 | **1.47** | −0.022em |
+| `body-strong` | `strong`、`th`、`.btn` | 17px | 600 | 1.47 | −0.022em |
+| `caption` ＝ `sm` | 圖說、meta、`.footer-link`、rail | 14px | 400 | 1.43 | 0 |
+| `nav` | `.nav-link`：Explore、切換器 summary、關閉鈕 | 14px | 600 | 1 | 0.09em |
+| `eyebrow` | `.eyebrow`、`.tag`（不能點的標籤） | 12px | 600 | 2.0 | 0.09em |
+
+**層級在每個寬度都遞減**：手機 40／34／24／21，tablet 以上 64／34／24／21。v5.1 之前手機是 36／36／24——h2 的拉丁行穿 `.display-lead`，與 h1 同一個 36px。
+
+⚠️ **`claude-skills-guide.html` 的 809 行內嵌樣式有自己的 px 刻度**（72／44／28／100／80…）與 700 字重，五份 locale 相同。它是一副投影片不是頁面，這一版刻意不動；記在「沒有東西檢查的事」。
 
 ### 級距：最大字必須是最小字的 5–12 倍
 
@@ -848,6 +863,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ### 沒有東西檢查的事
 
+- **`claude-skills-guide` 那副投影片的刻度。** 內嵌樣式 809 行、五份相同、自己的 px 字級與 700 字重，不在規則 27 讀的 config 刻度上，也不在任何規則的視野裡（`stylesheet.js` 讀得到它，但沒有規則問「字級在不在刻度上」）。v5.1 刻意不動；它要的是一張自己的票，先決定它是不是還要當投影片。
 - **inert 的範圍對不對、skip link 有沒有作用。** 兩者都是「存在檢查無效」的形狀（決策 #113 的判準）：`inert` 屬性在 markup 上有沒有，說不出腳本開關的順序對不對；`.skip-link` 這個 class 在不在，說不出它是不是第一個 Tab stop。**用 Playwright 手動驗過**：開啟後 40 次 Tab 全在 overlay 內、Escape 把焦點還給漢堡、第一次 Tab 落在 skip link 且 x=16、Enter 之後 `location.hash` 是 `#main`。腳本在 PR 說明裡，不在 repo。
 
 - **`forced-colors` 區塊真的修好了東西沒有。** 它把行內 `code` 只靠 `bg-ink/5` 傳達的區別換成 `1px solid CanvasText`，因為高對比模式會抹平背景，而那層底是 11 個 chip 與 16 個表格列**唯一的記號**。⚠️ **刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。**手動驗過**：`forcedColors: 'active'` 下 border-width 從 `0px` 變 `1px`。
@@ -1048,6 +1064,11 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 130 | **chrome 的字串進 `[locale.strings]`，頁尾 tagline 刪除** | Privacy Policy、Terms of Service、Open/Close menu、Site menu、Main Navigation、TauX Homepage、Close——七個字串在 header/footer 裡寫死英文，五個 locale 都是；日文頁的螢幕閱讀器唸 Main Navigation。與 `nav_explore` 同一個形狀（issue #241）。tagline 那句 Pioneering the future of work… 是促銷語（違反 v5 唯一的內容規則）、五個 locale 都英文、而且講的是 AI agents 與 data governance 不是 GEO——使用者選擇刪。**代價：`site.toml` 多 40 行；`nav_menu_close` 同時是可見文字與 aria-label，兩者從此不會不一致，也從此不能不一致** |
 | 131 | SVG `aria-hidden` 320 個、`<th scope>` 394 個、`overflow-x-auto` 的 `tabindex="0"` 170 個、`transition-all` 25 個移除 | 全部是 sed，全部是 better-accessibility／better-ui 的表列項。SVG 沒有 `aria-hidden` 時螢幕閱讀器逐個唸「圖片」；`<th>` 沒有 scope；寬表格的捲動容器鍵盤搆不到。**代價：`tabindex="0"` 的容器沒有可及性名稱，焦點環會停在一個沒名字的框上——better-accessibility 會要 `role="region"` 加名字，而名字要五種語言，留給內容工作** |
 | 132 | `.tag` 圓角改 `xs`，從 `CONTROL_CLASSES` 移除 | 不能點的標籤穿著 `.btn` 的 9999px 膠囊；better-layout：a non-clickable badge shaped exactly like the buttons beside it collects dead clicks。`xs` 從此有使用者（v5 寫「三階沒有使用者」）。**代價：規則 26 對 `.tag` 從寬鬆變嚴格——`.tag` 裡的 Cobalt 現在會紅，今天 0 個** |
+| 134 | **標題字級由元素決定，全部在刻度上** | h2 130 個 `text-3xl`（30px）、225 個 `text-2xl`（24px）——Tailwind 的預設，不是刻度的階；100 個雙語 h2 的拉丁行穿 `.display-lead`，手機上 36px 與 h1 相同。基底 `h2 { text-display-sm }`、`h3 { text-xl }`、`h4 { text-lg }`，`.display-lead` 手機改 `display-md`（40），雙語 h2 改 `display-lead text-display-sm`（utility 層贏過元件層的 tablet 規則，所以四個寬度都是 34）。**890 個標題 class 拿掉尺寸與字重 utility，模板只留間距與版面。** 45 個數字磚從 `text-5xl/6xl`（48／60，`leading-none`）改到 `display-md/lg` 加 `tabular-nums`。**代價：h3 從三種尺寸（21／24／24）收成一種，原本用 `text-lg` 的 140 個 h3 大了 3px；30px 的 h2 大了 4px，rail 的字從 12 變 14** |
+| 135 | **700 沒有角色，所以沒有使用者** | 基底 h1–h6 是 700、Preflight 的 `<strong>` 是 `bolder`、模板 834 個 `font-bold`（改完標題後剩下的），而字重階梯那一節寫「display 600、強調 600」。三條路都改 600；刻度不動。**代價：全站每一個粗體都細了一階，這是 v5.1 唯一改到每一頁每一段的視覺變化；`font-bold` 回來不會紅** |
+| 136 | `nav` token 12 → 14px，控制項字級離開 `eyebrow` | Explore、切換器 summary、關閉鈕穿 `.eyebrow`（12px，標籤的字級）；better-typography 給選單 14px 起、12 是地板。`nav` 改 14／600／0.09em 並進字級表；三個控制項改用 `.nav-link`。`eyebrow` 從此獨佔最小階，規則 27 的分母不再有兩個名字（決策 #121 記的那個隱形分母消失）。**代價：導覽列的 Explore 大了 2px、變粗；`.nav-link` 的 `transition-colors` 一併改成 `transition-opacity`——它從來只變 opacity。⚠️ 切換器 summary 變寬之後，ja-JP 的 footer 那一列在 320px 擠到 利用規約 折成兩行、42px 寬——geometry 抓到的；`.footer-link` 改 `whitespace-nowrap min-w-11`，那一列改 `flex-wrap`，控制項寧可換行也不折自己的字** |
+| 137 | `.display-sub` 21／24，行高由 token 給 | 實際是 20 → 28px（`text-[1.75rem]`，不在刻度上）配手寫 1.15；表寫 24／1.4。CJK 填滿 em box，1.15 的兩行副標之間沒有空氣，better-typography 對會換行的字要 1.4。改 `text-lg tablet:text-xl`，`text-wrap: pretty`。**代價：tablet 以上副標小了 4px** |
+| 138 | 引號、eyebrow 原文、`text-wrap`、`tabular-nums` | 6 個檔裡 9 處 blockquote 直引號：zh-Hant 改「『』」、zh-Hans 與 en 改 “ ”，**ko 不改**——`ko-quotes.txt` 記錄的 `""` 是韓文直接引述的既定決定（PR #237）。10 個 eyebrow 原文（×5 locale）是 Title Case 且縮寫被改壞（`What Is Geo`、`Geo Vs Seo`）：CSS 本來就 uppercase，畫面看不出來，但 `.md` 雙生檔與螢幕閱讀器讀的是原文——改成自然寫法、縮寫大寫。h1–h6 `text-wrap: balance`，`.display-sub` `pretty`，`table` 與數字磚 `tabular-nums`。**代價：`check:ko` 的 spacing ledger 重錄一次——變的只是記錄裡的 `font-bold` 字串，777 個決定本身不變** |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋

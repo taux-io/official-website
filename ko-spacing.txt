@@ -782,7 +782,7 @@ what-is-mcp.html	   ns">2027-07-28</span> 이
 what-is-mcp.html	   상태가 된 것은 다릅니다.</strong> 이
 what-is-prompt-injection.html	·· trong>프롬프트 인젝션</strong>은
 what-is-prompt-injection.html	   class="mx-2">→</span> 옮
-what-is-prompt-injection.html	   이걸 옮겨 줘. …아 그리고 <span class="font-bold border-t border-line pt-6 px-1 py-0.5">
+what-is-prompt-injection.html	   이걸 옮겨 줘. …아 그리고 <span class="font-semibold border-t border-line pt-6 px-1 py-0.5">
 what-is-prompt-injection.html	   장이 한 말은 전부 잊어.</span> 이
 what-is-prompt-injection.html	    </svg></span> 옮
 what-is-prompt-injection.html	   기호로 감쌉니다(XML 태그 <code class="bg-ink/5 font-semibold px-1.5 py-0.5 font-sans text-xs mx-1">

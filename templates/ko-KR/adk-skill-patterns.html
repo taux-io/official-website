@@ -33,7 +33,7 @@
             </p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
-                <h3 class="text-lg font-bold mb-2">왜 설계 패턴이 필요한가</h3>
+                <h3 class="mb-2">왜 설계 패턴이 필요한가</h3>
                 <p class="leading-relaxed">
                     <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code>의 YAML만 쓰면 된다고 여기기 쉽지만, 그것은 껍데기입니다.
                     어려운 쪽은 <strong>내용 설계</strong>입니다. 단계를 건너뛰지 않게, 넘겨짚지 않게, 매번 다른 형태로 내놓지 않게 — 어떻게 할 것인가.
@@ -62,7 +62,7 @@
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">01</p>
-                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 </span>
@@ -73,40 +73,40 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">#</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">패턴</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm">한마디로</th>
-                            <th scope="col" class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">어울리는 상황</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">#</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">패턴</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm">한마디로</th>
+                            <th scope="col" class="py-3 px-4 font-semibold text-sm hidden tablet:table-cell">어울리는 상황</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">01</td>
-                            <td class="py-4 px-4 font-bold">Tool Wrapper</td>
+                            <td class="py-4 px-4 font-semibold">Tool Wrapper</td>
                             <td class="py-4 px-4">필요할 때만 전문 지식을 불러온다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">특정 프레임워크·라이브러리 대응</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">02</td>
-                            <td class="py-4 px-4 font-bold">Generator</td>
+                            <td class="py-4 px-4 font-semibold">Generator</td>
                             <td class="py-4 px-4">템플릿으로 출력 형태를 맞춘다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">리포트, 문서, API 명세 생성</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">03</td>
-                            <td class="py-4 px-4 font-bold">Reviewer</td>
+                            <td class="py-4 px-4 font-semibold">Reviewer</td>
                             <td class="py-4 px-4">체크리스트로 품질을 본다</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">코드 리뷰, 보안 감사</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">04</td>
-                            <td class="py-4 px-4 font-bold">Inversion</td>
+                            <td class="py-4 px-4 font-semibold">Inversion</td>
                             <td class="py-4 px-4">충분히 묻고 나서 손대기</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">요구가 흐릿한 일</td>
                         </tr>
                         <tr>
                             <td class="py-4 px-4 font-sans font-semibold">05</td>
-                            <td class="py-4 px-4 font-bold">Pipeline</td>
+                            <td class="py-4 px-4 font-semibold">Pipeline</td>
                             <td class="py-4 px-4">단계를 무너뜨리지 않는 파이프라인</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">배포, 승인, 복잡한 업무 흐름</td>
                         </tr>
@@ -118,8 +118,8 @@
         <!-- Pattern 1: Tool Wrapper -->
         <section id="tool-wrapper" class="border-t border-line pt-16">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool Wrapper</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Tool wrapper</p>
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">01</span>
                 Tool Wrapper
             </h2>
@@ -129,7 +129,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">문제</h3>
+                    <h3 class="mb-2">문제</h3>
                     <p>
                         프레임워크 자료(FastAPI 관례, React 규약, SQL 스타일 지침…)를 전부 시스템 프롬프트에 밀어 넣으면 토큰이 불어나고 주의도 흩어집니다.
                     </p>
@@ -137,7 +137,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">방법</h3>
+                    <h3 class="mb-2">방법</h3>
                     <p class="mb-4">
                         <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">SKILL.md</code>에 '이 말이 나오면'이라는 방아쇠를 적어 둡니다.
                         사용자가 그 프레임워크를 꺼냈을 때만 <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code>에서 해당 관례를 불러옵니다.
@@ -161,7 +161,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
@@ -174,7 +174,7 @@
         <section id="generator" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">03</span> &mdash; Generator</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">02</span>
                 Generator
             </h2>
@@ -184,7 +184,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">문제</h3>
+                    <h3 class="mb-2">문제</h3>
                     <p>
                         자유롭게 쓰게 하면 리포트 형태가 매번 달라집니다. 목차가 있다 없다, 세 단락이다 서른 단락이다.
                     </p>
@@ -192,7 +192,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">방법</h3>
+                    <h3 class="mb-2">방법</h3>
                     <p class="mb-4">
                         미리 템플릿을 두고(<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code>에 둡니다), 처음부터 짜게 하는 대신 빈칸을 채우게 합니다.
                     </p>
@@ -222,7 +222,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
@@ -235,7 +235,7 @@
         <section id="reviewer" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">04</span> &mdash; Reviewer</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">03</span>
                 Reviewer
             </h2>
@@ -245,7 +245,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">문제</h3>
+                    <h3 class="mb-2">문제</h3>
                     <p>
                         나온 것이 '맞아 보이는데' 구멍이 있을 때가 있습니다. 가장자리 조건, 보안 확인, 팀의 약속이 빠져 있습니다.
                     </p>
@@ -253,7 +253,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">방법</h3>
+                    <h3 class="mb-2">방법</h3>
                     <p class="mb-4">
                         따로 세운 리뷰용 스킬을 두고, <code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code>에서 전용 체크리스트를 불러옵니다.
                         한 항목씩 확인하게 하고 심각도로 나눠 보고하게 합니다.
@@ -275,7 +275,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
@@ -288,7 +288,7 @@
         <section id="inversion" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">05</span> &mdash; Inversion</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">04</span>
                 Inversion
             </h2>
@@ -298,7 +298,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">문제</h3>
+                    <h3 class="mb-2">문제</h3>
                     <p>
                         "사이트 만들어 줘" 한마디에 곧바로 코드를 쓰기 시작합니다. 나온 것은 바라던 것과 딴판입니다. 모델은 본래 먼저 움직이려 하기 때문입니다.
                     </p>
@@ -306,7 +306,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">방법</h3>
+                    <h3 class="mb-2">방법</h3>
                     <p class="mb-4">
                         <strong>행동을 뒤집습니다.</strong> 실행자가 아니라 먼저 듣는 쪽을 시킵니다.
                         건너뛸 수 없는 관문(non-negotiable gates)을 두고, 필요한 조건이 갖춰질 때까지 착수시키지 않습니다.
@@ -336,7 +336,7 @@
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
@@ -349,7 +349,7 @@
         <section id="pipeline" class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8"><span class="font-sans">06</span> &mdash; Pipeline</p>
-                <h2 class="font-display text-3xl font-bold mb-2 flex items-center">
+                <h2 class="mb-2 flex items-center">
                 <span class="w-12 h-12 font-semibold flex items-center justify-center mr-4 font-sans text-lg">05</span>
                 Pipeline
             </h2>
@@ -359,7 +359,7 @@
             <div class="space-y-6 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">문제</h3>
+                    <h3 class="mb-2">문제</h3>
                     <p>
                         손이 많이 가는 일에서는 단계를 건너뛰고, 합쳐 버리고, 중간의 요긴한 데를 잊습니다. 다루는 정보가 길어지면 더 그렇습니다.
                     </p>
@@ -367,7 +367,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">방법</h3>
+                    <h3 class="mb-2">방법</h3>
                     <p class="mb-4">
                         스킬을 <strong>무너뜨릴 수 없는 파이프라인</strong>으로 설계합니다. 단계(phase)를 분명히 정하고,
                         그 사이에 관문(gate)을 둡니다. 지금 단계를 마치고 사람의 확인을 받기 전에는 다음으로 못 갑니다.
@@ -376,7 +376,7 @@
                     <!-- Pipeline Visual -->
                     <div class="flex flex-col tablet:flex-row items-center gap-3 tablet:gap-0 my-6">
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 1</div>
+                            <div class="font-semibold text-sm">Phase 1</div>
                             <div class="text-xs mt-1">Research</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
@@ -385,7 +385,7 @@
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 2</div>
+                            <div class="font-semibold text-sm">Phase 2</div>
                             <div class="text-xs mt-1">Plan</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
@@ -394,19 +394,19 @@
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Phase 3</div>
+                            <div class="font-semibold text-sm">Phase 3</div>
                             <div class="text-xs mt-1">Execute</div>
                         </div>
                         <div class="text-xl tablet:px-2 rotate-90 tablet:rotate-0 min-w-0">→</div>
                         <div class="border-t border-line pt-6 px-5 py-3 flex-1 tablet:flex-none min-w-0">
-                            <div class="font-bold text-sm">Done</div>
+                            <div class="font-semibold text-sm">Done</div>
                             <div class="text-xs mt-1">Verify</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="border-t border-line pt-6 p-5">
-                    <p class="font-bold mb-1 flex items-center gap-2">
+                    <p class="font-semibold mb-1 flex items-center gap-2">
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         듣는 지점
                     </p>
@@ -419,7 +419,7 @@
         <section class="border-t border-line pt-16">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-8 font-sans">07</p>
-                <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
+                <h2 class="mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
                     <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                 </span>
@@ -432,7 +432,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">Progressive Disclosure(단계적으로 열기)</h4>
+                        <h4 class="mb-1">Progressive Disclosure(단계적으로 열기)</h4>
                         <p class="text-sm">ADK의 SkillToolset은 필요할 때만 지시와 문맥을 불러오게 합니다. 토큰을 아끼고 초점도 지킵니다.</p>
                     </div>
                 </div>
@@ -441,7 +441,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">형태와 내용을 나눈다</h4>
+                        <h4 class="mb-1">형태와 내용을 나눈다</h4>
                         <p class="text-sm"><code class="bg-ink/5 font-semibold font-sans px-1 py-0.5 text-xs">SKILL.md</code>는 표준화된 껍데기를 제공하고, 이 패턴들이 정하는 것은 '어떻게 생각하고 어떻게 움직이는가'라는 안쪽의 갈래입니다.</p>
                     </div>
                 </div>
@@ -450,7 +450,7 @@
                         <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
-                        <h4 class="font-bold mb-1">섞어 쓴다</h4>
+                        <h4 class="mb-1">섞어 쓴다</h4>
                         <p class="text-sm">섞어 쓸 수 있습니다. 파이프라인 마지막에 리뷰를 두거나, 제너레이터 앞에 Inversion을 넣어 조건을 모으거나.</p>
                     </div>
                 </div>
@@ -460,7 +460,7 @@
         <!-- Related Links -->
         <section class="border-t border-line pt-16">
             <p class="eyebrow mb-8 font-sans">08</p>
-            <h3 class="font-bold mb-6 font-display text-xl">함께 읽기</h3>
+            <h3 class="mb-6">함께 읽기</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     프롬프트 설계 가이드 <span class="ml-2">→</span>

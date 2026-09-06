@@ -29,7 +29,7 @@
             <p class="text-lg mb-8 max-w-prose">A practical prompt-engineering guide</p>
 
             <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
-                <h3 class="text-lg font-bold mb-2">Why the model keeps missing the point</h3>
+                <h3 class="mb-2">Why the model keeps missing the point</h3>
                 <p class="mb-4">
                     It is rarely that the model is not capable. It is that the instruction left room to be read another way. Prompt engineering is programming in prose.
                     The job is to give a clear instruction, the context needed to follow it, and the shape the answer should take.
@@ -68,7 +68,7 @@
                      circled numerals: there the numeral is the ONLY place the section
                      number appears, so dropping it would lose which pattern is which.
                      Here the eyebrow already says it. Issues 281, 284. -->
-                <h2 class="font-display text-3xl font-bold mb-2">
+                <h2 class="mb-2">
                 The basics
             </h2>
             </div>
@@ -78,15 +78,15 @@
                 <!-- Point 1 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">1. Give it a role and a task</h3>
+                    <h3 class="mb-2">1. Give it a role and a task</h3>
                     <p class="mb-3">Do not throw it a sentence. Cast it, the way a director would.</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
-                        <span class="font-bold block mb-2 flex items-center gap-1">
+                        <span class="font-semibold block mb-2 flex items-center gap-1">
                             <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg> Weak: "What is this?"
                         </span>
-                        <span class="font-bold block flex items-center gap-1">
+                        <span class="font-semibold block flex items-center gap-1">
                             <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg> Better: "You are a claims adjuster at a Swedish insurer. Read this accident report and determine fault."
@@ -100,7 +100,7 @@
                 <!-- Point 2 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">2. Give it the reference material</h3>
+                    <h3 class="mb-2">2. Give it the reference material</h3>
                     <p class="mb-3">Anything fixed — a standard form, a regulation — goes at the top, in the system prompt.</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Why:</strong> so the model spends its attention on the content rather than re-deriving the format each time. You hand the intern the staffhandbook once, not with every task.</li>
@@ -111,7 +111,7 @@
                 <!-- Point 3 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">3. Specify the steps, not just the result</h3>
+                    <h3 class="mb-2">3. Specify the steps, not just the result</h3>
                     <p class="mb-3">Do not ask only for an answer. Describe the process a person would follow, and ask for that.</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
                         <strong class="font-semibold mb-1 block">How to write it:</strong>
@@ -125,7 +125,7 @@
                 <!-- Point 4 -->
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">4. Specify the output format</h3>
+                    <h3 class="mb-2">4. Specify the output format</h3>
                     <p class="mb-3">Say "return JSON", or "wrap the conclusion in a <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> tag".</p>
                     <p class="text-sm flex items-start">
                         <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Then code can consume the result directly, with nobody copying and pasting.
@@ -137,8 +137,8 @@
         <!-- Part 2: Agents -->
         <section id="agent-prompting" class="p-8 border-t border-line pt-16">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent Prompting</p>
-                <h2 class="font-display text-3xl font-bold mb-2">
+                <p class="eyebrow mb-8"><span class="font-sans">02</span> &mdash; Agent prompting</p>
+                <h2 class="mb-2">
                 Prompting agents
             </h2>
             </div>
@@ -147,7 +147,7 @@
             <div class="space-y-10 ml-4 tablet:ml-16">
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">1. What an agent is</h3>
+                    <h3 class="mb-2">1. What an agent is</h3>
                     <p>The basics treat the model as a question-answering box. An agent works like a colleague, in a loop:<br>
                         <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">use a tool → look at the result → decide the next move → use another tool</span><br>
                         <span class="inline-block mt-2 text-sm">until the job is done.</span>
@@ -156,7 +156,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">2. When it is worth it</h3>
+                    <h3 class="mb-2">2. When it is worth it</h3>
                     <p class="mb-3">Not for everything. Agents earn their cost when the task is complex and the path through it is not known in advance.</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start">
@@ -172,7 +172,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">3. Think like the agent</h3>
+                    <h3 class="mb-2">3. Think like the agent</h3>
                     <p class="mb-3">Ask yourself: handed these tools and this brief on my first day, would I know what to do?</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>Name tools precisely.</strong> Short, accurate, no two that overlap.</li>
@@ -182,7 +182,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">4. Make it plan before it acts</h3>
+                    <h3 class="mb-2">4. Make it plan before it acts</h3>
                     <p class="mb-3">Current models can reason as they go — ask them to.</p>
                     <ul class="list-none space-y-2 ml-2 text-sm">
                         <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>The instruction:</strong>before calling a tool, state the plan — "what am I searching for, and what kind of source would settle it?"</li>
@@ -192,7 +192,7 @@
 
                 <div class="relative pl-6 border-l border-line">
                     <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
-                    <h3 class="text-xl font-bold mb-2">5. How to test it</h3>
+                    <h3 class="mb-2">5. How to test it</h3>
                     <p>Start small. Run a handful of cases by hand and read the logs.<br>
                         Which tools did it call? Did it loop? That tells you far more about the instruction than the final answer does.</p>
                 </div>
@@ -201,7 +201,7 @@
 
         <!-- Related Links -->
         <section class="mt-16 pt-12 border-t border-line">
-            <h3 class="font-bold mb-6 font-display text-xl">Further reading</h3>
+            <h3 class="mb-6">Further reading</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     The GEO guide <span class="ml-2">→</span>
