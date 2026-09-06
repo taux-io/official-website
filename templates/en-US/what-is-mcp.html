@@ -85,7 +85,7 @@
             </p>
 
             <figure class="mb-10">
-              <div class="overflow-x-auto">
+              <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">The three MCP roles</title>
                     <desc id="arch-desc">A host contains three clients, each connected to one server. The first two servers are local, the third remote. The database sits outside the server, showing the server as an intermediary in front of the data.</desc>
@@ -288,11 +288,11 @@
             </div>
         </section>
 
-        <nav class="border-t border-line pt-10">
-            <p class="eyebrow mb-6">Next</p>
+        <nav class="border-t border-line pt-10" aria-labelledby="next-reading">
+            <p class="eyebrow mb-6" id="next-reading">Next</p>
             <ul class="space-y-4">
-                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">How to actually build with it → Claude Skills  guide</a></li>
-                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">Another new standard worth knowing → LLMs.txt </a></li>
+                <li><a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center min-h-11">How to actually build with it → Claude Skills  guide</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center min-h-11">Another new standard worth knowing → LLMs.txt </a></li>
             </ul>
         </nav>
 

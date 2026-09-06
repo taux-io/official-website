@@ -116,13 +116,13 @@
 
             <h3 class="font-display text-xl font-bold mt-14 mb-4">One: who can invoke it</h3>
             <p class="leading-relaxed mb-6">This is the <strong>only classifying axis</strong> in the whole pack.</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">User-invoked</th>
-                            <th class="py-3 font-bold text-sm">Model-invoked</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">User-invoked</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Model-invoked</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -189,13 +189,13 @@
             <p class="leading-relaxed mb-6">
                 A block of work inside a session is a <strong>phase</strong> — interview, implementation, QA. The question "what do I do with my context" <strong>only arises between two phases</strong>. Mid-phase there is no choice: carry on, or hand the rest to a subagent.
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Order</th>
-                            <th class="py-3 pr-4 font-bold text-sm">Option</th>
-                            <th class="py-3 font-bold text-sm">When to pick it</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Order</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Option</th>
+                            <th scope="col" class="py-3 font-bold text-sm">When to pick it</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -277,13 +277,13 @@
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> is <strong>a precondition for every engineering skill, not a step in the flow</strong>.
             </p>
-            <div class="overflow-x-auto mb-8">
+            <div class="overflow-x-auto mb-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Decision</th>
-                            <th class="py-3 pr-4 font-bold text-sm">What it proposes</th>
-                            <th class="py-3 font-bold text-sm">When it actually asks</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Decision</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">What it proposes</th>
+                            <th scope="col" class="py-3 font-bold text-sm">When it actually asks</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -364,15 +364,15 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 The dependency column is the one that matters in practice — <strong>with a dependency missing, a skill degrades quietly into improvisation.</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Skill</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Invoked by</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Role</th>
-                            <th class="py-3 pr-4 font-bold text-sm">In one line</th>
-                            <th class="py-3 font-bold text-sm hidden tablet:table-cell">Hard dependency</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Skill</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Invoked by</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Role</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">In one line</th>
+                            <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">Hard dependency</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -447,12 +447,12 @@ gh label create enhancement</code></pre>
                     <p>"One long form or three pages?" "How should this interaction feel?" — questions like these <strong>cannot be talked out</strong>; they need something to react to. Stop, prototype it, come back with a one-line answer. Pushing on an ungrillable question is the main way a session  session blows up: the agent keeps rephrasing, you keep guessing, and the scope inflates to fill the uncertainty.</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">What got resolved</th>
-                            <th class="py-3 font-bold text-sm">Where it lands</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">What got resolved</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Where it lands</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -486,12 +486,12 @@ gh label create enhancement</code></pre>
                     <p>Before writing a word it drafts which <strong>seams</strong> — the public boundaries where a test observes behaviour — this feature should be tested on, and brings them to you. It prefers an existing seam to a new one, and takes the <strong>highest</strong> one it can. Ideally the whole change has exactly one. That pre-agreed seam then travels downstream: <code>tdd</code>  writes tests only on a pre-agreed seam, and <code>code-review</code>  checks whether any unagreed seam was used.<strong>So answer this exchange properly rather than deferring it to implementation.</strong></p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Where you are</th>
-                            <th class="py-3 font-bold text-sm">What to run</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Where you are</th>
+                            <th scope="col" class="py-3 font-bold text-sm">What to run</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -514,13 +514,13 @@ gh label create enhancement</code></pre>
 
             <h3 id="step-3" class="font-display text-xl font-bold mt-14 mb-4">Step 3 — cut it into tracer bullets</h3>
             <p class="leading-relaxed mb-6"><code>/to-tickets</code>, same window — or <code>/to-tickets #&lt;spec_issue&gt;</code>. A plan that exists only in the conversation works too — it reads the conversation directly.</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">Horizontal (wrong)</th>
-                            <th class="py-3 font-bold text-sm">Vertical (right)</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Horizontal (wrong)</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Vertical (right)</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -580,12 +580,12 @@ gh label create enhancement</code></pre>
                     <p><strong>It never reopens the plan.</strong> No interview, no clarifying round, no alternative proposal. What was decided upstream is the input, and its job is to turn that into a commit. That is exactly the difference from typing "do this" at a fresh agent, which will redesign as it goes.</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Symptom</th>
-                            <th class="py-3 font-bold text-sm">What is happening</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Symptom</th>
+                            <th scope="col" class="py-3 font-bold text-sm">What is happening</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -619,12 +619,12 @@ gh label create enhancement</code></pre>
                     <p>The rule is absolute: <strong>no test without a confirmed seam.</strong> On the full chain, seams are agreed at <code>to-spec</code>; called on its own, it asks you directly.</p>
                 </div>
             </div>
-            <div class="overflow-x-auto mt-8">
+            <div class="overflow-x-auto mt-8" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Antipattern</th>
-                            <th class="py-3 font-bold text-sm">How it shows</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Antipattern</th>
+                            <th scope="col" class="py-3 font-bold text-sm">How it shows</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -652,13 +652,13 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-6">
                 <strong>You must supply the fixed point.</strong> Without one it asks rather than guesses, and it verifies the ref resolves and the diff is non-empty before spawning any sub-agent.
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm"></th>
-                            <th class="py-3 pr-4 font-bold text-sm">Standards</th>
-                            <th class="py-3 font-bold text-sm">Spec</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm"></th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Standards</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Spec</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -774,12 +774,12 @@ gh label create enhancement</code></pre>
                         <li>A differential loop — same input, old version against new</li>
                         <li>A human-in-the-loop bash script, as a last resort</li>
                     </ol>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Gate</th>
-                                    <th class="py-3 font-bold text-sm">What must be true</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Gate</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">What must be true</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -815,12 +815,12 @@ gh label create enhancement</code></pre>
                         <p><strong>Two filters.</strong> The <em>deletion test</em>: imagine removing this module — does complexity <strong>concentrate</strong> behind a smaller interface, or <strong>disperse</strong> across the callers? Only concentrating cases get a card. Unless you name a region it also reads recent commit history first and biases the scan towards <strong>paths that are changing</strong> — a deepening in code nobody touches is a refactor you will never cash in.</p>
                         <p>Three strength labels. <strong>Strong</strong> — the deletion test passes cleanly and the friction is real; take it seriously. <strong>Worth exploring</strong> — it makes sense, but the payoff depends on where the code goes next. <strong>Speculative</strong> — listed for completeness, and mostly safe to ignore.</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Situation</th>
-                                    <th class="py-3 font-bold text-sm">How to use it</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Situation</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">How to use it</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -858,13 +858,13 @@ gh label create enhancement</code></pre>
                         <p><strong>Four things on a map.</strong> <em>Destination</em> — what the end looks like, <strong>named before any ticket exists</strong>. <em>Decisions so far</em> — one line per closed ticket, each linking to where the detail actually lives. <em>Not yet specified</em>, the <strong>fog of war</strong> — decisions you can see coming but cannot yet state precisely. The test is <strong>whether you can state the question precisely right now</strong>, not whether you can answer it. <em>Out of scope</em> — work judged outside the destination, closed and never graduated. The map is <strong>an index, not storage</strong>; a decision lives only in its own ticket.</p>
                         <p>The <strong>frontier</strong> is the set of tickets that are open, unblocked and unclaimed. A session claims one by assigning it to itself before doing any work, so the assignee is the claim. Tickets are <strong>referred to by name throughout, never a bare number</strong> — a wall of issue numbers is unreadable in prose.</p>
                     </div>
-                    <div class="overflow-x-auto mt-6">
+                    <div class="overflow-x-auto mt-6" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Type</th>
-                                    <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Mode</th>
-                                    <th class="py-3 font-bold text-sm">When to use it</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Type</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Mode</th>
+                                    <th scope="col" class="py-3 font-bold text-sm">When to use it</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -922,12 +922,12 @@ gh label create enhancement</code></pre>
                     <div class="space-y-4 leading-relaxed">
                         <p>It turns the directory you run it in into a standing teaching workspace, and teaches a subject across multiple sessions through a series of <strong>short, self-styled HTML lessons</strong>.</p>
                         <p><strong>It does not teach from what the model already knows.</strong> Parametric knowledge is treated as untrustworthy: before teaching it finds high-trust sources, records them, and cites them in every lesson. It is <strong>stateful</strong> — mission, resources, lessons and learning records all live in the directory as files:</p>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto" tabindex="0">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-line">
-                                        <th class="py-3 pr-4 font-bold text-sm">Path</th>
-                                        <th class="py-3 font-bold text-sm">What goes in it</th>
+                                        <th scope="col" class="py-3 pr-4 font-bold text-sm">Path</th>
+                                        <th scope="col" class="py-3 font-bold text-sm">What goes in it</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm align-top">
@@ -963,13 +963,13 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">Vocabulary — codebase-design</p>
                     <h3 class="font-display text-lg font-bold mb-3">What shape should a module be</h3>
                     <p class="leading-relaxed mb-6">It fixes the words you use when designing modules, defines each precisely, <strong>bans the loose alternatives</strong>, and states the principles that follow from them.</p>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto" tabindex="0">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-line">
-                                    <th class="py-3 pr-4 font-bold text-sm">Word</th>
-                                    <th class="py-3 pr-4 font-bold text-sm">Meaning</th>
-                                    <th class="py-3 font-bold text-sm hidden tablet:table-cell">Do not say</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Word</th>
+                                    <th scope="col" class="py-3 pr-4 font-bold text-sm">Meaning</th>
+                                    <th scope="col" class="py-3 font-bold text-sm hidden tablet:table-cell">Do not say</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm align-top">
@@ -1130,14 +1130,14 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 Ordered by the symptom you notice first. <strong>Serious</strong> means it costs you money or time.
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Symptom</th>
-                            <th class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">Which skill</th>
-                            <th class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Serious</th>
-                            <th class="py-3 font-bold text-sm">What to do</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Symptom</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm hidden tablet:table-cell">Which skill</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm whitespace-nowrap">Serious</th>
+                            <th scope="col" class="py-3 font-bold text-sm">What to do</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1223,12 +1223,12 @@ gh label create enhancement</code></pre>
             <p class="leading-relaxed mb-8">
                 These are the shared language of the whole pack. <strong>Without them, the output of a skill will not read.</strong>
             </p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Word</th>
-                            <th class="py-3 font-bold text-sm">Definition</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Word</th>
+                            <th scope="col" class="py-3 font-bold text-sm">Definition</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
@@ -1294,13 +1294,13 @@ gh label create enhancement</code></pre>
                 <h2 class="font-display text-2xl font-bold mb-6">A 14-day learning plan</h2>
             </div>
             <p class="leading-relaxed mb-8">About 30 to 60 minutes a day, <strong>on a real project of your own</strong>.</p>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 pr-4 font-bold text-sm">Day</th>
-                            <th class="py-3 pr-4 font-bold text-sm">What to do</th>
-                            <th class="py-3 font-bold text-sm">How to know it passed</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">Day</th>
+                            <th scope="col" class="py-3 pr-4 font-bold text-sm">What to do</th>
+                            <th scope="col" class="py-3 font-bold text-sm">How to know it passed</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">

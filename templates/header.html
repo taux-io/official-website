@@ -207,12 +207,18 @@
          version is what every reader actually got, on every page, while both
          descriptions said otherwise. Nothing checked it; the rule
          `surface is painted once` does now. -->
-    <nav class="site-nav fixed w-full z-50 bg-surface transition-transform" aria-label="Main Navigation">
+    <nav class="site-nav fixed w-full z-50 bg-surface transition-transform" aria-label="{{ strings.nav_main }}">
+        <!-- The first focusable thing on every page. Keyboard and screen-reader
+             users otherwise walk the bar, the switcher and (once open) the
+             overlay before reaching the article. Inside <nav> rather than
+             before it: the Markdown twin cuts <main> only, so a link placed
+             here never leaks into the .md as a stray first line. -->
+        <a class="skip-link" href="#main">{{ strings.skip_to_content }}</a>
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- h-full rather than the text's own 33px: the bar is 64px tall
                  and the wordmark is a control, so its target should fill the
                  bar rather than stop at the cap height. -->
-            <a href="/{{ locale }}" class="wordmark" aria-label="TauX Homepage">
+            <a href="/{{ locale }}" class="wordmark" aria-label="{{ strings.nav_home_link }}">
                 TauX
             </a>
 
@@ -248,17 +254,17 @@
                 <button type="button" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
                     {{ strings.nav_explore }}
                 </button>
-{% with link_class = "nav-link", list_class = "absolute top-full right-0 mt-2 bg-surface border border-line p-4 space-y-3 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
+{% with link_class = "nav-link", list_class = "absolute top-full right-0 mt-2 bg-surface border border-line p-4 space-y-1 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
             </div>
 
             <!-- 44x44. It measured 40x31 before issue 154 — the only way into
                  the site on a phone, and under the minimum target on both
                  axes. The bars keep their own size; the button grows around
                  them and centres them. -->
-            <button type="button" id="hamburger" class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
-                <span class="w-6 h-px bg-ink origin-center"></span>
-                <span class="w-6 h-px bg-ink opacity-100"></span>
-                <span class="w-6 h-px bg-ink origin-center"></span>
+            <button type="button" id="hamburger" class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50" aria-label="{{ strings.nav_menu_open }}" data-label-open="{{ strings.nav_menu_open }}" data-label-close="{{ strings.nav_menu_close }}" aria-expanded="false" aria-controls="menuOverlay">
+                <span class="w-6 h-px bg-ink origin-center transition-transform duration-200"></span>
+                <span class="w-6 h-px bg-ink opacity-100 transition-opacity duration-200"></span>
+                <span class="w-6 h-px bg-ink origin-center transition-transform duration-200"></span>
             </button>
         </div>
     </nav>
@@ -279,12 +285,12 @@
          open, and an unopenable menu should not be collecting focus. The
          script removes the attribute when it opens the overlay and puts it
          back when it closes. -->
-    <div id="menuOverlay" inert class="menu-surface fixed inset-0 z-[60] opacity-0 pointer-events-none overflow-y-auto" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div id="menuOverlay" inert class="menu-surface fixed inset-0 z-[60] opacity-0 pointer-events-none overflow-y-auto" role="dialog" aria-modal="true" aria-label="{{ strings.nav_menu }}">
         <div class="max-w-6xl mx-auto px-6 py-6">
             <div class="flex items-center justify-between h-10">
                 <span class="font-display text-lg uppercase tracking-[0.09em]">TauX</span>
-                <button type="button" id="menuClose" class="eyebrow min-h-12 min-w-12 inline-flex items-center justify-end" aria-label="Close menu">
-                    Close
+                <button type="button" id="menuClose" class="eyebrow min-h-12 min-w-12 inline-flex items-center justify-end" aria-label="{{ strings.nav_menu_close }}">
+                    {{ strings.nav_menu_close }}
                 </button>
             </div>
 
@@ -320,5 +326,5 @@
          it" — both halves now false: the nav is opaque, and painting the
          surface onto something that already sits on it was the invisible
          no-op the `surface is painted once` rule was written for. -->
-    <main class="pt-16 min-h-screen relative overflow-x-clip">
+    <main id="main" class="pt-16 min-h-screen relative overflow-x-clip">
         

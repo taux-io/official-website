@@ -64,47 +64,47 @@
                 <p class="eyebrow mb-8 font-sans">01</p>
                 <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 </span>
                 五つのパターン、ひと目で
             </h2>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-line">
-                            <th class="py-3 px-4 font-bold text-sm">#</th>
-                            <th class="py-3 px-4 font-bold text-sm">パターン</th>
-                            <th class="py-3 px-4 font-bold text-sm">ひとことで</th>
-                            <th class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">向いている場面</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">#</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">パターン</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm">ひとことで</th>
+                            <th scope="col" class="py-3 px-4 font-bold text-sm hidden tablet:table-cell">向いている場面</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">01</td>
                             <td class="py-4 px-4 font-bold">Tool Wrapper</td>
                             <td class="py-4 px-4">必要になったときだけ専門知識を読み込む</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">特定のフレームワークやライブラリへの対応</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">02</td>
                             <td class="py-4 px-4 font-bold">Generator</td>
                             <td class="py-4 px-4">テンプレートで出力の形をそろえる</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">レポート、ドキュメント、API 仕様の生成</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">03</td>
                             <td class="py-4 px-4 font-bold">Reviewer</td>
                             <td class="py-4 px-4">チェックリストで品質を見る</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">コードレビュー、セキュリティ監査</td>
                         </tr>
-                        <tr class="border-b border-line hover:bg-ink/5 transition-colors">
+                        <tr class="border-b border-line">
                             <td class="py-4 px-4 font-sans font-semibold">04</td>
                             <td class="py-4 px-4 font-bold">Inversion</td>
                             <td class="py-4 px-4">十分に聞いてから手を動かす</td>
                             <td class="py-4 px-4 hidden tablet:table-cell">要件がはっきりしない仕事</td>
                         </tr>
-                        <tr class="hover:bg-ink/5 transition-colors">
+                        <tr>
                             <td class="py-4 px-4 font-sans font-semibold">05</td>
                             <td class="py-4 px-4 font-bold">Pipeline</td>
                             <td class="py-4 px-4">段階を崩さないパイプライン</td>
@@ -143,7 +143,7 @@
                         利用者がそのフレームワークに触れたときだけ、<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">references/</code> から対応する作法を読み込みます。
                     </p>
                     <!-- Code Example -->
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -162,7 +162,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         効くところ
                     </p>
                     <p class="text-sm">コンテキストを散らかさずに済みます。関係のあるときだけ専門知識を入れるので、無関係な情報に引っぱられません。</p>
@@ -196,7 +196,7 @@
                     <p class="mb-4">
                         あらかじめテンプレートを用意し（<code class="bg-ink/5 font-semibold font-sans px-1.5 py-0.5 text-sm">assets/</code> に置きます）、ゼロから組み立てさせるのではなく、空欄を埋めさせます。
                     </p>
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -223,7 +223,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         効くところ
                     </p>
                     <p class="text-sm">形と中身を切り離します。モデルは中身に集中し、形はテンプレートが保ちます。</p>
@@ -276,7 +276,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         効くところ
                     </p>
                     <p class="text-sm">つくる筋道と、見る筋道を分けます。一方が手を動かし、もう一方が検める——コードの PR レビューと同じ形です。</p>
@@ -311,7 +311,7 @@
                         <strong>ふるまいを反転させます。</strong>実行役ではなく、まず聞き手をやらせます。
                         飛ばせない関門（non-negotiable gates）を置き、必要な条件がそろうまで着手させません。
                     </p>
-                    <div class="p-5 text-sm overflow-x-auto">
+                    <div class="p-5 text-sm overflow-x-auto" tabindex="0">
                         <div class="flex gap-2 mb-3 border-b border-line pb-3">
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
                             <span class="w-3 h-3 rounded-full bg-ink"></span>
@@ -337,7 +337,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         効くところ
                     </p>
                     <p class="text-sm">先に聞くことで、埋め合わせの作り話を減らせます。手元の情報がそろっているほど、出てくるものはよくなります。</p>
@@ -407,7 +407,7 @@
 
                 <div class="border-t border-line pt-6 p-5">
                     <p class="font-bold mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5 font-semibold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         効くところ
                     </p>
                     <p class="text-sm">読めない文章生成を、制御でき、繰り返せ、あとから追える状態機械に変えます。</p>
@@ -421,7 +421,7 @@
                 <p class="eyebrow mb-8 font-sans">07</p>
                 <h2 class="font-display text-2xl font-bold mb-6 flex items-center">
                 <span class="w-10 h-10 font-semibold flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                 </span>
                 押さえどころ
             </h2>
@@ -429,7 +429,7 @@
             <div class="space-y-4 ml-4 tablet:ml-14">
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">Progressive Disclosure（段階的に開く）</h4>
@@ -438,7 +438,7 @@
                 </div>
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">形と中身を分ける</h4>
@@ -447,7 +447,7 @@
                 </div>
                 <div class="flex items-start p-4">
                     <span class="font-semibold mr-4 mt-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </span>
                     <div>
                         <h4 class="font-bold mb-1">組み合わせて使う</h4>
@@ -462,13 +462,13 @@
             <p class="eyebrow mb-8 font-sans">08</p>
             <h3 class="font-bold mb-6 font-display text-xl">あわせて読む</h3>
             <div class="flex flex-wrap gap-3">
-                <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/agent-prompting-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     プロンプト設計ガイド <span class="ml-2">→</span>
                 </a>
-                <a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     Claude Skills 実践ガイド <span class="ml-2">→</span>
                 </a>
-                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4 transition-all">
+                <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
                     GEO 入門ガイド <span class="ml-2">→</span>
                 </a>
             </div>

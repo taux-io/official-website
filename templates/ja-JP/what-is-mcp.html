@@ -82,7 +82,7 @@
             </p>
 
             <figure class="mb-10">
-              <div class="overflow-x-auto">
+              <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP の三つの役割</title>
                     <desc id="arch-desc">ホストの中にクライアントが三つあり、それぞれが一つのサーバにつながっています。前の二つのサーバは手元、三つ目は遠隔にあります。データベースはサーバの外側に描かれ、サーバがデータの手前に立つ仲介であることを示しています。</desc>
@@ -285,11 +285,11 @@
             </div>
         </section>
 
-        <nav class="border-t border-line pt-10">
-            <p class="eyebrow mb-6">次に読む</p>
+        <nav class="border-t border-line pt-10" aria-labelledby="next-reading">
+            <p class="eyebrow mb-6" id="next-reading">次に読む</p>
             <ul class="space-y-4">
-                <li><a href="/{{ locale }}/claude-skills-guide" class="hover:underline hover:underline-offset-4 transition-colors duration-200">実際に使って何かをするなら → Claude Skills 実践ガイド</a></li>
-                <li><a href="/{{ locale }}/what-is-llms-txt" class="hover:underline hover:underline-offset-4 transition-colors duration-200">AI 時代のもう一つの書式 → llms.txt とは何か</a></li>
+                <li><a href="/{{ locale }}/claude-skills-guide" class="inline-flex items-center min-h-11">実際に使って何かをするなら → Claude Skills 実践ガイド</a></li>
+                <li><a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center min-h-11">AI 時代のもう一つの書式 → llms.txt とは何か</a></li>
             </ul>
         </nav>
 

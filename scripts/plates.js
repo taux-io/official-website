@@ -228,4 +228,22 @@ function onScale(coverage) {
   return null;
 }
 
-module.exports = { stepsIn, plateUtility, foreignColourUtility, onScale, DENSITY_SCALE };
+// The colour a value actually paints, as 8-bit channels, composited over
+// `under` (the paper unless told otherwise). Rule 34 needs the PAIR a state
+// produces — label over ground — and a pair is two rendered colours, not two
+// plate memberships: paper on ink at 12% is legal by plate and coverage and
+// still 1.24:1. First colour token in the value; null when there is none the
+// module can read.
+function rendered(value, sheet, under) {
+  const plates = plateValues(sheet);
+  const substrate = under || plates.surface;
+  if (!substrate) return null;
+  const expanded = expand(String(value), sheet);
+  const text = (expanded.match(COLOUR_TOKEN) || [])[0];
+  if (!text) return null;
+  const parsed = channels(text);
+  if (!parsed) return null;
+  return parsed.rgb.map((c, i) => Math.round(parsed.alpha * c + (1 - parsed.alpha) * substrate[i]));
+}
+
+module.exports = { stepsIn, rendered, plateUtility, foreignColourUtility, onScale, DENSITY_SCALE };

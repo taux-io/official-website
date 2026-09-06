@@ -66,7 +66,11 @@ const KEYWORD_EASINGS = new Set([
 ]);
 
 const CONTROL_TAGS = new Set(["button", "input", "select", "textarea"]);
-const CONTROL_CLASSES = ["btn", "tag"];
+// `tag` WAS HERE. A .tag cannot be clicked — it labels a section the way an
+// eyebrow does — and listing it as a control let the accent onto something
+// inert while the rule believed it was guarding a button. It now wears the
+// xs radius rather than the pill precisely so it stops looking like one.
+const CONTROL_CLASSES = ["btn"];
 
 // The full-screen menu rests at opacity-0 and is revealed by the menu script.
 // That is a disclosure, not a scroll reveal: it is driven by a click, it has no
@@ -1676,7 +1680,7 @@ function ruleTwoPlates(files) {
 // surface: a legal case is described by where it sits, so no exemption list is
 // needed and none is kept.
 const INTERACTIVE_TAGS = new Set(["a", "button", "label", "summary", ...CONTROL_TAGS]);
-const INTERACTIVE_SELECTOR = /(^|[\s,>~+([])(a|button|input|select|textarea|label|summary)([\s,:.\[)]|$)|\.(btn|tag)\b|:(hover|active|focus|focus-visible|focus-within)\b|\[aria-(current|expanded|selected)/;
+const INTERACTIVE_SELECTOR = /(^|[\s,>~+([])(a|button|input|select|textarea|label|summary)([\s,:.\[)]|$)|\.btn\b|:(hover|active|focus|focus-visible|focus-within)\b|\[aria-(current|expanded|selected)/;
 
 function isInteractiveNode(node) {
   if (INTERACTIVE_TAGS.has(node.tag)) return true;
@@ -1833,6 +1837,138 @@ function ruleDeclaredSurfaces() {
       file: stylesheet.INPUT_CSS,
       line: 1,
       detail: `${want.where} declares no ${want.prop} — ${want.why}`,
+    });
+  }
+  return found;
+}
+
+
+// RULE 34 — state pairs keep contrast.
+//
+// `contrast` walks every route and measures every text element — at rest.
+// Nothing measured what a pointer does to a control, and the primary call to
+// action on every page lost its label the moment it was hovered: `.btn:hover`
+// painted a 12% ink wash under text that stayed `--on-primary`, the paper.
+// #FAFAF7 on #E2E2E0 is 1.24:1. It was on the density ladder, it was on a plate,
+// it was in the built stylesheet, and it was green in every gate this repo has,
+// because every gate that reads colour reads membership and the one that reads
+// pairs reads them with nothing pressed.
+//
+// This reads the pair a state rule produces: the ground it sets, under the
+// label it sets or inherits from its own base rule. Both are composited over
+// the paper first (plates.rendered), so a `/ 0.12` and a token that names the
+// same colour measure the same. A state whose base rule declares no colour is
+// skipped rather than guessed — the label's colour then comes from outside the
+// component and is `contrast`'s to measure at rest.
+//
+// 4.5 for everything. Buttons here are 17px at 600, under WCAG's large-text
+// line, and a 3:1 allowance for the one large case would be a second threshold
+// nothing needs yet.
+//
+// WENT RED BEFORE IT WENT GREEN: run against the stylesheet as it stood, it
+// reported `.btn:hover` at 1.24 and `.btn:active` at 1.45 — the two values it
+// was written to find — and reported nothing else. Then the values changed.
+const STATE_PAIR = /:(hover|active|focus-visible)\b/;
+const TEXT_CONTRAST_MIN = 4.5;
+
+function relativeLuminance([r, g, b]) {
+  const lin = (c) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+
+function contrastRatio(a, b) {
+  const [hi, lo] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+const hexOf = ([r, g, b]) => "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
+
+function ruleStatePairsKeepContrast() {
+  const sheet = stylesheet.read();
+  const baseBySelector = new Map();
+  for (const rule of sheet.rules) {
+    for (const sel of rule.selectors) {
+      if (STATE_SELECTOR.test(sel)) continue;
+      if (!baseBySelector.has(sel)) baseBySelector.set(sel, rule);
+    }
+  }
+
+  const found = [];
+  for (const rule of sheet.rules) {
+    for (const sel of rule.selectors) {
+      if (!STATE_PAIR.test(sel)) continue;
+      // A pseudo-element paints its own box, not the label.
+      if (sel.includes("::")) continue;
+      const ground = rule.declarations.find((d) => d.prop === "background-color" || d.prop === "background");
+      if (!ground) continue;
+      const base = baseBySelector.get(sel.replace(STATE_PAIR, "").trim());
+      const label =
+        rule.declarations.find((d) => d.prop === "color") ||
+        base?.declarations.find((d) => d.prop === "color");
+      if (!label) continue;
+      const bg = plates.rendered(ground.value, sheet);
+      if (!bg) continue;
+      const fg = plates.rendered(label.value, sheet, bg);
+      if (!fg) continue;
+      const ratio = contrastRatio(fg, bg);
+      if (ratio >= TEXT_CONTRAST_MIN) continue;
+      found.push({
+        file: ground.file,
+        line: ground.line,
+        detail:
+          `${sel} paints its label ${hexOf(fg)} on ${hexOf(bg)} — ${ratio.toFixed(2)}:1, under ${TEXT_CONTRAST_MIN}; ` +
+          `the state a pointer produces is where the text has to stay readable`,
+      });
+    }
+  }
+  return found;
+}
+
+
+// RULE 35 — hover is guarded.
+//
+// On a touch screen there is no hover, but :hover still fires: it latches on
+// the tap and holds until the next tap lands somewhere else, so a row or a link
+// sits in its hover state looking selected. better-accessibility's fix is a
+// media query, and this vocabulary had zero of them — every :hover on the site
+// applied to every finger.
+//
+// Two roads, one query. tailwind.config.js sets `hoverOnlyWhenSupported`, which
+// compiles every `hover:` utility under `@media (hover: hover) and (pointer:
+// fine)`; this rule holds the authored CSS to the same idea. It reads the
+// ancestors stylesheet.js now records for every rule, so a :hover written in a
+// template's own <style> block is held to it as well.
+function ruleHoverIsGuarded() {
+  const sheet = stylesheet.read();
+  const found = [];
+  // The utility half. 63 `hover:` and `group-hover:` classes in the templates are guarded by one
+  // config flag, and a flag is one edit from being "simplified" away — after
+  // which every one of them latches on touch again while this rule, reading
+  // only authored CSS, stays green. So the flag is asserted here too.
+  const config = path.join(ROOT, "tailwind.config.js");
+  let flag = false;
+  try {
+    flag = require(config)?.future?.hoverOnlyWhenSupported === true;
+  } catch (err) {
+    found.push({ file: "tailwind.config.js", line: 1, detail: `not readable: ${err.message}` });
+  }
+  if (!flag) {
+    found.push({
+      file: "tailwind.config.js",
+      line: 1,
+      detail: "future.hoverOnlyWhenSupported is not true — every `hover:` utility compiles unguarded and latches on touch",
+    });
+  }
+  for (const rule of sheet.rules) {
+    if (!rule.selectors.some((s) => /:hover\b/.test(s))) continue;
+    if ((rule.conditions || []).some((c) => /\(\s*hover:\s*hover\s*\)/.test(c))) continue;
+    found.push({
+      file: rule.file,
+      line: rule.line,
+      detail: `${rule.selector} answers :hover outside @media (hover: hover) — on touch the state latches after a tap and reads as stuck`,
     });
   }
   return found;
@@ -2105,6 +2241,20 @@ const RULES = [
     turnedOnBy: "v5 — the manifest carried a black theme colour through two resets while declared the whole time",
     run: ruleThemeColourAgrees,
     summary: "the meta theme-color and the manifest's theme_color are the same surface",
+  },
+  {
+    name: "state pairs keep contrast",
+    enabled: true,
+    turnedOnBy: "v5.1 — the primary button's label was 1.24:1 on hover, on every route, and no gate read a state",
+    run: ruleStatePairsKeepContrast,
+    summary: "a hover, active or focus ground keeps its own label at 4.5:1 or better",
+  },
+  {
+    name: "hover is guarded",
+    enabled: true,
+    turnedOnBy: "v5.1 — better-accessibility: hover latches on touch; zero media queries guarded it",
+    run: ruleHoverIsGuarded,
+    summary: "every :hover in authored CSS sits inside @media (hover: hover)",
   },
 ];
 
