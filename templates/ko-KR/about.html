@@ -35,8 +35,8 @@
 }
 </script>
 
-<section class="band relative overflow-hidden">
-    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
         <!-- Hero -->
         <span class="tag mb-4 inline-block">Who Builds This</span>
         <h1 class="mb-6">
@@ -52,16 +52,14 @@
         <p class="text-sm max-w-[42ch] leading-relaxed font-sans">
             회사 이름은 그리스 문자 <strong class="font-sans">τ</strong>에서 왔습니다. Tau는 제어공학과 물리학에서 말하는 <strong>시정수</strong>, 곧 시스템이 외부 변화에 반응해 새로운 안정 상태로 옮겨 가기까지 걸리는 시간입니다. TauX가 다루는 것은 기업이 AI에 적응할 때의 시정수입니다. 적응하느냐가 아니라, 얼마나 걸리느냐입니다.
         </p>
-    </div>
 </section>
 
-<section class="relative overflow-hidden border-t border-line">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+<section>
         <!-- Content Grid -->
-        <div class="grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16 mb-6">
+        <div class="space-y-6 mb-6">
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">Our Mission</span>
                     <span class="display-sub">우리의 사명</span>
                 </h2>
@@ -72,7 +70,7 @@
             </div>
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">What We Build With</span>
                     <span class="display-sub">기술 기반</span>
                 </h2>
@@ -86,7 +84,7 @@
         <!-- Contact Info -->
         <div class="border-t border-line pt-8">
             <div class="cover" data-cover>
-                <h2 class="mb-6">
+                <h2>
                 <span class="display-lead text-display-sm">Find Us</span>
                 <span class="display-sub">문의</span>
             </h2>
@@ -118,7 +116,8 @@
                  needs the characters a Taiwanese map will match. -->
             <p class="mt-6">대만 가오슝시 강산구 문셴로 57호 2층 (高雄市岡山區文賢路57號2樓)</p>
         </div>
-    </div>
 </section>
+
+</div>
 
 {% include "footer.html" %}

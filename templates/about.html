@@ -35,8 +35,8 @@
 }
 </script>
 
-<section class="band relative overflow-hidden">
-    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
         <!-- Hero -->
         <span class="tag mb-4 inline-block">Who Builds This</span>
         <h1 class="mb-6">
@@ -54,16 +54,14 @@
         <p class="text-sm max-w-[42ch] leading-relaxed font-sans">
             我們的名字源自希臘字母 <strong class="font-sans">τ</strong>（Tau，在控制科學與物理學中代表<strong>時間常數 Time Constant</strong>，表徵系統響應外界變化並過渡至全新穩定狀態的關鍵時間）。導入 AI 也有這個常數，而縮短它就是我們在做的事。
         </p>
-    </div>
 </section>
 
-<section class="relative overflow-hidden border-t border-line">
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+<section>
         <!-- Content Grid -->
-        <div class="grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16 mb-6">
+        <div class="space-y-6 mb-6">
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">Our Mission</span>
                     <span class="display-sub">核心使命</span>
                 </h2>
@@ -74,7 +72,7 @@
             </div>
             <div class="border-t border-line pt-8">
                 <div class="cover" data-cover>
-                    <h2 class="mb-4">
+                    <h2>
                     <span class="display-lead text-display-sm">What We Build With</span>
                     <span class="display-sub">技術優勢</span>
                 </h2>
@@ -88,7 +86,7 @@
         <!-- Contact Info -->
         <div class="border-t border-line pt-8">
             <div class="cover" data-cover>
-                <h2 class="mb-6">
+                <h2>
                 <span class="display-lead text-display-sm">Find Us</span>
                 <span class="display-sub">聯絡我們</span>
             </h2>
@@ -115,7 +113,8 @@
             </div>
             <p class="mt-6">高雄市岡山區文賢路 57 號 2 樓</p>
         </div>
-    </div>
 </section>
+
+</div>
 
 {% include "footer.html" %}

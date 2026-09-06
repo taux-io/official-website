@@ -19,14 +19,8 @@
 }
 </script>
 
-<article class="relative pt-2 pb-0 px-6 overflow-hidden">
-    <!-- Background Decor -->
-    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
-    </div>
-
-    <div class="max-w-4xl mx-auto relative z-10">
-        <!-- Header -->
-        <header class="band mb-0">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+    <header class="band">
             <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
      because Chinese has no upper case; on an English page the lead IS the
      content. `heading structure` asks for `display-sub` only from non-Latin
@@ -41,32 +35,11 @@
                 </blockquote>
             </div>
         </header>
-
-            <!-- The same step response as the homepage, drawn once and left
-                 still. A reader spends minutes on this page, so it carries the
-                 mark without carrying the animation's cost.
-
-                 The curve drifts within this strip as the page scrolls. Travel
-                 is the strip's height times the factor, so a thin frame needs a
-                 large factor to read as anything: at 0.25 it moved 20px over a
-                 full pass, which is nothing. Overscaled to 200% so the bound —
-                 half the travel, 24px — stays inside the overhang. -->
-    </div>
-</article>
-
-<div class="pt-2 pb-4">
-    <div class="max-w-prose mx-auto px-6 space-y-12 tablet:space-y-16">
         <!-- What is GEO -->
-        <section id="what-is-geo" class="p-5 border-t border-line pt-10">
+        <section id="what-is-geo">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3"><span class="font-sans">01</span> &mdash; What is GEO</p>
-                <h2 class="mb-4 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center me-4">
-                    <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </span>
-                What is GEO?
+                <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; What is GEO</p>
+                <h2 class="mb-0">What is GEO?
             </h2>
             </div>
 
@@ -103,12 +76,12 @@
         </section>
 
         <!-- Why Matters -->
-        <section id="why-geo-matters" class="border-t border-line pt-10">
+        <section id="why-geo-matters">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3"><span class="font-sans">02</span> &mdash; Why GEO matters</p>
-                <h2 class="mb-4">Why it matters now</h2>
+                <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Why GEO matters</p>
+                <h2>Why it matters now</h2>
             </div>
-            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+            <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-3 flex items-center">
                         <span class="me-3 font-semibold"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
@@ -151,10 +124,10 @@
         </section>
 
         <!-- Comparison Table -->
-        <section id="geo-vs-seo" class="border-t border-line pt-10">
+        <section id="geo-vs-seo">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3"><span class="font-sans">03</span> &mdash; GEO vs SEO</p>
-                <h2 class="mb-4">GEO against SEO, side by side</h2>
+                <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; GEO vs SEO</p>
+                <h2>GEO against SEO, side by side</h2>
             </div>
             <div class="overflow-hidden">
                 <div class="overflow-x-auto" tabindex="0">
@@ -205,11 +178,10 @@
         </section>
 
         <!-- Princeton GEO Research Section -->
-        <section id="princeton-geo-research" class="space-y-8 border-t border-line pt-10">
-            <div class="text-start mb-6">
-                <div class="cover" data-cover>
-                    <p class="eyebrow mb-3"><span class="font-sans">04</span> &mdash; Princeton GEO research</p>
-                    <h2 class="mb-4">Nine methods, measured: the Princeton study</h2>
+        <section id="princeton-geo-research">
+            <div class="cover" data-cover>
+                    <p class="eyebrow mb-2"><span class="font-sans">04</span> &mdash; Princeton GEO research</p>
+                    <h2>Nine methods, measured: the Princeton study</h2>
                 </div>
                 <p class="text-lg leading-relaxed max-w-prose">
                     A paper from Princeton, Georgia Tech, the Allen Institute for AI and IIT Delhi, <strong>"Generative Engine Optimization"</strong>, tested nine concrete tactics and measured how much each raised the odds of being cited by engines such as ChatGPT and Perplexity:
@@ -302,7 +274,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 
             <blockquote class="quote my-8">
                 <p class="max-w-prose">“AI search is a contest over credibility and entity relationships. A model does not invent a brand that is not there — it cites what is well-backed, well-evidenced and clearly structured.”
@@ -312,10 +283,10 @@
         </section>
 
         <!-- How it works -->
-        <section id="how-geo-works" class="border-t border-line pt-10">
+        <section id="how-geo-works">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3"><span class="font-sans">05</span> &mdash; How GEO works</p>
-                <h2 class="mb-4">How we run a GEO engagement</h2>
+                <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; How GEO works</p>
+                <h2>How we run a GEO engagement</h2>
             </div>
             <div class="space-y-6">
                 <div class="space-y-2">
@@ -356,10 +327,10 @@
         </section>
 
         <!-- CTA -->
-        <section class="mt-10 relative overflow-hidden">
+        <section>
             <div class="relative z-10">
                 <div class="cover" data-cover>
-                    <h2 class="mb-6">Ready to start?</h2>
+                    <h2>Ready to start?</h2>
                 </div>
                 <p class="mb-6 max-w-prose mx-auto">GEO compounds. Starting now means being the cited source while your competitors are still arguing about whether this matters.</p>
                 <div class="flex flex-col mobile:flex-row justify-center gap-4">
@@ -382,6 +353,5 @@
             </div>
         </section>
     </div>
-</div>
 
 {% include"footer.html" %}

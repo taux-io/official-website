@@ -15,10 +15,9 @@
 }
 </script>
 
-<div class="relative pt-2 pb-0 px-6">
-    <article class="max-w-4xl mx-auto relative z-10">
+<article class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
 
-        <header class="band mb-0">
+        <header class="band">
             <div class="tag mb-4">AI 技术观点</div>
             <h1 class="mb-4">
                 <span class="display-lead text-display-sm tablet:text-display-md">Model Context Protocol</span>
@@ -33,9 +32,9 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="what">01 — 一句话</h2>
+                <h2 class="eyebrow" id="what">01 — 一句话</h2>
             </div>
             <p class="text-xl font-display mb-5 max-w-prose">
                 MCP 让任何 AI 应用程序，用同一种方式接上任何数据来源。
@@ -46,15 +45,15 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="why">02 — 为什么需要它</h2>
+                <h2 class="eyebrow" id="why">02 — 为什么需要它</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-5">
                 假设有 4 个 AI 应用程序，和 5 个你想接上的东西：Google Drive、GitHub、数据库、Slack、公司内部 API。
             </p>
             <div class="border border-line p-5 mb-6">
-                <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
+                <div class="space-y-6">
                     <div>
                         <p class="eyebrow mb-4">没有共通协议</p>
                         <p class="font-sans text-display-sm tabular-nums mb-3">4 × 5 = 20</p>
@@ -73,9 +72,9 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="roles">03 — 三个角色</h2>
+                <h2 class="eyebrow" id="roles">03 — 三个角色</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP 里有三个角色。<strong>最多人搞混的是前两个</strong>——大家说「MCP client」的时候，心里想的通常是 Claude Desktop，但那是 host。
@@ -154,9 +153,9 @@
         </section>
 
         <!-- ④ 交互 --------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="primitives">04 — 服务器提供什么</h2>
+                <h2 class="eyebrow" id="primitives">04 — 服务器提供什么</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-4">
                 服务器提供三种东西。它们的差别<strong>不是</strong>「读 vs 写」——那是最常见的错误直觉。
@@ -178,7 +177,7 @@
                     </button>
                 </div>
 
-                <section data-panel="resource" class="">
+                <section data-panel="resource">
                     <p class="eyebrow mb-4">答案：<strong>Resource</strong> — 由应用程序决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你把一份文档拖进对话，或是 host 判断「这个问题需要附上这个文档」——决定权在<strong>应用程序</strong>手上，不在模型手上。模型只是收到了那份内容。
@@ -188,7 +187,7 @@
                     </p>
                 </section>
 
-                <section data-panel="tool" class="">
+                <section data-panel="tool">
                     <p class="eyebrow mb-4">答案：<strong>Tool</strong> — 由模型决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你说「帮我把这个 bug 开成一张票」，模型自己判断要调用哪个功能、带什么参数。决定权在<strong>模型</strong>手上。
@@ -198,7 +197,7 @@
                     </p>
                 </section>
 
-                <section data-panel="prompt" class="">
+                <section data-panel="prompt">
                     <p class="eyebrow mb-4">答案：<strong>Prompt</strong> — 由用户决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你从菜单挑一个「代码审查」，或打一个斜线指令。决定权在<strong>你</strong>手上——模型不会自己跑去用它。
@@ -215,9 +214,9 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="transport">05 — 它怎么传输</h2>
+                <h2 class="eyebrow" id="transport">05 — 它怎么传输</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 两种标准方式：<strong>stdio</strong>——服务器是一个子进程，透过标准输入输出沟通；与 <strong>Streamable HTTP</strong>——每则消息是一个 HTTP POST。<strong>这是「怎么传」的差别，不是「在哪里」的差别</strong>：一个跑在你自己机器上的服务器，一样可以讲 Streamable HTTP。
@@ -228,9 +227,9 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="whats-new">06 — 这一版变了什么</h2>
+                <h2 class="eyebrow" id="whats-new">06 — 这一版变了什么</h2>
             </div>
             <p class="text-xl font-display mb-5 max-w-prose">
                 服务器现在什么都不记得。
@@ -265,9 +264,9 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="version">07 — 本页对应哪一版</h2>
+                <h2 class="eyebrow" id="version">07 — 本页对应哪一版</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP 的版号<strong>就是日期</strong>。它标示的是「最后一次做出破坏性变更的日子」，不是发布周期。所以你手上任何一份 MCP 数据，看它对应哪个日期就知道新不新——<strong>这是这页最值得你带走的一件事</strong>。
@@ -294,6 +293,5 @@
         </nav>
 
     </article>
-</div>
 
 {% include "footer.html" %}

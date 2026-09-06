@@ -349,6 +349,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 | 手機 h2 24／h3 21；內文行高 1.6 | ✅ | D |
 | `.tag` 不再被 column flex 撐滿 | ✅ | D |
 | `first-paragraph` 探針（舊建置 240 紅）；`npm run blank` 工具 | ✅ | D |
+| **v5.3** 一個骨架、無章節線、單欄、裝飾拿掉；規則 24 改寫 | ✅ | E |
 
 ✅ **階段 ① 已落地，一次改完沒有拆。** 表面、三階墨色、`hairline`、`on-primary` 的值互相定義——`ink-72` 之所以是 `#696B6F`，是因為它是 Charcoal 在 `#FAFAF7` 上的 72% 覆蓋。先改表面不改墨色會得到一組沒有算過對比的顏色。
 
@@ -562,6 +563,16 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 ---
 
 ## 版面
+
+### 一個欄，一種節奏（v5.3，決策 #147–#150）
+
+**每一頁（首頁與 404 除外）是同一個骨架**：一個 `max-w-prose mx-auto px-6` 的欄，裡面依序是 `<header class="band">`（tag、h1、副標、引言、CTA）與 `<section>` 們，**間距全部由欄的 `space-y-12 tablet:space-y-16` 給**。section 不帶分隔線、不帶上內距、不帶自己的 margin——規則 24 改成守這一句，對 v5.2 的模板跑是 446 個 section 紅。
+
+**章節之間沒有線。** better-layout 的順序是 space first, lines last；標題本身就是章節的邊界，線是多的。髮絲線只留在內容裡（表格、引述、對照框、清單列）。
+
+**桌機跟手機是同一個結構**：三欄的文字卡片、十二欄的數字列，在手機上本來就是一欄，現在桌機也是——`space-y-6` 取代 `grid-cols-*`（65 個網格）。之前 ai-smart-work 一頁裡有 `7xl`、`6xl`、`4xl` 三種欄寬，左邊緣在 60px 與 160px 之間跳；五頁「滿版 section + 內層容器」的分隔線橫跨整個視窗而字在欄裡。**實測 v5.3：zh-Hant-TW 20 條路由在 375 與 1280 下，h1、第一個 h2、第一段正文同一個左邊緣**（`scratchpad/align.js`，投影片頁除外）。
+
+**裝飾拿掉**：四種 `absolute` 裝飾（模糊方塊、點陣底、右上角淡水印、h3 前的孤立圖示）——它們是「預留給圖片的位置」，而本站沒有圖片。
 
 ### 章節區塊
 
@@ -1109,6 +1120,10 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 144 | `first-paragraph` 探針 | 「第一段正文在第一屏」是這次改動的驗收條件，寫成探針而不是寫在 PR 裡。三次才寫對：第一版量 `main p`，hero 的一句摘要就在第一屏，舊建置全綠；第二版排除 `.band`，hero 裡真正的散文（about 的 τ 故事）被排除；第三版：band 的第一段是摘要、第二段起算，且讀的是 own text ≥ 20 字的任何區塊（prompt-injection 用 `<div>` 講故事）。投影片頁具名豁免。**代價：三種手機高度 × 101 條路由各 reload 一次，geometry 慢約 40 秒** |
 | 145 | `npm run blank`：截圖的空白行與最長連續空白 | 「太空」要能量。整行都是紙色算空白；行距本來就貢獻約三成，所以看的是**最長連續空白**——超過一支手機的高度就是一屏什麼都沒有。給人看的工具，不是閘門（沒有可辯護的門檻）。舊建置：手機長文頁 354–499px，投影片頁 30–110px |
 | 146 | `.tag` 在 column flex 的 band 裡撐滿整行 | `align-items: stretch` 是 flex 的預設，一顆 inline-flex 的膠囊被拉到 327px（手機）／896px（桌機），四個字。`.band > .tag { align-self: flex-start }`。**沒有閘門讀得到「這顆 pill 比它的字寬七倍」** |
+| 147 | **一個欄、一種節奏：section 不帶線與內距，間距由欄給** | 使用者截圖（ai-smart-work 桌機）：hero 高度拿掉了但分隔線還在、h2 貼著線、下一條線貼著上一格最後一行。根因是兩種骨架並存（15 頁「窄欄＋欄內線」、5 頁「滿版 section＋內層容器」）加上章節的三層間距被 v5.2 拿掉了兩層。改成一個骨架：hero 與 section 同一個欄，`space-y` 一處宣告。**規則 24 改寫**：section 帶 `border-t`／`pt-*`／`mt-*`／`space-y-*` 就紅；先對 v5.2 的模板跑，446 紅。**代價：五個 locale 100 個模板一起換骨架，diff 4,000 行；`section gap scale` 這個名字留著但意思反了** |
+| 148 | 章節之間不用分隔線（使用者選擇） | better-layout：space first, lines last。h2 34px 加 64px 間距已經是邊界。**代價：DESIGN.md「分隔之後的間距三階」整節作廢，髮絲線只剩內容層** |
+| 149 | 全站一個 68ch 欄，桌機跟手機同一個結構（使用者選擇） | 同一頁三種欄寬、hero 與正文不對齊，是截圖裡「擠成一坨」的另一半。文字卡片與數字列改單欄（65 個網格）。**代價：桌機右邊留白變多；三欄變一欄後頁面變長——長度換閱讀** |
+| 150 | 四種 absolute 裝飾拿掉 | 模糊方塊（`blur-3xl`，DESIGN.md 本來就禁模糊）在 section 失去 `overflow-hidden` 後撐出視窗，geometry 抓到；點陣底用了具名色 `white`（規則 1 看不見具名色）；右上角淡水印與 h3 前的孤立圖示是「預留給圖片的位置」。**代價：無** |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋

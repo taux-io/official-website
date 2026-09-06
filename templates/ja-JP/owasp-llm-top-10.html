@@ -54,9 +54,8 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-2 pb-0 px-6 overflow-hidden">
-    <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-0">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 relative">
+    <header class="band mb-12 tablet:mb-16">
             <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 AI Security Lab
@@ -67,15 +66,6 @@
             </h1>
             <p class="text-base tablet:text-lg mb-5 max-w-prose">十のリスクを一つずつ。定義、実際の攻撃面、そして防ぎ方。企業が AI のリスク棚卸しをするときの最初の対照表です。</p>
         </header>
-
-        <!-- The same step response as the homepage, drawn once and left still.
-             A reader spends minutes on this page, so it carries the mark
-             without carrying the animation's cost. -->
-    </div>
-</article>
-
-<div class="pt-2 pb-4">
-    <div class="max-w-prose mx-auto px-6 relative">
 
         <!-- Section index.
 
@@ -120,10 +110,10 @@
              is that replacement: what it used to say — "2026 exists, we have
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
-        <section id="version-status" class="border-t border-line pt-10">
+        <section id="version-status">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">00</p>
-                <h2 class="mb-6">2025 → 2026 で変わったこと</h2>
+                <p class="eyebrow mb-2 font-sans">00</p>
+                <h2>2025 → 2026 で変わったこと</h2>
             </div>
             <div class="border-s border-line ps-6 leading-relaxed">
                 <p>このページの十条は<strong>2026 版</strong>にもとづきます。<strong>順位の動きが例年より大きい</strong>ので、旧版で棚卸しした一覧は見直す値打ちがあります。</p>
@@ -175,10 +165,10 @@
              silently on different content the moment the ranking moved. The
              number changes between editions; the topic does not. Same reason
              the URL carries no year. -->
-        <section id="overview" class="border-t border-line pt-10">
+        <section id="overview">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">01</p>
-                <h2 class="mb-6">十条をひと目で</h2>
+                <p class="eyebrow mb-2 font-sans">01</p>
+                <h2>十条をひと目で</h2>
             </div>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -249,10 +239,10 @@
              prompt injection out in full here would put it in direct
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
-        <section id="prompt-injection" class="border-t border-line pt-10">
+        <section id="prompt-injection">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM01</p>
-                <h2 class="mb-6">プロンプトインジェクション<span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM01</p>
+                <h2>プロンプトインジェクション<span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -282,10 +272,10 @@
             </div>
         </section>
 
-        <section id="sensitive-information-disclosure" class="border-t border-line pt-10">
+        <section id="sensitive-information-disclosure">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM02</p>
-                <h2 class="mb-6">機微情報の漏えい<span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM02</p>
+                <h2>機微情報の漏えい<span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -313,10 +303,10 @@
             </div>
         </section>
 
-        <section id="excessive-agency" class="border-t border-line pt-10">
+        <section id="excessive-agency">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM03</p>
-                <h2 class="mb-6">過剰な権限<span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM03</p>
+                <h2>過剰な権限<span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -347,10 +337,10 @@
             </div>
         </section>
 
-        <section id="supply-chain" class="border-t border-line pt-10">
+        <section id="supply-chain">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM04</p>
-                <h2 class="mb-6">サプライチェーン<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM04</p>
+                <h2>サプライチェーン<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -376,10 +366,10 @@
             </div>
         </section>
 
-        <section id="data-and-model-poisoning" class="border-t border-line pt-10">
+        <section id="data-and-model-poisoning">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM05</p>
-                <h2 class="mb-6">データとモデルの汚染<span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM05</p>
+                <h2>データとモデルの汚染<span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -407,10 +397,10 @@
             </div>
         </section>
 
-        <section id="unbounded-consumption" class="border-t border-line pt-10">
+        <section id="unbounded-consumption">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM06</p>
-                <h2 class="mb-6">際限のない消費<span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM06</p>
+                <h2>際限のない消費<span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -439,10 +429,10 @@
             </div>
         </section>
 
-        <section id="misinformation" class="border-t border-line pt-10">
+        <section id="misinformation">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM07</p>
-                <h2 class="mb-6">誤情報<span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM07</p>
+                <h2>誤情報<span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -470,10 +460,10 @@
             </div>
         </section>
 
-        <section id="hidden-context-exposure" class="border-t border-line pt-10">
+        <section id="hidden-context-exposure">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM08</p>
-                <h2 class="mb-6">隠し文脈の露出<span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM08</p>
+                <h2>隠し文脈の露出<span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -504,10 +494,10 @@
             </div>
         </section>
 
-        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-10">
+        <section id="vector-and-embedding-weaknesses">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM09</p>
-                <h2 class="mb-6">ベクトルと埋め込みの弱点<span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM09</p>
+                <h2>ベクトルと埋め込みの弱点<span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -535,10 +525,10 @@
             </div>
         </section>
 
-        <section id="improper-output-handling" class="border-t border-line pt-10">
+        <section id="improper-output-handling">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">LLM10</p>
-                <h2 class="mb-6">出力処理の不備<span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
+                <p class="eyebrow mb-2 font-sans">LLM10</p>
+                <h2>出力処理の不備<span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
             </div>
             <div class="space-y-6 leading-relaxed">
                 <div>
@@ -570,15 +560,15 @@
         </section>
 
         <!-- Source -->
-        <section id="source" class="border-t border-line pt-10">
+        <section id="source">
             <p class="eyebrow mb-3 font-sans">出典</p>
             <p class="leading-relaxed">十条の名称、順序、範囲は OWASP GenAI Security Project が公表した<a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 版の文書（ライセンス CC BY-SA 4.0）から。順位の決め方と事故データの数字も同じ文書によります。このページの整理、訳語、防ぎ方は TauX が書いたもので、OWASP の立場を示すものではありません。</p>
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-10">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="mb-6">自社の LLM アプリが心配な方へ</h2>
+                <h2>自社の LLM アプリが心配な方へ</h2>
             </div>
             <p class="mb-6 max-w-[42ch] text-lg">TauX Security Lab では LLM のセキュリティ検査とレッドチーム演習を行い、この十条に沿って一つずつ棚卸しします。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
@@ -588,7 +578,6 @@
         </section>
     </div>
     </div>
-</div>
 
 <script src="/static/js/section-index.js?v=1" defer></script>
 

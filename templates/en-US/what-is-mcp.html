@@ -15,10 +15,9 @@
 }
 </script>
 
-<div class="relative pt-2 pb-0 px-6">
-    <article class="max-w-4xl mx-auto relative z-10">
+<article class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
 
-        <header class="band mb-0">
+        <header class="band">
             <div class="tag mb-4">AI Technical Note</div>
             <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
      because Chinese has no upper case; on an English page the lead IS the
@@ -36,9 +35,9 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="what">01 — In one sentence</h2>
+                <h2 class="eyebrow" id="what">01 — In one sentence</h2>
             </div>
             <p class="text-xl font-display mb-5 max-w-prose">
                 MCP lets any AI application connect to any data source the same way.
@@ -49,15 +48,15 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="why">02 — The problem it solves</h2>
+                <h2 class="eyebrow" id="why">02 — The problem it solves</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-5">
                 Four AI applications, and five things to connect them to: Google Drive, GitHub, a database, Slack, an internal API.
             </p>
             <div class="border border-line p-5 mb-6">
-                <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
+                <div class="space-y-6">
                     <div>
                         <p class="eyebrow mb-4">Without a shared protocol</p>
                         <p class="font-sans text-display-sm tabular-nums mb-3">4 × 5 = 20</p>
@@ -76,9 +75,9 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="roles">03 — The three roles</h2>
+                <h2 class="eyebrow" id="roles">03 — The three roles</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 Three roles, and <strong>the first two are what everyone conflates</strong>. When people say "MCP client" they usually mean Claude Desktop — which is the host.
@@ -157,9 +156,9 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="primitives">04 — What a server offers</h2>
+                <h2 class="eyebrow" id="primitives">04 — What a server offers</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-4">
                 Three things, and the difference between them is <strong>not</strong> read versus write. That is the intuition almost everyone arrives with, and it is wrong.
@@ -181,7 +180,7 @@
                     </button>
                 </div>
 
-                <section data-panel="resource" class="">
+                <section data-panel="resource">
                     <p class="eyebrow mb-4"><strong>Resource</strong> — the application decides</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         You drag a document in, or the host works out that this question needs that file attached. The decision belongs to the <strong>application</strong>, not the model. The model simply receives the content.
@@ -191,7 +190,7 @@
                     </p>
                 </section>
 
-                <section data-panel="tool" class="">
+                <section data-panel="tool">
                     <p class="eyebrow mb-4"><strong>Tool</strong> — the model decides</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         You say "file this bug as a ticket" and the model works out which function to call and with what arguments. The decision belongs to the <strong>model</strong>.
@@ -201,7 +200,7 @@
                     </p>
                 </section>
 
-                <section data-panel="prompt" class="">
+                <section data-panel="prompt">
                     <p class="eyebrow mb-4"><strong>Prompt</strong> — the user decides</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         You pick "code review" from a menu, or type a slash command. The decision is <strong>yours</strong> — the model will not reach for it on its own.
@@ -218,9 +217,9 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="transport">05 — How it travels</h2>
+                <h2 class="eyebrow" id="transport">05 — How it travels</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 Two standard transports. <strong>stdio</strong>: the server is a subprocess, talking over standard input and output. <strong>Streamable HTTP</strong>: each message is an HTTP POST. <strong>This is a difference in how, not in where</strong>: a server running on your own machine can speak Streamable HTTP just as well.
@@ -231,9 +230,9 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="whats-new">06 — What this revision changed</h2>
+                <h2 class="eyebrow" id="whats-new">06 — What this revision changed</h2>
             </div>
             <p class="text-xl font-display mb-5 max-w-prose">
                 Servers no longer remember anything.
@@ -268,9 +267,9 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section class="mb-6">
+        <section>
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-3" id="version">07 — Which revision this page describes</h2>
+                <h2 class="eyebrow" id="version">07 — Which revision this page describes</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 An MCP version <strong>is a date</strong>. It marks the last day a breaking change was made, not a release cadence. So for any MCP material you come across, the date tells you how current it is — <strong>which is the single most useful thing on this page</strong>.
@@ -297,6 +296,5 @@
         </nav>
 
     </article>
-</div>
 
 {% include "footer.html" %}

@@ -16,13 +16,8 @@
 }
 </script>
 
-<div class="relative pt-2 pb-0 px-6 overflow-hidden">
-    <!-- Background Decor -->
-    <div class="absolute inset-0 pointer-events-none" class="pointer-events-none">
-    </div>
-
-    <article class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-0">
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+    <header class="band">
             <div class="tag mb-4">
                 GEO 技術觀點
             </div>
@@ -32,37 +27,15 @@
         </h1>
 
             <div class="border-t border-line pt-4 pb-2 ps-6 border-s border-line text-start relative overflow-hidden">
-                <div class="absolute top-0 end-0 p-4 opacity-10 font-semibold">
-                    <svg aria-hidden="true" focusable="false" class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                    </svg>
-                </div>
                 <blockquote class="text-lg relative z-10">「LLMs.txt 就像是 AI 時代的 robots.txt。它是一個純文字檔案，用來告訴大型語言模型：這裡歡迎光臨，那裡請勿進入。」
                 </blockquote>
             </div>
         </header>
-
-            <!-- The same step response as the homepage, drawn once and left
-                 still. A reader spends minutes on this page, so it carries the
-                 mark without carrying the animation's cost.
-
-                 The curve drifts within this strip as the page scrolls. Travel
-                 is the strip's height times the factor, so a thin frame needs a
-                 large factor to read as anything: at 0.25 it moved 20px over a
-                 full pass, which is nothing. Overscaled to 200% so the bound —
-                 half the travel, 24px — stays inside the overhang. -->
-    </article>
-</div>
-
-<div class="pt-2 pb-4">
-    <div class="max-w-prose mx-auto px-6 space-y-12 tablet:space-y-16">
         <!-- Section 1 -->
-        <section class="border-t border-line pt-10">
+        <section>
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">01</p>
-                <h2 class="mb-4 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 text-xl">1</span>
-                LLMs.txt 是什麼？
+                <p class="eyebrow mb-2 font-sans">01</p>
+                <h2 class="mb-0">LLMs.txt 是什麼？
             </h2>
             </div>
             <div class="space-y-6">
@@ -107,15 +80,13 @@
         </section>
 
         <!-- Section 2 -->
-        <section class="border-t border-line pt-10">
+        <section>
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">02</p>
-                <h2 class="mb-4 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 text-xl">2</span>
-                功能與指令範例
+                <p class="eyebrow mb-2 font-sans">02</p>
+                <h2 class="mb-0">功能與指令範例
             </h2>
             </div>
-            <div class="grid tablet:grid-cols-2 gap-8">
+            <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
                     <h3 class="mb-6 flex items-center">
                         <span class="me-3 font-semibold"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
@@ -174,64 +145,37 @@
         </section>
 
         <!-- Section 3 -->
-        <section class="border-t border-line pt-10">
+        <section>
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">03</p>
-                <h2 class="mb-4 flex items-center">
-                <span class="w-12 h-12 font-semibold flex items-center justify-center me-4 text-xl">3</span>
-                為何需要 LLMs.txt？
+                <p class="eyebrow mb-2 font-sans">03</p>
+                <h2 class="mb-0">為何需要 LLMs.txt？
             </h2>
             </div>
-            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+            <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
-                    <div class="w-12 h-12 flex items-center justify-center font-semibold mb-6">
-                        <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">智慧財產權保護</h3>
+<h3 class="mb-3">智慧財產權保護</h3>
                     <p class="text-sm leading-relaxed">避免原創內容被無限制用於訓練與生成，導致被大量複製或稀釋。</p>
                 </div>
                 <div class="min-w-0 space-y-2">
-                    <div class="w-12 h-12 flex items-center justify-center font-semibold mb-6">
-                        <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">數據隱私與安全</h3>
+<h3 class="mb-3">數據隱私與安全</h3>
                     <p class="text-sm leading-relaxed">宣示不希望 AI 存取特定區域（如 UGC 或敏感資訊）。</p>
                 </div>
                 <div class="min-w-0 space-y-2">
-                    <div class="w-12 h-12 flex items-center justify-center font-semibold mb-6">
-                        <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">品牌與內容品質</h3>
+<h3 class="mb-3">品牌與內容品質</h3>
                     <p class="text-sm leading-relaxed">透過提供清楚的使用指南，降低 AI 錯誤引用或脫線解讀。</p>
                 </div>
                 <div class="min-w-0 space-y-2">
-                    <div class="w-12 h-12 flex items-center justify-center font-semibold mb-6">
-                        <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                            </path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">伺服器資源管理</h3>
+<h3 class="mb-3">伺服器資源管理</h3>
                     <p class="text-sm leading-relaxed">LLMs.txt 可作為一種調節與限制大規模 AI 爬取的方式。</p>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Section -->
-        <section class="border-t border-line pt-10">
+        <section>
             <div class="cover" data-cover>
-                <p class="eyebrow mb-3 font-sans">04</p>
-                <h2 class="mb-8">常見問題 (FAQ)</h2>
+                <p class="eyebrow mb-2 font-sans">04</p>
+                <h2>常見問題 (FAQ)</h2>
             </div>
             <div class="space-y-4">
                 <details class="group py-2 cursor-pointer">
@@ -267,10 +211,10 @@
         </section>
 
         <!-- CTA -->
-        <section class="mt-10 relative overflow-hidden">
+        <section>
             <div class="relative z-10">
                 <div class="cover" data-cover>
-                    <h2 class="mb-6">想要保護您的網站內容？</h2>
+                    <h2>想要保護您的網站內容？</h2>
                 </div>
                 <p class="mb-6 max-w-[42ch] text-lg">我們可以協助您配置最適合的 GEO 策略與 AI 協定檔案。</p>
 
@@ -282,6 +226,5 @@
             </div>
         </section>
     </div>
-</div>
 
 {% include"footer.html" %}

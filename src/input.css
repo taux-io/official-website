@@ -530,13 +530,21 @@
   .band {
     display: flex;
     flex-direction: column;
-    padding-block: 0 1rem;
+    padding-block: 0;
   }
 
+  /* The column's own space-y separates the hero from the first section, so
+     the band pads nothing below; a little air above the title from tablet up. */
   @media (min-width: 768px) {
     .band {
-      padding-block: 3rem;
+      padding-top: 2rem;
     }
+  }
+
+  /* Sub-headings open a group: a step of air above them that a paragraph's
+     own bottom margin does not give. A utility on the element still wins. */
+  :where(main h3, main h4) {
+    margin-top: 2rem;
   }
 
   /* A column flex container stretches its children, and the tag — an
