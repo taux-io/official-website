@@ -15,16 +15,16 @@
 }
 </script>
 
-<div class="relative pt-32 pb-24 px-6">
+<div class="relative pt-4 pb-0 px-6">
     <article class="max-w-4xl mx-auto relative z-10">
 
-        <header class="band mb-20">
-            <div class="tag mb-6">AI 技术观点</div>
-            <h1 class="mb-8">
-                <span class="display-lead">Model Context Protocol</span>
+        <header class="band mb-0">
+            <div class="tag mb-4">AI 技术观点</div>
+            <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">Model Context Protocol</span>
                 <span class="display-sub">MCP 是什么？一次搞懂它在解决什么问题</span>
             </h1>
-            <p class="text-lg max-w-prose leading-relaxed">
+            <p class="text-base tablet:text-lg max-w-prose leading-relaxed">
                 MCP 是一套<strong>通用接线标准</strong>，让 AI 应用程序能接上外部的数据与工具。这页用白话解释它的三个角色、它提供的三种东西，以及 2026 年这次改版把什么翻掉了。
             </p>
             <p class="font-sans text-eyebrow uppercase mt-8">
@@ -33,11 +33,11 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="what">01 — 一句话</h2>
+                <h2 class="eyebrow mb-3" id="what">01 — 一句话</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 MCP 让任何 AI 应用程序，用同一种方式接上任何数据来源。
             </p>
             <p class="max-w-prose leading-relaxed">
@@ -46,14 +46,14 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="why">02 — 为什么需要它</h2>
+                <h2 class="eyebrow mb-3" id="why">02 — 为什么需要它</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-8">
+            <p class="max-w-prose leading-relaxed mb-5">
                 假设有 4 个 AI 应用程序，和 5 个你想接上的东西：Google Drive、GitHub、数据库、Slack、公司内部 API。
             </p>
-            <div class="border border-line p-8 mb-8">
+            <div class="border border-line p-5 mb-6">
                 <div class="grid grid-cols-1 tablet:grid-cols-2 gap-8">
                     <div>
                         <p class="eyebrow mb-4">没有共通协议</p>
@@ -73,15 +73,15 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="roles">03 — 三个角色</h2>
+                <h2 class="eyebrow mb-3" id="roles">03 — 三个角色</h2>
             </div>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 MCP 里有三个角色。<strong>最多人搞混的是前两个</strong>——大家说「MCP client」的时候，心里想的通常是 Claude Desktop，但那是 host。
             </p>
 
-            <figure class="mb-10">
+            <figure class="mb-6">
               <div class="overflow-x-auto" tabindex="0">
                 <svg viewBox="0 0 720 300" class="h-auto w-full min-w-[680px]" role="img" aria-labelledby="arch-title" aria-describedby="arch-desc">
                     <title id="arch-title">MCP 的三个角色</title>
@@ -154,14 +154,14 @@
         </section>
 
         <!-- ④ 交互 --------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="primitives">04 — 服务器提供什么</h2>
+                <h2 class="eyebrow mb-3" id="primitives">04 — 服务器提供什么</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-4">
                 服务器提供三种东西。它们的差别<strong>不是</strong>「读 vs 写」——那是最常见的错误直觉。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 真正的差别是<strong>谁决定要不要用它</strong>。下面三个情境，每一个的答案都不一样：
             </p>
 
@@ -178,7 +178,7 @@
                     </button>
                 </div>
 
-                <section data-panel="resource" class="p-8">
+                <section data-panel="resource" class="">
                     <p class="eyebrow mb-4">答案：<strong>Resource</strong> — 由应用程序决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你把一份文档拖进对话，或是 host 判断「这个问题需要附上这个文档」——决定权在<strong>应用程序</strong>手上，不在模型手上。模型只是收到了那份内容。
@@ -188,7 +188,7 @@
                     </p>
                 </section>
 
-                <section data-panel="tool" class="p-8">
+                <section data-panel="tool" class="">
                     <p class="eyebrow mb-4">答案：<strong>Tool</strong> — 由模型决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你说「帮我把这个 bug 开成一张票」，模型自己判断要调用哪个功能、带什么参数。决定权在<strong>模型</strong>手上。
@@ -198,7 +198,7 @@
                     </p>
                 </section>
 
-                <section data-panel="prompt" class="p-8">
+                <section data-panel="prompt" class="">
                     <p class="eyebrow mb-4">答案：<strong>Prompt</strong> — 由用户决定</p>
                     <p class="leading-relaxed max-w-prose mb-4">
                         你从菜单挑一个「代码审查」，或打一个斜线指令。决定权在<strong>你</strong>手上——模型不会自己跑去用它。
@@ -215,9 +215,9 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="transport">05 — 它怎么传输</h2>
+                <h2 class="eyebrow mb-3" id="transport">05 — 它怎么传输</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 两种标准方式：<strong>stdio</strong>——服务器是一个子进程，透过标准输入输出沟通；与 <strong>Streamable HTTP</strong>——每则消息是一个 HTTP POST。<strong>这是「怎么传」的差别，不是「在哪里」的差别</strong>：一个跑在你自己机器上的服务器，一样可以讲 Streamable HTTP。
@@ -228,21 +228,21 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="whats-new">06 — 这一版变了什么</h2>
+                <h2 class="eyebrow mb-3" id="whats-new">06 — 这一版变了什么</h2>
             </div>
-            <p class="text-xl font-display mb-8 max-w-prose">
+            <p class="text-xl font-display mb-5 max-w-prose">
                 服务器现在什么都不记得。
             </p>
             <p class="max-w-prose leading-relaxed mb-6">
                 <span class="font-sans">2026-07-28</span> 是 MCP 问世以来最大的一次改版，而且是破坏性的。以前客户端要先跟服务器「握手」建立连接，之后双方记得彼此。<strong>现在没有握手、没有连接阶段</strong>——每一个请求都自己带着版本与身分，服务器处理完就忘记。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 方向也改了：<strong>服务器不会回头问你问题</strong>。它会回一个「我需要这个信息」然后结束这次请求，由客户端拿到答案后<strong>重新发一次</strong>。
             </p>
 
-            <div class="border-s border-line ps-6 mb-10">
+            <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-4">你在别处看到这些，代表那份数据已经过期</p>
                 <ul class="font-sans text-sm space-y-2">
                     <li>├─ <code>initialize</code> 握手</li>
@@ -255,7 +255,7 @@
             <p class="max-w-prose leading-relaxed mb-6">
                 第三项要讲清楚，因为它最容易被误读成「服务器再也不能要东西了」。<strong>消失的是「主动送出请求」这个机制，不是服务器提出要求的能力。</strong>以前服务器可以直接推一个请求过来；现在它只能在回应里说「我需要这个」然后结束，剩下的由客户端接手。
             </p>
-            <p class="max-w-prose leading-relaxed mb-10">
+            <p class="max-w-prose leading-relaxed mb-6">
                 所以那些「服务器向客户端要东西」的功能<strong>都还在，只是换了条路走</strong>——包括 <strong>Elicitation</strong>（跟用户要一项信息）与 <strong>Sampling</strong>（借用 host 的模型；方向与直觉相反，所以特别多人误解）。
             </p>
 
@@ -265,17 +265,17 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section class="mb-20">
+        <section class="mb-6">
             <div class="cover" data-cover>
-                <h2 class="eyebrow mb-6" id="version">07 — 本页对应哪一版</h2>
+                <h2 class="eyebrow mb-3" id="version">07 — 本页对应哪一版</h2>
             </div>
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP 的版号<strong>就是日期</strong>。它标示的是「最后一次做出破坏性变更的日子」，不是发布周期。所以你手上任何一份 MCP 数据，看它对应哪个日期就知道新不新——<strong>这是这页最值得你带走的一件事</strong>。
             </p>
-            <p class="font-sans text-sm mb-10">
+            <p class="font-sans text-sm mb-6">
                 2024-11-05 → 2025-03-26 → 2025-06-18 → 2025-11-25 → <span>2026-07-28</span>
             </p>
-            <div class="border border-line p-8">
+            <div class="border border-line p-5">
                 <p class="eyebrow mb-4">有时效的说法</p>
                 <ul class="text-sm space-y-3 leading-relaxed">
                     <li>上一节「这一版变了什么」只对 <span class="font-sans">2026-07-28</span> 成立。</li>

@@ -110,6 +110,7 @@ const CHECKS = {
   overflow: { enabled: true, turnedOnBy: "issue 151" },
   measure: { enabled: true, turnedOnBy: "#188 — the reading measure" },
   control: { enabled: true, turnedOnBy: "#185 — the ghost pill" },
+  "first-paragraph": { enabled: true, turnedOnBy: "v5.2 — the first sentence sat 1.6 screens down on every long-form route" },
   fold: { enabled: true, turnedOnBy: "the Gestalt pass — the CTA cleared a fold nothing measured" },
 };
 
@@ -333,6 +334,56 @@ function measureFoldInPage({ homePaths }) {
   ];
 }
 
+// THE FIRST PARAGRAPH IS ON THE FIRST SCREEN.
+//
+// A page that is nothing but sentences must show one before the reader
+// scrolls. Measured before this existed: on a 375×812 phone the first
+// paragraph of /what-is-mcp sat at y=1,324 and /geo-guide's at y=1,421 — a
+// full-screen hero holding a title, then a 96px cover, then the text. The
+// fold probe above asks this of the home page's button; this asks it of every
+// route's first paragraph, at the phone heights the fold probe already uses.
+// Ran against the old build first: 100 of 100 routes red, 812px screen.
+// ONE NAMED EXEMPTION: the slide deck. /claude-skills-guide is a run of
+// screen-height slides by design (its own stylesheet, DESIGN.md「沒有東西檢查
+// 的事」), and its first slide is a title card. Named by the class the deck
+// hangs its whole stylesheet on, not pattern-matched, so a second exemption
+// cannot arrive without being written here.
+const DECK_ROOT = ".skills-guide-body";
+
+function measureFirstParagraphInPage({ deckRoot }) {
+  window.scrollTo(0, 0);
+  if (document.querySelector(deckRoot)) return [];
+  // Body text, not the hero's own lead line: every long-form hero carries a
+  // one-sentence summary inside the band, and that sentence sat on the first
+  // screen while the article started 1.6 screens down. The band is chrome
+  // around the title; the first paragraph outside it is where reading begins.
+  // The band's FIRST paragraph is the summary; a second one in there is prose
+  // (the about page tells the τ story in its hero) and counts.
+  const inBand = new Set();
+  // Reading is a paragraph, a list item, a quote or a definition — not a
+  // heading, and not a label in a card.
+  // Own text, not descendants': a <div> that wraps a whole section has a
+  // huge textContent and no reading of its own; a <div> that holds a line of
+  // dialogue does. The prompt-injection page tells its story in such divs.
+  const own = (el) => [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent.trim()).join(" ").trim();
+  const p = [...document.querySelectorAll("main :is(p, li, blockquote, dd, td, figcaption, div)")].find((el) => {
+    if (own(el).length < 20 || el.getBoundingClientRect().height === 0) return false;
+    const band = el.closest(".band");
+    if (!band) return true;
+    if (inBand.has(band)) return true;
+    inBand.add(band);
+    return false;
+  });
+  // A page that IS its band — the home page, 404, /building — has nothing to
+  // scroll to and passes; the fold probe covers the home page's button.
+  if (!p) return [];
+  // "Starts on the first screen": the paragraph's first line is visible
+  // without scrolling. Not the whole paragraph — a long one may run past.
+  const top = p.getBoundingClientRect().top;
+  if (top < window.innerHeight) return [];
+  return [{ detail: `first paragraph starts ${Math.round(top)}px down a ${window.innerHeight}px screen — the reader scrolls ${(top / window.innerHeight).toFixed(1)} screens before the first sentence` }];
+}
+
 // The reading measure, taken at the widest viewport only.
 //
 // Container widths grow monotonically with the viewport, so the widest pass is
@@ -413,6 +464,14 @@ async function main() {
         settle: false,
       },
       {
+        name: "first-paragraph",
+        inPage: measureFirstParagraphInPage,
+        args: { deckRoot: DECK_ROOT },
+        viewports: PHONE_VIEWPORTS,
+        reload: true,
+        settle: false,
+      },
+      {
         name: "fold",
         inPage: measureFoldInPage,
         args: { homePaths: LOCALES.map((l) => `/${l.tag}`) },
@@ -451,6 +510,7 @@ async function main() {
   console.log(`${stats.paths} routes checked for a reading measure (${limits}; widest viewport only)`);
   const heights = PHONE_VIEWPORTS.map((v) => v.name).join(", ");
   console.log(`${LOCALES.length} home pages checked for a call to action on the first screen (${heights})`);
+  console.log(`${stats.paths} routes checked for a first paragraph on the first screen (${heights})`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
   // scope would report green on ground it never covered.

@@ -54,10 +54,10 @@
 </script>
 
 <!-- Hero -->
-<article class="relative pt-24 pb-20 px-6 overflow-hidden">
+<article class="relative pt-4 pb-0 px-6 overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
-        <header class="band mb-16">
-            <div class="tag mb-6">
+        <header class="band mb-0">
+            <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
                 AI Security Lab
             </div>
@@ -65,10 +65,10 @@
      because Chinese has no upper case; on an English page the lead IS the
      content. `heading structure` asks for `display-sub` only from non-Latin
      locales (decision #56). -->
-    <h1 class="mb-6">
-                <span class="display-lead">OWASP LLM Top 10</span>
+    <h1 class="mb-4">
+                <span class="display-lead text-display-sm tablet:text-display-md">OWASP LLM Top 10</span>
             </h1>
-            <p class="text-lg mb-8 max-w-prose">
+            <p class="text-base tablet:text-lg mb-5 max-w-prose">
                 Ten risks, each with its definition, real attack surface and defences — the first checklist to work against when auditing an AI deployment.
             </p>
         </header>
@@ -79,7 +79,7 @@
     </div>
 </article>
 
-<div class="py-24">
+<div class="pt-2 pb-4">
     <div class="max-w-prose mx-auto px-6 relative">
 
         <!-- Section index.
@@ -88,7 +88,7 @@
              to know where you are, not a widget that has to run before the page
              is navigable — with no script it still lists and still jumps.
 
-             Sits outside the space-y-32 stack rather than inside it: space-y
+             Sits outside the space-y-12 tablet:space-y-16 stack rather than inside it: space-y
              adds a top margin to every element after the first, and an absolute
              child still counts as an element, so putting it in the stack would
              push the whole page down by eight rem.
@@ -116,7 +116,7 @@
             </div>
         </nav>
 
-    <div class="space-y-32">
+    <div class="space-y-12 tablet:space-y-16">
 
         <!-- Version status.
 
@@ -125,9 +125,9 @@
              is that replacement: what it used to say — "2026 exists, we have
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
-        <section id="version-status" class="border-t border-line pt-16">
+        <section id="version-status" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">00</p>
+                <p class="eyebrow mb-3 font-sans">00</p>
                 <h2 class="mb-6">What changed from 2025 to 2026</h2>
             </div>
             <div class="border-s border-line ps-6 leading-relaxed">
@@ -195,9 +195,9 @@
      string, so the column printed every risk name twice — on the page in a
      tablet-width column, and in the Markdown twin on every row. Same reason
      the headings on this page carry no second half. Issue 282. -->
-<section id="overview" class="border-t border-line pt-16">
+<section id="overview" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">01</p>
+                <p class="eyebrow mb-3 font-sans">01</p>
                 <h2 class="mb-6">The ten at a glance</h2>
             </div>
             <div class="overflow-x-auto" tabindex="0">
@@ -210,44 +210,44 @@
                     </thead>
                     <tbody class="text-sm">
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM01</td>
-                            <td class="py-4 pe-4"><a href="#prompt-injection" class="font-semibold">Prompt Injection</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM01</td>
+                            <td class="py-3 pe-4"><a href="#prompt-injection" class="font-semibold">Prompt Injection</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM02</td>
-                            <td class="py-4 pe-4"><a href="#sensitive-information-disclosure" class="font-semibold">Sensitive Information Disclosure</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM02</td>
+                            <td class="py-3 pe-4"><a href="#sensitive-information-disclosure" class="font-semibold">Sensitive Information Disclosure</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM03</td>
-                            <td class="py-4 pe-4"><a href="#excessive-agency" class="font-semibold">Excessive Agency</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM03</td>
+                            <td class="py-3 pe-4"><a href="#excessive-agency" class="font-semibold">Excessive Agency</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM04</td>
-                            <td class="py-4 pe-4"><a href="#supply-chain" class="font-semibold">Supply Chain</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM04</td>
+                            <td class="py-3 pe-4"><a href="#supply-chain" class="font-semibold">Supply Chain</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM05</td>
-                            <td class="py-4 pe-4"><a href="#data-and-model-poisoning" class="font-semibold">Data and Model Poisoning</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM05</td>
+                            <td class="py-3 pe-4"><a href="#data-and-model-poisoning" class="font-semibold">Data and Model Poisoning</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM06</td>
-                            <td class="py-4 pe-4"><a href="#unbounded-consumption" class="font-semibold">Unbounded Consumption</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM06</td>
+                            <td class="py-3 pe-4"><a href="#unbounded-consumption" class="font-semibold">Unbounded Consumption</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM07</td>
-                            <td class="py-4 pe-4"><a href="#misinformation" class="font-semibold">Misinformation</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM07</td>
+                            <td class="py-3 pe-4"><a href="#misinformation" class="font-semibold">Misinformation</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM08</td>
-                            <td class="py-4 pe-4"><a href="#hidden-context-exposure" class="font-semibold">Hidden Context Exposure</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM08</td>
+                            <td class="py-3 pe-4"><a href="#hidden-context-exposure" class="font-semibold">Hidden Context Exposure</a></td>
                         </tr>
                         <tr class="border-b border-line">
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM09</td>
-                            <td class="py-4 pe-4"><a href="#vector-and-embedding-weaknesses" class="font-semibold">Vector and Embedding Weaknesses</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM09</td>
+                            <td class="py-3 pe-4"><a href="#vector-and-embedding-weaknesses" class="font-semibold">Vector and Embedding Weaknesses</a></td>
                         </tr>
                         <tr>
-                            <td class="py-4 pe-4 font-sans font-semibold">LLM10</td>
-                            <td class="py-4 pe-4"><a href="#improper-output-handling" class="font-semibold">Improper Output Handling</a></td>
+                            <td class="py-3 pe-4 font-sans font-semibold">LLM10</td>
+                            <td class="py-3 pe-4"><a href="#improper-output-handling" class="font-semibold">Improper Output Handling</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -258,9 +258,9 @@
              prompt injection out in full here would put it in direct
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
-        <section id="prompt-injection" class="border-t border-line pt-16">
+        <section id="prompt-injection" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM01</p>
+                <p class="eyebrow mb-3 font-sans">LLM01</p>
                 <h2 class="mb-6">Prompt Injection</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -293,9 +293,9 @@
             </div>
         </section>
 
-        <section id="sensitive-information-disclosure" class="border-t border-line pt-16">
+        <section id="sensitive-information-disclosure" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM02</p>
+                <p class="eyebrow mb-3 font-sans">LLM02</p>
                 <h2 class="mb-6">Sensitive Information Disclosure</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -324,9 +324,9 @@
             </div>
         </section>
 
-        <section id="excessive-agency" class="border-t border-line pt-16">
+        <section id="excessive-agency" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM03</p>
+                <p class="eyebrow mb-3 font-sans">LLM03</p>
                 <h2 class="mb-6">Excessive Agency</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -359,9 +359,9 @@
             </div>
         </section>
 
-        <section id="supply-chain" class="border-t border-line pt-16">
+        <section id="supply-chain" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM04</p>
+                <p class="eyebrow mb-3 font-sans">LLM04</p>
                 <h2 class="mb-6">Supply Chain</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -388,9 +388,9 @@
             </div>
         </section>
 
-        <section id="data-and-model-poisoning" class="border-t border-line pt-16">
+        <section id="data-and-model-poisoning" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM05</p>
+                <p class="eyebrow mb-3 font-sans">LLM05</p>
                 <h2 class="mb-6">Data and Model Poisoning</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -419,9 +419,9 @@
             </div>
         </section>
 
-        <section id="unbounded-consumption" class="border-t border-line pt-16">
+        <section id="unbounded-consumption" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM06</p>
+                <p class="eyebrow mb-3 font-sans">LLM06</p>
                 <h2 class="mb-6">Unbounded Consumption</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -452,9 +452,9 @@
             </div>
         </section>
 
-        <section id="misinformation" class="border-t border-line pt-16">
+        <section id="misinformation" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM07</p>
+                <p class="eyebrow mb-3 font-sans">LLM07</p>
                 <h2 class="mb-6">Misinformation</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -485,9 +485,9 @@
             </div>
         </section>
 
-        <section id="hidden-context-exposure" class="border-t border-line pt-16">
+        <section id="hidden-context-exposure" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM08</p>
+                <p class="eyebrow mb-3 font-sans">LLM08</p>
                 <h2 class="mb-6">Hidden Context Exposure</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -520,9 +520,9 @@
             </div>
         </section>
 
-        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-16">
+        <section id="vector-and-embedding-weaknesses" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM09</p>
+                <p class="eyebrow mb-3 font-sans">LLM09</p>
                 <h2 class="mb-6">Vector and Embedding Weaknesses</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -551,9 +551,9 @@
             </div>
         </section>
 
-        <section id="improper-output-handling" class="border-t border-line pt-16">
+        <section id="improper-output-handling" class="border-t border-line pt-10">
             <div class="cover" data-cover>
-                <p class="eyebrow mb-8 font-sans">LLM10</p>
+                <p class="eyebrow mb-3 font-sans">LLM10</p>
                 <h2 class="mb-6">Improper Output Handling</h2>
             </div>
             <div class="space-y-6 leading-relaxed">
@@ -587,8 +587,8 @@
         </section>
 
         <!-- Source -->
-        <section id="source" class="border-t border-line pt-16">
-            <p class="eyebrow mb-8 font-sans">Source</p>
+        <section id="source" class="border-t border-line pt-10">
+            <p class="eyebrow mb-3 font-sans">Source</p>
             <p class="leading-relaxed">
                 The names, order and scope of the ten are taken from the OWASP GenAI Security Project's
                 <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>
@@ -598,11 +598,11 @@
         </section>
 
         <!-- CTA -->
-        <section class="border-t border-line pt-16">
+        <section class="border-t border-line pt-10">
             <div class="cover" data-cover>
                 <h2 class="mb-6">Not sure your LLM application holds up?</h2>
             </div>
-            <p class="mb-10 max-w-[42ch] text-lg">
+            <p class="mb-6 max-w-[42ch] text-lg">
                 TauX Security Lab runs LLM security assessments and red-team exercises, working through your system against each of these ten.
             </p>
             <div class="flex flex-col mobile:flex-row gap-4">

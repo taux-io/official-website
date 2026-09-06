@@ -280,7 +280,9 @@ function ruleNoLiteralColour(files) {
 // where which padding won depended on the order of the generated CSS rather
 // than on anything an author wrote.
 function ruleSectionGapScale(files) {
-  const ALLOWED = new Set(["pt-16", "pt-12"]);
+  // pt-10 / pt-8 since v5.2 (decision #141): with the cover's own 96px gone,
+  // 40px is the whole gap between a section rule and its heading, 32 nested.
+  const ALLOWED = new Set(["pt-10", "pt-8"]);
   const found = [];
   for (const { rel, html } of files) {
     for (const m of html.matchAll(/<section\b([^>]*)>/g)) {
@@ -326,7 +328,7 @@ function ruleSectionGapScale(files) {
           found.push({
             file: rel,
             line: lineOf(html, m.index),
-            detail: `${values[0]}${where} after a section rule — the scale is pt-16 top-level, pt-12 nested, or none when a cover supplies the gap`,
+            detail: `${values[0]}${where} after a section rule — the scale is pt-10 top-level, pt-8 nested, or none when a cover supplies the gap`,
           });
         }
       }
@@ -2058,7 +2060,7 @@ const RULES = [
     enabled: true,
     turnedOnBy: "the Gestalt pass — proximity finally has a written ratio",
     run: ruleSectionGapScale,
-    summary: "the gap after a section rule is pt-16, pt-12, or a cover's own 96px",
+    summary: "the gap after a section rule is pt-10 top-level or pt-8 nested; the cover adds none",
   },
   {
     name: "surface is painted once",

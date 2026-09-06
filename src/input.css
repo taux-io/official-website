@@ -306,12 +306,16 @@
     text-wrap: balance;
   }
 
+  /* One step smaller on a phone: h2 24, h3 21 under 768px; 34 and 24 from
+     tablet up. A 34px CJK heading on a 327px column is four or five characters
+     a line (decision #142). The h1 lead follows the same idea in the templates
+     (34 → 40 on long-form pages; the home page keeps 40 → 64). */
   h2 {
-    @apply text-display-sm;
+    @apply text-xl tablet:text-display-sm;
   }
 
   h3 {
-    @apply text-xl;
+    @apply text-lg tablet:text-xl;
   }
 
   h4 {
@@ -505,16 +509,41 @@
      The `section cover screens` rule still holds — it checks that every h2 opens
      one of these. What went with the change is geometry's `cover` probe, which
      asserted the height. */
+  /* NO PADDING OF ITS OWN ANY MORE. 96px above and below every section
+     heading, on top of the section's own pt-16 and the 128px between sections,
+     put 289–353px of paper between the last line of one section and the next
+     heading — measured on a 375px phone (decision #141). The section's pt-*
+     is the gap; the cover only keeps the heading and its eyebrow together. */
   .cover {
-    padding-block: 6rem;
+    padding-top: 0;
+    padding-bottom: 1rem;
   }
 
+  /* A BAND IS NOT A SCREEN. It was `min-height: 100svh` with the content
+     centred: on a 375×812 phone the hero was exactly 812px tall, the h1 sat
+     at y=417 and the first paragraph at y=1,324 — the reader scrolled 1.6
+     screens to reach the first sentence of a page that is nothing but
+     sentences. Decision #44 removed fifteen 86vh blocks for this reason;
+     #53/#54 brought one back per page as "the pause before the section".
+     There is no imagery to pause for (decision #141). Content height, with
+     the rhythm carried by padding: 40px on a phone, 64px from tablet up. */
   .band {
-    min-height: 100vh;
-    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding-block: 0.5rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .band {
+      padding-block: 3rem;
+    }
+  }
+
+  /* A column flex container stretches its children, and the tag — an
+     inline-flex pill — stretched to the full column: 327px on a phone, 896px
+     on a desktop, for a label four characters long. */
+  .band > .tag {
+    align-self: flex-start;
   }
 
   /* A BAND IS A FLEX CONTAINER, AND THE CROSS AXIS DOES NOT SHRINK.

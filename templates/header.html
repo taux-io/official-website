@@ -326,5 +326,9 @@
          it" — both halves now false: the nav is opaque, and painting the
          surface onto something that already sits on it was the invisible
          no-op the `surface is painted once` rule was written for. -->
-    <main id="main" class="pt-16 min-h-screen relative overflow-x-clip">
+    <!-- NO min-h-screen. It held the footer a full viewport down on every
+         short page: the home page's hero ends at y=495 on a 375×812 phone and
+         the footer could not start before 812, so 317px of paper sat between
+         them for no reason but the rule (decision 141 — written without the hash: rule 1 reads three hex digits after one as a colour). -->
+    <main id="main" class="pt-16 relative overflow-x-clip">
         

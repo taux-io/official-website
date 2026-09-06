@@ -124,8 +124,12 @@ module.exports = {
         button: ["1.0625rem", { lineHeight: "1.2", letterSpacing: "-0.022em", fontWeight: "600" }],
         // Body is 17px and the leading floor is 1.47. The editorial leading is
         // part of the brand — DESIGN.md forbids going below it.
-        base: ["1.0625rem", { lineHeight: "1.47", letterSpacing: "-0.022em" }],
-        lg: ["1.3125rem", { lineHeight: "1.48", letterSpacing: "0.011em" }],
+        // 1.6, NOT 1.47. The Apple ladder's 1.47 is drawn for Latin; 17px CJK
+        // fills its em box and reads tighter than the same number in Latin.
+        // better-typography gives body copy 1.5–1.6; DESIGN.md sets 1.47 as a
+        // FLOOR, not a value. Raised for the phone (decision #143).
+        base: ["1.0625rem", { lineHeight: "1.6", letterSpacing: "-0.022em" }],
+        lg: ["1.3125rem", { lineHeight: "1.5", letterSpacing: "0.011em" }],
         xl: ["1.5rem", { lineHeight: "1.4", letterSpacing: "0" }],
         "display-sm": ["2.125rem", { lineHeight: "1.18", letterSpacing: "-0.011em", fontWeight: "600" }],
         "display-md": ["2.5rem", { lineHeight: "1.1", letterSpacing: "0", fontWeight: "600" }],
