@@ -325,6 +325,18 @@
     font-weight: 600;
   }
 
+  /* `text-align: start` ON A TABLE DOES NOT REACH ITS <th>. Chromium's UA
+     sheet gives th `text-align: -internal-center`, which inherits when the
+     parent's alignment is anything but `start` and centres when it IS `start`
+     — the initial value and, since the logical migration, the declared one.
+     So swapping `text-left` for `text-start` re-centred every column heading
+     on 27 tables while every gate stayed green; the screenshot diff is what
+     saw it (decision #139). `inherit` makes the heading follow the table in
+     both directions, which is what `text-start` on the table meant. */
+  th {
+    text-align: inherit;
+  }
+
   /* Digits share a width inside a table, so a column of figures lines up and a
      value that changes does not shift its neighbours (better-typography). */
   table {
