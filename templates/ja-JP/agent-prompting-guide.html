@@ -25,7 +25,7 @@
         </h1>
             <p class="text-lg mb-8 max-w-prose">プロンプト設計の実践ガイド</p>
 
-            <div class="border-t border-line pt-6 p-8 border-l border-line text-left">
+            <div class="border-t border-line pt-6 p-8 border-s border-line text-start">
                 <h3 class="mb-2">はじめに：なぜ AI は、こちらの意図を外すのか</h3>
                 <p class="mb-4">
                     AI の頭が悪いわけではありません。こちらの「頼み方」がはっきりしていないだけです。プロンプト設計は、普通の言葉でプログラムを書くようなものです。
@@ -69,12 +69,12 @@
                 基礎（Prompting 101）
             </h2>
             </div>
-            <p class="mb-8 ml-16">向いている場面：文章を書く、資料を読む、一問一答、情報の抽出。</p>
+            <p class="mb-8 ms-16">向いている場面：文章を書く、資料を読む、一問一答、情報の抽出。</p>
 
-            <div class="space-y-10 ml-4 tablet:ml-16">
+            <div class="space-y-10 ms-4 tablet:ms-16">
                 <!-- Point 1 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">1. 立場と課題を渡す（Context &amp; Role）</h3>
                     <p class="mb-3">一文を投げるのではなく、演出家のように役を決めます。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
@@ -90,24 +90,24 @@
                         </span>
                     </div>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 交通事故の報告書だと言わなければ、スキーの事故だと受け取られることもあります。立場をはっきり書けば、推測で埋められずに済みます。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 交通事故の報告書だと言わなければ、スキーの事故だと受け取られることもあります。立場をはっきり書けば、推測で埋められずに済みます。
                     </p>
                 </div>
 
                 <!-- Point 2 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">2. 手元に置く資料を渡す（Background Data）</h3>
                     <p class="mb-3">変わらない情報（定型の書式、規程など）は先頭に置きます（システムプロンプト）。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>なぜか。</strong> 形式を毎回覚え直させず、中身に集中させるためです。インターンに就業マニュアルを渡すのと同じです。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>コツ。</strong> XML タグを使います（<code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;中身&lt;/form&gt;</code> のように）。構造のあるデータのほうがよく通ります。</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>なぜか。</strong> 形式を毎回覚え直させず、中身に集中させるためです。インターンに就業マニュアルを渡すのと同じです。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>コツ。</strong> XML タグを使います（<code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;form&gt;中身&lt;/form&gt;</code> のように）。構造のあるデータのほうがよく通ります。</li>
                     </ul>
                 </div>
 
                 <!-- Point 3 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">3. 手順で指示する（Step-by-Step Instructions）</h3>
                     <p class="mb-3">結果だけを求めず、過程を決めます。人が考える順番を、そのまま書いて渡します。</p>
                     <div class="border-t border-line pt-6 p-5 text-sm mb-3">
@@ -115,17 +115,17 @@
                         <span>「手順 1：書式のチェック欄を見る。手順 2：現場の図を読む。手順 3：結論を出す。」</span>
                     </div>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 考えた筋道を書かせる（show its work）だけで、正確さははっきり上がります。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> 考えた筋道を書かせる（show its work）だけで、正確さははっきり上がります。
                     </p>
                 </div>
 
                 <!-- Point 4 -->
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">4. 出力の形を決める（Output Formatting）</h3>
                     <p class="mb-3">「JSON で返してください」「結論は <code class="bg-ink/5 font-semibold font-sans px-1 py-0.5">&lt;verdict&gt;</code> タグで囲んでください」と書きます。</p>
                     <p class="text-sm flex items-start">
-                        <span class="mr-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> そのままプログラムで取り出せます。人が写して貼る手間が消えます。
+                        <span class="me-2 font-semibold"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> そのままプログラムで取り出せます。人が写して貼る手間が消えます。
                     </p>
                 </div>
             </div>
@@ -139,11 +139,11 @@
                 エージェント向け（Prompting for Agents）
             </h2>
             </div>
-            <p class="mb-8 ml-16">向いている場面：ツールを使う、検索する、コードを書く、手数の多い仕事。</p>
+            <p class="mb-8 ms-16">向いている場面：ツールを使う、検索する、コードを書く、手数の多い仕事。</p>
 
-            <div class="space-y-10 ml-4 tablet:ml-16">
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+            <div class="space-y-10 ms-4 tablet:ms-16">
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">1. エージェントとは何か</h3>
                     <p>基礎編の AI は「答える機械」です。エージェントは「自分で動く担当者」で、ループの中で働きます。<br>
                         <span class="inline-block mt-2 font-semibold px-3 py-1 text-sm border border-line">ツールを使う → 結果を見る → 次を考える → またツールを使う</span><br>
@@ -151,44 +151,44 @@
                     </p>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">2. どんなときに使うか</h3>
                     <p class="mb-3">何にでも使うものではありません。込み入っていて、進む道筋が決まっていない仕事に向いています。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
+                    <ul class="list-none space-y-2 ms-2 text-sm">
                         <li class="flex items-start">
-                            <span class="mr-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
+                            <span class="me-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span>
                             <strong>向いている：</strong>市場調査。何回検索すれば答えに届くか、始める前にはわかりません。
                         </li>
                         <li class="flex items-start">
-                            <span class="mr-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
+                            <span class="me-2"><svg aria-hidden="true" focusable="false" class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></span>
                             <strong>向いていない：</strong>手順が確定している定型業務や、単純な仕事。
                         </li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">3. こつ：エージェントの側に立って考える</h3>
                     <p class="mb-3">自分に聞いてみてください。「新人の自分がこの道具一式を渡されて、途方に暮れないだろうか」。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>ツールははっきりさせる。</strong>名前は短く正確に。役割が重ならないように。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>台本ではなく原則を渡す。</strong>たとえば「簡単な問いなら 5 回、込み入っていれば 10 回まで検索する」「答えが出たらそこで止める」。</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>ツールははっきりさせる。</strong>名前は短く正確に。役割が重ならないように。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>台本ではなく原則を渡す。</strong>たとえば「簡単な問いなら 5 回、込み入っていれば 10 回まで検索する」「答えが出たらそこで止める」。</li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">4. 動く前に考えさせる（Plan &amp; Guide Thinking）</h3>
                     <p class="mb-3">いまのモデルは、動きながら考えられます。</p>
-                    <ul class="list-none space-y-2 ml-2 text-sm">
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>書き方。</strong>ツールを呼ぶ前に計画させます。「どの語で検索するか。どの情報源を当たるか」。</li>
-                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full mr-3 mt-1.5"></span><strong>点検のしくみ。</strong>結果が返ったら評価させます。「この情報は信用できるか。裏を取る必要があるか」。</li>
+                    <ul class="list-none space-y-2 ms-2 text-sm">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>書き方。</strong>ツールを呼ぶ前に計画させます。「どの語で検索するか。どの情報源を当たるか」。</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 bg-ink rounded-full me-3 mt-1.5"></span><strong>点検のしくみ。</strong>結果が返ったら評価させます。「この情報は信用できるか。裏を取る必要があるか」。</li>
                     </ul>
                 </div>
 
-                <div class="relative pl-6 border-l border-line">
-                    <div class="absolute -left-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
+                <div class="relative ps-6 border-s border-line">
+                    <div class="absolute -start-[4px] top-2 w-2 h-2 rounded-full bg-ink"></div>
                     <h3 class="mb-2">5. どう確かめるか（Evaluation）</h3>
                     <p>小さく始めます。いくつかの事例を手で試し、ログを見ます。<br>
                         どのツールを呼んだか。同じところを回っていないか。最終的な答えだけを見るより、指示を直す手がかりがずっと多く取れます。</p>
@@ -201,10 +201,10 @@
             <h3 class="mb-6">あわせて読む</h3>
             <div class="flex flex-wrap gap-3">
                 <a href="/{{ locale }}/geo-guide" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
-                    GEO 入門ガイド <span class="ml-2">→</span>
+                    GEO 入門ガイド <span class="ms-2">→</span>
                 </a>
                 <a href="/{{ locale }}/what-is-llms-txt" class="inline-flex items-center px-4 py-2 border border-line text-sm hover:underline hover:underline-offset-4">
-                    llms.txt とは何か <span class="ml-2">→</span>
+                    llms.txt とは何か <span class="ms-2">→</span>
                 </a>
             </div>
         </section>

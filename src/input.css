@@ -670,9 +670,11 @@
   /* Pull quote: a hairline rule rather than a coloured bar, no quotation
      glyph, no fill. Left upright — italic on CJK is not italic, it is the
      browser shearing an upright glyph. */
+  /* Logical, not physical (better-layout): the rule sits on the leading edge
+     and mirrors under dir="rtl" without a second declaration. */
   .quote {
-    @apply relative pl-6 my-8;
-    border-left: 1px solid var(--line);
+    @apply relative ps-6 my-8;
+    border-inline-start: 1px solid var(--line);
   }
 
   .quote p {
@@ -722,7 +724,11 @@
 
   .nav-link::after {
     content: '';
-    @apply absolute left-0 -bottom-1 w-full h-px bg-ink scale-x-0 origin-right transition-transform duration-300;
+    /* start-0 is logical; the transform origin stays physical because
+       `transform-origin` has no logical keywords — the underline grows from
+       the right and lands on the left in every direction, and that is a
+       gesture-like animation better-layout leaves physical. */
+    @apply absolute start-0 -bottom-1 w-full h-px bg-ink scale-x-0 origin-right transition-transform duration-300;
   }
 
   .nav-link[aria-expanded="true"]::after {
@@ -905,7 +911,7 @@
      Thirteen entries at 44px is 572px, inside the 900px viewport the walk uses
      once the sticky offset is paid. */
   .section-index-link {
-    @apply flex items-center border-l border-line pl-3 text-sm text-ink
+    @apply flex items-center border-s border-line ps-3 text-sm text-ink
            transition-colors duration-200;
     min-height: 44px;
   }
@@ -1000,6 +1006,34 @@
 }
 
 @layer utilities {
+  /* THE LOGICAL UTILITIES TAILWIND 3.4 DOES NOT SHIP. It has ms/me, ps/pe,
+     start/end and rounded-s/e, and `border-s`/`border-e` for COLOUR — but no
+     logical border WIDTH and no `text-start`. The migration to logical
+     properties (better-layout; decision #139) needs all four, so they are
+     declared here in the utilities layer, where Tailwind gives them variants
+     (`tablet:border-e`) like any of its own. Measured before writing: a build
+     with `@apply origin-end` and templates carrying `border-s` failed outright,
+     and check:classes reported exactly these names. */
+  .text-start {
+    text-align: start;
+  }
+
+  .text-end {
+    text-align: end;
+  }
+
+  .border-s {
+    border-inline-start-width: 1px;
+  }
+
+  .border-s-2 {
+    border-inline-start-width: 2px;
+  }
+
+  .border-e {
+    border-inline-end-width: 1px;
+  }
+
   /* Disclosure rows sit directly on the surface; the hairline above each one
      is the only separator. The `transition-colors` that stood here transitioned
      nothing — no colour on a row ever changes — and better-ui asks that only
