@@ -25,12 +25,11 @@ const fs = require("node:fs");
 const path = require("node:path");
 const OpenCC = require("opencc-js");
 const { TERMS, PROPER_NOUNS } = require("./hans-terms");
-const { PAGES } = require("./routes");
+const { PAGES, CANONICAL_LOCALE } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const FROM = path.join(ROOT, "templates");
 const TO = path.join(FROM, "zh-Hans-CN");
-const CANONICAL_LOCALE = "zh-Hant-TW";
 
 // `tw` → `cn`, NOT `twp` → `cn`. The `p` is the phrase dictionary, and the
 // phrases are the half this repo decides for itself.

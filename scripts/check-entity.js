@@ -27,17 +27,14 @@
 
 const fs = require("fs");
 const path = require("path");
-const { PAGES, DOCUMENTS, LOCALES } = require("./routes");
+// ORIGIN and CANONICAL_LOCALE (the language the error document speaks) come
+// from routes.js, which mirrors the generator's constants; they were restated
+// here and in three other scripts.
+const { PAGES, DOCUMENTS, LOCALES, ORIGIN, CANONICAL_LOCALE } = require("./routes");
 const { jsonLdBlocks } = require("./lib/html");
-
-// The language the error document speaks. Same constant, same reason, as the
-// generator's: one file answers every unmatched path, chosen before the host
-// knows anything about the reader.
-const CANONICAL_LOCALE = "zh-Hant-TW";
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
-const ORIGIN = "https://taux.io";
 
 const TITLE = /<title>([\s\S]*?)<\/title>/;
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;

@@ -13,6 +13,7 @@
 // of an older palette measures against its own ground.
 const fs = require("fs");
 const path = require("path");
+const { walk } = require("../lib/fs");
 const sharp = require("sharp");
 
 const label = process.argv[2];
@@ -22,18 +23,10 @@ if (!label) {
 }
 const root = path.join(__dirname, "..", "..", ".visual", label);
 
-function walk(dir, out = []) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out);
-    else if (e.name.endsWith(".png")) out.push(p);
-  }
-  return out;
-}
 
 (async () => {
   const rows = [];
-  for (const file of walk(root).sort()) {
+  for (const file of walk(root, ".png")) {
     const { data, info } = await sharp(file).raw().toBuffer({ resolveWithObject: true });
     const { width: w, height: h, channels: c } = info;
     const paper = [data[0], data[1], data[2]];

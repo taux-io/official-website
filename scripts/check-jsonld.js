@@ -18,6 +18,7 @@
 const fs = require("fs");
 const path = require("path");
 const { jsonLdBlocks } = require("./lib/html");
+const { walk } = require("./lib/fs");
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
@@ -86,14 +87,6 @@ function duplicateKeys(text) {
   return found;
 }
 
-function walk(dir, out = []) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(p, out);
-    else if (entry.name.endsWith(".html")) out.push(p);
-  }
-  return out;
-}
 
 function main() {
   if (!fs.existsSync(DIST)) {
@@ -104,7 +97,7 @@ function main() {
   const problems = [];
   let blocks = 0;
 
-  for (const file of walk(DIST)) {
+  for (const file of walk(DIST, ".html")) {
     const html = fs.readFileSync(file, "utf8");
     const rel = path.relative(ROOT, file);
     for (const body of jsonLdBlocks(html, rel)) {
