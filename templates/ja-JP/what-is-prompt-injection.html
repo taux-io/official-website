@@ -33,7 +33,7 @@
                 AI Security
             </div>
             <h1 class="mb-4">
-            <span class="display-lead text-display-sm tablet:text-display-md">What is Prompt Injection</span>
+            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">What is Prompt Injection</span>
             <span class="display-sub">LLM アプリが受け継ぐ欠陥</span>
         </h1>
 
@@ -147,7 +147,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         1</div>
                     <div>
-                        <h4 class="mb-2">入口：隔離してふるいにかける</h4>
+                        <h3 class="mb-2">入口：隔離してふるいにかける</h3>
                         <p class="text-sm leading-relaxed">利用者の入力を記号で包みます（XML タグの <code class="bg-ink/5 font-semibold px-1.5 py-0.5 font-sans text-xs mx-1">&lt;user_input&gt;</code> など）。これは信用できない外部のデータだと、はっきり伝えるためです。
                         </p>
                     </div>
@@ -157,7 +157,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         2</div>
                     <div>
-                        <h4 class="mb-2">モデル側：前後で挟む</h4>
+                        <h3 class="mb-2">モデル側：前後で挟む</h3>
                         <p class="text-sm leading-relaxed">利用者の入力の前と後ろの両方に、安全上の決まりを置き直します。中心となる指示を保たせ、割り込んできた指示を上書きするためです。
                         </p>
                     </div>
@@ -167,7 +167,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         3</div>
                     <div>
-                        <h4 class="mb-2">見張り役：別のモデルに審査させる</h4>
+                        <h3 class="mb-2">見張り役：別のモデルに審査させる</h3>
                         <p class="text-sm leading-relaxed">安全の判断だけを担う別のモデルを横に置き、最終的な出力に機微な情報や危険なコードが混じっていないかを見させます。</p>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
                 </div>
                 <p class="mb-6 max-w-[42ch] text-lg">TauX では LLM のセキュリティ検査とレッドチーム演習を行い、抜け道を洗い出します。</p>
 
-                <div class="flex flex-col mobile:flex-row justify-center gap-4">
+                <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="mailto:hello@taux.io" class="btn">
                         セキュリティ相談を予約する
                     </a>

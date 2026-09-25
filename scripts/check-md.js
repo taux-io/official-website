@@ -74,8 +74,9 @@ const STRUCTURAL_RE = new RegExp(`</?(?:${STRUCTURAL.join("|")})[\\s>/]`, "i");
 
 // A link target this file is willing to see. `https://` because every internal
 // link is rewritten absolute at build time — a root-relative one survives being
-// copied elsewhere as a link to nothing — and `mailto:` because seventy of them
-// are the contact address and are absolute already.
+// copied elsewhere as a link to nothing — and `mailto:` and `tel:` because they
+// are the contact address and phone number and are absolute already (a `tel:`
+// URI carries the full international number, so it resolves anywhere).
 const LINK_RE = /\]\(([^)\s]+)/g;
 
 // The separator that keeps a bilingual heading readable.
@@ -342,7 +343,7 @@ function main() {
     // 6 — every link is absolute.
     checked++;
     for (const [, target] of body.matchAll(LINK_RE)) {
-      if (!target.startsWith("https://") && !target.startsWith("mailto:")) {
+      if (!/^(https:\/\/|mailto:|tel:\+)/.test(target)) {
         fail(rel, "relative link", `${target} — dies the moment this file is copied elsewhere`);
         break;
       }
