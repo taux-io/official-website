@@ -21,6 +21,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { jsonLdBlocks } = require("./lib/html");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -77,10 +78,8 @@ function runs(html) {
   // Text nodes. `[^<]` by construction, so no bracket test is needed or wanted.
   for (const m of body.matchAll(/>([^<]*)</g)) if (HAN.test(m[1])) add(m[1]);
   // JSON-LD only. Escaped quotes stay part of the value rather than ending it.
-  for (const block of body.matchAll(
-    /<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g
-  )) {
-    for (const m of block[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)) if (HAN.test(m[1])) add(m[1]);
+  for (const block of jsonLdBlocks(body)) {
+    for (const m of block.matchAll(/"((?:[^"\\]|\\.)*)"/g)) if (HAN.test(m[1])) add(m[1]);
   }
   // ATTRIBUTE VALUES, WHICH NO TEXT-NODE SCAN CAN EVER REACH.
   //

@@ -23,8 +23,10 @@ const path = require("path");
 const { chromium } = require("playwright");
 
 const ROOT = path.join(__dirname, "..", "..");
-// The dark mark on transparency — correct for a light surface.
-const SOURCE = path.join(ROOT, "static", "taux-logo-light.png");
+// The dark mark on transparency — correct for a light surface. A source, not
+// an asset: it lives outside static/ because nothing on the site links it, and
+// copy_tree publishes everything under static/.
+const SOURCE = path.join(ROOT, "brand-src", "taux-logo-light.png");
 const OUT = path.join(ROOT, "static", "brand", "logo-on-light.png");
 
 // Google asks for at least 112px on a side and prefers generous resolution.

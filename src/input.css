@@ -98,8 +98,6 @@
 
   --surface: rgb(var(--surface-rgb));
   --ink: rgb(var(--ink-rgb));
-  --ink-86: rgb(var(--ink-86-rgb));
-  --ink-72: rgb(var(--ink-72-rgb));
   --on-primary: rgb(var(--on-primary-rgb));
   --primary: rgb(var(--primary-rgb));
   --line: rgb(var(--line-rgb));
@@ -1109,20 +1107,6 @@
      asked for. check-design.js now fails on any element that starts
      transparent and waits for something else to reveal it. */
 
-  /* Tau-Pulse keyframe for dynamic rings */
-  @keyframes tau-pulse {
-    0% {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    100% {
-      transform: scale(1.4);
-      opacity: 0;
-    }
-  }
 }
 /* ===========================================================================
    User preferences. Three independent signals, none of which had a CSS

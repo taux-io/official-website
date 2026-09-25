@@ -123,12 +123,11 @@ const servedPath = (canonical) => canonical.replace(ORIGIN, "") || "/";
 //   url  — what a visitor or crawler asks for. `/zh-Hant-TW/geo-guide`.
 //   file — where it lands in dist/. `zh-Hant-TW/geo-guide.html`.
 //
-// `file` mirrors Page::output_path in the generator, including the locale home
+// `file` mirrors Page::relative_output in the generator, including the locale home
 // being a flat `<locale>.html` rather than a directory index — measured against
 // the host, see that function's comment for the two layouts and their hops.
 const localeFile = (route, tag) => {
   if (route.path === "/") return `${tag}.html`;
-  if (route.path.endsWith(".html")) return route.path.replace(/^\//, "");
   return `${tag}/${route.path.replace(/^\//, "")}.html`;
 };
 

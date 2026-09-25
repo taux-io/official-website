@@ -360,19 +360,19 @@ date_modified = "2026-08-09"
   [page.locale.ja-JP]
   template    = "ja-JP/index.html"
   title       = "TauX 拓思科技｜AI を、会社が本当に使える力に｜GEO 生成エンジン最適化"
-  description = "TauX は AI を、一度きりのデモではなく企業が実際に運用できるシステムに変えます。GEO、ソフトウェア開発、ショート動画、AI の自動化。台湾・高雄から。"
+  description = "TauX は AI を、一度きりのデモではなく企業が実際に運用できるシステムに変えます。GEO、AI エージェント開発、ソフトウェア開発、企業向け AI 研修。台湾・高雄から。"
   canonical   = "https://taux.io/ja-JP"
 
   [page.locale.ko-KR]
   template    = "ko-KR/index.html"
   title       = "TauX 拓思科技｜AI를 회사가 진짜 쓸 수 있는 힘으로｜GEO 생성형 엔진 최적화"
-  description = "TauX는 AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로 바꿉니다. GEO, 소프트웨어 개발, 숏폼 영상, AI 자동화. 대만 가오슝에서."
+  description = "TauX는 AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로 바꿉니다. GEO, AI 에이전트 개발, 소프트웨어 개발, 기업 AI 교육. 대만 가오슝에서."
   canonical   = "https://taux.io/ko-KR"
 
   [page.locale.en-US]
   template    = "en-US/index.html"
   title       = "TauX — AI that earns its place | Generative Engine Optimization"
-  description = "TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, software platforms, short-form video and AI automation, from Kaohsiung, Taiwan."
+  description = "TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, AI agent development, software platforms and in-house AI training, from Kaohsiung, Taiwan."
   canonical   = "https://taux.io/en-US"
 
 [[page]]

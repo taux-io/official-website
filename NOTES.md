@@ -50,13 +50,14 @@ npm run check:entity:links  # sameAs 的 URL 是否解析得到（CI 閘門，�
 npm run check:ko       # 韓文的空白與引號決定沒有改變（CI 閘門）
 npm run ko:record      # 把今天的韓文決定寫進兩份 ledger
 npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
+npm run test:worker    # src/worker.js 的語言協商與「不自組回應」（CI 閘門）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 npm run blank <label>        # 截圖的空白行比例與最長連續空白（給人看，不是閘門）
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko` / `check:i18n`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `check:entity:links`。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `check:entity:links`。
 
 **需要瀏覽器或網路的都在 `audit`，離線的都在 `build`。** 前兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
 
@@ -64,7 +65,7 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 
 ⚠️ **這個數字錯過兩次，而第二次是在這段警告自己裡面。** 第一次它寫「九道」而實際有十道——`check:routes` 落地時沒有進這份清單，於是有人（我）照著這裡數，在 PR 上公開宣告「九道閘門全綠」。**文件與 CI 分歧時，綠的是 CI，錯的是宣告。**
 
-第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。**第三次**：清單漏了 `check:md`，總數也還停在十四。它是隨 Markdown 雙生檔（issue #259）加進 `checks.yml` 的，而這段文字沒有跟上——同一種漂移，第三次，寫在專門警告它的段落裡。**第四次**：`cards` 隨 v5 的規則 29 加進 `checks.yml`，而這段文字沒有跟上，總數還停在十五。**同一種漂移，第四次，寫在專門警告它的段落裡**——而且這一次是被兩軸審查抓到的，不是被任何閘門。**沒有東西數這個數字**，這就是它一直漂的原因。現在是**十六道**——下面的清單有幾項就是幾道。改 `checks.yml` 時請一併改這裡。
+第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。**第三次**：清單漏了 `check:md`，總數也還停在十四。它是隨 Markdown 雙生檔（issue #259）加進 `checks.yml` 的，而這段文字沒有跟上——同一種漂移，第三次，寫在專門警告它的段落裡。**第四次**：`cards` 隨 v5 的規則 29 加進 `checks.yml`，而這段文字沒有跟上，總數還停在十五。**同一種漂移，第四次，寫在專門警告它的段落裡**——而且這一次是被兩軸審查抓到的，不是被任何閘門。**沒有東西數這個數字**，這就是它一直漂的原因。**第五次**：`test:worker` 隨稽核修正加進 `checks.yml`，這一次同一個 commit 就改了這裡。現在是**十七道**——下面的清單有幾項就是幾道。改 `checks.yml` 時請一併改這裡。
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
 - **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
@@ -82,6 +83,7 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ko-quotes.txt` 記 325 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— `templates/en-US/*.html` 沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。**這道閘門遲到了**：能自動判斷的那一半在 `i18n-extract` 裡放了一陣子，而 DESIGN.md 已經寫成「補進去了」——它不在任何 job 裡，等於沒有。
   ⚠️ **它讀模板不讀 `dist/`，而那個理由已經不成立了。** 原本的理由是每一頁建出來都帶著全站唯一 Organization 節點的六個中文標點（`（）`×2、`、`×3、`。`×1），讀 `dist/` 會每次都紅在一個決定上——**那六個全部在那句中文 `description` 裡**，而 issue #241 把它改成 per-locale 之後，`dist/en-US/*.html` 現在是 **0 個**（用這道閘門自己的字元集數的：`grep -c '[「」『』，。、；：（）？！《》]' dist/en-US/*.html` 全部回 0）。所以「讀 `dist/` 會永遠紅」今天是假的，而讀 `dist/` 會多守住一件模板守不住的事：共用 include 把中文標點帶上英文頁——**那正是 #241 這次的形狀**。沒有一起改是因為它不在那三張票的範圍裡，記在這裡而不是默默留著一個過期的理由
+- **test:worker** —— `src/worker.js` 的 `Accept-Language` 協商（q 權重、簡繁、`q=0`），以及 Worker 產生的每一個 `Response` 都是轉包資產層的回應——自己組的回應不會套用 `_headers`，等於沒有 CSP
 - **check:entity:links** —— `sameAs` 的 URL 解析得到。只抓硬性 404；登入牆後面的軟性 404（Facebook 對不存在的頁面回 200）抓不到，那仍然是人的判斷
 
 **`check:entity` 會拒絕稽核不完整的 `dist/`。** 建置是一頁一頁寫的，遇到第一個解析不了的模板就結束，所以失敗的建置會留下半棵樹——而所有讀 `dist/` 的檢查都會對著它報綠。這實際發生過：一個壞掉的 include 讓十七頁只寫了八頁，三條規則全部「通過」。它現在會比對 `site.toml` 宣告的頁數。
@@ -372,7 +374,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 `npm run build:assets` 產生全部三類，改主題後重跑一次就會同步：
 
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
-- **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `taux-logo-light.png` 裁切而來。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
+- **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `brand-src/taux-logo-light.png` 裁切而來（來源檔不在 `static/`，所以不會被發佈）。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
 - **OG 分享卡**：每條路由一張，標題取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。
 
 ---

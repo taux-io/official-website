@@ -158,6 +158,12 @@ jobs:
       - name: English pages carry no CJK punctuation
         run: npm run check:i18n
 
+      # The one piece of code that runs in production. Pins q-weighted
+      # Accept-Language resolution, and fails on any Response the Worker builds
+      # itself — `_headers` does not apply to one, so it would ship without CSP.
+      - name: worker unit tests
+        run: npm run test:worker
+
   audit:
     runs-on: ubuntu-latest
     steps:

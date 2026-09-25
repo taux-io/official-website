@@ -2,7 +2,7 @@
 
 這份文件是部署這個網站的唯一依據。README.md 講開發，NOTES.md 記錄為什麼做了某些決定，**部署照這份做**。
 
-網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有執行期環境變數、沒有執行期機密。建置產生一個目錄，Cloudflare Workers 從邊緣供應那個目錄。`wrangler.jsonc` 裡沒有 `main`，所以沒有任何程式碼會執行。
+網站是靜態的。執行期沒有伺服器、沒有資料庫、沒有執行期環境變數、沒有執行期機密。建置產生一個目錄，Cloudflare Workers 從邊緣供應那個目錄。唯一執行的程式碼是 `src/worker.js`，而且只在 `/` 上跑（`run_worker_first: ["/"]`）：依 `Accept-Language` 決定要不要導向某個 locale。它從不自己產生回應，只轉包資產層的回應，所以 `_headers` 照樣套用；這個性質由 `npm run test:worker` 把關。
 
 **部署是全自動的。** 推送到 `main`，Cloudflare 會自己 clone、建置、上線。**沒有自動的上線關卡**——擋在 production 前面的是 PR 階段的 CI，理由與代價見第 4 節。
 

@@ -1,216 +1,75 @@
-# TauX 拓思科技股份有限公司 - 官方網站
+# TauX 拓思科技股份有限公司 — 官方網站
 
-![TauX Logo](static/taux-logo-light.png)
+https://taux.io 的原始碼。TauX 做 GEO（生成式引擎優化）、AI Agent 開發、軟體平台建置與企業 AI 內訓，公司在高雄岡山。
 
-**Code the Future - 用科技創造未來**
+這份 README 只講**怎麼開始**。其餘每件事都有唯一的出處，這裡只指路，不重述——重述的那一份遲早會過時，而過時的文件看起來和正確的一樣（這份 README 先前就是如此：它描述的黑底、自架字體、兩個語言和短影片服務，全都已經不存在）。
 
-TauX 拓思科技股份有限公司專注於 AI Smart Work 與 GEO (Generative Engine Optimization)，運用 AI 技術為企業打造全方位數位轉型解決方案。
+| 想知道 | 看 |
+|---|---|
+| 建置、閘門、技術決策的現況 | [NOTES.md](NOTES.md) |
+| 設計規範與設計決策紀錄（唯一來源） | [DESIGN.md](DESIGN.md) |
+| 部署、主機設定、上線後怎麼驗 | [DEPLOYMENT.md](DEPLOYMENT.md)（部署的唯一依據） |
+| 專案用語：路由、locale、閘門… | [CONTEXT.md](CONTEXT.md) |
 
-## 關於我們
+## 架構一句話
 
-我們是高雄在地的專業團隊，致力於為台灣企業提供最優質的數位化服務。結合軟體開發專業與創意行銷策略，為您的品牌創造數位時代的競爭優勢。
+建置時把模板算成靜態檔，Cloudflare Workers 從邊緣供應。
 
-### 核心服務
+- **Generator**：Rust（`generator/`），用 minijinja 把 `templates/` 依 `site.toml` 算成 `dist/`，連同 sitemap、`_redirects` 與每頁的 Markdown 雙生檔
+- **前端**：靜態 HTML + Tailwind CSS 3.4，系統字體堆疊，沒有前端框架
+- **Locale**：五個——`zh-Hant-TW`（正典）、`zh-Hans-CN`、`en-US`、`ja-JP`、`ko-KR`，每條路徑都帶 locale 前綴
+- **執行期**：唯一會跑的程式碼是 `src/worker.js`，只處理 `/` 的語言協商；它從不自己組回應，所以 `_headers`（含 CSP）照樣套用
+- **工具鏈**：Node 負責 CSS、資產生成與所有檢查（`scripts/`）
 
-- **軟體平台開發** - 企業級 Web 應用、APP、SaaS 平台開發
-- **短影片製作與策略** - TikTok、Instagram Reels、YouTube Shorts 內容製作
-- **數位行銷整合** - 社群媒體經營、SEO、廣告投放策略
-- **AI 智能解決方案** - 智能客服、數據分析、自動化工具
-- **系統整合與自動化** - CRM/ERP 系統串接、工作流程優化
-
-## 技術規格
-
-本站是**靜態網站**：建置時把模板算完，執行期沒有任何伺服器。
-
-會走到這裡，是因為先前的 Go 伺服器對每個請求做的唯一變化只有頁尾的年份——同一條路由連續兩次請求回傳的位元組完全相同。既然如此就沒有東西需要在執行期算，只有檔案需要算一次交給 CDN，而那才是真正改善台灣以外讀者與爬蟲 TTFB 的做法。
-
-- **Generator**: Rust，用 minijinja 把 `templates/*.html` 算成 `dist/` 底下的靜態檔
-- **Frontend**: 靜態 HTML + TailwindCSS 3.4
-- **Infrastructure**: Cloudflare Workers（靜態資產，無 `main`，不執行任何程式碼）；標頭與快取宣告在 `_headers`，資產行為宣告在 `wrangler.jsonc`
-- **Design**: 單色深色系統 (spacex.com 語彙) — 黑底、自架 D-DIN、髮絲線、零彩色。Token 定義於 `src/input.css` 的 `:root`；**規範與決策紀錄見 [DESIGN.md](DESIGN.md)，那是設計的唯一來源**
-- **Security**: CSP 與安全標頭定義在 `_headers`，隨靜態檔一起部署
-
-### 頁面宣告於 `site.toml`
-
-所有頁面只在 `site.toml` 宣告一次。Rust generator、Node 工具鏈都讀同一張表，沒有任何一邊去解析另一邊的原始碼。新增一個 `[[page]]` 就同時帶動：算出 HTML、寫進 `sitemap.xml`、產生 OG 分享卡、納入對比稽核與路由契約測試。
-
-## 專案結構
+## 目錄
 
 ```
-taux-dev/
-├── site.toml                   # 頁面宣告 (路由、title、description、canonical、日期)
-├── generator/                  # Rust 靜態網站產生器
-├── wrangler.jsonc              # 部署拓撲 (資產目錄、404 處理、URL 形狀)
-├── _headers                    # Cloudflare 標頭與快取規則 (含 CSP)
-├── templates/                  # Jinja 模板
-│   ├── index.html              # 首頁
-│   ├── header.html             # 共用頁首
-│   ├── footer.html             # 共用頁尾
-│   ├── geo-guide.html          # GEO 指南
-│   ├── ai-smart-work.html      # AI Smart Work
-│   ├── data-governance.html    # 資料治理
-│   ├── what-is-llms-txt.html   # LLMs.txt 介紹
-│   ├── what-is-prompt-injection.html # Prompt Injection 安全
-│   ├── agent-prompting-guide.html    # Agent Prompting 指南
-│   ├── claude-skills-guide.html      # Claude Skills 實戰指南
-│   ├── building.html           # Building in Public
-│   ├── about.html              # 關於我們
-│   ├── privacy-policy.html     # 隱私權政策
-│   ├── terms-of-service.html   # 服務條款
-│   ├── 404.html                # 自定義 404 頁面
-├── static/                     # 靜態資源
-│   ├── css/                    # 編譯後的 CSS
-│   ├── js/                     # 前端 JavaScript
-│   └── img/                    # 圖片資源
-├── src/                        # 前端原始碼 (CSS input)
-├── tailwind.config.js          # Tailwind 設定
-├── scripts/visual/             # 對比稽核、路由契約測試、截圖、像素比對
-├── scripts/assets/             # 圖示、結構化資料 logo、OG 分享卡生成
-└── dist/                       # 建置產物 (不進版控)
+site.toml          每一條路由只在這裡宣告一次：路徑、模板、各 locale 的 title / description / 日期
+generator/         Rust 靜態網站產生器
+templates/         zh-Hant-TW 正本與共用 partial（header、footer、_*.html）
+templates/<locale>/  其他四個 locale 的頁面
+src/input.css      Tailwind 來源與設計 token → static/css/styles.min.css（進版控）
+src/worker.js      `/` 的語言協商
+static/            原樣發佈的資產：css、js、og 分享卡、brand、favicon、robots.txt、llms.txt
+brand-src/         不發佈的原始素材（build-logo.js 的裁切來源）
+scripts/           檢查閘門、資產生成、視覺稽核
+_headers           標頭、快取與 CSP
+wrangler.jsonc     部署拓撲
 ```
 
-## AI 協作體系
+## 開始
 
-`.agents/` 不在版本控制內。它描述的是「怎麼在這個專案上工作」而不是「這個專案是什麼」，而它的基礎設施那一半仍在描述已經刪除的 Docker 與 nginx 部署——一份被 check in 的文件如果過時，讀它的人沒有理由懷疑它。
-
-專案本身的長期記憶與技術決策紀錄在 **[NOTES.md](NOTES.md)**；設計規範與設計決策紀錄在 **[DESIGN.md](DESIGN.md)**。
-
-## 安全機制
-
-### 標頭 (`_headers`)
-- `X-Content-Type-Options: nosniff`
-- `X-Frame-Options: DENY`
-- `Referrer-Policy: strict-origin-when-cross-origin`
-- `Permissions-Policy: geolocation=(), microphone=(), camera=()`
-
-### Content-Security-Policy (`_headers`)
-- `script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com` — **無 `unsafe-inline`**
-- `style-src` 需要 `unsafe-inline`（16 個 style 屬性 + 2 個行內區塊）
-- `font-src 'self'` — 字體已自架
-- `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`
-
-> 此 policy 曾經只存在於 `nginx.conf`，而該檔案不在實際運行的拓撲中，等於從未生效——整整一年沒有人發現，因為缺少 CSP 的頁面看起來和有 CSP 的頁面一模一樣。現在它在 `_headers`，而路由契約測試會對每一條路由斷言標頭確實存在且內容相符。
-
-### 為什麼一定要用 wrangler 在本機驗
-
-一般的靜態檔案伺服器不讀 `_headers`。用它預覽，一條永遠匹配不到的規則看起來會完全正常——上面那個一年沒生效的 CSP 就是這樣活下來的。`npm run serve`（即 `wrangler dev`）會讀 `wrangler.jsonc` 並套用真正的規則，稽核才有意義。
-
-## 快速開始
-
-1. **安裝依賴**
-   ```bash
-   npm ci             # Tailwind、wrangler 與工具鏈
-   ```
-   Rust toolchain 見 https://rustup.rs。版本不用自己選——`rust-toolchain.toml`
-   與 `.nvmrc` 釘好了，rustup 與 nvm 會自己讀。
-
-2. **建置**
-   ```bash
-   npm run build:css   # src/input.css -> static/css/styles.min.css
-   npm run build:site  # templates/ + site.toml -> dist/
-   ```
-
-3. **預覽 (務必用 wrangler，它才會套用 `_headers`)**
-   ```bash
-   npm run serve
-   open http://127.0.0.1:8099
-   ```
-
-4. **改 CSS 時開監聽**
-   ```bash
-   npm run watch:css
-   ```
-
-### 檢查
+Node 與 Rust 的版本由 `.nvmrc` 與 `rust-toolchain.toml` 釘住，nvm 與 rustup 會自己讀。
 
 ```bash
-npm run check:css      # styles.min.css 與 input.css 是否同步
-npm run check:classes  # 模板裡有沒有 Tailwind 產不出 CSS 的 class
-npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面
-npm run check:dates    # 每頁都有可用的日期，且沒有未來或早於發布的修改日
-npm run check:jsonld   # 結構化資料有效，且沒有重複鍵
-npm run dates          # 宣告的日期 vs git 認為的（僅報告，不會寫入）
-npm run contrast       # WCAG 對比稽核 (需 wrangler 在 8099)
-npm run contract       # 路由契約：狀態碼、canonical、標頭、結構化資料、JS 錯誤
-cargo test --manifest-path generator/Cargo.toml   # generator 的輸出路徑、slug、註解剝除
+npm ci
+npm run build:css    # src/input.css → static/css/styles.min.css
+npm run build:site   # templates/ + site.toml → dist/
+npm run serve        # wrangler dev，http://127.0.0.1:8099
 ```
 
-`check:classes` 是這個專案最高頻的風險。Tailwind 遇到解析不出來的 class 什麼都不產，所以 markup 看起來是刻意的、建置也成功，只有效果消失——改版時一次找出 55 個這種 class，其中包括讓 prompting 指南整條時間軸的圓點隱形的那些。
+**預覽一定要用 `npm run serve`。** 一般的靜態伺服器不讀 `_headers`，一條永遠匹配不到的標頭規則在那裡看起來完全正常——這個站的 CSP 曾經因此一整年沒有生效而沒人發現。
 
-## 功能特色
+改 CSS 時開 `npm run watch:css`。改了模板裡的 class 要重建 CSS，`styles.min.css` 是進版控的建置產物，`npm run check:css` 會擋。
 
-### 響應式設計
-- 自適應各種螢幕尺寸
-- 移動裝置優先設計
-- 觸控友好的使用者介面
+## 檢查
 
-### SEO & GEO 優化
-- 完整的 Meta 標籤配置
-- 結構化數據 (Schema.org: Organization, FAQPage, BreadcrumbList)
-- 多語言支援 (zh-TW, en)
-- 社群媒體優化 (Open Graph, Twitter Cards)
-- LLMs.txt 支援 AI 搜尋引擎
+CI（`.github/workflows/checks.yml`）在每個 PR 跑兩個 job：`build` 跑離線的檢查，`audit` 在 wrangler 供應的 `dist/` 上跑瀏覽器稽核。**合併進 `main` 就是上線**，所以 CI 是唯一的關卡。
 
-### 效能優化
-- 圖片延遲載入
-- 字體預加載
-- CSS/JS 最佳化
-- 快取策略
+每一道閘門做什麼、為什麼存在，列在 [NOTES.md 的「建置與檢查」](NOTES.md)——那份清單是唯一來源，這裡不重複。
 
-## 開發指南
+## 新增一頁
 
-### 編輯內容
-**Developers**: 建置、檢查與新增頁面的流程見上方各節；技術決策紀錄見 `NOTES.md`。
+1. 在 `templates/` 寫 zh-Hant-TW 正本，其他 locale 放在 `templates/<locale>/`（簡體可用 `node scripts/hans.js` 起稿）
+2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`
+3. 導覽連結在 `templates/_nav-columns.html`，連結文字在 `site.toml` 每個 `[[locale]]` 的 `[locale.strings]`（`nav_*`）
+4. 在 `static/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
 
-### 新增頁面
-1. 在 `templates/` 目錄下創建新的 HTML 檔案 (參考 `templates/index.html`)
-2. 在 `site.toml` 新增一個 `[[page]]` 區塊
-3. 更新 `header.html` (PC & Mobile) 與 `footer.html` 導航連結
+sitemap、hreflang、OG 標籤、路由契約測試都從 `site.toml` 推導，不用手改。日期（`date_published`、`date_modified`）寫在 `site.toml`，建置不讀 git；`npm run dates` 會拿 git 的紀錄跟宣告值對照（只報告）。
 
-`sitemap.xml` 不用改——它是從 `site.toml` 產生的，所以頁面不可能漏掉，`lastmod` 也不可能和頁面自己的結構化資料打架。這兩件事在手寫 sitemap 的時代都發生過。
+## 聯絡
 
-### 日期
+- hello@taux.io · +886-7-6211033
+- 高雄市岡山區文賢路 57 號 2 樓
 
-`dateModified` 取自最後一次改動該模板的 commit。頁面自己手寫日期時每一個都是錯的：六篇文章全部寫著四月，內容卻是當天重寫的，其中四篇還和 sitemap 對同一個 URL 的 `lastmod` 互相矛盾。
-
-若某次 commit 動了模板但沒有改變頁面說的內容（改 class 名、修錯字），在 `site.toml` 寫一行 `date_modified` 覆寫——修改日期跟著裝飾性改動跳動，是內容撐不起來的新鮮度宣稱。
-
-`date_published` 維持手寫，放在 `site.toml`：那是事實，不是推導值。
-
-## 部署說明
-
-**部署照 [DEPLOYMENT.md](DEPLOYMENT.md) 做，那是唯一依據。** 這裡只是摘要。
-
-| 項目 | 值 |
-|---|---|
-| 建置指令 | `npm ci && npm run build:css && npm run build:site` |
-| 輸出目錄 | `dist` |
-| 環境變數 | 無 |
-| Node | 22（`.nvmrc`） |
-| Rust | 1.90（`rust-toolchain.toml`）—— **預設映像沒有 cargo，見 DEPLOYMENT.md 的完整指令** |
-
-DEPLOYMENT.md 另外寫了三件不在這裡的事：線上現況與切換（`taux.io` 現在的 HEAD 回 404、內容停在改名前）、主機必須做對的四件事（`_headers` 有沒有套用、規則互不重疊、未匹配路徑回 404 而非 200、扁平 `.html` 不加尾斜線），以及上線後怎麼驗證。四件都出過錯，四件都不會在瀏覽器裡看起來不對。
-
-### 檔案為什麼是扁平的 `.html`
-
-`geo-guide.html` 而不是 `geo-guide/index.html`。後者在 `/geo-guide/` 被供應，而 `/geo-guide` 會拿到一個 308 轉址——每一條已經被索引的 URL 都多一跳，canonical 指向的位置主機還不直接供應。扁平檔案在 `/geo-guide` 直接命中，沒有轉址。
-
-### 錯誤頁
-
-只有 404。500 沒有應用程式可以失敗，502／503 沒有來源伺服器可以失效——三者在靜態託管下都沒有任何機制會供應，已移除。
-
-## 聯絡資訊
-
-- **公司名稱**: TauX 拓思科技股份有限公司
-- **網站**: https://taux.io
-- **電子郵件**: hello@taux.io
-- **電話**: 07-6211033
-- **地址**: 高雄市岡山區文賢路 57 號 2 樓
-
-## 授權條款
-
-© 2026 TauX 拓思科技股份有限公司. 保留所有權利.
-
----
-
-**Code the Future - 用科技創造未來**
+© 2026 TauX 拓思科技股份有限公司。保留所有權利。

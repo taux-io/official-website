@@ -53,13 +53,13 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 -   **服務內容**: 高效能 Web 應用 (Next.js/React/Go)、APP 開發、SaaS 管理平台。
 -   **核心價值**: 不只是寫程式，我們打造具備高擴充性、符合商業邏輯的數位資產。
 
-### 3. 短影片製作
--   **服務內容**: TikTok / Reels / Shorts 短影音策略規劃、腳本撰寫、拍攝與後製。
--   **核心價值**: 3 秒決勝負。將複雜的技術或產品資訊，轉化為易於傳播的視覺語言。
-
-### 4. AI 整合與自動化
+### 3. AI Agent 開發與自動化
 -   **服務內容**: AI Agent 開發、智能客服、工作流程自動化 (RPA)、數據分析儀表板。
 -   **核心價值**: 釋放人力，讓 AI 處理重複性工作，提升團隊營運效率。
+
+### 4. 企業 AI 內訓
+-   **服務內容**: PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造的團隊課程。詳見 [AI for Smart Work](https://taux.io/zh-Hant-TW/ai-smart-work)。
+-   **核心價值**: 讓團隊自己把 AI 用進日常工作，而不是依賴一次性的展示。
 
 ---
 
@@ -100,7 +100,7 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 Every route on the site has an English edition. These are all of them.
 
--   [TauX — Empower Your Business with AI | Generative Engine Optimization](https://taux.io/en-US): TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, software platforms, short-form video and AI automation, from Kaohsiung, Taiwan.
+-   [TauX — AI that earns its place | Generative Engine Optimization](https://taux.io/en-US): TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, AI agent development, software platforms and in-house AI training, from Kaohsiung, Taiwan.
 -   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.
 -   [Generative Engine Optimization Service | TauX](https://taux.io/en-US/geo-optimization): Structured data, content chunking, entity declarations and citation measurement — with a baseline recorded before the work starts, so the result can be checked.
 -   [AI Training for Teams | TauX](https://taux.io/en-US/ai-smart-work): In-house AI training: build assistants that hold a role and follow a structure, and learn the prompt patterns that make them reliable rather than impressive.
@@ -123,7 +123,7 @@ Every route on the site has an English edition. These are all of them.
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。 ([Markdown](https://taux.io/zh-Hant-TW/building.md))
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
--   [About TauX | Empowering business with AI through GEO](https://taux.io/en-US/about): What TauX is, where the name comes from (the Greek letter τ, the time constant in control theory), and what the team actually ships. Based in Kaohsiung, Taiwan.
+-   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX is, where the name comes from (the Greek letter τ, the time constant in control theory), and what the team actually ships. Based in Kaohsiung, Taiwan.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。 ([Markdown](https://taux.io/zh-Hant-TW/privacy-policy.md))
@@ -168,8 +168,8 @@ Every route on the site has an English edition. These are all of them.
 -   [데이터 거버넌스와 AI 보안](https://taux.io/ko-KR/data-governance): 데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업.
 -   [llms.txt とは何か](https://taux.io/ja-JP/what-is-llms-txt): llms.txt が何を表明できて robots.txt には何ができないのか。使われている提案であって、批准された標準ではありません。
 -   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
--   [TauX 拓思科技](https://taux.io/ja-JP): AI を、一度きりのデモではなく企業が実際に運用できるシステムに。GEO、ソフトウェア開発、ショート動画、AI の自動化。台湾・高雄から。
--   [TauX 拓思科技](https://taux.io/ko-KR): AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로. GEO, 소프트웨어 개발, 숏폼 영상, AI 자동화. 대만 가오슝에서.
+-   [TauX 拓思科技](https://taux.io/ja-JP): AI を、一度きりのデモではなく企業が実際に運用できるシステムに。GEO、AI エージェント開発、ソフトウェア開発、企業向け AI 研修。台湾・高雄から。
+-   [TauX 拓思科技](https://taux.io/ko-KR): AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로. GEO, AI 에이전트 개발, 소프트웨어 개발, 기업 AI 교육. 대만 가오슝에서.
 -   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。
 -   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.
 -   [Agent Skill の五つの設計パターン](https://taux.io/ja-JP/adk-skill-patterns): Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。それぞれが実際に解いている問題。

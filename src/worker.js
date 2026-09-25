@@ -12,11 +12,11 @@
 // `/zh-Hant-TW` — and changes headers on the way out. Everything in `_headers`
 // arrives because the assets layer put it there.
 //
-// ⚠️ NOTHING CHECKS THAT THE NEXT PERSON KEEPS THIS PROPERTY. There is no rule
-// that fails on a `new Response("…")` in this file; the discipline is the two
-// paragraphs above and the fact that `run_worker_first` is one path long. This
-// is written out rather than assumed, because this repo's own argument is that
-// a rule nothing checks is not a rule (decision #63).
+// THE PROPERTY IS CHECKED. `npm run test:worker` (scripts/worker.test.mjs,
+// in CI) fails on any `new Response(...)` here that does not wrap an asset
+// response as `new Response(x.body, x)`. This paragraph used to say nothing
+// enforced it, which by this repo's own argument (decision #63) meant it was
+// not a rule.
 //
 // WHAT THIS BUYS OVER A ZONE REDIRECT RULE, which was the original plan:
 //
