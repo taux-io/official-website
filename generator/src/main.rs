@@ -448,8 +448,8 @@ fn render_pages(
                 // `.md`: documents share this set, are written by a different
                 // loop, and would otherwise overwrite a page's twin silently.
                 //
-                // It is the third copy of this block in the file. Left as a
-                // copy rather than extracted, because the other two are not
+                // It is the third copy of this block (the others guard the
+                // page and document HTML). Left as a copy rather than extracted, because the other two are not
                 // this ticket's code and the error messages differ.
                 if !destinations.insert(rel_md.clone()) {
                     return Err(format!(
@@ -557,7 +557,7 @@ fn render_documents(
         // dist/, or on top of a tracked file in the repository, so an ordinary
         // `npm run build:site` could mutate its own inputs. And documents never
         // entered `destinations`, so a document could silently replace a page
-        // the loop above had just written, with the build still reporting both.
+        // `render_pages` had just written, with the build still reporting both.
         let dest = contained(out, &doc.output)?;
         let rel = dest.strip_prefix(out)?.to_path_buf();
         if !destinations.insert(rel.clone()) {

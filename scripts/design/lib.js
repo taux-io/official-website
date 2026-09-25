@@ -1,7 +1,6 @@
 // Helpers and constants for scripts/design/rules/: whatever more than one rule
 // reads, the template parsers and walkers, and ROOT/TEMPLATES for check-design.js.
 const path = require("path");
-const { PAGES, DOCUMENTS } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -84,19 +83,6 @@ function* elements(html) {
 }
 
 const stripVariants = (c) => c.replace(/^(?:(?:[a-z0-9-]+|\[[^\]]*\]):)+/, "");
-
-// A genuine circle declares equal width and height. Reading the classes beats
-// measuring in a browser: this checker reads authored intent, and an element
-// that means to be a circle says so.
-function squareSized(classes) {
-  const dim = (p) => {
-    const m = classes.map(stripVariants).find((c) => new RegExp(`^${p}-`).test(c));
-    return m ? m.slice(p.length + 1) : null;
-  };
-  const w = dim("w");
-  const h = dim("h");
-  return w !== null && w === h;
-}
 
 // Every `{% include "x.html" %}` a template pulls in, in both spellings the
 // templates use — some carry a space after the keyword and some do not.
@@ -200,51 +186,9 @@ function parseElements(html) {
   return nodes;
 }
 
-const subtreeText = (html, node) =>
-  html
-    .slice(node.contentStart, node.contentEnd)
-    .replace(/<[^>]*>/g, "")
-    .replace(/&#x?[0-9a-fA-F]+;/g, "")
-    .trim();
-
 const hasAttr = (node, re) => re.test(node.attrs) || node.ancestors.some((a) => re.test(a.attrs));
 
-// Every template a route actually renders, resolved through its includes, with
-// the file each element really came from. Two rules need this and they used to
-// disagree about it: one walked rendered pages and the other walked raw files,
-// so a partial that only 404.html includes was judged as though it were a page.
-function renderedNodes(name, byName, chain = []) {
-  const out = [];
-  // Guard cycles, not repetition. A shared partial reached from both the header
-  // and the footer renders TWICE on the page, and a budget counted against the
-  // rendered page has to see both — memoising on "visited anywhere" would hide
-  // half of _nav-columns.html and let a page ship double the budget while the
-  // checker reported it inside.
-  if (chain.includes(name)) return out;
-  const f = byName.get(name);
-  if (!f) return out;
-
-  for (const node of parseElements(f.html)) {
-    out.push({ node, file: f.rel, line: lineOf(f.html, node.index), html: f.html });
-  }
-  const next = [...chain, name];
-  for (const inc of includesOf(f.html)) out.push(...renderedNodes(inc, byName, next));
-  return out;
-}
-
-function routeTemplates(files) {
-  const declared = [...PAGES, ...DOCUMENTS].map((p) => p.template);
-  const byName = new Map(files.map((f) => [templateKey(f.rel), f]));
-  return { declared, byName };
-}
-
 // ---------------------------------------------------------------------------
-
-// No reader today; kept so this split changes nothing but where code lives.
-const BG_IMAGE_INLINE = /style=("|')[^"']*background(-image)?\s*:[^"']*(url\(|gradient)/i;
-
-// No reader today either — the rules use stylesheet.INPUT_CSS.
-const INPUT_CSS = path.join("src", "input.css");
 
 // The reference set's one type rule, shared by the two ladders that answer to
 // it: the pages' scale (rule 27) and the card's (rule 30). They read different
@@ -415,17 +359,11 @@ module.exports = {
   maskNonColourHashes,
   elements,
   stripVariants,
-  squareSized,
   includesOf,
   reachable,
   VOID_TAGS,
   parseElements,
-  subtreeText,
   hasAttr,
-  renderedNodes,
-  routeTemplates,
-  BG_IMAGE_INLINE,
-  INPUT_CSS,
   TYPE_LADDER_MIN,
   TYPE_LADDER_MAX,
   COLOUR_PROP,

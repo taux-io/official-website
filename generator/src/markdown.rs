@@ -554,7 +554,7 @@ fn drop_tag_pills(html: &str) -> String {
 /// templates cannot simply be written absolute instead: `header.html` is one
 /// file rendered per language, and the switcher's href must stay relative or a
 /// review on a preview URL walks the reviewer onto production (see the
-/// `alternates` context above).
+/// `alternates` context in `render_pages`, main.rs).
 ///
 /// ⚠️ IT MATCHES TEXT AS READILY AS ATTRIBUTES. A code sample containing the
 /// literal string `href="/x"` would be rewritten as though it were markup.
