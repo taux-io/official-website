@@ -37,7 +37,7 @@ const path = require("path");
 const { PAGES, REDIRECTS } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
-const LEDGER = path.join(ROOT, "published-paths.txt");
+const LEDGER = path.join(ROOT, "ledgers", "published-paths.txt");
 
 const HEADER = `# Every path this site has ever published, one per line.
 #
@@ -90,7 +90,7 @@ function verify() {
   const ledger = readLedger();
 
   if (ledger === null) {
-    console.log("\npublished-paths.txt is missing — run npm run routes:record and commit it.");
+    console.log("\nledgers/published-paths.txt is missing — run npm run routes:record and commit it.");
     process.exitCode = 1;
     return;
   }
@@ -104,7 +104,7 @@ function verify() {
   if (unrecorded.length) {
     console.log("\n  unrecorded — published but absent from the ledger\n");
     for (const p of unrecorded) console.log(`      ${p}`);
-    console.log("\n  Run npm run routes:record and commit published-paths.txt.");
+    console.log("\n  Run npm run routes:record and commit ledgers/published-paths.txt.");
   }
 
   if (abandoned.length) {

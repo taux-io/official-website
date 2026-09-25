@@ -34,6 +34,7 @@ static/            原樣發佈在 /static/ 底下的資產：css、js、og 分�
 public/            發佈在網站根目錄的檔案：favicon.ico、robots.txt、llms.txt、site.webmanifest
 brand-src/         不發佈的原始素材（build-logo.js 的裁切來源）
 scripts/           檢查閘門、資產生成、視覺稽核
+ledgers/           閘門的記憶：已發布路徑、韓文空白與引號決定（`check:routes`、`check:ko` 讀它們）
 _headers           標頭、快取與 CSP
 wrangler.jsonc     部署拓撲
 ```

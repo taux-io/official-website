@@ -31,14 +31,12 @@
 
 const fs = require("fs");
 const path = require("path");
+const { walk } = require("./lib/fs");
 const stylesheet = require("./stylesheet");
 const plates = require("./plates");
-const { PAGES, DOCUMENTS, isLatin } = require("./routes");
-
-// The language the error document speaks; the generator holds the same constant
-// and for the same reason — one file answers every unmatched path, chosen
-// before the host knows anything about the reader.
-const CANONICAL_LOCALE = "zh-Hant-TW";
+// CANONICAL_LOCALE is the language the error document speaks; routes.js holds
+// it (mirroring the generator's constant) so it is written once on this side.
+const { PAGES, DOCUMENTS, isLatin, CANONICAL_LOCALE } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -82,14 +80,6 @@ const OPACITY_EXEMPT_IDS = new Set(["menuOverlay"]);
 
 // ---------------------------------------------------------------------------
 
-function walk(dir, out = []) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(p, out);
-    else if (entry.name.endsWith(".html")) out.push(p);
-  }
-  return out;
-}
 
 // HOW site.toml NAMES A TEMPLATE, which stopped being its basename.
 //
@@ -2350,7 +2340,7 @@ const RULES = [
 ];
 
 function main() {
-  const files = walk(TEMPLATES).map((file) => ({
+  const files = walk(TEMPLATES, ".html").map((file) => ({
     rel: path.relative(ROOT, file),
     html: fs.readFileSync(file, "utf8"),
   }));

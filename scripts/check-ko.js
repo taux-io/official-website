@@ -53,8 +53,8 @@ const path = require("node:path");
 
 const ROOT = path.join(__dirname, "..");
 const DIR = path.join(ROOT, "templates", "ko-KR");
-const SPACING = path.join(ROOT, "ko-spacing.txt");
-const QUOTES = path.join(ROOT, "ko-quotes.txt");
+const SPACING = path.join(ROOT, "ledgers", "ko-spacing.txt");
+const QUOTES = path.join(ROOT, "ledgers", "ko-quotes.txt");
 
 const SPACING_HEADER = `# Every Korean word boundary that touches an inline tag, and whether a person
 # left a space there.

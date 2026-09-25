@@ -34,8 +34,7 @@
 // in `index.js` now checks them on every run and says so.
 
 const { markSignature } = require("./extract");
-
-const ORIGIN = "https://taux.io";
+const { ORIGIN } = require("../routes");
 
 // The em dash the generator inserts between the two halves of a bilingual
 // heading (issue 270). The HTML has the halves as two spans and no separator at
