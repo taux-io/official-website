@@ -71,7 +71,10 @@ const HSTS_MIN_MAX_AGE = 15552000;
 // `_headers` opens by naming: a policy advertised for months while no response
 // carried it. There is no font tier now because there are no fonts.
 const CACHE_TIERS = {
-  "/static/og/index.png": "public, max-age=604800",
+  // This was `/static/og/index.png` — a file that has never existed, so the tier
+  // was asserted against a 404 that `_headers` matched by pattern. The very
+  // failure the paragraph above describes, one line below it.
+  "/static/og/zh-Hant-TW.png": "public, max-age=604800",
   "/static/css/styles.min.css": "public, max-age=3600",
 };
 

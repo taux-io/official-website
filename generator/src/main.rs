@@ -328,22 +328,15 @@ impl Page {
         if self.path == "/" {
             return format!("{locale}.html");
         }
-        // Error documents keep their literal name; the host maps status codes
-        // to them by filename. They are not localised and take no prefix — the
-        // host picks one file for an unmatched path and cannot know a language.
-        if self.path.ends_with(".html") {
-            return self.path.trim_start_matches('/').to_string();
-        }
         format!("{locale}/{}.html", self.path.trim_start_matches('/'))
     }
 
     /// Where this route's Markdown twin lands, or `None` for a route that gets
     /// none.
     ///
-    /// Derived from `relative_output` rather than rebuilt beside it. The three
-    /// layouts that function picks between — a locale home is a flat file, an
-    /// error document keeps its literal name, everything else takes a locale
-    /// prefix — are exactly the rules the Markdown has to obey too, and a second
+    /// Derived from `relative_output` rather than rebuilt beside it. The two
+    /// layouts that function picks between — a locale home is a flat file,
+    /// everything else takes a locale prefix — are exactly the rules the Markdown has to obey too, and a second
     /// copy of them is a second thing to keep in step.
     ///
     /// `noindex` IS WHY THIS RETURNS AN OPTION, and the reason is that Markdown
@@ -356,14 +349,8 @@ impl Page {
     /// difference between a guard and a comment is whether something enforces
     /// it.
     ///
-    /// ⚠️ THE `.html` ARM IS UNREACHABLE FOR EVERY CURRENT CONFIG, and an
-    /// earlier version of this comment presented it as live policy about error
-    /// documents. It is not: /404 is a `[[document]]`, rendered by a different
-    /// loop that never calls this, and no `[[page]]` path ends in `.html`. The
-    /// arm is here because `relative_output` has the same branch, and two
-    /// functions deriving one path must not disagree about which layouts exist.
     fn relative_markdown(&self, locale: &str) -> Option<String> {
-        if self.noindex || self.path.ends_with(".html") {
+        if self.noindex {
             return None;
         }
         let html = self.relative_output(locale);
@@ -1251,6 +1238,17 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         if page.locale.is_empty() {
             return Err(format!("{} declares no locale", page.path).into());
         }
+        // A route is a path, not a filename. Error documents are `[[document]]`
+        // rows with their own output; a `[[page]]` ending in `.html` would land
+        // at `<locale>/x.html.html`. The generator used to carry a layout for
+        // it that no config reached, so it is refused rather than supported.
+        if page.path.ends_with(".html") {
+            return Err(format!(
+                "{} ends in .html — a [[page]] path is a route; error documents are [[document]]s",
+                page.path
+            )
+            .into());
+        }
         // EVERY LANGUAGE THIS ROUTE EXISTS IN, FOR hreflang AND THE SWITCHER.
         //
         // Built from the page's own locale table rather than the roster, and
@@ -1341,22 +1339,24 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             })?;
             let html = strip_comments(&html);
 
-            sitemap.push((text.canonical.clone(), page.date_modified.clone()));
+            // A noindex page asks to be left out of an index; listing it in the
+            // sitemap asks for the opposite. No page sets the flag today — the
+            // Markdown twin already refuses it, and the sitemap now agrees.
+            if !page.noindex {
+                sitemap.push((text.canonical.clone(), page.date_modified.clone()));
+            }
 
             let dest = contained(&out, &page.relative_output(locale))?;
             let rel = dest.strip_prefix(&out)?.to_path_buf();
 
             // TWO LOCALES MUST NOT LAND ON THE SAME FILE.
             //
-            // `output_path` takes the locale now (issue 199 gave every path its
+            // `relative_output` takes the locale now (issue 199 gave every path its
             // prefix), so the collision this guards against is no longer one
             // locale away — it takes a mistake in the layout rules to produce.
             // The rules are not obvious enough to trust: a locale home is a flat
-            // `<locale>.html` rather than a directory index, a `path` ending in
-            // `.html` keeps its own name and skips the prefix entirely, and the
-            // two meet if a locale tag ever matches such a route's name (`/x.html`
-            // and a locale `x` both land on `x.html`). Any of those returns two
-            // identical paths from a function whose callers assume otherwise.
+            // `<locale>.html` rather than a directory index, so a route named
+            // after a locale tag and that locale's home would meet on one file.
             //
             // WHY IT IS STILL WORTH A CHECK — the failure is silent everywhere
             // else. One file on disk, two entries in the sitemap, and every gate
@@ -1370,7 +1370,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             if !destinations.insert(rel.clone()) {
                 return Err(format!(
                     "{} in {locale} would overwrite {} — two rows resolve to one \
-                 file; see Page::output_path for the three layouts it picks between",
+                 file; see Page::relative_output for the layouts it picks between",
                     page.path,
                     rel.display()
                 )
@@ -1486,7 +1486,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             noindex => doc.noindex,
             year => year,
             css_version => &css_v,
-            og_image => url_attr(&format!("{ORIGIN}/static/og/index.png")),
+            // The canonical locale's home card. This pointed at `og/index.png`,
+            // a file build-og.js has never produced — the cards are named by
+            // slug, and the home slug is the locale tag.
+            og_image => url_attr(&format!("{ORIGIN}/static/og/{CANONICAL_LOCALE}.png")),
         })?);
         // VETTED AND COLLISION-CHECKED EXACTLY LIKE A PAGE. It was neither.
         //
@@ -1809,16 +1812,6 @@ mod tests {
     fn a_noindex_page_gets_no_markdown() {
         let mut p = page("/geo-guide", CANON);
         p.noindex = true;
-        assert_eq!(p.relative_markdown(TEST_LOCALE), None);
-    }
-
-    // Unreachable for every current config — /404 is a `[[document]]`, rendered
-    // by a loop that never calls this — and asserted anyway, because
-    // `relative_output` keeps the same branch and the two must not disagree
-    // about which layouts exist.
-    #[test]
-    fn a_dot_html_route_would_get_no_markdown() {
-        let p = page("/404.html", "https://taux.io/404");
         assert_eq!(p.relative_markdown(TEST_LOCALE), None);
     }
 
@@ -2214,14 +2207,6 @@ mod tests {
         assert_ne!(p.relative_output("zh-Hant-TW"), p.relative_output("en-US"));
     }
 
-    // The host answers every unmatched path with one file, chosen before it
-    // knows anything about the reader, so the error document takes no prefix.
-    #[test]
-    fn a_path_that_is_already_a_filename_keeps_its_name() {
-        let out = page("/404.html", "https://taux.io/404").relative_output(TEST_LOCALE);
-        assert_eq!(out, "404.html");
-    }
-
     // THE URLs THAT WERE MARKED SAFE AND ESCAPED BY NOTHING.
     //
     // One `canonical` in site.toml reaches five attribute sinks — the canonical
@@ -2295,14 +2280,13 @@ mod tests {
         assert!(contained(Path::new("dist"), "./404.html").is_err());
     }
 
-    // The guard must not cost the generator a layout it actually uses. All three
+    // The guard must not cost the generator a layout it actually uses. Both
     // that `relative_output` picks between have to pass through unchanged.
     #[test]
     fn the_three_layouts_all_survive_containment() {
         for rel in [
             page("/", "https://taux.io/zh-Hant-TW").relative_output(TEST_LOCALE),
             page("/geo-guide", "https://taux.io/zh-Hant-TW/geo-guide").relative_output(TEST_LOCALE),
-            page("/404.html", "https://taux.io/404").relative_output(TEST_LOCALE),
         ] {
             assert_eq!(
                 contained(Path::new("dist"), &rel).unwrap(),

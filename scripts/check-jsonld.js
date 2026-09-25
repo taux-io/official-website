@@ -17,6 +17,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { jsonLdBlocks } = require("./lib/html");
 
 const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
@@ -106,11 +107,8 @@ function main() {
   for (const file of walk(DIST)) {
     const html = fs.readFileSync(file, "utf8");
     const rel = path.relative(ROOT, file);
-    for (const m of html.matchAll(
-      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
-    )) {
+    for (const body of jsonLdBlocks(html, rel)) {
       blocks++;
-      const body = m[1];
       try {
         JSON.parse(body);
       } catch (e) {

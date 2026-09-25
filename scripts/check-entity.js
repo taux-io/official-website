@@ -28,6 +28,7 @@
 const fs = require("fs");
 const path = require("path");
 const { PAGES, DOCUMENTS, LOCALES } = require("./routes");
+const { jsonLdBlocks } = require("./lib/html");
 
 // The language the error document speaks. Same constant, same reason, as the
 // generator's: one file answers every unmatched path, chosen before the host
@@ -38,7 +39,6 @@ const ROOT = path.join(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const ORIGIN = "https://taux.io";
 
-const LD = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
 const TITLE = /<title>([\s\S]*?)<\/title>/;
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;
 // THE SCRIPT A TITLE HAS TO CONTAIN, PER WRITING SYSTEM.
@@ -111,9 +111,9 @@ function pages(dir = DIST, prefix = "") {
 // worth saying out loud rather than crashing with a JSON error.
 function graphs(html, rel) {
   const out = [];
-  for (const m of html.matchAll(LD)) {
+  for (const body of jsonLdBlocks(html, rel)) {
     try {
-      out.push(JSON.parse(m[1]));
+      out.push(JSON.parse(body));
     } catch (e) {
       throw new Error(`${rel}: JSON-LD does not parse — run check:jsonld first (${e.message})`);
     }
@@ -630,7 +630,7 @@ async function main() {
   // immune to that.
   const wanted = [
     // The file, not the route identity. routes.js derives it the same way the
-    // generator's output_path does, so this cannot drift from where the build
+    // generator's relative_output does, so this cannot drift from where the build
     // actually writes — which is the whole reason this check reads dist/.
     ...PAGES.map((p) => p.file),
     ...DOCUMENTS.map((d) => d.output),

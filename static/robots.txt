@@ -21,8 +21,11 @@
 
 User-agent: *
 Allow: /
-Disallow: /static/css/
-Disallow: /static/js/
+
+# /static/css/ and /static/js/ are deliberately NOT disallowed. Google renders a
+# page before judging it, and a crawler that cannot fetch the stylesheet renders
+# an unstyled page — the mobile-friendliness and layout signals are then read off
+# a page no visitor ever sees. Nothing under /static/ is worth hiding.
 
 # /404 is deliberately NOT disallowed. It carries <meta name="robots"
 # content="noindex, follow">, and a meta directive only works if the crawler is

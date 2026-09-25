@@ -1845,9 +1845,19 @@ const VOID_ELEMENTS = new Set([
 // still points at the file an author would open.
 const INCLUDE = /\{%-?\s*include\s*"([^"]+)"\s*-?%\}/;
 
+// A MISSING OR TOO-DEEP INCLUDE IS AN ERROR, NOT AN EMPTY STRING. This returned
+// "" for both, so a fifth level of nesting — or a partial this walk could not
+// find — was dropped from the composed page and the nesting rule reported the
+// remainder clean: the green-while-unchecked shape this file exists to prevent.
+// The generator has no depth limit; the only reason to stop is a cycle.
+const MAX_INCLUDE_DEPTH = 16;
+
 function compose(rel, byRel, depth = 0) {
   const file = byRel.get(rel);
-  if (!file || depth > 4) return { text: "", map: [] };
+  if (!file) throw new Error(`tags nest: cannot compose ${rel} — no such template was read`);
+  if (depth > MAX_INCLUDE_DEPTH) {
+    throw new Error(`tags nest: includes nest deeper than ${MAX_INCLUDE_DEPTH} at ${rel} — is there a cycle?`);
+  }
   let text = "";
   const map = [];
   let rest = file.html;
