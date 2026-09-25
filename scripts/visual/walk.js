@@ -42,10 +42,11 @@ const { ROUTES, DOCUMENTS, BASE_URL } = require("../routes");
 // definition rather than a literal here and two more spelled 404.html.
 const DEFAULT_PATHS = [...ROUTES.map((r) => r.path), ...DOCUMENTS.map((d) => d.servedPath)];
 
-// Chart.js sizes its canvas from the container after load, and networkidle can
-// fire mid-resize: the chart on /what-is-prompt-injection has been caught at
-// 376px wide in a 320px viewport and settles at 176px. Only paid when the first
-// look found something, so a clean run costs nothing.
+// Anything that sizes itself after load can be caught mid-resize by
+// networkidle. The case that motivated this — Chart.js on
+// /what-is-prompt-injection, caught at 376px in a 320px viewport — is gone (the
+// chart is a build-time SVG now), but the re-measure is kept: it is only paid
+// when the first look found something, so a clean run costs nothing.
 const TRANSIENT_SETTLE_MS = 400;
 
 // Scrolling the whole page before measuring, then waiting.

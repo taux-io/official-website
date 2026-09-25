@@ -943,35 +943,35 @@ date_modified = "2026-07-26"
 [[page]]
 path        = "/about"
 template    = "about.html"
-date_modified = "2026-07-26"
+date_modified = "2026-09-25"
 
   [page.locale.zh-Hant-TW]
-  title       = "關於 TauX 拓思科技｜把 AI 變成企業戰力的 GEO 團隊"
-  description = "TauX 拓思科技把 AI 變成企業真正用得上的能力，而不是一場展示。專注 GEO 生成式引擎優化與 AI 技術落地，總部位於高雄。名字的由來、我們相信什麼、我們實際交付什麼。"
+  title       = "關於 TauX 拓思科技｜做 GEO 與企業 AI 導入的技術公司"
+  description = "TauX 拓思科技做 GEO（生成式引擎優化）與企業 AI 導入，公司設在高雄岡山。名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。"
   canonical   = "https://taux.io/zh-Hant-TW/about"
 
   [page.locale.zh-Hans-CN]
   template    = "zh-Hans-CN/about.html"
-  title       = "关于 TauX 拓思科技｜把 AI 变成企业战力的 GEO 团队"
-  description = "TauX 拓思科技把 AI 变成企业真正用得上的能力，而不是一场展示。专注 GEO 生成式引擎优化与 AI 技术落地，总部位于高雄。名字的由来、我们相信什么、我们实际交付什么。"
+  title       = "关于 TauX 拓思科技｜做 GEO 与企业 AI 导入的技术公司"
+  description = "TauX 拓思科技做 GEO（生成式引擎优化）与企业 AI 导入，公司设在高雄冈山。名字的由来（希腊字母 τ，控制科学里的时间常数）与联系方式。"
   canonical   = "https://taux.io/zh-Hans-CN/about"
 
   [page.locale.ja-JP]
   template    = "ja-JP/about.html"
   title       = "TauX 拓思科技について｜GEO と AI エンジニアリング"
-  description = "TauX が何をつくっているか、社名の由来（ギリシャ文字 τ、制御工学の時定数）、そして実際に納品しているもの。台湾・高雄を拠点に GEO と AI システムを手がけています。"
+  description = "TauX 拓思科技は、GEO（生成エンジン最適化）と企業の AI 導入を手がける台湾・高雄の技術会社です。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。"
   canonical   = "https://taux.io/ja-JP/about"
 
   [page.locale.ko-KR]
   template    = "ko-KR/about.html"
   title       = "TauX 拓思科技 소개｜GEO와 AI 엔지니어링"
-  description = "TauX가 무엇을 만드는지, 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수), 그리고 실제로 납품하는 것. 대만 가오슝에서 GEO와 AI 시스템을 만듭니다."
+  description = "TauX 拓思科技는 GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사입니다. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처."
   canonical   = "https://taux.io/ko-KR/about"
 
   [page.locale.en-US]
   template    = "en-US/about.html"
   title       = "About TauX | A technology company in Kaohsiung"
-  description = "TauX turns AI into something a business can actually run on, not a demo. Generative Engine Optimization and the AI systems around it, from Kaohsiung, Taiwan. What the name means and what we ship."
+  description = "TauX is a technology company in Kaohsiung, Taiwan, working on GEO (Generative Engine Optimization) and on bringing AI into companies. Where the name comes from, and how to reach us."
   canonical   = "https://taux.io/en-US/about"
 
 [[page]]

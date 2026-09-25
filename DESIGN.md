@@ -828,7 +828,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **仍然沒有涵蓋，具名寫在這裡而不是留成暗示**：`oklch()`、`lab()`、`color()` 與具名色（`white`、`red`）。**今天各實測 0 個**，所以沒有為不存在的情況長分支——但一個宣稱「沒有字面色」的 summary 會把這條規則原本的錯誤再犯一次，因此 summary 只列它真的讀得到的四個家族。
 
-⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它的豁免清單是 `CANVAS_EXEMPT_IDS = new Set(["jailbreakChart"])`。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
+⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它沒有豁免：唯一的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
 
 ### 八條新規則要檢查什麼
 
