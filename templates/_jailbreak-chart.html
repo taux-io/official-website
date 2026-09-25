@@ -42,7 +42,12 @@
             </svg>
         </svg>
     </div>
-    <table class="sr-only">
+    <!-- The wrapper, not the table, carries sr-only. A table ignores the 1px
+         width sr-only sets and lays out at its content width, so on a phone
+         the invisible table pushed the page 170–410px past the viewport. A
+         block that clips it does not. -->
+    <div class="sr-only">
+    <table>
         <thead>
             <tr><th scope="col">{{ axis_x }}</th><th scope="col">{{ label_large }}</th><th scope="col">{{ label_small }}</th></tr>
         </thead>
@@ -52,4 +57,5 @@
             {%- endfor %}
         </tbody>
     </table>
+    </div>
 </figure>
