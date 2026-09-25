@@ -55,8 +55,13 @@ const CANONICAL_LOCALE: &str = "zh-Hant-TW";
 /// query cannot lag the file it busts, because it is a function of that file.
 /// FNV-1a rather than a cryptographic digest, and no new dependency for it —
 /// this needs "differs when the bytes differ", not collision resistance.
-fn css_version(css: &Path) -> Result<String, std::io::Error> {
-    let bytes = fs::read(css)?;
+///
+/// The scripts under static/js/ get the same treatment (`js_version`): they
+/// carried hand-written `?v=1` and `?v=8`, the exact bet this replaced for the
+/// stylesheet. With every asset query derived from its bytes, `_headers` can
+/// cache both directories as immutable.
+fn content_version(file: &Path) -> Result<String, std::io::Error> {
+    let bytes = fs::read(file)?;
     let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
     for b in bytes {
         hash ^= u64::from(b);
@@ -1210,7 +1215,16 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     // Read once and handed to every render. Failing here is correct: a missing
     // stylesheet means the build is broken, and emitting pages that link to a
     // file that is not there would hide it until someone loaded the site.
-    let css_v = css_version(&root.join("static").join("css").join("styles.min.css"))?;
+    let css_v = content_version(&root.join("static").join("css").join("styles.min.css"))?;
+    // Keyed by file name, so a template writes `?v={{ js_version["script.js"] }}`
+    // and a misspelt name fails the build under strict undefined behaviour.
+    let mut js_v = BTreeMap::new();
+    for entry in fs::read_dir(root.join("static").join("js"))? {
+        let path = entry?.path();
+        if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+            js_v.insert(name.to_string(), content_version(&path)?);
+        }
+    }
     let mut written = BTreeMap::new();
     let mut markdown_written = 0usize;
     let mut destinations: HashSet<PathBuf> = HashSet::new();
@@ -1368,6 +1382,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 noindex => page.noindex,
                 year => year,
                 css_version => &css_v,
+                js_version => &js_v,
                 og_image => url_attr(&format!("{ORIGIN}/static/og/{}.png", text.slug())),
                 date_modified => &page.date_modified,
                 ..match &page.date_published {
@@ -1526,6 +1541,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             noindex => doc.noindex,
             year => year,
             css_version => &css_v,
+            js_version => &js_v,
             // The canonical locale's home card. This pointed at `og/index.png`,
             // a file build-og.js has never produced — the cards are named by
             // slug, and the home slug is the locale tag.
@@ -1586,13 +1602,33 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     copy_tree(&root.join("static"), &out.join("static"))?;
 
-    // These sit at the root in the served site but live under static/ in the
-    // repo, matching the routes the Go server exposed for them.
-    for name in ["favicon.ico", "robots.txt", "llms.txt", "site.webmanifest"] {
-        let from = root.join("static").join(name);
-        if from.exists() {
-            fs::copy(&from, out.join(name))?;
+    // Files served at the site root. They used to live in static/ and be
+    // copied twice — once with the tree, once to the root — so favicon.ico,
+    // robots.txt, llms.txt and site.webmanifest each answered at two URLs and
+    // `_headers` and `contract` carried rules for both. public/ is published at
+    // the root only; the old /static/ URLs are [[redirect]]s in site.toml.
+    //
+    // Flat, and never on top of something the build wrote: a public/sitemap.xml
+    // silently replacing the generated one is the collision this refuses.
+    for entry in fs::read_dir(root.join("public"))? {
+        let entry = entry?;
+        let name = entry.file_name();
+        if !entry.file_type()?.is_file() {
+            return Err(format!(
+                "public/{} is not a plain file — public/ is flat",
+                name.to_string_lossy()
+            )
+            .into());
         }
+        let dest = out.join(&name);
+        if dest.exists() {
+            return Err(format!(
+                "public/{} would overwrite a file the build generated",
+                name.to_string_lossy()
+            )
+            .into());
+        }
+        fs::copy(entry.path(), dest)?;
     }
 
     for (path, file) in &written {

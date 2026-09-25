@@ -75,7 +75,8 @@ const CACHE_TIERS = {
   // was asserted against a 404 that `_headers` matched by pattern. The very
   // failure the paragraph above describes, one line below it.
   "/static/og/zh-Hant-TW.png": "public, max-age=604800",
-  "/static/css/styles.min.css": "public, max-age=3600",
+  "/static/css/styles.min.css": "public, max-age=31536000, immutable",
+  "/static/js/script.js": "public, max-age=31536000, immutable",
 };
 
 // THE ONE SCRIPT THIS SITE CANNOT REMOVE, NAMED SO THAT EVERYTHING ELSE STILL
@@ -241,6 +242,19 @@ const CHECKS = [
       return bad.length
         ? bad.map((a) => `${a.url} -> ${a.status}`).join("; ")
         : null;
+    },
+  },
+  {
+    // /static/css/* and /static/js/* are cached immutable, which is only safe
+    // while every reference carries the content hash the generator computes.
+    // A bare or hand-written `?v=` here would strand returning visitors on the
+    // old file for a year, so it is a failure, not a style note.
+    name: "asset versions",
+    run: ({ doc }) => {
+      const bad = doc.assetUrls.filter(
+        (u) => /\/static\/(css|js)\//.test(u) && !/\?v=[0-9a-f]{16}$/.test(u)
+      );
+      return bad.length ? `not content-hashed: ${bad.join(", ")}` : null;
     },
   },
   {
@@ -957,7 +971,7 @@ async function main() {
     // Content-Type assertion above has the same weakness for the same reason
     // and is left where it is: moving it is not this change.
     const TEXT_TYPE = "text/plain; charset=utf-8";
-    for (const file of ["/llms.txt", "/robots.txt", "/static/llms.txt", "/static/robots.txt"]) {
+    for (const file of ["/llms.txt", "/robots.txt"]) {
       checked++;
       const res = await fetch(BASE_URL + file, { redirect: "manual" });
       if (res.status !== 200) {

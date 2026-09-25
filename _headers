@@ -39,15 +39,17 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
-# Stylesheet and scripts are busted by a ?v= query that nothing enforces the
-# incrementing of. An hour plus revalidation drops nearly every round trip
-# without betting on anyone remembering; immutable would strand a returning
-# visitor on a stale stylesheet with no way to recover.
+# Stylesheet and scripts are immutable because their ?v= is a hash of their
+# bytes, computed by the generator (content_version in generator/src/main.rs) —
+# a changed file is a new URL, so a cached copy can never be stale. This was an
+# hour with revalidation while the query was hand-written: `?v=25` sat unchanged
+# through a year of stylesheet changes, and immutable on a query nobody bumps
+# strands a returning visitor on the old file with no way to recover.
 /static/css/*
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=31536000, immutable
 
 /static/js/*
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=31536000, immutable
 
 # Images change when their content does, and their names change with them.
 /static/og/*
@@ -72,9 +74,6 @@
   Cache-Control: public, max-age=604800
 
 /static/favicon-32x32.png
-  Cache-Control: public, max-age=604800
-
-/static/favicon.ico
   Cache-Control: public, max-age=604800
 
 /favicon.ico
@@ -184,9 +183,9 @@
 #
 # ONE GLOB RATHER THAN FOUR RULES, and that is measured. Cloudflare's `*`
 # crosses directory separators — the comment above the icon rules says so, where
-# it is a hazard — so `/*.txt` reaches `/static/llms.txt` as readily as
-# `/llms.txt`. Verified against `wrangler dev`: all four files, one
-# `Content-Type` header each, and `.md` and HTML untouched.
+# it is a hazard — so `/*.txt` would reach a .txt under /static/ as readily as
+# `/llms.txt`. There is none now: llms.txt and robots.txt live in public/ and
+# are published once, at the root (their old /static/ URLs redirect).
 
 # WHERE THE GUARD IS, because it is not where you would look. `contract`
 # asserts these four files, but only in its `AGAINST_ORIGIN` branch: measured,

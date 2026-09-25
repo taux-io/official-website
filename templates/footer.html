@@ -73,8 +73,10 @@
 
 <!-- Scripts. Every one of these is optional: the page is complete and
      readable with all of them absent. -->
-<script src="/static/js/mcp-primitives.js?v=1" defer></script>
-<script src="/static/js/script.js?v=8"></script>
+<!-- mcp-primitives.js is not here: only /what-is-mcp has the element it
+     drives, so those five pages load it themselves, as the section-index pages
+     do. It was loaded on all 101. -->
+<script src="/static/js/script.js?v={{ js_version["script.js"] }}" defer></script>
 </body>
 
 </html>
