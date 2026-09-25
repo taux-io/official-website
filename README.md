@@ -30,7 +30,8 @@ templates/         zh-Hant-TW 正本與共用 partial（header、footer、_*.htm
 templates/<locale>/  其他四個 locale 的頁面
 src/input.css      Tailwind 來源與設計 token → static/css/styles.min.css（進版控）
 src/worker.js      `/` 的語言協商
-static/            原樣發佈的資產：css、js、og 分享卡、brand、favicon、robots.txt、llms.txt
+static/            原樣發佈在 /static/ 底下的資產：css、js、og 分享卡、brand、圖示
+public/            發佈在網站根目錄的檔案：favicon.ico、robots.txt、llms.txt、site.webmanifest
 brand-src/         不發佈的原始素材（build-logo.js 的裁切來源）
 scripts/           檢查閘門、資產生成、視覺稽核
 _headers           標頭、快取與 CSP
@@ -63,7 +64,7 @@ CI（`.github/workflows/checks.yml`）在每個 PR 跑兩個 job：`build` 跑�
 1. 在 `templates/` 寫 zh-Hant-TW 正本，其他 locale 放在 `templates/<locale>/`（簡體可用 `node scripts/hans.js` 起稿）
 2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`
 3. 導覽連結在 `templates/_nav-columns.html`，連結文字在 `site.toml` 每個 `[[locale]]` 的 `[locale.strings]`（`nav_*`）
-4. 在 `static/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
+4. 在 `public/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
 
 sitemap、hreflang、OG 標籤、路由契約測試都從 `site.toml` 推導，不用手改。日期（`date_published`、`date_modified`）寫在 `site.toml`，建置不讀 git；`npm run dates` 會拿 git 的紀錄跟宣告值對照（只報告）。
 

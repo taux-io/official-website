@@ -182,8 +182,24 @@ jobs:
 
       - run: npm ci
 
+      # The browser download is cached, keyed on the lockfile (which pins the
+      # Playwright version, and so the Chromium build). It was fetched fresh on
+      # every run of both workflows. The system libraries are not files a cache
+      # can restore, so a hit still installs those.
+      - name: cache chromium
+        id: chromium-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: install chromium
+        if: steps.chromium-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
+
+      - name: install chromium system dependencies
+        if: steps.chromium-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
 
       - name: build the site
         run: npm run build:site

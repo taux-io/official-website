@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
+const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
 const { ROUTES, LOCALES } = require("../routes");
 
@@ -196,7 +197,12 @@ async function main() {
     // did not. The directory has to exist first.
     const dest = path.join(OUT_DIR, `${item.name}.png`);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
-    await page.screenshot({ path: dest });
+    // Re-encoded losslessly at the highest zlib effort. Chromium writes a fast,
+    // lightly compressed PNG; the same pixels in a tighter stream took the
+    // hundred cards from 6.0 MB to about 2.4. Lossless on purpose: `cards`
+    // measures ink, and a palette quantiser would move it.
+    const png = await page.screenshot();
+    fs.writeFileSync(dest, await sharp(png).png({ compressionLevel: 9, effort: 10 }).toBuffer());
     console.log(`  ${item.name}.png  ${item.title}`);
   }
 

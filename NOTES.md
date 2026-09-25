@@ -102,9 +102,11 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 
 Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效**——曾經發生過，`.md:h-20` 沒進去，七個頁面的曲線細帶少了 16px 而毫無跡象。`npm run check:css` 就是為此存在。
 
-### `?v=` 版號是手動的
+### `?v=` 版號由內容算出，所以 CSS/JS 可以 immutable
 
-`header.html` 和 `footer.html` 引用 CSS/JS 時帶著 `?v=N`。**改了那些檔案就要遞增它，沒有任何東西會提醒你。** 也因為如此，CSS/JS 的 `Cache-Control` 只給一小時而非 immutable——押注在人的記性上，代價是使用者永久卡在舊版且無法復原。
+`styles.min.css` 與 `static/js/*` 的 `?v=` 是檔案內容的 FNV-1a 雜湊，由 generator 的 `content_version()` 算出並傳給模板（`css_version`、`js_version["<檔名>"]`）。檔案一變，網址就變，所以 `_headers` 把 `/static/css/*` 與 `/static/js/*` 設成 `max-age=31536000, immutable`。
+
+先前這裡寫的是「版號是手動的，所以只給一小時」——那在手寫 `?v=25` 一年沒動過的時候是對的決定。**immutable 只在每個引用都帶雜湊時安全**，`contract` 的 `asset versions` 斷言守這件事：任何 `/static/css`、`/static/js` 引用沒有 16 位十六進位的 `?v=` 就紅。新增一支 JS 時照 `section-index.js` 的寫法引用即可，不用記任何數字。
 
 ---
 

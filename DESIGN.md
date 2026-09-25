@@ -884,7 +884,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **`accent-color` 剔除的理由不同：它沒有對象。** 實測全站 **0 個** checkbox、radio、range。守著一個不可能有主體的屬性，什麼也沒守。
 
-**33 `theme colour agrees`** ✅ — `<meta name="theme-color">` 的值必須等於 `static/site.webmanifest` 的 `theme_color`。
+**33 `theme colour agrees`** ✅ — `<meta name="theme-color">` 的值必須等於 `public/site.webmanifest` 的 `theme_color`。
 
 ⚠️ **它跟規則 31 分開，因為這裡的風險不是缺席是漂移。** manifest 的 `theme_color` **一直都有宣告**——它帶著黑底時代的值跨過兩次品牌重置，線上生效、每個 Android 安裝都讀得到（決策 #99）。**一條檢查「有沒有宣告」的規則會說它是乾淨的。**
 

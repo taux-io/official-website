@@ -923,6 +923,28 @@ status = 301
 # The card moved twice: once with the rename, and again when the slug gained a
 # locale prefix. Same rule as above — the destination is where the file is now,
 # not where it was between the two moves.
+# THE ROOT FILES' OLD SECOND ADDRESSES. favicon.ico, robots.txt, llms.txt and
+# site.webmanifest were published both at the root and under /static/, because
+# they lived in static/ and were copied to the root as well. They live in
+# public/ now and are published once; the /static/ copies are redirected rather
+# than dropped, since /static/site.webmanifest was the manifest every page
+# linked until this change and /static/llms.txt is a URL a crawler may hold.
+[[redirect]]
+from   = "/static/favicon.ico"
+to     = "/favicon.ico"
+
+[[redirect]]
+from   = "/static/robots.txt"
+to     = "/robots.txt"
+
+[[redirect]]
+from   = "/static/llms.txt"
+to     = "/llms.txt"
+
+[[redirect]]
+from   = "/static/site.webmanifest"
+to     = "/site.webmanifest"
+
 [[redirect]]
 from   = "/static/og/workspace-ai-roi.png"
 to     = "/static/og/zh-Hant-TW/google-workspace-with-ai.png"

@@ -122,7 +122,7 @@ async function main() {
   header.writeUInt16LE(32, 12); // bits per pixel
   header.writeUInt32LE(png.length, 14);
   header.writeUInt32LE(22, 18); // offset to the payload
-  fs.writeFileSync(path.join(STATIC, "favicon.ico"), Buffer.concat([header, png]));
+  fs.writeFileSync(path.join(__dirname, "..", "..", "public", "favicon.ico"), Buffer.concat([header, png]));
   console.log("  favicon.ico (32x32, PNG payload)");
 
   await browser.close();

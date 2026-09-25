@@ -193,10 +193,12 @@ function initEasterEggs() {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         keyBuffer = (keyBuffer + e.key.toUpperCase()).slice(-secretCode.length);
         if (keyBuffer === secretCode) {
+            // A whole-page spin is exactly the motion reduced-motion asks a
+            // site not to make; the rest of the site already honours it.
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             document.body.style.transition = 'transform 0.5s ease';
             document.body.style.transform = 'rotate(360deg)';
             setTimeout(() => document.body.style.transform = '', 500);
-            console.log('🎉 TauX Mode Activated! 🎉');
         }
     });
 }

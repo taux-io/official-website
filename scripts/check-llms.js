@@ -17,7 +17,7 @@ const path = require("path");
 const { ROUTES, ORIGIN } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
-const LLMS = path.join(ROOT, "static", "llms.txt");
+const LLMS = path.join(ROOT, "public", "llms.txt");
 
 function main() {
   const text = fs.readFileSync(LLMS, "utf8");

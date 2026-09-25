@@ -2073,13 +2073,13 @@ function ruleHoverIsGuarded() {
 // was not, was equal to the surface. Checking that something is declared would
 // have called that clean.
 function ruleThemeColourAgrees(files) {
-  const manifest = path.join(ROOT, "static", "site.webmanifest");
+  const manifest = path.join(ROOT, "public", "site.webmanifest");
   if (!fs.existsSync(manifest)) return [];
   let declared;
   try {
     declared = JSON.parse(fs.readFileSync(manifest, "utf8")).theme_color;
   } catch (err) {
-    return [{ file: path.join("static", "site.webmanifest"), line: 1, detail: `will not parse: ${err.message}` }];
+    return [{ file: path.join("public", "site.webmanifest"), line: 1, detail: `will not parse: ${err.message}` }];
   }
   if (!declared) return [];
 
