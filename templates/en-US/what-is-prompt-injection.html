@@ -150,7 +150,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         1</div>
                     <div>
-                        <h4 class="mb-2">At the input: isolate and label</h4>
+                        <h3 class="mb-2">At the input: isolate and label</h3>
                         <p class="text-sm leading-relaxed">Wrap what the user sent in a delimiter (an XML tag such as
                             <code class="bg-ink/5 font-semibold px-1.5 py-0.5 font-sans text-xs mx-1">&lt;user_input&gt;</code>), so the model is told plainly:
                             this is untrusted external data, not an instruction.
@@ -162,7 +162,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         2</div>
                     <div>
-                        <h4 class="mb-2">At the model: repeat the rules after the input</h4>
+                        <h3 class="mb-2">At the model: repeat the rules after the input</h3>
                         <p class="text-sm leading-relaxed">State the safety rules before the user content and again after it. The newest instruction tends to win, so make sure the newest instruction is yours.
                         </p>
                     </div>
@@ -172,7 +172,7 @@
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
                         3</div>
                     <div>
-                        <h4 class="mb-2">Above both: a second model watching</h4>
+                        <h3 class="mb-2">Above both: a second model watching</h3>
                         <p class="text-sm leading-relaxed">A separate model whose only job is to inspect
                             the final output — does it leak anything sensitive, does it contain code nobody asked for.</p>
                     </div>
@@ -189,7 +189,7 @@
                 <p class="mb-6 max-w-[42ch] text-lg">TauX runs LLM
                     security assessments and red-team exercises to find the gaps before someone else does.</p>
 
-                <div class="flex flex-col mobile:flex-row justify-center gap-4">
+                <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="mailto:hello@taux.io" class="btn">
                         Book a security review
                     </a>
