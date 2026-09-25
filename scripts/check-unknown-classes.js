@@ -20,23 +20,6 @@ const ROOT = path.join(__dirname, "..");
 const CSS = path.join(ROOT, "static", "css", "styles.min.css");
 const TEMPLATE_DIRS = [path.join(ROOT, "templates"), path.join(ROOT, "static")];
 
-// Classes a template declares in its own <style> block. Reading them beats
-// maintaining a list of prefixes by hand — the list goes stale and each stale
-// entry is a false report that trains people to ignore this check.
-function localClasses(html) {
-  const found = new Set();
-  for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
-    for (const chunk of block[1].split("}")) {
-      const parts = chunk.split("{");
-      if (parts.length < 2) continue;
-      for (const m of parts[parts.length - 2].matchAll(/\.((?:\\.|[a-zA-Z0-9_-])+)/g)) {
-        found.add(m[1].replace(/\\/g, ""));
-      }
-    }
-  }
-  return found;
-}
-
 // Variants sit in front of the utility they modify — `hover:`, `md:`,
 // `group-open:`, `[&>svg]:` — and stack. They have to come off before the base
 // is recognised, because the first version of this tested the whole candidate
@@ -110,6 +93,23 @@ function localClasses(html) {
   return found;
 }
 
+// A <style> block reaches a page through an include as readily as inline: the
+// slide deck's stylesheet is `_skills-guide-style.html`, included by five
+// locales. Reading only the file's own text would report every deck class as
+// generating no CSS, so the includes are followed — recursively, and relative to
+// templates/, which is how minijinja resolves them.
+const INCLUDE = /\{%-?\s*include\s*"([^"]+)"/g;
+function withIncludes(html, seen = new Set()) {
+  let out = html;
+  for (const m of html.matchAll(INCLUDE)) {
+    const target = path.join(ROOT, "templates", m[1]);
+    if (seen.has(target) || !fs.existsSync(target)) continue;
+    seen.add(target);
+    out += "\n" + withIncludes(fs.readFileSync(target, "utf8"), seen);
+  }
+  return out;
+}
+
 function main() {
   if (!fs.existsSync(CSS)) {
     console.error("stylesheet not built — run npm run build:css first");
@@ -122,7 +122,7 @@ function main() {
     if (!fs.existsSync(dir)) continue;
     for (const file of walk(dir)) {
       const html = fs.readFileSync(file, "utf8");
-      const local = localClasses(html);
+      const local = localClasses(withIncludes(html));
       // A class can also arrive as a template variable. `_nav-columns.html`
       // takes its link class and list spacing through a with-block, so the
       // strings live in {% with list_space = "space-y-5" %} rather than in a

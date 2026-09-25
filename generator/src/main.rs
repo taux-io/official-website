@@ -104,6 +104,40 @@ struct Site {
     redirect: Vec<Redirect>,
 }
 
+impl Site {
+    /// Fills in what site.toml leaves out because it follows from the rest.
+    ///
+    /// ONE HUNDRED CANONICALS AND EIGHTY TEMPLATES, NONE OF THEM A DECISION.
+    /// Every `canonical` was `ORIGIN/<locale><path>` and every non-canonical
+    /// locale's `template` was `<locale>/<route template>`, without exception —
+    /// 180 hand-written lines whose only possible content was the rule, and
+    /// whose only possible deviation was a typo. They are derived here, once,
+    /// and `scripts/routes.js` applies the same rule for the Node side; a row
+    /// that genuinely differs still says so explicitly and wins.
+    fn derive(&mut self) {
+        for page in &mut self.page {
+            for (tag, text) in &mut page.locale {
+                if text.canonical.is_empty() {
+                    text.canonical = derived_canonical(tag, &page.path);
+                }
+                if text.template.is_none() && tag != CANONICAL_LOCALE {
+                    text.template = Some(format!("{tag}/{}", page.template));
+                }
+            }
+        }
+    }
+}
+
+/// `https://taux.io/<locale>` for the home route, `https://taux.io/<locale><path>`
+/// for every other. Mirrored by `derivedCanonical` in scripts/routes.js.
+fn derived_canonical(locale: &str, path: &str) -> String {
+    if path == "/" {
+        format!("{ORIGIN}/{locale}")
+    } else {
+        format!("{ORIGIN}/{locale}{path}")
+    }
+}
+
 /// A path that has been retired, and where it goes now.
 ///
 /// Declared in site.toml rather than hand-written into `_redirects`, for the
@@ -159,6 +193,9 @@ struct Document {
 struct LocaleText {
     title: String,
     description: String,
+    /// Derived when absent — see `Site::derive`. Written only when it differs
+    /// from `ORIGIN/<locale><path>`, which today it never does.
+    #[serde(default)]
     canonical: String,
     /// The template this language renders from, when it is not the route's.
     ///
@@ -168,8 +205,10 @@ struct LocaleText {
     /// body under a translated title — a page that passes every gate, because
     /// no gate reads prose, and is wrong to every reader.
     ///
-    /// Optional so the canonical locale keeps using the route's template and
-    /// nothing has to be restated twenty times.
+    /// Derived when absent — see `Site::derive`: the canonical locale uses the
+    /// route's template, every other locale `<locale>/<template>`. Falling back
+    /// to the route's template for a non-canonical locale would be exactly the
+    /// failure described above, so it is never the default.
     #[serde(default)]
     template: Option<String>,
 }
@@ -1150,7 +1189,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let root = std::env::current_dir()?;
     let out = root.join("dist");
 
-    let site: Site = toml::from_str(&fs::read_to_string(root.join("site.toml"))?)?;
+    let mut site: Site = toml::from_str(&fs::read_to_string(root.join("site.toml"))?)?;
+    site.derive();
 
     let mut env = Environment::new();
     env.set_loader(minijinja::path_loader(root.join("templates")));
@@ -2341,6 +2381,54 @@ mod tests {
         )
         .unwrap();
         assert_eq!(site.redirect[0].status, 301);
+    }
+
+    // The derivation is the whole reason 180 lines left site.toml, so it is
+    // pinned: home and non-home canonicals, the canonical locale keeping the
+    // route's template, every other locale getting its own — and a row that
+    // states a value keeping it.
+    #[test]
+    fn omitted_canonicals_and_templates_are_derived() {
+        let mut site: Site = toml::from_str(
+            r#"
+            [[page]]
+            path = "/"
+            template = "index.html"
+            date_modified = "2026-01-01"
+              [page.locale.zh-Hant-TW]
+              title = "t"
+              description = "d"
+              [page.locale.en-US]
+              title = "t"
+              description = "d"
+            [[page]]
+            path = "/geo-guide"
+            template = "geo-guide.html"
+            date_modified = "2026-01-01"
+              [page.locale.ja-JP]
+              title = "t"
+              description = "d"
+              [page.locale.ko-KR]
+              title = "t"
+              description = "d"
+              canonical = "https://taux.io/ko-KR/elsewhere"
+              template = "ko-KR/other.html"
+            "#,
+        )
+        .unwrap();
+        site.derive();
+        let home = &site.page[0].locale;
+        assert_eq!(home["zh-Hant-TW"].canonical, "https://taux.io/zh-Hant-TW");
+        assert_eq!(home["zh-Hant-TW"].template, None);
+        assert_eq!(home["en-US"].template.as_deref(), Some("en-US/index.html"));
+        let guide = &site.page[1].locale;
+        assert_eq!(guide["ja-JP"].canonical, "https://taux.io/ja-JP/geo-guide");
+        assert_eq!(
+            guide["ja-JP"].template.as_deref(),
+            Some("ja-JP/geo-guide.html")
+        );
+        assert_eq!(guide["ko-KR"].canonical, "https://taux.io/ko-KR/elsewhere");
+        assert_eq!(guide["ko-KR"].template.as_deref(), Some("ko-KR/other.html"));
     }
 
     #[test]

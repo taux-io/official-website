@@ -131,20 +131,34 @@ const localeFile = (route, tag) => {
   return `${tag}/${route.path.replace(/^\//, "")}.html`;
 };
 
+// The locale a bare `/` resolves to, and the one whose template is the route's
+// own. Mirrors CANONICAL_LOCALE in the generator.
+const CANONICAL_LOCALE = "zh-Hant-TW";
+
+// What site.toml leaves out because it follows from the rest — the same rule as
+// `Site::derive` in the generator. A row that states either value wins.
+const derivedCanonical = (tag, routePath) =>
+  routePath === "/" ? `${ORIGIN}/${tag}` : `${ORIGIN}/${tag}${routePath}`;
+const derivedTemplate = (tag, routeTemplate) =>
+  tag === CANONICAL_LOCALE ? routeTemplate : `${tag}/${routeTemplate}`;
+
 const PAGES = (SITE.page || []).flatMap((p) => {
   const { locale, ...route } = p;
-  return Object.entries(locale || {}).map(([tag, text]) => ({
-    ...route,
-    ...text,
-    // A language may override the route's template, because translated prose
-    // cannot live in the same file as the original. Spreading `text` after
-    // `route` already does this; naming it is what stops the next reader from
-    // deleting the ordering as incidental.
-    template: text.template || route.template,
-    locale: tag,
-    url: servedPath(text.canonical),
-    file: localeFile(route, tag),
-  }));
+  return Object.entries(locale || {}).map(([tag, text]) => {
+    const canonical = text.canonical || derivedCanonical(tag, route.path);
+    return {
+      ...route,
+      ...text,
+      canonical,
+      // A language renders its own template, because translated prose cannot
+      // live in the same file as the original. Named rather than left to the
+      // spread order, so the next reader does not delete it as incidental.
+      template: text.template || derivedTemplate(tag, route.template),
+      locale: tag,
+      url: servedPath(canonical),
+      file: localeFile(route, tag),
+    };
+  });
 });
 
 // The published languages, in the order the switcher shows them.
@@ -241,6 +255,7 @@ module.exports = {
   VIEWPORTS,
   BASE_URL,
   ORIGIN,
+  CANONICAL_LOCALE,
   isLatin,
   measureFor,
 };
