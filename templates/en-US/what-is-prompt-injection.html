@@ -25,34 +25,12 @@
 }
 </script>
 
-<!-- Chart.js -->
-<!-- PINNED AND HASH-VERIFIED. This was `/npm/chart.js` — no version, no
-     integrity, no crossorigin — so whatever the maintainers published to
-     npm's `latest` executed here, in this origin, within jsDelivr's edge
-     TTL, with no commit or deploy by this repository. That the URL floated
-     was measured rather than assumed: the unversioned form returned
-     `max-age=604800, s-maxage=43200`, byte-identical in caching policy to
-     `@latest`, while the pinned form returns `immutable`.
-
-     The chalk/debug incident of September 2025 is this exact shape: a
-     maintainer phished, eighteen packages republished with a
-     browser-resident payload, live for seven to nine hours.
-
-     4.5.1 is what the floating URL resolved to when this was pinned, and
-     the two were compared byte for byte before the change — pinning did
-     not move the version, it removed the ability for it to move on its
-     own. `crossorigin` is required for `integrity` to be enforced on a
-     cross-origin script; without it the browser cannot read the response
-     to check it and fails open. -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"
-        integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ"
-        crossorigin="anonymous"></script>
 
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
     <header class="band">
             <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2 animate-pulse"></span>
-                AI Security Lab
+                AI Security
             </div>
             <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
      because Chinese has no upper case; on an English page the lead IS the
@@ -156,9 +134,7 @@
                 <p class="mb-5">
                     The attacker pastes hundreds of fabricated example exchanges. After enough of them, the model treats the pattern as the rule rather than the exception.
                 </p>
-                <div class="h-80 w-full relative border-t border-line pt-3 p-4">
-                    <canvas id="jailbreakChart"></canvas>
-                </div>
+{% with label_large = "Large language models (high risk)", label_small = "Fine-tuned small models", axis_x = "Fabricated examples (shots)", axis_y = "Attack success rate (%)" %}{% include "_jailbreak-chart.html" %}{% endwith %}
                 <p class="text-xs mt-4">Source: Anthropic research (illustrative)</p>
             </div>
         </section>
@@ -210,21 +186,17 @@
                 <div class="cover" data-cover>
                     <h2>Not sure your LLM app holds up?</h2>
                 </div>
-                <p class="mb-6 max-w-[42ch] text-lg">TauX Security Lab runs LLM
+                <p class="mb-6 max-w-[42ch] text-lg">TauX runs LLM
                     security assessments and red-team exercises to find the gaps before someone else does.</p>
 
                 <div class="flex flex-col mobile:flex-row justify-center gap-4">
                     <a href="mailto:hello@taux.io" class="btn">
                         Book a security review
                     </a>
-                    <a href="/{{ locale }}" class="btn-quiet">
-                        See what is involved
-                    </a>
                 </div>
             </div>
         </section>
     </div>
 
-<script src="/static/js/prompt-injection-chart.js?v=3" defer></script>
 
 {% include"footer.html" %}

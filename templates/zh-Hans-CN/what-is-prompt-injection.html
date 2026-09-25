@@ -25,34 +25,12 @@
 }
 </script>
 
-<!-- Chart.js -->
-<!-- PINNED AND HASH-VERIFIED. This was `/npm/chart.js` — no version, no
-     integrity, no crossorigin — so whatever the maintainers published to
-     npm's `latest` executed here, in this origin, within jsDelivr's edge
-     TTL, with no commit or deploy by this repository. That the URL floated
-     was measured rather than assumed: the unversioned form returned
-     `max-age=604800, s-maxage=43200`, byte-identical in caching policy to
-     `@latest`, while the pinned form returns `immutable`.
-
-     The chalk/debug incident of September 2025 is this exact shape: a
-     maintainer phished, eighteen packages republished with a
-     browser-resident payload, live for seven to nine hours.
-
-     4.5.1 is what the floating URL resolved to when this was pinned, and
-     the two were compared byte for byte before the change — pinning did
-     not move the version, it removed the ability for it to move on its
-     own. `crossorigin` is required for `integrity` to be enforced on a
-     cross-origin script; without it the browser cannot read the response
-     to check it and fails open. -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"
-        integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ"
-        crossorigin="anonymous"></script>
 
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
     <header class="band">
             <div class="tag mb-4">
                 <span class="w-2 h-2 bg-ink rounded-full me-2 animate-pulse"></span>
-                AI Security Lab
+                AI Security
             </div>
             <h1 class="mb-4">
             <span class="display-lead text-display-sm tablet:text-display-md">What is Prompt Injection</span>
@@ -153,9 +131,7 @@
                 <p class="mb-5">
                     攻击者在对话中粘贴数百个「假对话范例」。当 AI 看了几百次后，它会以为这是新规则 (Many-shot Jailbreaking)。
                 </p>
-                <div class="h-80 w-full relative border-t border-line pt-3 p-4">
-                    <canvas id="jailbreakChart"></canvas>
-                </div>
+{% with label_large = "大型语言模型（高风险）", label_small = "微调小型模型", axis_x = "伪造范例数量（shots）", axis_y = "攻击成功率（%）" %}{% include "_jailbreak-chart.html" %}{% endwith %}
                 <p class="text-xs mt-4">数据来源: Anthropic Research (趋势示意图)</p>
             </div>
         </section>
@@ -207,21 +183,17 @@
                 <div class="cover" data-cover>
                     <h2>担心您的 AI 应用不安全？</h2>
                 </div>
-                <p class="mb-6 max-w-[42ch] text-lg">TauX Security Lab 提供专业的 LLM
+                <p class="mb-6 max-w-[42ch] text-lg">TauX 提供专业的 LLM
                     安全检测与红队演练服务，协助您找出潜在漏洞。</p>
 
                 <div class="flex flex-col mobile:flex-row justify-center gap-4">
                     <a href="mailto:hello@taux.io" class="btn">
                         预约安全咨询
                     </a>
-                    <a href="/{{ locale }}" class="btn-quiet">
-                        了解服务详情
-                    </a>
                 </div>
             </div>
         </section>
     </div>
 
-<script src="/static/js/prompt-injection-chart.js?v=3" defer></script>
 
 {% include"footer.html" %}

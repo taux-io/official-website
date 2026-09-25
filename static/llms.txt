@@ -123,7 +123,7 @@ Every route on the site has an English edition. These are all of them.
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。 ([Markdown](https://taux.io/zh-Hant-TW/building.md))
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
--   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX is, where the name comes from (the Greek letter τ, the time constant in control theory), and what the team actually ships. Based in Kaohsiung, Taiwan.
+-   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。 ([Markdown](https://taux.io/zh-Hant-TW/privacy-policy.md))
@@ -158,8 +158,8 @@ Every route on the site has an English edition. These are all of them.
 
 翻訳は route ごとに進めています。以下が現在公開されているものです。／번역은 라우트 단위로 진행 중이며, 아래가 현재 공개된 것입니다.
 
--   [TauX 拓思科技について](https://taux.io/ja-JP/about): TauX が何をつくっているか、社名の由来（ギリシャ文字 τ、制御工学の時定数）、そして実際に納品しているもの。台湾・高雄を拠点に GEO と AI システムを手がけています。
--   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): TauX가 무엇을 만드는지, 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수), 그리고 실제로 납품하는 것. 대만 가오슝에서 GEO와 AI 시스템을 만듭니다.
+-   [TauX 拓思科技について](https://taux.io/ja-JP/about): GEO（生成エンジン最適化）と企業の AI 導入を手がける台湾・高雄の技術会社。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。
+-   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
 -   [GEO 生成エンジン最適化サービス](https://taux.io/ja-JP/geo-optimization): 構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。
 -   [GEO 생성형 엔진 최적화 서비스](https://taux.io/ko-KR/geo-optimization): 구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다.
 -   [企業向け AI 実務研修](https://taux.io/ja-JP/ai-smart-work): 役割を保ち構造に従う AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型。
