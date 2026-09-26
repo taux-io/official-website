@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, slide_cover -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: TechArticle -->
@@ -32,9 +33,7 @@
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">What a Skill actually is</h2>
-        </div>
+        {% call slide_cover() %}What a Skill actually is{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -76,9 +75,7 @@
 
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">The staircase</h2>
-        </div>
+        {% call slide_cover() %}The staircase{% endcall %}
         <div class="content-area">
             <div class="timeline-layout">
                 <div class="timeline-line"></div>
@@ -116,9 +113,7 @@
 
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">MCP and Skills together</h2>
-        </div>
+        {% call slide_cover() %}MCP and Skills together{% endcall %}
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
@@ -141,9 +136,7 @@
 
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Three things people build</h2>
-        </div>
+        {% call slide_cover() %}Three things people build{% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="image-tile">
@@ -199,9 +192,7 @@
 
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">The YAML rules — where most Skills die</h2>
-        </div>
+        {% call slide_cover() %}The YAML rules — where most Skills die{% endcall %}
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
@@ -229,9 +220,7 @@
 
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Writing the instructions</h2>
-        </div>
+        {% call slide_cover() %}Writing the instructions{% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
@@ -257,9 +246,7 @@
 
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Worked example 1: a code review assistant</h2>
-        </div>
+        {% call slide_cover() %}Worked example 1: a code review assistant{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -298,9 +285,7 @@
 
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Worked example 2: automation across MCP</h2>
-        </div>
+        {% call slide_cover() %}Worked example 2: automation across MCP{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -340,18 +325,14 @@
     <div class="slide-container dark-theme" id="slide10">
         <div class="section-title-layout">
             <hr>
-            <div class="cover" data-cover>
-                <h2>Testing</h2>
-            </div>
+            {% call cover() %}Testing{% endcall %}
             <p>"Get Claude doing one task perfectly first. Then extract that pattern and wrap it as a Skill."</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Three dimensions to test</h2>
-        </div>
+        {% call slide_cover() %}Three dimensions to test{% endcall %}
         <div class="content-area">
             <div class="table-layout">
                 <table>
@@ -386,9 +367,7 @@
 
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">Five patterns worth knowing</h2>
-        </div>
+        {% call slide_cover() %}Five patterns worth knowing{% endcall %}
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
@@ -408,9 +387,7 @@
     <!-- Slide 13: Bleed_Image_Right -->
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
-            <div class="cover" data-cover>
-                <h2 class="slide-title">Packaging and release</h2>
-            </div>
+            {% call slide_cover() %}Packaging and release{% endcall %}
             <div class="content-area">
                 <div class="bleed-text-side">
                     <p><strong>Packaging:</strong> once tested, zip the folder as <code>.zip</code>. Individuals upload it on Claude.ai; an administrator can deploy it across a whole
@@ -467,9 +444,7 @@
     <!-- Slide 14: Q&A -->
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
-            <div class="cover" data-cover>
-                <h2>Ready to build one?</h2>
-            </div>
+            {% call cover() %}Ready to build one?{% endcall %}
             <p>"Knowledge drives the tools, and automation becomes the team default."</p>
             <div class="contact-info">
                 <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i> Use the built-in skill-creator to get moving.

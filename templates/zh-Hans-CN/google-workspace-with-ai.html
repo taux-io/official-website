@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: BreadcrumbList + Article.
@@ -169,13 +170,10 @@
         </header>
 
 <section id="vendor-figures">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; Vendor figures</p>
-            <h2>
+        {% call cover("01", "Vendor figures") %}
             <span class="display-lead text-display-sm" lang="en">What the Vendors Claim</span>
             <span class="display-sub">手动与自动之间，他们说差了多少</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-4">
             以下四组是被引用最广的数据。我们逐一回到原始出处核对过，
             <strong class="font-normal">数字全部属实</strong>——但广为流传的转述版本有数处与原文不符，一并在下面标明。
@@ -251,13 +249,10 @@
 </section>
 
 <section id="independent-evidence">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Independent research</p>
-            <h2>
+        {% call cover("02", "Independent research") %}
             <span class="display-lead text-display-sm" lang="en">The Gains Are Real</span>
             <span class="display-sub">效益是真的，这点有非厂商证据</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">
             如果只有厂商说有效，这一页的结论会是「无法判断」。但独立研究确实测到了效益，
             而且用的是<strong class="font-normal">客观量测而非问卷</strong>。
@@ -308,13 +303,10 @@
 </section>
 
 <section id="how-it-was-measured">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; How it was measured</p>
-            <h2>
+        {% call cover("03", "How it was measured") %}
             <span class="display-lead text-display-sm" lang="en">Self-Reported Time Is Unreliable</span>
             <span class="display-sub">人对自己省下多少时间的判断并不可靠</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">
             这是整页最重要的一节。前面所有的厂商数字，
             <strong class="font-normal">全部是自陈或以自陈为基础的建模</strong>——而自陈恰好是下面这项研究证明不可靠的测量方式。
@@ -364,93 +356,37 @@
      an exchange that only exists in the structured data misrepresents the page,
      which on this page in particular would be self-defeating. -->
 <section id="questions">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; Questions</p>
-            <h2>
+        {% call cover("05", "Questions") %}
             <span class="display-lead text-display-sm" lang="en">Common Questions</span>
             <span class="display-sub">你可能想问</span>
-        </h2>
-        </div>
+        {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>导入 Google Workspace AI 的投资报酬率是多少？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Forrester 于 2026 年 2 月发布、由 Google 委托的 TEI 研究报告三年期投资报酬率 416%、净现值 1.237 亿美元、回收期低于六个月。该数字建立在六位决策者、五家组织的访谈之上，并投射至一个 20,000 人的假想复合组织，因此它是一个财务模型而非一次量测。
-                </div>
-            </details>
+            {% call faq("导入 Google Workspace AI 的投资报酬率是多少？") %}
+                Forrester 于 2026 年 2 月发布、由 Google 委托的 TEI 研究报告三年期投资报酬率 416%、净现值 1.237 亿美元、回收期低于六个月。该数字建立在六位决策者、五家组织的访谈之上，并投射至一个 20,000 人的假想复合组织，因此它是一个财务模型而非一次量测。
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>员工每周实际能省下多少时间？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Forrester 的研究记载平均每位 Gemini 用户每周省下 3 小时，注意是用户而非全体员工。Google 的 Gemini at Work 调查则记载 105 分钟，样本为 18 家企业、3,200 余份问卷，数据汇整于 2024 年 7 月。两者都是自陈数字。
-                </div>
-            </details>
+            {% call faq("员工每周实际能省下多少时间？") %}
+                Forrester 的研究记载平均每位 Gemini 用户每周省下 3 小时，注意是用户而非全体员工。Google 的 Gemini at Work 调查则记载 105 分钟，样本为 18 家企业、3,200 余份问卷，数据汇整于 2024 年 7 月。两者都是自陈数字。
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>这些效益数据有独立第三方的证据吗？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    有。一项针对某 Fortune 500 企业 5,172 名客服人员的实地实验，以每小时解决件数客观量测到生产力提升 15%，技能最低五分位者提升 36%。NBER 的随机对照实验（1,174 名成人）亦显示 AI 缩小教育程度造成的生产力落差，从 0.548 个标准差降至 0.139。这两项研究均非厂商委托。
-                </div>
-            </details>
+            {% call faq("这些效益数据有独立第三方的证据吗？") %}
+                有。一项针对某 Fortune 500 企业 5,172 名客服人员的实地实验，以每小时解决件数客观量测到生产力提升 15%，技能最低五分位者提升 36%。NBER 的随机对照实验（1,174 名成人）亦显示 AI 缩小教育程度造成的生产力落差，从 0.548 个标准差降至 0.139。这两项研究均非厂商委托。
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>为什么自陈的时间节省数字需要打折扣？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    METR 于 2025 年 7 月发表的随机对照试验中，16 名资深开发者在 246 项真实任务上使用 AI 工具时实际慢了 19%，但事后自评认为快了 20%，认知与实际相差近 40 个百分点且方向相反。该研究样本小、领域限于软件开发，且 METR 已将结果标示为历史数据，但它足以说明以问卷询问用户省下多少时间并不可靠。
-                </div>
-            </details>
+            {% call faq("为什么自陈的时间节省数字需要打折扣？") %}
+                METR 于 2025 年 7 月发表的随机对照试验中，16 名资深开发者在 246 项真实任务上使用 AI 工具时实际慢了 19%，但事后自评认为快了 20%，认知与实际相差近 40 个百分点且方向相反。该研究样本小、领域限于软件开发，且 METR 已将结果标示为历史数据，但它足以说明以问卷询问用户省下多少时间并不可靠。
+            {% endcall %}
 
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>那企业该如何判断导入是否值得？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    在自己的组织中量测，而且量测必须在导入之前设计好，否则导入后已无对照组可用。具体做法包括：挑出可客观计数的任务（件数、周期时间、返工率）、在任何人拿到工具之前先取基线、保留对照组或分批导入、并将自陈数字与客观数字分开记录——两者的落差本身就是重要信号。
-                </div>
-            </details>
+            {% call faq("那企业该如何判断导入是否值得？", last=true) %}
+                在自己的组织中量测，而且量测必须在导入之前设计好，否则导入后已无对照组可用。具体做法包括：挑出可客观计数的任务（件数、周期时间、返工率）、在任何人拿到工具之前先取基线、保留对照组或分批导入、并将自陈数字与客观数字分开记录——两者的落差本身就是重要信号。
+            {% endcall %}
 </section>
 
 <section id="measurement">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">06</span> &mdash; Measurement</p>
-            <h2>
+        {% call cover("06", "Measurement") %}
             <span class="display-lead text-display-sm" lang="en">Answer With Measurement</span>
             <span class="display-sub">用量测回答，不要用演示文稿回答</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <p class="text-lg leading-relaxed max-w-prose mb-6">
             把三节的结论放在一起：效益是真的，有客观量测支持；

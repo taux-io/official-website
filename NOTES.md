@@ -448,7 +448,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ---
 
-## 模板結構大改：評估過，前置條件未滿足之前不做
+## 模板結構大改：A 的 cover 與 FAQ 已做
 
 2026-09-26 評估三件事，**在 pqc-migration 上實際改寫、在改寫後的標記裡注入違規**量出來的，不是推測：
 
@@ -458,7 +458,21 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 | **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
 | **C. BreadcrumbList 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | ✅ **已做（#323）**：site.toml 每個 locale 的 `crumb`，generator 以 serde_json 組出節點、當 safe string 交給模板的 `{{ breadcrumb }}`。改動前後 101 頁的 JSON-LD 逐頁 deep-equal、其餘位元組不變。Article 的 `@id`／`mainEntityOfPage` 仍手寫，由 check:entity 的 `page nodes name their canonical` 守著 |
 
-**A 與 B 的前置條件已完成**：四條結構規則改讀建置產物（用文字比對指回原檔），並加了規則 37 禁止 macro 接收 `class`／`href` 參數。用評估時的破壞重測：macro 拿掉 `data-cover`、macro 留一個沒關的 `<div>`、macro 把 class 當參數，現在都紅；macro 產生的 id 被連結時不再誤報。**要不要真的做 A、B 是另一個決定**——B 仍然幾乎不省行數，A 只值得做 cover 與 FAQ。
+**A 與 B 的前置條件已完成**：四條結構規則改讀建置產物（用文字比對指回原檔），並加了規則 37 禁止 macro 接收 `class`／`href` 參數。用評估時的破壞重測：macro 拿掉 `data-cover`、macro 留一個沒關的 `<div>`、macro 把 class 當參數，現在都紅；macro 產生的 id 被連結時不再誤報。
+
+**A 已做，只做 cover 與 FAQ**（CTA 與 hero 不做，理由見上表）。macro 在 `templates/_blocks.html`，用到的頁面第一行 `{% from "_blocks.html" import … -%}`（`-%}` 吃掉 import 那一行留下的換行）：
+
+- `cover(eyebrow=none, label=none, flush=false)`——章節封面。眉標兩種寫法由有沒有 `label` 決定（`01` 用 `font-sans` 的整段，`02 — Tool wrapper` 只有數字是 `font-sans`），`flush=true` 給 h2 加 `mb-0`（adk-skill-patterns）。h2 的內容是 `{% call %}` 的本體，所以雙語的 `display-lead`／`display-sub`、`block text-base` 的副標都留在頁面上、照舊被讀 class 的規則看到
+- `slide_cover()`——claude-skills-guide 的投影片封面（`h2.slide-title`、沒有眉標）
+- `faq(question, last=false)`——FAQ 一題；答案是 call 本體，`last=true` 是最後一題的 `border-b`
+
+轉換前先量了變形：570 個 `<div class="cover" data-cover>` 分成 14 種外殼（眉標：數字、數字加英文名、無；h2：無 class、`mb-0`、`mb-0 relative z-10`、`slide-title`、`eyebrow` 帶 id），另有 7 處在眉標與 h2 之間夾著 HTML 註解（註解移到 call 上方，產生器本來就會剝掉）。**轉了 525 處（`cover` 470、`slide_cover` 55），手寫留下 45 處**：what-is-mcp 五個 locale 的 35 個（h2 本身是 `class="eyebrow"` 還帶 `id`，是單頁的版式）與 data-governance、geo-optimization 的 10 個（h2 是 `mb-0 relative z-10`；兩頁上都沒有絕對定位的東西要它疊過去，看起來是殘留，但拿掉會改變輸出，不在這次範圍）——各為一頁多開一個參數，就是評估時說的「6 個參數的巨集」。FAQ 125 題全轉（兩種變形只差 `border-b`）。`data-cover="sr"` 的 12 個只給螢幕閱讀器的 h2 不是這個外殼，沒動。模板少了約 2,500 行。
+
+**驗收用「產物相同」**：改動前後的 `dist/` 320 個檔，245 個逐位元組相同（全部 100 份 Markdown 在內），75 個 HTML 只差空白——macro 的輸出不知道呼叫處的縮排，所以封面與 FAQ 內部的縮排變了，空白有無不變（連續空白收成一個之後逐字相同）。`styles.min.css` 不變。突變測試：macro 裡拿掉 `data-cover` → `section cover screens` 紅、指向 `_blocks.html` 的行；macro 的 div 加 `rounded-[7px]` → `radius scale` 紅。
+
+**兩道讀原始碼的閘門跟著改了**，否則它們會被 macro 呼叫騙到：`check:classes` 原本把 `{% … %}` 裡所有字串當 class 候選（為了 `_nav-columns.html` 的 `with`），於是 `{% call faq("Why discount self-reported time savings?") %}` 的 `self-reported` 被報成不存在的 class——規則 37 保證 call 的參數不會進 class，所以 `call`／`from`／`import` 標籤跳過。`check:ko` 原本把 `{% … %}` 整段拿掉，那會讓 FAQ 問題裡的引號從 ledger 消失；現在保留 `{% call %}` 的字串參數。ko-quotes 有 4 行的左側上下文因此改寫（引號本身沒變），已重新 record。
+
+**B 沒做**，仍待擁有者決定（見「已知待辦」）：幾乎不省行數。
 
 **C 的四個前置條件都已完成**：JSON 由 Rust 序列化（不經模板插值，autoescape 碰不到）；check:entity 的兩條斷言；首層統一為 `https://taux.io/<locale>`；site.toml 的 `crumb`。
 
@@ -468,7 +482,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ### 需要擁有者決定
 
-- **模板結構大改的 A 與 B。** 前置條件已滿足（check:design 讀建置產物、規則 37）。建議只做 A 的 cover 與 FAQ 兩種 macro；B（base layout）幾乎不省行數，不建議（見「模板結構大改」）
+- **模板結構大改的 B（base layout）。** A 的 cover 與 FAQ 已做；B 幾乎不省行數，建議不做，要做仍需擁有者決定。手寫留下的 45 個封面（what-is-mcp 的 eyebrow 式 h2、data-governance／geo-optimization 的 `relative z-10`）要不要改成一般封面是視覺決定，改了就能進 `cover()`（見「模板結構大改」）
 - **法律頁與兩頁導言框的標題層級。** 目前用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級；改成可見的 h2 就要各開一個封面區塊
 
 ### 有日期

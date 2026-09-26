@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, slide_cover -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: TechArticle -->
@@ -33,9 +34,7 @@
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">核心概念：什么是 Skill？</h2>
-        </div>
+        {% call slide_cover() %}核心概念：什么是 Skill？{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -77,9 +76,7 @@
 
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">阶梯式开发路径 (The Staircase)</h2>
-        </div>
+        {% call slide_cover() %}阶梯式开发路径 (The Staircase){% endcall %}
         <div class="content-area">
             <div class="timeline-layout">
                 <div class="timeline-line"></div>
@@ -117,9 +114,7 @@
 
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">MCP 与 Skills 的强大组合</h2>
-        </div>
+        {% call slide_cover() %}MCP 与 Skills 的强大组合{% endcall %}
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
@@ -142,9 +137,7 @@
 
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">三大核心应用场景 (Use Cases)</h2>
-        </div>
+        {% call slide_cover() %}三大核心应用场景 (Use Cases){% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="image-tile">
@@ -200,9 +193,7 @@
 
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">YAML 撰写准则：决定生死的第一线</h2>
-        </div>
+        {% call slide_cover() %}YAML 撰写准则：决定生死的第一线{% endcall %}
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
@@ -230,9 +221,7 @@
 
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">指令设计的最佳实践 (Best Practices)</h2>
-        </div>
+        {% call slide_cover() %}指令设计的最佳实践 (Best Practices){% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
@@ -259,9 +248,7 @@
 
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">实战案例一：Code Review 助手</h2>
-        </div>
+        {% call slide_cover() %}实战案例一：Code Review 助手{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -300,9 +287,7 @@
 
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">实战案例二：串接 MCP 的自动化</h2>
-        </div>
+        {% call slide_cover() %}实战案例二：串接 MCP 的自动化{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -342,18 +327,14 @@
     <div class="slide-container dark-theme" id="slide10">
         <div class="section-title-layout">
             <hr>
-            <div class="cover" data-cover>
-                <h2>测试与验证阶段</h2>
-            </div>
+            {% call cover() %}测试与验证阶段{% endcall %}
             <p>「先在单一任务上确保 Claude 能完美执行，再将该成功模式提取并封装为 Skill。」</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">全面测试指南：三个关键维度</h2>
-        </div>
+        {% call slide_cover() %}全面测试指南：三个关键维度{% endcall %}
         <div class="content-area">
             <div class="table-layout">
                 <table>
@@ -388,9 +369,7 @@
 
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">高级设计：五大常见专家模式</h2>
-        </div>
+        {% call slide_cover() %}高级设计：五大常见专家模式{% endcall %}
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
@@ -412,9 +391,7 @@
     <!-- Slide 13: Bleed_Image_Right -->
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
-            <div class="cover" data-cover>
-                <h2 class="slide-title">最终步：封装与发布</h2>
-            </div>
+            {% call slide_cover() %}最终步：封装与发布{% endcall %}
             <div class="content-area">
                 <div class="bleed-text-side">
                     <p><strong>打包与安装：</strong>完成测试后，将文档夹压缩为 <code>.zip</code>。个人用户可透过 Claude.ai 上传；企业团队管理员则可将其布署至整个
@@ -471,9 +448,7 @@
     <!-- Slide 14: Q&A -->
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
-            <div class="cover" data-cover>
-                <h2>准备好打造专属 Skill 了吗？</h2>
-            </div>
+            {% call cover() %}准备好打造专属 Skill 了吗？{% endcall %}
             <p>「用知识驱动工具，让自动化成为团队标准」</p>
             <div class="contact-info">
                 <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i> 善用内置的 skill-creator 快速起步！

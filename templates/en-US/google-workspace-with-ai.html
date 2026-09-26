@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: BreadcrumbList + Article.
@@ -172,12 +173,9 @@
         </header>
 
 <section id="vendor-figures">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; Vendor figures</p>
-            <h2>
+        {% call cover("01", "Vendor figures") %}
             <span class="display-lead text-display-sm">What the Vendors Claim</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-4">
             These four are the most widely quoted. We went back to each original source.
             <strong class="font-normal">Every figure checks out</strong> — but several of the widely circulated paraphrases do not match the source, and those are flagged below.
@@ -253,12 +251,9 @@
 </section>
 
 <section id="independent-evidence">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Independent research</p>
-            <h2>
+        {% call cover("02", "Independent research") %}
             <span class="display-lead text-display-sm">The Gains Are Real</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">
             If only the vendor said it worked, the conclusion here would be "cannot tell". But independent research does find a benefit,
             and it does so with <strong class="font-normal">objective measurement rather than a questionnaire</strong>.
@@ -309,12 +304,9 @@
 </section>
 
 <section id="how-it-was-measured">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; How it was measured</p>
-            <h2>
+        {% call cover("03", "How it was measured") %}
             <span class="display-lead text-display-sm">Self-Reported Time Is Unreliable</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">
             This is the most important section here. Every vendor figure above
             is <strong class="font-normal">self-reported, or modelled on self-report</strong> — and self-report is precisely what the study below shows to be unreliable.
@@ -364,91 +356,35 @@
      an exchange that only exists in the structured data misrepresents the page,
      which on this page in particular would be self-defeating. -->
 <section id="questions">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; Questions</p>
-            <h2>
+        {% call cover("05", "Questions") %}
             <span class="display-lead text-display-sm">Common Questions</span>
-        </h2>
-        </div>
+        {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is the ROI on Google Workspace AI?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Forrester  published a Google-commissioned TEI study in February 2026 reporting a three-year ROI of 416%, net present value of US$123.7m and payback under six months. Those figures rest on interviews with six decision-makers at five organisations, projected onto a hypothetical composite organisation of 20,000 people — so it is a financial model rather than a measurement.
-                </div>
-            </details>
+            {% call faq("What is the ROI on Google Workspace AI?") %}
+                Forrester  published a Google-commissioned TEI study in February 2026 reporting a three-year ROI of 416%, net present value of US$123.7m and payback under six months. Those figures rest on interviews with six decision-makers at five organisations, projected onto a hypothetical composite organisation of 20,000 people — so it is a financial model rather than a measurement.
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>How much time does it actually save per week?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Forrester  records three hours a week for the average Gemini user — user, not employee. Google's Gemini at Work survey records 105 minutes, from 18 companies and just over 3,200 responses, compiled in July 2024. Both are self-reported.
-                </div>
-            </details>
+            {% call faq("How much time does it actually save per week?") %}
+                Forrester  records three hours a week for the average Gemini user — user, not employee. Google's Gemini at Work survey records 105 minutes, from 18 companies and just over 3,200 responses, compiled in July 2024. Both are self-reported.
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Is there independent evidence for these benefits?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Yes. A field experiment with 5,172 support agents at a Fortune 500 company measured a 15% productivity gain by issues resolved per hour, rising to 36% for the lowest-skilled quintile. An NBER randomised controlled trial with 1,174 adults found AI narrowed the productivity gap attributable to education from 0.548 standard deviations to 0.139. Neither was vendor-commissioned.
-                </div>
-            </details>
+            {% call faq("Is there independent evidence for these benefits?") %}
+                Yes. A field experiment with 5,172 support agents at a Fortune 500 company measured a 15% productivity gain by issues resolved per hour, rising to 36% for the lowest-skilled quintile. An NBER randomised controlled trial with 1,174 adults found AI narrowed the productivity gap attributable to education from 0.548 standard deviations to 0.139. Neither was vendor-commissioned.
+            {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Why discount self-reported time savings?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    METR  ran a randomised controlled trial in July 2025 in which 16 experienced developers were 19% slower on 246 real tasks while using AI tools — and believed afterwards they had been 20% faster. Perception and reality differed by nearly forty percentage points, in opposite directions. The sample is small, the domain is software, and METR has marked the result historical; it is still enough to show that asking users how much time they saved is not a reliable measurement.
-                </div>
-            </details>
+            {% call faq("Why discount self-reported time savings?") %}
+                METR  ran a randomised controlled trial in July 2025 in which 16 experienced developers were 19% slower on 246 real tasks while using AI tools — and believed afterwards they had been 20% faster. Perception and reality differed by nearly forty percentage points, in opposite directions. The sample is small, the domain is software, and METR has marked the result historical; it is still enough to show that asking users how much time they saved is not a reliable measurement.
+            {% endcall %}
 
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>So how should a company decide?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Measure it in your own organisation, and design the measurement before the rollout — afterwards there is no control group left. In practice: pick tasks you can count objectively (volume, cycle time, rework rate), take a baseline before anyone gets the tool, keep a control group or roll out in waves, and record self-reported and objective figures separately. The gap between those two is itself an important signal.
-                </div>
-            </details>
+            {% call faq("So how should a company decide?", last=true) %}
+                Measure it in your own organisation, and design the measurement before the rollout — afterwards there is no control group left. In practice: pick tasks you can count objectively (volume, cycle time, rework rate), take a baseline before anyone gets the tool, keep a control group or roll out in waves, and record self-reported and objective figures separately. The gap between those two is itself an important signal.
+            {% endcall %}
 </section>
 
 <section id="measurement">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">06</span> &mdash; Measurement</p>
-            <h2>
+        {% call cover("06", "Measurement") %}
             <span class="display-lead text-display-sm">Answer With Measurement</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <p class="text-lg leading-relaxed max-w-prose mb-6">
             Putting the three sections together: the benefit is real and objectively measured;

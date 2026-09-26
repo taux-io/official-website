@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -27,11 +28,8 @@
         </header>
         <!-- Section 1 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2 class="mb-0">llms.txt とは何か
-            </h2>
-            </div>
+            {% call cover("01", flush=true) %}llms.txt とは何か
+            {% endcall %}
             <div class="space-y-6">
                 <p class="text-lg leading-relaxed max-w-prose">
                     ねらいは、サイト運営者が「どう使ってよいか」をはっきり書けるようにすることです。<strong class="font-semibold">学習・要約・書き換え・引用</strong>を許すのか、制限するのか。正式な業界標準にはまだなっていませんが、AI による
@@ -74,11 +72,8 @@
 
         <!-- Section 2 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2 class="mb-0">書き方の例
-            </h2>
-            </div>
+            {% call cover("02", flush=true) %}書き方の例
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
                     <h3 class="mb-6 flex items-center">
@@ -138,11 +133,8 @@
 
         <!-- Section 3 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2 class="mb-0">なぜ llms.txt が要るのか
-            </h2>
-            </div>
+            {% call cover("03", flush=true) %}なぜ llms.txt が要るのか
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
 <h3 class="mb-3">知的財産を守る</h3>
@@ -165,10 +157,7 @@
 
         <!-- FAQ Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>よくある質問</h2>
-            </div>
+            {% call cover("04") %}よくある質問{% endcall %}
             <div class="space-y-4">
                 <details class="group py-2 cursor-pointer">
                     <summary class="font-semibold text-lg list-none flex justify-between items-center">
@@ -205,9 +194,7 @@
         <!-- CTA -->
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>サイトのコンテンツを守りたい方へ</h2>
-                </div>
+                {% call cover() %}サイトのコンテンツを守りたい方へ{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">御社に合った GEO の方針と、AI 向けの設定ファイルの用意までお手伝いします。</p>
 
                 <div class="flex flex-col mobile:flex-row gap-4">

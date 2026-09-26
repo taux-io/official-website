@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include"header.html" %}
 
 <!-- Article, breadcrumb and FAQ schema. This page carried the FAQ alone, so it
@@ -42,10 +43,7 @@
         </header>
         <!-- Concept Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>用「費曼技巧」看懂原理</h2>
-            </div>
+            {% call cover("01") %}用「費曼技巧」看懂原理{% endcall %}
 
             <div class="relative overflow-hidden border-t border-line pt-4">
                 <h3 class="mb-2"> 想像你在玩「西蒙說 (Simon Says)」...
@@ -96,10 +94,7 @@
 
         <!-- Attack Types -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>常見的攻擊類型</h2>
-            </div>
+            {% call cover("02") %}常見的攻擊類型{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
 <h3 class="mb-3">直接注入 (Direct Injection)</h3>
@@ -135,10 +130,7 @@
 
         <!-- Defense Strategy -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>我們該如何防禦？</h2>
-            </div>
+            {% call cover("03") %}我們該如何防禦？{% endcall %}
             <div class="space-y-6">
                 <div class="border-line ps-5 py-2 flex items-start border-s border-line">
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
@@ -180,56 +172,21 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>常見問題</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>什麼是 Prompt Injection (提示詞注入)？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Prompt Injection 是一種欺騙大型語言模型 (LLM) 的攻擊技術。攻擊者通過輸入精心設計的文字（提示詞），偽裝成系統指令，誘使 AI 忽略開發者設定的安全規則，轉而執行惡意操作，例如洩露個資或散布錯誤資訊。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Prompt Injection 和越獄 (Jailbreak) 有什麼不同？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    「越獄」通常指繞過 AI 的道德審查（如讓它說髒話），主要影響輸出內容；而「提示詞注入」則更廣泛，可能操控 AI 的系統邏輯，甚至讓 AI 去執行危險的外部指令（如刪除檔案、發送釣魚郵件）。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>如何防範 Prompt Injection？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    沒有單一完美的解法，目前最有效的是「縱深防禦」：包括使用特殊符號隔離使用者輸入、過濾關鍵字、以及使用另一個 AI 模型來監督輸出的安全性。
-                </div>
-            </details>
+            {% call cover("04") %}常見問題{% endcall %}
+            {% call faq("什麼是 Prompt Injection (提示詞注入)？") %}
+                Prompt Injection 是一種欺騙大型語言模型 (LLM) 的攻擊技術。攻擊者通過輸入精心設計的文字（提示詞），偽裝成系統指令，誘使 AI 忽略開發者設定的安全規則，轉而執行惡意操作，例如洩露個資或散布錯誤資訊。
+            {% endcall %}
+            {% call faq("Prompt Injection 和越獄 (Jailbreak) 有什麼不同？") %}
+                「越獄」通常指繞過 AI 的道德審查（如讓它說髒話），主要影響輸出內容；而「提示詞注入」則更廣泛，可能操控 AI 的系統邏輯，甚至讓 AI 去執行危險的外部指令（如刪除檔案、發送釣魚郵件）。
+            {% endcall %}
+            {% call faq("如何防範 Prompt Injection？", last=true) %}
+                沒有單一完美的解法，目前最有效的是「縱深防禦」：包括使用特殊符號隔離使用者輸入、過濾關鍵字、以及使用另一個 AI 模型來監督輸出的安全性。
+            {% endcall %}
         </section>
 
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>擔心您的 AI 應用不安全？</h2>
-                </div>
+                {% call cover() %}擔心您的 AI 應用不安全？{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">TauX 提供專業的 LLM
                     安全檢測與紅隊演練服務，協助您找出潛在漏洞。</p>
 

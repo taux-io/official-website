@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -78,10 +79,7 @@
              hundreds of posts. What is almost never said is where they come
              from and what that bounds them to. -->
         <section id="how-to-read">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>Read it right, then look at the numbers</h2>
-            </div>
+            {% call cover("00") %}Read it right, then look at the numbers{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     The numbers are worth reading and they are not a census. <strong>A vendor threat report is built from that vendor's own product telemetry and incident response caseload</strong>, so the population is its customer base — organisations running EDR, which mostly means organisations with the budget to.
@@ -99,10 +97,7 @@
         </section>
 
         <section id="numbers">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>The eight numbers</h2>
-            </div>
+            {% call cover("01") %}The eight numbers{% endcall %}
             <p class="leading-relaxed mb-5">
                 All figures are from the public pages of the CrowdStrike 2026 Global Threat Report, covering observations from 2025.
             </p>
@@ -153,10 +148,7 @@
         </section>
 
         <section id="speed">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>Speed: 27 seconds and +65%</h2>
-            </div>
+            {% call cover("02") %}Speed: 27 seconds and +65%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">What it measures</p>
@@ -177,10 +169,7 @@
         </section>
 
         <section id="malware-free">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>Malware-free: 82%</h2>
-            </div>
+            {% call cover("03") %}Malware-free: 82%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">What it measures</p>
@@ -209,10 +198,7 @@
         </section>
 
         <section id="ai">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>AI-assisted attacks: +89%, 90+, +550%</h2>
-            </div>
+            {% call cover("04") %}AI-assisted attacks: +89%, 90+, +550%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">What it measures</p>
@@ -241,10 +227,7 @@
         </section>
 
         <section id="nation-state">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">05</p>
-                <h2>Nation-state actors: 40% and +266%</h2>
-            </div>
+            {% call cover("05") %}Nation-state actors: 40% and +266%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">What it measures</p>
@@ -263,10 +246,7 @@
         </section>
 
         <section id="what-it-means">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">06</p>
-                <h2>What it means for defenders</h2>
-            </div>
+            {% call cover("06") %}What it means for defenders{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     Discount every caveat above and the direction still holds, because none of it depends on a percentage being exact:
@@ -290,69 +270,23 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2>Common questions</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>CrowdStrike 2026 Global Threat Report — what are the headline numbers?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    From the report's public pages: fastest eCrime breakout time of 27 seconds; attacks by AI-assisted adversaries up 89%; 82% of 2025 detections malware-free; more than 90 organisations with legitimate AI tools abused to generate malicious instructions; ChatGPT mentioned on criminal forums 550% more than any other model; average breakout speed up 65% year on year; 40% of vulnerabilities exploited by China-nexus actors aimed at edge devices; cloud-directed intrusions by nation-state actors up 266%.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is breakout time, and what does 27 seconds mean?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Breakout time is how long an attacker takes to move from the first host they compromise to a second one. It measures the defender's budget: detection, triage and containment must all fit inside it. 27 seconds is the fastest recorded, not an average — reading it as an average badly misstates your position. What it honestly bounds is the worst case, and any response process that waits for a human to look first does not fit inside that.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Why were 82% of detections malware-free, and how should that be read?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    It reflects two things at once. Attackers genuinely write fewer malicious files, relying on legitimate tooling and stolen credentials instead. And detection capability itself: seeing fileless behaviour is exactly what EDR is sold on. The figure comes from CrowdStrike's own detection telemetry, so the population is environments that run it. It reliably describes what you see in an EDR-equipped environment, and does not extrapolate to the global composition of attacks. The practical conclusion is unchanged: signature-based antivirus does not cover most of what gets detected.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Can vendor threat reports be trusted?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Yes, provided you know what they measure. The data usually comes from the vendor's own product telemetry and incident response caseload, so the population is its customers rather than all organisations. That is not an accusation of dishonesty; it means every figure carries three conditions — the environment it was measured in, the tool that measured it, and what that tool can see. Use them as intelligence on trend and technique, not as the statistical basis for your own risk.
-                </div>
-            </details>
+            {% call cover("07") %}Common questions{% endcall %}
+            {% call faq("CrowdStrike 2026 Global Threat Report — what are the headline numbers?") %}
+                From the report's public pages: fastest eCrime breakout time of 27 seconds; attacks by AI-assisted adversaries up 89%; 82% of 2025 detections malware-free; more than 90 organisations with legitimate AI tools abused to generate malicious instructions; ChatGPT mentioned on criminal forums 550% more than any other model; average breakout speed up 65% year on year; 40% of vulnerabilities exploited by China-nexus actors aimed at edge devices; cloud-directed intrusions by nation-state actors up 266%.
+            {% endcall %}
+            {% call faq("What is breakout time, and what does 27 seconds mean?") %}
+                Breakout time is how long an attacker takes to move from the first host they compromise to a second one. It measures the defender's budget: detection, triage and containment must all fit inside it. 27 seconds is the fastest recorded, not an average — reading it as an average badly misstates your position. What it honestly bounds is the worst case, and any response process that waits for a human to look first does not fit inside that.
+            {% endcall %}
+            {% call faq("Why were 82% of detections malware-free, and how should that be read?") %}
+                It reflects two things at once. Attackers genuinely write fewer malicious files, relying on legitimate tooling and stolen credentials instead. And detection capability itself: seeing fileless behaviour is exactly what EDR is sold on. The figure comes from CrowdStrike's own detection telemetry, so the population is environments that run it. It reliably describes what you see in an EDR-equipped environment, and does not extrapolate to the global composition of attacks. The practical conclusion is unchanged: signature-based antivirus does not cover most of what gets detected.
+            {% endcall %}
+            {% call faq("Can vendor threat reports be trusted?", last=true) %}
+                Yes, provided you know what they measure. The data usually comes from the vendor's own product telemetry and incident response caseload, so the population is its customers rather than all organisations. That is not an accusation of dishonesty; it means every figure carries three conditions — the environment it was measured in, the tool that measured it, and what that tool can see. Use them as intelligence on trend and technique, not as the statistical basis for your own risk.
+            {% endcall %}
         </section>
 
         <section id="source">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Source and limits</p>
-                <h2>Where these numbers come from</h2>
-            </div>
+            {% call cover("Source and limits") %}Where these numbers come from{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     All figures are taken from the public pages of the
@@ -369,9 +303,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>Want to know what this means for your environment?</h2>
-            </div>
+            {% call cover() %}Want to know what this means for your environment?{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 The report describes a global picture. What you need is your own asset list and exposure — which starts with an inventory.
             </p>

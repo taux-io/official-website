@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -92,10 +93,7 @@
              carrier of meaning anyway. Every role below is a word.
              ================================================================== -->
         <section id="concepts">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>Three concepts to get straight first</h2>
-            </div>
+            {% call cover("01") %}Three concepts to get straight first{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     This page describes <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> (MIT licence), version <strong>1.2.3</strong>, with 25 published skills. <strong>These skills are not TauX's work</strong>; this guide is. Every test, pitfall and scenario below was written by us after reading the official documentation and the issues. It is neither a translation nor a reproduction.
@@ -227,10 +225,7 @@
              02 · Install
              ================================================================== -->
         <section id="install">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>Installing: two routes, pick one</h2>
-            </div>
+            {% call cover("02") %}Installing: two routes, pick one{% endcall %}
             <p class="leading-relaxed mb-5">
                 Two installation methods, two philosophies. <strong>Install both and you have two copies of every skill.</strong>
             </p>
@@ -261,10 +256,7 @@
              03 · Setup
              ================================================================== -->
         <section id="setup">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>Setup, once per repo</h2>
-            </div>
+            {% call cover("03") %}Setup, once per repo{% endcall %}
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> is <strong>a precondition for every engineering skill, not a step in the flow</strong>.
             </p>
@@ -348,10 +340,7 @@ gh label create enhancement</code></pre>
              and the whole table is 25 rows.
              ================================================================== -->
         <section id="map">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>All 25, mapped</h2>
-            </div>
+            {% call cover("04") %}All 25, mapped{% endcall %}
             <p class="leading-relaxed mb-5">
                 The dependency column is the one that matters in practice — <strong>with a dependency missing, a skill degrades quietly into improvisation.</strong>
             </p>
@@ -408,10 +397,7 @@ gh label create enhancement</code></pre>
              05 · The main flow, seven steps.
              ================================================================== -->
         <section id="main-flow">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">05</p>
-                <h2>The seven steps, worked through</h2>
-            </div>
+            {% call cover("05") %}The seven steps, worked through{% endcall %}
             <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-2">The worked example</p>
                 <p class="leading-relaxed">An internal tools repo (Next.js and Postgres) needs a contract-expiry reminder: list contracts expiring within 30 days, email the owner, show a red dot in the admin panel. It crosses schema, API, UI and mail. It is broad enough to be worth the full flow.</p>
@@ -711,10 +697,7 @@ gh label create enhancement</code></pre>
              role is the eyebrow here.
              ================================================================== -->
         <section id="situations">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">06</p>
-                <h2>By situation: which skill to reach for</h2>
-            </div>
+            {% call cover("06") %}By situation: which skill to reach for{% endcall %}
             <p class="leading-relaxed mb-6">
                 Everything off the main line is a branch you take in a specific situation. Ordered here by <strong>the situation you are in</strong>.
             </p>
@@ -1034,10 +1017,7 @@ gh label create enhancement</code></pre>
              07 · Scenarios
              ================================================================== -->
         <section id="scenarios">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2>Four worked scenarios</h2>
-            </div>
+            {% call cover("07") %}Four worked scenarios{% endcall %}
             <p class="leading-relaxed mb-6">The main-line example is in <a href="#main-flow" class="underline">section 05</a>. These are the four next most common situations.</p>
 
             <div class="space-y-12">
@@ -1114,10 +1094,7 @@ gh label create enhancement</code></pre>
              in its own column here.
              ================================================================== -->
         <section id="pitfalls">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">08</p>
-                <h2>Known pitfalls</h2>
-            </div>
+            {% call cover("08") %}Known pitfalls{% endcall %}
             <p class="leading-relaxed mb-5">
                 Ordered by the symptom you notice first. <strong>Serious</strong> means it costs you money or time.
             </p>
@@ -1173,10 +1150,7 @@ gh label create enhancement</code></pre>
              09 · CLAUDE.md
              ================================================================== -->
         <section id="claude-md">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">09</p>
-                <h2>Suggested lines for your own instruction file</h2>
-            </div>
+            {% call cover("09") %}Suggested lines for your own instruction file{% endcall %}
             <p class="leading-relaxed mb-6">
                 This is customisation through the supported route — <strong>edits to a skill file get overwritten; these do not</strong>. Copy the whole block into your <code>CLAUDE.md</code> or <code>AGENTS.md</code>.
             </p>
@@ -1207,10 +1181,7 @@ gh label create enhancement</code></pre>
              10 · Vocabulary
              ================================================================== -->
         <section id="vocabulary">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">10</p>
-                <h2>Vocabulary</h2>
-            </div>
+            {% call cover("10") %}Vocabulary{% endcall %}
             <p class="leading-relaxed mb-5">
                 These are the shared language of the whole pack. <strong>Without them, the output of a skill will not read.</strong>
             </p>
@@ -1256,10 +1227,7 @@ gh label create enhancement</code></pre>
              11 · Antipatterns
              ================================================================== -->
         <section id="antipatterns">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">11</p>
-                <h2>Seven antipatterns</h2>
-            </div>
+            {% call cover("11") %}Seven antipatterns{% endcall %}
             <p class="leading-relaxed mb-5">The most common ways this gets used wrong.</p>
             <ol class="space-y-6 leading-relaxed">
                 <li><strong>Passive grilling.</strong> Forty "agreed"s and out comes a plan the agent wrote and you nodded at. <strong>A session you never pushed back in is a session you did not need.</strong></li>
@@ -1280,10 +1248,7 @@ gh label create enhancement</code></pre>
              12 · 14-day plan
              ================================================================== -->
         <section id="plan">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">12</p>
-                <h2>A 14-day learning plan</h2>
-            </div>
+            {% call cover("12") %}A 14-day learning plan{% endcall %}
             <p class="leading-relaxed mb-5">About 30 to 60 minutes a day, <strong>on a real project of your own</strong>.</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -1325,10 +1290,7 @@ gh label create enhancement</code></pre>
              block into the line beside each command.
              ================================================================== -->
         <section id="cheatsheet">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">13</p>
-                <h2>One-page cheatsheet</h2>
-            </div>
+            {% call cover("13") %}One-page cheatsheet{% endcall %}
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-3">Once per repo</p>
@@ -1390,69 +1352,23 @@ gh label create enhancement</code></pre>
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">14</p>
-                <h2>Common questions</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is the difference between a user-invoked and a model-invoked skill?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    This is the only classification axis in the whole pack. A user-invoked skill can only be typed by a human, no other skill may call it, its description is written for people, and its role is orchestrator: it decides how the flow runs. A model-invoked skill can be typed too, and the agent will also reach for it on its own; its description is written for the model, and its role is a discipline library. The rule is that user-invoked may call model-invoked, but never another user-invoked. One common side effect: the harness does not put user-invoked skills in the list injected into the model, so the agent often reports that these skills are not installed. They are installed. Type it anyway.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is a tracer bullet, and why is horizontal slicing wrong?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    A tracer bullet is a thin but complete path through every layer — schema, API, UI, tests — that can be demoed on its own the moment it lands. A horizontal slice delivers one layer at a time: all the schema in one ticket, all the API in another. The problem is that nothing works until every layer is in place, and the acceptance criteria have to reach into work another ticket owns. The measured cost: one team used 26 layer-sliced tickets and averaged 20 agent runs to close each one, roughly three quarters of it rework, and their own retrospective traced every class of failure to horizontal slicing rather than implementation quality. The test is one sentence: what can I demo when this ticket is done? If you cannot name a behaviour, it is a horizontal slice.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Why run code review in a separate session?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Reviewing your own code in the same context is confirmation bias with a slash command attached — an agent that wrote the code favours its own solution. Three more things go with that: the review looks at the diff &lt;fixed-point&gt;...HEAD, excluding staged and working-tree changes, so commit before reviewing. Findings are hypotheses rather than evidence: the sub-agent does not verify each one against the files, so a citation may point at the wrong place — read it before acting. And every run finds something new, because changes create new surface and the judgement half is not deterministic. There is no convergence guarantee: treat a pass as a list of leads, act on the ones backed by a written rule, and stop.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What are the most common ways to misuse these skills?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Seven. Passive grilling — forty agreed-with-that answers producing a plan you nodded at in which nothing was actually decided. Clearing or compacting between to-spec and to-tickets, when almost everything you worked out lives only in that context window. Running triage on tickets you generated yourself. Reaching for wayfinder on a well-scoped feature, when the test is session count rather than project size. Using a vocabulary skill as a driver. Running the review in the same session as the coding. And customising by editing SKILL.md, which updates overwrite and plugin installs make read-only — long-term behaviour belongs in your own instruction file. There is also a meta-antipattern: treating the process as a substitute for thinking. Output quality tracks the quality of your answers, not the number of questions.
-                </div>
-            </details>
+            {% call cover("14") %}Common questions{% endcall %}
+            {% call faq("What is the difference between a user-invoked and a model-invoked skill?") %}
+                This is the only classification axis in the whole pack. A user-invoked skill can only be typed by a human, no other skill may call it, its description is written for people, and its role is orchestrator: it decides how the flow runs. A model-invoked skill can be typed too, and the agent will also reach for it on its own; its description is written for the model, and its role is a discipline library. The rule is that user-invoked may call model-invoked, but never another user-invoked. One common side effect: the harness does not put user-invoked skills in the list injected into the model, so the agent often reports that these skills are not installed. They are installed. Type it anyway.
+            {% endcall %}
+            {% call faq("What is a tracer bullet, and why is horizontal slicing wrong?") %}
+                A tracer bullet is a thin but complete path through every layer — schema, API, UI, tests — that can be demoed on its own the moment it lands. A horizontal slice delivers one layer at a time: all the schema in one ticket, all the API in another. The problem is that nothing works until every layer is in place, and the acceptance criteria have to reach into work another ticket owns. The measured cost: one team used 26 layer-sliced tickets and averaged 20 agent runs to close each one, roughly three quarters of it rework, and their own retrospective traced every class of failure to horizontal slicing rather than implementation quality. The test is one sentence: what can I demo when this ticket is done? If you cannot name a behaviour, it is a horizontal slice.
+            {% endcall %}
+            {% call faq("Why run code review in a separate session?") %}
+                Reviewing your own code in the same context is confirmation bias with a slash command attached — an agent that wrote the code favours its own solution. Three more things go with that: the review looks at the diff &lt;fixed-point&gt;...HEAD, excluding staged and working-tree changes, so commit before reviewing. Findings are hypotheses rather than evidence: the sub-agent does not verify each one against the files, so a citation may point at the wrong place — read it before acting. And every run finds something new, because changes create new surface and the judgement half is not deterministic. There is no convergence guarantee: treat a pass as a list of leads, act on the ones backed by a written rule, and stop.
+            {% endcall %}
+            {% call faq("What are the most common ways to misuse these skills?", last=true) %}
+                Seven. Passive grilling — forty agreed-with-that answers producing a plan you nodded at in which nothing was actually decided. Clearing or compacting between to-spec and to-tickets, when almost everything you worked out lives only in that context window. Running triage on tickets you generated yourself. Reaching for wayfinder on a well-scoped feature, when the test is session count rather than project size. Using a vocabulary skill as a driver. Running the review in the same session as the coding. And customising by editing SKILL.md, which updates overwrite and plugin installs make read-only — long-term behaviour belongs in your own instruction file. There is also a meta-antipattern: treating the process as a substitute for thinking. Output quality tracks the quality of your answers, not the number of questions.
+            {% endcall %}
         </section>
 
         <section id="source">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Sources</p>
-                <h2>What this tutorial is based on</h2>
-            </div>
+            {% call cover("Sources") %}What this tutorial is based on{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     Based on the <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>version 1.2.3</strong>, covering the 25 published skills. Written and rewritten after reading that repo's <code>README.md</code>, <code>CONTEXT.md</code>, all 25 official skill documents, <code>.claude-plugin/plugin.json</code>, and <code>CHANGELOG.md</code>. The repo is released under the <strong>MIT</strong> licence.
@@ -1471,9 +1387,7 @@ gh label create enhancement</code></pre>
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>Want this flow inside your own team?</h2>
-            </div>
+            {% call cover() %}Want this flow inside your own team?{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 The tools are public. The hard part is wiring them into the tracker, the standards, and the delivery rhythm you already have. That part we have done before.
             </p>

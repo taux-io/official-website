@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -89,10 +90,7 @@
              carrier of meaning anyway. Every role below is a word.
              ================================================================== -->
         <section id="concepts">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>先建立三个底层观念</h2>
-            </div>
+            {% call cover("01") %}先建立三个底层观念{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     本页描述的是 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT 授权）第 <strong>1.2.3</strong> 版，25 支已发布的 skill。<strong>这套 skill 不是 TauX 的作品</strong>；这篇教学是。下面所有的判准、坑与剧本都是我们读完官方文档与 issue 之后重新编写的中文教材，不是翻译，也不是转载。
@@ -224,10 +222,7 @@
              02 · Install
              ================================================================== -->
         <section id="install">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>安装：两条路，选一条</h2>
-            </div>
+            {% call cover("02") %}安装：两条路，选一条{% endcall %}
             <p class="leading-relaxed mb-5">
                 两种安装方式代表两种哲学。<strong>装两次会让你每个 skill 都有两份。</strong>
             </p>
@@ -258,10 +253,7 @@
              03 · Setup
              ================================================================== -->
         <section id="setup">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>前置设置，每个 repo 跑一次</h2>
-            </div>
+            {% call cover("03") %}前置设置，每个 repo 跑一次{% endcall %}
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> 是所有 engineering skill 的<strong>前置条件，不是流程的一步</strong>。
             </p>
@@ -345,10 +337,7 @@ gh label create enhancement</code></pre>
              and the whole table is 25 rows.
              ================================================================== -->
         <section id="map">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>全套 25 支地图</h2>
-            </div>
+            {% call cover("04") %}全套 25 支地图{% endcall %}
             <p class="leading-relaxed mb-5">
                 「硬依赖」那一栏是实战重点——<strong>依赖没装，skill 会安静地退化成一场即兴表演。</strong>
             </p>
@@ -405,10 +394,7 @@ gh label create enhancement</code></pre>
              05 · The main flow, seven steps.
              ================================================================== -->
         <section id="main-flow">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">05</p>
-                <h2>主干七步，逐步实作</h2>
-            </div>
+            {% call cover("05") %}主干七步，逐步实作{% endcall %}
             <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-2">贯穿案例</p>
                 <p class="leading-relaxed">内部工具 repo（Next.js 加 Postgres），要加「合约到期提醒」——列出 30 天内到期的合约、寄信给负责人、后台显示红点。跨 schema、API、UI 与寄信，够广，值得走完整流程。</p>
@@ -708,10 +694,7 @@ gh label create enhancement</code></pre>
              role is the eyebrow here.
              ================================================================== -->
         <section id="situations">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">06</p>
-                <h2>情境索引，什么时候抓哪一支</h2>
-            </div>
+            {% call cover("06") %}情境索引，什么时候抓哪一支{% endcall %}
             <p class="leading-relaxed mb-6">
                 主干以外的 skill 都是「特定情况才岔出去」。这里按<strong>你的处境</strong>排列。
             </p>
@@ -1031,10 +1014,7 @@ gh label create enhancement</code></pre>
              07 · Scenarios
              ================================================================== -->
         <section id="scenarios">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2>四个完整剧本</h2>
-            </div>
+            {% call cover("07") %}四个完整剧本{% endcall %}
             <p class="leading-relaxed mb-6">主干案例在 <a href="#main-flow" class="underline">第 05 节</a>。这里是另外四个最常见的处境。</p>
 
             <div class="space-y-12">
@@ -1111,10 +1091,7 @@ gh label create enhancement</code></pre>
              in its own column here.
              ================================================================== -->
         <section id="pitfalls">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">08</p>
-                <h2>已知坑总表</h2>
-            </div>
+            {% call cover("08") %}已知坑总表{% endcall %}
             <p class="leading-relaxed mb-5">
                 依「你会先看到的症状」排列。<strong>严重</strong>代表会浪费你钱或时间。
             </p>
@@ -1170,10 +1147,7 @@ gh label create enhancement</code></pre>
              09 · CLAUDE.md
              ================================================================== -->
         <section id="claude-md">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">09</p>
-                <h2>建议放进你自己的指令档</h2>
-            </div>
+            {% call cover("09") %}建议放进你自己的指令档{% endcall %}
             <p class="leading-relaxed mb-6">
                 这是「用官方管道客制」的方式——<strong>改 skill 档会被覆盖，这里不会</strong>。整段可以直接复制进你的 <code>CLAUDE.md</code> 或 <code>AGENTS.md</code>。
             </p>
@@ -1204,10 +1178,7 @@ gh label create enhancement</code></pre>
              10 · Vocabulary
              ================================================================== -->
         <section id="vocabulary">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">10</p>
-                <h2>核心词汇</h2>
-            </div>
+            {% call cover("10") %}核心词汇{% endcall %}
             <p class="leading-relaxed mb-5">
                 这些词是整套 skill 的共用语言。<strong>看不懂它们，skill 的输出你就读不懂。</strong>
             </p>
@@ -1253,10 +1224,7 @@ gh label create enhancement</code></pre>
              11 · Antipatterns
              ================================================================== -->
         <section id="antipatterns">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">11</p>
-                <h2>七种反模式</h2>
-            </div>
+            {% call cover("11") %}七种反模式{% endcall %}
             <p class="leading-relaxed mb-5">这套东西最常被用坏的方式。</p>
             <ol class="space-y-6 leading-relaxed">
                 <li><strong>被动 grilling。</strong>连答四十个「同意」，出来一份 agent 写的、你点头过的计划。<strong>一场你完全没推回去的 session，是一场你不需要的 session。</strong></li>
@@ -1277,10 +1245,7 @@ gh label create enhancement</code></pre>
              12 · 14-day plan
              ================================================================== -->
         <section id="plan">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">12</p>
-                <h2>14 天学习计划</h2>
-            </div>
+            {% call cover("12") %}14 天学习计划{% endcall %}
             <p class="leading-relaxed mb-5">每天约 30 到 60 分钟，<strong>用你自己真实的项目</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -1322,10 +1287,7 @@ gh label create enhancement</code></pre>
              block into the line beside each command.
              ================================================================== -->
         <section id="cheatsheet">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">13</p>
-                <h2>一页速查</h2>
-            </div>
+            {% call cover("13") %}一页速查{% endcall %}
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-3">每个 repo 一次</p>
@@ -1387,69 +1349,23 @@ gh label create enhancement</code></pre>
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">14</p>
-                <h2>常见问题</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>user-invoked 与 model-invoked 的 skill 差在哪里？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    这是整套 skill 唯一的分类轴线。user-invoked 只有人类打得出来，其他 skill 也不能调用它，它的 description 是写给人看的，定位是编排者——决定流程怎么走。model-invoked 你可以打，agent 也会自己判断后抓来用，description 写给模型看，定位是纪律库。规则是 user-invoked 可以调用 model-invoked，但永远不能调用另一个 user-invoked。一个常见的副作用是：harness 不把 user-invoked skill 放进注入模型的清单，所以 agent 常常回报这些 skill 没安装——它们有装，照打就是。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>什么是 tracer bullet？为什么水平切票是错的？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Tracer bullet 是穿过所有层（schema、API、UI、测试）的一条细但完整的路，落地当下就能单独 demo。水平切片是一次交付一层——全部 schema 一张票、全部 API 一张票——它的问题是每层都到位之前什么都不能动，而且验收条件必须伸手到别张票拥有的工作。实测代价：某团队用 26 张按层切的票，平均每张票关闭要跑 20 次 agent，其中约四分之三是重工，他们自己的检讨把每一类失败都追回到水平切片而不是实作质量。判准只有一句：这张票做完我能 demo 什么？答不出行为的就是水平切片。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>为什么 code review 要跑在另一个 session？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff &lt;fixed-point&gt;...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文档验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>这套 skill 最常被用坏的方式是什么？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    七种：被动 grilling（连答四十个同意，出来一份你点头过但什么都没真正决定的计划）；在 to-spec 与 to-tickets 之间 clear 或 compact（你烤出来的东西绝大部分只在那个 context window 里）；对自己产生的票跑 triage；范围良好的功能抓 wayfinder（判准是 session 数不是项目大小）；把词汇层当驱动器；把 review 跑在写程序的同一个 session；以及改 SKILL.md 来客制（更新会覆盖、plugin 唯读，长期行为要写进自己的 CLAUDE.md）。还有一个元反模式：把它当成有了流程就不用想——产出的质量追踪的是你答案的质量，不是问题的数量。
-                </div>
-            </details>
+            {% call cover("14") %}常见问题{% endcall %}
+            {% call faq("user-invoked 与 model-invoked 的 skill 差在哪里？") %}
+                这是整套 skill 唯一的分类轴线。user-invoked 只有人类打得出来，其他 skill 也不能调用它，它的 description 是写给人看的，定位是编排者——决定流程怎么走。model-invoked 你可以打，agent 也会自己判断后抓来用，description 写给模型看，定位是纪律库。规则是 user-invoked 可以调用 model-invoked，但永远不能调用另一个 user-invoked。一个常见的副作用是：harness 不把 user-invoked skill 放进注入模型的清单，所以 agent 常常回报这些 skill 没安装——它们有装，照打就是。
+            {% endcall %}
+            {% call faq("什么是 tracer bullet？为什么水平切票是错的？") %}
+                Tracer bullet 是穿过所有层（schema、API、UI、测试）的一条细但完整的路，落地当下就能单独 demo。水平切片是一次交付一层——全部 schema 一张票、全部 API 一张票——它的问题是每层都到位之前什么都不能动，而且验收条件必须伸手到别张票拥有的工作。实测代价：某团队用 26 张按层切的票，平均每张票关闭要跑 20 次 agent，其中约四分之三是重工，他们自己的检讨把每一类失败都追回到水平切片而不是实作质量。判准只有一句：这张票做完我能 demo 什么？答不出行为的就是水平切片。
+            {% endcall %}
+            {% call faq("为什么 code review 要跑在另一个 session？") %}
+                同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff &lt;fixed-point&gt;...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文档验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。
+            {% endcall %}
+            {% call faq("这套 skill 最常被用坏的方式是什么？", last=true) %}
+                七种：被动 grilling（连答四十个同意，出来一份你点头过但什么都没真正决定的计划）；在 to-spec 与 to-tickets 之间 clear 或 compact（你烤出来的东西绝大部分只在那个 context window 里）；对自己产生的票跑 triage；范围良好的功能抓 wayfinder（判准是 session 数不是项目大小）；把词汇层当驱动器；把 review 跑在写程序的同一个 session；以及改 SKILL.md 来客制（更新会覆盖、plugin 唯读，长期行为要写进自己的 CLAUDE.md）。还有一个元反模式：把它当成有了流程就不用想——产出的质量追踪的是你答案的质量，不是问题的数量。
+            {% endcall %}
         </section>
 
         <section id="source">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">出处</p>
-                <h2>这篇教学依据什么写成</h2>
-            </div>
+            {% call cover("出处") %}这篇教学依据什么写成{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     依据 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>1.2.3 版</strong>（25 个已发布的 skill），读该 repo 的 <code>README.md</code>、<code>CONTEXT.md</code>、25 篇官方 skill 文档、<code>.claude-plugin/plugin.json</code> 与 <code>CHANGELOG.md</code> 之后整理与重写。该 repo 以 <strong>MIT</strong> 授权发布。
@@ -1468,9 +1384,7 @@ gh label create enhancement</code></pre>
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>想把这条流程接进你自己的团队？</h2>
-            </div>
+            {% call cover() %}想把这条流程接进你自己的团队？{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 工具是公开的，难的是接到你既有的 tracker、规范与交付节奏上。那部分我们做过。
             </p>

@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: BreadcrumbList + Article.
@@ -166,13 +167,10 @@
         </header>
 
 <section id="vendor-figures">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; Vendor figures</p>
-            <h2>
+        {% call cover("01", "Vendor figures") %}
             <span class="display-lead text-display-sm" lang="en">What the Vendors Claim</span>
             <span class="display-sub">수동과 자동이 얼마나 다르다고들 하는가</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-4">가장 널리 인용되는 네 가지 숫자입니다. 각각 원전까지 돌아가 확인했습니다. <strong class="font-normal">숫자는 모두 사실입니다</strong>—— 다만 돌아다니는 표현 몇 가지는 원문과 어긋나며, 그것도 아래에 적습니다.</p>
         <p class="text-sm leading-relaxed max-w-prose mb-8">각각에 조사 방법, 표본 크기, 데이터 연도를 붙였습니다. 숫자보다 이 셋을 먼저 보는 것 — 이 페이지가 보이려는 바입니다.</p>
 
@@ -239,13 +237,10 @@
 </section>
 
 <section id="independent-evidence">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Independent research</p>
-            <h2>
+        {% call cover("02", "Independent research") %}
             <span class="display-lead text-display-sm" lang="en">The Gains Are Real</span>
             <span class="display-sub">효과는 진짜입니다. 벤더 아닌 증거가 있습니다</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">효과가 있다고 말하는 쪽이 벤더뿐이라면 이 페이지의 결론은 '판단할 수 없다'가 됩니다. 그러나 독립 연구가 효과를 측정했습니다. 그것도 <strong class="font-normal">설문이 아니라 객관적인 계측으로</strong>.
         </p>
 
@@ -278,13 +273,10 @@
 </section>
 
 <section id="how-it-was-measured">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; How it was measured</p>
-            <h2>
+        {% call cover("03", "How it was measured") %}
             <span class="display-lead text-display-sm" lang="en">Self-Reported Time Is Unreliable</span>
             <span class="display-sub">사람은 자기가 얼마나 시간을 아꼈는지 제대로 말하지 못합니다</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">이 페이지에서 가장 중요한 절입니다. 앞서 든 벤더의 숫자는 <strong class="font-normal">모두 자기 보고이거나 자기 보고를 바탕으로 한 모델</strong>입니다. 그리고 자기 보고야말로 다음 연구가 믿을 수 없다고 보인 측정 방식입니다.</p>
 
         <div class="border-t border-line py-12">
@@ -319,83 +311,27 @@
      an exchange that only exists in the structured data misrepresents the page,
      which on this page in particular would be self-defeating. -->
 <section id="questions">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; Questions</p>
-            <h2>
+        {% call cover("05", "Questions") %}
             <span class="display-lead text-display-sm" lang="en">Common Questions</span>
             <span class="display-sub">자주 묻는 것들</span>
-        </h2>
-        </div>
+        {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Google Workspace의 AI를 넣으면 투자수익률은 얼마나 되나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester가 2026년 2월에 공표한 Google 의뢰 TEI 보고서에서는 3년 투자수익률 416%, 순현재가치 1억 2,370만 달러, 회수 기간 6개월 미만으로 나옵니다. 이 숫자는 의사결정자 6명·5개 조직 인터뷰를 바탕으로 직원 20,000명의 가상 복합 조직에 투영한 것입니다. 즉 측정이 아니라 재무 모델입니다.</div>
-            </details>
+            {% call faq("Google Workspace의 AI를 넣으면 투자수익률은 얼마나 되나요") %}Forrester가 2026년 2월에 공표한 Google 의뢰 TEI 보고서에서는 3년 투자수익률 416%, 순현재가치 1억 2,370만 달러, 회수 기간 6개월 미만으로 나옵니다. 이 숫자는 의사결정자 6명·5개 조직 인터뷰를 바탕으로 직원 20,000명의 가상 복합 조직에 투영한 것입니다. 즉 측정이 아니라 재무 모델입니다.{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>직원은 실제로 주당 얼마나 시간을 아낄 수 있나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester 연구에는 Gemini 사용자 1인당 주 3시간으로 적혀 있습니다. 전체 직원이 아니라 사용자라는 점에 주의하세요. Google의 Gemini at Work 조사에서는 105분이고, 표본은 18개 사·3,200여 건, 데이터 취합은 2024년 7월입니다. 둘 다 자기 보고 숫자입니다.</div>
-            </details>
+            {% call faq("직원은 실제로 주당 얼마나 시간을 아낄 수 있나요") %}Forrester 연구에는 Gemini 사용자 1인당 주 3시간으로 적혀 있습니다. 전체 직원이 아니라 사용자라는 점에 주의하세요. Google의 Gemini at Work 조사에서는 105분이고, 표본은 18개 사·3,200여 건, 데이터 취합은 2024년 7월입니다. 둘 다 자기 보고 숫자입니다.{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>벤더 아닌 증거가 있나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">있습니다. 어느 Fortune 500 기업의 상담 인력 5,172명을 대상으로 한 현장 실험에서는 시간당 해결 건수라는 객관 지표로 생산성이 15% 올랐고, 기술 하위 5분위 층에서는 36% 올랐습니다. NBER의 무작위 대조 시험(성인 1,174명)에서도 학력에 따른 생산성 격차가 0.548 표준편차에서 0.139로 좁아졌습니다. 둘 다 벤더 의뢰가 아닙니다.</div>
-            </details>
+            {% call faq("벤더 아닌 증거가 있나요") %}있습니다. 어느 Fortune 500 기업의 상담 인력 5,172명을 대상으로 한 현장 실험에서는 시간당 해결 건수라는 객관 지표로 생산성이 15% 올랐고, 기술 하위 5분위 층에서는 36% 올랐습니다. NBER의 무작위 대조 시험(성인 1,174명)에서도 학력에 따른 생산성 격차가 0.548 표준편차에서 0.139로 좁아졌습니다. 둘 다 벤더 의뢰가 아닙니다.{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>자기 보고한 절약 시간을 깎아서 읽어야 하는 이유는 무엇인가요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">METR이 2025년 7월에 공표한 무작위 대조 시험에서, 숙련 개발자 16명이 246건의 실제 작업에 AI를 썼을 때 실제로는 19% 느려졌지만 본인은 나중에 20% 빨라졌다고 답했습니다. 인식과 실제가 40 포인트 가까이 벌어졌고 방향도 반대입니다. 표본이 작고 영역도 소프트웨어 개발에 한정되며 METR 자신이 결과를 지난 데이터로 두고 있지만, 사용자에게 묻는 측정 방식이 믿을 만하지 않음을 보이기에는 충분합니다.</div>
-            </details>
+            {% call faq("자기 보고한 절약 시간을 깎아서 읽어야 하는 이유는 무엇인가요") %}METR이 2025년 7월에 공표한 무작위 대조 시험에서, 숙련 개발자 16명이 246건의 실제 작업에 AI를 썼을 때 실제로는 19% 느려졌지만 본인은 나중에 20% 빨라졌다고 답했습니다. 인식과 실제가 40 포인트 가까이 벌어졌고 방향도 반대입니다. 표본이 작고 영역도 소프트웨어 개발에 한정되며 METR 자신이 결과를 지난 데이터로 두고 있지만, 사용자에게 묻는 측정 방식이 믿을 만하지 않음을 보이기에는 충분합니다.{% endcall %}
 
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>그러면 기업은 도입할 값어치가 있는지 어떻게 판단해야 하나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">자기 조직에서 재는 것입니다. 그리고 그 측정은 도입 전에 설계해 두어야 합니다. 넣고 나면 대조군이 남지 않습니다. 구체적으로는 객관적으로 셀 수 있는 작업을 고르고(건수, 소요 시간, 재작업률), 누군가 도구를 손에 쥐기 전에 기준값을 잡고, 대조군을 남기거나 단계적으로 넣고, 자기 보고 숫자와 객관 숫자를 따로 기록하는 것 —— 이 둘의 벌어짐 자체가 중요한 실마리입니다.</div>
-            </details>
+            {% call faq("그러면 기업은 도입할 값어치가 있는지 어떻게 판단해야 하나요", last=true) %}자기 조직에서 재는 것입니다. 그리고 그 측정은 도입 전에 설계해 두어야 합니다. 넣고 나면 대조군이 남지 않습니다. 구체적으로는 객관적으로 셀 수 있는 작업을 고르고(건수, 소요 시간, 재작업률), 누군가 도구를 손에 쥐기 전에 기준값을 잡고, 대조군을 남기거나 단계적으로 넣고, 자기 보고 숫자와 객관 숫자를 따로 기록하는 것 —— 이 둘의 벌어짐 자체가 중요한 실마리입니다.{% endcall %}
 </section>
 
 <section id="measurement">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">06</span> &mdash; Measurement</p>
-            <h2>
+        {% call cover("06", "Measurement") %}
             <span class="display-lead text-display-sm" lang="en">Answer With Measurement</span>
             <span class="display-sub">자료가 아니라 계측으로 답한다</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <p class="text-lg leading-relaxed max-w-prose mb-6">세 절의 결론을 나란히 둡니다. 효과는 진짜이고 객관적인 계측이 그것을 받칩니다. 그러나 벤더의 숫자는 모두 자기 보고에서 나왔고, 그 자기 보고는 유일한 객관 계시 시험에서 크게 빗나갔습니다. 그러니 그 숫자들은 <strong class="font-normal">당신의 조직에 무슨 일이 일어날지 맞히는 데 쓸 수 없습니다</strong>—— 애초에 그러라고 만든 숫자가 아닙니다.</p>
 

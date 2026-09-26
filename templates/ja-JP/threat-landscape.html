@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -73,10 +74,7 @@
              hundreds of posts. What is almost never said is where they come
              from and what that bounds them to. -->
         <section id="how-to-read">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>数字より先に、読み方</h2>
-            </div>
+            {% call cover("00") %}数字より先に、読み方{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>見る値打ちはありますが、これは全数調査ではありません。<strong>脅威レポートのデータは、ベンダー自身の製品テレメトリとインシデント対応の案件から来ます</strong>。母集団はその顧客環境——EDR（エンドポイントの検知と対応）を導入している、たいていは予算のある組織です。</p>
                 <p>数字が捏造だという話ではありません。どの数字にも三つの限界がついて回るという話です。<strong>どんな環境で測ったか、何で測ったか、その道具に何が見えているか</strong>。この三つを飛ばすと、「EDR のある環境で見えた姿」を「世界の姿」だと思い込むことになります。</p>
@@ -88,10 +86,7 @@
         </section>
 
         <section id="numbers">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>八つの数字</h2>
-            </div>
+            {% call cover("01") %}八つの数字{% endcall %}
             <p class="leading-relaxed mb-5">以下の数字はすべて CrowdStrike 2026 グローバル脅威レポートの公開ページから。対象は 2025 年の観測データです。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -140,10 +135,7 @@
         </section>
 
         <section id="speed">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>速さ：27 秒と +65%</h2>
-            </div>
+            {% call cover("02") %}速さ：27 秒と +65%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">この数字は何か</p>
@@ -160,10 +152,7 @@
         </section>
 
         <section id="malware-free">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>ファイルを置かない攻撃：82%</h2>
-            </div>
+            {% call cover("03") %}ファイルを置かない攻撃：82%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">この数字は何か</p>
@@ -186,10 +175,7 @@
         </section>
 
         <section id="ai">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>AI を使う攻撃：+89%、90 以上、+550%</h2>
-            </div>
+            {% call cover("04") %}AI を使う攻撃：+89%、90 以上、+550%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">この数字は何か</p>
@@ -209,10 +195,7 @@
         </section>
 
         <section id="nation-state">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">05</p>
-                <h2>国家が背後にいる相手：40% と +266%</h2>
-            </div>
+            {% call cover("05") %}国家が背後にいる相手：40% と +266%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">この数字は何か</p>
@@ -227,10 +210,7 @@
         </section>
 
         <section id="what-it-means">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">06</p>
-                <h2>守る側にとって何を意味するか</h2>
-            </div>
+            {% call cover("06") %}守る側にとって何を意味するか{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>上の限界をすべて差し引いても、残る方向はそのまま成り立ちます。どれも、特定の割合が正確であることに依存していないからです。</p>
                 <ol class="space-y-3 list-none">
@@ -251,69 +231,23 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2>よくいただく質問</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>CrowdStrike 2026 グローバル脅威レポートの主な数字は何ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    公開ページに載っている主な数字は次のとおりです。eCrime の breakout time の最短が 27 秒。AI を使う攻撃者による攻撃が 89% 増加。2025 年の検知の 82% が悪意あるファイルを伴わない（malware-free）。90 を超える組織で正規の AI ツールが不正な指示の生成に悪用された。ChatGPT が犯罪フォーラムで言及された回数がほかのどのモデルより 550% 多い。breakout の平均の速さが前年比 65% 増。中国系の攻撃者が突いた脆弱性の 40% がエッジ機器を狙ったもの。国家が背後にいる相手によるクラウド経由の侵入が 266% 増加。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>breakout time とは何ですか。27 秒は何を意味しますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Breakout time とは、最初に入られた一台から環境内の別の一台へ攻撃者が横に移るまでの時間です。攻撃が広がる前に検知・判断・封じ込めを終えるために守る側に残された時間の予算を測っています。27 秒はレポートに記録された最短値であって平均ではありません。最短を平均だと思うと自分の状況をひどく読み違えます。ほんとうの意味はこうです。人の判断を待って動き出す対応手順は、この桁では間に合いません。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>なぜ検知の 82% がファイルを伴わないのか、この数字はどう読めばよいですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    この割合は二つのことを同時に映しています。攻撃者が悪意あるファイルを落とすことが実際に減り、正規のツールと盗んだ認証情報に移っていること。そして検知する力そのもの——ファイルのないふるまいが見えることは、まさに EDR（エンドポイントの検知と対応）製品の売りです。この数字は CrowdStrike 自身の検知テレメトリから来ており、母集団はそれを導入した環境です。ですから「EDR のある環境で何が見えるか」は確かに描けますが、世界全体の攻撃の内訳にそのまま広げることはできません。守る側の実務的な結論は変わりません。ファイルの特徴を中心に据えたウイルス対策では、検知の大半を覆えません。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>ベンダーが出す脅威レポートは信用できますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    使えます。ただし何を測っているかを知ったうえでです。この種のレポートのデータはたいていベンダー自身の製品テレメトリとインシデント対応の案件から来ており、母集団はその顧客であって世界のすべての組織ではありません。数字が捏造だという話ではなく、どの数字にも「どんな環境で、どんな道具で、何が見えているか」という三つの限界がついて回るという話です。実務では、傾向と攻撃手法の情報源として使い、自分の組織のリスク確率の統計的な土台としては使わないことです。
-                </div>
-            </details>
+            {% call cover("07") %}よくいただく質問{% endcall %}
+            {% call faq("CrowdStrike 2026 グローバル脅威レポートの主な数字は何ですか") %}
+                公開ページに載っている主な数字は次のとおりです。eCrime の breakout time の最短が 27 秒。AI を使う攻撃者による攻撃が 89% 増加。2025 年の検知の 82% が悪意あるファイルを伴わない（malware-free）。90 を超える組織で正規の AI ツールが不正な指示の生成に悪用された。ChatGPT が犯罪フォーラムで言及された回数がほかのどのモデルより 550% 多い。breakout の平均の速さが前年比 65% 増。中国系の攻撃者が突いた脆弱性の 40% がエッジ機器を狙ったもの。国家が背後にいる相手によるクラウド経由の侵入が 266% 増加。
+            {% endcall %}
+            {% call faq("breakout time とは何ですか。27 秒は何を意味しますか") %}
+                Breakout time とは、最初に入られた一台から環境内の別の一台へ攻撃者が横に移るまでの時間です。攻撃が広がる前に検知・判断・封じ込めを終えるために守る側に残された時間の予算を測っています。27 秒はレポートに記録された最短値であって平均ではありません。最短を平均だと思うと自分の状況をひどく読み違えます。ほんとうの意味はこうです。人の判断を待って動き出す対応手順は、この桁では間に合いません。
+            {% endcall %}
+            {% call faq("なぜ検知の 82% がファイルを伴わないのか、この数字はどう読めばよいですか") %}
+                この割合は二つのことを同時に映しています。攻撃者が悪意あるファイルを落とすことが実際に減り、正規のツールと盗んだ認証情報に移っていること。そして検知する力そのもの——ファイルのないふるまいが見えることは、まさに EDR（エンドポイントの検知と対応）製品の売りです。この数字は CrowdStrike 自身の検知テレメトリから来ており、母集団はそれを導入した環境です。ですから「EDR のある環境で何が見えるか」は確かに描けますが、世界全体の攻撃の内訳にそのまま広げることはできません。守る側の実務的な結論は変わりません。ファイルの特徴を中心に据えたウイルス対策では、検知の大半を覆えません。
+            {% endcall %}
+            {% call faq("ベンダーが出す脅威レポートは信用できますか", last=true) %}
+                使えます。ただし何を測っているかを知ったうえでです。この種のレポートのデータはたいていベンダー自身の製品テレメトリとインシデント対応の案件から来ており、母集団はその顧客であって世界のすべての組織ではありません。数字が捏造だという話ではなく、どの数字にも「どんな環境で、どんな道具で、何が見えているか」という三つの限界がついて回るという話です。実務では、傾向と攻撃手法の情報源として使い、自分の組織のリスク確率の統計的な土台としては使わないことです。
+            {% endcall %}
         </section>
 
         <section id="source">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">出典と限界</p>
-                <h2>この数字はどこから来たか</h2>
-            </div>
+            {% call cover("出典と限界") %}この数字はどこから来たか{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>すべて<a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer" class="underline">CrowdStrike 2026 Global Threat Report</a>の公開ページから。<strong>確認日 2026-08-06</strong>。対象は 2025 年の観測データで、著作権は CrowdStrike にあります。</p>
                 <p>このページは<strong>公開された要点をまとめ、読み方を添えたもの</strong>であり、レポートの内容を複製するものではありません。データと研究成果は TauX のものではありません。方法論、図表、相手の分析を見るには原典をお読みください。</p>
@@ -323,9 +257,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>この傾向が自分の環境に何を意味するのか</h2>
-            </div>
+            {% call cover() %}この傾向が自分の環境に何を意味するのか{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">レポートが語るのは世界の姿です。要るのは自分の資産台帳と、露出している面。そこは棚卸しから始まります。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>

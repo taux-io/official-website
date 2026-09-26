@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, slide_cover -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: TechArticle -->
@@ -32,9 +33,7 @@
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">まず概念：Skill とは何か</h2>
-        </div>
+        {% call slide_cover() %}まず概念：Skill とは何か{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -76,9 +75,7 @@
 
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">段階を追った開発の道すじ（The Staircase）</h2>
-        </div>
+        {% call slide_cover() %}段階を追った開発の道すじ（The Staircase）{% endcall %}
         <div class="content-area">
             <div class="timeline-layout">
                 <div class="timeline-line"></div>
@@ -116,9 +113,7 @@
 
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">MCP と Skills の組み合わせ</h2>
-        </div>
+        {% call slide_cover() %}MCP と Skills の組み合わせ{% endcall %}
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
@@ -139,9 +134,7 @@
 
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">よくある三つの使いどころ（Use Cases）</h2>
-        </div>
+        {% call slide_cover() %}よくある三つの使いどころ（Use Cases）{% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="image-tile">
@@ -197,9 +190,7 @@
 
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">YAML の書き方：ここで生き死にが決まる</h2>
-        </div>
+        {% call slide_cover() %}YAML の書き方：ここで生き死にが決まる{% endcall %}
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
@@ -227,9 +218,7 @@
 
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">指示の書き方、定石（Best Practices）</h2>
-        </div>
+        {% call slide_cover() %}指示の書き方、定石（Best Practices）{% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
@@ -253,9 +242,7 @@
 
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">実例その一：コードレビューの相棒</h2>
-        </div>
+        {% call slide_cover() %}実例その一：コードレビューの相棒{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -294,9 +281,7 @@
 
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">実例その二：MCP につなぐ自動化</h2>
-        </div>
+        {% call slide_cover() %}実例その二：MCP につなぐ自動化{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -335,18 +320,14 @@
     <div class="slide-container dark-theme" id="slide10">
         <div class="section-title-layout">
             <hr>
-            <div class="cover" data-cover>
-                <h2>試して確かめる段階</h2>
-            </div>
+            {% call cover() %}試して確かめる段階{% endcall %}
             <p>「まず単一の仕事で Claude が完璧にこなせることを確かめ、そのうまくいった形を取り出して Skill に固める。」</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">試し方の全体像：三つの観点</h2>
-        </div>
+        {% call slide_cover() %}試し方の全体像：三つの観点{% endcall %}
         <div class="content-area">
             <div class="table-layout">
                 <table>
@@ -381,9 +362,7 @@
 
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">一歩進んだ設計：五つの型</h2>
-        </div>
+        {% call slide_cover() %}一歩進んだ設計：五つの型{% endcall %}
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
@@ -400,9 +379,7 @@
     <!-- Slide 13: Bleed_Image_Right -->
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
-            <div class="cover" data-cover>
-                <h2 class="slide-title">最後の一歩：まとめて配る</h2>
-            </div>
+            {% call slide_cover() %}最後の一歩：まとめて配る{% endcall %}
             <div class="content-area">
                 <div class="bleed-text-side">
                     <p><strong>まとめ方と入れ方：</strong>試し終えたら、フォルダを<code>.zip</code>にまとめます。個人なら Claude.ai から上げられます。企業の管理者は Workspace 全体へ配れます（自動で更新されます）。</p>
@@ -457,9 +434,7 @@
     <!-- Slide 14: Q&A -->
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
-            <div class="cover" data-cover>
-                <h2>自分の Skill をつくる準備はできましたか</h2>
-            </div>
+            {% call cover() %}自分の Skill をつくる準備はできましたか{% endcall %}
             <p>「知識で道具を動かし、自動化をチームの標準にする」</p>
             <div class="contact-info">
                 <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i>まずは組み込みの skill-creator から始めてみてください。</div>

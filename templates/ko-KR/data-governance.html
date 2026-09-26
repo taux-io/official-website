@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -78,12 +79,10 @@
         </section>
 
         <section>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
                 <span class="display-sub">진행 방식</span>
-            </h2>
-            </div>
+            {% endcall %}
 
                 <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
                     <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
@@ -119,12 +118,10 @@
             <!-- CTA -->
             <section>
                 <div class="relative z-10">
-                    <div class="cover" data-cover>
-                        <h2>
+                    {% call cover() %}
                         <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
                         <span class="display-sub">시작할 준비가 되셨나요</span>
-                    </h2>
-                    </div>
+                    {% endcall %}
                     <p class="mb-6 max-w-prose mx-auto text-lg">AI 도입이 막히는 곳은 대개 모델이 아니라 데이터입니다. 어디에 있는지, 누가 쓰는지, 믿을 수 있는지. 먼저 지금 상황부터 들려주세요.</p>
 
                     <a href="mailto:hello@taux.io" class="btn">

@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -45,12 +46,10 @@
 
 <!-- Problem Section -->
 <section>
-        <div class="cover" data-cover>
-                <h2>
-                <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-                <span class="display-sub">為什麼你的 AI 總是給出平庸的答案？</span>
-            </h2>
-            </div>
+        {% call cover() %}
+            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
+            <span class="display-sub">為什麼你的 AI 總是給出平庸的答案？</span>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -75,12 +74,10 @@
         <div class="mb-8">
             <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
                 Methodology</span>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
                 <span class="display-sub">掌握 AI 溝通的「數位口才學」</span>
-            </h2>
-            </div>
+            {% endcall %}
         </div>
 
         <div class="space-y-6">
@@ -106,12 +103,10 @@
 
 <!-- Use Cases -->
 <section id="cases">
-        <div class="cover" data-cover>
-            <h2>
+        {% call cover() %}
             <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
             <span class="display-sub">讓 AI 成為你的百變分身</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -144,12 +139,10 @@
 <section>
         <div class="relative overflow-hidden">
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>
-                        <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                        <span class="display-sub">懂得問，AI才會答；懂得想，AI才能幫</span>
-                    </h2>
-                </div>
+                {% call cover() %}
+                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
+                    <span class="display-sub">懂得問，AI才會答；懂得想，AI才能幫</span>
+                {% endcall %}
                 <p class="text-lg mb-6 max-w-prose mx-auto">同一個問題換個問法，答案的可用度差很多。想把它變成團隊的共同做法，那是另一件事——可以聊。</p>
                 <a href="mailto:hello@taux.io" class="btn">
                     開始諮詢

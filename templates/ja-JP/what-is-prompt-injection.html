@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include"header.html" %}
 
 <!-- Article, breadcrumb and FAQ schema. This page carried the FAQ alone, so it
@@ -42,10 +43,7 @@
         </header>
         <!-- Concept Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>仕組みを、たとえ話で</h2>
-            </div>
+            {% call cover("01") %}仕組みを、たとえ話で{% endcall %}
 
             <div class="relative overflow-hidden border-t border-line pt-4">
                 <h3 class="mb-2"> 「サイモン・セズ」という遊びを思い浮かべてください。
@@ -96,10 +94,7 @@
 
         <!-- Attack Types -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>よくある型</h2>
-            </div>
+            {% call cover("02") %}よくある型{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
 <h3 class="mb-3">直接入れる（Direct Injection）</h3>
@@ -135,10 +130,7 @@
 
         <!-- Defense Strategy -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>どう防ぐか</h2>
-            </div>
+            {% call cover("03") %}どう防ぐか{% endcall %}
             <div class="space-y-6">
                 <div class="border-line ps-5 py-2 flex items-start border-s border-line">
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
@@ -177,56 +169,21 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>よくいただく質問</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>プロンプトインジェクションとは何ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    大規模言語モデルをだます攻撃です。攻撃者は入念に組み立てた文章を入力し、それをシステムからの指示に見せかけます。開発者が定めた安全上の決まりを無視させ、個人情報を漏らす、誤った情報を広めるといった動きをさせます。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>ジェイルブレイクとは何が違いますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    ジェイルブレイクは主に倫理面の制限を回避させるもので、影響は出力の中身に留まります。プロンプトインジェクションはもっと広く、システム側の筋道そのものを操り、ファイルの削除やフィッシングメールの送信といった外部への操作までさせ得ます。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>どう防ぎますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    一発で片づく方法はありません。いま最も効くのは層を重ねる防ぎ方です。記号で利用者の入力を隔離する、語句をふるいにかける、別のモデルに出力を見張らせる——これらを組み合わせます。
-                </div>
-            </details>
+            {% call cover("04") %}よくいただく質問{% endcall %}
+            {% call faq("プロンプトインジェクションとは何ですか") %}
+                大規模言語モデルをだます攻撃です。攻撃者は入念に組み立てた文章を入力し、それをシステムからの指示に見せかけます。開発者が定めた安全上の決まりを無視させ、個人情報を漏らす、誤った情報を広めるといった動きをさせます。
+            {% endcall %}
+            {% call faq("ジェイルブレイクとは何が違いますか") %}
+                ジェイルブレイクは主に倫理面の制限を回避させるもので、影響は出力の中身に留まります。プロンプトインジェクションはもっと広く、システム側の筋道そのものを操り、ファイルの削除やフィッシングメールの送信といった外部への操作までさせ得ます。
+            {% endcall %}
+            {% call faq("どう防ぎますか", last=true) %}
+                一発で片づく方法はありません。いま最も効くのは層を重ねる防ぎ方です。記号で利用者の入力を隔離する、語句をふるいにかける、別のモデルに出力を見張らせる——これらを組み合わせます。
+            {% endcall %}
         </section>
 
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>自社の AI が心配な方へ</h2>
-                </div>
+                {% call cover() %}自社の AI が心配な方へ{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">TauX では LLM のセキュリティ検査とレッドチーム演習を行い、抜け道を洗い出します。</p>
 
                 <div class="flex flex-col mobile:flex-row gap-4">

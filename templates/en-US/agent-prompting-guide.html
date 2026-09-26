@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -40,9 +41,7 @@
         </header>
         <!-- Part 1: Prompting 101 -->
         <section id="prompting-101">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; Prompting 101</p>
-                <!-- No number on this heading. The section already carries one: the
+            <!-- No number on this heading. The section already carries one: the
                      eyebrow directly above reads "01 — Prompting 101". A circled numeral used to sit
                      here as well, and the title said the number a third time — three
                      sources for one section number, which the Markdown twin printed as an
@@ -52,10 +51,9 @@
                      circled numerals: there the numeral is the ONLY place the section
                      number appears, so dropping it would lose which pattern is which.
                      Here the eyebrow already says it. Issues 281, 284. -->
-                <h2>
+            {% call cover("01", "Prompting 101") %}
                 The basics
-            </h2>
-            </div>
+            {% endcall %}
             <p class="mb-5 ms-4">For: writing, document analysis, one-shot questions, extraction.</p>
 
             <div class="space-y-10 ms-4 tablet:ms-6">
@@ -120,12 +118,9 @@
 
         <!-- Part 2: Agents -->
         <section id="agent-prompting">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Agent prompting</p>
-                <h2>
+            {% call cover("02", "Agent prompting") %}
                 Prompting agents
-            </h2>
-            </div>
+            {% endcall %}
             <p class="mb-5 ms-4">For: tool use, search, writing code, multi-step work.</p>
 
             <div class="space-y-10 ms-4 tablet:ms-6">

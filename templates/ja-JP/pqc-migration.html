@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -88,10 +89,7 @@
              from losing the reader. The regulatory dates do not depend on any
              prediction being right. -->
         <section id="why-now">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>なぜ、いまなのか</h2>
-            </div>
+            {% call cover("00") %}なぜ、いまなのか{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>理由は二つあり、<strong>互いに独立</strong>しています。確からしさが違うので分けて書きます。この二つを混ぜることが、この話題で最も誇張されやすいところだからです。</p>
                 <div>
@@ -109,10 +107,7 @@
 
         <!-- Overview: also the table of contents on small screens. -->
         <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>五段階のあらまし</h2>
-            </div>
+            {% call cover("01") %}五段階のあらまし{% endcall %}
             <p class="leading-relaxed mb-5">各段階に、台湾 FSC『金融業ポスト量子暗号移行参考指針』の七つの方針のどれに当たるかを示します。金融業以外に台湾国内の法定期限はいまのところありませんが、この順序はそのまま使えます——そして金融機関に何かを売っているなら、あなたはすでにその指針の範囲内です。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -156,10 +151,7 @@
         </section>
 
         <section id="governance">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">段階 00</p>
-                <h2>ガバナンス<span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
-            </div>
+            {% call cover("段階 00") %}ガバナンス<span class="block text-base font-normal mt-2 font-sans">Governance</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">何を決めるか</p>
@@ -181,10 +173,7 @@
         </section>
 
         <section id="cbom">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">段階 01</p>
-                <h2>暗号資産の棚卸し<span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
-            </div>
+            {% call cover("段階 01") %}暗号資産の棚卸し<span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -210,10 +199,7 @@
         </section>
 
         <section id="risk-assessment">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">段階 02</p>
-                <h2>リスク評価と適合の突き合わせ<span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
-            </div>
+            {% call cover("段階 02") %}リスク評価と適合の突き合わせ<span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">答えるべき問い</p>
@@ -232,10 +218,7 @@
         </section>
 
         <section id="crypto-agility">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">段階 03</p>
-                <h2>暗号アジリティの構築<span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
-            </div>
+            {% call cover("段階 03") %}暗号アジリティの構築<span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -261,10 +244,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">段階 04</p>
-                <h2>サプライチェーンの量子安全<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
-            </div>
+            {% call cover("段階 04") %}サプライチェーンの量子安全<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">なぜ台湾の企業にとってとくに重いのか</p>
@@ -291,10 +271,7 @@
              The verification date and the convention around date_modified are
              the only defence, and they depend on a person. -->
         <section id="regulatory-timeline">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">規制の期限</p>
-                <h2>世界の規制の進み方</h2>
-            </div>
+            {% call cover("規制の期限") %}世界の規制の進み方{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed mb-8">
                 <p>
                     <strong>このページの規制の状態は 2026-08-15 に確認しました。</strong>各行にどの文書から来たかを示しています。この区画を守れる自動チェックはありません——法規の変更は私たちのバージョン管理の中にないからです——ので、このページの「最終更新日」が意味するのは<strong>規制の状態を確認し直した日</strong>であって、体裁を直した日ではありません。</p>
@@ -337,10 +314,7 @@
         </section>
 
         <section id="standards">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">標準の現状</p>
-                <h2>どれが標準で、どれがまだなのか</h2>
-            </div>
+            {% call cover("標準の現状") %}どれが標準で、どれがまだなのか{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>この区画を分けて書くのは、「確定した標準」と「まだ標準化の過程にあるアルゴリズム」がよく混同されるからです。調達と設計の判断は前者の上に立てる必要があります。</p>
                 <div>
@@ -366,75 +340,22 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>よくいただく質問</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>ポスト量子暗号（PQC）とは何ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    ポスト量子暗号（Post-Quantum Cryptography）は、量子計算機による攻撃に耐えるよう設計された暗号アルゴリズムの総称です。いま広く使われている RSA と楕円曲線暗号は、素因数分解と離散対数の難しさに安全性を置いていますが、この二つはどちらも十分に大きな量子計算機で効率よく解けます。PQC は格子、ハッシュ、符号といった数学の構造に切り替えており、いまのところ効率よく破れる量子アルゴリズムは知られていません。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>台湾企業に PQC の規制要件はありますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    いまはっきりした期限があるのは金融業だけです。台湾 FSC は 2026 年 6 月 18 日に「金融業ポスト量子暗号移行参考指針」を公表し、七つの方針と 2026〜2035 年の段階的な期限を示しました。対象は金融機関とその重要な取引先で、性質は参考指針であって強制ではありません。数位発展部数位産業署は 2025 年 4 月 16 日に後量子資安産業連盟とともに「ポスト量子暗号移行指針」を公表しており、公開鍵基盤、セキュリティチップ、電子署名、ネットワーク機器、ゼロトラストの本人確認などを対象としています。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>企業はどの段階から始めるべきですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    棚卸しではなくガバナンスから始めてください。FSC の指針は「PQC の方針とガバナンス」を第一の方針に置き、暗号技術の棚卸しより前に順序づけています。理由はとても実際的です。誰が責任を持つのか、予算はどこから出るのかが決まっていないと、暗号資産の棚卸しは途中で止まります。ガバナンスが定まってはじめて CBOM の棚卸し、リスクを軸にした優先順位づけ、暗号アジリティの構築、最後にサプライチェーンと調達要件の更新へ進みます。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>CBOM（暗号部品表）とは何ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    CBOM（Cryptography Bill of Materials）は暗号資産の台帳です。システムのどこでどのアルゴリズムを使い、鍵長は、証明書は、ライブラリは何か。それぞれどこにあり、誰が保守し、寿命はどれだけか。SBOM（ソフトウェア部品表）の暗号版にあたり、PQC 移行の前提でもあります——棚卸しできないものに優先順位はつけられません。CycloneDX は 1.6 版から CBOM 形式に対応しています。台湾 FSC の指針はこれを第二の方針に置いています。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>量子計算機はまだ現れていないのに、なぜいま動くのですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    互いに独立した理由が二つあります。一つは「いま集めて、あとで解く」（Harvest Now, Decrypt Later）です。今日とらえられた暗号化通信は将来まで保存して解かれ得るので、秘匿の年限が長いデータは今日すでにさらされています。もう一つの理由は、量子計算機がいつ来るかという予測に一切依りません。規制の期限そのものが存在するからです。EU は加盟国に 2026 年末までの着手を、重要インフラには 2030 年末までに高リスク領域を終えるよう勧告しています。台湾 FSC の段階的な期限は 2026 年から始まります。
-                </div>
-            </details>
+            {% call cover("FAQ") %}よくいただく質問{% endcall %}
+            {% call faq("ポスト量子暗号（PQC）とは何ですか") %}
+                ポスト量子暗号（Post-Quantum Cryptography）は、量子計算機による攻撃に耐えるよう設計された暗号アルゴリズムの総称です。いま広く使われている RSA と楕円曲線暗号は、素因数分解と離散対数の難しさに安全性を置いていますが、この二つはどちらも十分に大きな量子計算機で効率よく解けます。PQC は格子、ハッシュ、符号といった数学の構造に切り替えており、いまのところ効率よく破れる量子アルゴリズムは知られていません。
+            {% endcall %}
+            {% call faq("台湾企業に PQC の規制要件はありますか") %}
+                いまはっきりした期限があるのは金融業だけです。台湾 FSC は 2026 年 6 月 18 日に「金融業ポスト量子暗号移行参考指針」を公表し、七つの方針と 2026〜2035 年の段階的な期限を示しました。対象は金融機関とその重要な取引先で、性質は参考指針であって強制ではありません。数位発展部数位産業署は 2025 年 4 月 16 日に後量子資安産業連盟とともに「ポスト量子暗号移行指針」を公表しており、公開鍵基盤、セキュリティチップ、電子署名、ネットワーク機器、ゼロトラストの本人確認などを対象としています。
+            {% endcall %}
+            {% call faq("企業はどの段階から始めるべきですか") %}
+                棚卸しではなくガバナンスから始めてください。FSC の指針は「PQC の方針とガバナンス」を第一の方針に置き、暗号技術の棚卸しより前に順序づけています。理由はとても実際的です。誰が責任を持つのか、予算はどこから出るのかが決まっていないと、暗号資産の棚卸しは途中で止まります。ガバナンスが定まってはじめて CBOM の棚卸し、リスクを軸にした優先順位づけ、暗号アジリティの構築、最後にサプライチェーンと調達要件の更新へ進みます。
+            {% endcall %}
+            {% call faq("CBOM（暗号部品表）とは何ですか") %}
+                CBOM（Cryptography Bill of Materials）は暗号資産の台帳です。システムのどこでどのアルゴリズムを使い、鍵長は、証明書は、ライブラリは何か。それぞれどこにあり、誰が保守し、寿命はどれだけか。SBOM（ソフトウェア部品表）の暗号版にあたり、PQC 移行の前提でもあります——棚卸しできないものに優先順位はつけられません。CycloneDX は 1.6 版から CBOM 形式に対応しています。台湾 FSC の指針はこれを第二の方針に置いています。
+            {% endcall %}
+            {% call faq("量子計算機はまだ現れていないのに、なぜいま動くのですか", last=true) %}
+                互いに独立した理由が二つあります。一つは「いま集めて、あとで解く」（Harvest Now, Decrypt Later）です。今日とらえられた暗号化通信は将来まで保存して解かれ得るので、秘匿の年限が長いデータは今日すでにさらされています。もう一つの理由は、量子計算機がいつ来るかという予測に一切依りません。規制の期限そのものが存在するからです。EU は加盟国に 2026 年末までの着手を、重要インフラには 2030 年末までに高リスク領域を終えるよう勧告しています。台湾 FSC の段階的な期限は 2026 年から始まります。
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -446,9 +367,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>自分の暗号資産が何かわからない方へ</h2>
-            </div>
+            {% call cover() %}自分の暗号資産が何かわからない方へ{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">多くの組織が最初の一歩で止まります。CBOM の棚卸しとデータガバナンスは同じ能力です。いまの資産目録がどうなっているか、まずお話ししましょう。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>

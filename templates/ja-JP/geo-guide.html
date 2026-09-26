@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -28,11 +29,8 @@
         </header>
         <!-- What is GEO -->
         <section id="what-is-geo">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; What is GEO</p>
-                <h2 class="mb-0">GEO とは何か
-            </h2>
-            </div>
+            {% call cover("01", "What is GEO", flush=true) %}GEO とは何か
+            {% endcall %}
 
             <p class="mb-5 text-lg leading-relaxed max-w-prose">
                 <strong>GEO（Generative Engine Optimization、生成エンジン最適化）</strong>は、ChatGPT・Perplexity・Gemini といった生成 AI の出力の中で、自社の内容がどれだけ見え、どれだけ引用されるかを上げるための取り組みです。
@@ -65,10 +63,7 @@
 
         <!-- Why Matters -->
         <section id="why-geo-matters">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Why GEO matters</p>
-                <h2>なぜ、いま GEO なのか</h2>
-            </div>
+            {% call cover("02", "Why GEO matters") %}なぜ、いま GEO なのか{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-3 flex items-center">
@@ -113,10 +108,7 @@
 
         <!-- Comparison Table -->
         <section id="geo-vs-seo">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; GEO vs SEO</p>
-                <h2>GEO と SEO を並べる</h2>
-            </div>
+            {% call cover("03", "GEO vs SEO") %}GEO と SEO を並べる{% endcall %}
             <div class="overflow-hidden">
                 <div class="overflow-x-auto" tabindex="0">
                     <table class="w-full text-start">
@@ -167,10 +159,7 @@
 
         <!-- Princeton GEO Research Section -->
         <section id="princeton-geo-research">
-            <div class="cover" data-cover>
-                    <p class="eyebrow mb-2"><span class="font-sans">04</span> &mdash; Princeton GEO research</p>
-                    <h2>測られた九つの手法：プリンストンの研究</h2>
-                </div>
+            {% call cover("04", "Princeton GEO research") %}測られた九つの手法：プリンストンの研究{% endcall %}
                 <p class="text-lg leading-relaxed max-w-prose">
                     プリンストン大学、ジョージア工科大学、アレン人工知能研究所、インド工科大学デリー校が発表した論文 <strong>《Generative Engine Optimization》</strong> で、ChatGPT や Perplexity のような AI 検索に引用される確率をはっきり動かす手法が九つ、実測で確かめられています。
                 </p>
@@ -272,10 +261,7 @@
 
         <!-- How it works -->
         <section id="how-geo-works">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; How GEO works</p>
-                <h2>どう進めるか</h2>
-            </div>
+            {% call cover("05", "How GEO works") %}どう進めるか{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-4">
@@ -317,9 +303,7 @@
         <!-- CTA -->
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>AI 時代に手を打つ準備はできましたか</h2>
-                </div>
+                {% call cover() %}AI 時代に手を打つ準備はできましたか{% endcall %}
                 <p class="mb-6 max-w-prose mx-auto">GEO は長く効く投資です。いま始めれば、AI に勧められる位置を先に取れます。</p>
                 <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="/{{ locale }}/geo-optimization" class="btn">

@@ -10,9 +10,10 @@
 // Hrefs the same way, for `locale relative links`.
 //
 // So a macro spells its classes and hrefs out and takes content, not markup:
-// text, a heading, an id, a number. Zero macros exist today, so this is the
-// guard that has to be in place before the first one is written — the
-// prerequisite NOTES 「模板結構大改」 names for part A.
+// text, a heading, an id, a number. It landed before the first macro was
+// written — the prerequisite NOTES 「模板結構大改」 names for part A — and
+// templates/_blocks.html (cover, slide_cover, faq) is written to it: a variant
+// that needs other classes is a boolean choosing between spelled-out strings.
 //
 // `locale` is not a macro parameter anywhere and is allowed inside an href: it
 // is the render's own variable, and `locale relative links` requires it.

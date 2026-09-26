@@ -89,7 +89,7 @@ agent-dev-workflow.html	''	 'Other'
 agent-dev-workflow.html	''	e-labels.md 파일은 '대조표'
 agent-dev-workflow.html	''	iage 명령은 label을 '붙이는'
 agent-dev-workflow.html	''	abel을 '붙이는' 것이지 '발명'
-agent-dev-workflow.html	''	 '하드 의존'
+agent-dev-workflow.html	''	 지도 '하드 의존'
 agent-dev-workflow.html	''	진입로codebase를 훑어 '모듈을 심화할'
 agent-dev-workflow.html	''	tsModel단독hunk마다 '의도'
 agent-dev-workflow.html	''	stionnaireUser단독'다른 사람만 아는'
@@ -185,7 +185,7 @@ agent-dev-workflow.html	''	의 epic으로 좁히십시오. 'V1 구현'
 agent-dev-workflow.html	''	르는 판단 기준은 그 질문을 '지금'
 agent-dev-workflow.html	''	 '직접 보지 않으면 답할 수 없는'
 agent-dev-workflow.html	''	 '답이 다른 사람의 머릿속에 있는'
-agent-dev-workflow.html	''	 '먼저 보게 되는 증상'
+agent-dev-workflow.html	''	 목록 '먼저 보게 되는 증상'
 agent-dev-workflow.html	''	ement심각#2라는 표기는 '눈에 보이는 번호 목록이면 무엇이든'
 agent-dev-workflow.html	''	yfinder심각Notes는 '계획만 하고 실행하지 않는다'
 agent-dev-workflow.html	''	 이것은 '공식 경로로 커스터마이즈하는'
@@ -219,10 +219,10 @@ claude-skills-guide.html	""	 예: "디자인 원고를 읽어 낼 때 쓴다. �
 claude-skills-guide.html	""	 막연한 지시는 피합니다. "데이터를 잘 검증한다"
 claude-skills-guide.html	""	"가 아니라 이렇게 씁니다. "scripts/validate.py을 실행하고, 오류가 나면 필수 항목이 빠졌는…"
 claude-skills-guide.html	""	주 있는 문제」 절을 두고, "연결이 거부되면 설정 &gt; 확장 기능에서 다시 연결해 주세요."
-claude-skills-guide.html	""	 "먼저 단일 작업에서 Claude가 완벽히 해내는 것을 확인하고, 그 잘된 형태를…"
+claude-skills-guide.html	""	 단계 "먼저 단일 작업에서 Claude가 완벽히 해내는 것을 확인하고, 그 잘된 형태를…"
 claude-skills-guide.html	""	e에 판단의 나무를 줍니다. "10MB를 넘는 파일이면 클라우드 스토리지 MCP, 코드면 GitHub MCP."
 claude-skills-guide.html	""	니라 성과 쪽으로 붙입니다. "이 Skill은 몇 초 만에 프로젝트 초기 설정을 끝냅니다"
-claude-skills-guide.html	""	 "지식으로 도구를 움직이고, 자동화를 팀의 표준으로"
+claude-skills-guide.html	""	셨나요 "지식으로 도구를 움직이고, 자동화를 팀의 표준으로"
 claude-skills-guide.html	''	otocol)가 바깥과 잇는 '손발'
 claude-skills-guide.html	''	떻게 제대로 쓸지 알려 주는 '두뇌'
 claude-skills-guide.html	''	 둘 다 반드시 씁니다: '무엇을 할 수 있는가'

@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: BreadcrumbList + Article.
@@ -166,13 +167,10 @@
         </header>
 
 <section id="vendor-figures">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; Vendor figures</p>
-            <h2>
+        {% call cover("01", "Vendor figures") %}
             <span class="display-lead text-display-sm" lang="en">What the Vendors Claim</span>
             <span class="display-sub">手動と自動で、どれだけ違うと言われているか</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-4">最も広く引かれている四つの数字です。それぞれ原典まで戻って確かめました。<strong class="font-normal">数字はすべて事実です</strong>——ただし出回っている言い換えのいくつかは原文と食い違っており、それも下に記します。</p>
         <p class="text-sm leading-relaxed max-w-prose mb-8">それぞれに調査方法、標本の大きさ、データの年を添えました。数字より先にこの三つを見る——このページが示したいのはそれです。</p>
 
@@ -239,13 +237,10 @@
 </section>
 
 <section id="independent-evidence">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Independent research</p>
-            <h2>
+        {% call cover("02", "Independent research") %}
             <span class="display-lead text-display-sm" lang="en">The Gains Are Real</span>
             <span class="display-sub">効果は本物です。ベンダー以外の証拠があります</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">効くと言っているのがベンダーだけなら、このページの結論は「判断できない」になります。ですが独立した研究が効果を測っています。しかも<strong class="font-normal">アンケートではなく客観的な計測で</strong>。
         </p>
 
@@ -278,13 +273,10 @@
 </section>
 
 <section id="how-it-was-measured">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; How it was measured</p>
-            <h2>
+        {% call cover("03", "How it was measured") %}
             <span class="display-lead text-display-sm" lang="en">Self-Reported Time Is Unreliable</span>
             <span class="display-sub">人は、自分がどれだけ時間を浮かせたかを正しく言えません</span>
-        </h2>
-        </div>
+        {% endcall %}
         <p class="leading-relaxed max-w-prose mb-8">ここがこのページで最も重要な節です。前に挙げたベンダーの数字は<strong class="font-normal">すべて自己申告か、自己申告を土台にしたモデル</strong>です。そして自己申告こそ、次の研究が当てにならないと示した測り方です。</p>
 
         <div class="border-t border-line py-12">
@@ -319,83 +311,27 @@
      an exchange that only exists in the structured data misrepresents the page,
      which on this page in particular would be self-defeating. -->
 <section id="questions">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; Questions</p>
-            <h2>
+        {% call cover("05", "Questions") %}
             <span class="display-lead text-display-sm" lang="en">Common Questions</span>
             <span class="display-sub">よくいただく質問</span>
-        </h2>
-        </div>
+        {% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Google Workspace の AI を入れると投資収益率はどのくらいですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester が 2026 年 2 月に公表した、Google 委託の TEI 報告では三年間の投資収益率 416%、正味現在価値 1 億 2,370 万ドル、回収期間六か月未満とされています。この数字は意思決定者六名・五組織への聞き取りを土台に、従業員 20,000 人の想定複合組織へ投射したものです。つまり測定ではなく財務モデルです。</div>
-            </details>
+            {% call faq("Google Workspace の AI を入れると投資収益率はどのくらいですか") %}Forrester が 2026 年 2 月に公表した、Google 委託の TEI 報告では三年間の投資収益率 416%、正味現在価値 1 億 2,370 万ドル、回収期間六か月未満とされています。この数字は意思決定者六名・五組織への聞き取りを土台に、従業員 20,000 人の想定複合組織へ投射したものです。つまり測定ではなく財務モデルです。{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>従業員は実際に週どれだけ時間を浮かせられますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">Forrester の研究では Gemini 利用者一人あたり週 3 時間と記されています。全従業員ではなく利用者である点に注意してください。Google の Gemini at Work 調査では 105 分で、標本は 18 社・3,200 件あまり、データのまとめは 2024 年 7 月です。どちらも自己申告の数字です。</div>
-            </details>
+            {% call faq("従業員は実際に週どれだけ時間を浮かせられますか") %}Forrester の研究では Gemini 利用者一人あたり週 3 時間と記されています。全従業員ではなく利用者である点に注意してください。Google の Gemini at Work 調査では 105 分で、標本は 18 社・3,200 件あまり、データのまとめは 2024 年 7 月です。どちらも自己申告の数字です。{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>ベンダー以外の証拠はありますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">あります。ある Fortune 500 企業のサポート担当 5,172 名を対象とした実地実験では、一時間あたりの解決件数という客観指標で生産性が 15% 上がり、技能が下から五分の一の層では 36% 上がりました。NBER の無作為化比較試験（成人 1,174 名）でも、学歴による生産性の差が 0.548 標準偏差から 0.139 へ縮まっています。いずれもベンダーの委託ではありません。</div>
-            </details>
+            {% call faq("ベンダー以外の証拠はありますか") %}あります。ある Fortune 500 企業のサポート担当 5,172 名を対象とした実地実験では、一時間あたりの解決件数という客観指標で生産性が 15% 上がり、技能が下から五分の一の層では 36% 上がりました。NBER の無作為化比較試験（成人 1,174 名）でも、学歴による生産性の差が 0.548 標準偏差から 0.139 へ縮まっています。いずれもベンダーの委託ではありません。{% endcall %}
 
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>自己申告の節約時間を割り引いて読むべき理由は何ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">METR が 2025 年 7 月に公表した無作為化比較試験では、熟練開発者 16 名が 246 件の実作業で AI を使ったとき実際には 19% 遅くなりましたが、本人はあとから 20% 速くなったと答えました。認識と実際が 40 ポイント近く離れ、向きも逆です。標本は小さく領域もソフトウェア開発に限られ、METR 自身が結果を過去のデータとしていますが、利用者に尋ねる測り方が当てにならないことを示すには十分です。</div>
-            </details>
+            {% call faq("自己申告の節約時間を割り引いて読むべき理由は何ですか") %}METR が 2025 年 7 月に公表した無作為化比較試験では、熟練開発者 16 名が 246 件の実作業で AI を使ったとき実際には 19% 遅くなりましたが、本人はあとから 20% 速くなったと答えました。認識と実際が 40 ポイント近く離れ、向きも逆です。標本は小さく領域もソフトウェア開発に限られ、METR 自身が結果を過去のデータとしていますが、利用者に尋ねる測り方が当てにならないことを示すには十分です。{% endcall %}
 
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>では企業は、導入する価値があるかをどう判断すればよいですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">自分の組織で測ることです。しかもその測定は導入の前に設計しておかなければなりません。入れてしまってからでは対照群が残りません。具体的には、客観的に数えられる作業を選ぶ（件数、所要時間、やり直し率）、誰かが道具を手にする前に基準値を取る、対照群を残すか段階的に入れる、そして自己申告の数字と客観的な数字を分けて記録する——この二つのずれ自体が重要な手がかりです。</div>
-            </details>
+            {% call faq("では企業は、導入する価値があるかをどう判断すればよいですか", last=true) %}自分の組織で測ることです。しかもその測定は導入の前に設計しておかなければなりません。入れてしまってからでは対照群が残りません。具体的には、客観的に数えられる作業を選ぶ（件数、所要時間、やり直し率）、誰かが道具を手にする前に基準値を取る、対照群を残すか段階的に入れる、そして自己申告の数字と客観的な数字を分けて記録する——この二つのずれ自体が重要な手がかりです。{% endcall %}
 </section>
 
 <section id="measurement">
-        <div class="cover" data-cover>
-            <p class="eyebrow mb-2"><span class="font-sans">06</span> &mdash; Measurement</p>
-            <h2>
+        {% call cover("06", "Measurement") %}
             <span class="display-lead text-display-sm" lang="en">Answer With Measurement</span>
             <span class="display-sub">資料ではなく、計測で答える</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <p class="text-lg leading-relaxed max-w-prose mb-6">三つの節の結論を並べます。効果は本物で、客観的な計測がそれを支えています。しかしベンダーの数字はすべて自己申告に由来し、その自己申告は唯一の客観的な計時試験で大きく外れました。ですからそれらの数字は<strong class="font-normal">あなたの組織に何が起きるかを言い当てるのには使えません</strong>——そもそもそのためにつくられた数字ではありません。</p>
 
