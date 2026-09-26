@@ -28,7 +28,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Full history, so check:locale-drift can diff the PR against its base.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # No toolchain action and no version here. The runner ships rustup, which
       # reads rust-toolchain.toml on the first cargo invocation — so the channel
@@ -157,6 +160,16 @@ jobs:
       # argument about rules, applied to itself one file late.
       - name: English pages carry no CJK punctuation
         run: npm run check:i18n
+
+      # A WARNING, NOT A GATE. A route edited in some locales and not the
+      # others shows up as an annotation and a table in the job summary; it
+      # never fails the build, because editing one locale is often right. It
+      # exists because #300 fixed the about page's tone in Chinese and the
+      # other three languages kept the old copy for three weeks, with every
+      # gate green — the gates compare markup, and only the words had drifted.
+      - name: locale drift (warning only)
+        if: github.event_name == 'pull_request'
+        run: npm run -s check:locale-drift -- --base origin/${{ github.base_ref }}
 
       # The one piece of code that runs in production. Pins q-weighted
       # Accept-Language resolution, and fails on any Response the Worker builds

@@ -215,8 +215,6 @@ agent-prompting-guide.html	''	는 기계'입니다. 에이전트는 '스스로 �
 ai-smart-work.html	""	 "구어체 요청을 정해진 형식의 표로 그대로 옮긴다. 숙련된 점원처럼 놓치지 않는다…"
 ai-smart-work.html	""	 "PM, 현장 소장, 품질 관리 셋이 논쟁하게 두고, 프로젝트 리스크를 서로 캐묻…"
 ai-smart-work.html	""	 "근거가 되는 규정과 사실만 넣으면, 행정 문체와 형식에 맞는 원고가 나온다."
-ai-smart-work.html	''	 'AI를 쓴다'
-ai-smart-work.html	''	 'AI를 쓴다'에서 'AI와 생각한다'
 claude-skills-guide.html	""	 예: "디자인 원고를 읽어 낼 때 쓴다. 사용자가 fig 파일을 올렸을 때, 또는 『디…"
 claude-skills-guide.html	""	 막연한 지시는 피합니다. "데이터를 잘 검증한다"
 claude-skills-guide.html	""	"가 아니라 이렇게 씁니다. "scripts/validate.py을 실행하고, 오류가 나면 필수 항목이 빠졌는…"
@@ -283,9 +281,13 @@ pqc-migration.html	''	니다 — 그래서 이 페이지의 '마지막 갱신일
 pqc-migration.html	''	 이 구역을 따로 적는 것은 '확정된 표준'
 pqc-migration.html	''	적는 것은 '확정된 표준'과 '아직 표준화 과정에 있는 알고리즘'
 pqc-migration.html	''	은 근거입니다. NIST조차 '지금의 표준이 나중에 모자랄 수 있다'
+pqc-migration.html	''	이유가 둘 있습니다. 하나는 '지금 모으고 나중에 푼다'
+pqc-migration.html	「」	 시작하세요. 금감위 지침은 「PQC 정책과 거버넌스」
 pqc-migration.html	『』	 각 단계에 대만 금감위 『금융업 포스트 양자 암호 이행 참고 지침』
 pqc-migration.html	『』	 대만 금감위 『금융업 포스트 양자 암호 이행 참고 지침』
 pqc-migration.html	『』	와 포스트양자정보보안산업연맹 『포스트 양자 암호 이행 지침』
+pqc-migration.html	『』	는 2026년 6월 18일에 『금융업 포스트 양자 암호 이행 참고 지침』
+pqc-migration.html	『』	트양자정보보안산업연맹과 함께 『포스트 양자 암호 이행 지침』
 pqc-migration.html	『』	 단계의 대응은 대만 금감위 『금융업 포스트 양자 암호 이행 참고 지침』
 threat-landscape.html	''	넣어 둔 환경입니다. 그러니 'EDR이 있는 환경에서 무엇이 보이는가'
 threat-landscape.html	''	말이 아니라, 어느 숫자에나 '어떤 환경에서, 어떤 도구로, 무엇이 보이는가'
@@ -302,6 +304,8 @@ threat-landscape.html	''	 '90개가 넘는 조직에서 정규 AI 도구가 악�
 threat-landscape.html	''	 대만의 조직에는 '40%가 엣지 장비'
 threat-landscape.html	''	트워크 안쪽에 서게 됩니다. '누구 소행인가'
 threat-landscape.html	''	로운 공격면입니다. 보고서의 '정규 AI 도구가 악용됐다'
+threat-landscape.html	''	넣어 둔 환경입니다. 그러니 'EDR이 있는 환경에서 무엇이 보이는가'
+threat-landscape.html	''	말이 아니라, 어느 숫자에나 '어떤 환경에서, 어떤 도구로, 무엇이 보이는가'
 what-is-llms-txt.html	""	 "llms.txt는 AI 시대의 robots.txt 같은 것입니다. 여기는 환영,…"
 what-is-llms-txt.html	""	사업을 적습니다. 예를 들어 "기업 대상 SEO와 디지털 마케팅 회사"
 what-is-llms-txt.html	''	 목적은 사이트 운영자가 '어떻게 써도 되는지'
