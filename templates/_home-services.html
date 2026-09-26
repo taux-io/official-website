@@ -8,24 +8,48 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "OfferCatalog", "@id": {{ (canonical ~ "#services")|tojson }}, "name": {{ strings.home_services_title|tojson }}, "description": {{ strings.home_services_lead|tojson }}, "itemListElement": [{% set n = namespace(i=0) %}{% for col in nav %}{% for item in col.items %}{% set n.i = n.i + 1 %}{% if n.i > 1 %}, {% endif %}{"@type": "ListItem", "position": {{ n.i }}, "name": {{ item.label|tojson }}, "item": {{ ("https://taux.io" ~ item.href)|tojson }}}{% endfor %}{% endfor %}]}
 </script>
-<div class="max-w-6xl mx-auto px-6 pt-8 pb-10 tablet:pt-12 tablet:pb-16">
+<div class="max-w-6xl mx-auto px-6 pt-8 pb-10 tablet:pt-12 tablet:pb-16 space-y-16">
     <section id="services" class="max-w-prose">
         {% call cover() %}{{ strings.home_services_title }}{% endcall %}
-        <p class="leading-relaxed mb-10">{{ strings.home_services_lead }}</p>
-        <div class="space-y-10">
+        <p class="text-lg leading-relaxed mb-10">{{ strings.home_services_lead }}</p>
+        <div class="space-y-12">
             {%- for col in nav %}
             <div>
-                <h3 class="mb-4">{{ col.title }}</h3>
-                <ul class="space-y-4">
+                <div class="flex items-center gap-3 mb-3">
+                    {%- if col.key == "ai" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><circle cx="24" cy="8" r="3"/><circle cx="16" cy="24" r="3"/><path d="M11 8h10M9.5 10.5l5 11M22.5 10.5l-5 11"/></svg>{% endif %}
+                    {%- if col.key == "marketing" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1.5"/></svg>{% endif %}
+                    {%- if col.key == "training" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><path d="M4 6h24v15H4z"/><path d="M16 21v5M11 26h10M9 11h9M9 15h6"/></svg>{% endif %}
+                    {%- if col.key == "security" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><path d="M16 4l10 4v7c0 7-4.5 11-10 13-5.5-2-10-6-10-13V8z"/><path d="M11.5 16l3 3 6-6"/></svg>{% endif %}
+                    <h3 class="mb-0">{{ col.title }}</h3>
+                </div>
+                <p class="text-lg leading-relaxed mb-5">{{ strings["home_problem_" ~ col.key] }}</p>
+                <ul class="space-y-5">
                     {%- for item in col.items %}
-                    <li class="border-t border-line pt-4">
-                        <a href="{{ item.href|safe }}" class="underline underline-offset-4 font-semibold">{{ item.label }}</a>
-                        <p class="text-sm leading-relaxed mt-2">{{ item.summary }}</p>
+                    <li class="border-t border-line pt-5">
+                        <a href="{{ item.href|safe }}" class="underline underline-offset-4 font-semibold">{{ item.label }}<span aria-hidden="true"> &rarr;</span></a>
+                        <p class="leading-relaxed mt-2">{{ item.summary }}</p>
                     </li>
                     {%- endfor %}
                 </ul>
             </div>
             {%- endfor %}
+        </div>
+    </section>
+    <section id="proof" class="max-w-prose">
+        {% call cover() %}{{ strings.home_proof_title }}{% endcall %}
+        <div class="space-y-6">
+            <div class="border-t border-line pt-6">
+                <h3 class="mb-2">{{ strings.home_proof_1_title }}</h3>
+                <p class="leading-relaxed">{{ strings.home_proof_1_body }} <a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">github.com/taux-io/twse-mcp</a></p>
+            </div>
+            <div class="border-t border-line pt-6">
+                <h3 class="mb-2">{{ strings.home_proof_2_title }}</h3>
+                <p class="leading-relaxed">{{ strings.home_proof_2_body }} <a href="/{{ locale }}/insights" class="underline underline-offset-4">{{ strings.nav_insights }}</a></p>
+            </div>
+            <div class="border-t border-line pt-6">
+                <h3 class="mb-2">{{ strings.home_proof_3_title }}</h3>
+                <p class="leading-relaxed">{{ strings.home_proof_3_body }}</p>
+            </div>
         </div>
     </section>
 </div>

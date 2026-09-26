@@ -16,6 +16,16 @@ const { colourBearing, colourUtilities, isInteractiveNode } = require("../lib");
 // mark, not a second use of the plate. That is the shape rule 23 uses for the
 // surface: a legal case is described by where it sits, so no exemption list is
 // needed and none is kept.
+// TWO NAMED WAYFINDING MARKS (DESIGN.md decision 156, the owner's call). The
+// accent also marks where the reader is: a section cover's number, and the
+// line icon beside each service category on the home page. Both are small,
+// neither is text a reader could mistake for a link — the number is a label
+// above a heading, the icon is aria-hidden — and both are named here rather
+// than matched by pattern, so a third use has to be written into this list
+// and argued for. Everything else still spends the accent on interaction only.
+const WAYFINDING_SELECTOR = /^\.cover \.eyebrow$/;
+const isWayfindingIcon = (node) => node.tag === "svg" && /aria-hidden="true"/.test(node.attrs);
+
 const INTERACTIVE_SELECTOR = /(^|[\s,>~+([])(a|button|input|select|textarea|label|summary)([\s,:.\[)]|$)|\.btn\b|:(hover|active|focus|focus-visible|focus-within)\b|\[aria-(current|expanded|selected)/;
 
 function ruleAccentCarriesInteraction(files) {
@@ -33,6 +43,7 @@ function ruleAccentCarriesInteraction(files) {
     if (d.prop.startsWith("--")) continue;
     if (!plates.stepsIn(value, sheet).some((s) => s.plate === "primary")) continue;
     if (INTERACTIVE_SELECTOR.test(d.selector)) continue;
+    if (WAYFINDING_SELECTOR.test(d.selector.trim())) continue;
     found.push({
       file: d.file,
       line: d.line,
@@ -47,6 +58,7 @@ function ruleAccentCarriesInteraction(files) {
     // component class is not a place — `sheet.applied` entries carry no node.
     if (!u.node) continue;
     if (isInteractiveNode(u.node)) continue;
+    if (isWayfindingIcon(u.node)) continue;
     found.push({
       file: u.file,
       line: u.line(),

@@ -27,6 +27,29 @@
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+<!-- How the pieces connect, drawn in HTML rather than SVG so it stacks on a
+     phone and its labels are text this locale's reader can read. -->
+<figure class="border-t border-line pt-6">
+    <div class="flex flex-col tablet:flex-row tablet:items-center gap-3">
+        <ul class="grid grid-cols-2 tablet:grid-cols-1 gap-2 tablet:w-40 shrink-0">
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">ERP / inventory</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">Excel reports</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">Shared folders</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">In-house databases</li>
+        </ul>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border-2 border-ink px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1" lang="en">MCP server</p>
+            <p class="text-sm leading-relaxed">Read-only by default<br>Existing permissions kept<br>Every query logged</p>
+        </div>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border border-line px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1">AI applications</p>
+            <p class="text-sm leading-relaxed">Claude, Gemini…<br>Staff ask in plain language</p>
+        </div>
+    </div>
+    <figcaption class="text-sm leading-relaxed mt-4">The data stays in the systems it lives in. The MCP server opens only the queries you allow to AI, and logs every access.</figcaption>
+</figure>
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}
     {{ items(scope) }}

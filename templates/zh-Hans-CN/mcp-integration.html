@@ -29,6 +29,29 @@
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+<!-- How the pieces connect, drawn in HTML rather than SVG so it stacks on a
+     phone and its labels are text this locale's reader can read. -->
+<figure class="border-t border-line pt-6">
+    <div class="flex flex-col tablet:flex-row tablet:items-center gap-3">
+        <ul class="grid grid-cols-2 tablet:grid-cols-1 gap-2 tablet:w-40 shrink-0">
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">ERP／进销存</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">Excel 报表</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">共用文件夹</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">自建数据库</li>
+        </ul>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border-2 border-ink px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1" lang="en">MCP server</p>
+            <p class="text-sm leading-relaxed">默认只读<br>沿用既有权限<br>每次查询留记录</p>
+        </div>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border border-line px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1">AI 应用程序</p>
+            <p class="text-sm leading-relaxed">Claude、Gemini⋯<br>同仁用自然语言查询</p>
+        </div>
+    </div>
+    <figcaption class="text-sm leading-relaxed mt-4">数据留在原本的系统里；MCP server 只把允许的查询开放给 AI，并记下每一次访问。</figcaption>
+</figure>
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}
     {{ items(scope) }}

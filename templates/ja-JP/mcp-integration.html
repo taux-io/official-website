@@ -28,6 +28,29 @@
     {% call cover("01") %}こんな方に{% endcall %}
     {{ lines(audience) }}
 </section>
+<!-- How the pieces connect, drawn in HTML rather than SVG so it stacks on a
+     phone and its labels are text this locale's reader can read. -->
+<figure class="border-t border-line pt-6">
+    <div class="flex flex-col tablet:flex-row tablet:items-center gap-3">
+        <ul class="grid grid-cols-2 tablet:grid-cols-1 gap-2 tablet:w-40 shrink-0">
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">ERP・販売管理</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">Excel の帳票</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">共有フォルダ</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">自社データベース</li>
+        </ul>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border-2 border-ink px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1" lang="en">MCP server</p>
+            <p class="text-sm leading-relaxed">既定は読み取り専用<br>既存の権限をそのまま使う<br>照会ごとに記録を残す</p>
+        </div>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border border-line px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1">AI アプリケーション</p>
+            <p class="text-sm leading-relaxed">Claude、Gemini など<br>社員が自然な言葉で照会</p>
+        </div>
+    </div>
+    <figcaption class="text-sm leading-relaxed mt-4">データは元のシステムに置いたままです。MCP server は許可した照会だけを AI に開き、すべてのアクセスを記録します。</figcaption>
+</figure>
 <section id="scope">
     {% call cover("02") %}サービス内容{% endcall %}
     {{ items(scope) }}
