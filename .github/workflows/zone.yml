@@ -46,11 +46,12 @@ permissions:
 
 jobs:
   contract:
-    runs-on: ubuntu-latest
+    # Pinned with checks.yml — see the note on its build job.
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -63,7 +64,7 @@ jobs:
       # can restore, so a hit still installs those.
       - name: cache chromium
         id: chromium-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}

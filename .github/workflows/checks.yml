@@ -26,10 +26,15 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # PINNED, NOT `ubuntu-latest`. That label moves to Ubuntu 26 from
+    # 2026-10-19, and `playwright install --with-deps` resolves system
+    # packages by distribution — a new release it does not know yet fails the
+    # audit job, which is a required check, on every PR at once. Move this
+    # deliberately, after one PR has run green on the new image.
+    runs-on: ubuntu-24.04
     steps:
       # Full history, so check:locale-drift can diff the PR against its base.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -43,7 +48,7 @@ jobs:
         with:
           workspaces: generator
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -178,9 +183,9 @@ jobs:
         run: npm run test:worker
 
   audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # rustup on the runner reads rust-toolchain.toml — see the build job.
 
@@ -188,7 +193,7 @@ jobs:
         with:
           workspaces: generator
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -201,7 +206,7 @@ jobs:
       # can restore, so a hit still installs those.
       - name: cache chromium
         id: chromium-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}

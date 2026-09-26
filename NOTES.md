@@ -103,6 +103,8 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 `.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
 
+**runner 釘在 `ubuntu-24.04`，不用 `ubuntu-latest`**（兩個 workflow 都是）。`ubuntu-latest` 自 2026-10-19 起改指 Ubuntu 26，而 `playwright install --with-deps` 是依發行版解析系統套件的——它還不認得的新版會讓 audit（必要檢查）在每個 PR 上同時失敗。要換版本時，先在一個 PR 上把 `runs-on` 改成新 image 跑綠，再合併。actions 用 `checkout@v7`、`setup-node@v7`、`cache@v6`（Node 24 runtime）。
+
 兩個 job 刻意平行而不共用產物：audit 約 10 分鐘（geometry 佔大半）、build 約 1 分鐘，讓 audit 等 build 的 `dist/` 會拉長總時間。
 
 **需要瀏覽器或網路的都在 `audit`，離線的都在 `build`。** 前兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
@@ -467,6 +469,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 ## 已知待辦
 
 - 模板結構大改的前置條件（見上一節）：C 還差 Rust 端的 JSON 序列化與每個 locale 的麵包屑名稱
+- CI runner 釘在 `ubuntu-24.04`：Ubuntu 26 image 穩定、Playwright 支援之後，在一個 PR 上試跑再切換（見「建置與檢查」）
 - Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
 - 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定
 - 法律頁內文維持英文（決定見 ja-JP 版模板的註解）
