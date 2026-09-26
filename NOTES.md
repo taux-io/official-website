@@ -464,9 +464,27 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ## 已知待辦
 
-- 模板結構大改：A（macro，建議只做 cover 與 FAQ）與 B（base layout）的前置條件已滿足，做不做待決定（見上一節）
-- CI runner 釘在 `ubuntu-24.04`：Ubuntu 26 image 穩定、Playwright 支援之後，在一個 PR 上試跑再切換（見「建置與檢查」）
-- Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
-- 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定
+分四類，每一項只寫在這裡；細節在括號指的段落。
+
+### 需要擁有者決定
+
+- **語系切換器在一般模式下沒有標示目前語系。** 高對比模式有（決策 #152 的 Highlight 前緣），一般模式什麼都沒有——要不要標、怎麼標是視覺決定
+- **模板結構大改的 A 與 B。** 前置條件已滿足（check:design 讀建置產物、規則 37）。建議只做 A 的 cover 與 FAQ 兩種 macro；B（base layout）幾乎不省行數，不建議（見「模板結構大改」）
+- **法律頁與兩頁導言框的標題層級。** 目前用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級；改成可見的 h2 就要各開一個封面區塊
+
+### 有日期
+
+- **2026-10-19 之後：Ubuntu 26。** CI runner 釘在 `ubuntu-24.04`；Ubuntu 26 image 穩定、Playwright 支援之後，在一個 PR 上把 `runs-on` 改掉跑綠再切換（見「建置與檢查」）
+
+### 可以直接做的工程項目
+
+- **翻譯漂移警示細到段落。** `check:locale-drift` 只比對檔案，「五個 locale 的檔都動了、但只改完一部分」看不到（#300 的 about）。可以改成比對同一條路由各 locale 改動的段落數；誤報率要實作後才知道
+- **`contrast` 在高對比模式下也跑一次。** 規則 38 守住了 `forced-colors` 區塊的唯一假設，但區塊本身沒有閘門，`contrast` 只量一般模式（DESIGN.md「沒有東西檢查的事」）
+- **Article／TechArticle 的 JSON-LD 也改由產生器組出。** 麵包屑已經是（#323）；約 55 個 Article 節點的 `@id`、`mainEntityOfPage` 仍手寫，目前由 check:entity 的 `page nodes name their canonical` 守著，不急
+
+### 已知、刻意維持
+
 - 法律頁內文維持英文（決定見 ja-JP 版模板的註解）
-- FAQ 的 `<summary>` 裡包 `<h3>`：部分讀屏會把 summary 當按鈕、吃掉標題語意，拿掉 h3 又失去標題導覽，目前維持
+- FAQ 的 `<summary>` 裡包 `<h3>`：部分讀屏會把 summary 當按鈕、吃掉標題語意，拿掉 h3 又失去標題導覽
+- Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
+- 「不得有促銷語言」沒有東西檢查，而且大概檢查不了（DESIGN.md 的語氣一章）；`check:locale-drift` 只能提醒「別的語系沒跟著改」
