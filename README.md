@@ -66,6 +66,7 @@ CI（`.github/workflows/checks.yml`）在每個 PR 跑兩個 job：`build` 跑�
 2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`（`title`、`description`，要麵包屑就加 `crumb`，模板的 JSON-LD `@graph` 裡寫 `{{ breadcrumb }}`）
 3. 導覽連結在 `templates/_nav-columns.html`，連結文字在 `site.toml` 每個 `[[locale]]` 的 `[locale.strings]`（`nav_*`）
 4. 在 `public/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
+5. 章節封面與 FAQ 用 `templates/_blocks.html` 的 macro，不要手抄外殼：第一行寫 `{% from "_blocks.html" import cover, faq -%}`，章節標題寫 `{% call cover("01") %}標題{% endcall %}`（`cover("02", "Tool wrapper")` 帶英文名，`cover()` 不帶眉標），FAQ 寫 `{% call faq("問題？") %}答案{% endcall %}`，最後一題加 `last=true`。問題要與 FAQPage JSON-LD 逐字相同（`check:entity` 會擋）。macro 只收內容，class 一律寫在 macro 裡（設計規則 37）
 
 sitemap、hreflang、OG 標籤、路由契約測試都從 `site.toml` 推導，不用手改。日期（`date_published`、`date_modified`）寫在 `site.toml`，建置不讀 git；`npm run dates` 會拿 git 的紀錄跟宣告值對照（只報告）。
 

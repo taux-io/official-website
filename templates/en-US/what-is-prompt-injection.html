@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include"header.html" %}
 
 <!-- Article, breadcrumb and FAQ schema. This page carried the FAQ alone, so it
@@ -45,10 +46,7 @@
         </header>
         <!-- Concept Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>The mechanism, in plain terms</h2>
-            </div>
+            {% call cover("01") %}The mechanism, in plain terms{% endcall %}
 
             <div class="relative overflow-hidden border-t border-line pt-4">
                 <h3 class="mb-2"> Think of it as a game of Simon Says the model cannot tell it is losing.
@@ -99,10 +97,7 @@
 
         <!-- Attack Types -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>How it arrives</h2>
-            </div>
+            {% call cover("02") %}How it arrives{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
 <h3 class="mb-3">Direct injection</h3>
@@ -138,10 +133,7 @@
 
         <!-- Defense Strategy -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>What actually helps</h2>
-            </div>
+            {% call cover("03") %}What actually helps{% endcall %}
             <div class="space-y-6">
                 <div class="border-line ps-5 py-2 flex items-start border-s border-line">
                     <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-semibold me-5 font-semibold">
@@ -183,56 +175,21 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>Common questions</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is prompt injection?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Prompt injection is an attack on a large language model in which crafted text is passed off as a system instruction. The model cannot reliably tell an instruction from content, so it may abandon the rules the developer set and do something else instead — leak personal data, or produce deliberate misinformation. The root cause is structural: instructions and data arrive through the same channel.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>How is prompt injection different from jailbreaking?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Jailbreaking is about getting past the model's content rules — making it say something it was trained to refuse. It affects the output. Prompt injection is wider: it targets the application's logic, and where the model can call tools it can be steered into real actions such as deleting files or sending phishing mail. Jailbreaking embarrasses you; injection can be used against your systems.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>How do you defend against prompt injection?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    There is no single fix, and anyone selling one is overstating it. What works is layering: delimit untrusted input so the model is told what it is, restate your rules after the user content rather than only before it, and put a second model in front of the output whose only job is to check it. Each layer is porous; together they raise the cost.
-                </div>
-            </details>
+            {% call cover("04") %}Common questions{% endcall %}
+            {% call faq("What is prompt injection?") %}
+                Prompt injection is an attack on a large language model in which crafted text is passed off as a system instruction. The model cannot reliably tell an instruction from content, so it may abandon the rules the developer set and do something else instead — leak personal data, or produce deliberate misinformation. The root cause is structural: instructions and data arrive through the same channel.
+            {% endcall %}
+            {% call faq("How is prompt injection different from jailbreaking?") %}
+                Jailbreaking is about getting past the model's content rules — making it say something it was trained to refuse. It affects the output. Prompt injection is wider: it targets the application's logic, and where the model can call tools it can be steered into real actions such as deleting files or sending phishing mail. Jailbreaking embarrasses you; injection can be used against your systems.
+            {% endcall %}
+            {% call faq("How do you defend against prompt injection?", last=true) %}
+                There is no single fix, and anyone selling one is overstating it. What works is layering: delimit untrusted input so the model is told what it is, restate your rules after the user content rather than only before it, and put a second model in front of the output whose only job is to check it. Each layer is porous; together they raise the cost.
+            {% endcall %}
         </section>
 
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>Not sure your LLM app holds up?</h2>
-                </div>
+                {% call cover() %}Not sure your LLM app holds up?{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">TauX runs LLM
                     security assessments and red-team exercises to find the gaps before someone else does.</p>
 

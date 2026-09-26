@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -88,10 +89,7 @@
              from losing the reader. The regulatory dates do not depend on any
              prediction being right. -->
         <section id="why-now">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>왜 지금인가</h2>
-            </div>
+            {% call cover("00") %}왜 지금인가{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>이유는 둘이고 <strong>서로 독립</strong>입니다. 확실한 정도가 다르니 나눠 적습니다. 이 둘을 섞는 것이 이 주제에서 가장 부풀려지기 쉬운 지점이기 때문입니다.</p>
                 <div>
@@ -109,10 +107,7 @@
 
         <!-- Overview: also the table of contents on small screens. -->
         <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>다섯 단계 훑기</h2>
-            </div>
+            {% call cover("01") %}다섯 단계 훑기{% endcall %}
             <p class="leading-relaxed mb-5">각 단계에 대만 금감위 『금융업 포스트 양자 암호 이행 참고 지침』의 일곱 방침 중 어디에 해당하는지 밝힙니다. 금융업 밖에는 지금 대만 국내의 법정 기한이 없지만 이 순서는 그대로 쓸 수 있습니다 — 그리고 금융기관에 무언가를 팔고 있다면 당신은 이미 그 지침의 범위 안입니다.</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -156,10 +151,7 @@
         </section>
 
         <section id="governance">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">단계 00</p>
-                <h2>거버넌스<span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
-            </div>
+            {% call cover("단계 00") %}거버넌스<span class="block text-base font-normal mt-2 font-sans">Governance</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">무엇을 정하는가</p>
@@ -181,10 +173,7 @@
         </section>
 
         <section id="cbom">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">단계 01</p>
-                <h2>암호 자산 점검<span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
-            </div>
+            {% call cover("단계 01") %}암호 자산 점검<span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">정의</p>
@@ -210,10 +199,7 @@
         </section>
 
         <section id="risk-assessment">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">단계 02</p>
-                <h2>리스크 평가와 규제 대조<span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
-            </div>
+            {% call cover("단계 02") %}리스크 평가와 규제 대조<span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">답해야 할 물음</p>
@@ -232,10 +218,7 @@
         </section>
 
         <section id="crypto-agility">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">단계 03</p>
-                <h2>암호 민첩성 구축<span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
-            </div>
+            {% call cover("단계 03") %}암호 민첩성 구축<span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">정의</p>
@@ -261,10 +244,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">단계 04</p>
-                <h2>공급망의 양자 안전<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
-            </div>
+            {% call cover("단계 04") %}공급망의 양자 안전<span class="block text-base font-normal mt-2 font-sans">Supply Chain</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">왜 대만 기업에 특히 무거운가</p>
@@ -291,10 +271,7 @@
              The verification date and the convention around date_modified are
              the only defence, and they depend on a person. -->
         <section id="regulatory-timeline">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">규제 기한</p>
-                <h2>세계 규제의 진행</h2>
-            </div>
+            {% call cover("규제 기한") %}세계 규제의 진행{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed mb-8">
                 <p>
                     <strong>이 페이지의 규제 상태는 2026-08-15에 확인했습니다.</strong> 각 줄에 어느 문서에서 왔는지 밝혔습니다. 이 구역을 지켜 줄 자동 검사는 없습니다 — 법규 변경은 우리 버전 관리 안에 없기 때문입니다 — 그래서 이 페이지의 '마지막 갱신일'이 뜻하는 것은 <strong>규제 상태를 다시 확인한 날</strong>이지 편집을 손본 날이 아닙니다.</p>
@@ -337,10 +314,7 @@
         </section>
 
         <section id="standards">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">표준 현황</p>
-                <h2>무엇이 표준이고 무엇이 아직인가</h2>
-            </div>
+            {% call cover("표준 현황") %}무엇이 표준이고 무엇이 아직인가{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>이 구역을 따로 적는 것은 '확정된 표준'과 '아직 표준화 과정에 있는 알고리즘'이 자주 섞이기 때문입니다. 조달과 설계 판단은 앞의 것 위에 세워야 합니다.</p>
                 <div>
@@ -366,75 +340,22 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>자주 묻는 것들</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>포스트 양자 암호(PQC)란 무엇인가요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    포스트 양자 암호(Post-Quantum Cryptography)는 양자컴퓨터의 공격을 견디도록 설계된 암호 알고리즘을 통틀어 이릅니다. 지금 널리 쓰이는 RSA와 타원곡선 암호는 소인수분해와 이산로그의 어려움에 안전성을 두는데, 이 둘은 충분히 큰 양자컴퓨터로 효율적으로 풀립니다. PQC는 격자, 해시, 부호 같은 수학 구조로 바꾸었고, 지금까지 효율적으로 깨는 양자 알고리즘은 알려져 있지 않습니다.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>대만 기업에 PQC 규제 요건이 있나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    지금 분명한 기한이 있는 곳은 금융업뿐입니다. 대만 금감위는 2026년 6월 18일에 『금융업 포스트 양자 암호 이행 참고 지침』을 공표하고 일곱 방침과 2026~2035년의 단계별 기한을 제시했습니다. 대상은 금융기관과 그 중요 공급업체이며 성격은 참고 지침이지 강제가 아닙니다. 디지털발전부 디지털산업서는 2025년 4월 16일에 포스트양자정보보안산업연맹과 함께 『포스트 양자 암호 이행 지침』을 공표했고, 공개키 기반, 보안 칩, 전자 서명, 네트워크 장비, 제로 트러스트 신원 확인 등을 다룹니다.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>기업은 어느 단계부터 시작해야 하나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    점검이 아니라 거버넌스부터 시작하세요. 금감위 지침은 「PQC 정책과 거버넌스」를 첫 방침에 두고 암호 기술 점검보다 앞에 놓았습니다. 이유는 아주 실제적입니다. 누가 책임지는지, 예산이 어디서 나오는지가 정해지지 않으면 암호 자산 점검은 도중에 멈춥니다. 거버넌스가 서고 나서야 CBOM 점검, 리스크를 축으로 한 우선순위, 암호 민첩성 구축, 마지막으로 공급망과 조달 요건 갱신으로 갑니다.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>CBOM(암호 자재 명세서)이란 무엇인가요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    CBOM(Cryptography Bill of Materials)은 암호 자산의 대장입니다. 시스템 어디에서 어떤 알고리즘을 쓰고 키 길이는, 인증서는, 라이브러리는 무엇인지. 각각 어디에 있고 누가 관리하며 수명은 얼마인지. SBOM(소프트웨어 자재 명세서)의 암호 판에 해당하며 PQC 이행의 전제이기도 합니다 — 점검하지 못하는 것에는 우선순위를 매길 수 없습니다. CycloneDX는 1.6판부터 CBOM 형식을 지원합니다. 대만 금감위 지침은 이것을 둘째 방침에 두었습니다.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>양자컴퓨터는 아직 없는데 왜 지금 움직이나요</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    서로 독립된 이유가 둘 있습니다. 하나는 '지금 모으고 나중에 푼다'(Harvest Now, Decrypt Later)입니다. 오늘 가로챈 암호화 통신은 나중까지 보관해 풀 수 있으므로, 비밀 유지 기한이 긴 데이터는 오늘 이미 드러나 있습니다. 다른 하나는 양자컴퓨터가 언제 오는지에 대한 예측에 전혀 기대지 않습니다. 규제 기한 자체가 존재하기 때문입니다. EU는 회원국에 2026년 말까지 착수를, 핵심 기반 시설에는 2030년 말까지 고위험 영역을 끝내도록 권고합니다. 대만 금감위의 단계별 기한은 2026년부터 시작합니다.
-                </div>
-            </details>
+            {% call cover("FAQ") %}자주 묻는 것들{% endcall %}
+            {% call faq("포스트 양자 암호(PQC)란 무엇인가요") %}
+                포스트 양자 암호(Post-Quantum Cryptography)는 양자컴퓨터의 공격을 견디도록 설계된 암호 알고리즘을 통틀어 이릅니다. 지금 널리 쓰이는 RSA와 타원곡선 암호는 소인수분해와 이산로그의 어려움에 안전성을 두는데, 이 둘은 충분히 큰 양자컴퓨터로 효율적으로 풀립니다. PQC는 격자, 해시, 부호 같은 수학 구조로 바꾸었고, 지금까지 효율적으로 깨는 양자 알고리즘은 알려져 있지 않습니다.
+            {% endcall %}
+            {% call faq("대만 기업에 PQC 규제 요건이 있나요") %}
+                지금 분명한 기한이 있는 곳은 금융업뿐입니다. 대만 금감위는 2026년 6월 18일에 『금융업 포스트 양자 암호 이행 참고 지침』을 공표하고 일곱 방침과 2026~2035년의 단계별 기한을 제시했습니다. 대상은 금융기관과 그 중요 공급업체이며 성격은 참고 지침이지 강제가 아닙니다. 디지털발전부 디지털산업서는 2025년 4월 16일에 포스트양자정보보안산업연맹과 함께 『포스트 양자 암호 이행 지침』을 공표했고, 공개키 기반, 보안 칩, 전자 서명, 네트워크 장비, 제로 트러스트 신원 확인 등을 다룹니다.
+            {% endcall %}
+            {% call faq("기업은 어느 단계부터 시작해야 하나요") %}
+                점검이 아니라 거버넌스부터 시작하세요. 금감위 지침은 「PQC 정책과 거버넌스」를 첫 방침에 두고 암호 기술 점검보다 앞에 놓았습니다. 이유는 아주 실제적입니다. 누가 책임지는지, 예산이 어디서 나오는지가 정해지지 않으면 암호 자산 점검은 도중에 멈춥니다. 거버넌스가 서고 나서야 CBOM 점검, 리스크를 축으로 한 우선순위, 암호 민첩성 구축, 마지막으로 공급망과 조달 요건 갱신으로 갑니다.
+            {% endcall %}
+            {% call faq("CBOM(암호 자재 명세서)이란 무엇인가요") %}
+                CBOM(Cryptography Bill of Materials)은 암호 자산의 대장입니다. 시스템 어디에서 어떤 알고리즘을 쓰고 키 길이는, 인증서는, 라이브러리는 무엇인지. 각각 어디에 있고 누가 관리하며 수명은 얼마인지. SBOM(소프트웨어 자재 명세서)의 암호 판에 해당하며 PQC 이행의 전제이기도 합니다 — 점검하지 못하는 것에는 우선순위를 매길 수 없습니다. CycloneDX는 1.6판부터 CBOM 형식을 지원합니다. 대만 금감위 지침은 이것을 둘째 방침에 두었습니다.
+            {% endcall %}
+            {% call faq("양자컴퓨터는 아직 없는데 왜 지금 움직이나요", last=true) %}
+                서로 독립된 이유가 둘 있습니다. 하나는 '지금 모으고 나중에 푼다'(Harvest Now, Decrypt Later)입니다. 오늘 가로챈 암호화 통신은 나중까지 보관해 풀 수 있으므로, 비밀 유지 기한이 긴 데이터는 오늘 이미 드러나 있습니다. 다른 하나는 양자컴퓨터가 언제 오는지에 대한 예측에 전혀 기대지 않습니다. 규제 기한 자체가 존재하기 때문입니다. EU는 회원국에 2026년 말까지 착수를, 핵심 기반 시설에는 2030년 말까지 고위험 영역을 끝내도록 권고합니다. 대만 금감위의 단계별 기한은 2026년부터 시작합니다.
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -446,9 +367,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>내 암호 자산이 무엇인지 모르겠다면</h2>
-            </div>
+            {% call cover() %}내 암호 자산이 무엇인지 모르겠다면{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">많은 조직이 첫걸음에서 멈춥니다. CBOM 점검과 데이터 거버넌스는 같은 능력입니다. 지금 자산 목록이 어떤지부터 이야기해 봅시다.</p>
             <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">상담 예약하기</a>

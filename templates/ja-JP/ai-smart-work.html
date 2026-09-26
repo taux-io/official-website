@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -45,12 +46,10 @@
 
 <!-- Problem Section -->
 <section>
-        <div class="cover" data-cover>
-                <h2>
-                <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-                <span class="display-sub">なぜ AI の答えは、いつも当たりさわりがないのか</span>
-            </h2>
-            </div>
+        {% call cover() %}
+            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
+            <span class="display-sub">なぜ AI の答えは、いつも当たりさわりがないのか</span>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -75,12 +74,10 @@
         <div class="mb-8">
             <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
                 Methodology</span>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
                 <span class="display-sub">AI に伝わる書き方を身につける</span>
-            </h2>
-            </div>
+            {% endcall %}
         </div>
 
         <div class="space-y-6">
@@ -106,12 +103,10 @@
 
 <!-- Use Cases -->
 <section id="cases">
-        <div class="cover" data-cover>
-            <h2>
+        {% call cover() %}
             <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
             <span class="display-sub">AI を、役割ごとの分身にする</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -144,12 +139,10 @@
 <section>
         <div class="relative overflow-hidden">
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>
-                        <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                        <span class="display-sub">問い方がわかれば答えが返る。考え方がわかれば助けになる</span>
-                    </h2>
-                </div>
+                {% call cover() %}
+                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
+                    <span class="display-sub">問い方がわかれば答えが返る。考え方がわかれば助けになる</span>
+                {% endcall %}
                 <p class="text-lg mb-6 max-w-prose mx-auto">同じ質問でも、問い方を変えるだけで答えの使える度合いは大きく変わります。それをチームの共通のやり方にするのは、また別の話です——ご相談ください。</p>
                 <a href="mailto:hello@taux.io" class="btn">
                     相談をはじめる

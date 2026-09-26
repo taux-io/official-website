@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, slide_cover -%}
 {% include "header.html" %}
 
 <!-- Schema.org JSON-LD: TechArticle -->
@@ -32,9 +33,7 @@
 
     <!-- Slide 2: Image_Right_Text_Left -->
     <div class="slide-container" id="slide2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">먼저 개념: Skill이란 무엇인가</h2>
-        </div>
+        {% call slide_cover() %}먼저 개념: Skill이란 무엇인가{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -76,9 +75,7 @@
 
     <!-- Slide 3: Timeline -->
     <div class="slide-container" id="slide3">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">단계를 밟는 개발 경로 (The Staircase)</h2>
-        </div>
+        {% call slide_cover() %}단계를 밟는 개발 경로 (The Staircase){% endcall %}
         <div class="content-area">
             <div class="timeline-layout">
                 <div class="timeline-line"></div>
@@ -116,9 +113,7 @@
 
     <!-- Slide 4: Highlighted_Numbers -->
     <div class="slide-container" id="slide4">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">MCP와 Skills의 조합</h2>
-        </div>
+        {% call slide_cover() %}MCP와 Skills의 조합{% endcall %}
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
@@ -139,9 +134,7 @@
 
     <!-- Slide 5: Tiled_Images -->
     <div class="slide-container" id="slide5">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">자주 쓰이는 세 가지 (Use Cases)</h2>
-        </div>
+        {% call slide_cover() %}자주 쓰이는 세 가지 (Use Cases){% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="image-tile">
@@ -197,9 +190,7 @@
 
     <!-- Slide 6: Two_Column_Tiled_Text -->
     <div class="slide-container dark-theme" id="slide6">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">YAML 쓰는 법: 여기서 생사가 갈린다</h2>
-        </div>
+        {% call slide_cover() %}YAML 쓰는 법: 여기서 생사가 갈린다{% endcall %}
         <div class="content-area">
             <div class="two-column tiled">
                 <div>
@@ -227,9 +218,7 @@
 
     <!-- Slide 7: Tiled_Text_With_Icons -->
     <div class="slide-container" id="slide7">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">지시를 쓰는 정석 (Best Practices)</h2>
-        </div>
+        {% call slide_cover() %}지시를 쓰는 정석 (Best Practices){% endcall %}
         <div class="content-area">
             <div class="tiled-content">
                 <div class="tile">
@@ -253,9 +242,7 @@
 
     <!-- Slide 8: Practical Example 1 -->
     <div class="slide-container" id="slide-example-1">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">실전 예 하나: 코드 리뷰 도우미</h2>
-        </div>
+        {% call slide_cover() %}실전 예 하나: 코드 리뷰 도우미{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -294,9 +281,7 @@
 
     <!-- Slide 9: Practical Example 2 -->
     <div class="slide-container dark-theme" id="slide-example-2">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">실전 예 둘: MCP에 잇는 자동화</h2>
-        </div>
+        {% call slide_cover() %}실전 예 둘: MCP에 잇는 자동화{% endcall %}
         <div class="content-area">
             <div class="two-column">
                 <div>
@@ -335,18 +320,14 @@
     <div class="slide-container dark-theme" id="slide10">
         <div class="section-title-layout">
             <hr>
-            <div class="cover" data-cover>
-                <h2>시험하고 확인하는 단계</h2>
-            </div>
+            {% call cover() %}시험하고 확인하는 단계{% endcall %}
             <p>"먼저 단일 작업에서 Claude가 완벽히 해내는 것을 확인하고, 그 잘된 형태를 뽑아 Skill로 굳힌다."</p>
         </div>
     </div>
 
     <!-- Slide 11: Table -->
     <div class="slide-container" id="slide11">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">시험하는 법 전체: 세 가지 관점</h2>
-        </div>
+        {% call slide_cover() %}시험하는 법 전체: 세 가지 관점{% endcall %}
         <div class="content-area">
             <div class="table-layout">
                 <table>
@@ -381,9 +362,7 @@
 
     <!-- Slide 12: Styled_Bullet_Points -->
     <div class="slide-container" id="slide12">
-        <div class="cover" data-cover>
-            <h2 class="slide-title">한발 더: 다섯 가지 형태</h2>
-        </div>
+        {% call slide_cover() %}한발 더: 다섯 가지 형태{% endcall %}
         <div class="content-area">
             <div class="bullet-list">
                 <ul>
@@ -400,9 +379,7 @@
     <!-- Slide 13: Bleed_Image_Right -->
     <div class="slide-container bleed-image-layout" id="slide13">
         <div class="content-container">
-            <div class="cover" data-cover>
-                <h2 class="slide-title">마지막 걸음: 묶어서 배포</h2>
-            </div>
+            {% call slide_cover() %}마지막 걸음: 묶어서 배포{% endcall %}
             <div class="content-area">
                 <div class="bleed-text-side">
                     <p><strong>묶는 법과 넣는 법:</strong> 시험을 마쳤으면 폴더를 <code>.zip</code>로 묶습니다. 개인은 Claude.ai에서 올릴 수 있습니다. 기업 관리자는 Workspace 전체에 배포할 수 있습니다(자동으로 갱신됩니다).</p>
@@ -457,9 +434,7 @@
     <!-- Slide 14: Q&A -->
     <div class="slide-container" id="slide14">
         <div class="qa-layout">
-            <div class="cover" data-cover>
-                <h2>자기만의 Skill을 만들 준비가 되셨나요</h2>
-            </div>
+            {% call cover() %}자기만의 Skill을 만들 준비가 되셨나요{% endcall %}
             <p>"지식으로 도구를 움직이고, 자동화를 팀의 표준으로"</p>
             <div class="contact-info">
                 <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i>우선 내장된 skill-creator부터 시작해 보세요.</div>

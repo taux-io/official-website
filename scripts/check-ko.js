@@ -129,6 +129,10 @@ function boundaries(html) {
 //   comments      the generator strips them; readers never see them
 //   <style>       CSS, and its /* */ comments hold English apostrophes
 //   {% %} {{ }}   minijinja syntax: `{% include "footer.html" %}` is not a quote
+//                 — except the string arguments of a `{% call %}`, which are
+//                 prose: `{% call faq("…") %}` is a question the page prints
+//                 (templates/_blocks.html). Dropping the whole tag would hide a
+//                 quote in a FAQ question from this ledger.
 //   tags          `class="btn"` is the overwhelming majority of every `"`
 //
 // JSON-LD is the exception and it is kept ON PURPOSE: issue #242 was two
@@ -143,6 +147,9 @@ function prose(html) {
   const body = html
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, "")
+    .replace(/\{%-?\s*call\b[\s\S]*?%\}/g, (tag) =>
+      [...tag.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]).join(" "),
+    )
     .replace(/\{%[\s\S]*?%\}/g, "")
     .replace(/\{\{[\s\S]*?\}\}/g, "")
     .replace(/&ldquo;/g, "“")

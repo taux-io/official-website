@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -27,11 +28,8 @@
         </header>
         <!-- Section 1 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2 class="mb-0">llms.txt란 무엇인가
-            </h2>
-            </div>
+            {% call cover("01", flush=true) %}llms.txt란 무엇인가
+            {% endcall %}
             <div class="space-y-6">
                 <p class="text-lg leading-relaxed max-w-prose">
                     목적은 사이트 운영자가 '어떻게 써도 되는지'를 분명히 적을 수 있게 하는 것입니다. <strong class="font-semibold">학습·요약·재작성·인용</strong>을 허용할지 제한할지. 아직 정식 업계 표준은 아니지만, AI가
@@ -74,11 +72,8 @@
 
         <!-- Section 2 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2 class="mb-0">쓰는 법 예시
-            </h2>
-            </div>
+            {% call cover("02", flush=true) %}쓰는 법 예시
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
                     <h3 class="mb-6 flex items-center">
@@ -138,11 +133,8 @@
 
         <!-- Section 3 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2 class="mb-0">왜 llms.txt가 필요한가
-            </h2>
-            </div>
+            {% call cover("03", flush=true) %}왜 llms.txt가 필요한가
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
 <h3 class="mb-3">지식재산 보호</h3>
@@ -165,10 +157,7 @@
 
         <!-- FAQ Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>자주 묻는 질문</h2>
-            </div>
+            {% call cover("04") %}자주 묻는 질문{% endcall %}
             <div class="space-y-4">
                 <details class="group py-2 cursor-pointer">
                     <summary class="font-semibold text-lg list-none flex justify-between items-center">
@@ -205,9 +194,7 @@
         <!-- CTA -->
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>사이트 콘텐츠를 지키고 싶다면</h2>
-                </div>
+                {% call cover() %}사이트 콘텐츠를 지키고 싶다면{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">귀사에 맞는 GEO 방침과 AI용 설정 파일 준비까지 도와드립니다.</p>
 
                 <div class="flex flex-col mobile:flex-row gap-4">

@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -48,11 +49,9 @@
 
 <!-- Problem Section -->
 <section>
-        <div class="cover" data-cover>
-                <h2>
-                <span class="display-lead text-display-sm">Why the Answers Are Average</span>
-            </h2>
-            </div>
+        {% call cover() %}
+            <span class="display-lead text-display-sm">Why the Answers Are Average</span>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -77,11 +76,9 @@
         <div class="mb-8">
             <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
                 Methodology</span>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm">The Craft of Asking</span>
-            </h2>
-            </div>
+            {% endcall %}
         </div>
 
         <div class="space-y-6">
@@ -107,11 +104,9 @@
 
 <!-- Use Cases -->
 <section id="cases">
-        <div class="cover" data-cover>
-            <h2>
+        {% call cover() %}
             <span class="display-lead text-display-sm">Many Roles, One Assistant</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -144,11 +139,9 @@
 <section>
         <div class="relative overflow-hidden">
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>
-                        <span class="display-lead text-display-sm">Ask Well, Think Better</span>
-                    </h2>
-                </div>
+                {% call cover() %}
+                    <span class="display-lead text-display-sm">Ask Well, Think Better</span>
+                {% endcall %}
                 <p class="text-lg mb-6 max-w-prose mx-auto">The gap is not access to AI — everyone has that. It is knowing how to instruct it. That part is teachable.</p>
                 <a href="mailto:hello@taux.io" class="btn">
                     Start a conversation

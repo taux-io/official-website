@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -45,12 +46,10 @@
 
 <!-- Problem Section -->
 <section>
-        <div class="cover" data-cover>
-                <h2>
-                <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-                <span class="display-sub">왜 AI의 답은 늘 무난하기만 한가</span>
-            </h2>
-            </div>
+        {% call cover() %}
+            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
+            <span class="display-sub">왜 AI의 답은 늘 무난하기만 한가</span>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -75,12 +74,10 @@
         <div class="mb-8">
             <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
                 Methodology</span>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
                 <span class="display-sub">AI에 통하는 글쓰기를 익힌다</span>
-            </h2>
-            </div>
+            {% endcall %}
         </div>
 
         <div class="space-y-6">
@@ -106,12 +103,10 @@
 
 <!-- Use Cases -->
 <section id="cases">
-        <div class="cover" data-cover>
-            <h2>
+        {% call cover() %}
             <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
             <span class="display-sub">AI를 역할별 분신으로</span>
-        </h2>
-        </div>
+        {% endcall %}
 
         <div class="space-y-6">
             <div class="space-y-2">
@@ -144,12 +139,10 @@
 <section>
         <div class="relative overflow-hidden">
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>
-                        <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                        <span class="display-sub">물을 줄 알면 답이 오고, 생각할 줄 알면 도움이 된다</span>
-                    </h2>
-                </div>
+                {% call cover() %}
+                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
+                    <span class="display-sub">물을 줄 알면 답이 오고, 생각할 줄 알면 도움이 된다</span>
+                {% endcall %}
                 <p class="text-lg mb-6 max-w-prose mx-auto">같은 질문이라도 묻는 법을 바꾸면 답이 쓸모 있는 정도가 크게 달라집니다. 그것을 팀의 공통된 방식으로 만드는 건 또 다른 일입니다. 이야기 나눠 보세요.</p>
                 <a href="mailto:hello@taux.io" class="btn">
                     상담 시작하기

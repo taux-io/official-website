@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -27,11 +28,8 @@
         </header>
         <!-- Section 1 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2 class="mb-0">LLMs.txt 是什么？
-            </h2>
-            </div>
+            {% call cover("01", flush=true) %}LLMs.txt 是什么？
+            {% endcall %}
             <div class="space-y-6">
                 <p class="text-lg leading-relaxed max-w-prose">
                     它的核心目的在于让网站管理者可以明确表达内容访问与使用意图，如<strong class="font-semibold">允许或限制训练、摘要、改写与引用</strong>等行为。虽然目前尚未成为正式业界标准，但已反映出网站对 AI
@@ -75,11 +73,8 @@
 
         <!-- Section 2 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2 class="mb-0">功能与指令范例
-            </h2>
-            </div>
+            {% call cover("02", flush=true) %}功能与指令范例
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
                     <h3 class="mb-6 flex items-center">
@@ -140,11 +135,8 @@
 
         <!-- Section 3 -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2 class="mb-0">为何需要 LLMs.txt？
-            </h2>
-            </div>
+            {% call cover("03", flush=true) %}为何需要 LLMs.txt？
+            {% endcall %}
             <div class="space-y-6">
                 <div class="min-w-0 space-y-2">
 <h3 class="mb-3">知识产权保护</h3>
@@ -167,10 +159,7 @@
 
         <!-- FAQ Section -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>常见问题 (FAQ)</h2>
-            </div>
+            {% call cover("04") %}常见问题 (FAQ){% endcall %}
             <div class="space-y-4">
                 <details class="group py-2 cursor-pointer">
                     <summary class="font-semibold text-lg list-none flex justify-between items-center">
@@ -207,9 +196,7 @@
         <!-- CTA -->
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>想要保护您的网站内容？</h2>
-                </div>
+                {% call cover() %}想要保护您的网站内容？{% endcall %}
                 <p class="mb-6 max-w-[42ch] text-lg">我们可以协助您配置最适合的 GEO 策略与 AI 协议文档。</p>
 
                 <div class="flex flex-col mobile:flex-row gap-4">

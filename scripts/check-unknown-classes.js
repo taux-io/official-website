@@ -125,7 +125,13 @@ function main() {
       // — so a typo there produced no CSS, no rule, and no failure. The one
       // place a class can hide from the check that exists to find hidden
       // classes.
+      //
+      // The string arguments of a `{% call %}` are not among them. Design rule
+      // 37 forbids a macro from putting an argument into a class attribute, so
+      // `{% call faq("Why discount self-reported time savings?") %}` is a
+      // question, and `self-reported` read as a utility is a false report.
       const withStrings = [...html.matchAll(/\{%-?[^%]*?%\}/g)]
+        .filter((tag) => !/^\{%-?\s*(?:call|from|import)\b/.test(tag[0]))
         .flatMap((tag) => [...tag[0].matchAll(/"([^"]*)"/g)].map((m) => m[1]))
         .filter((v) => !v.endsWith(".html")); // include targets, not classes
 

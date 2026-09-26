@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -87,10 +88,7 @@
              carrier of meaning anyway. Every role below is a word.
              ================================================================== -->
         <section id="concepts">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>まず押さえる三つの土台</h2>
-            </div>
+            {% call cover("01") %}まず押さえる三つの土台{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>本ページが扱うのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a>（MIT ライセンス）の <strong>1.2.3</strong> 版、公開済みの 25 個の skill です。<strong>この skill 群は TauX の作品ではありません</strong>。このチュートリアルが TauX のものです。以下の判定基準、落とし穴、シナリオはすべて、公式ドキュメントと issue を読み込んだうえで書き起こした日本語の教材であり、翻訳でも転載でもありません。</p>
                 <p>この三つを先に理解しておかないと、後に出てくる skill はどれも使い方を誤ります。</p>
@@ -213,10 +211,7 @@
              02 · Install
              ================================================================== -->
         <section id="install">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">02</p>
-                <h2>インストール：二つの道から一つを選ぶ</h2>
-            </div>
+            {% call cover("02") %}インストール：二つの道から一つを選ぶ{% endcall %}
             <p class="leading-relaxed mb-5">二つのインストール方法は、二つの哲学を表します。<strong>両方入れると、すべての skill が二重になります。</strong>
             </p>
             <div class="space-y-8">
@@ -246,10 +241,7 @@
              03 · Setup
              ================================================================== -->
         <section id="setup">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">03</p>
-                <h2>前準備、repo ごとに一度</h2>
-            </div>
+            {% call cover("03") %}前準備、repo ごとに一度{% endcall %}
             <p class="leading-relaxed mb-6">
                 <code>/setup-matt-pocock-skills</code> は、すべての engineering skill の<strong>前提条件であり、フローの一ステップではありません</strong>。
             </p>
@@ -327,10 +319,7 @@ gh label create enhancement</code></pre>
              and the whole table is 25 rows.
              ================================================================== -->
         <section id="map">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">04</p>
-                <h2>25 個の skill、全体の地図</h2>
-            </div>
+            {% call cover("04") %}25 個の skill、全体の地図{% endcall %}
             <p class="leading-relaxed mb-5">「ハード依存」の列が実戦での要点です——<strong>依存が入っていなければ、skill は静かにただの即興へと退化します。</strong>
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -386,10 +375,7 @@ gh label create enhancement</code></pre>
              05 · The main flow, seven steps.
              ================================================================== -->
         <section id="main-flow">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">05</p>
-                <h2>本流の七ステップ、順を追って</h2>
-            </div>
+            {% call cover("05") %}本流の七ステップ、順を追って{% endcall %}
             <div class="border-s border-line ps-6 mb-6">
                 <p class="eyebrow mb-2">通しの事例</p>
                 <p class="leading-relaxed">社内ツールの repo（Next.js と Postgres）に「契約期限リマインダー」を足したい——30 日以内に期限が来る契約を一覧し、担当者にメールを送り、管理画面に赤い点を出す。schema、API、UI、メール送信にまたがり、幅として十分で、フル工程を通す価値があります。</p>
@@ -679,10 +665,7 @@ gh label create enhancement</code></pre>
              role is the eyebrow here.
              ================================================================== -->
         <section id="situations">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">06</p>
-                <h2>状況別インデックス、どんなときにどれを取るか</h2>
-            </div>
+            {% call cover("06") %}状況別インデックス、どんなときにどれを取るか{% endcall %}
             <p class="leading-relaxed mb-6">本流以外の skill は、どれも「特定の状況でだけ逸れていく」ものです。ここでは<strong>あなたの状況</strong>で並べます。</p>
 
             <div class="space-y-12">
@@ -1000,10 +983,7 @@ gh label create enhancement</code></pre>
              07 · Scenarios
              ================================================================== -->
         <section id="scenarios">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2>四つの完全なシナリオ</h2>
-            </div>
+            {% call cover("07") %}四つの完全なシナリオ{% endcall %}
             <p class="leading-relaxed mb-6">本流のシナリオは <a href="#main-flow" class="underline">第 05 節</a>にあります。ここでは、それ以外で最もよくある四つの状況を挙げます。</p>
 
             <div class="space-y-12">
@@ -1080,10 +1060,7 @@ gh label create enhancement</code></pre>
              in its own column here.
              ================================================================== -->
         <section id="pitfalls">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">08</p>
-                <h2>既知の落とし穴一覧</h2>
-            </div>
+            {% call cover("08") %}既知の落とし穴一覧{% endcall %}
             <p class="leading-relaxed mb-5">「最初に目にする症状」の順に並べています。<strong>重大</strong>は、お金か時間を無駄にするという意味です。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -1137,10 +1114,7 @@ gh label create enhancement</code></pre>
              09 · CLAUDE.md
              ================================================================== -->
         <section id="claude-md">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">09</p>
-                <h2>自分の指示ファイルに入れるとよいもの</h2>
-            </div>
+            {% call cover("09") %}自分の指示ファイルに入れるとよいもの{% endcall %}
             <p class="leading-relaxed mb-6">これは「公式の経路でカスタマイズする」やり方です——<strong>skill のファイルを書き換えると上書きされますが、ここは上書きされません</strong>。全体をそのままコピーして構いません。貼り先は自分の <code>CLAUDE.md</code> か <code>AGENTS.md</code>。
             </p>
             <pre class="bg-ink/5 p-4 overflow-x-auto text-sm"><code>## Agent behaviour
@@ -1170,10 +1144,7 @@ gh label create enhancement</code></pre>
              10 · Vocabulary
              ================================================================== -->
         <section id="vocabulary">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">10</p>
-                <h2>中核の用語</h2>
-            </div>
+            {% call cover("10") %}中核の用語{% endcall %}
             <p class="leading-relaxed mb-5">これらの語は skill 群に共通する言語です。<strong>意味が取れなければ、skill の出力も読めません。</strong>
             </p>
             <div class="overflow-x-auto" tabindex="0">
@@ -1218,10 +1189,7 @@ gh label create enhancement</code></pre>
              11 · Antipatterns
              ================================================================== -->
         <section id="antipatterns">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">11</p>
-                <h2>七つのアンチパターン</h2>
-            </div>
+            {% call cover("11") %}七つのアンチパターン{% endcall %}
             <p class="leading-relaxed mb-5">この仕組みが最もよく壊れる使われ方です。</p>
             <ol class="space-y-6 leading-relaxed">
                 <li><strong>受け身の grilling。</strong>「同意」と四十回答えた末に出てくるのは、agent が書いてあなたが頷いただけの計画です。<strong>一度も押し返さなかった session は、必要のなかった session です。</strong></li>
@@ -1242,10 +1210,7 @@ gh label create enhancement</code></pre>
              12 · 14-day plan
              ================================================================== -->
         <section id="plan">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">12</p>
-                <h2>14 日間の学習プラン</h2>
-            </div>
+            {% call cover("12") %}14 日間の学習プラン{% endcall %}
             <p class="leading-relaxed mb-5">1 日あたり 30 分から 60 分ほど、対象は<strong>自分の本物のプロジェクト</strong>。</p>
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
@@ -1285,10 +1250,7 @@ gh label create enhancement</code></pre>
              block into the line beside each command.
              ================================================================== -->
         <section id="cheatsheet">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">13</p>
-                <h2>1 ページのチートシート</h2>
-            </div>
+            {% call cover("13") %}1 ページのチートシート{% endcall %}
             <div class="space-y-8">
                 <div>
                     <p class="eyebrow mb-3">repo ごとに一度</p>
@@ -1350,69 +1312,23 @@ gh label create enhancement</code></pre>
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">14</p>
-                <h2>よくいただく質問</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>user-invoked と model-invoked の skill は何が違いますか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    これは skill 群全体で唯一の分類軸です。user-invoked は人間しか打てず、ほかの skill から呼ぶこともできません。その description は人に向けて書かれており、役割はオーケストレーター——フローの進み方を決めます。model-invoked は自分で打つこともできますし、agent が自分で判断して取りに行くこともあります。description はモデルに向けて書かれ、役割は規律のライブラリです。ルールは、user-invoked は model-invoked を呼べるが、別の user-invoked は決して呼べない、というものです。よくある副作用が一つあります。harness は user-invoked skill をモデルへ注入する一覧に入れないため、agent はこれらの skill が入っていないとよく報告します——入っています。そのまま打てば動きます。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>tracer bullet とは何ですか。水平にチケットを切るのがなぜ間違いなのですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Tracer bullet は、すべての層（schema、API、UI、テスト）を貫く、細いけれども完全な一本の道です。着地したその時点で単独で demo できます。水平スライスは一度に一層ずつ届けます——schema を全部で一枚のチケット、API を全部で一枚のチケット——問題は、すべての層がそろうまで何も動かないこと、そして受け入れ条件が別のチケットの持ち物にまで手を伸ばさなければならないことです。実測された代償があります。あるチームは層で切ったチケットを 26 枚使い、一枚を閉じるのに平均 20 回の agent 実行を要し、そのおよそ四分の三は手戻りでした。彼ら自身の振り返りは、あらゆる種類の失敗を実装の品質ではなく水平スライスに突き当てています。判定基準は一文だけです。このチケットが終わったら何を demo できるのか。振る舞いを言えないものが水平スライスです。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>なぜ code review は別の session で走らせるのですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    同じ context で自分の書いたコードをレビューするのは、slash command 付きの確証バイアスです——コードを書いた agent は自分の解法をひいきします。ほかに三つ、あわせて知っておくべきことがあります。レビューが見るのは diff &lt;fixed-point&gt;...HEAD で、staged と working tree は除外されます。だから先に commit してから review してください。レビューの指摘は証拠ではなく仮説です。sub-agent は一つずつファイルに戻って確かめないので、引用が別の場所を指していることがあります。引用を見てから動いてください。そして走らせるたびに新しい問題が見つかります。修正が新しい面をつくり、判断に属する半分は決定的ではないからで、収束の保証はありません——手がかりの一覧として扱い、明文の規則が裏づけているものを片づけたら手を止めてください。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>この skill 群がいちばんよく誤用されるのはどんな形ですか</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    七つあります。受け身の grilling（四十回続けて同意し、うなずいただけで何も本当には決めていない計画が出てくる）。to-spec と to-tickets のあいだで clear や compact をする（問い詰めて得たものの大半は、その context window の中にしかありません）。自分で作ったチケットに triage を走らせる。範囲がきちんと決まっている機能に wayfinder を持ち出す（判定基準は session の数であってプロジェクトの大きさではありません）。語彙層をドライバーとして使う。review をコードを書いたのと同じ session で走らせる。そして SKILL.md を書き換えてカスタマイズする（更新で上書きされ、plugin は読み取り専用です。長く効かせたい振る舞いは自分の CLAUDE.md に書いてください）。もう一つメタなアンチパターンがあります。流れができたからもう考えなくてよい、と受け取ってしまうことです——出てくるものの品質は、問いの数ではなくあなたの答えの品質を追いかけます。
-                </div>
-            </details>
+            {% call cover("14") %}よくいただく質問{% endcall %}
+            {% call faq("user-invoked と model-invoked の skill は何が違いますか") %}
+                これは skill 群全体で唯一の分類軸です。user-invoked は人間しか打てず、ほかの skill から呼ぶこともできません。その description は人に向けて書かれており、役割はオーケストレーター——フローの進み方を決めます。model-invoked は自分で打つこともできますし、agent が自分で判断して取りに行くこともあります。description はモデルに向けて書かれ、役割は規律のライブラリです。ルールは、user-invoked は model-invoked を呼べるが、別の user-invoked は決して呼べない、というものです。よくある副作用が一つあります。harness は user-invoked skill をモデルへ注入する一覧に入れないため、agent はこれらの skill が入っていないとよく報告します——入っています。そのまま打てば動きます。
+            {% endcall %}
+            {% call faq("tracer bullet とは何ですか。水平にチケットを切るのがなぜ間違いなのですか") %}
+                Tracer bullet は、すべての層（schema、API、UI、テスト）を貫く、細いけれども完全な一本の道です。着地したその時点で単独で demo できます。水平スライスは一度に一層ずつ届けます——schema を全部で一枚のチケット、API を全部で一枚のチケット——問題は、すべての層がそろうまで何も動かないこと、そして受け入れ条件が別のチケットの持ち物にまで手を伸ばさなければならないことです。実測された代償があります。あるチームは層で切ったチケットを 26 枚使い、一枚を閉じるのに平均 20 回の agent 実行を要し、そのおよそ四分の三は手戻りでした。彼ら自身の振り返りは、あらゆる種類の失敗を実装の品質ではなく水平スライスに突き当てています。判定基準は一文だけです。このチケットが終わったら何を demo できるのか。振る舞いを言えないものが水平スライスです。
+            {% endcall %}
+            {% call faq("なぜ code review は別の session で走らせるのですか") %}
+                同じ context で自分の書いたコードをレビューするのは、slash command 付きの確証バイアスです——コードを書いた agent は自分の解法をひいきします。ほかに三つ、あわせて知っておくべきことがあります。レビューが見るのは diff &lt;fixed-point&gt;...HEAD で、staged と working tree は除外されます。だから先に commit してから review してください。レビューの指摘は証拠ではなく仮説です。sub-agent は一つずつファイルに戻って確かめないので、引用が別の場所を指していることがあります。引用を見てから動いてください。そして走らせるたびに新しい問題が見つかります。修正が新しい面をつくり、判断に属する半分は決定的ではないからで、収束の保証はありません——手がかりの一覧として扱い、明文の規則が裏づけているものを片づけたら手を止めてください。
+            {% endcall %}
+            {% call faq("この skill 群がいちばんよく誤用されるのはどんな形ですか", last=true) %}
+                七つあります。受け身の grilling（四十回続けて同意し、うなずいただけで何も本当には決めていない計画が出てくる）。to-spec と to-tickets のあいだで clear や compact をする（問い詰めて得たものの大半は、その context window の中にしかありません）。自分で作ったチケットに triage を走らせる。範囲がきちんと決まっている機能に wayfinder を持ち出す（判定基準は session の数であってプロジェクトの大きさではありません）。語彙層をドライバーとして使う。review をコードを書いたのと同じ session で走らせる。そして SKILL.md を書き換えてカスタマイズする（更新で上書きされ、plugin は読み取り専用です。長く効かせたい振る舞いは自分の CLAUDE.md に書いてください）。もう一つメタなアンチパターンがあります。流れができたからもう考えなくてよい、と受け取ってしまうことです——出てくるものの品質は、問いの数ではなくあなたの答えの品質を追いかけます。
+            {% endcall %}
         </section>
 
         <section id="source">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">出典</p>
-                <h2>このチュートリアルは何にもとづいて書かれたか</h2>
-            </div>
+            {% call cover("出典") %}このチュートリアルは何にもとづいて書かれたか{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>もとにしたのは <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">mattpocock/skills</a> plugin <strong>1.2.3 版</strong>（公開済みの 25 個の skill）です。その repo の <code>README.md</code>、<code>CONTEXT.md</code>、25 本の公式 skill ドキュメント、<code>.claude-plugin/plugin.json</code> と <code>CHANGELOG.md</code> を読んだうえで整理し、書き直しました。この repo は <strong>MIT</strong> ライセンスで公開されています。</p>
                 <p>
@@ -1426,9 +1342,7 @@ gh label create enhancement</code></pre>
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>このワークフローを自分のチームに組み込みたい方へ</h2>
-            </div>
+            {% call cover() %}このワークフローを自分のチームに組み込みたい方へ{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">ツールは公開されています。難しいのは、すでにある tracker、規範、納品のリズムにつなぎ込むところです。そこは私たちがやってきました。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
                 <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>

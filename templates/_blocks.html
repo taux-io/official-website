@@ -1,0 +1,87 @@
+{#-
+  Shells that repeat across pages, as macros. Import what a page uses on its
+  first line:
+
+      {% from "_blocks.html" import cover, faq -%}
+
+  The `-%}` matters: without it the import leaves an empty line at the top of
+  the rendered page.
+
+  Every argument is content — a heading, a number, a question. None of them
+  lands in a class or an href (design rule 37, `no parameterised markup`):
+  the rules that read class attributes read this file, and they could not see
+  a class a caller passed. A variant that needs different classes is a boolean
+  here choosing between spelled-out strings, never a string from the caller.
+
+  Arguments are autoescaped like any `{{ … }}`: write them as plain text, not
+  as HTML. Markup goes in the `{% call %}` body, which is not escaped.
+-#}
+
+{#-
+  Section cover — the eyebrow and h2 that open a section (DESIGN.md, section
+  covers; `data-cover` is what the `section cover screens` rule counts).
+
+      {% call cover() %}標題{% endcall %}
+      {% call cover("01") %}標題{% endcall %}
+      {% call cover("02", "Tool wrapper") %}標題{% endcall %}
+      {% call cover("01", flush=true) %}標題{% endcall %}
+
+  eyebrow  the number or short label above the heading, set in the sans face
+  label    with an eyebrow, the English name after it: `02 — Tool wrapper`
+  flush    the h2 carries `mb-0` (adk-skill-patterns)
+
+  The call body is the heading's content, bilingual spans and all.
+-#}
+{% macro cover(eyebrow=none, label=none, flush=false) -%}
+<div class="cover" data-cover>
+{%- if eyebrow is not none and label is not none %}
+    <p class="eyebrow mb-2"><span class="font-sans">{{ eyebrow }}</span> &mdash; {{ label }}</p>
+{%- elif eyebrow is not none %}
+    <p class="eyebrow mb-2 font-sans">{{ eyebrow }}</p>
+{%- endif %}
+{%- if flush %}
+    <h2 class="mb-0">{{ caller() }}</h2>
+{%- else %}
+    <h2>{{ caller() }}</h2>
+{%- endif %}
+</div>
+{%- endmacro %}
+
+{#-
+  A slide's cover in claude-skills-guide: no eyebrow, the deck's own title
+  class.
+-#}
+{% macro slide_cover() -%}
+<div class="cover" data-cover>
+    <h2 class="slide-title">{{ caller() }}</h2>
+</div>
+{%- endmacro %}
+
+{#-
+  One FAQ item. The question is the argument, the answer is the call body.
+  `last=true` closes the list with a bottom rule.
+
+      {% call faq("什麼是 PQC？") %}
+          答案……
+      {% endcall %}
+
+  Every question must also appear, word for word, in the page's FAQPage
+  JSON-LD — `check:entity` compares them on the built page.
+-#}
+{% macro faq(question, last=false) -%}
+{%- if last -%}
+<details class="faq-details group border-t border-b border-line">
+{%- else -%}
+<details class="faq-details group border-t border-line">
+{%- endif %}
+    <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+        <h3>{{ question }}</h3>
+        <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+            <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </span>
+    </summary>
+    <div class="pb-8 text-sm leading-loose max-w-prose">{{ caller() }}</div>
+</details>
+{%- endmacro %}

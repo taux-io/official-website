@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -110,10 +111,7 @@
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
         <section id="version-status">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>2025 → 2026 改了什麼</h2>
-            </div>
+            {% call cover("00") %}2025 → 2026 改了什麼{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed">
                 <p>
                     本頁十條依 <strong>2026 版</strong>撰寫。<strong>排序變動比往年都大</strong>，所以照舊版盤點過的清單值得重看一次。
@@ -175,10 +173,7 @@
              number changes between editions; the topic does not. Same reason
              the URL carries no year. -->
         <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>十條速覽</h2>
-            </div>
+            {% call cover("01") %}十條速覽{% endcall %}
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
                     <thead>
@@ -249,10 +244,7 @@
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
         <section id="prompt-injection">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM01</p>
-                <h2>提示詞注入 <span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span></h2>
-            </div>
+            {% call cover("LLM01") %}提示詞注入 <span class="block text-base font-normal mt-2 font-sans">Prompt Injection</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -284,10 +276,7 @@
         </section>
 
         <section id="sensitive-information-disclosure">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM02</p>
-                <h2>敏感資訊洩漏 <span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span></h2>
-            </div>
+            {% call cover("LLM02") %}敏感資訊洩漏 <span class="block text-base font-normal mt-2 font-sans">Sensitive Information Disclosure</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -315,10 +304,7 @@
         </section>
 
         <section id="excessive-agency">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM03</p>
-                <h2>過度代理權 <span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span></h2>
-            </div>
+            {% call cover("LLM03") %}過度代理權 <span class="block text-base font-normal mt-2 font-sans">Excessive Agency</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -350,10 +336,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM04</p>
-                <h2>供應鏈 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
-            </div>
+            {% call cover("LLM04") %}供應鏈 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -379,10 +362,7 @@
         </section>
 
         <section id="data-and-model-poisoning">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM05</p>
-                <h2>資料與模型投毒 <span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span></h2>
-            </div>
+            {% call cover("LLM05") %}資料與模型投毒 <span class="block text-base font-normal mt-2 font-sans">Data and Model Poisoning</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -410,10 +390,7 @@
         </section>
 
         <section id="unbounded-consumption">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM06</p>
-                <h2>無節制消耗 <span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span></h2>
-            </div>
+            {% call cover("LLM06") %}無節制消耗 <span class="block text-base font-normal mt-2 font-sans">Unbounded Consumption</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -443,10 +420,7 @@
         </section>
 
         <section id="misinformation">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM07</p>
-                <h2>錯誤資訊 <span class="block text-base font-normal mt-2 font-sans">Misinformation</span></h2>
-            </div>
+            {% call cover("LLM07") %}錯誤資訊 <span class="block text-base font-normal mt-2 font-sans">Misinformation</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -476,10 +450,7 @@
         </section>
 
         <section id="hidden-context-exposure">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM08</p>
-                <h2>隱藏脈絡外洩 <span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span></h2>
-            </div>
+            {% call cover("LLM08") %}隱藏脈絡外洩 <span class="block text-base font-normal mt-2 font-sans">Hidden Context Exposure</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -511,10 +482,7 @@
         </section>
 
         <section id="vector-and-embedding-weaknesses">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM09</p>
-                <h2>向量與嵌入弱點 <span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span></h2>
-            </div>
+            {% call cover("LLM09") %}向量與嵌入弱點 <span class="block text-base font-normal mt-2 font-sans">Vector and Embedding Weaknesses</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -542,10 +510,7 @@
         </section>
 
         <section id="improper-output-handling">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM10</p>
-                <h2>輸出處理不當 <span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span></h2>
-            </div>
+            {% call cover("LLM10") %}輸出處理不當 <span class="block text-base font-normal mt-2 font-sans">Improper Output Handling</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定義</p>
@@ -582,62 +547,19 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>常見問題</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>什麼是 OWASP Top 10 for LLM Applications？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    這是 OWASP GenAI Security Project 維護的一份清單，列出大型語言模型應用最關鍵的十類資安風險。它是企業做 AI 風險盤點時最常被當成起點的對照表，涵蓋從提示詞注入、過度代理權到輸出處理不當等十個項目。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>OWASP LLM Top 10 2026 有哪十條？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    依 2026 版依序為：LLM01 提示詞注入、LLM02 敏感資訊洩漏、LLM03 過度代理權、LLM04 供應鏈、LLM05 資料與模型投毒、LLM06 無節制消耗、LLM07 錯誤資訊、LLM08 隱藏脈絡外洩、LLM09 向量與嵌入弱點、LLM10 輸出處理不當。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>2026 版和 2025 版差在哪裡？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    排序變動很大。過度代理權從第六升到第三，無節制消耗從第十升到第六，錯誤資訊從第九升到第七；供應鏈從第三降到第四，資料與模型投毒從第四降到第五，向量與嵌入弱點從第八降到第九，輸出處理不當從第五降到第十。提示詞注入與敏感資訊洩漏維持第一與第二。2025 版的系統提示詞洩漏被更名並擴大為隱藏脈絡外洩，涵蓋整個不對使用者顯示的脈絡而不只是系統提示詞。另有四條的範圍擴大：提示詞注入納入跨模態攻擊，供應鏈納入模型物件名實不符，資料與模型投毒納入微調階段的顛覆，輸出處理不當納入助理大量產生的不安全程式碼。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>OWASP 是怎麼決定 2026 版排序的？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    2026 版首次在社群投票之外加入事故資料。OWASP 蒐集了 7,714 筆來自公開漏洞資料庫與 AI 危害資料庫的真實事故，其中 6,639 筆細節足以分類，用來與從業者的投票結果對照。最終權重是投票佔四分之三、事故資料佔四分之一，刻意讓投票為主，理由是一年的資料不足以推翻實務工作者的判斷。
-                </div>
-            </details>
+            {% call cover("FAQ") %}常見問題{% endcall %}
+            {% call faq("什麼是 OWASP Top 10 for LLM Applications？") %}
+                這是 OWASP GenAI Security Project 維護的一份清單，列出大型語言模型應用最關鍵的十類資安風險。它是企業做 AI 風險盤點時最常被當成起點的對照表，涵蓋從提示詞注入、過度代理權到輸出處理不當等十個項目。
+            {% endcall %}
+            {% call faq("OWASP LLM Top 10 2026 有哪十條？") %}
+                依 2026 版依序為：LLM01 提示詞注入、LLM02 敏感資訊洩漏、LLM03 過度代理權、LLM04 供應鏈、LLM05 資料與模型投毒、LLM06 無節制消耗、LLM07 錯誤資訊、LLM08 隱藏脈絡外洩、LLM09 向量與嵌入弱點、LLM10 輸出處理不當。
+            {% endcall %}
+            {% call faq("2026 版和 2025 版差在哪裡？") %}
+                排序變動很大。過度代理權從第六升到第三，無節制消耗從第十升到第六，錯誤資訊從第九升到第七；供應鏈從第三降到第四，資料與模型投毒從第四降到第五，向量與嵌入弱點從第八降到第九，輸出處理不當從第五降到第十。提示詞注入與敏感資訊洩漏維持第一與第二。2025 版的系統提示詞洩漏被更名並擴大為隱藏脈絡外洩，涵蓋整個不對使用者顯示的脈絡而不只是系統提示詞。另有四條的範圍擴大：提示詞注入納入跨模態攻擊，供應鏈納入模型物件名實不符，資料與模型投毒納入微調階段的顛覆，輸出處理不當納入助理大量產生的不安全程式碼。
+            {% endcall %}
+            {% call faq("OWASP 是怎麼決定 2026 版排序的？", last=true) %}
+                2026 版首次在社群投票之外加入事故資料。OWASP 蒐集了 7,714 筆來自公開漏洞資料庫與 AI 危害資料庫的真實事故，其中 6,639 筆細節足以分類，用來與從業者的投票結果對照。最終權重是投票佔四分之三、事故資料佔四分之一，刻意讓投票為主，理由是一年的資料不足以推翻實務工作者的判斷。
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -652,9 +574,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>擔心您的 LLM 應用不安全？</h2>
-            </div>
+            {% call cover() %}擔心您的 LLM 應用不安全？{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 TauX 提供 LLM 安全檢測與紅隊演練，依這十條逐項盤點您的系統。
             </p>

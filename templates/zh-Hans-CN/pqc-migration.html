@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -90,10 +91,7 @@
              from losing the reader. The regulatory dates do not depend on any
              prediction being right. -->
         <section id="why-now">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>为什么是现在</h2>
-            </div>
+            {% call cover("00") %}为什么是现在{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     有两个<strong>彼此独立</strong>的理由，而它们的可靠程度不一样。分开讲，因为把两者混在一起正是这个题目在行销上最常被夸大的地方。
@@ -121,10 +119,7 @@
 
         <!-- Overview: also the table of contents on small screens. -->
         <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>五步骤速览</h2>
-            </div>
+            {% call cover("01") %}五步骤速览{% endcall %}
             <p class="leading-relaxed mb-5">
                 每一步标明对应金管会《金融业后量子密码迁移参考指引》七大策略的哪一条。金融业以外的产业目前没有台湾本地的法定期限，但这套顺序一样适用——而且如果你卖东西给金融机构，你已经在那份指引的适用范围内。
             </p>
@@ -172,10 +167,7 @@
         </section>
 
         <section id="governance">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">步骤 00</p>
-                <h2>治理 <span class="block text-base font-normal mt-2 font-sans">Governance</span></h2>
-            </div>
+            {% call cover("步骤 00") %}治理 <span class="block text-base font-normal mt-2 font-sans">Governance</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">要决定什么</p>
@@ -199,10 +191,7 @@
         </section>
 
         <section id="cbom">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">步骤 01</p>
-                <h2>盘点加密资产 <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
-            </div>
+            {% call cover("步骤 01") %}盘点加密资产 <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定义</p>
@@ -233,10 +222,7 @@
         </section>
 
         <section id="risk-assessment">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">步骤 02</p>
-                <h2>风险评估与合规比对 <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
-            </div>
+            {% call cover("步骤 02") %}风险评估与合规比对 <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">要回答的问题</p>
@@ -257,10 +243,7 @@
         </section>
 
         <section id="crypto-agility">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">步骤 03</p>
-                <h2>建构加密敏捷性 <span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span></h2>
-            </div>
+            {% call cover("步骤 03") %}建构加密敏捷性 <span class="block text-base font-normal mt-2 font-sans">Crypto Agility</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">定义</p>
@@ -291,10 +274,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">步骤 04</p>
-                <h2>供应链量子安全 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span></h2>
-            </div>
+            {% call cover("步骤 04") %}供应链量子安全 <span class="block text-base font-normal mt-2 font-sans">Supply Chain</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">为什么这一条对台湾企业特别重要</p>
@@ -323,10 +303,7 @@
              The verification date and the convention around date_modified are
              the only defence, and they depend on a person. -->
         <section id="regulatory-timeline">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">法规时程</p>
-                <h2>全球规范落地进度</h2>
-            </div>
+            {% call cover("法规时程") %}全球规范落地进度{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed mb-8">
                 <p>
                     <strong>本页法规状态查证于 2026-08-15。</strong>
@@ -377,10 +354,7 @@
         </section>
 
         <section id="standards">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">标准现况</p>
-                <h2>哪些是标准，哪些还不是</h2>
-            </div>
+            {% call cover("标准现况") %}哪些是标准，哪些还不是{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     这一区分开写，是因为「已定案的标准」与「还在标准化程序中的算法」经常被混为一谈，而采购与架构决策要建立在前者上。
@@ -411,75 +385,22 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>常见问题</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>什么是后量子密码（PQC）？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    后量子密码（Post-Quantum Cryptography）是一类设计成能抵抗量子电脑攻击的加密算法。今天广泛使用的 RSA 与椭圆曲线密码，其安全性建立在大数分解与离散对数的困难度上，而这两个问题都能被够大的量子电脑有效解开。PQC 改用格、哈希、编码等数学结构，目前没有已知的量子算法能有效攻破。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>台湾企业有 PQC 的法规要求吗？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    目前只有金融业有明确时程。金管会于 2026 年 6 月 18 日发布「金融业后量子密码迁移参考指引」，提出七大策略方向与 2026 至 2035 年的分阶段时程，适用对象包含金融机构与其重要供应商，性质为参考指引而非强制规范。数位发展部数位产业署则于 2025 年 4 月 16 日与后量子资安产业联盟发布「后量子密码迁移指引」，涵盖公钥基础设施、安全芯片、数字签章、网通设备等领域，但未订定产业别的完成期限。其他产业目前没有台湾本地的法定期限。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>企业该从哪一步开始做 PQC 迁移？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    从治理开始，不是从盘点开始。金管会的指引把「PQC 政策与治理」列为第一项策略，顺序在密码技术盘点之前，理由很实际：没有人拍板谁负责、预算从哪里来，加密资产盘点做到一半就会停下来。治理确立之后才是 CBOM 密码物料清单盘点、风险导向的优先序、加密敏捷性建构，最后是供应链与采购要求的更新。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>什么是 CBOM 密码物料清单？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    CBOM（Cryptography Bill of Materials）是加密资产的清册：系统里用了哪些算法、密钥长度、证书、函数库，各自在哪里、由谁维护、生命周期多长。它是 SBOM 软件物料清单的密码学对应物，也是 PQC 迁移的前提——无法盘点的东西就无法排优先序。CycloneDX 从 1.6 版起原生支持 CBOM 格式。金管会的指引把建立密码技术清单列为第二项策略，并放在 2026 至 2027 年的短期阶段。
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>为什么现在就要动，量子电脑不是还没出现？</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    有两个彼此独立的理由。第一是「先收集、以后解密」（Harvest Now, Decrypt Later）：今天被截取的加密流量可以被保存到未来解密，所以保密年限长的数据在今天就已经暴露。第二个理由不依赖任何对量子电脑到来时间的预测——法规期限本身就存在。欧盟建议会员国在 2026 年底前启动迁移，关键基础设施在 2030 年底前完成高风险场景；金管会的分阶段时程从 2026 年开始。这些日期不管量子电脑哪一天出现都不会改变。
-                </div>
-            </details>
+            {% call cover("FAQ") %}常见问题{% endcall %}
+            {% call faq("什么是后量子密码（PQC）？") %}
+                后量子密码（Post-Quantum Cryptography）是一类设计成能抵抗量子电脑攻击的加密算法。今天广泛使用的 RSA 与椭圆曲线密码，其安全性建立在大数分解与离散对数的困难度上，而这两个问题都能被够大的量子电脑有效解开。PQC 改用格、哈希、编码等数学结构，目前没有已知的量子算法能有效攻破。
+            {% endcall %}
+            {% call faq("台湾企业有 PQC 的法规要求吗？") %}
+                目前只有金融业有明确时程。金管会于 2026 年 6 月 18 日发布「金融业后量子密码迁移参考指引」，提出七大策略方向与 2026 至 2035 年的分阶段时程，适用对象包含金融机构与其重要供应商，性质为参考指引而非强制规范。数位发展部数位产业署则于 2025 年 4 月 16 日与后量子资安产业联盟发布「后量子密码迁移指引」，涵盖公钥基础设施、安全芯片、数字签章、网通设备等领域，但未订定产业别的完成期限。其他产业目前没有台湾本地的法定期限。
+            {% endcall %}
+            {% call faq("企业该从哪一步开始做 PQC 迁移？") %}
+                从治理开始，不是从盘点开始。金管会的指引把「PQC 政策与治理」列为第一项策略，顺序在密码技术盘点之前，理由很实际：没有人拍板谁负责、预算从哪里来，加密资产盘点做到一半就会停下来。治理确立之后才是 CBOM 密码物料清单盘点、风险导向的优先序、加密敏捷性建构，最后是供应链与采购要求的更新。
+            {% endcall %}
+            {% call faq("什么是 CBOM 密码物料清单？") %}
+                CBOM（Cryptography Bill of Materials）是加密资产的清册：系统里用了哪些算法、密钥长度、证书、函数库，各自在哪里、由谁维护、生命周期多长。它是 SBOM 软件物料清单的密码学对应物，也是 PQC 迁移的前提——无法盘点的东西就无法排优先序。CycloneDX 从 1.6 版起原生支持 CBOM 格式。金管会的指引把建立密码技术清单列为第二项策略，并放在 2026 至 2027 年的短期阶段。
+            {% endcall %}
+            {% call faq("为什么现在就要动，量子电脑不是还没出现？", last=true) %}
+                有两个彼此独立的理由。第一是「先收集、以后解密」（Harvest Now, Decrypt Later）：今天被截取的加密流量可以被保存到未来解密，所以保密年限长的数据在今天就已经暴露。第二个理由不依赖任何对量子电脑到来时间的预测——法规期限本身就存在。欧盟建议会员国在 2026 年底前启动迁移，关键基础设施在 2030 年底前完成高风险场景；金管会的分阶段时程从 2026 年开始。这些日期不管量子电脑哪一天出现都不会改变。
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -497,9 +418,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>不知道自己有哪些加密资产？</h2>
-            </div>
+            {% call cover() %}不知道自己有哪些加密资产？{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 多数组织卡在第一步。CBOM 盘点与数据治理是同一套能力，我们可以先聊聊你现在的资产目录长什么样。
             </p>

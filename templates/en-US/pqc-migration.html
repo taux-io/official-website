@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -93,10 +94,7 @@
              from losing the reader. The regulatory dates do not depend on any
              prediction being right. -->
         <section id="why-now">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>Why now</h2>
-            </div>
+            {% call cover("00") %}Why now{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     Two <strong>independent</strong> reasons, and they are not equally reliable. Keeping them apart matters, because conflating them is how this subject gets oversold.
@@ -124,10 +122,7 @@
 
         <!-- Overview: also the table of contents on small screens. -->
         <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>The five steps</h2>
-            </div>
+            {% call cover("01") %}The five steps{% endcall %}
             <p class="leading-relaxed mb-5">
                 Each step is mapped to one of the seven strategies in the FSC's PQC migration guidance for the financial sector. Outside finance there is no local statutory deadline in Taiwan yet, but the sequence holds — and if you sell to a financial institution you are already inside that guidance's scope.
             </p>
@@ -175,9 +170,7 @@
         </section>
 
         <section id="governance">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Step 00</p>
-                <!-- Four of the five step headings here carry a second half; the fifth
+            <!-- Four of the five step headings here carry a second half; the fifth
                      (Governance) did not, because in English it was the same word twice.
                      The other locales use that half for the English term beside their own;
                      in English it only earns its place when it says something the first
@@ -185,8 +178,7 @@
                      acronym, `Risk-Based Prioritisation` names a method. `Supply Chain`
                      after `Quantum-safe supply chain` and `Crypto Agility` after `Build
                      crypto-agility` said nothing new and are gone too. Issue 282. -->
-                <h2>Governance</h2>
-            </div>
+            {% call cover("Step 00") %}Governance{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">What has to be decided</p>
@@ -210,10 +202,7 @@
         </section>
 
         <section id="cbom">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Step 01</p>
-                <h2>Inventory the cryptography <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span></h2>
-            </div>
+            {% call cover("Step 01") %}Inventory the cryptography <span class="block text-base font-normal mt-2 font-sans">CBOM — Cryptography Bill of Materials</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -244,10 +233,7 @@
         </section>
 
         <section id="risk-assessment">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Step 02</p>
-                <h2>Risk assessment and compliance mapping <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span></h2>
-            </div>
+            {% call cover("Step 02") %}Risk assessment and compliance mapping <span class="block text-base font-normal mt-2 font-sans">Risk-Based Prioritisation</span>{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">The question to answer</p>
@@ -268,10 +254,7 @@
         </section>
 
         <section id="crypto-agility">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Step 03</p>
-                <h2>Build crypto-agility</h2>
-            </div>
+            {% call cover("Step 03") %}Build crypto-agility{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -302,10 +285,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Step 04</p>
-                <h2>Quantum-safe supply chain</h2>
-            </div>
+            {% call cover("Step 04") %}Quantum-safe supply chain{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Why this one matters especially in Taiwan</p>
@@ -334,10 +314,7 @@
              The verification date and the convention around date_modified are
              the only defence, and they depend on a person. -->
         <section id="regulatory-timeline">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Regulatory timelines</p>
-                <h2>Where the rules stand</h2>
-            </div>
+            {% call cover("Regulatory timelines") %}Where the rules stand{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed mb-8">
                 <p>
                     <strong>Regulatory status on this page was checked on 2026-08-15.</strong>
@@ -388,10 +365,7 @@
         </section>
 
         <section id="standards">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">Standards status</p>
-                <h2>What is standardised and what is not</h2>
-            </div>
+            {% call cover("Standards status") %}What is standardised and what is not{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
                     Separated out because finalised standards and algorithms still in the standardisation process get conflated constantly — and procurement and architecture decisions should rest on the first kind.
@@ -422,75 +396,22 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>Common questions</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is post-quantum cryptography?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Post-quantum cryptography is a family of algorithms designed to resist attack by a quantum computer. RSA and elliptic-curve cryptography, both in wide use today, rest on the difficulty of integer factorisation and discrete logarithms — problems a sufficiently large quantum computer solves efficiently. PQC uses lattice, hash and code-based constructions instead, against which no efficient quantum algorithm is currently known.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Are there regulatory requirements in Taiwan?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Only the financial sector has a stated timeline. On 2026-06-18 the FSC issued PQC migration guidance for finance: seven strategic directions and phases running from 2026 to 2035, applying to financial institutions and their significant suppliers. It is guidance rather than a mandate. Separately, on 2025-04-16 the Administration for Digital Industries and a post-quantum security industry alliance published migration guidance covering PKI, secure chips, digital signatures and network equipment, without setting sector completion deadlines. No other sector has a local statutory deadline in Taiwan today.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Where should a company start?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Start with governance, not the inventory. The FSC lists PQC policy and governance as its first strategy, ahead of the cryptographic inventory, for a practical reason: without someone deciding who owns the work and where the budget comes from, the inventory stalls halfway. Governance first, then the CBOM, then risk-based prioritisation, then crypto-agility, and finally supply chain and procurement requirements.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is a CBOM?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    A CBOM — Cryptography Bill of Materials — is a register of cryptographic assets: which algorithms, key lengths, certificates and libraries are in use, where each lives, who maintains it, and how long its lifecycle is. It is the cryptographic counterpart of an SBOM and a precondition for migration, because you cannot prioritise what you cannot enumerate. CycloneDX has supported the format natively since 1.6. The FSC lists building this register as its second strategy, in the near-term 2026–2027 phase.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>Why act now, when quantum computers do not exist yet?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    Two independent reasons. First, harvest-now-decrypt-later: traffic intercepted today can be stored and decrypted later, so data with a long confidentiality requirement is already exposed. Second — and this one depends on no forecast at all — the regulatory deadlines already exist. The EU recommends member states begin by end-2026 and complete high-risk critical-infrastructure scenarios by end-2030; the FSC's phases start in 2026. Those dates do not move whenever quantum computers arrive.
-                </div>
-            </details>
+            {% call cover("FAQ") %}Common questions{% endcall %}
+            {% call faq("What is post-quantum cryptography?") %}
+                Post-quantum cryptography is a family of algorithms designed to resist attack by a quantum computer. RSA and elliptic-curve cryptography, both in wide use today, rest on the difficulty of integer factorisation and discrete logarithms — problems a sufficiently large quantum computer solves efficiently. PQC uses lattice, hash and code-based constructions instead, against which no efficient quantum algorithm is currently known.
+            {% endcall %}
+            {% call faq("Are there regulatory requirements in Taiwan?") %}
+                Only the financial sector has a stated timeline. On 2026-06-18 the FSC issued PQC migration guidance for finance: seven strategic directions and phases running from 2026 to 2035, applying to financial institutions and their significant suppliers. It is guidance rather than a mandate. Separately, on 2025-04-16 the Administration for Digital Industries and a post-quantum security industry alliance published migration guidance covering PKI, secure chips, digital signatures and network equipment, without setting sector completion deadlines. No other sector has a local statutory deadline in Taiwan today.
+            {% endcall %}
+            {% call faq("Where should a company start?") %}
+                Start with governance, not the inventory. The FSC lists PQC policy and governance as its first strategy, ahead of the cryptographic inventory, for a practical reason: without someone deciding who owns the work and where the budget comes from, the inventory stalls halfway. Governance first, then the CBOM, then risk-based prioritisation, then crypto-agility, and finally supply chain and procurement requirements.
+            {% endcall %}
+            {% call faq("What is a CBOM?") %}
+                A CBOM — Cryptography Bill of Materials — is a register of cryptographic assets: which algorithms, key lengths, certificates and libraries are in use, where each lives, who maintains it, and how long its lifecycle is. It is the cryptographic counterpart of an SBOM and a precondition for migration, because you cannot prioritise what you cannot enumerate. CycloneDX has supported the format natively since 1.6. The FSC lists building this register as its second strategy, in the near-term 2026–2027 phase.
+            {% endcall %}
+            {% call faq("Why act now, when quantum computers do not exist yet?", last=true) %}
+                Two independent reasons. First, harvest-now-decrypt-later: traffic intercepted today can be stored and decrypted later, so data with a long confidentiality requirement is already exposed. Second — and this one depends on no forecast at all — the regulatory deadlines already exist. The EU recommends member states begin by end-2026 and complete high-risk critical-infrastructure scenarios by end-2030; the FSC's phases start in 2026. Those dates do not move whenever quantum computers arrive.
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -508,9 +429,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>Not sure what cryptography you are running?</h2>
-            </div>
+            {% call cover() %}Not sure what cryptography you are running?{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 Most organisations stall at step one. A CBOM inventory is the same capability as data governance — start by telling us what your asset catalogue looks like today.
             </p>

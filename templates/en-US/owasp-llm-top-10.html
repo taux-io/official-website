@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
 
 <!-- Structured data.
@@ -113,10 +114,7 @@
              not confirmed it, we will not copy a list nobody checked" — is now
              a diff against the real thing. -->
         <section id="version-status">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">00</p>
-                <h2>What changed from 2025 to 2026</h2>
-            </div>
+            {% call cover("00") %}What changed from 2025 to 2026{% endcall %}
             <div class="border-s border-line ps-6 leading-relaxed">
                 <p>
                     This page follows the <strong>2026 edition</strong>. <strong>The ordering moved more than in any previous year</strong>, so an audit done against the old list is worth revisiting.
@@ -183,10 +181,7 @@
      tablet-width column, and in the Markdown twin on every row. Same reason
      the headings on this page carry no second half. Issue 282. -->
 <section id="overview">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2>The ten at a glance</h2>
-            </div>
+            {% call cover("01") %}The ten at a glance{% endcall %}
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
                     <thead>
@@ -246,10 +241,7 @@
              competition with /what-is-prompt-injection for the same queries,
              and that page is the one that should win them. -->
         <section id="prompt-injection">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM01</p>
-                <h2>Prompt Injection</h2>
-            </div>
+            {% call cover("LLM01") %}Prompt Injection{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -281,10 +273,7 @@
         </section>
 
         <section id="sensitive-information-disclosure">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM02</p>
-                <h2>Sensitive Information Disclosure</h2>
-            </div>
+            {% call cover("LLM02") %}Sensitive Information Disclosure{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -312,10 +301,7 @@
         </section>
 
         <section id="excessive-agency">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM03</p>
-                <h2>Excessive Agency</h2>
-            </div>
+            {% call cover("LLM03") %}Excessive Agency{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -347,10 +333,7 @@
         </section>
 
         <section id="supply-chain">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM04</p>
-                <h2>Supply Chain</h2>
-            </div>
+            {% call cover("LLM04") %}Supply Chain{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -376,10 +359,7 @@
         </section>
 
         <section id="data-and-model-poisoning">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM05</p>
-                <h2>Data and Model Poisoning</h2>
-            </div>
+            {% call cover("LLM05") %}Data and Model Poisoning{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -407,10 +387,7 @@
         </section>
 
         <section id="unbounded-consumption">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM06</p>
-                <h2>Unbounded Consumption</h2>
-            </div>
+            {% call cover("LLM06") %}Unbounded Consumption{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -440,10 +417,7 @@
         </section>
 
         <section id="misinformation">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM07</p>
-                <h2>Misinformation</h2>
-            </div>
+            {% call cover("LLM07") %}Misinformation{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -473,10 +447,7 @@
         </section>
 
         <section id="hidden-context-exposure">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM08</p>
-                <h2>Hidden Context Exposure</h2>
-            </div>
+            {% call cover("LLM08") %}Hidden Context Exposure{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -508,10 +479,7 @@
         </section>
 
         <section id="vector-and-embedding-weaknesses">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM09</p>
-                <h2>Vector and Embedding Weaknesses</h2>
-            </div>
+            {% call cover("LLM09") %}Vector and Embedding Weaknesses{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -539,10 +507,7 @@
         </section>
 
         <section id="improper-output-handling">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">LLM10</p>
-                <h2>Improper Output Handling</h2>
-            </div>
+            {% call cover("LLM10") %}Improper Output Handling{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">Definition</p>
@@ -579,62 +544,19 @@
              FAQ content to be visible on the page, and `check:entity` now fails
              when the two differ. -->
         <section id="faq">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">FAQ</p>
-                <h2>Common questions</h2>
-            </div>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What is the OWASP Top 10 for LLM Applications?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    A list maintained by the OWASP GenAI Security Project setting out the ten most critical categories of security risk in large language model applications. It is the checklist most organisations start from when auditing an AI deployment, running from prompt injection and excessive agency through to improper output handling.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What are the ten risks in the OWASP LLM Top 10 2026?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>What changed between the 2025 and 2026 editions?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants.
-                </div>
-            </details>
-            <details class="faq-details group border-t border-b border-line">
-                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
-                    <h3>How did OWASP decide the 2026 order?</h3>
-                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
-                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </summary>
-                <div class="pb-8 text-sm leading-loose max-w-prose">
-                    The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
-                </div>
-            </details>
+            {% call cover("FAQ") %}Common questions{% endcall %}
+            {% call faq("What is the OWASP Top 10 for LLM Applications?") %}
+                A list maintained by the OWASP GenAI Security Project setting out the ten most critical categories of security risk in large language model applications. It is the checklist most organisations start from when auditing an AI deployment, running from prompt injection and excessive agency through to improper output handling.
+            {% endcall %}
+            {% call faq("What are the ten risks in the OWASP LLM Top 10 2026?") %}
+                In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling.
+            {% endcall %}
+            {% call faq("What changed between the 2025 and 2026 editions?") %}
+                The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants.
+            {% endcall %}
+            {% call faq("How did OWASP decide the 2026 order?", last=true) %}
+                The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
+            {% endcall %}
         </section>
 
         <section id="source">
@@ -649,9 +571,7 @@
 
         <!-- CTA -->
         <section>
-            <div class="cover" data-cover>
-                <h2>Not sure your LLM application holds up?</h2>
-            </div>
+            {% call cover() %}Not sure your LLM application holds up?{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">
                 TauX runs LLM security assessments and red-team exercises, working through your system against each of these ten.
             </p>

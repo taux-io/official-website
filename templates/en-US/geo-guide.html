@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -31,11 +32,8 @@
         </header>
         <!-- What is GEO -->
         <section id="what-is-geo">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">01</span> &mdash; What is GEO</p>
-                <h2 class="mb-0">What is GEO?
-            </h2>
-            </div>
+            {% call cover("01", "What is GEO", flush=true) %}What is GEO?
+            {% endcall %}
 
             <p class="mb-5 text-lg leading-relaxed max-w-prose">
                 <strong>GEO — Generative Engine Optimization</strong> is the practice of structuring content so it shows up, and gets cited, in what generative engines (ChatGPT, Perplexity,
@@ -71,10 +69,7 @@
 
         <!-- Why Matters -->
         <section id="why-geo-matters">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Why GEO matters</p>
-                <h2>Why it matters now</h2>
-            </div>
+            {% call cover("02", "Why GEO matters") %}Why it matters now{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-3 flex items-center">
@@ -119,10 +114,7 @@
 
         <!-- Comparison Table -->
         <section id="geo-vs-seo">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; GEO vs SEO</p>
-                <h2>GEO against SEO, side by side</h2>
-            </div>
+            {% call cover("03", "GEO vs SEO") %}GEO against SEO, side by side{% endcall %}
             <div class="overflow-hidden">
                 <div class="overflow-x-auto" tabindex="0">
                     <table class="w-full text-start">
@@ -173,10 +165,7 @@
 
         <!-- Princeton GEO Research Section -->
         <section id="princeton-geo-research">
-            <div class="cover" data-cover>
-                    <p class="eyebrow mb-2"><span class="font-sans">04</span> &mdash; Princeton GEO research</p>
-                    <h2>Nine methods, measured: the Princeton study</h2>
-                </div>
+            {% call cover("04", "Princeton GEO research") %}Nine methods, measured: the Princeton study{% endcall %}
                 <p class="text-lg leading-relaxed max-w-prose">
                     A paper from Princeton, Georgia Tech, the Allen Institute for AI and IIT Delhi, <strong>"Generative Engine Optimization"</strong>, tested nine concrete tactics and measured how much each raised the odds of being cited by engines such as ChatGPT and Perplexity:
                 </p>
@@ -278,10 +267,7 @@
 
         <!-- How it works -->
         <section id="how-geo-works">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; How GEO works</p>
-                <h2>How we run a GEO engagement</h2>
-            </div>
+            {% call cover("05", "How GEO works") %}How we run a GEO engagement{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-4">
@@ -323,9 +309,7 @@
         <!-- CTA -->
         <section>
             <div class="relative z-10">
-                <div class="cover" data-cover>
-                    <h2>Ready to start?</h2>
-                </div>
+                {% call cover() %}Ready to start?{% endcall %}
                 <p class="mb-6 max-w-prose mx-auto">GEO compounds. Starting now means being the cited source while your competitors are still arguing about whether this matters.</p>
                 <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="/{{ locale }}/geo-optimization" class="btn">

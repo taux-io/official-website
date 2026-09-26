@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include"header.html" %}
 
 <!-- Article Schema -->
@@ -46,11 +47,8 @@
 
         <!-- Pattern Overview -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">01</p>
-                <h2 class="mb-0">다섯 가지, 한눈에
-            </h2>
-            </div>
+            {% call cover("01", flush=true) %}다섯 가지, 한눈에
+            {% endcall %}
             <div class="overflow-x-auto" tabindex="0">
                 <table class="w-full text-start border-collapse">
                     <thead>
@@ -99,11 +97,8 @@
 
         <!-- Pattern 1: Tool Wrapper -->
         <section id="tool-wrapper">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">02</span> &mdash; Tool wrapper</p>
-                <h2 class="mb-0">Tool Wrapper
-            </h2>
-            </div>
+            {% call cover("02", "Tool wrapper", flush=true) %}Tool Wrapper
+            {% endcall %}
             <p class="font-semibold mb-6 ms-4">그 자리에서 전문가가 된다</p>
 
             <div class="space-y-6 ms-4 tablet:ms-6">
@@ -152,11 +147,8 @@
 
         <!-- Pattern 2: Generator -->
         <section id="generator">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">03</span> &mdash; Generator</p>
-                <h2 class="mb-0">Generator
-            </h2>
-            </div>
+            {% call cover("03", "Generator", flush=true) %}Generator
+            {% endcall %}
             <p class="font-semibold mb-6 ms-4">템플릿으로 형태를 맞춘다</p>
 
             <div class="space-y-6 ms-4 tablet:ms-6">
@@ -211,11 +203,8 @@
 
         <!-- Pattern 3: Reviewer -->
         <section id="reviewer">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">04</span> &mdash; Reviewer</p>
-                <h2 class="mb-0">Reviewer
-            </h2>
-            </div>
+            {% call cover("04", "Reviewer", flush=true) %}Reviewer
+            {% endcall %}
             <p class="font-semibold mb-6 ms-4">체크리스트로 본다</p>
 
             <div class="space-y-6 ms-4 tablet:ms-6">
@@ -262,11 +251,8 @@
 
         <!-- Pattern 4: Inversion -->
         <section id="inversion">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">05</span> &mdash; Inversion</p>
-                <h2 class="mb-0">Inversion
-            </h2>
-            </div>
+            {% call cover("05", "Inversion", flush=true) %}Inversion
+            {% endcall %}
             <p class="font-semibold mb-6 ms-4">충분히 묻고 나서 움직인다</p>
 
             <div class="space-y-6 ms-4 tablet:ms-6">
@@ -321,11 +307,8 @@
 
         <!-- Pattern 5: Pipeline -->
         <section id="pipeline">
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2"><span class="font-sans">06</span> &mdash; Pipeline</p>
-                <h2 class="mb-0">Pipeline
-            </h2>
-            </div>
+            {% call cover("06", "Pipeline", flush=true) %}Pipeline
+            {% endcall %}
             <p class="font-semibold mb-6 ms-4">단계를 무너뜨리지 않는 파이프라인</p>
 
             <div class="space-y-6 ms-4 tablet:ms-6">
@@ -389,11 +372,8 @@
 
         <!-- Key Concepts -->
         <section>
-            <div class="cover" data-cover>
-                <p class="eyebrow mb-2 font-sans">07</p>
-                <h2 class="mb-0">짚어 둘 것
-            </h2>
-            </div>
+            {% call cover("07", flush=true) %}짚어 둘 것
+            {% endcall %}
             <div class="space-y-4 ms-4 tablet:ms-6">
                 <div class="flex items-start p-4">
                     <span class="font-semibold me-4 mt-0.5">

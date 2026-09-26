@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <!-- Service Schema -->
@@ -78,12 +79,10 @@
         </section>
 
         <section>
-            <div class="cover" data-cover>
-                <h2>
+            {% call cover() %}
                 <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
                 <span class="display-sub">進め方</span>
-            </h2>
-            </div>
+            {% endcall %}
 
                 <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
                     <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
@@ -119,12 +118,10 @@
             <!-- CTA -->
             <section>
                 <div class="relative z-10">
-                    <div class="cover" data-cover>
-                        <h2>
+                    {% call cover() %}
                         <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
                         <span class="display-sub">はじめる準備はできましたか</span>
-                    </h2>
-                    </div>
+                    {% endcall %}
                     <p class="mb-6 max-w-prose mx-auto text-lg">AI 導入でつまずくのは、たいていモデルではなくデータです——どこにあるのか、誰が使っているのか、信頼できるのか。まずは今の状況をお聞かせください。</p>
 
                     <a href="mailto:hello@taux.io" class="btn">
