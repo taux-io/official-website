@@ -27,7 +27,7 @@
       {"@type":"Question","name":"什么是 tracer bullet？为什么水平切票是错的？","acceptedAnswer": {"@type":"Answer","text":"Tracer bullet 是穿过所有层（schema、API、UI、测试）的一条细但完整的路，落地当下就能单独 demo。水平切片是一次交付一层——全部 schema 一张票、全部 API 一张票——它的问题是每层都到位之前什么都不能动，而且验收条件必须伸手到别张票拥有的工作。实测代价：某团队用 26 张按层切的票，平均每张票关闭要跑 20 次 agent，其中约四分之三是重工，他们自己的检讨把每一类失败都追回到水平切片而不是实作质量。判准只有一句：这张票做完我能 demo 什么？答不出行为的就是水平切片。"
         }
       },
-      {"@type":"Question","name":"为什么 code review 要跑在另一个 session？","acceptedAnswer": {"@type":"Answer","text":"同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff <fixed-point>...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文档验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。"
+      {"@type":"Question","name":"为什么 code review 要跑在另一个 session？","acceptedAnswer": {"@type":"Answer","text":"同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff <fixed-point>...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文件验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。"
         }
       },
       {"@type":"Question","name":"这套 skill 最常被用坏的方式是什么？","acceptedAnswer": {"@type":"Answer","text":"七种：被动 grilling（连答四十个同意，出来一份你点头过但什么都没真正决定的计划）；在 to-spec 与 to-tickets 之间 clear 或 compact（你烤出来的东西绝大部分只在那个 context window 里）；对自己产生的票跑 triage；范围良好的功能抓 wayfinder（判准是 session 数不是项目大小）；把词汇层当驱动器；把 review 跑在写程序的同一个 session；以及改 SKILL.md 来客制（更新会覆盖、plugin 唯读，长期行为要写进自己的 CLAUDE.md）。还有一个元反模式：把它当成有了流程就不用想——产出的质量追踪的是你答案的质量，不是问题的数量。"
@@ -235,7 +235,7 @@
                 <div>
                     <p class="eyebrow mb-2">路线 B — 可改版</p>
                     <pre class="bg-ink/5 p-4 overflow-x-auto text-sm mb-3"><code>npx skills@latest add mattpocock/skills</code></pre>
-                    <p class="leading-relaxed">会问你要装哪些 skill、装到哪些 agent 上。<strong>一定要勾 <code>setup-matt-pocock-skills</code>。</strong>文档以「你拥有的普通文档」写进 repo，可随便改；要更新时自己跑 <code>npx skills update</code>。</p>
+                    <p class="leading-relaxed">会问你要装哪些 skill、装到哪些 agent 上。<strong>一定要勾 <code>setup-matt-pocock-skills</code>。</strong>文件以「你拥有的普通文件」写进 repo，可随便改；要更新时自己跑 <code>npx skills update</code>。</p>
                 </div>
                 <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">路线 B 的陷阱</p>
@@ -312,7 +312,7 @@ gh label create enhancement</code></pre>
                     <p class="mt-3">要用 <code>wayfinder</code> 的话，另外五个也要先建（<code>gh</code> 遇到不存在的 label 是直接失败）：<code>wayfinder:map</code>、<code>wayfinder:grilling</code>、<code>wayfinder:prototype</code>、<code>wayfinder:research</code>、<code>wayfinder:task</code>。</p>
                 </div>
                 <div>
-                    <p class="eyebrow mb-2">二、它看文档存不存在，不是看你用哪个 harness</p>
+                    <p class="eyebrow mb-2">二、它看文件存不存在，不是看你用哪个 harness</p>
                     <p>你在 Codex 但 repo 有残留的 <code>CLAUDE.md</code>，那段 <code>## Agent skills</code> 就会写到 Codex 永远读不到的地方。解法：手动搬到 <code>AGENTS.md</code>，或让 <code>AGENTS.md</code> 当本尊、<code>CLAUDE.md</code> 只放一行指向它。</p>
                 </div>
                 <div>
@@ -544,7 +544,7 @@ gh label create enhancement</code></pre>
                     <ol class="space-y-2 mt-2">
                         <li>读 ticket 或 spec，推出 seam</li>
                         <li>在事先同意的 seam 上驱动 <code>tdd</code>，一次一个 red-green 切片</li>
-                        <li>频繁 typecheck，过程中跑单一测试文档</li>
+                        <li>频繁 typecheck，过程中跑单一测试文件</li>
                         <li>最后跑一次完整测试套件</li>
                         <li>跑 <code>code-review</code>，然后 commit 到<strong>当前 branch</strong></li>
                     </ol>
@@ -609,7 +609,7 @@ gh label create enhancement</code></pre>
                 </table>
             </div>
             <p class="leading-relaxed mt-6">
-                <strong>Mock 只用在系统边界</strong>：外部 API、时间、随机。有时是文档系统或数据库。<strong>不要 mock 你自己的模块。</strong>
+                <strong>Mock 只用在系统边界</strong>：外部 API、时间、随机。有时是文件系统或数据库。<strong>不要 mock 你自己的模块。</strong>
             </p>
             <div class="mt-8">
                 <p class="eyebrow mb-3">常见坑</p>
@@ -657,7 +657,7 @@ gh label create enhancement</code></pre>
                     <li><strong>和内置的同名指令撞名</strong>：最常被回报，未修。内置那个是「在 diff 里找 bug」，这个是规范与 spec 合规。装了就有一个会赢，谁赢取决于安装方式。</li>
                     <li><strong>sub-agent 又去调用自己，生出更多 agent</strong>：多人多 harness 重现过，有一次到 50 个以上。fork 上的修法是在两个 sub-agent brief 各加一行「不要调用 code-review 或生成额外 agent，直接执行这次审查」。<strong>无人看管跑这支时，盯着 agent 数量。</strong></li>
                     <li><strong>该在写程序的同一个 session 跑吗？</strong>偏好用新的。有人讲得很好：<strong>同一个 context 审自己，等于带着 slash command 的确认偏误。</strong></li>
-                    <li><strong>发现可以信吗？</strong>不查证不能信。sub-agent 的输出是<strong>假设不是证据</strong>。它汇总两份报告但不逐条回文档验证，所以引用可能指错位置或夸大影响。看每个发现的引用再行动。</li>
+                    <li><strong>发现可以信吗？</strong>不查证不能信。sub-agent 的输出是<strong>假设不是证据</strong>。它汇总两份报告但不逐条回文件验证，所以引用可能指错位置或夸大影响。看每个发现的引用再行动。</li>
                     <li><strong>为什么每次跑都找到新问题？</strong>修改会创造新表面，而判断题那半不是决定性的。<strong>没有收敛保证。</strong>把一次 pass 当成线索清单，处理有明文规则背书的，然后停手——不要跑到它「干净」为止，它不会。</li>
                 </ul>
             </div>
@@ -716,11 +716,11 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">独立 — research</p>
                     <h3 class="mb-3">有个外部事实卡住决策</h3>
                     <div class="space-y-4 leading-relaxed">
-                        <p>它只从<strong>一手来源</strong>工作（官方文档、源代码、规格、第一方 API），每个主张都追回拥有答案的那个来源。<strong>它不在对话里回答你</strong>——输出是一份文档，每个主张带链接。决定性的动作是：读的部分跑在<strong>背景 agent</strong>。</p>
+                        <p>它只从<strong>一手来源</strong>工作（官方文档、源代码、规格、第一方 API），每个主张都追回拥有答案的那个来源。<strong>它不在对话里回答你</strong>——输出是一份文件，每个主张带链接。决定性的动作是：读的部分跑在<strong>背景 agent</strong>。</p>
                         <p><strong>research 是你委派的跑腿，不是你外包的思考。</strong></p>
                         <p><strong>坑</strong>：它会生出第二个自己（issue 530）——skill 叫调用者开背景 agent 但没限制 agent 类型，于是生出的是通用 agent、握着同样的工具和指令、再开一次。有人量到<strong>单一 research 任务跨三次重叠执行烧掉约 450k token</strong>，重复那个在半小时后、完全在视线外完成。<strong>调用后看一下背景任务列表，把重复的停掉。</strong></p>
                         <p>另外三件：反向失败是你的全域指令禁止再委派时，背景 agent 会礼貌拒绝、skill 静静什么都没做；「高信任来源」由模型自己判断、没有 allowlist，你实际的缓解手段是<strong>随机追两三个引用</strong>，落在「那个东西的摘要」而不是那个东西本身就是失败；<strong>没有停止准则</strong>，范围是你的责任——一个 API、一个行为、一个版本主张，比「research X」回来得好太多。</p>
-                        <p><strong>research 文档不是 ADR</strong>：ADR 留、research 档用完归档或删掉。过期的 research 档比没有更糟，它会污染未来的 repo 读取。</p>
+                        <p><strong>research 文件不是 ADR</strong>：ADR 留、research 档用完归档或删掉。过期的 research 档比没有更糟，它会污染未来的 repo 读取。</p>
                     </div>
                 </div>
 
@@ -773,7 +773,7 @@ gh label create enhancement</code></pre>
                     <div class="space-y-4 leading-relaxed">
                         <p>它<strong>拒绝把冲突当成文字问题</strong>。动一个 hunk 之前，先把两边追回<strong>一手来源</strong>——commit message、PR、原始 issue——所以它是在<strong>两个意图</strong>之间选，不是在两块文字之间选，并且在兼容的地方两边都保留。真的不兼容时，选符合这次 merge 已陈述目标的那边，并讲出取舍。它不会为了粉饰冲突而发明新行为，而且<strong>它不放弃</strong>：merge 一定被带到一个完成的 commit。</p>
                         <p>它还会找出 repo 自己的自动化检查并在 commit 前跑——因为 merge 是 git 里最容易产生「同时满足两个 branch、但两边测试都不过」的地方。</p>
-                        <p><strong>额外的实务知识</strong>：不要为了避免冲突而在平行任务之间「划分文档」，那成本比收益高。唯一值得保留的纪律是<strong>大重构先做</strong>。worktree 平行开发时，<strong>merge 回去最好由写那个改动的 session 做</strong>，因为只有它知道意图。把大家的冲突 batch 给最后一个 agent，正好丢掉这支 skill 要辛苦重建的东西。</p>
+                        <p><strong>额外的实务知识</strong>：不要为了避免冲突而在平行任务之间「划分文件」，那成本比收益高。唯一值得保留的纪律是<strong>大重构先做</strong>。worktree 平行开发时，<strong>merge 回去最好由写那个改动的 session 做</strong>，因为只有它知道意图。把大家的冲突 batch 给最后一个 agent，正好丢掉这支 skill 要辛苦重建的东西。</p>
                     </div>
                 </div>
 
@@ -813,8 +813,8 @@ gh label create enhancement</code></pre>
                     <div class="space-y-4 leading-relaxed">
                         <p><strong>只用于你没有建立的 issue。</strong>原始 bug 报告、外来 feature request、突然出现的外部 PR。<code>to-tickets</code> 产出的票依构造就已经 agent-ready，对它们跑 triage 最好的情况是白做工。它<strong>建议然后等待</strong>：告诉你分类与状态的判断加理由，在你指示之前不套用任何东西。</p>
                         <p>每个被 triage 的项目最后带<strong>恰好一个分类角色加一个状态角色</strong>。分类两个：bug、enhancement。状态五个：<code>needs-triage</code>（你需要评估它）、<code>needs-info</code>（等回报者，回复后回到 needs-triage）、<code>ready-for-agent</code>（完整规格化、附 agent brief）、<code>ready-for-human</code>（同样的 brief 加上「为什么不能委派」）、<code>wontfix</code>（关闭，理由已记录）。</p>
-                        <p><code>wontfix</code> 分三种，差别重要，因为<strong>只有一种会写进知识库</strong>：已实作的留个指向它已存在位置的留言、<strong>不写</strong>进 out-of-scope（那是已建功能不是被拒功能，写进去会污染去重检查）；拒绝的 bug 礼貌解释后关闭；拒绝的 enhancement 在 out-of-scope 目录写一份文档、从关闭留言连过去。那个目录是<strong>一个被拒概念一份 markdown</strong>（不是一个 issue 一份），而 triage 在评估任何东西之前先读整个目录，<strong>按概念比对而非关键字</strong>。</p>
-                        <p><strong>先验证再写 brief</strong>：对 bug 照回报者的步骤重现，对 PR checkout 并跑相关测试，然后报告三种结果之一——已确认（附代码路径）、无法重现、细节不足以尝试（这本身就是最强的 needs-info 信号）。这一切都是为了让 <strong>agent brief</strong> 变好，而它被写成<strong>耐久而非精确</strong>：写类型、签章、行为契约，<strong>永不写文档路径与行号</strong>，因为 issue 可能躺好几周而底下代码在动。</p>
+                        <p><code>wontfix</code> 分三种，差别重要，因为<strong>只有一种会写进知识库</strong>：已实作的留个指向它已存在位置的留言、<strong>不写</strong>进 out-of-scope（那是已建功能不是被拒功能，写进去会污染去重检查）；拒绝的 bug 礼貌解释后关闭；拒绝的 enhancement 在 out-of-scope 目录写一份文件、从关闭留言连过去。那个目录是<strong>一个被拒概念一份 markdown</strong>（不是一个 issue 一份），而 triage 在评估任何东西之前先读整个目录，<strong>按概念比对而非关键字</strong>。</p>
+                        <p><strong>先验证再写 brief</strong>：对 bug 照回报者的步骤重现，对 PR checkout 并跑相关测试，然后报告三种结果之一——已确认（附代码路径）、无法重现、细节不足以尝试（这本身就是最强的 needs-info 信号）。这一切都是为了让 <strong>agent brief</strong> 变好，而它被写成<strong>耐久而非精确</strong>：写类型、签章、行为契约，<strong>永不写文件路径与行号</strong>，因为 issue 可能躺好几周而底下代码在动。</p>
                         <p><strong>坑</strong>：label 不会自动建立；五个状态<strong>不够用</strong>是最常被提的缺口（blocked、deferred、implemented 都有人要，都没 ship）；<strong>不要一次对整个 backlog 放它跑</strong>——「显示需要注意的东西」那一 pass 是给挑选用的便宜列表，一次跑二十个 issue 时 agent 会悄悄把它当成证据基础，而它<strong>只回 issue 内文、不回留言</strong>。</p>
                     </div>
                 </div>
@@ -848,7 +848,7 @@ gh label create enhancement</code></pre>
                     </div>
                     <div class="mt-6 space-y-4 leading-relaxed">
                         <p><code>task</code> 是唯一「做」而不是「决定」的类型，它的存在理由是<strong>解除一个决定的阻塞</strong>，<strong>永不是交付目的地的一块</strong>。这是实务上最常出错的类型：agent 把它当实作步骤，开始在地图里写产品代码。<code>research</code> 是「一 session 一票」的唯一例外。</p>
-                        <p><strong>三个致命坑。</strong>一、<strong>agent 在 wayfinder session 中间开始写正式代码</strong>——最常回报的失败。「规划不执行」默认可以在地图的 Notes 里被覆写，但 <strong>Notes 是 agent 写的</strong>，所以约束和它的豁免住在同一个由「被约束方」拥有的文档里。有用户看着 agent 把「这张地图带执行」写进自己的 Notes，然后在后续 session 读回来当自己的许可，在正式服务器上动工。二、<strong>地图清空之后还是要 <code>/to-spec</code> 和 <code>/to-tickets</code></strong>——decision ticket 在地图关闭时全都关了，剩下的是「一张塞满链接决定的地图」，那不是搭建计划。三、<strong>不要平行跑 grilling 票</strong>，两个 session 不共享 context，你会在一边被问到刚在另一边答过的问题。</p>
+                        <p><strong>三个致命坑。</strong>一、<strong>agent 在 wayfinder session 中间开始写正式代码</strong>——最常回报的失败。「规划不执行」默认可以在地图的 Notes 里被覆写，但 <strong>Notes 是 agent 写的</strong>，所以约束和它的豁免住在同一个由「被约束方」拥有的文件里。有用户看着 agent 把「这张地图带执行」写进自己的 Notes，然后在后续 session 读回来当自己的许可，在正式服务器上动工。二、<strong>地图清空之后还是要 <code>/to-spec</code> 和 <code>/to-tickets</code></strong>——decision ticket 在地图关闭时全都关了，剩下的是「一张塞满链接决定的地图」，那不是搭建计划。三、<strong>不要平行跑 grilling 票</strong>，两个 session 不共享 context，你会在一边被问到刚在另一边答过的问题。</p>
                         <p>还有一个实测：<strong>「我画了 27 张票，做到第 13 张时后面全部不合理了」</strong>。两个反制：把地图范围缩到<strong>一个有界的目的地</strong>（一个定义好的 epic 比笼统的「实作 V1」表现好太多），以及<strong>积极 prototype</strong>。作者的说法是 wayfinder 是「prototypemaxxing」而不是「planmaxxing」。</p>
                     </div>
                 </div>
@@ -858,10 +858,10 @@ gh label create enhancement</code></pre>
                     <h3 class="mb-3">有东西要搬家</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>它把当前对话压成一份<strong>交接文档</strong>——一个 markdown 档，写到 OS 暂存目录（不是工作区），让一个全新 agent 读了就能接手。</p>
-                        <p><strong>它买的是可携性，不是压缩。</strong>这让它比听起来窄得多：只有工作要<strong>移动</strong>时你才需要文档。四个触发情境：换 harness、搬到不同目录或 repo、把工作送给同事、把 phase 中途发现的支线分叉出去。</p>
+                        <p><strong>它买的是可携性，不是压缩。</strong>这让它比听起来窄得多：只有工作要<strong>移动</strong>时你才需要文件。四个触发情境：换 harness、搬到不同目录或 repo、把工作送给同事、把 phase 中途发现的支线分叉出去。</p>
                         <p><strong>最常被跳过的用法是分叉。</strong>你留在自己的 session，把累积的 context 复制一份交给第二个 agent 平行工作。prototype 岔路就是这样用的：你正在一场很深的设计对话里、撞到一个只有跑起来才能解的问题、又不想把辛苦建起来的 thread 花在查这件事上——handoff 到一个 prototype session、拿到答案、把答案交回来、在原 thread 引用它。<strong>两次跨越、一场活着的对话、什么都不用重讲。</strong></p>
                         <p>什么会旅行：文档带着活的 thread（在飞什么、为什么、下一步），加上一段建议的 skill。秘密会在写入前被屏蔽。它刻意<strong>不</strong>带任何已经写下来的东西——spec、计划、ADR、issue、commit、diff 一律用路径或 URL 引用、绝不复制。</p>
-                        <p><strong>坑</strong>：文档在暂存目录，路径长、每个 OS 不同，<strong>问它路径并记下来再往下走</strong>；有些环境会在 session 之间清掉 temp，下一个 session 不会很快开始就自己复制到耐久的地方；交给下一个 agent 的方式是<strong>指向路径</strong>，不要把摘要贴进 shell 指令——含特殊字符的摘要会被搞烂，而典型失败是<strong>静默截断</strong>；「它抓到 what、没抓到 why」是公允的批评，<strong>把「下一个 session 要做什么」当参数传进去</strong>，并留意它把没验证过的信念写成事实。</p>
+                        <p><strong>坑</strong>：文件在暂存目录，路径长、每个 OS 不同，<strong>问它路径并记下来再往下走</strong>；有些环境会在 session 之间清掉 temp，下一个 session 不会很快开始就自己复制到耐久的地方；交给下一个 agent 的方式是<strong>指向路径</strong>，不要把摘要贴进 shell 指令——含特殊字符的摘要会被搞烂，而典型失败是<strong>静默截断</strong>；「它抓到 what、没抓到 why」是公允的批评，<strong>把「下一个 session 要做什么」当参数传进去</strong>，并留意它把没验证过的信念写成事实。</p>
                     </div>
                 </div>
 
@@ -892,7 +892,7 @@ gh label create enhancement</code></pre>
                     <h3 class="mb-3">我想学一个东西，跨很多天</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>它把你执行它的那个目录变成常设教学工作区，用一系列<strong>自带样式的短 HTML 课程</strong>跨多个 session 教你一个主题。</p>
-                        <p><strong>它不从模型已知的东西教。</strong>parametric knowledge 被当成不可信：教之前它先去找高信任资源、记进资源档、并在每一课里引用。它是<strong>有状态的</strong>——mission、资源、课程、学习纪录全部以文档形式住在目录里：</p>
+                        <p><strong>它不从模型已知的东西教。</strong>parametric knowledge 被当成不可信：教之前它先去找高信任资源、记进资源档、并在每一课里引用。它是<strong>有状态的</strong>——mission、资源、课程、学习纪录全部以文件形式住在目录里：</p>
                         <div class="overflow-x-auto" tabindex="0">
                             <table class="w-full text-start border-collapse">
                                 <thead>
@@ -913,7 +913,7 @@ gh label create enhancement</code></pre>
                             </table>
                         </div>
                         <p>核心观念是 <strong>storage strength</strong>（长期保留）而不是 <strong>fluency</strong>（当下的回想感，读的时候像精通、一周后就没了）。它用<strong>期望难度</strong>建前者。知识先来（此时难度是敌人，会吃掉你理解所需的工作记忆），技能再靠紧的反馈循环操练（此时难度是工具）。<strong>课程很少被重读，参考文档会</strong>——所以一课的压缩精华属于参考目录，不是埋在引入它的那一课里。</p>
-                        <p><strong>坑</strong>：文档可能被写到错的地方（issue 377，有人的课程被写进全域 skill 目录），<strong>开始时明确讲出目录名</strong>；<strong>小考正确答案永远是第一个选项</strong>（多模型确认、未修，有贡献者测到 9 课 33 次全部落在 A）；<strong>没有能力评估步骤</strong>，第一则消息就把你的既有知识与缺口讲出来；<strong>没有间隔重复调度</strong>，要复习就自己要。</p>
+                        <p><strong>坑</strong>：文件可能被写到错的地方（issue 377，有人的课程被写进全域 skill 目录），<strong>开始时明确讲出目录名</strong>；<strong>小考正确答案永远是第一个选项</strong>（多模型确认、未修，有贡献者测到 9 课 33 次全部落在 A）；<strong>没有能力评估步骤</strong>，第一则消息就把你的既有知识与缺口讲出来；<strong>没有间隔重复调度</strong>，要复习就自己要。</p>
                         <p>不只给程序用——纪录里非程序的用途占更大部分。在程序里，最强的用途不是从零学一门语言，而是<strong>在陌生的 codebase 或新团队的技术栈里找方向</strong>。作者提过一个漂亮的组合：被烤到一个你不懂的东西时，<strong>不要停下 grilling 去学</strong>——handoff 到一个教学工作区、在那里学会、再回来接续。</p>
                     </div>
                 </div>
@@ -968,9 +968,9 @@ gh label create enhancement</code></pre>
                         <p>它在你设计的同时建立与磨利项目的 <strong>ubiquitous language</strong>——挑战和词汇表冲突的用词、在你用了模糊字时逼出精确的字、用具体情境压力测试一段关系直到边界精确。</p>
                         <p><strong>它是主动纪律、不是被动的。</strong>读 <code>CONTEXT.md</code> 借用词汇是任何 skill 都能做的一行习惯；这支是给你<strong>在改变模型</strong>的时候用的。这就是它会<strong>打断你</strong>的原因：它在术语被解决的那一刻、对话中间就写进 <code>CONTEXT.md</code>——因为批量版是一场 session 的<strong>摘要</strong>，实时版是那场 session 的<strong>实际产出</strong>。</p>
                         <p>两个产物、两套标准。<code>CONTEXT.md</code> 装<strong>术语</strong>（一个东西是什么，一两句话），写入门槛是「一个模糊的词变成正式术语」，时机是实时，<strong>永不装</strong>实作细节、spec、草稿纸、一般程序概念。ADR 装<strong>一个决定</strong>（一到三句：context、选择、理由），写入门槛是<strong>三个全中</strong>——难以逆转、没有 context 会觉得意外、真实取舍的结果——而且是提议，不默认。</p>
-                        <p><strong>要真正记住的是 <code>CONTEXT.md</code> 那条规则</strong>，因为它是实战中会坏的那条：<strong>它是词汇表，而且只是词汇表。</strong>不管的话，模型会把「写进 CONTEXT.md」当成「把你给的每个答案都持久化」的许可，文档就变成一份跑动的 spec——<strong>这是本 skill 最常被回报的问题，跨多个模型。</strong></p>
+                        <p><strong>要真正记住的是 <code>CONTEXT.md</code> 那条规则</strong>，因为它是实战中会坏的那条：<strong>它是词汇表，而且只是词汇表。</strong>不管的话，模型会把「写进 CONTEXT.md」当成「把你给的每个答案都持久化」的许可，文件就变成一份跑动的 spec——<strong>这是本 skill 最常被回报的问题，跨多个模型。</strong></p>
                         <p><strong>让这支有感的动作</strong>：你陈述某件事怎么运作时，它去查代码并把矛盾摊出来——「你的代码取消整张 Order，但你刚说可以部分取消，哪个对？」语言和代码被迫<strong>出声对齐</strong>，在任何一边被改之前。<strong>限制</strong>：它只交叉参照代码与已 commit 的文档，<strong>不搜你的 issue tracker</strong>，所以几个月前在一张已关闭 issue 里吵完并刻意定案的命名冲突，会被当成新的摊出来。</p>
-                        <p><strong>坑</strong>：<code>CONTEXT.md</code> 长到 500 行以上——<strong>大小是症状不是病</strong>，直接下令它精简并移除实作细节；只有在文档真的精瘦、却仍涵盖两个读者不会想同时装进脑里的领域时，才考虑切分——<strong>切一个臃肿的文档只会得到好几个臃肿的文档</strong>。<strong>自动触发是它最弱的地方</strong>：一场 grilling 跑完 <code>CONTEXT.md</code> 一动也没动，就是这件事发生了，点名叫它。<strong>没有经人审阅、由 agent 撰写的词汇表比没有更糟</strong>：它会变成听起来很自信的传说，被后续 session 当成真理。</p>
+                        <p><strong>坑</strong>：<code>CONTEXT.md</code> 长到 500 行以上——<strong>大小是症状不是病</strong>，直接下令它精简并移除实作细节；只有在文件真的精瘦、却仍涵盖两个读者不会想同时装进脑里的领域时，才考虑切分——<strong>切一个臃肿的文件只会得到好几个臃肿的文件</strong>。<strong>自动触发是它最弱的地方</strong>：一场 grilling 跑完 <code>CONTEXT.md</code> 一动也没动，就是这件事发生了，点名叫它。<strong>没有经人审阅、由 agent 撰写的词汇表比没有更糟</strong>：它会变成听起来很自信的传说，被后续 session 当成真理。</p>
                     </div>
                 </div>
 
@@ -979,7 +979,7 @@ gh label create enhancement</code></pre>
                     <h3 class="mb-3">我要写给 agent 看的文档</h3>
                     <div class="space-y-4 leading-relaxed">
                         <p>skill、指令档、spec、runtime prompt、README——任何 agent 会读的文档。包装不同，写法一样。</p>
-                        <p><strong>它的默认动作是删除，不是解释。</strong>叫 agent 写给另一个 agent 的指令，它大部分字会花在解释模型已经知道的东西，<strong>每一行都是 no-op</strong>：付了 context 却没改变任何行为。这份参考就是找出它们的镜片，所以它在<strong>你已经有的文档</strong>上赚到的价值，至少和在空白文档上一样多。</p>
+                        <p><strong>它的默认动作是删除，不是解释。</strong>叫 agent 写给另一个 agent 的指令，它大部分字会花在解释模型已经知道的东西，<strong>每一行都是 no-op</strong>：付了 context 却没改变任何行为。这份参考就是找出它们的镜片，所以它在<strong>你已经有的文档</strong>上赚到的价值，至少和在空白文件上一样多。</p>
                         <p><strong>两种负担。</strong><em>Context load</em> 是永远加载的材料在 agent 窗口上的成本：指令档的一行、skill description、任何每个 turn 都在 context 里的东西，不管它有没有被触发。<em>Cognitive load</em> 是在<strong>你</strong>身上的成本：有哪些文档存在、什么时候该抓哪一个，你就是那个索引。<strong>这不是要最小化的成本，它是人类主导权的价格。</strong>想通这两种之后，大部分写作决定都变成同一个取舍在不同地方做。</p>
                         <p><strong>五个杠杆</strong>：<em>Context pointer</em>（在 context 里、指名 context 外材料、并编码「何时去拿它」的引用；决定 agent 多可靠地伸手穿过它的是 pointer 的<strong>用字</strong>，不是它的目标）、<em>Information hierarchy</em>（从「档内步骤」到「档内参考」到「pointer 后的插件参考」的梯子）、<em>Completion criteria</em>（对抗<strong>过早完成</strong>的防线）、<em>Leading words</em>（模型预训练里已有的压缩概念，锚定两次：body 里锚定执行、pointer 里锚定触发）、<em>Pruning</em>（单一真实来源、相关性、逐句套用 no-op test）。</p>
                         <p><strong>no-op test 是行为性的、不是美学性的</strong>：删掉那一行，问 agent 的行为有没有改变。一个句子不通过，<strong>删整句</strong>而不是修字。对它有歧见时，<strong>跑那份文档</strong>来解决，不要争论。判准：文档变好的同时变短，而且你会惊讶剩下这么少；<strong>没有任何东西被说两次</strong>（重复是「这份文档从未被测过」最可靠的征兆）。</p>
@@ -990,7 +990,7 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">独立 — grill-me</p>
                     <h3 class="mb-3">我有个想法，还没成形</h3>
                     <div class="space-y-4 leading-relaxed">
-                        <p>它拿一个<strong>松散的想法</strong>访谈你，直到你能对它做出承诺。你不需要一份想好的计划才能开始——<strong>产出那份计划正是这场 session 的用途</strong>。它是<strong>无状态</strong>的：不写文档、不留工作区，留下的只有你脑子里那个更锐利的版本。主题不必是程序，也不需要 repo。</p>
+                        <p>它拿一个<strong>松散的想法</strong>访谈你，直到你能对它做出承诺。你不需要一份想好的计划才能开始——<strong>产出那份计划正是这场 session 的用途</strong>。它是<strong>无状态</strong>的：不写文件、不留工作区，留下的只有你脑子里那个更锐利的版本。主题不必是程序，也不需要 repo。</p>
                         <p><strong>关掉 plan mode。</strong>它会催 agent 赶快产出计划，那正好和「保持在提问状态」相反。</p>
                         <p><strong>它在正常工作的样子</strong>：你不同意某件事——<strong>一场你完全没推回去的 session，是一场你不需要的 session</strong>；问题以「少数几轮」而不是一长串点滴到达，而且后面的轮次明显建立在你前面说的话上；你走到一个没预期的地方，因为某个问题翻出了你一直在隐性做的决定；结束时，每个选择你都能对一个当时不在场的人辩护。</p>
                         <p><strong>数轮不要数题。</strong>46 题分 4 轮是普通的一场。200 题代表范围太大，而且超长 session 会漂进 <strong>dumb zone</strong>——context window 满到问题质量下降。烤完之后如果确定要做，<strong>不要开新 session</strong>，那场对话的 context 就是价值所在。</p>
@@ -1001,7 +1001,7 @@ gh label create enhancement</code></pre>
                     <p class="eyebrow mb-2">路由器 — ask-matt</p>
                     <h3 class="mb-3">我不知道该用哪支</h3>
                     <div class="space-y-4 leading-relaxed">
-                        <p>它<strong>建议然后停下</strong>。不会 grill、不会写 spec、不会开文档、不会帮你发射它刚点名的 skill——你拿到的是「下一步该打什么」，然后你去打。它给你的思考单位是 <strong>flow</strong>：一条<strong>穿过</strong> skill 的路径，而不是单一个 skill。</p>
+                        <p>它<strong>建议然后停下</strong>。不会 grill、不会写 spec、不会开文件、不会帮你发射它刚点名的 skill——你拿到的是「下一步该打什么」，然后你去打。它给你的思考单位是 <strong>flow</strong>：一条<strong>穿过</strong> skill 的路径，而不是单一个 skill。</p>
                         <p><strong>必须知道的诚实限制。</strong>它是<strong>手写</strong>的地图、会落后 repo，而且只认得这个 pack 的 skill。它<strong>会告诉你「一半的 skill 没安装」</strong>——已知未修：大部分被它路由的 skill 是 user-invoked，harness 就不把它们放进注入 agent 的清单，agent 把那份清单当成完整的，于是报告它们不存在。<strong>它们有装。</strong></p>
                         <p>它也<strong>可能描述错别的 skill 的行为</strong>：它从自己那份一行摘要回答，而不是从 skill 本身。有一份详细回报在单一 session 里追到三次，包括凭「把 thread 变成 spec」这个粗略印象建议跳过 <code>to-spec</code>——那份 <code>SKILL.md</code> 从未被打开，代价是少了一次真正的 seam 检查，切出来的票低估了工作量。<strong>当它对别的 skill 做出承重的断言时，要它先去打开那份 <code>SKILL.md</code>。</strong></p>
                         <p><strong>定位</strong>：ask-matt 是这整套之上的 <strong>secondary source</strong>。router 和 <code>SKILL.md</code> 打架时，<code>SKILL.md</code> 是对的。</p>
@@ -1041,7 +1041,7 @@ gh label create enhancement</code></pre>
                         <p><strong>处境</strong>：你刚加入一个八年的项目，或接手一个 vibe-coded 的 repo。没有 ADR、没有领域语言、没有设计原则。</p>
                         <ol class="space-y-2">
                             <li><strong>第一天</strong>：<code>/setup-matt-pocock-skills</code> 设置 tracker 与文档配置。</li>
-                            <li><strong>第一天</strong>：<code>/grill-with-docs</code>，请它帮你把这个既有 repo 用 <code>CONTEXT.md</code> 建立起来。预期一场<strong>很长</strong>的访问（有人回报 50 题以上才把文档弄成形），而且要主动导引——它会读代码、问你它找到什么，而<strong>「代码里现有的哪些词才是对的词」是你决定的</strong>。</li>
+                            <li><strong>第一天</strong>：<code>/grill-with-docs</code>，请它帮你把这个既有 repo 用 <code>CONTEXT.md</code> 建立起来。预期一场<strong>很长</strong>的访问（有人回报 50 题以上才把文件弄成形），而且要主动导引——它会读代码、问你它找到什么，而<strong>「代码里现有的哪些词才是对的词」是你决定的</strong>。</li>
                             <li><strong>第二天</strong>：<code>/improve-codebase-architecture</code>，开口就说「不要烤我，先给我报告」。<strong>全部都是 Speculative 等于它其实什么都没找到</strong>；挑一个 Strong 的候选。</li>
                             <li><strong>第二天</strong>：一次一个候选，让它对那个候选 grilling，产出是「决定」不是 diff。然后接 <code>to-spec</code>、<code>to-tickets</code>、<code>implement</code>。</li>
                             <li><strong>之后</strong>：每几天再跑一次架构巡检当保养。</li>
@@ -1079,7 +1079,7 @@ gh label create enhancement</code></pre>
                             <li>一轮一轮回答，用编号整批回。推回问得太浅的问题；范围在漂就讲；<strong>「我不知道」是真的答案</strong>。</li>
                             <li>遇到「看到东西才能答」的问题，它是 ungrillable。非程序情境下通常是：先做一页草稿、先算一张表、先问一个客户。</li>
                             <li>遇到「答案在别人脑子里」的问题，<strong>在同一个对话里</strong>跑 <code>/to-questionnaire</code>，寄给那个人，答案回来再开下一轮。</li>
-                            <li>它是无状态的：不写文档、不留工作区。留下的只有你脑子里那个更锐利的版本。</li>
+                            <li>它是无状态的：不写文件、不留工作区。留下的只有你脑子里那个更锐利的版本。</li>
                         </ol>
                     </div>
                 </div>
@@ -1133,7 +1133,7 @@ gh label create enhancement</code></pre>
                         <tr class="border-b border-line"><td class="py-3 pe-4">wayfinder 的 agent 开始写正式代码</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">Notes 可覆写「规划不执行」，而 Notes 是 agent 写的。<strong>先读 Notes</strong></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4">27 张票做到第 13 张全部不合理</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">范围缩到一个有界 epic，并积极 prototype</td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4">grilling 每个问题三段落、很累</td><td class="py-3 pe-4 hidden tablet:table-cell">wayfinder、grilling</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">降 reasoning effort 加全域指令档一句白话指示。<strong>未解决</strong></td></tr>
-                        <tr class="border-b border-line"><td class="py-3 pe-4">handoff 文档不见了</td><td class="py-3 pe-4 hidden tablet:table-cell">handoff</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">暂存目录会被清。<strong>问它路径，需要就自己复制到耐久位置</strong></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4">handoff 文件不见了</td><td class="py-3 pe-4 hidden tablet:table-cell">handoff</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">暂存目录会被清。<strong>问它路径，需要就自己复制到耐久位置</strong></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4">课程被写到全域 skill 目录</td><td class="py-3 pe-4 hidden tablet:table-cell">teach</td><td class="py-3 pe-4 font-semibold whitespace-nowrap">严重</td><td class="py-3">issue 377。<strong>明确讲出目录名，第一课落在哪先确认</strong></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4">小考正确答案永远是 A</td><td class="py-3 pe-4 hidden tablet:table-cell">teach</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">已知未修（33 次全中）。把位置当无意义，或要一个 render 时洗牌的组件</td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4">wizard 打错字想回上一步</td><td class="py-3 pe-4 hidden tablet:table-cell">wizard</td><td class="py-3 pe-4 whitespace-nowrap">—</td><td class="py-3">没有回上一步。中断重跑（已存的值会当默认）；方向键有 bug，用 backspace</td></tr>
@@ -1257,7 +1257,7 @@ gh label create enhancement</code></pre>
                         </tr>
                     </thead>
                     <tbody class="text-sm align-top">
-                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">01</td><td class="py-3 pe-4">读 <a href="#concepts" class="underline">三个底层观念</a>；装 plugin 或 skills.sh（<strong>选一</strong>）；在一个 repo 跑 setup；建好 label</td><td class="py-3"><code>docs/agents/</code> 三个文档存在，指令档有 <code>## Agent skills</code></td></tr>
+                        <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">01</td><td class="py-3 pe-4">读 <a href="#concepts" class="underline">三个底层观念</a>；装 plugin 或 skills.sh（<strong>选一</strong>）；在一个 repo 跑 setup；建好 label</td><td class="py-3"><code>docs/agents/</code> 三个文件存在，指令档有 <code>## Agent skills</code></td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">02</td><td class="py-3 pe-4"><code>/grill-me</code> 烤一个<strong>非程序</strong>的决定。刻意练习「推回去」</td><td class="py-3">至少推回三次；能对一个不在场的人辩护每个选择</td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">03</td><td class="py-3 pe-4"><code>/grill-with-docs</code> 对你现有 repo 做一次小功能的访谈</td><td class="py-3"><code>CONTEXT.md</code> 在过程中逐条长出来；ADR 0 到 1 份</td></tr>
                         <tr class="border-b border-line"><td class="py-3 pe-4 font-sans font-semibold">04</td><td class="py-3 pe-4">同一对话接 <code>/to-spec</code>。认真看 seam 与 out-of-scope 两节</td><td class="py-3">spec 里每个决定你都记得自己做过</td></tr>
@@ -1316,7 +1316,7 @@ gh label create enhancement</code></pre>
                 <div>
                     <p class="eyebrow mb-3">随时</p>
                     <ul class="space-y-2 leading-relaxed">
-                        <li><code>/grill-me</code> — 无 repo、无文档，主题不必是程序</li>
+                        <li><code>/grill-me</code> — 无 repo、无文件，主题不必是程序</li>
                         <li><code>/prototype</code> — 谈不出来的设计问题，一次一个问题</li>
                         <li><code>/research</code> — 外部事实。背景跑，检查有没有生两个</li>
                         <li><code>/diagnosing-bugs</code> — 难 bug。先有红的循环才准猜</li>
@@ -1357,7 +1357,7 @@ gh label create enhancement</code></pre>
                 Tracer bullet 是穿过所有层（schema、API、UI、测试）的一条细但完整的路，落地当下就能单独 demo。水平切片是一次交付一层——全部 schema 一张票、全部 API 一张票——它的问题是每层都到位之前什么都不能动，而且验收条件必须伸手到别张票拥有的工作。实测代价：某团队用 26 张按层切的票，平均每张票关闭要跑 20 次 agent，其中约四分之三是重工，他们自己的检讨把每一类失败都追回到水平切片而不是实作质量。判准只有一句：这张票做完我能 demo 什么？答不出行为的就是水平切片。
             {% endcall %}
             {% call faq("为什么 code review 要跑在另一个 session？") %}
-                同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff &lt;fixed-point&gt;...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文档验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。
+                同一个 context 审自己写的程序，是带着 slash command 的确认偏误——写程序的 agent 会偏袒自己的解法。另外三件事要一起知道：审查看的是 diff &lt;fixed-point&gt;...HEAD，排除 staged 与 working tree，所以要先 commit 再 review；审查发现是假设不是证据，sub-agent 不会逐条回文件验证，引用可能指错位置，看引用再行动；以及每次跑都会找到新问题，因为修改会创造新表面而判断题那半不是决定性的，没有收敛保证——当成线索清单，处理有明文规则背书的然后停手。
             {% endcall %}
             {% call faq("这套 skill 最常被用坏的方式是什么？", last=true) %}
                 七种：被动 grilling（连答四十个同意，出来一份你点头过但什么都没真正决定的计划）；在 to-spec 与 to-tickets 之间 clear 或 compact（你烤出来的东西绝大部分只在那个 context window 里）；对自己产生的票跑 triage；范围良好的功能抓 wayfinder（判准是 session 数不是项目大小）；把词汇层当驱动器；把 review 跑在写程序的同一个 session；以及改 SKILL.md 来客制（更新会覆盖、plugin 唯读，长期行为要写进自己的 CLAUDE.md）。还有一个元反模式：把它当成有了流程就不用想——产出的质量追踪的是你答案的质量，不是问题的数量。

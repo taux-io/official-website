@@ -1,189 +1,60 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["網站流量少，或只有搜尋公司名稱才找得到", "客戶開始問 ChatGPT、Perplexity，而 AI 的回答裡沒有你", "網站多年沒整理，結構與內容都跟不上現在的搜尋方式", "投了廣告，想同時累積不必付費的自然流量"] %}
+{%- set scope = [{"t": "技術 SEO", "d": "網站速度、行動版、索引狀態、網址與內部連結結構，先排除讓搜尋引擎讀不到你的問題。"}, {"t": "內容與關鍵字", "d": "找出客戶實際在搜尋的問題，規劃與改寫內容，讓每一頁回答一個明確的問題。"}, {"t": "結構化資料", "d": "Schema 標記、實體識別與知識圖譜關聯，讓機器不必從版面猜你是誰、賣什麼、誰寫的。"}, {"t": "內容分塊與可引用性", "d": "把內容整理成模型擷取得動的區塊：固定結構、明確定義、每段都能單獨被引用。"}, {"t": "AI 爬蟲存取與 llms.txt", "d": "盤點 AI 爬蟲的存取政策並建置 llms.txt，決定哪些內容開放給模型、以什麼形式開放。"}, {"t": "量測", "d": "在動工前記錄基準線：搜尋排名與流量，以及在主要生成式引擎上被提及與被引用的情況，之後持續追蹤變化。"}] %}
+{%- set process = [{"t": "現況稽核與基準線", "d": "盤點技術、內容、結構化資料與爬蟲存取，並記錄動工前的數字。沒有基準線，就無法判斷之後的改動有沒有用。"}, {"t": "優先修正", "d": "先處理影響最大的技術問題與最重要的頁面。"}, {"t": "內容與結構", "d": "改寫或新增內容、補上結構化資料與 llms.txt。"}, {"t": "量測與調整", "d": "定期比對基準線，決定下一批要處理的內容。"}] %}
+{%- set deliverables = ["網站稽核報告與基準線數字", "修正清單與優先序", "結構化資料與 llms.txt", "內容規劃與改寫", "定期量測報告"] %}
+{%- set faqs = [{"q": "GEO 和 SEO 有什麼不同？", "a": "SEO 的目標是在搜尋結果的連結裡排名；GEO 的目標是在 ChatGPT、Perplexity、Google AI 摘要等生成式引擎的回答中被提及與引用。兩者的基礎相同：內容清楚、結構明確、機器讀得懂。"}, {"q": "做 SEO 與 GEO 多久看得到效果？", "a": "技術問題修正後，搜尋引擎重新索引通常需要幾週；內容累積的效果則以月計。所以我們在動工前就記錄基準線，用數字比對變化。"}, {"q": "可以保證排名或被 AI 引用嗎？", "a": "不能。排名與引用由搜尋引擎與 AI 公司決定，任何人都無法保證。我們能做的是讓你的內容更容易被讀懂、被信任，並如實量測結果。"}] %}
 {% include "header.html" %}
-
-<!-- Service schema. This page answers a buying intent, so what it declares is a
-     Service with a provider — not an Article. /geo-guide keeps the Article and
-     the informational intent; the two pages take different queries on purpose
-     and are linked to each other rather than competing.
-
-     provider references the organisation declared in the header instead of
-     restating it. -->
+<!-- Service page: SEO 與 GEO 搜尋優化. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/zh-Hant-TW/geo-optimization#service",
-            "serviceType": "Generative Engine Optimization",
-            "name": "GEO 生成式引擎優化服務",
-            "description": "針對生成式 AI 的檢索與引用機制優化網站，讓品牌成為 ChatGPT、Perplexity、Google AI 摘要回答問題時的引用來源。含結構化資料建置、內容分塊、實體關聯與可被引用性稽核。",
-            "provider": {% include "_org-ref.html" %},
-            "areaServed": "TW",
-            "availableChannel": {
-                "@type": "ServiceChannel",
-                "serviceUrl": "https://taux.io/zh-Hant-TW/geo-optimization",
-                "servicePhone": "+886-7-6211033"
-            },
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock",
-                "priceCurrency": "TWD",
-                "priceSpecification": {
-                    "@type": "PriceSpecification",
-                    "priceCurrency": "TWD",
-                    "minPrice": 80000,
-                    "maxPrice": 600000,
-                    "description": "依網站規模與內容量而定。單次稽核與導入專案的區間，長期維運另計。"
-                }
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "SEO 與 GEO 搜尋優化", "serviceType": "搜尋引擎優化與生成式引擎優化", "description": "TauX 為中小企業提供 SEO 與 GEO（生成式引擎優化）：技術 SEO、內容與關鍵字、結構化資料、llms.txt 與 AI 爬蟲政策，並在動工前記錄基準線，之後量測被引用的變化。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <span class="tag mb-4">GEO Service</span>
-            <h1 class="mb-4">
-                <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Be the Answer</span>
-                <span class="display-sub">GEO 生成式引擎優化服務</span>
-            </h1>
-            <p class="text-base tablet:text-lg max-w-[42ch] leading-relaxed">
-                搜尋正在從「給你十條連結」變成「直接給你答案」。這門生意是讓那個答案裡有你。
-            </p>
-        </header>
-
-<!-- What the work is -->
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm" lang="en">What We Do</span>
-                <span class="display-sub">方案內容</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
-                GEO 不是把 SEO 的做法換個名字。它問的是另一個問題：當語言模型要回答使用者的問題時，你的內容是否可被檢索、可被理解、可被安全引用。
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">結構化資料建置</h3>
-                    <p class="text-sm leading-relaxed">
-                        Schema 標記、實體識別與知識圖譜關聯。讓機器不必從版面猜你是誰、賣什麼、誰寫的。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">內容分塊與可引用性</h3>
-                    <p class="text-sm leading-relaxed">
-                        把內容整理成模型擷取得動的區塊：固定結構、明確定義、每段都能單獨成立地被引用。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">爬蟲存取與 llms.txt</h3>
-                    <p class="text-sm leading-relaxed">
-                        AI 爬蟲的存取政策盤點與 llms.txt 建置，決定哪些內容開放給模型、以什麼形式開放。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">引用率量測</h3>
-                    <p class="text-sm leading-relaxed">
-                        建立基準線並持續追蹤：在主要生成式引擎上，你的品牌被提及與被引用的變化。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- How it runs -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
-                <span class="display-sub">執行流程</span>
-            {% endcall %}
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    1</div>
-                <div>
-                    <h3 class="mb-3">現況稽核</h3>
-                    <p class="leading-relaxed">
-                        盤點結構化資料、內容結構、爬蟲存取與實體宣告，並在動工前記錄可被引用性的基準線。沒有基準線就無法判斷之後的改動有沒有用。
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    2</div>
-                <div>
-                    <h3 class="mb-3">修正與建置</h3>
-                    <p class="leading-relaxed">
-                        依稽核結果修正實體宣告與結構化資料、重整內容分塊、建立 llms.txt。改動一次上線，讓效果歸因得出來。
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    3</div>
-                <div>
-                    <h3 class="mb-3">量測與交付</h3>
-                    <p class="leading-relaxed">
-                        6–8 週後對照基準線，交出實際的變化而不是宣稱。含自動化檢查，讓修好的東西不會在下一次改版時悄悄退化。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- Deliverables and price -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">What You Get</span>
-                <span class="display-sub">交付物</span>
-            {% endcall %}
-            <ul class="space-y-4 max-w-[46ch]">
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>現況稽核報告，含具體問題清單與優先順序</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>結構化資料與實體宣告的實作（我們動手，不只給建議）</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt 與 AI 爬蟲存取政策</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>可持續執行的自動化檢查，接進你的 CI</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>基準線與 6–8 週後的對照報告</span></li>
-            </ul>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">What It Costs</span>
-                <span class="display-sub">報價區間</span>
-            {% endcall %}
-            <div class="border-t border-line pt-6 max-w-[46ch]">
-                <p class="font-sans text-xl tabular-nums mb-4">NT$ 80,000 – 600,000</p>
-                <p class="leading-relaxed">
-                    區間取決於網站規模、內容量與既有結構的狀況。單次稽核在下緣，含實作與量測的完整導入在中段以上，長期維運另計。
-                </p>
-                <p class="leading-relaxed mt-4">
-                    先聊一次，我們會給你一個依實際範圍算出來的數字，而不是先報價再湊範圍。
-                </p>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
-                <span class="display-sub">想知道現在的網站站在哪裡？</span>
-            {% endcall %}
-            <p class="mb-6 max-w-[42ch] text-lg">
-                告訴我們你的網址，我們先做一次免費的初步檢視，說明最值得先修的三件事。
-            </p>
-            <a href="mailto:hello@taux.io" class="btn">預約 GEO 諮詢</a>
-        </section>
-
-        <section>
-            <p>
-                還在了解 GEO 是什麼？先讀
-                <a href="/{{ locale }}/geo-guide" class="underline">GEO 入門指南</a>，
-                那篇教你怎麼自己做。
-            </p>
-        </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Search optimisation</span>
+        <span class="display-sub">SEO 與 GEO 搜尋優化</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">搜尋正在從「給你十條連結」變成「直接給你答案」。SEO 讓你出現在連結裡，GEO 讓你出現在答案裡。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}適合誰{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服務內容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}執行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常見問題{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸閱讀{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO 指南</a></li>
+        <li><a href="/{{ locale }}/what-is-llms-txt" class="underline underline-offset-4">llms.txt 是什麼</a></li>
+        <li><a href="/{{ locale }}/digital-advertising" class="underline underline-offset-4">數位廣告投放</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

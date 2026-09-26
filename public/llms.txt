@@ -45,32 +45,32 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI 
 
 ## 主要服務
 
-### 1. GEO 生成式引擎優化
--   **服務內容**: 網站結構診斷、Schema 標記建置、內容塊 (Chunking) 優化、語意實體建立。
--   **核心價值**: 讓品牌在 AI 搜尋時代不缺席，爭取「引用連結 (Citations)」。
+以中小企業為對象，提供顧問服務與技術導入，以三個月、半年或一年為一個合作週期，依個別案例估價。
 
-### 2. 軟體平台開發
--   **服務內容**: 高效能 Web 應用 (Next.js/React/Go)、APP 開發、SaaS 管理平台。
--   **核心價值**: 不只是寫程式，我們打造具備高擴充性、符合商業邏輯的數位資產。
+### AI 導入與整合
+-   [企業 AI 導入顧問](https://taux.io/zh-Hant-TW/ai-consulting): TauX 為中小企業提供 AI 導入顧問與技術導入：盤點值得用 AI 做的工作、排定優先序、做 PoC、導入前先量基線，事後用同一把尺驗收成效。 ([Markdown](https://taux.io/zh-Hant-TW/ai-consulting.md))
+-   [舊系統與 AI 串接](https://taux.io/zh-Hant-TW/mcp-integration): 資料散在 ERP、Excel、共用資料夾與各部門系統裡，AI 看不到。TauX 用 MCP（Model Context Protocol）把舊系統接給 AI，唯讀優先、沿用既有權限並留下紀錄。 ([Markdown](https://taux.io/zh-Hant-TW/mcp-integration.md))
+-   [AI Agent 開發](https://taux.io/zh-Hant-TW/ai-agents): TauX 為中小企業開發 AI Agent：把規則清楚、步驟重複的工作流程，交給能呼叫工具、依步驟執行、在需要人判斷時停下來並留下紀錄的 AI。 ([Markdown](https://taux.io/zh-Hant-TW/ai-agents.md))
+-   [資料治理](https://taux.io/zh-Hant-TW/data-governance): TauX 為中小企業提供資料治理顧問與導入：盤點資料、統一標準、監控品質、訂出存取權限與個資規則，讓 AI 導入有可以信任的資料可用。 ([Markdown](https://taux.io/zh-Hant-TW/data-governance.md))
 
-### 3. AI Agent 開發與自動化
--   **服務內容**: AI Agent 開發、智能客服、工作流程自動化 (RPA)、數據分析儀表板。
--   **核心價值**: 釋放人力，讓 AI 處理重複性工作，提升團隊營運效率。
+### 行銷
+-   [數位廣告投放](https://taux.io/zh-Hant-TW/digital-advertising): TauX 為中小企業規劃與執行 Google、Meta（Facebook、Instagram）廣告投放：先把轉換追蹤設定好，再設定目標、受眾與預算，每月回報花費與成效。 ([Markdown](https://taux.io/zh-Hant-TW/digital-advertising.md))
+-   [SEO 與 GEO 搜尋優化](https://taux.io/zh-Hant-TW/geo-optimization): TauX 為中小企業提供 SEO 與 GEO（生成式引擎優化）：技術 SEO、內容與關鍵字、結構化資料、llms.txt 與 AI 爬蟲政策，並在動工前記錄基準線，之後量測被引用的變化。 ([Markdown](https://taux.io/zh-Hant-TW/geo-optimization.md))
 
-### 4. 企業 AI 內訓
--   **服務內容**: PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造的團隊課程。詳見 [AI for Smart Work](https://taux.io/zh-Hant-TW/ai-smart-work)。
--   **核心價值**: 讓團隊自己把 AI 用進日常工作，而不是依賴一次性的展示。
+### 教育訓練
+-   [Google Workspace 教育訓練](https://taux.io/zh-Hant-TW/google-workspace-training): TauX 為企業與政府機關規劃 Google Workspace 教育訓練：雲端協作、文件與試算表、會議與日曆、Workspace 內建 AI（Gemini），以及管理者設定，依實際工作流程設計練習。 ([Markdown](https://taux.io/zh-Hant-TW/google-workspace-training.md))
+-   [生成式 AI 實務課程](https://taux.io/zh-Hant-TW/ai-smart-work): TauX 為企業規劃生成式 AI 內訓：結構化的提示詞寫法、讓 AI 協助推理與決策、用 NotebookLM 整理知識庫，以及把一組問法固定成可重複使用的專屬助理（Gem）。 ([Markdown](https://taux.io/zh-Hant-TW/ai-smart-work.md))
 
+### 資安
+-   [AI 對抗測試](https://taux.io/zh-Hant-TW/ai-red-teaming): TauX 為 AI 客服、內部 AI 助理與 AI Agent 提供對抗測試：提示詞注入、資料外洩、越權操作等 LLM 特有風險，依 OWASP LLM Top 10 逐項測試，並提供重現步驟與修補建議。 ([Markdown](https://taux.io/zh-Hant-TW/ai-red-teaming.md))
+-   [Google SecOps 導入](https://taux.io/zh-Hant-TW/google-secops): TauX 協助中小企業導入 Google Security Operations（Google SecOps）：評估日誌來源、接入並正規化為 UDM、撰寫與調整偵測規則、建立告警處理流程，並交接給團隊維運。 ([Markdown](https://taux.io/zh-Hant-TW/google-secops.md))
 ---
 
 ## 技術資源
 
--   [GEO 生成式引擎優化服務](https://taux.io/zh-Hant-TW/geo-optimization): TauX 的 GEO 服務內容、執行流程、交付物與報價區間。想找廠商做 GEO 的人看這頁。 ([Markdown](https://taux.io/zh-Hant-TW/geo-optimization.md))
 -   [GEO 入門指南](https://taux.io/zh-Hant-TW/geo-guide): 深入了解 GEO 與 SEO 的差異及執行細節。 ([Markdown](https://taux.io/zh-Hant-TW/geo-guide.md))
--   [AI for Smart Work](https://taux.io/zh-Hant-TW/ai-smart-work): 企業 AI 內訓服務，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。 ([Markdown](https://taux.io/zh-Hant-TW/ai-smart-work.md))
 -   [2026 全球威脅報告重點拆解](https://taux.io/zh-Hant-TW/threat-landscape): CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組的量測方法與適用限制。重點不只是數字本身，是廠商遙測資料能推論到多廣。 ([Markdown](https://taux.io/zh-Hant-TW/threat-landscape.md))
 -   [後量子密碼 PQC 遷移指南](https://taux.io/zh-Hant-TW/pqc-migration): 企業導入 PQC 的五步驟落地路徑（治理、CBOM 盤點、風險評估、加密敏捷性、供應鏈），對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。法規狀態查證日期標於頁面上。 ([Markdown](https://taux.io/zh-Hant-TW/pqc-migration.md))
--   [Data Governance 數據治理指南](https://taux.io/zh-Hant-TW/data-governance): 針對傳統產業數位轉型的完整路徑，包含資料管理到數位治理的成熟度評估。 ([Markdown](https://taux.io/zh-Hant-TW/data-governance.md))
 -   [Agent Prompting Guide](https://taux.io/zh-Hant-TW/agent-prompting-guide): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。 ([Markdown](https://taux.io/zh-Hant-TW/agent-prompting-guide.md))
 -   [Prompt Injection 安全指南](https://taux.io/zh-Hant-TW/what-is-prompt-injection): AI 提示詞注入攻擊的原理、案例與防禦措施。 ([Markdown](https://taux.io/zh-Hant-TW/what-is-prompt-injection.md))
 -   [OWASP LLM Top 10 2026](https://taux.io/zh-Hant-TW/owasp-llm-top-10): LLM 應用十大資安風險逐條拆解，含定義、攻擊面與防禦作法。依 OWASP 2026 版撰寫，並附 2025 到 2026 的排序變動、範圍調整與排序方法的改變。 ([Markdown](https://taux.io/zh-Hant-TW/owasp-llm-top-10.md))
@@ -121,9 +121,11 @@ Every route on the site has an English edition. These are all of them.
 
 -   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。 ([Markdown](https://taux.io/zh-Hant-TW.md))
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
+-   [技術文章](https://taux.io/zh-Hant-TW/insights): 本站全部技術文章的總覽（GEO、MCP、AI Agent、LLM 資安、後量子密碼），以及公開維護的開源專案。 ([Markdown](https://taux.io/zh-Hant-TW/insights.md))
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。 ([Markdown](https://taux.io/zh-Hant-TW/building.md))
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
 -   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
+-   [Insights](https://taux.io/en-US/insights): Every technical article on the site — GEO, MCP, AI agents, LLM security, post-quantum cryptography — and the open-source projects we maintain.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。 ([Markdown](https://taux.io/zh-Hant-TW/privacy-policy.md))
@@ -133,12 +135,19 @@ Every route on the site has an English edition. These are all of them.
 
 以下为全站二十条路由的简体中文版本，内容与繁体版一致，词汇按大陆用法改写。
 
--   [GEO 生成式引擎优化服务](https://taux.io/zh-Hans-CN/geo-optimization): TauX 的 GEO 服务内容、执行流程、交付物与报价区间。想找厂商做 GEO 的人看这页。
+-   [企业 AI 导入顾问](https://taux.io/zh-Hans-CN/ai-consulting): TauX 为中小企业提供 AI 导入顾问与技术导入：盘点值得用 AI 做的工作、排定优先序、做 PoC、导入前先量基线，事后用同一把尺验收成效。
+-   [旧系统与 AI 串接](https://taux.io/zh-Hans-CN/mcp-integration): 数据散在 ERP、Excel、共用文件夹与各部门系统里，AI 看不到。TauX 用 MCP（Model Context Protocol）把旧系统接给 AI，只读优先、沿用既有权限并留下记录。
+-   [AI Agent 开发](https://taux.io/zh-Hans-CN/ai-agents): TauX 为中小企业开发 AI Agent：把规则清楚、步骤重复的工作流程，交给能调用工具、依步骤执行、在需要人判断时停下来并留下记录的 AI。
+-   [数据治理](https://taux.io/zh-Hans-CN/data-governance): TauX 为中小企业提供数据治理顾问与导入：盘点数据、统一标准、监控质量、订出访问权限与个资规则，让 AI 导入有可以信任的数据可用。
+-   [数字广告投放](https://taux.io/zh-Hans-CN/digital-advertising): TauX 为中小企业规划与执行 Google、Meta（Facebook、Instagram）广告投放：先把转换追踪设置好，再设置目标、受众与预算，每月回报花费与成效。
+-   [SEO 与 GEO 搜索优化](https://taux.io/zh-Hans-CN/geo-optimization): TauX 为中小企业提供 SEO 与 GEO（生成式引擎优化）：技术 SEO、内容与关键字、结构化数据、llms.txt 与 AI 爬虫政策，并在动工前记录基准线，之后量测被引用的变化。
+-   [Google Workspace 教育训练](https://taux.io/zh-Hans-CN/google-workspace-training): TauX 为企业与政府机关规划 Google Workspace 教育训练：云端协作、文档与试算表、会议与日历、Workspace 内置 AI（Gemini），以及管理者设置，依实际工作流程设计练习。
+-   [生成式 AI 实务课程](https://taux.io/zh-Hans-CN/ai-smart-work): TauX 为企业规划生成式 AI 内训：结构化的提示词写法、让 AI 协助推理与决策、用 NotebookLM 整理知识库，以及把一组问法固定成可重复使用的专属助理（Gem）。
+-   [AI 对抗测试](https://taux.io/zh-Hans-CN/ai-red-teaming): TauX 为 AI 客服、内部 AI 助理与 AI Agent 提供对抗测试：提示词注入、数据外泄、越权操作等 LLM 特有风险，依 OWASP LLM Top 10 逐项测试，并提供重现步骤与修补建议。
+-   [Google SecOps 导入](https://taux.io/zh-Hans-CN/google-secops): TauX 协助中小企业导入 Google Security Operations（Google SecOps）：评估日志来源、接入并正规化为 UDM、撰写与调整侦测规则、建立告警处理流程，并交接给团队维运。
 -   [GEO 入门指南](https://taux.io/zh-Hans-CN/geo-guide): 深入了解 GEO 与 SEO 的差异及执行细节。
--   [AI for Smart Work](https://taux.io/zh-Hans-CN/ai-smart-work): 企业 AI 内训服务，教授 PTCF 提示词架构、CoT 深度推理与专属 Agent 打造。
 -   [2026 全球威胁报告重点拆解](https://taux.io/zh-Hans-CN/threat-landscape): CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组的量测方法与适用限制。重点不只是数字本身，是厂商遥测数据能推论到多广。
 -   [后量子密码 PQC 迁移指南](https://taux.io/zh-Hans-CN/pqc-migration): 企业导入 PQC 的五步骤落地路径（治理、CBOM 盘点、风险评估、加密敏捷性、供应链），对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。法规状态查证日期标于页面上。
--   [Data Governance 数据治理指南](https://taux.io/zh-Hans-CN/data-governance): 针对传统产业数字转型的完整路径，包含数据管理到数字治理的成熟度评估。
 -   [Agent Prompting Guide](https://taux.io/zh-Hans-CN/agent-prompting-guide): 从新手到高手的 AI 指令秘籍，包含提示词工程与 Agent 设计模式。
 -   [Prompt Injection 安全指南](https://taux.io/zh-Hans-CN/what-is-prompt-injection): AI 提示词注入攻击的原理、案例与防御措施。
 -   [OWASP LLM Top 10 2026](https://taux.io/zh-Hans-CN/owasp-llm-top-10): LLM 应用十大网络安全风险逐条拆解，含定义、攻击面与防御作法。依 OWASP 2026 版撰写，并附 2025 到 2026 的排序变动、范围调整与排序方法的改变。
@@ -150,6 +159,7 @@ Every route on the site has an English edition. These are all of them.
 -   [AI Agent 开发流程实战](https://taux.io/zh-Hans-CN/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一条可重复的开发流程。主干七步（grill、spec、tickets、implement、code-review）、四个完整剧本、31 个已知坑与 14 天练习计划。依该 pack 1.2.3 版撰写，为独立编写的中文教学而非官方文档翻译。
 -   [首页](https://taux.io/zh-Hans-CN): TauX 拓思科技股份有限公司官方网站。
 -   [关于我们](https://taux.io/zh-Hans-CN/about): TauX 拓思科技的定位、名字的由来（希腊字母 τ，控制科学里的时间常数）与联系方式。
+-   [技术文章](https://taux.io/zh-Hans-CN/insights): 本站全部技术文章的总览（GEO、MCP、AI Agent、LLM 网络安全、后量子密码），以及公开维护的开源项目。
 -   [Building in Public](https://taux.io/zh-Hans-CN/building): TauX 的公开开发日志，透明度至上。
 -   [隐私权政策](https://taux.io/zh-Hans-CN/privacy-policy): 数据保护与隐私权承诺。
 -   [服务条款](https://taux.io/zh-Hans-CN/terms-of-service): 使用 TauX 服务之条款与条件。
@@ -159,7 +169,9 @@ Every route on the site has an English edition. These are all of them.
 翻訳は route ごとに進めています。以下が現在公開されているものです。／번역은 라우트 단위로 진행 중이며, 아래가 현재 공개된 것입니다.
 
 -   [TauX 拓思科技について](https://taux.io/ja-JP/about): GEO（生成エンジン最適化）と企業の AI 導入を手がける台湾・高雄の技術会社。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。
+-   [技術記事](https://taux.io/ja-JP/insights): サイト内のすべての技術記事（GEO、MCP、AI エージェント、LLM セキュリティ、ポスト量子暗号）と、公開で保守しているオープンソースプロジェクトの一覧。
 -   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
+-   [기술 문서](https://taux.io/ko-KR/insights): 사이트의 모든 기술 문서(GEO, MCP, AI 에이전트, LLM 보안, 포스트 양자 암호)와 공개적으로 관리하는 오픈소스 프로젝트 목록.
 -   [GEO 生成エンジン最適化サービス](https://taux.io/ja-JP/geo-optimization): 構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。
 -   [GEO 생성형 엔진 최적화 서비스](https://taux.io/ko-KR/geo-optimization): 구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다.
 -   [企業向け AI 実務研修](https://taux.io/ja-JP/ai-smart-work): 役割を保ち構造に従う AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型。

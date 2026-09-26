@@ -165,6 +165,10 @@ pub(crate) struct LocaleText {
     /// template that asks for it fails the build under strict undefined.
     #[serde(default)]
     pub(crate) crumb: Option<String>,
+    /// The page's name in the menu, when the breadcrumb name is too long for
+    /// it. Falls back to `crumb`, then to the title's first segment.
+    #[serde(default)]
+    pub(crate) label: Option<String>,
 }
 
 impl LocaleText {
@@ -216,6 +220,14 @@ pub(crate) struct Page {
     /// not supply it fails the build rather than borrowing another date.
     #[serde(default)]
     pub(crate) date_published: Option<String>,
+    /// Where the page is listed. One of the menu's service columns — `ai`,
+    /// `marketing`, `training`, `security` (`NAV_SECTIONS`) — or `article` for
+    /// the insights index. Absent for pages listed by hand (home, company,
+    /// legal). The menu and the index are generated from this, per locale, so
+    /// a page that has not been translated into a language is not linked from
+    /// that language's menu.
+    #[serde(default)]
+    pub(crate) section: Option<String>,
     /// Emits `<meta name="robots" content="noindex, follow">`, same as on a
     /// document.
     ///
@@ -392,6 +404,7 @@ pub(crate) mod tests {
             locale: BTreeMap::from([(TEST_LOCALE.to_string(), text(canonical))]),
             date_modified: "2026-01-01".to_string(),
             date_published: None,
+            section: None,
             noindex: false,
         }
     }
@@ -403,6 +416,7 @@ pub(crate) mod tests {
             canonical: canonical.to_string(),
             template: None,
             crumb: None,
+            label: None,
         }
     }
 
@@ -413,6 +427,7 @@ pub(crate) mod tests {
             canonical: canonical.to_string(),
             template: None,
             crumb: None,
+            label: None,
         }
     }
 
@@ -571,6 +586,67 @@ pub(crate) mod tests {
         assert!(!json.contains("&#"));
     }
 
+    // The menu is generated per locale: a page missing from a locale is not
+    // listed there, an empty column is dropped, a column title comes from the
+    // locale's strings, and a typo in `section` fails the build.
+    #[test]
+    fn the_menu_lists_only_what_a_locale_has() {
+        let mut site: Site = toml::from_str(
+            r#"
+            [[locale]]
+            tag = "zh-Hant-TW"
+            name = "繁體中文"
+            og = "zh_TW"
+            script = "Hant"
+              [locale.strings]
+              nav_col_ai = "AI 導入與整合"
+            [[locale]]
+            tag = "en-US"
+            name = "English"
+            og = "en_US"
+            script = "Latn"
+              [locale.strings]
+              nav_col_ai = "AI adoption"
+            [[page]]
+            path = "/mcp-integration"
+            template = "mcp-integration.html"
+            section = "ai"
+            date_modified = "2026-01-01"
+              [page.locale.zh-Hant-TW]
+              title = "MCP 串接 | TauX"
+              description = "d"
+              label = "MCP 串接"
+            [[page]]
+            path = "/what-is-mcp"
+            template = "what-is-mcp.html"
+            section = "article"
+            date_modified = "2026-01-01"
+              [page.locale.zh-Hant-TW]
+              title = "MCP 是什麼？ | TauX"
+              description = "d"
+              [page.locale.en-US]
+              title = "What is MCP | TauX"
+              description = "d"
+            "#,
+        )
+        .unwrap();
+        site.derive();
+        let (cols, articles) = site.nav_for("zh-Hant-TW").unwrap();
+        assert_eq!(cols.len(), 1);
+        assert_eq!(cols[0].title, "AI 導入與整合");
+        assert_eq!(cols[0].items[0].href, "/zh-Hant-TW/mcp-integration");
+        assert_eq!(cols[0].items[0].label, "MCP 串接");
+        assert_eq!(articles[0].label, "MCP 是什麼？");
+        let (cols, articles) = site.nav_for("en-US").unwrap();
+        assert!(
+            cols.is_empty(),
+            "the service has no en-US entry, so no column"
+        );
+        assert_eq!(articles[0].href, "/en-US/what-is-mcp");
+        site.page[0].section = Some("sercurity".to_string());
+        assert!(site.nav_for("zh-Hant-TW").is_err());
+    }
+
     #[test]
     fn omitted_canonicals_and_templates_are_derived() {
         let mut site: Site = toml::from_str(
@@ -613,5 +689,96 @@ pub(crate) mod tests {
         );
         assert_eq!(guide["ko-KR"].canonical, "https://taux.io/ko-KR/elsewhere");
         assert_eq!(guide["ko-KR"].template.as_deref(), Some("ko-KR/other.html"));
+    }
+}
+
+/// The menu's service columns, in order. Each needs a `nav_col_<key>` string in
+/// every locale that lists a page under it.
+pub(crate) const NAV_SECTIONS: [&str; 4] = ["ai", "marketing", "training", "security"];
+
+#[derive(serde::Serialize)]
+pub(crate) struct NavItem {
+    /// `/<locale><path>`, built from site.toml — ours, so templates print it
+    /// with `|safe`. Autoescape would otherwise write every `/` as `&#x2f;`:
+    /// harmless to a browser, but the anchor rule and the Markdown twin's link
+    /// rewriting both read the literal attribute.
+    pub(crate) href: String,
+    pub(crate) label: String,
+    pub(crate) description: String,
+}
+
+#[derive(serde::Serialize)]
+pub(crate) struct NavColumn {
+    pub(crate) key: &'static str,
+    pub(crate) title: String,
+    pub(crate) items: Vec<NavItem>,
+}
+
+impl LocaleText {
+    /// The shortest name the page has: `label`, then `crumb`, then the title
+    /// up to its first `|`／`｜`.
+    pub(crate) fn short_name(&self) -> String {
+        if let Some(l) = self.label.as_ref().or(self.crumb.as_ref()) {
+            return l.clone();
+        }
+        self.title
+            .split(['|', '｜'])
+            .next()
+            .unwrap_or(&self.title)
+            .trim()
+            .to_string()
+    }
+}
+
+impl Site {
+    /// The menu's service columns and the insights index for one locale.
+    ///
+    /// Only pages that exist in `locale` are listed, so a service published in
+    /// two languages first is simply absent from the other three menus rather
+    /// than a link to a 404. An empty column is dropped.
+    pub(crate) fn nav_for(&self, locale: &str) -> Result<(Vec<NavColumn>, Vec<NavItem>), String> {
+        let strings = self
+            .locale
+            .iter()
+            .find(|l| l.tag == locale)
+            .map(|l| &l.strings);
+        let item = |page: &Page, text: &LocaleText| NavItem {
+            href: format!("/{locale}{}", page.path),
+            label: text.short_name(),
+            description: text.description.clone(),
+        };
+        for page in &self.page {
+            if let Some(s) = &page.section {
+                if s != "article" && !NAV_SECTIONS.contains(&s.as_str()) {
+                    return Err(format!("{} has unknown section {s:?}", page.path));
+                }
+            }
+        }
+        let mut columns = Vec::new();
+        for key in NAV_SECTIONS {
+            let items: Vec<NavItem> = self
+                .page
+                .iter()
+                .filter(|p| p.section.as_deref() == Some(key))
+                .filter_map(|p| p.locale.get(locale).map(|t| item(p, t)))
+                .collect();
+            if items.is_empty() {
+                continue;
+            }
+            let title = strings
+                .and_then(|s| s.get(&format!("nav_col_{key}")))
+                .ok_or_else(|| {
+                    format!("{locale} lists a {key} page but has no nav_col_{key} string")
+                })?
+                .clone();
+            columns.push(NavColumn { key, title, items });
+        }
+        let articles = self
+            .page
+            .iter()
+            .filter(|p| p.section.as_deref() == Some("article"))
+            .filter_map(|p| p.locale.get(locale).map(|t| item(p, t)))
+            .collect();
+        Ok((columns, articles))
     }
 }

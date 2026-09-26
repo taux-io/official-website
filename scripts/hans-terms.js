@@ -59,6 +59,8 @@ const TERMS = {
   主档名: "主文件名",
   文件: "文档", // Taiwan 文件 is a document; mainland 文档
   资讯: "信息",
+  唯读: "只读", // read-only
+  纪录: "记录", // a log or record kept; 纪录 on the mainland is an achievement ("a new record")
 
   // Software.
   程式: "程序",

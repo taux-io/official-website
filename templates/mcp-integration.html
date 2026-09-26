@@ -1,0 +1,61 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["有 ERP、進銷存或自建資料庫等舊系統，資料分散在好幾個地方", "想讓同仁用自然語言查詢內部資料，而不是每次請資訊人員撈報表", "已經在用 AI 助理，但它只讀得到人手動貼上去的內容", "舊系統沒有 API，或沒有人記得它怎麼運作"] %}
+{%- set scope = [{"t": "資料孤島盤點", "d": "列出每個系統與資料的位置、擁有者與存取方式（API、資料庫、檔案），以及哪些資料可以開放給 AI。"}, {"t": "串接架構設計", "d": "決定哪些資料以 MCP server 提供、由哪個 AI 應用程式使用，以及連線方式：跑在本機，或透過 HTTP 提供。"}, {"t": "MCP server 開發", "d": "為舊系統開發 MCP server，提供查詢工具與資料資源。預設唯讀，需要寫入的動作另外設計確認步驟。"}, {"t": "權限與稽核", "d": "沿用既有的帳號與權限，每一次查詢都留下紀錄，看得到誰透過 AI 查了什麼。"}, {"t": "安全測試", "d": "針對提示詞注入等 LLM 特有的風險測試串接，確認 AI 不會被資料內容誘導去做不該做的事。"}] %}
+{%- set process = [{"t": "盤點", "d": "列出資料來源與存取方式，挑出第一個要串接的系統。"}, {"t": "設計", "d": "定義要提供的查詢與資料、權限與紀錄方式。"}, {"t": "開發與試用", "d": "完成第一個資料源的 MCP server，讓一小群同仁實際使用並回饋。"}, {"t": "擴充與交接", "d": "依使用情況串接下一個系統，並交付文件與維護方式。"}] %}
+{%- set deliverables = ["資料來源盤點與串接架構文件", "MCP server 原始碼與部署說明", "權限與稽核紀錄設定", "安全測試報告", "操作與維護文件"] %}
+{%- set faqs = [{"q": "什麼是 MCP？", "a": "Model Context Protocol，一種讓 AI 應用程式用同一種方式接上外部資料與工具的開放協定。為一個系統寫好 MCP server，支援 MCP 的 AI 應用程式都能使用它。"}, {"q": "我們的舊系統沒有 API，還能串接嗎？", "a": "多數可以。MCP server 可以讀資料庫、匯出檔或內部網頁。沒有 API 時，我們會先評估最穩定、對原系統影響最小的讀取方式。"}, {"q": "AI 會不會改到我們的資料？", "a": "預設只做唯讀查詢。需要寫入的動作會另外設計確認步驟與權限，並留下紀錄。"}, {"q": "資料會被傳到公司外部嗎？", "a": "取決於選用的 AI 應用程式與部署方式。MCP server 可以跑在公司內部；設計階段會說明每一筆資料會經過哪裡，由你決定。"}] %}
+{% include "header.html" %}
+<!-- Service page: 舊系統與 AI 串接. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "舊系統與 AI 串接", "serviceType": "系統整合", "description": "資料散在 ERP、Excel、共用資料夾與各部門系統裡，AI 看不到。TauX 用 MCP（Model Context Protocol）把舊系統接給 AI，唯讀優先、沿用既有權限並留下紀錄。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Connecting legacy systems to AI</span>
+        <span class="display-sub">用 MCP 打通資料孤島</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">資料散在 ERP、Excel、共用資料夾與各部門的系統裡，AI 看不到。用 MCP 把它們接起來，讓 AI 在權限範圍內直接查。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}適合誰{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服務內容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}執行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常見問題{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸閱讀{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/what-is-mcp" class="underline underline-offset-4">MCP 是什麼</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">資料治理</a></li>
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">TWSE MCP（我們公開維護的 MCP server）</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

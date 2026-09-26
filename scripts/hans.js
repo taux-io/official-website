@@ -37,6 +37,7 @@ const characters = OpenCC.Converter({ from: "tw", to: "cn" });
 
 // Longest first, so 资料夹 is settled before 资料 and 人工智慧 before 智慧.
 const ORDER = Object.keys(TERMS).sort((a, b) => b.length - a.length);
+const TERM_PATTERN = new RegExp(ORDER.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
 
 // Names are held out with a sentinel rather than by being early in the order.
 // A longest-first pass only protects a name when the replacement removes the
@@ -49,7 +50,12 @@ const sentinel = (i) => `\u0000${i}\u0000`;
 function toHans(source) {
   let out = characters(source);
   NAMES.forEach((name, i) => (out = out.replaceAll(name, sentinel(i))));
-  for (const term of ORDER) out = out.replaceAll(term, TERMS[term]);
+  // ONE PASS, NOT ONE PASS PER TERM. Replacing term by term let a later rule
+  // rewrite an earlier rule's output: 资料夹 → 文件夹, then 文件 → 文档,
+  // shipped 文档夹 ("document folder") on /zh-Hans-CN/claude-skills-guide. A
+  // single alternation, longest first, consumes each span once, so what a term
+  // produces is never read again.
+  out = out.replace(TERM_PATTERN, (term) => TERMS[term]);
   NAMES.forEach((name, i) => (out = out.replaceAll(sentinel(i), name)));
   if (out.includes("\u0000")) throw new Error("a sentinel survived the term pass");
   // After the text, the identifiers. Simplified characters never appear in a

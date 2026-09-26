@@ -1,0 +1,57 @@
+{% from "_blocks.html" import cover -%}
+{% include "header.html" %}
+<!-- /insights — every technical article, in one list, for every locale.
+
+     ONE TEMPLATE FOR FIVE LOCALES. The page is a generated list (`articles`,
+     built from each page's `section = "article"` in site.toml by
+     `Site::nav_for`), and the few sentences around it are [locale.strings] —
+     so there is nothing to translate by copying a file, and an article added to
+     site.toml appears here without an edit. The articles used to be the menu's
+     items; since the menu lists services only, this is where they are found. -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {{ breadcrumb }},
+        {
+            "@type": "CollectionPage",
+            "@id": "{{ canonical }}#webpage",
+            "url": "{{ canonical }}",
+            "inLanguage": "{{ locale }}",
+            "isPartOf": {"@id": "https://taux.io/#website"},
+            "publisher": {% include "_org-ref.html" %}
+        }
+    ]
+}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+        <h1 class="mb-6">
+            <span class="display-lead" lang="en">Insights</span>
+            {%- if strings.insights_sub is defined %}
+            <span class="display-sub">{{ strings.insights_sub }}</span>
+            {%- endif %}
+        </h1>
+        <p class="text-xl max-w-[42ch] leading-relaxed">{{ strings.insights_lead }}</p>
+</section>
+<section>
+        {% call cover() %}{{ strings.insights_articles }}{% endcall %}
+        <ul class="space-y-8">
+            {%- for a in articles %}
+            <li>
+                <a href="{{ a.href|safe }}" class="underline underline-offset-4 font-semibold">{{ a.label }}</a>
+                <p class="text-sm leading-relaxed mt-2">{{ a.description }}</p>
+            </li>
+            {%- endfor %}
+        </ul>
+</section>
+<section>
+        {% call cover() %}{{ strings.nav_col_open_source }}{% endcall %}
+        <p class="leading-relaxed">
+            <a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4 font-semibold">TWSE MCP</a>
+        </p>
+        <p class="text-sm leading-relaxed mt-2">{{ strings.insights_open_source }}</p>
+</section>
+</div>
+
+{% include "footer.html" %}

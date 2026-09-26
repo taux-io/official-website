@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["剛導入或準備導入 Google Workspace 的企業與政府機關", "已經在用，但多數同仁只用到 Gmail", "檔案散在個人雲端硬碟，人員異動時交接困難", "想開始用 Gemini，但同仁不會用或不確定能不能用"] %}
+{%- set scope = [{"t": "雲端協作基礎", "d": "雲端硬碟與共用雲端硬碟、分享與權限設定，讓檔案屬於組織而不是個人。"}, {"t": "文件、試算表與簡報", "d": "共同編輯、留言與指派、版本紀錄；試算表的函式、資料整理與樞紐分析。"}, {"t": "會議與日曆", "d": "Google Meet、預約時段、會議紀錄與日曆共享。"}, {"t": "Workspace 中的 AI", "d": "用 Gemini 撰寫、摘要與分析文件，以及哪些資料可以、哪些不可以交給 AI。"}, {"t": "管理者課程", "d": "帳號與群組、共用雲端硬碟政策、資料保護與安全性設定。"}] %}
+{%- set process = [{"t": "需求訪談", "d": "了解單位的工作流程、現有工具與同仁程度。"}, {"t": "課程規劃", "d": "依對象分為一般使用者與管理者，用你們實際的文件與流程設計練習。"}, {"t": "授課", "d": "實體或線上，以操作練習為主。"}, {"t": "課後回饋", "d": "問卷與常見問題整理，決定是否需要進階或補充課程。"}] %}
+{%- set deliverables = ["課前需求訪談與課程規劃", "講義與練習檔", "課後問卷與回饋整理", "常見問題與操作說明整理"] %}
+{%- set faqs = [{"q": "課程可以依我們的業務內容客製嗎？", "a": "可以。課前會先訪談，用你們實際的文件與流程設計練習，而不是通用的範例。"}, {"q": "政府機關可以上這個課程嗎？", "a": "可以。課程會依機關的資料保護規定，調整使用 AI 的範圍與練習內容。"}, {"q": "可以只上 Gemini 的課程嗎？", "a": "可以。課程模組可以單獨選擇，也可以組合成完整的導入訓練。"}] %}
+{% include "header.html" %}
+<!-- Service page: Google Workspace 教育訓練. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google Workspace 教育訓練", "serviceType": "教育訓練", "description": "TauX 為企業與政府機關規劃 Google Workspace 教育訓練：雲端協作、文件與試算表、會議與日曆、Workspace 內建 AI（Gemini），以及管理者設定，依實際工作流程設計練習。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google Workspace training</span>
+        <span class="display-sub">企業與政府機關課程</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">依組織實際的工作流程設計課程：雲端協作、文件與試算表、會議與日曆，以及 Workspace 內建 AI（Gemini）的用法與使用規範。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}適合誰{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服務內容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}執行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常見問題{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸閱讀{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI 導入效益</a></li>
+        <li><a href="/{{ locale }}/ai-smart-work" class="underline underline-offset-4">生成式 AI 實務課程</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

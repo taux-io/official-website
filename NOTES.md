@@ -36,6 +36,12 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 
 非正典 locale 缺 `template` 時，**不會**退回正典模板——那會變成翻譯的標題配原文的內文，每道閘門都綠。
 
+### 選單與服務頁
+
+選單由產生器組出（`Site::nav_for`）：每頁的 `section` 決定它在哪一欄（`ai`／`marketing`／`training`／`security`）或列在 `/insights`（`article`），每個 locale 只列它自己有的頁面，空的欄位不顯示。欄名是 `[locale.strings]` 的 `nav_col_<key>`，05 公司欄仍寫在 `header.html`。**選單只列服務**（2026-09 擁有者的決定）：技術文章在 `/insights`，服務頁的「延伸閱讀」連到支撐它的文章。
+
+服務頁都是同一個形狀：開頭 `{% set %}` 五份清單（適合誰、服務內容、執行方式、交付物、FAQ），經 `_blocks.html` 的 macro 渲染；合作週期與計價是 `_service-terms.html`（三個月／半年／一年為一個週期、依個案估價——擁有者的回答），聯絡是 `_service-contact.html`。**FAQ 只寫一次**：`faq_list` 畫在頁面上，`faq_jsonld` 用 `tojson` 寫進 FAQPage（minijinja 開了 `json` feature），兩者不可能分歧。**服務頁不寫認證、合作夥伴或採購資格，也不放案例**，直到擁有者提供可查證的內容。
+
 ### 目錄
 
 | 目錄 | 放什麼 | 發佈嗎 |
@@ -444,6 +450,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
 - **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `brand-src/taux-logo-light.png` 裁切而來（來源檔不在 `static/`，所以不會被發佈）。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
 - **OG 分享卡**：每條路由一張，標題與 description 取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。輸出經 sharp **無損**重壓（zlib 9），100 張從 6.0 MB 降到 2.5 MB；刻意不用調色盤量化，因為 `cards` 量的是墨跡，量化會移動它。`build:og` 每次重寫全部 100 張，而 Chromium 的反鋸齒在不同次執行間會有微小差異——**只 commit 標題或 description 真的變了的那幾張**，其餘 `git checkout` 回去。
+- **簡體版起稿**：`node scripts/hans.js`（或模組的 `toHans()`）。詞彙表 `scripts/hans-terms.js` 是唯一的決定點。⚠️ 2026-09 修掉一個替換順序的 bug：逐條替換會讓後面的規則改寫前面的輸出（资料夹 → 文件夹 → 文档夹），`/zh-Hans-CN/claude-skills-guide` 等 6 頁因此出現「文档夹」「文档名」；現在是一次比對全部詞條。那 55 行只改了「档 → 件」這一個字，其餘人工修訂保留
 - **favicon.ico**：`build-icons.js` 寫進 `public/`（根目錄發佈），其餘圖示寫進 `static/`。
 
 ---

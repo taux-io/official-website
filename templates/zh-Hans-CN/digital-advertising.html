@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["已经在投广告，但说不出带来了多少询问或订单", "想开始投广告，但不确定该投哪个平台、预算抓多少", "广告交给外部代操，但看不懂报表", "想把付费广告和自然搜索（SEO、GEO）一起规划"] %}
+{%- set scope = [{"t": "追踪设置", "d": "设置转换追踪、分析工具与网址参数，确保每一次询问或购买都记录得到来源。"}, {"t": "目标、受众与预算", "d": "依产品与客群设置广告目标、受众与预算分配。"}, {"t": "广告规划与投放", "d": "规划广告文案、素材规格与版位，在 Google（搜索、多媒体、YouTube）与 Meta（Facebook、Instagram）上投放。"}, {"t": "成效优化", "d": "依数据调整出价、受众与素材，停掉没有效果的组合。"}, {"t": "月报", "d": "每月回报花费、成效与下一步，并说明每一项判断的依据。"}] %}
+{%- set process = [{"t": "现况与目标", "d": "检查现有帐号、追踪与网站，确定要追求的成效指标。"}, {"t": "追踪与规划", "d": "补齐追踪设置，完成投放策略与预算规划。"}, {"t": "上线与测试", "d": "推出第一批广告，用数据比较不同受众与素材。"}, {"t": "优化与回报", "d": "持续调整，每月回报并规划下个月。"}] %}
+{%- set deliverables = ["追踪设置检查表", "投放策略与预算规划", "广告活动设置与素材规格", "每月成效报告"] %}
+{%- set faqs = [{"q": "广告预算要多少才够？", "a": "依产业、目标与地区而定。我们会先依你的目标估算一个足以量出结果的预算，再依实际成效调整。"}, {"q": "广告和 SEO、GEO 有什么不同？", "a": "广告是付费取得曝光，停止付费就停止；SEO 与 GEO 是让内容被搜索引擎与 AI 找到、引用，累积较慢但会持续。多数企业两者并用。"}, {"q": "多久看得到成效？", "a": "广告上线后很快就有数据，但要调整到稳定，通常需要几周的测试。我们每月回报，并说明判断依据。"}, {"q": "需要自己准备广告素材吗？", "a": "文案与素材规划包含在服务内。需要拍摄或大量影音制作时，范围另外讨论。"}] %}
+{% include "header.html" %}
+<!-- Service page: 数字广告投放. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "数字广告投放", "serviceType": "数字广告投放", "description": "TauX 为中小企业规划与执行 Google、Meta（Facebook、Instagram）广告投放：先把转换追踪设置好，再设置目标、受众与预算，每月回报花费与成效。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Digital advertising</span>
+        <span class="display-sub">Google 与 Meta 广告投放</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">在 Google 与 Meta（Facebook、Instagram）上投放广告。先把追踪设置好，让每一笔预算都量得到结果，再谈怎么投。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-optimization" class="underline underline-offset-4">SEO 与 GEO 搜索优化</a></li>
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO 指南</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

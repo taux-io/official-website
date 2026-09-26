@@ -38,8 +38,8 @@
         <div class="content-area">
             <div class="two-column">
                 <div>
-                    <p>Skill 是一个装载了指令与工作流的文档夹，它能让 Claude 精准掌握您专属的作业流程，而无需每次对话都重新解释背景。</p>
-                    <p>一个标准的 Skill 文档夹包含：</p>
+                    <p>Skill 是一个装载了指令与工作流的文件夹，它能让 Claude 精准掌握您专属的作业流程，而无需每次对话都重新解释背景。</p>
+                    <p>一个标准的 Skill 文件夹包含：</p>
                     <ul>
                         <li><span class="highlight">SKILL.md</span> (必填)：核心指令，包含决定何时触发的 YAML 前置数据。</li>
                         <li><span class="highlight">scripts/</span> (选填)：可执行的自动化脚本 (如 Python、Bash)。</li>
@@ -91,7 +91,7 @@
                 <div class="timeline-item">
                     <div class="content-wrapper">
                         <h3>Step 2. 结构建立</h3>
-                        <p>建立文档夹，配置必须的 SKILL.md，并遵循严格的 kebab-case 命名规范。</p>
+                        <p>建立文件夹，配置必须的 SKILL.md，并遵循严格的 kebab-case 命名规范。</p>
                     </div>
                 </div>
 
@@ -198,10 +198,10 @@
             <div class="two-column tiled">
                 <div>
                     <h3>严格的命名规范 (Naming)</h3>
-                    <p>Claude 非常挑剔文档夹与文档名称的格式，任何微小的错误都会导致 Skill 无法加载。</p>
+                    <p>Claude 非常挑剔文件夹与文件名称的格式，任何微小的错误都会导致 Skill 无法加载。</p>
                     <ul>
-                        <li>主文档名必须精确为 <span class="highlight">SKILL.md</span> (区分大小写，不可写成 skill.md)。</li>
-                        <li>文档夹与 <code>name:</code> 字段必须使用 <span class="highlight">kebab-case</span>。</li>
+                        <li>主文件名必须精确为 <span class="highlight">SKILL.md</span> (区分大小写，不可写成 skill.md)。</li>
+                        <li>文件夹与 <code>name:</code> 字段必须使用 <span class="highlight">kebab-case</span>。</li>
                         <li><strong>严格禁止</strong>包含空格、大写字母或底线 (例如：<code>Notion_Setup</code> 是错误的)。</li>
                         <li>禁止包含 <code>README.md</code> 于 Skill 根目录内。</li>
                     </ul>
@@ -211,7 +211,7 @@
                     <p>Description 是 Claude 判断是否主动启动 Skill 的唯一依据，长度需小于 1024 字符。</p>
                     <ul>
                         <li>必须同时包含：<strong>「它能做什么」</strong>与<strong>「何时该使用它」</strong>(具体触发词)。</li>
-                        <li>例如：「用于分析设计图稿。当用户上传 fig 文档，或要求『设计规格』时使用。」</li>
+                        <li>例如：「用于分析设计图稿。当用户上传 fig 文件，或要求『设计规格』时使用。」</li>
                         <li><strong>网络安全禁令</strong>：绝对禁止在 YAML 中使用 XML 标签 <code>&lt; &gt;</code>，以防 Prompt 注入攻击。</li>
                     </ul>
                 </div>
@@ -235,7 +235,7 @@
                     <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
                     <h3>渐进式揭露机制</h3>
                     <p>为避免消耗过多 Token，保持 <code>SKILL.md</code> 精简，仅放核心步骤。将详细的 API 规范或庞大的样板移至 <code>references/</code>
-                        文档夹，让 Claude 需要时再去读取。</p>
+                        文件夹，让 Claude 需要时再去读取。</p>
                 </div>
                 <div class="tile">
                     <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -380,7 +380,7 @@
                     <li><i class="fa-solid fa-rotate"></i> <strong>迭代优化 (Iterative Refinement)：</strong>建立「产出草稿 -> 脚本验证
                         -> 自动修正」的封闭循环，直到质量达标才结束对话。</li>
                     <li><i class="fa-solid fa-sitemap"></i> <strong>上下文感知 (Context-aware)：</strong>为 Claude
-                        建立决策树。例如：「若文档大于 10MB，调用云端硬盘 MCP；若为代码，调用 GitHub MCP。」</li>
+                        建立决策树。例如：「若文件大于 10MB，调用云端硬盘 MCP；若为代码，调用 GitHub MCP。」</li>
                     <li><i class="fa-solid fa-scale-balanced"></i> <strong>领域知识注入 (Domain-specific)：</strong>在调用 API
                         前嵌入合规检查或风控逻辑，让 Claude 表现得像一位资深专家。</li>
                 </ul>
@@ -394,7 +394,7 @@
             {% call slide_cover() %}最终步：封装与发布{% endcall %}
             <div class="content-area">
                 <div class="bleed-text-side">
-                    <p><strong>打包与安装：</strong>完成测试后，将文档夹压缩为 <code>.zip</code>。个人用户可透过 Claude.ai 上传；企业团队管理员则可将其布署至整个
+                    <p><strong>打包与安装：</strong>完成测试后，将文件夹压缩为 <code>.zip</code>。个人用户可透过 Claude.ai 上传；企业团队管理员则可将其布署至整个
                         Workspace (自动更新)。</p>
                     <p><strong>开源与 API：</strong>您可以将 Skill 托管于 GitHub，提供清晰的 <code>README.md</code> 安装教学。若是应用程序开发者，也能透过
                         API 的 <code>container.skills</code> 参数以程序化方式调用。</p>

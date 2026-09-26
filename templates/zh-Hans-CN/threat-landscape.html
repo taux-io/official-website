@@ -18,13 +18,13 @@
   {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/threat-landscape#article","headline":"2026 全球威胁报告重点拆解：CrowdStrike 的数据与它的适用限制","description":"CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组是怎么被量出来的、那对它能推论到多广代表什么。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/threat-landscape" },"citation":"CrowdStrike 2026 Global Threat Report"
   },
   {"@type":"FAQPage","@id":"https://taux.io/zh-Hans-CN/threat-landscape#faq","mainEntity": [
-      {"@type":"Question","name":"CrowdStrike 2026 全球威胁报告的重点数据有哪些？","acceptedAnswer": {"@type":"Answer","text":"报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文档（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。"
+      {"@type":"Question","name":"CrowdStrike 2026 全球威胁报告的重点数据有哪些？","acceptedAnswer": {"@type":"Answer","text":"报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文件（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。"
         }
       },
       {"@type":"Question","name":"什么是 breakout time？27 秒代表什么？","acceptedAnswer": {"@type":"Answer","text":"Breakout time 指攻击者从最初入侵的那台主机横向移动到环境中另一台主机所需的时间。它衡量的是防守方在攻击扩散之前必须完成侦测、判读与遏制的时间预算。27 秒是报告中记录到的最快值，不是平均值——把最快值当成平均会严重误判自己的处境。它真正的意义是：任何依赖人工判读才能启动的应变流程，在这个量级上都来不及。"
         }
       },
-      {"@type":"Question","name":"为什么 82% 的侦测是无恶意文档，这个数字要怎么读？","acceptedAnswer": {"@type":"Answer","text":"这个比例同时反映两件事：攻击者确实越来越少落地恶意文档，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文档行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文档特征为中心的杀毒无法覆盖大部分的侦测。"
+      {"@type":"Question","name":"为什么 82% 的侦测是无恶意文件，这个数字要怎么读？","acceptedAnswer": {"@type":"Answer","text":"这个比例同时反映两件事：攻击者确实越来越少落地恶意文件，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文件行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文件特征为中心的杀毒无法覆盖大部分的侦测。"
         }
       },
       {"@type":"Question","name":"厂商发布的威胁报告可以信吗？","acceptedAnswer": {"@type":"Answer","text":"可以用，但要知道它量的是什么。这类报告的数据通常来自厂商自家的产品遥测与事件应变案件，母体是它的客户群，不是全球所有组织。这不是说数字造假，而是说每一个数字都带着「在什么样的环境里、用什么样的工具、看得见什么」这三个限制。实务上的用法是把它当成趋势与攻击手法的情报来源，而不是当成自己组织风险概率的统计基础。"
@@ -59,7 +59,7 @@
                     <li><a href="#how-to-read" class="section-index-link">先讲怎么读</a></li>
                     <li><a href="#numbers" class="section-index-link">八组数据</a></li>
                     <li><a href="#speed" class="section-index-link">速度</a></li>
-                    <li><a href="#malware-free" class="section-index-link">无文档攻击</a></li>
+                    <li><a href="#malware-free" class="section-index-link">无文件攻击</a></li>
                     <li><a href="#ai" class="section-index-link">AI 加持的攻击</a></li>
                     <li><a href="#nation-state" class="section-index-link">国家级行为者</a></li>
                     <li><a href="#what-it-means" class="section-index-link">对防守方的意义</a></li>
@@ -117,7 +117,7 @@
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-3 pe-4 font-sans font-semibold whitespace-nowrap">82%</td>
-                            <td class="py-3"><a href="#malware-free" >2025 年的侦测为无恶意文档</a>（malware-free）</td>
+                            <td class="py-3"><a href="#malware-free" >2025 年的侦测为无恶意文件</a>（malware-free）</td>
                         </tr>
                         <tr class="border-b border-line">
                             <td class="py-3 pe-4 font-sans font-semibold whitespace-nowrap">+89%</td>
@@ -166,11 +166,11 @@
         </section>
 
         <section id="malware-free">
-            {% call cover("03") %}无文档攻击：82%{% endcall %}
+            {% call cover("03") %}无文件攻击：82%{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <div>
                     <p class="eyebrow mb-2">数字是什么</p>
-                    <p>2025 年的侦测有 82% 属于「malware-free」——攻击过程中没有落地恶意文档，改用系统内置工具、合法软件与窃得的证书。</p>
+                    <p>2025 年的侦测有 82% 属于「malware-free」——攻击过程中没有落地恶意文件，改用系统内置工具、合法软件与窃得的证书。</p>
                 </div>
                 <div>
                     <p class="eyebrow mb-2">怎么读</p>
@@ -179,7 +179,7 @@
                     </p>
                     <ol class="space-y-3 list-none mt-4">
                         <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span>攻击者行为确实在改变，这一点有大量独立证据支持。</span></li>
-                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>侦测能力本身。</strong>「看得见没有文档的攻击」正是 EDR 产品的核心卖点。一个看不见行为只看得见文档的工具，它的 malware-free 比例会是零——不是因为那些攻击不存在，是因为它看不到。</span></li>
+                        <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>侦测能力本身。</strong>「看得见没有文件的攻击」正是 EDR 产品的核心卖点。一个看不见行为只看得见文件的工具，它的 malware-free 比例会是零——不是因为那些攻击不存在，是因为它看不到。</span></li>
                     </ol>
                     <p class="mt-4">
                         所以这个比例可靠地描述了<strong>「在有 EDR 的环境里会看到什么」</strong>，但不能直接外推成全世界的攻击组成。
@@ -188,7 +188,7 @@
                 <div class="border-s border-line ps-6">
                     <p class="eyebrow mb-2">但实务结论不受影响</p>
                     <p>
-                        不管真实比例是 82% 还是别的数字，方向是明确的：<strong>以文档特征为中心的杀毒，覆盖不到大部分的侦测</strong>。这个结论不需要那个百分比精确才成立。
+                        不管真实比例是 82% 还是别的数字，方向是明确的：<strong>以文件特征为中心的杀毒，覆盖不到大部分的侦测</strong>。这个结论不需要那个百分比精确才成立。
                     </p>
                 </div>
             </div>
@@ -250,7 +250,7 @@
                 </p>
                 <ol class="space-y-3 list-none">
                     <li class="flex gap-4"><span class="font-sans shrink-0">01</span><span><strong>应变速度是设计问题，不是人力问题。</strong>需要人先看一眼才能启动的流程，跟不上以秒计的横向移动。</span></li>
-                    <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>身分与证书是主战场。</strong>攻击者越少落地文档，就越依赖看起来合法的登录。</span></li>
+                    <li class="flex gap-4"><span class="font-sans shrink-0">02</span><span><strong>身分与证书是主战场。</strong>攻击者越少落地文件，就越依赖看起来合法的登录。</span></li>
                     <li class="flex gap-4"><span class="font-sans shrink-0">03</span><span><strong>边缘设备要进盘点。</strong>它们常常不在任何一张资产清单上，而那正是它们被选中的原因。</span></li>
                     <li class="flex gap-4"><span class="font-sans shrink-0">04</span><span><strong>你自己导入的 AI 工具是新的攻击面。</strong>报告里「合法 AI 工具被滥用」那 90 多个组织，用的是他们自己买的东西。</span></li>
                 </ol>
@@ -269,13 +269,13 @@
         <section id="faq">
             {% call cover("07") %}常见问题{% endcall %}
             {% call faq("CrowdStrike 2026 全球威胁报告的重点数据有哪些？") %}
-                报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文档（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。
+                报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文件（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。
             {% endcall %}
             {% call faq("什么是 breakout time？27 秒代表什么？") %}
                 Breakout time 指攻击者从最初入侵的那台主机横向移动到环境中另一台主机所需的时间。它衡量的是防守方在攻击扩散之前必须完成侦测、判读与遏制的时间预算。27 秒是报告中记录到的最快值，不是平均值——把最快值当成平均会严重误判自己的处境。它真正的意义是：任何依赖人工判读才能启动的应变流程，在这个量级上都来不及。
             {% endcall %}
-            {% call faq("为什么 82% 的侦测是无恶意文档，这个数字要怎么读？") %}
-                这个比例同时反映两件事：攻击者确实越来越少落地恶意文档，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文档行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文档特征为中心的杀毒无法覆盖大部分的侦测。
+            {% call faq("为什么 82% 的侦测是无恶意文件，这个数字要怎么读？") %}
+                这个比例同时反映两件事：攻击者确实越来越少落地恶意文件，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文件行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文件特征为中心的杀毒无法覆盖大部分的侦测。
             {% endcall %}
             {% call faq("厂商发布的威胁报告可以信吗？", last=true) %}
                 可以用，但要知道它量的是什么。这类报告的数据通常来自厂商自家的产品遥测与事件应变案件，母体是它的客户群，不是全球所有组织。这不是说数字造假，而是说每一个数字都带着「在什么样的环境里、用什么样的工具、看得见什么」这三个限制。实务上的用法是把它当成趋势与攻击手法的情报来源，而不是当成自己组织风险概率的统计基础。
