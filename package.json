@@ -15,6 +15,7 @@
     "check:entity:links": "node scripts/check-entity.js --links",
     "check:ko": "node scripts/check-ko.js",
     "check:i18n": "node scripts/i18n-extract.js gate",
+    "check:locale-drift": "node scripts/check-locale-drift.js",
     "test:worker": "node --test scripts/worker.test.mjs",
     "ko:record": "node scripts/check-ko.js --record",
     "check:design": "node scripts/check-design.js",

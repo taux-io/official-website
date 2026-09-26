@@ -91,6 +91,7 @@ npm run check:ko       # 韓文的空白與引號決定沒有改變（CI 閘門�
 npm run ko:record      # 把今天的韓文決定寫進兩份 ledger
 npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
 npm run test:worker    # src/worker.js 的語言協商與「不自組回應」（CI 閘門）
+npm run check:locale-drift  # 這次改動是不是只動了某條路由的部分 locale（CI 只警告，不擋）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
@@ -127,10 +128,12 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
   結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取，同一份模板只解析一次）。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆
 - **check:entity** —— 讀**建置產物**的實體宣告，六條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
-- **check:i18n** —— `templates/en-US/*.html` 沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。**這道閘門遲到了**：能自動判斷的那一半在 `i18n-extract` 裡放了一陣子，而 DESIGN.md 已經寫成「補進去了」——它不在任何 job 裡，等於沒有。
-  ⚠️ **它讀模板不讀 `dist/`，而那個理由已經不成立了。** 原本的理由是每一頁建出來都帶著全站唯一 Organization 節點的六個中文標點（`（）`×2、`、`×3、`。`×1），讀 `dist/` 會每次都紅在一個決定上——**那六個全部在那句中文 `description` 裡**，而 issue #241 把它改成 per-locale 之後，`dist/en-US/*.html` 現在是 **0 個**（用這道閘門自己的字元集數的：`grep -c '[「」『』，。、；：（）？！《》]' dist/en-US/*.html` 全部回 0）。所以「讀 `dist/` 會永遠紅」今天是假的，而讀 `dist/` 會多守住一件模板守不住的事：共用 include 把中文標點帶上英文頁——**那正是 #241 這次的形狀**。沒有一起改是因為它不在那三張票的範圍裡，記在這裡而不是默默留著一個過期的理由
+- **check:i18n** —— **建置後的**英文頁（20 份 HTML 與 20 份 Markdown 雙生檔，清單取自路由表——英文首頁是 `dist/en-US.html`，不在 `dist/en-US/` 裡）沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。
+  它原本讀 `templates/en-US/`，理由是每一頁建出來都帶著全站 Organization 節點中文 `description` 的六個標點；issue #241 把那句改成 per-locale 之後理由就不成立了，而這道閘門多留在模板上一段時間。讀 `dist/` 會多守住模板守不住的事：共用 partial、site.toml 字串或 JSON-LD 把中文標點帶上英文頁——**那正是 #241 的形狀**
 - **test:worker** —— `src/worker.js` 的 `Accept-Language` 協商（q 權重、簡繁、`q=0`），以及 Worker 產生的每一個 `Response` 都是轉包資產層的回應——自己組的回應不會套用 `_headers`，等於沒有 CSP
 - **check:entity:links** —— `sameAs` 的 URL 解析得到。只抓硬性 404；登入牆後面的軟性 404（Facebook 對不存在的頁面回 200）抓不到，那仍然是人的判斷
+
+**`check:locale-drift` 不是閘門，所以不在上面的數目裡。** PR 改了某條路由的部分 locale（模板，或 site.toml 的 title／description）而其他 locale 沒動時，它在 CI 印出 GitHub warning 與 job summary 的表格，永遠回 0——只改一個 locale 常常是對的（錯字、韓文空白）。它存在是因為 #300 修了 about 的語氣，ja／ko／en 卻留著舊文案三週，每道閘門都綠：閘門比對的是標記，漂的是文字。第一次對歷史跑就抓到 ai-smart-work 與 data-governance 的 ja／ko 仍是舊文案。**它看不到**「每個 locale 的檔案都動了、但只有部分改完」——那正是 #300 的 about，檔案層級的 diff 會把它當成完整的改動。CI 的 build job 因此以 `fetch-depth: 0` checkout。
 
 **`check:entity` 會拒絕稽核不完整的 `dist/`。** 建置是一頁一頁寫的，遇到第一個解析不了的模板就結束，所以失敗的建置會留下半棵樹——而所有讀 `dist/` 的檢查都會對著它報綠。這實際發生過：一個壞掉的 include 讓十七頁只寫了八頁，三條規則全部「通過」。它現在會比對 `site.toml` 宣告的頁數。
 

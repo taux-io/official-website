@@ -17,11 +17,12 @@
 // Usage:
 //   node scripts/i18n-extract.js runs <route>          the strings to translate
 //   node scripts/i18n-extract.js check <route> <tag>   what the twin still owes
-//   node scripts/i18n-extract.js gate                  CI: CJK punctuation on the English pages
+//   node scripts/i18n-extract.js gate                  CI: CJK punctuation on the built English pages
 
 const fs = require("node:fs");
 const path = require("node:path");
 const { jsonLdBlocks } = require("./lib/html");
+const { PAGES } = require("./routes");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -133,22 +134,21 @@ const TRADITIONAL_ONLY = [
 // in DESIGN.md is now about it rather than about this constant.
 const CJK_PUNCTUATION = /[「」『』，。、；：（）？！《》]/;
 
-// WHY THE GATE READS `templates/en-US/` AND NOT `dist/en-US/`.
+// WHY THE GATE READS `dist/` — THE HTML AND ITS MARKDOWN TWIN.
 //
-// dist is what ships, and reading it would be the stronger choice for anything
-// a person writes. But every built English page carries six CJK punctuation
-// marks that no English author put there: `_identity.html` is the site's single
-// Organization node — one identity site-wide, which is a rule `check:entity`
-// enforces — and it holds a registered legal name, a Taiwanese address and a
-// Chinese `description`. Gating dist would fail on that decision every run.
-// Whether that node should carry a per-locale description is a separate
-// question and belongs in a separate change; it is not this gate's business to
-// force it by staying red.
+// It read `templates/en-US/` until 2026-09. The reason was that every built
+// English page carried six CJK punctuation marks from the site-wide
+// Organization node's Chinese `description`, so gating dist would fail on that
+// decision every run. Issue #241 made that description per-locale and the
+// count went to zero, and the reason stopped being true while the choice it
+// justified stayed.
 //
-// The prose a person writes and translates lives in `templates/en-US/`, and
-// that is where all 190 of the shipped ones were. So this is where the gate
-// looks — narrower than dist, and exactly as wide as the claim it makes true.
-//
+// Reading dist catches what the templates cannot: a shared partial, a
+// site.toml string or a JSON-LD value that puts `。` on an English page without
+// any English template containing it — the shape of #241 itself. And the
+// Markdown twin is served too, so it is read as well. The pages come from the
+// route table, because the English home is `dist/en-US.html`, not a file inside
+// `dist/en-US/`.
 // WHY PUNCTUATION AND NOT HAN. Three of these templates hold Han on purpose:
 // the registered company name 拓思科技股份有限公司 (a proper noun — CONTEXT.md
 // says a name is kept, not translated), a Chinese label quoted from a source
@@ -157,29 +157,34 @@ const CJK_PUNCTUATION = /[「」『』，。、；：（）？！《》]/;
 // which is the reason `check` deliberately does not exit non-zero. CJK
 // punctuation has no such exception, which is what makes it gateable.
 const EN_LOCALE = "en-US";
+const DIST = path.join(__dirname, "..", "dist");
 
 function gate() {
-  const dir = path.join(TEMPLATES, EN_LOCALE);
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".html")).sort();
+  if (!fs.existsSync(DIST)) {
+    console.log("\ndist/ is missing — run npm run build:site first.");
+    process.exitCode = 1;
+    return;
+  }
+  const files = PAGES.filter((p) => p.locale === EN_LOCALE).flatMap((p) =>
+    p.noindex ? [p.file] : [p.file, p.file.replace(/\.html$/, ".md")]
+  );
   let found = 0;
-  for (const name of files) {
-    // Comments are stripped, as they are everywhere else in this file: the
-    // generator strips them out of the output too, so they are not something a
-    // reader can be served. One English template carries `④ 互動` as a section
-    // marker copied from the source it was translated from.
+  for (const rel of files) {
+    // Comments are stripped, as the generator strips them from what it serves;
+    // a stray one in dist would not reach a reader either.
     const body = fs
-      .readFileSync(path.join(dir, name), "utf8")
+      .readFileSync(path.join(DIST, rel), "utf8")
       .replace(/<!--[\s\S]*?-->/g, "");
     body.split("\n").forEach((line, i) => {
       if (!CJK_PUNCTUATION.test(line)) return;
       found++;
-      console.log(`  ${EN_LOCALE}/${name}:${i + 1}  ${line.trim().slice(0, 110)}`);
+      console.log(`  dist/${rel}:${i + 1}  ${line.trim().slice(0, 110)}`);
     });
   }
   console.log(
     found
-      ? `\n${found} line(s) carry CJK punctuation across ${files.length} English templates`
-      : `\n${files.length} English templates, 0 CJK punctuation`
+      ? `\n${found} line(s) carry CJK punctuation across ${files.length} built English files`
+      : `\n${files.length} built English files (HTML and Markdown), 0 CJK punctuation`
   );
   // Unlike `check`, this one fails the build. There is no judgement call in it:
   // a full stop written `。` on an English page is wrong in every context, and

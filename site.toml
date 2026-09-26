@@ -428,7 +428,7 @@ date_modified = "2026-08-05"
 [[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
-date_modified = "2026-07-26"
+date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
   title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
@@ -509,7 +509,7 @@ date_published = "2026-08-06"
 [[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
-date_modified = "2026-07-26"
+date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
   title       = "資料治理與 AI 資安｜Data Governance | TauX"
