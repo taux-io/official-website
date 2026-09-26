@@ -934,6 +934,16 @@
     display: flex;
     align-items: center;
     min-height: 44px;
+    @apply border-s border-line ps-3;
+  }
+
+  /* The language you are reading. The section rail's vocabulary, deliberately:
+     every entry carries a hairline edge, the current one an ink edge. One way
+     to say "you are here" on the whole site, read from the same `aria-current`
+     the markup already carried — it was there for screen readers and forced
+     colours, and nothing in the normal palette read it (decision #154). */
+  .locale-switcher li a[aria-current] {
+    @apply border-ink;
   }
 
   /* Section index — the sticky rail beside a long-form page.
@@ -2165,13 +2175,13 @@
     padding-inline-start: calc(0.75rem - 2px);
   }
 
-  /* The language you are reading, in the switcher's list. ⚠️ Outside this mode
-     it is NOT marked at all — `aria-current` is in the markup and no rule reads
-     it (DESIGN.md decision #152). Marked here because this is the mode where a
-     reader is least able to tell the entries apart by anything else. */
+  /* The language you are reading, in the switcher's list — the same 3px
+     Highlight edge as the section rail, and the same padding give-back so the
+     label does not shift (the normal palette marks it with an ink edge since
+     decision #154). */
   .locale-switcher li a[aria-current] {
     border-inline-start: 3px solid Highlight;
-    padding-inline-start: 0.5rem;
+    padding-inline-start: calc(0.75rem - 2px);
   }
 }
 

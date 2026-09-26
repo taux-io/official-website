@@ -468,7 +468,6 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ### 需要擁有者決定
 
-- **語系切換器在一般模式下沒有標示目前語系。** 高對比模式有（決策 #152 的 Highlight 前緣），一般模式什麼都沒有——要不要標、怎麼標是視覺決定
 - **模板結構大改的 A 與 B。** 前置條件已滿足（check:design 讀建置產物、規則 37）。建議只做 A 的 cover 與 FAQ 兩種 macro；B（base layout）幾乎不省行數，不建議（見「模板結構大改」）
 - **法律頁與兩頁導言框的標題層級。** 目前用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級；改成可見的 h2 就要各開一個封面區塊
 
