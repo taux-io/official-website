@@ -1,5 +1,8 @@
 # Dependencies
-node_modules/
+# No trailing slash: a worktree that symlinks node_modules to the main
+# checkout has a symlink here, not a directory, and `node_modules/` does not
+# match a symlink — it was committed twice that way.
+node_modules
 npm-debug.log
 
 # Environment variables
