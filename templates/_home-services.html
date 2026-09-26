@@ -1,0 +1,31 @@
+{% from "_blocks.html" import cover -%}
+<!-- The home page's service list (DESIGN.md decision 155, which replaces decision 67). Built
+     from the same `nav` the menu is, so a service added to site.toml appears
+     here without an edit, and each line is the page's `summary` — its lead
+     sentence — rather than its description, which is written for a results
+     page. The OfferCatalog below is this list as data: a crawler reading the
+     graph and a reader reading the page see the same ten services. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "OfferCatalog", "@id": {{ (canonical ~ "#services")|tojson }}, "name": {{ strings.home_services_title|tojson }}, "description": {{ strings.home_services_lead|tojson }}, "itemListElement": [{% set n = namespace(i=0) %}{% for col in nav %}{% for item in col.items %}{% set n.i = n.i + 1 %}{% if n.i > 1 %}, {% endif %}{"@type": "ListItem", "position": {{ n.i }}, "name": {{ item.label|tojson }}, "item": {{ ("https://taux.io" ~ item.href)|tojson }}}{% endfor %}{% endfor %}]}
+</script>
+<div class="max-w-6xl mx-auto px-6 pt-8 pb-10 tablet:pt-12 tablet:pb-16">
+    <section id="services" class="max-w-prose">
+        {% call cover() %}{{ strings.home_services_title }}{% endcall %}
+        <p class="leading-relaxed mb-10">{{ strings.home_services_lead }}</p>
+        <div class="space-y-10">
+            {%- for col in nav %}
+            <div>
+                <h3 class="mb-4">{{ col.title }}</h3>
+                <ul class="space-y-4">
+                    {%- for item in col.items %}
+                    <li class="border-t border-line pt-4">
+                        <a href="{{ item.href|safe }}" class="underline underline-offset-4 font-semibold">{{ item.label }}</a>
+                        <p class="text-sm leading-relaxed mt-2">{{ item.summary }}</p>
+                    </li>
+                    {%- endfor %}
+                </ul>
+            </div>
+            {%- endfor %}
+        </div>
+    </section>
+</div>
