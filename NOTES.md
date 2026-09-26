@@ -381,7 +381,25 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ---
 
+## 模板結構大改：評估過，前置條件未滿足之前不做
+
+2026-09-26 評估三件事，**在 pqc-migration 上實際改寫、在改寫後的標記裡注入違規**量出來的，不是推測：
+
+| | 省下多少 | 會讓哪些閘門失明 | 結論 |
+|---|---|---|---|
+| **A. Jinja macro**（cover、FAQ、CTA、hero） | cover 545 處／約 2,400 行，但有 14 種變形、巨集要約 6 個參數；FAQ 40 處；CTA 幾乎全是各頁文案；hero 沒有共用外殼 | `section-cover-screens` 跳過 `_*.html`、`tags-nest` 的 `compose()` 只展開 include——**巨集裡拿掉 `data-cover`、或留一個沒關的 `<div>`，check:design 與 check:md 全綠而且建置成功**。class／href 以參數傳入時，十多條讀屬性的規則與 check:classes 都看不到 | 前置條件滿足後只做 cover 與 FAQ |
+| **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
+| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，先補兩個前置條件 |
+
+**A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
+
+**C 的前置條件**：
+1. JSON 字串要由 Rust 序列化或開 minijinja 的 `tojson`——**直接寫 `"{{ canonical }}"` 會被 autoescape 成 `https:&#x2f;&#x2f;taux.io…`，而 check:jsonld 與 check:entity 都是綠的**。不可用 `|safe` 繞過
+2. check:entity 補兩條斷言：麵包屑／Article 的 `@id` 與 `mainEntityOfPage` 等於 canonical；JSON-LD 裡不得出現 `&#x`
+3. 決定首頁那一層的 `item` 用 `https://taux.io` 還是 `/<locale>`——現在 38 個是前者、37 個是後者，統一會刻意改動其中一邊的 dist
+4. site.toml 每個 locale 加一個麵包屑名稱：現有 75 個名稱只有 28 個與 title 開頭相同，推導不出來
+
 ## 已知待辦
 
-- `?v=` 版號手動遞增（見上）
+- 模板結構大改的前置條件（見上一節）
 - Windows 中文渲染品質低於 macOS（見上）
