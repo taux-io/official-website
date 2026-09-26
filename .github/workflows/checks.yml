@@ -241,7 +241,9 @@ jobs:
           curl -sf -o /dev/null http://127.0.0.1:8099/ || { echo "host emulator never came up"; exit 1; }
 
       # Exits non-zero on any element below its WCAG AA threshold. Anything
-      # under 1.5:1 is reported separately as effectively invisible.
+      # under 1.5:1 is reported separately as effectively invisible. Two passes:
+      # the site's own palette, then Windows high contrast (forced-colors), where
+      # it catches CSS that paints text and its ground the same system colour.
       - name: contrast audit
         run: npm run contrast
 

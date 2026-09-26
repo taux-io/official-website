@@ -2,6 +2,16 @@
 //
 //   node scripts/visual/contrast.js            # report failures
 //   node scripts/visual/contrast.js --all      # also list passing elements
+//   node scripts/visual/contrast.js --mode normal|forced   # one mode only
+//
+// TWICE: AS DESIGNED, AND UNDER WINDOWS HIGH CONTRAST. In `forced-colors:
+// active` the OS replaces every colour, and src/input.css has a block that
+// decides what survives (decision #152). Rule 38 guards that block's one
+// assumption, but nothing measured what it actually paints — a Highlight edge
+// or a ButtonText label could land on a ground the OS made the same colour, and
+// this audit ran only in the normal palette. The second pass runs the same
+// measurement with Playwright's forced-colors emulation, where computed colours
+// are the system colours actually painted. Either pass failing fails the run.
 //
 // Inverting a site that carries four generations of stale hex, the dangerous
 // failure is not "looks wrong" but "invisible": a section background gets
@@ -177,19 +187,24 @@ const AUDIT = () => {
   return findings;
 };
 
-async function main() {
-  // One viewport. Contrast is a colour property, not a layout one, and the same
-  // elements render at every breakpoint.
+const ONLY = (() => {
+  const i = process.argv.indexOf("--mode");
+  return i > -1 ? process.argv[i + 1] : null;
+})();
+const MODES = [
+  { name: "normal", forcedColors: "none", label: "" },
+  { name: "forced", forcedColors: "active", label: " [forced-colors]" },
+].filter((m) => !ONLY || m.name === ONLY);
+
+async function audit(mode) {
   const { findings, stats } = await walk({
     viewports: [{ name: VIEWPORT.name, width: VIEWPORT.width, height: VIEWPORT.height }],
-    // Everything below the fold has to have painted before the audit reads it.
     scroll: true,
+    forcedColors: mode.forcedColors,
     probes: [
       {
         name: "contrast",
         inPage: AUDIT,
-        // A contrast ratio is not transient; nothing settles into a different
-        // colour, so the re-measure would be paid for nothing.
         settle: false,
       },
     ],
@@ -207,7 +222,7 @@ async function main() {
     const shown = SHOW_ALL ? rows : rows.filter((f) => !f.pass);
     if (!shown.length) continue;
 
-    console.log(`\n${routePath}  (${rows.length} text elements)`);
+    console.log(`\n${routePath}${mode.label}  (${rows.length} text elements)`);
     for (const f of shown) {
       // Below 1.5:1 the text is effectively invisible, not merely low-contrast.
       const severity = f.ratio < 1.5 ? "INVISIBLE" : f.pass ? "ok" : "LOW";
@@ -222,11 +237,17 @@ async function main() {
   }
 
   console.log(
-    `\n${findings.length} text elements checked across ${stats.paths} routes` +
+    `\n${mode.name}: ${findings.length} text elements checked across ${stats.paths} routes` +
       `\n${totalFail} below WCAG AA` +
       `\n${invisible} effectively invisible (< 1.5:1)`
   );
-  if (totalFail) process.exitCode = 1;
+  return totalFail;
+}
+
+async function main() {
+  let failed = 0;
+  for (const mode of MODES) failed += await audit(mode);
+  if (failed) process.exitCode = 1;
 }
 
 main().catch((err) => {
