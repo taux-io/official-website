@@ -246,6 +246,13 @@
 
   :root:lang(ko-KR) {
     --cjk: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR";
+    /* Korean is written with spaces between words, and a line may only break
+       at them. The browser's default treats every hangul syllable as a break
+       opportunity, as it does for Chinese, so 흩어져 ended one line with 흩어
+       and began the next with 져 — on every Korean page. `keep-all` restores
+       the word as the unit. A word longer than the line still breaks: the
+       `overflow-wrap: anywhere` on main's text below takes over only then. */
+    word-break: keep-all;
   }
 
   /* en-US keeps the Traditional faces underneath rather than dropping CJK.
