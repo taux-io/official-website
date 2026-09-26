@@ -74,6 +74,7 @@
                     <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> 14 日プラン</a></li>
                     <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> 1 ページのチートシート</a></li>
                     <li><a href="#source" class="section-index-link">出典</a></li>
+                    <li><a href="#faq" class="section-index-link">よくいただく質問</a></li>
                 </ul>
             </div>
         </nav>
@@ -1348,6 +1349,69 @@ gh label create enhancement</code></pre>
              Source. Named in section 01 as well; repeated here because this is
              where a reader who skipped to the end will look for it.
              ================================================================== -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">14</p>
+                <h2>よくいただく質問</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>user-invoked と model-invoked の skill は何が違いますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    これは skill 群全体で唯一の分類軸です。user-invoked は人間しか打てず、ほかの skill から呼ぶこともできません。その description は人に向けて書かれており、役割はオーケストレーター——フローの進み方を決めます。model-invoked は自分で打つこともできますし、agent が自分で判断して取りに行くこともあります。description はモデルに向けて書かれ、役割は規律のライブラリです。ルールは、user-invoked は model-invoked を呼べるが、別の user-invoked は決して呼べない、というものです。よくある副作用が一つあります。harness は user-invoked skill をモデルへ注入する一覧に入れないため、agent はこれらの skill が入っていないとよく報告します——入っています。そのまま打てば動きます。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>tracer bullet とは何ですか。水平にチケットを切るのがなぜ間違いなのですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Tracer bullet は、すべての層（schema、API、UI、テスト）を貫く、細いけれども完全な一本の道です。着地したその時点で単独で demo できます。水平スライスは一度に一層ずつ届けます——schema を全部で一枚のチケット、API を全部で一枚のチケット——問題は、すべての層がそろうまで何も動かないこと、そして受け入れ条件が別のチケットの持ち物にまで手を伸ばさなければならないことです。実測された代償があります。あるチームは層で切ったチケットを 26 枚使い、一枚を閉じるのに平均 20 回の agent 実行を要し、そのおよそ四分の三は手戻りでした。彼ら自身の振り返りは、あらゆる種類の失敗を実装の品質ではなく水平スライスに突き当てています。判定基準は一文だけです。このチケットが終わったら何を demo できるのか。振る舞いを言えないものが水平スライスです。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>なぜ code review は別の session で走らせるのですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    同じ context で自分の書いたコードをレビューするのは、slash command 付きの確証バイアスです——コードを書いた agent は自分の解法をひいきします。ほかに三つ、あわせて知っておくべきことがあります。レビューが見るのは diff &lt;fixed-point&gt;...HEAD で、staged と working tree は除外されます。だから先に commit してから review してください。レビューの指摘は証拠ではなく仮説です。sub-agent は一つずつファイルに戻って確かめないので、引用が別の場所を指していることがあります。引用を見てから動いてください。そして走らせるたびに新しい問題が見つかります。修正が新しい面をつくり、判断に属する半分は決定的ではないからで、収束の保証はありません——手がかりの一覧として扱い、明文の規則が裏づけているものを片づけたら手を止めてください。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>この skill 群がいちばんよく誤用されるのはどんな形ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    七つあります。受け身の grilling（四十回続けて同意し、うなずいただけで何も本当には決めていない計画が出てくる）。to-spec と to-tickets のあいだで clear や compact をする（問い詰めて得たものの大半は、その context window の中にしかありません）。自分で作ったチケットに triage を走らせる。範囲がきちんと決まっている機能に wayfinder を持ち出す（判定基準は session の数であってプロジェクトの大きさではありません）。語彙層をドライバーとして使う。review をコードを書いたのと同じ session で走らせる。そして SKILL.md を書き換えてカスタマイズする（更新で上書きされ、plugin は読み取り専用です。長く効かせたい振る舞いは自分の CLAUDE.md に書いてください）。もう一つメタなアンチパターンがあります。流れができたからもう考えなくてよい、と受け取ってしまうことです——出てくるものの品質は、問いの数ではなくあなたの答えの品質を追いかけます。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">出典</p>

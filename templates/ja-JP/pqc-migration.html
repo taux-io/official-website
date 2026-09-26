@@ -7,7 +7,8 @@
      was the other candidate and is not used — Google has wound its support down
      to almost nothing, and it would add a maintenance surface for no gain.
 
-     Every FAQ answer here is answerable from the page and from a named source
+     Every FAQ answer here is on the page, word for word, in the #faq section
+     (check:entity fails when the two differ), and comes from a named source
      document. The regulatory dates in particular are the kind of thing that
      gets restated confidently across the web without anyone checking whether
      the document they come from is final. -->
@@ -74,6 +75,7 @@
                     <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span>サプライチェーン</a></li>
                     <li><a href="#regulatory-timeline" class="section-index-link">規制の期限</a></li>
                     <li><a href="#standards" class="section-index-link">標準の現状</a></li>
+                    <li><a href="#faq" class="section-index-link">よくいただく質問</a></li>
                 </ul>
             </div>
         </nav>
@@ -363,6 +365,82 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>よくいただく質問</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>ポスト量子暗号（PQC）とは何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    ポスト量子暗号（Post-Quantum Cryptography）は、量子計算機による攻撃に耐えるよう設計された暗号アルゴリズムの総称です。いま広く使われている RSA と楕円曲線暗号は、素因数分解と離散対数の難しさに安全性を置いていますが、この二つはどちらも十分に大きな量子計算機で効率よく解けます。PQC は格子、ハッシュ、符号といった数学の構造に切り替えており、いまのところ効率よく破れる量子アルゴリズムは知られていません。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>台湾企業に PQC の規制要件はありますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    いまはっきりした期限があるのは金融業だけです。台湾 FSC は 2026 年 6 月 18 日に「金融業ポスト量子暗号移行参考指針」を公表し、七つの方針と 2026〜2035 年の段階的な期限を示しました。対象は金融機関とその重要な取引先で、性質は参考指針であって強制ではありません。数位発展部数位産業署は 2025 年 4 月 16 日に後量子資安産業連盟とともに「ポスト量子暗号移行指針」を公表しており、公開鍵基盤、セキュリティチップ、電子署名、ネットワーク機器、ゼロトラストの本人確認などを対象としています。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>企業はどの段階から始めるべきですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    棚卸しではなくガバナンスから始めてください。FSC の指針は「PQC の方針とガバナンス」を第一の方針に置き、暗号技術の棚卸しより前に順序づけています。理由はとても実際的です。誰が責任を持つのか、予算はどこから出るのかが決まっていないと、暗号資産の棚卸しは途中で止まります。ガバナンスが定まってはじめて CBOM の棚卸し、リスクを軸にした優先順位づけ、暗号アジリティの構築、最後にサプライチェーンと調達要件の更新へ進みます。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>CBOM（暗号部品表）とは何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    CBOM（Cryptography Bill of Materials）は暗号資産の台帳です。システムのどこでどのアルゴリズムを使い、鍵長は、証明書は、ライブラリは何か。それぞれどこにあり、誰が保守し、寿命はどれだけか。SBOM（ソフトウェア部品表）の暗号版にあたり、PQC 移行の前提でもあります——棚卸しできないものに優先順位はつけられません。CycloneDX は 1.6 版から CBOM 形式に対応しています。台湾 FSC の指針はこれを第二の方針に置いています。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>量子計算機はまだ現れていないのに、なぜいま動くのですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    互いに独立した理由が二つあります。一つは「いま集めて、あとで解く」（Harvest Now, Decrypt Later）です。今日とらえられた暗号化通信は将来まで保存して解かれ得るので、秘匿の年限が長いデータは今日すでにさらされています。もう一つの理由は、量子計算機がいつ来るかという予測に一切依りません。規制の期限そのものが存在するからです。EU は加盟国に 2026 年末までの着手を、重要インフラには 2030 年末までに高リスク領域を終えるよう勧告しています。台湾 FSC の段階的な期限は 2026 年から始まります。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">出典</p>
             <p class="leading-relaxed">規制の期限と標準の状態は<a href="https://csrc.nist.gov/projects/post-quantum-cryptography" target="_blank" rel="noopener noreferrer" class="underline">NIST Post-Quantum Cryptography Project</a>、

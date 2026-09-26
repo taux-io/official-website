@@ -74,6 +74,7 @@
                     <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> 14일 계획</a></li>
                     <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> 한 장 치트시트</a></li>
                     <li><a href="#source" class="section-index-link">출처</a></li>
+                    <li><a href="#faq" class="section-index-link">자주 묻는 것들</a></li>
                 </ul>
             </div>
         </nav>
@@ -1348,6 +1349,69 @@ gh label create enhancement</code></pre>
              Source. Named in section 01 as well; repeated here because this is
              where a reader who skipped to the end will look for it.
              ================================================================== -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">14</p>
+                <h2>자주 묻는 것들</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>user-invoked와 model-invoked skill은 무엇이 다른가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    이것은 skill 전체에서 유일한 분류 축입니다. user-invoked는 사람만 칠 수 있고 다른 skill이 호출할 수도 없습니다. description은 사람이 읽으라고 쓴 것이며, 자리는 오케스트레이터 — 흐름을 어떻게 굴릴지 정합니다. model-invoked는 직접 쳐도 되고 agent가 스스로 판단해 가져다 쓰기도 하며, description은 모델이 읽으라고 쓴 것이고 자리는 규율 라이브러리입니다. 규칙은 user-invoked가 model-invoked를 호출할 수는 있지만 다른 user-invoked는 결코 호출할 수 없다는 것입니다. 흔한 부작용이 하나 있습니다. harness가 user-invoked skill을 모델에 주입하는 목록에 넣지 않기 때문에 agent는 이 skill들이 설치되지 않았다고 자주 보고합니다 — 설치되어 있습니다. 그냥 치면 됩니다.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>tracer bullet이란 무엇이고, 수평으로 티켓을 자르는 것은 왜 틀렸나요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Tracer bullet은 모든 층(schema, API, UI, 테스트)을 관통하는 가늘지만 완전한 하나의 길이며, 착지하는 순간 단독으로 demo 할 수 있습니다. 수평 슬라이스는 한 번에 한 층씩 넘깁니다 — schema 전부를 티켓 하나로, API 전부를 티켓 하나로 — 문제는 모든 층이 갖춰지기 전에는 아무것도 움직이지 않는다는 것, 그리고 인수 조건이 다른 티켓이 가진 일까지 손을 뻗어야 한다는 것입니다. 실측된 대가가 있습니다. 어느 팀은 층으로 자른 티켓 26장을 썼는데 한 장을 닫는 데 평균 20번의 agent 실행이 들었고 그중 약 사분의 삼은 재작업이었습니다. 그들 자신의 회고는 모든 종류의 실패를 구현 품질이 아니라 수평 슬라이스로 돌렸습니다. 판단 기준은 한 문장뿐입니다. 이 티켓이 끝나면 나는 무엇을 demo 할 수 있는가. 행동을 답하지 못하면 그것이 수평 슬라이스입니다.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>왜 code review는 다른 session에서 돌려야 하나요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    같은 context에서 자기가 쓴 코드를 심사하는 것은 slash command를 단 확증 편향입니다 — 코드를 쓴 agent는 자기 해법을 편듭니다. 함께 알아 둘 것이 세 가지 더 있습니다. 리뷰가 보는 것은 diff &lt;fixed-point&gt;...HEAD이고 staged와 working tree는 제외됩니다. 그러니 먼저 commit 하고 나서 review 하십시오. 리뷰가 찾아낸 것은 증거가 아니라 가설입니다. sub-agent는 한 건씩 파일로 돌아가 확인하지 않으므로 인용이 엉뚱한 위치를 가리킬 수 있습니다. 인용을 보고 나서 움직이십시오. 그리고 돌릴 때마다 새 문제가 나옵니다. 수정이 새 표면을 만들고, 판단에 속하는 절반은 결정적이지 않기 때문이며, 수렴은 보장되지 않습니다 — 단서 목록으로 다루고 명문 규칙이 뒷받침하는 것만 처리한 뒤 손을 떼십시오.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>이 skill 묶음이 가장 흔하게 잘못 쓰이는 방식은 무엇인가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    일곱 가지입니다. 수동적인 그릴링(연달아 마흔 번 동의해서, 고개는 끄덕였지만 사실 아무것도 정하지 않은 계획이 나오는 경우). to-spec과 to-tickets 사이에서 clear나 compact 하기(캐물어 얻은 것의 대부분은 그 context window 안에만 있습니다). 자기가 만든 티켓에 triage 돌리기. 범위가 잘 잡힌 기능에 wayfinder 꺼내기(판단 기준은 session 수이지 프로젝트 크기가 아닙니다). 어휘층을 드라이버로 쓰기. review를 코드를 쓴 것과 같은 session에서 돌리기. 그리고 SKILL.md를 고쳐 맞춤 설정하기(갱신하면 덮어써지고 plugin은 읽기 전용입니다. 오래 갈 행동은 자기 CLAUDE.md에 쓰십시오). 메타 안티패턴도 하나 있습니다. 흐름이 생겼으니 이제 생각하지 않아도 된다고 받아들이는 것입니다 — 나오는 결과의 품질은 질문의 수가 아니라 당신 답의 품질을 따라갑니다.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">출처</p>

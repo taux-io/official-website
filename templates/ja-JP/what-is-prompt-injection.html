@@ -175,6 +175,56 @@
         </section>
 
         <!-- CTA -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">04</p>
+                <h2>よくいただく質問</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>プロンプトインジェクションとは何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    大規模言語モデルをだます攻撃です。攻撃者は入念に組み立てた文章を入力し、それをシステムからの指示に見せかけます。開発者が定めた安全上の決まりを無視させ、個人情報を漏らす、誤った情報を広めるといった動きをさせます。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>ジェイルブレイクとは何が違いますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    ジェイルブレイクは主に倫理面の制限を回避させるもので、影響は出力の中身に留まります。プロンプトインジェクションはもっと広く、システム側の筋道そのものを操り、ファイルの削除やフィッシングメールの送信といった外部への操作までさせ得ます。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>どう防ぎますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    一発で片づく方法はありません。いま最も効くのは層を重ねる防ぎ方です。記号で利用者の入力を隔離する、語句をふるいにかける、別のモデルに出力を見張らせる——これらを組み合わせます。
+                </div>
+            </details>
+        </section>
+
         <section>
             <div class="relative z-10">
                 <div class="cover" data-cover>

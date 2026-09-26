@@ -7,7 +7,8 @@
      was the other candidate and is not used — Google has wound its support down
      to almost nothing, and it would add a maintenance surface for no gain.
 
-     Every FAQ answer here is answerable from the page and from a named source
+     Every FAQ answer here is on the page, word for word, in the #faq section
+     (check:entity fails when the two differ), and comes from a named source
      document. The regulatory dates in particular are the kind of thing that
      gets restated confidently across the web without anyone checking whether
      the document they come from is final. -->
@@ -79,6 +80,7 @@
                     <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span> Supply chain</a></li>
                     <li><a href="#regulatory-timeline" class="section-index-link">Regulatory timelines</a></li>
                     <li><a href="#standards" class="section-index-link">Standards status</a></li>
+                    <li><a href="#faq" class="section-index-link">Common questions</a></li>
                 </ul>
             </div>
         </nav>
@@ -419,6 +421,82 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>Common questions</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is post-quantum cryptography?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Post-quantum cryptography is a family of algorithms designed to resist attack by a quantum computer. RSA and elliptic-curve cryptography, both in wide use today, rest on the difficulty of integer factorisation and discrete logarithms — problems a sufficiently large quantum computer solves efficiently. PQC uses lattice, hash and code-based constructions instead, against which no efficient quantum algorithm is currently known.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Are there regulatory requirements in Taiwan?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Only the financial sector has a stated timeline. On 2026-06-18 the FSC issued PQC migration guidance for finance: seven strategic directions and phases running from 2026 to 2035, applying to financial institutions and their significant suppliers. It is guidance rather than a mandate. Separately, on 2025-04-16 the Administration for Digital Industries and a post-quantum security industry alliance published migration guidance covering PKI, secure chips, digital signatures and network equipment, without setting sector completion deadlines. No other sector has a local statutory deadline in Taiwan today.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Where should a company start?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Start with governance, not the inventory. The FSC lists PQC policy and governance as its first strategy, ahead of the cryptographic inventory, for a practical reason: without someone deciding who owns the work and where the budget comes from, the inventory stalls halfway. Governance first, then the CBOM, then risk-based prioritisation, then crypto-agility, and finally supply chain and procurement requirements.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is a CBOM?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    A CBOM — Cryptography Bill of Materials — is a register of cryptographic assets: which algorithms, key lengths, certificates and libraries are in use, where each lives, who maintains it, and how long its lifecycle is. It is the cryptographic counterpart of an SBOM and a precondition for migration, because you cannot prioritise what you cannot enumerate. CycloneDX has supported the format natively since 1.6. The FSC lists building this register as its second strategy, in the near-term 2026–2027 phase.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Why act now, when quantum computers do not exist yet?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Two independent reasons. First, harvest-now-decrypt-later: traffic intercepted today can be stored and decrypted later, so data with a long confidentiality requirement is already exposed. Second — and this one depends on no forecast at all — the regulatory deadlines already exist. The EU recommends member states begin by end-2026 and complete high-risk critical-infrastructure scenarios by end-2030; the FSC's phases start in 2026. Those dates do not move whenever quantum computers arrive.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">Sources</p>
             <p class="leading-relaxed">

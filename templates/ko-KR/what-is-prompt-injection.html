@@ -175,6 +175,56 @@
         </section>
 
         <!-- CTA -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">04</p>
+                <h2>자주 묻는 것들</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>프롬프트 인젝션이란 무엇인가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    대규모 언어 모델을 속이는 공격입니다. 공격자는 공들여 짠 문장을 넣어 시스템의 지시인 것처럼 보이게 합니다. 개발자가 정한 안전 규칙을 무시하게 만들어 개인정보를 흘리거나 잘못된 정보를 퍼뜨리게 합니다.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>탈옥과는 무엇이 다른가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    탈옥은 주로 윤리 제한을 우회하게 하는 것이고, 영향은 출력 내용에 머뭅니다. 프롬프트 인젝션은 더 넓어서 시스템 쪽 논리를 조종하고, 파일 삭제나 피싱 메일 발송 같은 외부 동작까지 시킬 수 있습니다.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>어떻게 막나요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    한 방에 끝나는 방법은 없습니다. 지금 가장 잘 듣는 것은 겹으로 쌓는 방어입니다. 기호로 사용자 입력을 격리하고, 문구를 걸러내고, 다른 모델이 출력을 지켜보게 하는 것을 함께 씁니다.
+                </div>
+            </details>
+        </section>
+
         <section>
             <div class="relative z-10">
                 <div class="cover" data-cover>

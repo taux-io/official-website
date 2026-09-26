@@ -99,6 +99,7 @@
                     <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> 隐藏脉络外泄</a></li>
                     <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> 向量与嵌入弱点</a></li>
                     <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> 输出处理不当</a></li>
+                    <li><a href="#faq" class="section-index-link">常见问题</a></li>
                 </ul>
             </div>
         </nav>
@@ -580,6 +581,69 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>常见问题</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什么是 OWASP Top 10 for LLM Applications？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    这是 OWASP GenAI Security Project 维护的一份清单，列出大型语言模型应用最关键的十类网络安全风险。它是企业做 AI 风险盘点时最常被当成起点的对照表，涵盖从提示词注入、过度代理权到输出处理不当等十个项目。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP LLM Top 10 2026 有哪十条？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    依 2026 版依序为：LLM01 提示词注入、LLM02 敏感信息泄漏、LLM03 过度代理权、LLM04 供应链、LLM05 数据与模型投毒、LLM06 无节制消耗、LLM07 错误信息、LLM08 隐藏脉络外泄、LLM09 向量与嵌入弱点、LLM10 输出处理不当。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>2026 版和 2025 版差在哪里？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    排序变动很大。过度代理权从第六升到第三，无节制消耗从第十升到第六，错误信息从第九升到第七；供应链从第三降到第四，数据与模型投毒从第四降到第五，向量与嵌入弱点从第八降到第九，输出处理不当从第五降到第十。提示词注入与敏感信息泄漏维持第一与第二。2025 版的系统提示词泄漏被更名并扩大为隐藏脉络外泄，涵盖整个不对用户显示的脉络而不只是系统提示词。另有四条的范围扩大：提示词注入纳入跨模态攻击，供应链纳入模型对象名实不符，数据与模型投毒纳入微调阶段的颠覆，输出处理不当纳入助理大量产生的不安全代码。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP 是怎么决定 2026 版排序的？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    2026 版首次在社区投票之外加入事故数据。OWASP 搜集了 7,714 笔来自公开漏洞数据库与 AI 危害数据库的真实事故，其中 6,639 笔细节足以分类，用来与从业者的投票结果对照。最终权重是投票占四分之三、事故数据占四分之一，刻意让投票为主，理由是一年的数据不足以推翻实务工作者的判断。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">来源</p>
             <p class="leading-relaxed">

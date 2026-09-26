@@ -97,6 +97,7 @@
                     <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span>隠し文脈の露出</a></li>
                     <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span>ベクトルと埋め込みの弱点</a></li>
                     <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span>出力処理の不備</a></li>
+                    <li><a href="#faq" class="section-index-link">よくいただく質問</a></li>
                 </ul>
             </div>
         </nav>
@@ -560,6 +561,69 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>よくいただく質問</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP Top 10 for LLM Applications とは何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    OWASP GenAI Security Project が保守している一覧で、大規模言語モデルのアプリで最も重要な十種類のセキュリティリスクを挙げています。企業が AI のリスク棚卸しをするとき、出発点として最もよく使われる対照表で、プロンプトインジェクション、過剰な権限、出力処理の不備まで十項目を扱います。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP LLM Top 10 2026 の十条は何ですか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    2026 版の順に、LLM01 プロンプトインジェクション、LLM02 機微情報の漏えい、LLM03 過剰な権限、LLM04 サプライチェーン、LLM05 データとモデルの汚染、LLM06 際限のない消費、LLM07 誤情報、LLM08 隠し文脈の露出、LLM09 ベクトルと埋め込みの弱点、LLM10 出力処理の不備。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>2026 版と 2025 版はどこが違いますか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    順位がかなり動きました。過剰な権限が六位から三位、際限のない消費が十位から六位、誤情報が九位から七位へ。サプライチェーンは三位から四位、データとモデルの汚染は四位から五位、ベクトルと埋め込みの弱点は八位から九位、出力処理の不備は五位から十位へ下がりました。プロンプトインジェクションと機微情報の漏えいは一位と二位のままです。2025 版のシステムプロンプト漏えいは改称され、利用者に見せない文脈全体を覆う隠し文脈の露出へ広がりました。ほかに四条の範囲が広がっています。プロンプトインジェクションはモダリティをまたぐ攻撃、サプライチェーンはモデル成果物の名実不一致、データとモデルの汚染はファインチューニング段階での乗っ取り、出力処理の不備はアシスタントが大量に生む安全でないコード。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP は 2026 版の順位をどう決めましたか</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    2026 版で初めて、コミュニティ投票のほかに事故データが入りました。公開脆弱性データベースと AI 危害データベースから実際の事故 7,714 件を集め、うち 6,639 件が分類できるだけの詳細を備えており、実務者の投票結果と突き合わせました。最終的な重みは投票が四分の三、事故データが四分の一です。意図して投票を主にしており、理由は一年分のデータでは実務者の判断を覆すには足りないというものです。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">出典</p>
             <p class="leading-relaxed">十条の名称、順序、範囲は OWASP GenAI Security Project が公表した<a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 版の文書（ライセンス CC BY-SA 4.0）から。順位の決め方と事故データの数字も同じ文書によります。このページの整理、訳語、防ぎ方は TauX が書いたもので、OWASP の立場を示すものではありません。</p>
