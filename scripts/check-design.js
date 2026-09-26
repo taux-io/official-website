@@ -90,6 +90,8 @@ const ruleTagsNest = require("./design/rules/tags-nest");
 const ruleStatePairsKeepContrast = require("./design/rules/state-pairs-keep-contrast");
 const ruleHoverIsGuarded = require("./design/rules/hover-is-guarded");
 const ruleThemeColourAgrees = require("./design/rules/theme-colour-agrees");
+const ruleNoParameterisedMarkup = require("./design/rules/no-parameterised-markup");
+const { renderedPages } = require("./design/rendered");
 
 const RULES = [
   {
@@ -317,6 +319,13 @@ const RULES = [
     summary: "every closing tag closes the element that is actually open; counts matching is not nesting",
   },
   {
+    name: "no parameterised markup",
+    enabled: true,
+    turnedOnBy: "the design gate reading built pages — a macro argument is invisible to every rule that reads class or href",
+    run: ruleNoParameterisedMarkup,
+    summary: "a macro spells out its classes and hrefs; it takes content, not markup",
+  },
+  {
     name: "state pairs keep contrast",
     enabled: true,
     turnedOnBy: "v5.1 — the primary button's label was 1.24:1 on hover, on every route, and no gate read a state",
@@ -346,7 +355,17 @@ function main() {
       pending.push(rule);
       continue;
     }
-    const violations = rule.run(files);
+    // Rules that must see the assembled page call `rendered()`; it reads dist/
+    // once and refuses a missing or stale build (scripts/design/rendered.js).
+    let violations;
+    try {
+      violations = rule.run(files, { rendered: renderedPages });
+    } catch (err) {
+      // A missing or stale dist/ is a precondition, not a crash: say what to run.
+      console.log(`\n${err.message}`);
+      process.exitCode = 1;
+      return;
+    }
     if (!violations.length) continue;
 
     failed += violations.length;
