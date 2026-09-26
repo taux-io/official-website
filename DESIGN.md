@@ -938,7 +938,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |
 | **封面區塊 / cover block** | 章節標題專用的區塊，只有 eyebrow 與標題，沒有 CTA。內容高度，不是一屏 |
-| **`data-cover="sr"`** | 封面區塊的唯一變體，⚠️ **全站 0 個**。變體保留在這裡是因為規則仍然接受它 |
+| **`data-cover="sr"`** | 封面區塊的唯一變體：只給螢幕閱讀器的 h2（`sr-only`），不畫任何區塊。用在 h3 原本直接接在 h1 之下的地方——兩個法律頁 partial 的條文、agent-prompting-guide 與 adk-skill-patterns 開頭的導言框——讓大綱不跳級而版面不變。**不要拿它包可見的標題**：可見的 h2 就該開一個封面區塊 |
 | **樣式表 / stylesheet** | 本站出貨的所有作者寫的 CSS，不論來自 `input.css`、模板的 `<style>` 或 `style=""` |
 | **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗 |
 | **探針 / probe** | 掛在走訪上的一筆資料：`inPage` 或 `onPage` |

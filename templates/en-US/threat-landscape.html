@@ -70,6 +70,7 @@
                     <li><a href="#nation-state" class="section-index-link">Nation-state actors</a></li>
                     <li><a href="#what-it-means" class="section-index-link">What it means for defenders</a></li>
                     <li><a href="#source" class="section-index-link">Source and limits</a></li>
+                    <li><a href="#faq" class="section-index-link">Common questions</a></li>
                 </ul>
             </div>
         </nav>
@@ -288,6 +289,69 @@
 
         <!-- Source and limits. Attribution is not a footnote on this page — it
              is half the argument. -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">07</p>
+                <h2>Common questions</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>CrowdStrike 2026 Global Threat Report — what are the headline numbers?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    From the report's public pages: fastest eCrime breakout time of 27 seconds; attacks by AI-assisted adversaries up 89%; 82% of 2025 detections malware-free; more than 90 organisations with legitimate AI tools abused to generate malicious instructions; ChatGPT mentioned on criminal forums 550% more than any other model; average breakout speed up 65% year on year; 40% of vulnerabilities exploited by China-nexus actors aimed at edge devices; cloud-directed intrusions by nation-state actors up 266%.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is breakout time, and what does 27 seconds mean?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Breakout time is how long an attacker takes to move from the first host they compromise to a second one. It measures the defender's budget: detection, triage and containment must all fit inside it. 27 seconds is the fastest recorded, not an average — reading it as an average badly misstates your position. What it honestly bounds is the worst case, and any response process that waits for a human to look first does not fit inside that.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Why were 82% of detections malware-free, and how should that be read?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    It reflects two things at once. Attackers genuinely write fewer malicious files, relying on legitimate tooling and stolen credentials instead. And detection capability itself: seeing fileless behaviour is exactly what EDR is sold on. The figure comes from CrowdStrike's own detection telemetry, so the population is environments that run it. It reliably describes what you see in an EDR-equipped environment, and does not extrapolate to the global composition of attacks. The practical conclusion is unchanged: signature-based antivirus does not cover most of what gets detected.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Can vendor threat reports be trusted?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Yes, provided you know what they measure. The data usually comes from the vendor's own product telemetry and incident response caseload, so the population is its customers rather than all organisations. That is not an accusation of dishonesty; it means every figure carries three conditions — the environment it was measured in, the tool that measured it, and what that tool can see. Use them as intelligence on trend and technique, not as the statistical basis for your own risk.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">Source and limits</p>

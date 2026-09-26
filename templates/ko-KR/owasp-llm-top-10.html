@@ -97,6 +97,7 @@
                     <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> 숨긴 맥락의 노출</a></li>
                     <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> 벡터와 임베딩 취약점</a></li>
                     <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> 출력 처리 미흡</a></li>
+                    <li><a href="#faq" class="section-index-link">자주 묻는 것들</a></li>
                 </ul>
             </div>
         </nav>
@@ -560,6 +561,69 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>자주 묻는 것들</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP Top 10 for LLM Applications란 무엇인가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    OWASP GenAI Security Project가 유지하는 목록으로, 대규모 언어 모델 앱에서 가장 중요한 열 종류의 보안 리스크를 꼽습니다. 기업이 AI 리스크를 점검할 때 출발점으로 가장 많이 쓰는 대조표이며, 프롬프트 인젝션, 과도한 권한, 출력 처리 미흡까지 열 항목을 다룹니다.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP LLM Top 10 2026의 열 조항은 무엇인가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    2026 판 순서로 LLM01 프롬프트 인젝션, LLM02 민감 정보 유출, LLM03 과도한 권한, LLM04 공급망, LLM05 데이터와 모델 오염, LLM06 끝없는 소비, LLM07 잘못된 정보, LLM08 숨긴 맥락의 노출, LLM09 벡터와 임베딩 취약점, LLM10 출력 처리 미흡.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>2026 판과 2025 판은 어디가 다른가요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    순위가 꽤 움직였습니다. 과도한 권한이 6위에서 3위, 끝없는 소비가 10위에서 6위, 잘못된 정보가 9위에서 7위로 올랐습니다. 공급망은 3위에서 4위, 데이터와 모델 오염은 4위에서 5위, 벡터와 임베딩 취약점은 8위에서 9위, 출력 처리 미흡은 5위에서 10위로 내려갔습니다. 프롬프트 인젝션과 민감 정보 유출은 1위와 2위 그대로입니다. 2025 판의 시스템 프롬프트 유출은 이름이 바뀌고 사용자에게 보이지 않는 맥락 전체를 덮는 숨긴 맥락의 노출로 넓어졌습니다. 그 밖에 네 조항의 범위가 넓어졌습니다. 프롬프트 인젝션은 모달리티를 넘나드는 공격, 공급망은 모델 산출물의 이름과 실체 불일치, 데이터와 모델 오염은 파인튜닝 단계의 탈취, 출력 처리 미흡은 어시스턴트가 대량으로 만드는 안전하지 않은 코드.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>OWASP는 2026 판 순위를 어떻게 정했나요</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    2026 판에서 처음으로 커뮤니티 투표 외에 사고 데이터가 들어왔습니다. 공개 취약점 데이터베이스와 AI 피해 데이터베이스에서 실제 사고 7,714건을 모았고 그중 6,639건이 분류할 만한 상세를 갖춰 실무자의 투표 결과와 맞춰 봤습니다. 최종 가중치는 투표 4분의 3, 사고 데이터 4분의 1입니다. 일부러 투표를 주로 삼았고, 이유는 한 해치 데이터로는 실무자의 판단을 뒤집기에 모자라다는 것입니다.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">출처</p>
             <p class="leading-relaxed">열 조항의 이름, 순서, 범위는 OWASP GenAI Security Project가 공표한 <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="underline">Top 10 for LLM Applications</a>2026 판 문서(라이선스 CC BY-SA 4.0)에서. 순위를 정하는 방식과 사고 데이터의 숫자도 같은 문서에 따릅니다. 이 페이지의 정리, 번역어, 막는 법은 TauX가 썼으며 OWASP의 입장을 나타내지 않습니다.</p>

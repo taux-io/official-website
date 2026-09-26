@@ -79,6 +79,7 @@
                     <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> A 14-day plan</a></li>
                     <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> One-page reference</a></li>
                     <li><a href="#source" class="section-index-link">Source</a></li>
+                    <li><a href="#faq" class="section-index-link">Common questions</a></li>
                 </ul>
             </div>
         </nav>
@@ -1388,6 +1389,69 @@ gh label create enhancement</code></pre>
              Source. Named in section 01 as well; repeated here because this is
              where a reader who skipped to the end will look for it.
              ================================================================== -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">14</p>
+                <h2>Common questions</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is the difference between a user-invoked and a model-invoked skill?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    This is the only classification axis in the whole pack. A user-invoked skill can only be typed by a human, no other skill may call it, its description is written for people, and its role is orchestrator: it decides how the flow runs. A model-invoked skill can be typed too, and the agent will also reach for it on its own; its description is written for the model, and its role is a discipline library. The rule is that user-invoked may call model-invoked, but never another user-invoked. One common side effect: the harness does not put user-invoked skills in the list injected into the model, so the agent often reports that these skills are not installed. They are installed. Type it anyway.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is a tracer bullet, and why is horizontal slicing wrong?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    A tracer bullet is a thin but complete path through every layer — schema, API, UI, tests — that can be demoed on its own the moment it lands. A horizontal slice delivers one layer at a time: all the schema in one ticket, all the API in another. The problem is that nothing works until every layer is in place, and the acceptance criteria have to reach into work another ticket owns. The measured cost: one team used 26 layer-sliced tickets and averaged 20 agent runs to close each one, roughly three quarters of it rework, and their own retrospective traced every class of failure to horizontal slicing rather than implementation quality. The test is one sentence: what can I demo when this ticket is done? If you cannot name a behaviour, it is a horizontal slice.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Why run code review in a separate session?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Reviewing your own code in the same context is confirmation bias with a slash command attached — an agent that wrote the code favours its own solution. Three more things go with that: the review looks at the diff &lt;fixed-point&gt;...HEAD, excluding staged and working-tree changes, so commit before reviewing. Findings are hypotheses rather than evidence: the sub-agent does not verify each one against the files, so a citation may point at the wrong place — read it before acting. And every run finds something new, because changes create new surface and the judgement half is not deterministic. There is no convergence guarantee: treat a pass as a list of leads, act on the ones backed by a written rule, and stop.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What are the most common ways to misuse these skills?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Seven. Passive grilling — forty agreed-with-that answers producing a plan you nodded at in which nothing was actually decided. Clearing or compacting between to-spec and to-tickets, when almost everything you worked out lives only in that context window. Running triage on tickets you generated yourself. Reaching for wayfinder on a well-scoped feature, when the test is session count rather than project size. Using a vocabulary skill as a driver. Running the review in the same session as the coding. And customising by editing SKILL.md, which updates overwrite and plugin installs make read-only — long-term behaviour belongs in your own instruction file. There is also a meta-antipattern: treating the process as a substitute for thinking. Output quality tracks the quality of your answers, not the number of questions.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">Sources</p>

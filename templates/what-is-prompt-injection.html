@@ -178,6 +178,56 @@
         </section>
 
         <!-- CTA -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">04</p>
+                <h2>常見問題</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什麼是 Prompt Injection (提示詞注入)？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Prompt Injection 是一種欺騙大型語言模型 (LLM) 的攻擊技術。攻擊者通過輸入精心設計的文字（提示詞），偽裝成系統指令，誘使 AI 忽略開發者設定的安全規則，轉而執行惡意操作，例如洩露個資或散布錯誤資訊。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>Prompt Injection 和越獄 (Jailbreak) 有什麼不同？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    「越獄」通常指繞過 AI 的道德審查（如讓它說髒話），主要影響輸出內容；而「提示詞注入」則更廣泛，可能操控 AI 的系統邏輯，甚至讓 AI 去執行危險的外部指令（如刪除檔案、發送釣魚郵件）。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>如何防範 Prompt Injection？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    沒有單一完美的解法，目前最有效的是「縱深防禦」：包括使用特殊符號隔離使用者輸入、過濾關鍵字、以及使用另一個 AI 模型來監督輸出的安全性。
+                </div>
+            </details>
+        </section>
+
         <section>
             <div class="relative z-10">
                 <div class="cover" data-cover>

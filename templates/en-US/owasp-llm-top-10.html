@@ -38,13 +38,13 @@
       {"@type":"Question","name":"What is the OWASP Top 10 for LLM Applications?","acceptedAnswer": {"@type":"Answer","text":"A list maintained by the OWASP GenAI Security Project setting out the ten most critical categories of security risk in large language model applications. It is the checklist most organisations start from when auditing an AI deployment, running from prompt injection and excessive agency through to improper output handling."
         }
       },
-      {"@type":"Question","name":"OWASP LLM Top 10 2026  — what are the ten?","acceptedAnswer": {"@type":"Answer","text":"In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling."
+      {"@type":"Question","name":"What are the ten risks in the OWASP LLM Top 10 2026?","acceptedAnswer": {"@type":"Answer","text":"In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling."
         }
       },
-      {"@type":"Question","name":"2026  versus 2025 — what changed?","acceptedAnswer": {"@type":"Answer","text":"The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants."
+      {"@type":"Question","name":"What changed between the 2025 and 2026 editions?","acceptedAnswer": {"@type":"Answer","text":"The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants."
         }
       },
-      {"@type":"Question","name":"OWASP  — how was the 2026 order decided?","acceptedAnswer": {"@type":"Answer","text":"The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement."
+      {"@type":"Question","name":"How did OWASP decide the 2026 order?","acceptedAnswer": {"@type":"Answer","text":"The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement."
         }
       }
     ]
@@ -102,6 +102,7 @@
                     <li><a href="#hidden-context-exposure" class="section-index-link"><span class="font-sans">LLM08</span> Hidden Context Exposure</a></li>
                     <li><a href="#vector-and-embedding-weaknesses" class="section-index-link"><span class="font-sans">LLM09</span> Vector and Embedding Weaknesses</a></li>
                     <li><a href="#improper-output-handling" class="section-index-link"><span class="font-sans">LLM10</span> Improper Output Handling</a></li>
+                    <li><a href="#faq" class="section-index-link">Common questions</a></li>
                 </ul>
             </div>
         </nav>
@@ -577,6 +578,69 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>Common questions</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What is the OWASP Top 10 for LLM Applications?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    A list maintained by the OWASP GenAI Security Project setting out the ten most critical categories of security risk in large language model applications. It is the checklist most organisations start from when auditing an AI deployment, running from prompt injection and excessive agency through to improper output handling.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What are the ten risks in the OWASP LLM Top 10 2026?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    In the 2026 order: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>What changed between the 2025 and 2026 editions?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    The order moved considerably. Excessive Agency rose from sixth to third, Unbounded Consumption from tenth to sixth, Misinformation from ninth to seventh; Supply Chain fell from third to fourth, Data and Model Poisoning from fourth to fifth, Vector and Embedding Weaknesses from eighth to ninth, and Improper Output Handling from fifth to tenth. Prompt Injection and Sensitive Information Disclosure held first and second. System prompt leakage from 2025 was renamed and widened into Hidden Context Exposure, covering the whole of the context not shown to the user rather than the system prompt alone. Four entries also grew in scope: prompt injection now covers cross-modal attacks, supply chain covers model artifacts that are not what they claim, poisoning covers fine-tuning-stage subversion, and output handling covers insecure code produced at volume by assistants.
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>How did OWASP decide the 2026 order?</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    The 2026 edition added incident data alongside the community vote for the first time. OWASP gathered 7,714 real incidents from public vulnerability and AI-harm databases, of which 6,639 carried enough detail to classify, and cross-referenced them against the practitioner vote. The final weighting is three-quarters vote to one-quarter data — deliberately vote-led, on the grounds that one year of data is not enough to overturn practitioner judgement.
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">Source</p>
             <p class="leading-relaxed">

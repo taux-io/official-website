@@ -1,6 +1,6 @@
 // Reports what the built pages declare about who published them.
 //
-//   node scripts/check-entity.js           the three offline rules
+//   node scripts/check-entity.js           the offline rules
 //   node scripts/check-entity.js --links   the one rule that needs the network
 //
 // The defects this exists for all passed every gate the repo already had, and
@@ -513,6 +513,48 @@ function ruleInLanguageTellsTheTruth(files) {
 // the company's remains a person's job.
 const UNVERIFIABLE = [];
 
+// A FAQPage MUST SAY WHAT THE PAGE SAYS.
+//
+// Google's structured-data rules require marked-up FAQ content to be visible
+// on the page. Five routes in five locales declared FAQPage with no visible
+// counterpart at all — the answers were "answerable from the page", which is
+// not the same thing — and the one route that did show its FAQ wrote every
+// answer twice by hand. The pages now render the same text; this keeps them
+// that way. Compared as text: tags and entities dropped, whitespace removed, so
+// a line break in the template is not a difference and a changed word is.
+function ruleFaqIsVisible(files) {
+  const found = [];
+  // Tags are stripped from the page only: the JSON side is plain text, and an
+  // answer that quotes `<fixed-point>` means those characters literally.
+  const squash = (s) => s.replace(/\s+/g, "");
+  const flatten = (s) =>
+    s
+      .replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;|&#39;/g, "'")
+      .replace(/\s+/g, "");
+  for (const { rel, html } of files) {
+    const visible = flatten(html.replace(/<script[\s\S]*?<\/script>/g, ""));
+    for (const doc of graphs(html, rel)) {
+      for (const node of doc["@graph"] || [doc]) {
+        if (node["@type"] !== "FAQPage") continue;
+        for (const q of node.mainEntity || []) {
+          const answer = q.acceptedAnswer && q.acceptedAnswer.text;
+          if (!visible.includes(squash(q.name || ""))) {
+            found.push({ file: rel, detail: `FAQ question not on the page: ${q.name}` });
+          } else if (!answer || !visible.includes(squash(answer))) {
+            found.push({ file: rel, detail: `FAQ answer differs from the page: ${q.name}` });
+          }
+        }
+      }
+    }
+  }
+  return found;
+}
+
 async function ruleSameAsResolves(files) {
   const found = [];
   const urls = new Map();
@@ -587,6 +629,14 @@ const RULES = [
     turnedOnBy: "issue 200 stage ② — the shared WebSite node called every English page Chinese",
     run: ruleInLanguageTellsTheTruth,
     summary: "a page-level inLanguage must be this page's locale; only the site-wide node may list several",
+  },
+  {
+    name: "faq is visible",
+    enabled: true,
+    network: false,
+    turnedOnBy: "the audit follow-up — 25 pages marked up an FAQ nobody could read",
+    run: ruleFaqIsVisible,
+    summary: "every FAQPage question and answer appears, word for word, on the page",
   },
   {
     name: "sameAs resolves",

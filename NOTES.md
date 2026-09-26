@@ -79,7 +79,7 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）
 - **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。⚠️ 其中規則 36 `tags nest` 是唯一會**展開 `{% include %}`** 的規則：巢狀是組合後的頁面才有的性質，而 `header.html` 單獨看是一份沒關 `<html>` 的半頁
-- **check:entity** —— 讀**建置產物**的實體宣告，五條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
+- **check:entity** —— 讀**建置產物**的實體宣告，六條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— `templates/en-US/*.html` 沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。**這道閘門遲到了**：能自動判斷的那一半在 `i18n-extract` 裡放了一陣子，而 DESIGN.md 已經寫成「補進去了」——它不在任何 job 裡，等於沒有。
   ⚠️ **它讀模板不讀 `dist/`，而那個理由已經不成立了。** 原本的理由是每一頁建出來都帶著全站唯一 Organization 節點的六個中文標點（`（）`×2、`、`×3、`。`×1），讀 `dist/` 會每次都紅在一個決定上——**那六個全部在那句中文 `description` 裡**，而 issue #241 把它改成 per-locale 之後，`dist/en-US/*.html` 現在是 **0 個**（用這道閘門自己的字元集數的：`grep -c '[「」『』，。、；：（）？！《》]' dist/en-US/*.html` 全部回 0）。所以「讀 `dist/` 會永遠紅」今天是假的，而讀 `dist/` 會多守住一件模板守不住的事：共用 include 把中文標點帶上英文頁——**那正是 #241 這次的形狀**。沒有一起改是因為它不在那三張票的範圍裡，記在這裡而不是默默留著一個過期的理由
@@ -381,7 +381,25 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ---
 
+## 模板結構大改：評估過，前置條件未滿足之前不做
+
+2026-09-26 評估三件事，**在 pqc-migration 上實際改寫、在改寫後的標記裡注入違規**量出來的，不是推測：
+
+| | 省下多少 | 會讓哪些閘門失明 | 結論 |
+|---|---|---|---|
+| **A. Jinja macro**（cover、FAQ、CTA、hero） | cover 545 處／約 2,400 行，但有 14 種變形、巨集要約 6 個參數；FAQ 40 處；CTA 幾乎全是各頁文案；hero 沒有共用外殼 | `section-cover-screens` 跳過 `_*.html`、`tags-nest` 的 `compose()` 只展開 include——**巨集裡拿掉 `data-cover`、或留一個沒關的 `<div>`，check:design 與 check:md 全綠而且建置成功**。class／href 以參數傳入時，十多條讀屬性的規則與 check:classes 都看不到 | 前置條件滿足後只做 cover 與 FAQ |
+| **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
+| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，先補兩個前置條件 |
+
+**A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
+
+**C 的前置條件**：
+1. JSON 字串要由 Rust 序列化或開 minijinja 的 `tojson`——**直接寫 `"{{ canonical }}"` 會被 autoescape 成 `https:&#x2f;&#x2f;taux.io…`，而 check:jsonld 與 check:entity 都是綠的**。不可用 `|safe` 繞過
+2. check:entity 補兩條斷言：麵包屑／Article 的 `@id` 與 `mainEntityOfPage` 等於 canonical；JSON-LD 裡不得出現 `&#x`
+3. 決定首頁那一層的 `item` 用 `https://taux.io` 還是 `/<locale>`——現在 38 個是前者、37 個是後者，統一會刻意改動其中一邊的 dist
+4. site.toml 每個 locale 加一個麵包屑名稱：現有 75 個名稱只有 28 個與 title 開頭相同，推導不出來
+
 ## 已知待辦
 
-- `?v=` 版號手動遞增（見上）
+- 模板結構大改的前置條件（見上一節）
 - Windows 中文渲染品質低於 macOS（見上）

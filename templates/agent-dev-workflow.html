@@ -76,6 +76,7 @@
                     <li><a href="#plan" class="section-index-link"><span class="font-sans">12</span> 14 天計畫</a></li>
                     <li><a href="#cheatsheet" class="section-index-link"><span class="font-sans">13</span> 一頁速查</a></li>
                     <li><a href="#source" class="section-index-link">出處</a></li>
+                    <li><a href="#faq" class="section-index-link">常見問題</a></li>
                 </ul>
             </div>
         </nav>
@@ -1398,6 +1399,69 @@ gh label create enhancement</code></pre>
              Source. Named in section 01 as well; repeated here because this is
              where a reader who skipped to the end will look for it.
              ================================================================== -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">14</p>
+                <h2>常見問題</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>user-invoked 與 model-invoked 的 skill 差在哪裡？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    這是整套 skill 唯一的分類軸線。user-invoked 只有人類打得出來，其他 skill 也不能呼叫它，它的 description 是寫給人看的，定位是編排者——決定流程怎麼走。model-invoked 你可以打，agent 也會自己判斷後抓來用，description 寫給模型看，定位是紀律庫。規則是 user-invoked 可以呼叫 model-invoked，但永遠不能呼叫另一個 user-invoked。一個常見的副作用是：harness 不把 user-invoked skill 放進注入模型的清單，所以 agent 常常回報這些 skill 沒安裝——它們有裝，照打就是。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什麼是 tracer bullet？為什麼水平切票是錯的？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Tracer bullet 是穿過所有層（schema、API、UI、測試）的一條細但完整的路，落地當下就能單獨 demo。水平切片是一次交付一層——全部 schema 一張票、全部 API 一張票——它的問題是每層都到位之前什麼都不能動，而且驗收條件必須伸手到別張票擁有的工作。實測代價：某團隊用 26 張按層切的票，平均每張票關閉要跑 20 次 agent，其中約四分之三是重工，他們自己的檢討把每一類失敗都追回到水平切片而不是實作品質。判準只有一句：這張票做完我能 demo 什麼？答不出行為的就是水平切片。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>為什麼 code review 要跑在另一個 session？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    同一個 context 審自己寫的程式，是帶著 slash command 的確認偏誤——寫程式的 agent 會偏袒自己的解法。另外三件事要一起知道：審查看的是 diff &lt;fixed-point&gt;...HEAD，排除 staged 與 working tree，所以要先 commit 再 review；審查發現是假設不是證據，sub-agent 不會逐條回檔案驗證，引用可能指錯位置，看引用再行動；以及每次跑都會找到新問題，因為修改會創造新表面而判斷題那半不是決定性的，沒有收斂保證——當成線索清單，處理有明文規則背書的然後停手。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>這套 skill 最常被用壞的方式是什麼？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    七種：被動 grilling（連答四十個同意，出來一份你點頭過但什麼都沒真正決定的計畫）；在 to-spec 與 to-tickets 之間 clear 或 compact（你烤出來的東西絕大部分只在那個 context window 裡）；對自己產生的票跑 triage；範圍良好的功能抓 wayfinder（判準是 session 數不是專案大小）；把詞彙層當驅動器；把 review 跑在寫程式的同一個 session；以及改 SKILL.md 來客製（更新會覆蓋、plugin 唯讀，長期行為要寫進自己的 CLAUDE.md）。還有一個元反模式：把它當成有了流程就不用想——產出的品質追蹤的是你答案的品質，不是問題的數量。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">出處</p>

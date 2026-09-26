@@ -7,6 +7,12 @@
      locale's page keeps what IS localised: the h1, the sub-line, the title,
      the description. -->        <div class="space-y-8">
             <p class="mb-6">Last updated: February 17, 2026</p>
+            <!-- The clauses are h3 under a screen-reader-only h2, the one variant
+                 the cover rule names (data-cover="sr"). They were h3 straight under
+                 the h1, a skipped level in every outline; a visible h2 would open
+                 a cover block per clause. lang="en" because the body is English on
+                 every locale, and this heading is part of the body. -->
+            <h2 class="sr-only" data-cover="sr" lang="en">Policy</h2>
 
             <div class="space-y-2">
                 <h3 class="mt-0 mb-4">1. Introduction</h3>

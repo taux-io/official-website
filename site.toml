@@ -453,7 +453,7 @@ date_modified = "2026-07-26"
 [[page]]
 path        = "/threat-landscape"
 template    = "threat-landscape.html"
-date_modified = "2026-08-06"
+date_modified = "2026-09-26"
 date_published = "2026-08-06"
 
   [page.locale.zh-Hant-TW]
@@ -483,7 +483,7 @@ template    = "pqc-migration.html"
 # 規則沒有任何閘門守得住（法規變動不在版本控制裡），那個約定是唯一的防線。
 # 2026-08-15 重查：NIST IR 8547 仍是 initial public draft，金管會指引無滾動
 # 修正。內容因此一字未動，而日期動了——那正是這個約定的意思。
-date_modified = "2026-08-15"
+date_modified = "2026-09-26"
 date_published = "2026-08-06"
 
   [page.locale.zh-Hant-TW]
@@ -612,7 +612,7 @@ date_published = "2026-08-09"
 [[page]]
 path        = "/what-is-prompt-injection"
 template    = "what-is-prompt-injection.html"
-date_modified = "2026-07-26"
+date_modified = "2026-09-26"
 date_published = "2026-02-17"
 
   [page.locale.zh-Hant-TW]
@@ -638,7 +638,7 @@ date_published = "2026-02-17"
 [[page]]
 path        = "/owasp-llm-top-10"
 template    = "owasp-llm-top-10.html"
-date_modified = "2026-08-06"
+date_modified = "2026-09-26"
 date_published = "2026-08-05"
 
   [page.locale.zh-Hant-TW]
@@ -742,7 +742,7 @@ date_published = "2026-04-06"
 [[page]]
 path        = "/agent-dev-workflow"
 template    = "agent-dev-workflow.html"
-date_modified = "2026-08-13"
+date_modified = "2026-09-26"
 date_published = "2026-08-13"
 
   [page.locale.zh-Hant-TW]

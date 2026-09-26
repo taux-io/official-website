@@ -67,6 +67,7 @@
                     <li><a href="#nation-state" class="section-index-link">国家级行为者</a></li>
                     <li><a href="#what-it-means" class="section-index-link">对防守方的意义</a></li>
                     <li><a href="#source" class="section-index-link">来源与限制</a></li>
+                    <li><a href="#faq" class="section-index-link">常见问题</a></li>
                 </ul>
             </div>
         </nav>
@@ -285,6 +286,69 @@
 
         <!-- Source and limits. Attribution is not a footnote on this page — it
              is half the argument. -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">07</p>
+                <h2>常见问题</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>CrowdStrike 2026 全球威胁报告的重点数据有哪些？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    报告公开页列出的关键数字包括：最快的 eCrime breakout time 为 27 秒；AI 加持的攻击者发动的攻击增加 89%；2025 年 82% 的侦测为无恶意文档（malware-free）；超过 90 个组织的合法 AI 工具被滥用来产生恶意指令；ChatGPT 在犯罪论坛被提及的次数比其他任何模型多 550%；平均 breakout 速度年增 65%；中国系攻击者所利用的漏洞有 40% 针对边缘设备；国家级行为者的云端导向入侵增加 266%。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什么是 breakout time？27 秒代表什么？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    Breakout time 指攻击者从最初入侵的那台主机横向移动到环境中另一台主机所需的时间。它衡量的是防守方在攻击扩散之前必须完成侦测、判读与遏制的时间预算。27 秒是报告中记录到的最快值，不是平均值——把最快值当成平均会严重误判自己的处境。它真正的意义是：任何依赖人工判读才能启动的应变流程，在这个量级上都来不及。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>为什么 82% 的侦测是无恶意文档，这个数字要怎么读？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    这个比例同时反映两件事：攻击者确实越来越少落地恶意文档，改用合法工具与窃得的证书；以及侦测能力本身——看得见无文档行为正是端点侦测与回应（EDR）产品的核心卖点。这个数字来自 CrowdStrike 自家的侦测遥测，母体是安装了它的环境。所以它可靠地描述了「在有 EDR 的环境里看到什么」，但不能直接外推成全世界的攻击组成。对防守方的实务结论不变：以文档特征为中心的杀毒无法覆盖大部分的侦测。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>厂商发布的威胁报告可以信吗？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    可以用，但要知道它量的是什么。这类报告的数据通常来自厂商自家的产品遥测与事件应变案件，母体是它的客户群，不是全球所有组织。这不是说数字造假，而是说每一个数字都带着「在什么样的环境里、用什么样的工具、看得见什么」这三个限制。实务上的用法是把它当成趋势与攻击手法的情报来源，而不是当成自己组织风险概率的统计基础。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <div class="cover" data-cover>
                 <p class="eyebrow mb-2 font-sans">来源与限制</p>

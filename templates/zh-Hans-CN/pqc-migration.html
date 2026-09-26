@@ -7,7 +7,8 @@
      was the other candidate and is not used — Google has wound its support down
      to almost nothing, and it would add a maintenance surface for no gain.
 
-     Every FAQ answer here is answerable from the page and from a named source
+     Every FAQ answer here is on the page, word for word, in the #faq section
+     (check:entity fails when the two differ), and comes from a named source
      document. The regulatory dates in particular are the kind of thing that
      gets restated confidently across the web without anyone checking whether
      the document they come from is final. -->
@@ -76,6 +77,7 @@
                     <li><a href="#supply-chain" class="section-index-link"><span class="font-sans">04</span> 供应链</a></li>
                     <li><a href="#regulatory-timeline" class="section-index-link">法规时程</a></li>
                     <li><a href="#standards" class="section-index-link">标准现况</a></li>
+                    <li><a href="#faq" class="section-index-link">常见问题</a></li>
                 </ul>
             </div>
         </nav>
@@ -408,6 +410,82 @@
         </section>
 
         <!-- Source -->
+        <!-- Common questions. The same questions and answers the FAQPage
+             structured data declares, word for word: Google requires marked-up
+             FAQ content to be visible on the page, and `check:entity` now fails
+             when the two differ. -->
+        <section id="faq">
+            <div class="cover" data-cover>
+                <p class="eyebrow mb-2 font-sans">FAQ</p>
+                <h2>常见问题</h2>
+            </div>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什么是后量子密码（PQC）？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    后量子密码（Post-Quantum Cryptography）是一类设计成能抵抗量子电脑攻击的加密算法。今天广泛使用的 RSA 与椭圆曲线密码，其安全性建立在大数分解与离散对数的困难度上，而这两个问题都能被够大的量子电脑有效解开。PQC 改用格、哈希、编码等数学结构，目前没有已知的量子算法能有效攻破。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>台湾企业有 PQC 的法规要求吗？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    目前只有金融业有明确时程。金管会于 2026 年 6 月 18 日发布「金融业后量子密码迁移参考指引」，提出七大策略方向与 2026 至 2035 年的分阶段时程，适用对象包含金融机构与其重要供应商，性质为参考指引而非强制规范。数位发展部数位产业署则于 2025 年 4 月 16 日与后量子资安产业联盟发布「后量子密码迁移指引」，涵盖公钥基础设施、安全芯片、数字签章、网通设备等领域，但未订定产业别的完成期限。其他产业目前没有台湾本地的法定期限。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>企业该从哪一步开始做 PQC 迁移？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    从治理开始，不是从盘点开始。金管会的指引把「PQC 政策与治理」列为第一项策略，顺序在密码技术盘点之前，理由很实际：没有人拍板谁负责、预算从哪里来，加密资产盘点做到一半就会停下来。治理确立之后才是 CBOM 密码物料清单盘点、风险导向的优先序、加密敏捷性建构，最后是供应链与采购要求的更新。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>什么是 CBOM 密码物料清单？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    CBOM（Cryptography Bill of Materials）是加密资产的清册：系统里用了哪些算法、密钥长度、证书、函数库，各自在哪里、由谁维护、生命周期多长。它是 SBOM 软件物料清单的密码学对应物，也是 PQC 迁移的前提——无法盘点的东西就无法排优先序。CycloneDX 从 1.6 版起原生支持 CBOM 格式。金管会的指引把建立密码技术清单列为第二项策略，并放在 2026 至 2027 年的短期阶段。
+                </div>
+            </details>
+            <details class="faq-details group border-t border-b border-line">
+                <summary class="flex justify-between items-center gap-8 py-6 cursor-pointer list-none">
+                    <h3>为什么现在就要动，量子电脑不是还没出现？</h3>
+                    <span class="shrink-0 transition-transform group-open:rotate-180" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" fill="none" class="w-5 h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </summary>
+                <div class="pb-8 text-sm leading-loose max-w-prose">
+                    有两个彼此独立的理由。第一是「先收集、以后解密」（Harvest Now, Decrypt Later）：今天被截取的加密流量可以被保存到未来解密，所以保密年限长的数据在今天就已经暴露。第二个理由不依赖任何对量子电脑到来时间的预测——法规期限本身就存在。欧盟建议会员国在 2026 年底前启动迁移，关键基础设施在 2030 年底前完成高风险场景；金管会的分阶段时程从 2026 年开始。这些日期不管量子电脑哪一天出现都不会改变。
+                </div>
+            </details>
+        </section>
+
         <section id="source">
             <p class="eyebrow mb-3 font-sans">来源</p>
             <p class="leading-relaxed">
