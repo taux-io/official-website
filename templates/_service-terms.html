@@ -6,6 +6,15 @@
 <section id="cycle">
     {% call cover("05") %}{{ strings.service_cycle_title }}{% endcall %}
     <p class="leading-relaxed max-w-prose">{{ strings.service_cycle_body }}</p>
+    <!-- The three cycle lengths drawn to scale — a quarter, a half and the
+         whole of one track. HTML rather than SVG so the labels are text that
+         translates and wraps; the bars are empty ink marks (rule 38). -->
+    <div class="mt-6 space-y-3" aria-hidden="true">
+        <div class="flex items-center gap-4"><span class="w-20 shrink-0 text-sm">{{ strings.service_cycle_3m }}</span><span class="flex-1 border-t border-line"><span class="block w-1/4 h-1 bg-ink -mt-0.5"></span></span></div>
+        <div class="flex items-center gap-4"><span class="w-20 shrink-0 text-sm">{{ strings.service_cycle_6m }}</span><span class="flex-1 border-t border-line"><span class="block w-1/2 h-1 bg-ink -mt-0.5"></span></span></div>
+        <div class="flex items-center gap-4"><span class="w-20 shrink-0 text-sm">{{ strings.service_cycle_12m }}</span><span class="flex-1 border-t border-line"><span class="block w-full h-1 bg-ink -mt-0.5"></span></span></div>
+    </div>
+    <p class="text-sm leading-relaxed mt-4">{{ strings.service_cycle_flow }}</p>
 </section>
 <section id="pricing">
     {% call cover("06") %}{{ strings.service_pricing_title }}{% endcall %}

@@ -28,6 +28,29 @@
     {% call cover("01") %}이런 분께 맞습니다{% endcall %}
     {{ lines(audience) }}
 </section>
+<!-- How the pieces connect, drawn in HTML rather than SVG so it stacks on a
+     phone and its labels are text this locale's reader can read. -->
+<figure class="border-t border-line pt-6">
+    <div class="flex flex-col tablet:flex-row tablet:items-center gap-3">
+        <ul class="grid grid-cols-2 tablet:grid-cols-1 gap-2 tablet:w-40 shrink-0">
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">ERP·재고 관리</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">Excel 보고서</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">공유 폴더</li>
+            <li class="w-full border border-line px-3 py-2 text-sm text-center">자체 데이터베이스</li>
+        </ul>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border-2 border-ink px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1" lang="en">MCP server</p>
+            <p class="text-sm leading-relaxed">기본은 읽기 전용<br>기존 권한을 그대로 사용<br>조회마다 기록을 남김</p>
+        </div>
+        <p class="text-center text-ink-soft" aria-hidden="true"><span class="tablet:hidden">&darr;</span><span class="hidden tablet:inline">&rarr;</span></p>
+        <div class="border border-line px-4 py-3 text-center tablet:flex-1">
+            <p class="font-semibold mb-1">AI 애플리케이션</p>
+            <p class="text-sm leading-relaxed">Claude, Gemini 등<br>직원이 자연어로 조회</p>
+        </div>
+    </div>
+    <figcaption class="text-sm leading-relaxed mt-4">데이터는 원래 시스템에 그대로 둡니다. MCP server는 허용된 조회만 AI에 열고, 모든 접근을 기록합니다.</figcaption>
+</figure>
 <section id="scope">
     {% call cover("02") %}서비스 내용{% endcall %}
     {{ items(scope) }}

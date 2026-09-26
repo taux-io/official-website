@@ -905,6 +905,16 @@
     @apply font-sans text-eyebrow uppercase text-ink;
   }
 
+  /* A section cover's number is a wayfinding mark, and the accent draws it
+     (DESIGN.md decision 156, which narrows rule 26 by name). The page was ink
+     on paper from top to bottom, so eight sections read as one; the blue
+     number is where the eye lands between them. Only inside `.cover` — an
+     eyebrow elsewhere is a label and stays ink. The selector is the one rule
+     26 names; spelling it differently turns that gate red. */
+  .cover .eyebrow {
+    color: rgb(var(--primary-rgb));
+  }
+
   /* py-1.5 buys 12px of height on a 14px line — a 26px target rather than 14px.
      NOT the 44px the guidance asks for, and that is a decision rather than an
      oversight: the footer carries four columns of these, and 44px each would
