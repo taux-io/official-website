@@ -3,11 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/agent-prompting-guide#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io/zh-Hans-CN" },
-                {"@type":"ListItem","position": 2,"name":"指令秘籍","item":"https://taux.io/zh-Hans-CN/agent-prompting-guide" }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"Article","@id":"https://taux.io/zh-Hans-CN/agent-prompting-guide#article","headline":"如何让 AI 听懂人话？从新手到高手的指令秘籍","description":"Prompt Engineering（提示工程）是指挥 AI 的艺术。本指南涵盖基础单一任务指派到高级 AI 代理人 (Agent) 的设计原则。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/agent-prompting-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" }
         }
     ]

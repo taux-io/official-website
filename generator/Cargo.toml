@@ -13,6 +13,12 @@ htmd = "0.5.5"
 # JSON-LD shapes — is the asset here, and none of it is touched.
 minijinja = { version = "2", features = ["loader"] }
 serde = { version = "1", features = ["derive"] }
+# The breadcrumb JSON-LD is built here rather than written in the templates:
+# minijinja autoescapes `{{ … }}` in .html, so a URL interpolated into a JSON
+# string renders as `https:&#x2f;&#x2f;…` — valid JSON, wrong data. Serialising
+# in Rust and passing the result as a safe string cannot hit that.
+# `preserve_order` keeps `@type` first, as every hand-written node has it.
+serde_json = { version = "1", features = ["preserve_order"] }
 toml = "0.8"
 
 [[bin]]

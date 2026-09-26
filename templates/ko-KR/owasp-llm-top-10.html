@@ -14,11 +14,7 @@
      invisible on the page and taken verbatim by the machines reading it. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-  {"@type":"BreadcrumbList","@id":"https://taux.io/ko-KR/owasp-llm-top-10#breadcrumb","itemListElement": [
-      {"@type":"ListItem","position": 1,"name":"홈","item":"https://taux.io/ko-KR" },
-      {"@type":"ListItem","position": 2,"name":"OWASP LLM Top 10","item":"https://taux.io/ko-KR/owasp-llm-top-10" }
-    ]
-  },
+  {{ breadcrumb }},
   {"@type":"TechArticle","@id":"https://taux.io/ko-KR/owasp-llm-top-10#article","headline":"OWASP LLM Top 10 2026: LLM 앱의 10대 보안 리스크","description":"OWASP Top 10 for LLM Applications 2026 열 조항을 하나씩. 2025에서 2026으로의 순위 변동과 범위 조정 포함.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/owasp-llm-top-10" },"mainEntity": {"@id":"https://taux.io/ko-KR/owasp-llm-top-10#list" }
   },
   {"@type":"ItemList","@id":"https://taux.io/ko-KR/owasp-llm-top-10#list","name":"OWASP Top 10 for LLM Applications (2026)","description":"LLM 앱의 10대 보안 리스크, OWASP 2026 판 순서로.","numberOfItems": 10,"itemListOrder":"https://schema.org/ItemListOrderAscending","itemListElement": [

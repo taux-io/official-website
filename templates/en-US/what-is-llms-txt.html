@@ -3,13 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/what-is-llms-txt#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io/en-US"
-                },
-                {"@type":"ListItem","position": 2,"name":"LLMs.txt Explained","item":"https://taux.io/en-US/what-is-llms-txt"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/en-US/what-is-llms-txt#article","headline":"What is llms.txt? A proposed convention for telling AI what it may do with your content","description":"What llms.txt is, what it can express that robots.txt cannot, and an honest account of its status: a proposal in use, not a ratified standard.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/what-is-llms-txt" }
         }
     ]
