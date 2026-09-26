@@ -15,7 +15,43 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 - **產生器**：Rust（minijinja），build 時輸出靜態 HTML
 - **前端**：`templates/*.html` + TailwindCSS 3.4，無前端框架
 - **工具鏈**：Node 負責 CSS 建置、資產生成與全部驗證（Tailwind 與 Playwright 沒有堪用的 Rust 替代品，所以這個 repo 是雙語言的）
-- **基礎設施**：Cloudflare Workers 靜態資產，無執行期伺服器
+- **基礎設施**：Cloudflare Workers 靜態資產。唯一會執行的程式碼是 `src/worker.js`，只處理 `/` 的語言協商（見「部署」）
+
+### 產生器的模組
+
+| 檔案 | 內容 |
+|---|---|
+| `generator/src/main.rs` | 常數（`ORIGIN`、`CANONICAL_LOCALE`）、`run()` 與它拆出的五段：`render_pages`、`render_documents`、`write_sitemap`、`write_redirects`、`copy_static`；檔案系統 helper（`contained`、`copy_tree`、`content_version`） |
+| `generator/src/site.rs` | site.toml 的資料模型與 `Site::derive` |
+| `generator/src/markdown.rs` | Markdown 雙生檔：從 `<main>` 切出、標題與藥丸的處理、連結改寫成絕對網址 |
+| `generator/src/html.rs` | 註解剝除與跳脫 |
+
+測試跟著它測的程式碼放在各模組的 `#[cfg(test)]` 裡。
+
+### site.toml 裡推導得出的欄位不寫
+
+`canonical` 預設是 `https://taux.io/<locale><path>`（首頁沒有 path），locale 的 `template` 預設是：正典 locale 用路由的 `template`，其他 locale 用 `<locale>/<template>`。一百個 canonical 與八十個 template 原本都是手寫的，而且沒有一個例外，所以改成推導——**只在真的不同時才寫**。
+
+同一條規則寫在兩處：generator 的 `Site::derive` 與 `scripts/routes.js` 的 `derivedCanonical`／`derivedTemplate`（Node 側讀 site.toml 的唯一入口）。改一邊就要改另一邊；Rust 那邊有測試釘著。
+
+非正典 locale 缺 `template` 時，**不會**退回正典模板——那會變成翻譯的標題配原文的內文，每道閘門都綠。
+
+### 目錄
+
+| 目錄 | 放什麼 | 發佈嗎 |
+|---|---|---|
+| `templates/` | zh-Hant-TW 正本與共用 partial（`_*.html`、`header.html`、`footer.html`） | 經產生器 |
+| `templates/<locale>/` | 其他四個 locale 的頁面 | 經產生器 |
+| `static/` | css、js、og 分享卡、brand、圖示——發佈在 `/static/` 底下 | 是 |
+| `public/` | `favicon.ico`、`robots.txt`、`llms.txt`、`site.webmanifest`——**只**發佈在根目錄。產生器拒絕它覆蓋建置產物 | 是 |
+| `brand-src/` | 不發佈的原始素材（`build-logo.js` 的裁切來源） | 否 |
+| `ledgers/` | 閘門的記憶：`published-paths.txt`、`ko-spacing.txt`、`ko-quotes.txt` | 否 |
+| `scripts/lib/` | 閘門共用的 helper：`fs.js` 的 `walk()`、`html.js` 的 `jsonLdBlocks()` | 否 |
+| `scripts/design/` | `check:design` 的 `lib.js` 與 `rules/`（每條規則一個檔） | 否 |
+
+`public/` 的四個檔案原本放在 `static/`，被整包複製之後又被複製到根目錄一次，所以每個檔案有兩個網址。舊的 `/static/…` 網址是 site.toml 裡的 `[[redirect]]`（301）。
+
+`ORIGIN` 與 `CANONICAL_LOCALE` 在 Node 側只寫在 `scripts/routes.js`，其他腳本都從那裡取；Rust 側寫在 `main.rs`。
 
 ---
 
@@ -36,15 +72,19 @@ npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
 npm run build:assets   # 圖示 + 結構化資料 logo + OG 分享卡
+npm run build:og       # 只重生 100 張 OG 分享卡（會重寫全部；只 commit 文字有變的那幾張）
 npm run contrast       # WCAG 稽核（CI 閘門）
 npm run contract       # 路由對外宣告的契約（CI 閘門）
+npm run geometry       # 溢出、觸控目標、行長、第一屏（CI 閘門，約 4 分鐘）
 npm run cards          # 100 張分享卡的外邊距與墨跡外框（CI 閘門）
 npm run check:classes  # 找出不產生任何 CSS 的類別（CI 閘門）
 npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面（CI 閘門）
+npm run check:md       # 100 份 Markdown 雙生檔（CI 閘門）
 npm run check:dates    # 日期已宣告且自洽（CI 閘門）
 npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
 npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門）
 npm run check:routes   # 已發布路徑與 ledger 相符（CI 閘門）
+npm run routes:record  # 新增路由後把它寫進 ledgers/published-paths.txt
 npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
 npm run check:entity:links  # sameAs 的 URL 是否解析得到（CI 閘門，需網路）
 npm run check:ko       # 韓文的空白與引號決定沒有改變（CI 閘門）
@@ -55,9 +95,14 @@ npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
 npm run diff <a> <b>         # 像素比對
 npm run blank <label>        # 截圖的空白行比例與最長連續空白（給人看，不是閘門）
+npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給人看，不是閘門）
 ```
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `check:entity:links`。
+**`geometry`、`contrast`、`contract`、`cards` 要先 `npm run serve`**，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port 起 `npx wrangler dev --port <n>`，再以 `BASE_URL` 指過去。
+
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
+
+兩個 job 刻意平行而不共用產物：audit 約 10 分鐘（geometry 佔大半）、build 約 1 分鐘，讓 audit 等 build 的 `dist/` 會拉長總時間。
 
 **需要瀏覽器或網路的都在 `audit`，離線的都在 `build`。** 前兩者跑在 wrangler 供應的 `dist/` 上，因為只有 wrangler 會套用 `_headers`——用一般靜態伺服器驗，一條永遠匹配不到的標頭規則看起來完全正常。
 
@@ -68,17 +113,18 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。**第三次**：清單漏了 `check:md`，總數也還停在十四。它是隨 Markdown 雙生檔（issue #259）加進 `checks.yml` 的，而這段文字沒有跟上——同一種漂移，第三次，寫在專門警告它的段落裡。**第四次**：`cards` 隨 v5 的規則 29 加進 `checks.yml`，而這段文字沒有跟上，總數還停在十五。**同一種漂移，第四次，寫在專門警告它的段落裡**——而且這一次是被兩軸審查抓到的，不是被任何閘門。**沒有東西數這個數字**，這就是它一直漂的原因。**第五次**：`test:worker` 隨稽核修正加進 `checks.yml`，這一次同一個 commit 就改了這裡。現在是**十七道**——下面的清單有幾項就是幾道。改 `checks.yml` 時請一併改這裡。
 
 - **contrast** —— 0 隱形元素、0 不符 WCAG AA
-- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
+- **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免、**`asset versions`**（每個 `/static/css`、`/static/js` 引用都帶 16 位內容雜湊，immutable 快取的前提，見下）。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔（`/llms.txt`、`/robots.txt`）的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
 - **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標（含 chrome 裡的普通 `<a>`：語言切換器、章節 rail、footer、skip link——探針原本只量 `a.btn` 與表單控制項，12px 高的下拉連結因此一直是綠的），以及依 locale 而定的行長上限；v5.2 起再加一根 `first-paragraph`：每條路由在三種手機高度下，第一段正文的第一行必須在第一屏內（投影片頁具名豁免；上線前對舊建置跑是 303 組裡 240 紅）
 - **cards** —— 100 張 OG 分享卡的外邊距（5–9% 版寬）、墨跡外框（45–80% 版面）與尺寸（1200×630）。**唯一一道讀產出物而不讀原始碼的設計閘門**：邊距從 `build-og.js` 的 `padding` 算得出來，墨跡外框算不出來——原始碼裡沒有任何東西說得出一個平衡斷行的三行標題會蓋掉多少版面（DESIGN.md 決策 #111）
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `ledgers/published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡
-- **check:classes** —— 沒有任何類別產生不出 CSS
-- **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、標題存在與否、殘留標記、連結、程式碼區塊、由兩部分組成的標題（雙語兩半、章節編號徽章）有沒有分開、裝飾藥丸有沒有變成內文、用字母編號的標題有沒有從 A 開始且不跳號，以及 HTML 有沒有指向它們。斷言與檢查的數量寫在 `check-md.js` 裡，也只寫在那裡——這份清單刻意不重複它，理由跟上面那段一樣。沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西。⚠️ 最後三道是**有人讀了十五行**才加的：九道斷言與 1564 條 production 斷言全綠的時候，`dist/ja-JP/about.md` 的第 13 行有一個當成句子的裝飾藥丸（共六十個），第 15 行有一個兩半黏在一起的標題（`with AI AI を`，共一百六十個）。兩者都不隱蔽，只是沒有人看。第三道是那次審查補的：修法差一點寫成「丟掉英文那半」，那會讓二十份英文頁失去標題，而當時沒有任何斷言看得見。**字母編號那道是第四道這樣來的**：`agent-dev-workflow` 五個語系都把四個案例編成 B C D E，標題卻寫「四個完整劇本」，從頁面上線以來沒有人發現——HTML 也寫 B，所以它不是轉換缺陷，稽核工具比對兩邊的那一趟從頭到尾都是綠的
+- **check:classes** —— 沒有任何類別產生不出 CSS。模板自己的 `<style>` 宣告的 class 不算未知，**include 進來的 partial 的 `<style>` 也算**——claude-skills-guide 的投影片樣式住在 `_skills-guide-style.html`
+- **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、標題存在與否、殘留標記、連結、程式碼區塊、由兩部分組成的標題（雙語兩半、章節編號徽章）有沒有分開、裝飾藥丸有沒有變成內文、用字母編號的標題有沒有從 A 開始且不跳號，以及 HTML 有沒有指向它們。連結必須是 `https://`、`mailto:` 或 `tel:+`（完整國際號碼，複製到哪裡都成立）。斷言與檢查的數量寫在 `check-md.js` 裡，也只寫在那裡——這份清單刻意不重複它，理由跟上面那段一樣。沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西。⚠️ 最後三道是**有人讀了十五行**才加的：九道斷言與 1564 條 production 斷言全綠的時候，`dist/ja-JP/about.md` 的第 13 行有一個當成句子的裝飾藥丸（共六十個），第 15 行有一個兩半黏在一起的標題（`with AI AI を`，共一百六十個）。兩者都不隱蔽，只是沒有人看。第三道是那次審查補的：修法差一點寫成「丟掉英文那半」，那會讓二十份英文頁失去標題，而當時沒有任何斷言看得見。**字母編號那道是第四道這樣來的**：`agent-dev-workflow` 五個語系都把四個案例編成 B C D E，標題卻寫「四個完整劇本」，從頁面上線以來沒有人發現——HTML 也寫 B，所以它不是轉換缺陷，稽核工具比對兩邊的那一趟從頭到尾都是綠的
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
-- **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）
-- **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。⚠️ 其中規則 36 `tags nest` 是唯一會**展開 `{% include %}`** 的規則：巢狀是組合後的頁面才有的性質，而 `header.html` 單獨看是一份沒關 `<html>` 的半頁
+- **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）。取區塊用 `scripts/lib/html.js` 的 `jsonLdBlocks()`，check:entity 與 i18n-extract 也用它：`<script>` 多一個屬性也認得，而頁面上 `ld+json` 標籤的數目與讀到的區塊數不符時直接丟錯——先前兩道閘門只認逐字的 `<script type="application/ld+json">`，多一個屬性就整段跳過還報綠
+- **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。⚠️ 其中規則 36 `tags nest` 是唯一會**展開 `{% include %}`** 的規則：巢狀是組合後的頁面才有的性質，而 `header.html` 單獨看是一份沒關 `<html>` 的半頁。它的 `compose()` 遇到找不到的 partial 或超過 16 層的 include 會**丟錯**——先前回傳空字串，第五層以下的內容沒檢查也報綠。
+  結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取，同一份模板只解析一次）。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆
 - **check:entity** —— 讀**建置產物**的實體宣告，六條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— `templates/en-US/*.html` 沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。**這道閘門遲到了**：能自動判斷的那一半在 `i18n-extract` 裡放了一陣子，而 DESIGN.md 已經寫成「補進去了」——它不在任何 job 裡，等於沒有。
@@ -122,6 +168,18 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 **骨架票要含一個決定，否則只是延後。** 「頁面先存在、內容之後補」本身沒有價值；有價值的是在那張票裡把**後續工作依賴的東西定死**——例如章節 id。定死了，做索引的人就不必等內容寫完。
 
+### 重構用「產物逐位元組相同」驗收
+
+只改結構、不該改輸出的工作（抽 partial、推導 site.toml 欄位、拆 generator 或 check-design），驗收條件寫成：**改動前建一份 `dist/`，改動後 `diff -r` 無差異**。它比任何檢查表都完整——HTML、Markdown 雙生檔、sitemap、`_redirects` 全在裡面。一個多出來的空行（HTML 註解被剝掉後留下的換行）就會讓它紅，那正是要的靈敏度。
+
+閘門本身的重構換成**突變測試**：刻意製造違規，比對新舊實作的 stdout、stderr 與 exit code。check-design 拆檔時用了 28 種破壞，涵蓋全部 34 條規則。只在乾淨的樹上看到「全綠」證明不了什麼——一條被拆壞的規則在乾淨的樹上也是綠的。
+
+### 疊起來的 PR：一次一個進 main，下一個 rebase 上去
+
+一批改動拆成多個 PR 時，每個分支疊在前一個上面，前一個合併後用 `git rebase --onto origin/main <舊的前一個 commit> <分支>` 把下一個移上去再開 PR。squash merge 之後舊 commit 不在 main 的歷史裡，所以一定要用 `--onto` 指明起點，不能直接 `git rebase origin/main`。
+
+平行開發用 `git worktree`，每個 worktree 自己的 `dist/`、自己的 wrangler port（見「建置與檢查」）。在 worktree 裡把 `node_modules` symlink 到主 checkout 可以省下安裝，但**別讓它被 commit**：`.gitignore` 的 `node_modules` 刻意不帶斜線，因為帶斜線只匹配目錄、不匹配 symlink，這次就被 commit 了兩次。
+
 ### 兩份 spec 同時進行時，多開一張整合票
 
 各自全綠不代表合併後成立。曾經有兩支分支分別通過全部閘門，合併後建置直接失敗：一支新增的頁面引用了另一支刪掉的 partial。git 兩邊都乾淨合上，因為一邊是新檔案、一邊是乾淨的刪除。
@@ -140,7 +198,9 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 ## 部署
 
-**靜態網站，由 Cloudflare Workers 以靜態資產（static assets）從邊緣節點供應。** 沒有執行期伺服器，`wrangler.jsonc` 裡也沒有 `main`——沒有任何程式碼會執行。
+**靜態網站，由 Cloudflare Workers 以靜態資產（static assets）從邊緣節點供應。** 沒有執行期伺服器。`wrangler.jsonc` 的 `main` 是 `src/worker.js`，但 `run_worker_first` 只有 `["/"]`：只有根路徑會進 Worker，其餘全部直接走 assets 層（見下面「`/` 的語言協商」）。
+
+**合併就是上線，而上線會落後 CI。** Workers Builds 在 `main` 收到推送後自己 clone、建置、`wrangler deploy`；它的建置會排隊，曾經一筆停在 `in_progress` 二十多分鐘才完成。確認某次合併是否已上線，看那個 commit 的 check run「Workers Builds: taux-io」是否 `completed`，或直接 `curl` 一個這次改動才有的值——不要只看 PR 的綠燈。
 
 ```bash
 npm run build:site   # cargo build + 產生 dist/
@@ -198,7 +258,7 @@ Worker 版本兩個問題都沒有：規則進版本控制，`contract` 對 `wra
 
 **它不自己組回應，而那是整個設計的重點。** `wrangler.jsonc` 開頭那段警告仍然成立：`_headers` 套用在靜態資產上，套不到 Worker 產生的回應。所以 `src/worker.js` 向 assets 層要一個回應——一般請求要的是它本來就會送出的那個，bot 要的是 `/zh-Hant-TW` 那個——然後只改標頭。`_headers` 裡的東西全部照樣到齊，因為是 assets 層放上去的。
 
-⚠️ **這是紀律，不是機制。** 危險本身沒有消失，只是被「不自己組回應」的寫法迴避掉，而**沒有任何東西檢查未來的人會不會在那支 Worker 裡直接 `new Response("…")`**：沒有規則、沒有斷言，只有那個檔案檔頭的兩段散文與下面這行的爆炸半徑。已記為決策 #63。
+**現在是機制，不只是紀律。** `npm run test:worker`（`scripts/worker.test.mjs`，進 CI）會在 Worker 出現任何不是 `new Response(x.body, x)` 形狀的 `new Response(…)` 時失敗——自己組的回應拿不到 `_headers`，等於沒有 CSP。同一支測試也釘住 q 權重、簡繁與 `q=0` 的協商結果。這一段先前寫的是「沒有任何東西檢查」（決策 #63 記錄的就是那個缺口），現在補上了。
 
 `run_worker_first` 設成 `["/"]`：**只有這一條路徑會進 Worker**，其餘全部照舊直接走 assets，所以上面那個風險的爆炸半徑正好是一條路徑。沒設這行的話 Worker 根本看不到 `/`——`_redirects` 屬於 assets 層，它先匹配，請求在任何程式碼跑之前就被回答掉了。
 
@@ -295,6 +355,7 @@ production 建置是**唯一一個在真正的部署環境裡驗證建置**的�
 ### 幾個必須知道的細節
 
 - **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
+- **CSS／JS 快取一年、immutable；分享卡、brand、圖示七天。** 前者安全是因為 `?v=` 是內容雜湊（見「建置與檢查」）。`script-src` 只有 `'self'` 與 Cloudflare 的 beacon 來源——prompt injection 頁的圖表改成建置時產生的 SVG 之後，`cdn.jsdelivr.net` 已經拿掉，站上沒有任何第三方腳本。
 - **`_headers` 的規則必須互不重疊。** Cloudflare **合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中會產生 `max-age=3600, max-age=31536000` —— 瀏覽器取第一個，字體實際只快取一小時。這已經發生過一次。
 - **`404.html` 不是路由。** 它在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑並附上 404 狀態。**靜態主機最常見的錯誤是用 200 送出 404 頁面**，Google 視為 soft 404 並可能連帶降權周邊路徑。契約測試會斷言這一點。
 - **靜態站沒有 500。** 沒有應用程式可以失敗，該頁已移除。
@@ -377,7 +438,8 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 - **圖示**：由 `static/brand/icon-master.png` 產生。母檔與輸出分離是必要的——腳本會覆寫 `android-chrome-512x512.png`，若從那裡讀來源，第二次執行會吃自己的輸出並產出白方塊。
 - **結構化資料 logo**：`static/brand/logo-on-light.png`，由 `brand-src/taux-logo-light.png` 裁切而來（來源檔不在 `static/`，所以不會被發佈）。**命名描述使用情境而非顏色**：原本的 `taux-logo-dark.png`（給深色底用的白色標記）曾被誤當成「深色的 logo」放進 JSON-LD，於是 Google 收到一張白底白字。
-- **OG 分享卡**：每條路由一張，標題取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。
+- **OG 分享卡**：每條路由一張，標題與 description 取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。輸出經 sharp **無損**重壓（zlib 9），100 張從 6.0 MB 降到 2.5 MB；刻意不用調色盤量化，因為 `cards` 量的是墨跡，量化會移動它。`build:og` 每次重寫全部 100 張，而 Chromium 的反鋸齒在不同次執行間會有微小差異——**只 commit 標題或 description 真的變了的那幾張**，其餘 `git checkout` 回去。
+- **favicon.ico**：`build-icons.js` 寫進 `public/`（根目錄發佈），其餘圖示寫進 `static/`。
 
 ---
 
@@ -389,7 +451,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 |---|---|---|---|
 | **A. Jinja macro**（cover、FAQ、CTA、hero） | cover 545 處／約 2,400 行，但有 14 種變形、巨集要約 6 個參數；FAQ 40 處；CTA 幾乎全是各頁文案；hero 沒有共用外殼 | `section-cover-screens` 跳過 `_*.html`、`tags-nest` 的 `compose()` 只展開 include——**巨集裡拿掉 `data-cover`、或留一個沒關的 `<div>`，check:design 與 check:md 全綠而且建置成功**。class／href 以參數傳入時，十多條讀屬性的規則與 check:classes 都看不到 | 前置條件滿足後只做 cover 與 FAQ |
 | **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
-| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，先補兩個前置條件 |
+| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，先補下面四個前置條件 |
 
 **A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
 
@@ -402,4 +464,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 ## 已知待辦
 
 - 模板結構大改的前置條件（見上一節）
-- Windows 中文渲染品質低於 macOS（見上）
+- Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
+- 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定
+- 法律頁內文維持英文（決定見 ja-JP 版模板的註解）
+- FAQ 的 `<summary>` 裡包 `<h3>`：部分讀屏會把 summary 當按鈕、吃掉標題語意，拿掉 h3 又失去標題導覽，目前維持
