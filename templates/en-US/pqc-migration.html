@@ -14,11 +14,7 @@
      the document they come from is final. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-  {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/pqc-migration#breadcrumb","itemListElement": [
-      {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io/en-US" },
-      {"@type":"ListItem","position": 2,"name":"Post-Quantum Cryptography Migration","item":"https://taux.io/en-US/pqc-migration" }
-    ]
-  },
+  {{ breadcrumb }},
   {"@type":"TechArticle","@id":"https://taux.io/en-US/pqc-migration#article","headline":"Post-quantum cryptography migration: a five-step path, and the regulatory clocks already running","description":"A five-step path — governance, CBOM inventory, risk assessment, crypto-agility, supply chain — mapped to the FSC's seven strategies, with US, EU and Taiwan timelines and their sources.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/pqc-migration" }
   },
   {"@type":"FAQPage","@id":"https://taux.io/en-US/pqc-migration#faq","mainEntity": [

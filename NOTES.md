@@ -456,19 +456,15 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 |---|---|---|---|
 | **A. Jinja macro**（cover、FAQ、CTA、hero） | cover 545 處／約 2,400 行，但有 14 種變形、巨集要約 6 個參數；FAQ 40 處；CTA 幾乎全是各頁文案；hero 沒有共用外殼 | `section-cover-screens` 跳過 `_*.html`、`tags-nest` 的 `compose()` 只展開 include——**巨集裡拿掉 `data-cover`、或留一個沒關的 `<div>`，check:design 與 check:md 全綠而且建置成功**。class／href 以參數傳入時，十多條讀屬性的規則與 check:classes 都看不到 | 前置條件滿足後只做 cover 與 FAQ |
 | **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
-| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，下面四個前置條件已完成兩個 |
+| **C. BreadcrumbList 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | ✅ **已做（#323）**：site.toml 每個 locale 的 `crumb`，generator 以 serde_json 組出節點、當 safe string 交給模板的 `{{ breadcrumb }}`。改動前後 101 頁的 JSON-LD 逐頁 deep-equal、其餘位元組不變。Article 的 `@id`／`mainEntityOfPage` 仍手寫，由 check:entity 的 `page nodes name their canonical` 守著 |
 
 **A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
 
-**C 的前置條件**：
-1. JSON 字串要由 Rust 序列化或開 minijinja 的 `tojson`——**直接寫 `"{{ canonical }}"` 會被 autoescape 成 `https:&#x2f;&#x2f;taux.io…`，而 check:jsonld 與 check:entity 都是綠的**。不可用 `|safe` 繞過
-2. ✅ check:entity 的兩條斷言已加：`page nodes name their canonical`、`json-ld carries no html escapes`
-3. ✅ 首頁那一層統一成 `https://taux.io/<locale>`（語系首頁的 canonical；`https://taux.io` 本身是 302，結構化資料不該指向轉址）。原本 38 個是後者，已改
-4. site.toml 每個 locale 加一個麵包屑名稱：現有 75 個名稱只有 28 個與 title 開頭相同，推導不出來
+**C 的四個前置條件都已完成**：JSON 由 Rust 序列化（不經模板插值，autoescape 碰不到）；check:entity 的兩條斷言；首層統一為 `https://taux.io/<locale>`；site.toml 的 `crumb`。
 
 ## 已知待辦
 
-- 模板結構大改的前置條件（見上一節）：C 還差 Rust 端的 JSON 序列化與每個 locale 的麵包屑名稱
+- 模板結構大改：A（macro）與 B（base layout）的前置條件——check-design 的結構類規則改讀組合後的頁面（見上一節）
 - CI runner 釘在 `ubuntu-24.04`：Ubuntu 26 image 穩定、Playwright 支援之後，在一個 PR 上試跑再切換（見「建置與檢查」）
 - Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
 - 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定

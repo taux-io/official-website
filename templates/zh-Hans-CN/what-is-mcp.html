@@ -2,13 +2,7 @@
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/what-is-mcp#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io/zh-Hans-CN"
-                },
-                {"@type":"ListItem","position": 2,"name":"MCP 是什么","item":"https://taux.io/zh-Hans-CN/what-is-mcp"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/what-is-mcp#article","headline":"MCP 是什么？模型上下文协议架构白话解说","description":"MCP（Model Context Protocol）让 AI 应用程序接上外部数据与工具。以白话解释 host、client、server 三个角色，以及 prompts、resources、tools 的差别在于「谁决定」，依规格修订版 2026-07-28 撰写。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/what-is-mcp" }
         }
     ]

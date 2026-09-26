@@ -2,13 +2,7 @@
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/ko-KR/what-is-mcp#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"홈","item":"https://taux.io/ko-KR"
-                },
-                {"@type":"ListItem","position": 2,"name":"MCP란","item":"https://taux.io/ko-KR/what-is-mcp"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/ko-KR/what-is-mcp#article","headline":"MCP란 무엇인가. Model Context Protocol 쉽게 보기","description":"MCP(Model Context Protocol)는 AI 애플리케이션을 바깥의 데이터와 도구에 잇습니다. host·client·server 세 역할과, prompts·resources·tools의 차이가 '누가 정하는가'에 있다는 점을 평이하게 설명합니다. 사양 개정판 2026-07-28 기준.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/what-is-mcp" }
         }
     ]

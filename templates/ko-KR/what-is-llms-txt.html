@@ -3,13 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/ko-KR/what-is-llms-txt#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"홈","item":"https://taux.io/ko-KR"
-                },
-                {"@type":"ListItem","position": 2,"name":"LLMs.txt란","item":"https://taux.io/ko-KR/what-is-llms-txt"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/ko-KR/what-is-llms-txt#article","headline":"llms.txt란 무엇인가. AI 시대의 콘텐츠 이용을 알리는 새 서식","description":"llms.txt의 정의와 역할, robots.txt와의 차이를 정리하고, GEO 시대에 사이트 운영자가 콘텐츠 이용 범위를 어떻게 밝히는지 설명합니다.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/what-is-llms-txt" }
         }
     ]

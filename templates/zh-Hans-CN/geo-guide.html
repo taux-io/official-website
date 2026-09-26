@@ -3,13 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/geo-guide#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io/zh-Hans-CN"
-                },
-                {"@type":"ListItem","position": 2,"name":"GEO 指南","item":"https://taux.io/zh-Hans-CN/geo-guide"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"Article","@id":"https://taux.io/zh-Hans-CN/geo-guide#article","headline":"GEO 入门指南：在 AI 时代，如何让 AI 帮你带流量？","description":"本指南将解释 GEO（生成式引擎优化）的基本概念，它与传统 SEO 的区别，以及企业如何利用 GEO 在 AI 搜索中获得优势。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
                 {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
                 {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }

@@ -2,13 +2,7 @@
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/en-US/what-is-mcp#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"Home","item":"https://taux.io/en-US"
-                },
-                {"@type":"ListItem","position": 2,"name":"What is MCP","item":"https://taux.io/en-US/what-is-mcp"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/en-US/what-is-mcp#article","headline":"What is MCP? The Model Context Protocol, explained plainly","description":"MCP (Model Context Protocol) connects AI applications to outside data and tools. The three roles — host, client, server — and why prompts, resources and tools differ by who decides, not by read versus write. Written against revision 2026-07-28.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/what-is-mcp" }
         }
     ]

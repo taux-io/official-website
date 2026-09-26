@@ -3,13 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"首页","item":"https://taux.io/zh-Hans-CN"
-                },
-                {"@type":"ListItem","position": 2,"name":"LLMs.txt 说明","item":"https://taux.io/zh-Hans-CN/what-is-llms-txt"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt#article","headline":"LLMs.txt 是什么？AI 时代网站内容保护新规范","description":"深入解析 LLMs.txt 的定义、功能及其与 robots.txt 的差异，协助网站管理者掌握 GEO 时代的内容访问权限。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hans-CN/what-is-llms-txt" }
         }
     ]

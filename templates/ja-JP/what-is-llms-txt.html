@@ -3,13 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/what-is-llms-txt#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP"
-                },
-                {"@type":"ListItem","position": 2,"name":"LLMs.txt とは","item":"https://taux.io/ja-JP/what-is-llms-txt"
-                }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"TechArticle","@id":"https://taux.io/ja-JP/what-is-llms-txt#article","headline":"llms.txt とは何か。AI 時代のコンテンツ利用を示す新しい書式","description":"llms.txt の定義と役割、robots.txt との違いを整理し、GEO 時代にサイト運営者がコンテンツ利用の範囲をどう示すかを解説します。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/what-is-llms-txt" }
         }
     ]

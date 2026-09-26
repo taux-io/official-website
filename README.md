@@ -63,7 +63,7 @@ CI（`.github/workflows/checks.yml`）在每個 PR 跑兩個 job：`build` 跑�
 ## 新增一頁
 
 1. 在 `templates/` 寫 zh-Hant-TW 正本，其他 locale 放在 `templates/<locale>/`（簡體可用 `node scripts/hans.js` 起稿）
-2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`
+2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`（`title`、`description`，要麵包屑就加 `crumb`，模板的 JSON-LD `@graph` 裡寫 `{{ breadcrumb }}`）
 3. 導覽連結在 `templates/_nav-columns.html`，連結文字在 `site.toml` 每個 `[[locale]]` 的 `[locale.strings]`（`nav_*`）
 4. 在 `public/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
 

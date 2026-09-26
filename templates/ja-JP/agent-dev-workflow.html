@@ -16,11 +16,7 @@
      identity, and this is not our identity. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-  {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/agent-dev-workflow#breadcrumb","itemListElement": [
-      {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP" },
-      {"@type":"ListItem","position": 2,"name":"AI Agent 開発ワークフロー実践","item":"https://taux.io/ja-JP/agent-dev-workflow" }
-    ]
-  },
+  {{ breadcrumb }},
   {"@type":"TechArticle","@id":"https://taux.io/ja-JP/agent-dev-workflow#article","headline":"AI Agent 開発ワークフロー実践：25 個の skill でつなぐ本流の七ステップ","description":"mattpocock/skills の 25 個の skill を、繰り返せる一本の開発ワークフローにつなぎます。本流の七ステップ、四つの完全なシナリオ、31 個の既知の落とし穴と 14 日間の練習計画。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/agent-dev-workflow" },"proficiencyLevel":"Intermediate","inLanguage":"{{ locale }}","citation":"mattpocock/skills v1.2.3 (MIT)"
   },
   {"@type":"FAQPage","@id":"https://taux.io/ja-JP/agent-dev-workflow#faq","mainEntity": [

@@ -3,11 +3,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
-        {"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/agent-prompting-guide#breadcrumb","itemListElement": [
-                {"@type":"ListItem","position": 1,"name":"ホーム","item":"https://taux.io/ja-JP" },
-                {"@type":"ListItem","position": 2,"name":"プロンプトの手引き","item":"https://taux.io/ja-JP/agent-prompting-guide" }
-            ]
-        },
+        {{ breadcrumb }},
         {"@type":"Article","@id":"https://taux.io/ja-JP/agent-prompting-guide#article","headline":"AI に伝わる書き方。最初のプロンプトからエージェント設計まで","description":"何を指定し、何を委ね、うまくいったかをどう確かめるか。役割と課題の与え方、手順の書き方、出力形式、そしてエージェントの設計まで扱います。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/agent-prompting-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" }
         }
     ]

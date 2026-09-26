@@ -339,6 +339,37 @@ fn render_pages(
                     )
                 })?;
             let tmpl = env.get_template(text.template.as_deref().unwrap_or(&page.template))?;
+            // Built in Rust and handed over as a safe string, never interpolated
+            // into JSON in a template — see `LocaleText::breadcrumb`.
+            let breadcrumb = match &text.crumb {
+                None => None,
+                Some(_) => {
+                    let home = site
+                        .locale
+                        .iter()
+                        .find(|l| &l.tag == locale)
+                        .and_then(|l| l.strings.get("nav_home"))
+                        .ok_or_else(|| {
+                            format!(
+                                "{} in {locale} declares a crumb, but the locale has no nav_home string",
+                                page.path
+                            )
+                        })?;
+                    text.breadcrumb(locale, home)
+                }
+            };
+            // Variables that exist only for some routes. Absent rather than
+            // empty, so a template that wants one fails loudly under the strict
+            // undefined behaviour set above. (`context!` takes one `..` merge,
+            // so the two are combined here.)
+            let dated = match &page.date_published {
+                Some(d) => context! { date_published => d },
+                None => context! {},
+            };
+            let optional = match &breadcrumb {
+                Some(b) => context! { breadcrumb => Value::from_safe_string(b.clone()), ..dated },
+                None => dated,
+            };
             // Titles and descriptions are escaped — one of them contains an
             // ampersand. The two URLs are not: they are ours, from site.toml, and
             // minijinja's HTML escaper turns every slash into &#x2f;, which is
@@ -372,12 +403,7 @@ fn render_pages(
                 js_version => &js_v,
                 og_image => url_attr(&format!("{ORIGIN}/static/og/{}.png", text.slug())),
                 date_modified => &page.date_modified,
-                ..match &page.date_published {
-                    Some(d) => context! { date_published => d },
-                    // Absent rather than empty, so a template that wants it fails
-                    // loudly under the strict undefined behaviour set above.
-                    None => context! {},
-                }
+                ..optional
             })?;
             let html = strip_comments(&html);
 

@@ -154,6 +154,39 @@ pub(crate) struct LocaleText {
     /// failure described above, so it is never the default.
     #[serde(default)]
     pub(crate) template: Option<String>,
+    /// This page's name in its breadcrumb — the second and last item; the first
+    /// is the locale's home, named by its `nav_home` string.
+    ///
+    /// The seventy-five BreadcrumbList nodes were hand-written JSON in the
+    /// templates, one per route per locale, with the URLs typed out. The names
+    /// are the one part that cannot be derived — only 28 of 75 matched the
+    /// start of the title — so they live here and the rest is built by
+    /// `breadcrumb()`. A route without one gets no breadcrumb variable, and a
+    /// template that asks for it fails the build under strict undefined.
+    #[serde(default)]
+    pub(crate) crumb: Option<String>,
+}
+
+impl LocaleText {
+    /// The BreadcrumbList node for this page, serialised: home → this page.
+    ///
+    /// Home is `ORIGIN/<locale>`, the locale home's canonical — not `ORIGIN`,
+    /// which is a 302 and which 38 of the hand-written breadcrumbs pointed at
+    /// before `check:entity` started holding them to the route table.
+    pub(crate) fn breadcrumb(&self, locale: &str, home_name: &str) -> Option<String> {
+        let name = self.crumb.as_ref()?;
+        Some(
+            serde_json::json!({
+                "@type": "BreadcrumbList",
+                "@id": format!("{}#breadcrumb", self.canonical),
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": home_name, "item": format!("{ORIGIN}/{locale}")},
+                    {"@type": "ListItem", "position": 2, "name": name, "item": self.canonical},
+                ]
+            })
+            .to_string(),
+        )
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -369,6 +402,7 @@ pub(crate) mod tests {
             description: String::new(),
             canonical: canonical.to_string(),
             template: None,
+            crumb: None,
         }
     }
 
@@ -378,6 +412,7 @@ pub(crate) mod tests {
             description: description.to_string(),
             canonical: canonical.to_string(),
             template: None,
+            crumb: None,
         }
     }
 
@@ -518,6 +553,24 @@ pub(crate) mod tests {
     // pinned: home and non-home canonicals, the canonical locale keeping the
     // route's template, every other locale getting its own — and a row that
     // states a value keeping it.
+    // The breadcrumb is data, built by serde_json: the URLs come out as URLs,
+    // not autoescaped `&#x2f;`, and a quote in a name cannot break the JSON.
+    #[test]
+    fn a_breadcrumb_runs_from_the_locale_home_to_the_page() {
+        let mut t = text("https://taux.io/ja-JP/geo-guide");
+        assert_eq!(t.breadcrumb("ja-JP", "ホーム"), None);
+        t.crumb = Some("GEO \"入門\"".to_string());
+        let json = t.breadcrumb("ja-JP", "ホーム").unwrap();
+        assert!(json.starts_with(
+            r#"{"@type":"BreadcrumbList","@id":"https://taux.io/ja-JP/geo-guide#breadcrumb""#
+        ));
+        assert!(json.contains(r#""position":1,"name":"ホーム","item":"https://taux.io/ja-JP""#));
+        assert!(json.contains(
+            r#""position":2,"name":"GEO \"入門\"","item":"https://taux.io/ja-JP/geo-guide""#
+        ));
+        assert!(!json.contains("&#"));
+    }
+
     #[test]
     fn omitted_canonicals_and_templates_are_derived() {
         let mut site: Site = toml::from_str(
