@@ -1,0 +1,60 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["同仁已经各自在用 ChatGPT 之类的工具，但公司没有共同的做法与规范", "想导入 AI，但不确定该从哪个部门、哪项工作开始", "试过一两套 AI 工具，说不出它到底省了多少时间", "担心公司数据交给 AI 的风险，想先把规则定清楚"] %}
+{%- set scope = [{"t": "现况盘点", "d": "访谈各部门，列出重复性高、规则清楚、数据拿得到的工作，以及每一项现在花多少时间。"}, {"t": "用例评估与排序", "d": "依效益、风险与数据就绪程度排序，挑出第一批要做的项目，并写明不做的理由。"}, {"t": "工具与架构建议", "d": "先看公司已经在付费的工具（例如 Google Workspace、Microsoft 365）内置的 AI 能不能做到；做不到的，才建议开发或采购。"}, {"t": "PoC 与导入", "d": "在一个部门、一项工作上先做，确认可行后再扩大，避免一次改动整间公司。"}, {"t": "成效量测", "d": "导入前取基线（处理件数、处理时间、返工率），导入后用同一把尺量；员工自评与客观数字分开记录。"}, {"t": "使用规范", "d": "哪些数据可以交给 AI、要用哪一种方案、输出由谁审核，写成同仁看得懂的规则。"}] %}
+{%- set process = [{"t": "盘点与访谈", "d": "了解现有流程、工具与数据，产出可以用 AI 处理的工作清单。"}, {"t": "选题与基线", "d": "排定优先序，为第一批项目设置量测指标并取得导入前的数字。"}, {"t": "PoC 与导入", "d": "实作、调整，并训练实际使用的同仁。"}, {"t": "量测与下一步", "d": "用同一组指标比对前后，决定扩大、调整或停止。"}] %}
+{%- set deliverables = ["现况盘点报告与可用 AI 处理的工作清单", "用例优先序与评估依据", "PoC 成果与可行性评估", "AI 使用规范", "导入前后的成效量测报告"] %}
+{%- set faqs = [{"q": "我们公司规模不大，也需要 AI 导入顾问吗？", "a": "规模小反而容易开始：流程短、决策快。我们会先找出一两项最花时间的重复性工作，从那里开始，而不是一次改变整间公司。"}, {"q": "导入 AI 一定要买新的软件吗？", "a": "不一定。很多需求用公司已经在付费的工具就能做到，例如 Google Workspace 或 Microsoft 365 内置的 AI。只有现有工具做不到时，才建议另外开发或采购。"}, {"q": "怎么知道导入 AI 有没有效？", "a": "导入前先量基线：挑出能客观计数的指标，例如处理件数、处理时间、返工率。导入后用同一把尺量，并把同仁的自评与客观数字分开记录。"}, {"q": "把公司数据交给 AI 安全吗？", "a": "这是导入前就要定下的规则。我们会协助订出哪些数据可以使用、该选哪一种方案与合约条件，以及输出由谁审核。"}] %}
+{% include "header.html" %}
+<!-- Service page: 企业 AI 导入顾问. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "企业 AI 导入顾问", "serviceType": "AI 导入顾问", "description": "TauX 为中小企业提供 AI 导入顾问与技术导入：盘点值得用 AI 做的工作、排定优先序、做 PoC、导入前先量基线，事后用同一把尺验收成效。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI adoption consulting</span>
+        <span class="display-sub">企业 AI 导入顾问</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">先找出值得用 AI 做的工作，再决定怎么做。导入前先量基线，事后才说得出有没有效。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI 导入效益</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">提示词指南</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">数据治理</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,61 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["流程固定但步骤多，例如报价整理、订单核对、报表汇整", "试过聊天机器人，但需要的是它实际去做事，而不只是回答", "工作要在好几个系统之间来回复制粘贴", "想先用一条流程试试看，确认可行再扩大"] %}
+{%- set scope = [{"t": "流程分析", "d": "拆解现有流程的每一个步骤，找出需要人判断、不能交给 AI 的点。"}, {"t": "Agent 设计", "d": "定义它的角色、可以使用的工具、停止条件，以及什么情况交还给人。"}, {"t": "开发与工具串接", "d": "以 Claude、Gemini 等模型实作，工具以 MCP 提供，之后要换模型时不必重写串接。"}, {"t": "测试与评估", "d": "用真实案例测试正确率，列出已知的失败情况与对应处理。"}, {"t": "上线与监控", "d": "所有动作留下记录，异常时通知负责人，并定期查看成效。"}] %}
+{%- set process = [{"t": "流程分析", "d": "选定一条流程，记录现在怎么做、花多少时间、哪里最容易出错。"}, {"t": "设计与规格", "d": "写下 Agent 要做什么、不做什么、何时停下来。"}, {"t": "开发与测试", "d": "实作并用真实案例反复测试。"}, {"t": "试行与上线", "d": "先让少数同仁使用，确认后正式上线并交付监控方式。"}] %}
+{%- set deliverables = ["流程分析与 Agent 设计文档", "Agent 程序、提示词与工具设置", "测试案例与评估结果", "上线、记录与异常通报设置", "维护文档"] %}
+{%- set faqs = [{"q": "AI Agent 跟聊天机器人有什么不同？", "a": "聊天机器人回答问题；AI Agent 会依步骤执行工作，例如查数据、调用系统、产出文档，并在需要人判断的地方停下来。"}, {"q": "AI Agent 做错了怎么办？", "a": "设计时就决定哪些步骤必须由人确认，所有动作都留下记录。上线前用真实案例测试，并列出已知的失败情况与处理方式。"}, {"q": "会绑定某一家 AI 公司的模型吗？", "a": "不会。依任务、成本与数据规定选择模型；工具以 MCP 提供，之后要换模型时不必重写串接。"}] %}
+{% include "header.html" %}
+<!-- Service page: AI Agent 开发. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI Agent 开发", "serviceType": "AI Agent 开发", "description": "TauX 为中小企业开发 AI Agent：把规则清楚、步骤重复的工作流程，交给能调用工具、依步骤执行、在需要人判断时停下来并留下记录的 AI。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI agent development</span>
+        <span class="display-sub">把重复的流程交给会执行的 AI</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">把一段有规则、会重复的工作流程，交给能调用工具、依步骤执行、并留下记录的 AI Agent；需要人判断的地方，它会停下来。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-dev-workflow" class="underline underline-offset-4">AI Agent 开发流程实战</a></li>
+        <li><a href="/{{ locale }}/claude-skills-guide" class="underline underline-offset-4">Claude Skills 实战指南</a></li>
+        <li><a href="/{{ locale }}/adk-skill-patterns" class="underline underline-offset-4">ADK Skill 设计模式</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">提示词指南</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

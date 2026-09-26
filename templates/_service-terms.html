@@ -1,0 +1,13 @@
+{% from "_blocks.html" import cover -%}
+<!-- The terms every service shares — cycle and pricing — written once, from
+     [locale.strings]. The owner's answers, 2026-09: engagements run in cycles
+     of three months, six months or a year; pricing is estimated per case. A
+     change to either is one edit here, not ten. -->
+<section id="cycle">
+    {% call cover("05") %}{{ strings.service_cycle_title }}{% endcall %}
+    <p class="leading-relaxed max-w-prose">{{ strings.service_cycle_body }}</p>
+</section>
+<section id="pricing">
+    {% call cover("06") %}{{ strings.service_pricing_title }}{% endcall %}
+    <p class="leading-relaxed max-w-prose">{{ strings.service_pricing_body }}</p>
+</section>

@@ -64,7 +64,8 @@ CI（`.github/workflows/checks.yml`）在每個 PR 跑兩個 job：`build` 跑�
 
 1. 在 `templates/` 寫 zh-Hant-TW 正本，其他 locale 放在 `templates/<locale>/`（簡體可用 `node scripts/hans.js` 起稿）
 2. 在 `site.toml` 加一個 `[[page]]`，每個 locale 一段 `[page.locale.<tag>]`（`title`、`description`，要麵包屑就加 `crumb`，模板的 JSON-LD `@graph` 裡寫 `{{ breadcrumb }}`）
-3. 導覽連結在 `templates/_nav-columns.html`，連結文字在 `site.toml` 每個 `[[locale]]` 的 `[locale.strings]`（`nav_*`）
+3. 選單是產生的：服務頁在 `[[page]]` 加 `section = "ai" | "marketing" | "training" | "security"`，技術文章加 `section = "article"`（會列在 `/insights`）；選單名稱是該 locale 的 `label`（沒有就用 `crumb`）。某 locale 沒有這頁，那個 locale 的選單就不列它
+   - **服務頁**照現有的寫：模板開頭用 `{% set %}` 寫 `audience`、`scope`、`process`、`deliverables`、`faqs` 五份清單，交給 `_blocks.html` 的 `lines`／`items`／`steps`／`faq_list`／`faq_jsonld`；合作週期、計價、聯絡是共用的 `_service-terms.html`、`_service-contact.html`（文字在 `[locale.strings]` 的 `service_*`）。FAQ 只寫一次，頁面與 FAQPage 由同一份清單產生
 4. 在 `public/llms.txt` 列出它（`check:llms` 會擋），`npm run build:og` 產生分享卡
 5. 章節封面與 FAQ 用 `templates/_blocks.html` 的 macro，不要手抄外殼：第一行寫 `{% from "_blocks.html" import cover, faq -%}`，章節標題寫 `{% call cover("01") %}標題{% endcall %}`（`cover("02", "Tool wrapper")` 帶英文名，`cover()` 不帶眉標），FAQ 寫 `{% call faq("問題？") %}答案{% endcall %}`，最後一題加 `last=true`。問題要與 FAQPage JSON-LD 逐字相同（`check:entity` 會擋）。macro 只收內容，class 一律寫在 macro 裡（設計規則 37）
 

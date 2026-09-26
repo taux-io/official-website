@@ -85,3 +85,64 @@
     <div class="pb-8 text-sm leading-loose max-w-prose">{{ caller() }}</div>
 </details>
 {%- endmacro %}
+
+{#-
+  Service pages (the menu's service columns). Each page is data — lists set at
+  the top of the template — rendered through these, so ten pages share one
+  shape: who it is for, what is done, how it runs, what is handed over, then
+  the shared terms (`_service-terms.html`), FAQ, reading, and contact.
+
+      {% set scope = [{"t": "標題", "d": "說明"}, …] %}
+      {{ items(scope) }}
+-#}
+{% macro items(list) -%}
+<div class="space-y-6">
+{%- for it in list %}
+    <div class="border-t border-line pt-6">
+        <h3 class="mb-3">{{ it.t }}</h3>
+        <p class="text-sm leading-relaxed">{{ it.d }}</p>
+    </div>
+{%- endfor %}
+</div>
+{%- endmacro %}
+{#- Numbered steps: the same rows, in order. The number is plain text in the
+    heading — not an <ol>, whose own numbering the Markdown twin would print a
+    second time, and not a font-sans badge, which the twin's heading rules read
+    as a two-part heading. -#}
+{% macro steps(list) -%}
+<div class="space-y-6">
+{%- for it in list %}
+    <div class="border-t border-line pt-6">
+        <h3 class="mb-3">{{ loop.index }}. {{ it.t }}</h3>
+        <p class="text-sm leading-relaxed">{{ it.d }}</p>
+    </div>
+{%- endfor %}
+</div>
+{%- endmacro %}
+{#- A plain list of short lines: who a service is for, what is handed over. -#}
+{% macro lines(list) -%}
+<ul class="space-y-3">
+{%- for line in list %}
+    <li class="border-t border-line pt-3 leading-relaxed">{{ line }}</li>
+{%- endfor %}
+</ul>
+{%- endmacro %}
+{#-
+  FAQ from ONE list, for both places it must appear: the visible items and the
+  FAQPage node. `check:entity` requires them to agree word for word; writing
+  them once makes that true by construction instead of by vigilance.
+      {% set faqs = [{"q": "問題", "a": "答案"}, …] %}
+      {{ faq_list(faqs) }}                      in the page
+      {{ faq_jsonld(faqs, canonical) }}         in the @graph
+  `tojson` writes JSON escapes, never HTML entities — the autoescape trap
+  (`&#x2f;` inside JSON-LD) cannot occur here.
+-#}
+{% macro faq_list(list) -%}
+{%- for f in list %}
+{% call faq(f.q, last=loop.last) %}{{ f.a }}{% endcall %}
+{%- endfor %}
+{%- endmacro %}
+{% macro faq_jsonld(list, canonical) -%}
+{"@type": "FAQPage", "@id": {{ (canonical ~ "#faq")|tojson }}, "mainEntity": [
+{%- for f in list %}{"@type": "Question", "name": {{ f.q|tojson }}, "acceptedAnswer": {"@type": "Answer", "text": {{ f.a|tojson }}}}{% if not loop.last %}, {% endif %}{% endfor %}]}
+{%- endmacro %}

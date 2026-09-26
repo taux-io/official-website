@@ -1,156 +1,59 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["同仁会用 AI，但得到的答案常常很普通、还要大改", "每个人各自摸索，公司没有共同的用法", "想让 AI 协助分析与决策，而不只是写文案", "有大量内部文档，想让 AI 依这些文档回答"] %}
+{%- set scope = [{"t": "结构化提示词", "d": "用角色、任务、背景、格式四个要素写出清楚的指令，让输出可以预期。"}, {"t": "推理与决策", "d": "引导 AI 逐步推理（Chain of Thought），协助比较方案、找出盲点，而不只是产生内容。"}, {"t": "知识库", "d": "用 NotebookLM 把公司文档整理成可以对话、会标示出处的知识库。"}, {"t": "专属助理（Gem）", "d": "把部门常用的问法固定成可重复使用的 Gemini 助理，让整个团队用同一套做法。"}, {"t": "使用规范", "d": "哪些数据可以交给 AI、输出要怎么查证。"}] %}
+{%- set process = [{"t": "需求访谈", "d": "了解部门工作与同仁目前怎么用 AI。"}, {"t": "课程规划", "d": "用你们实际的工作情境设计练习。"}, {"t": "授课与实作", "d": "每个单元都有实作，课堂上做出可以带回去用的成果。"}, {"t": "课后追踪", "d": "整理常见问题，视需要安排高级课程。"}] %}
+{%- set deliverables = ["课程规划", "讲义与提示词模板", "课堂实作成果（例如部门专属助理）", "课后问卷与反馈整理"] %}
+{%- set faqs = [{"q": "完全没用过 AI 的同仁也能上吗？", "a": "可以。课程会依同仁程度分组，从基本操作开始，再进到结构化的问法。"}, {"q": "课程用哪一套 AI 工具？", "a": "以 Google 的 Gemini 与 NotebookLM 为主；方法本身适用于其他 AI 工具，课前会依公司使用的工具调整。"}, {"q": "上完课能带回什么？", "a": "每个单元都有实作。课程结束时，同仁会带走提示词模板，以及课堂上做出的部门专属助理。"}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: 生成式 AI 实务课程. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/zh-Hans-CN/ai-smart-work#service",
-            "serviceType": "AI Corporate Training",
-            "provider": {% include "_org-ref.html" %},
-            "name": "AI 数智化企业内训",
-            "description": "协助企业与个人打造专属 AI 数智化助理 (Gem)，掌握 Prompt Engineering 与 CoT 推理技术。",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "生成式 AI 实务课程", "serviceType": "教育训练", "description": "TauX 为企业规划生成式 AI 内训：结构化的提示词写法、让 AI 协助推理与决策、用 NotebookLM 整理知识库，以及把一组问法固定成可重复使用的专属助理（Gem）。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <div>
-<span class="tag mb-2">AI Corporate Training</span>
-
-                <h1 class="mb-2">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">From Generating to Deciding</span>
-            <span class="display-sub">95% 的人只用 AI 生成内容，5% 的人懂得用 AI 辅助决策</span>
-        </h1>
-
-                <p class="text-base tablet:text-lg leading-relaxed max-w-prose mb-3">
-                    这页讲的是问法，以及怎么把一组问法固定成一个可重复用的助理（Gem）。内训做的就是这件事。
-                </p>
-
-                <a href="mailto:hello@taux.io" class="btn">
-                    预约企业内训咨询
-                </a>
-            </div>
-
-        </header>
-
-<!-- Problem Section -->
-<section>
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-            <span class="display-sub">为什么你的 AI 总是给出平庸的答案？</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-                <h3 class="mb-4">Garbage In, Garbage Out</h3>
-                <p class="leading-relaxed">指令模糊，结果就模糊。不懂精确描述需求，AI 就只能给你泛泛之谈。</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">沟通断层</h3>
-                <p class="leading-relaxed">还在用搜索引擎的方式对话？AI 需要的是结构化的「工程化语言」，而非闲聊。</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">缺乏角色</h3>
-                <p class="leading-relaxed">没有设置 Persona 的 AI 就像没有灵魂的机器。赋予它角色，它才能切换视角。</p>
-            </div>
-        </div>
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Generative AI in practice</span>
+        <span class="display-sub">企业内训：问法、推理与专属助理</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">同一个问题换个问法，答案的可用度差很多。这门课教的是问法，以及怎么把一组问法固定成一个可重复使用的助理（Gem）。</p>
 </section>
-
-<!-- Methodology -->
-<section id="methodology">
-        <div class="mb-8">
-            <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
-                Methodology</span>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
-                <span class="display-sub">掌握 AI 沟通的「数字口才学」</span>
-            {% endcall %}
-        </div>
-
-        <div class="space-y-6">
-            <!-- Method 1 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">PTCF 结构化提示词</h3>
-                <p class="mb-6">独家架构：角色 (Persona)、任务 (Task)、背景 (Context)、格式 (Format)。精准控制 AI 输出。</p>
-            </div>
-
-            <!-- Method 2 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">深度推理 (CoT)</h3>
-                <p class="mb-6">启动逻辑区。运用思维链 (Chain of Thought)，让 AI 协助你进行复杂决策与推演。</p>
-            </div>
-
-            <!-- Method 3 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">知识库管理 (RAG)</h3>
-                <p class="mb-6">利用 NotebookLM 打造专属大脑。将千页文档转化为可对话的智能资产。</p>
-            </div>
-        </div>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
 </section>
-
-<!-- Use Cases -->
-<section id="cases">
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
-            <span class="display-sub">让 AI 成为你的百变分身</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-<h3 class="mb-2">精准点餐模式</h3>
-                <p class="text-sm mb-4 font-semibold">应用：客户服务、订单处理</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "将口语化的需求转化为标准化数据表格，像专业店员一样精准执行任务。"
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">会议决策模拟</h3>
-                <p class="text-sm mb-4 font-semibold">应用：项目管理、风险评估</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "模拟 PM、工地主任与品管经理三方辩论，针对项目风险进行交叉诘问。"
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">自动化新闻稿</h3>
-                <p class="text-sm mb-4 font-semibold">应用：公关行销、政府文书</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "输入法规与事实，自动生成符合政府风格与格式的标准新闻稿。"
-                </p>
-            </div>
-        </div>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
 </section>
-
-<!-- CTA -->
-<section>
-        <div class="relative overflow-hidden">
-            <div class="relative z-10">
-                {% call cover() %}
-                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                    <span class="display-sub">懂得问，AI才会答；懂得想，AI才能帮</span>
-                {% endcall %}
-                <p class="text-lg mb-6 max-w-prose mx-auto">同一个问题换个问法，答案的可用度差很多。想把它变成团队的共同做法，那是另一件事——可以聊。</p>
-                <a href="mailto:hello@taux.io" class="btn">
-                    开始咨询
-                </a>
-            </div>
-        </div>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
 </section>
-
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">提示词指南</a></li>
+        <li><a href="/{{ locale }}/google-workspace-training" class="underline underline-offset-4">Google Workspace 教育训练</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

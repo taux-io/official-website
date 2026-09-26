@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["已上线或准备上线的 AI 客服、聊天机器人或内部 AI 助理", "AI 应用串接了内部数据，或能执行寄信、下单等动作", "需要向客户、审计或主管机关说明 AI 的安全措施", "模型或功能改版后，不确定原本的防护还有没有效"] %}
+{%- set scope = [{"t": "范围界定", "d": "厘清应用架构、AI 可以访问的数据与工具，以及不同用户的权限。"}, {"t": "提示词注入测试", "d": "直接注入与间接注入（藏在文档、网页、Email 里的指令），确认 AI 会不会被改变行为。"}, {"t": "数据外泄与越权", "d": "系统提示与敏感数据是否会被套出、AI 能否被诱导执行超出权限的动作。"}, {"t": "输出处理", "d": "AI 的输出被其他系统使用时，是否会造成注入或错误执行。"}, {"t": "报告与复测", "d": "每个发现附严重度、重现步骤与修补建议；修补后复测。"}] %}
+{%- set process = [{"t": "范围与规则", "d": "约定测试范围、环境、时段与停止条件。"}, {"t": "测试", "d": "依 OWASP LLM Top 10 逐项测试，记录每一次尝试。"}, {"t": "报告", "d": "说明发现、影响与修补建议，并与开发团队逐项讨论。"}, {"t": "复测", "d": "修补后重新测试，确认问题已处理。"}] %}
+{%- set deliverables = ["测试范围与方法说明", "发现清单（严重度、重现步骤、修补建议）", "复测报告"] %}
+{%- set faqs = [{"q": "什么是 AI 对抗测试？", "a": "模拟攻击者，尝试让 AI 应用做出不该做的事：泄漏数据、忽略原本的指令、执行超出权限的动作。目的是在真正的攻击者之前找到问题。"}, {"q": "AI 对抗测试跟一般的渗透测试有什么不同？", "a": "一般渗透测试针对网络、服务器与网页的弱点；AI 对抗测试针对语言模型特有的风险，例如用文字内容改变模型行为的提示词注入。两者互补。"}, {"q": "测试会影响正式环境吗？", "a": "建议在测试环境进行。必须在正式环境测试时，会事先约定范围、时段与停止条件。"}, {"q": "修补之后就安全了吗？", "a": "提示词注入目前没有一次根治的解法，重点是降低风险、限制 AI 能动用的权限与数据。模型或功能改版后，建议重新测试。"}] %}
+{% include "header.html" %}
+<!-- Service page: AI 对抗测试. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI 对抗测试", "serviceType": "网络安全测试", "description": "TauX 为 AI 客服、内部 AI 助理与 AI Agent 提供对抗测试：提示词注入、数据外泄、越权操作等 LLM 特有风险，依 OWASP LLM Top 10 逐项测试，并提供重现步骤与修补建议。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI red teaming</span>
+        <span class="display-sub">依 OWASP LLM Top 10 测试你的 AI 应用</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">在上线前，用攻击者的方法测你的 AI 应用：提示词注入、数据外泄、越权操作，依 OWASP LLM Top 10 逐项检查。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="/{{ locale }}/what-is-prompt-injection" class="underline underline-offset-4">Prompt Injection 说明</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

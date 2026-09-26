@@ -116,6 +116,13 @@ script = "Hant"
   insights_lead = "我們寫給自己、也寫給客戶的技術筆記。每一篇都附出處，並寫明結論在哪裡不再適用。"
   insights_articles = "文章"
   insights_open_source = "臺灣證券交易所公開資料的 MCP server：股價、ETF 與 140 多個公開資料集，讓 AI 應用程式直接查詢。我們公開維護。"
+  service_cycle_title = "合作週期"
+  service_cycle_body = "以三個月、半年或一年為一個週期，依範圍決定。每個週期結束時，我們會和你一起對照一開始設定的目標，再決定下一個週期要做什麼，或到此為止。"
+  service_pricing_title = "計價方式"
+  service_pricing_body = "依個別案例估算：要處理的系統與資料有多少、需要的人力與時間、週期多長。先聊一次，我們會依實際範圍給你一個數字，而不是先報價再湊範圍。"
+  service_contact_title = "聊聊你的狀況"
+  service_contact_body = "寫信告訴我們你現在卡在哪裡，我們會回覆可行的做法與下一步。"
+  service_contact_button = "寫信給我們"
   nav_home = "首頁"
   nav_about = "關於 TauX"
   nav_building = "公開打造中"
@@ -162,6 +169,13 @@ script = "Hans"
   insights_lead = "我们写给自己、也写给客户的技术笔记。每一篇都附出处，并写明结论在哪里不再适用。"
   insights_articles = "文章"
   insights_open_source = "台湾证券交易所公开数据的 MCP server：股价、ETF 与 140 多个公开数据集，让 AI 应用程序直接查询。我们公开维护。"
+  service_cycle_title = "合作周期"
+  service_cycle_body = "以三个月、半年或一年为一个周期，依范围决定。每个周期结束时，我们会和你一起对照一开始设置的目标，再决定下一个周期要做什么，或到此为止。"
+  service_pricing_title = "计价方式"
+  service_pricing_body = "依个别案例估算：要处理的系统与数据有多少、需要的人力与时间、周期多长。先聊一次，我们会依实际范围给你一个数字，而不是先报价再凑范围。"
+  service_contact_title = "聊聊你的状况"
+  service_contact_body = "写信告诉我们你现在卡在哪里，我们会回复可行的做法与下一步。"
+  service_contact_button = "写信给我们"
   nav_home = "首页"
   nav_about = "关于 TauX"
   nav_building = "公开打造中"
@@ -375,22 +389,41 @@ date_published = "2025-08-15"
   crumb       = "GEO Guide"
 
 [[page]]
+path        = "/digital-advertising"
+template    = "digital-advertising.html"
+section    = "marketing"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "數位廣告投放｜Google 與 Meta 廣告，從追蹤設定開始 | TauX"
+  description = "TauX 為中小企業規劃與執行 Google、Meta（Facebook、Instagram）廣告投放：先把轉換追蹤設定好，再設定目標、受眾與預算，每月回報花費與成效。"
+  crumb       = "數位廣告投放"
+  label       = "數位廣告投放"
+
+  [page.locale.zh-Hans-CN]
+  title       = "数字广告投放｜Google 与 Meta 广告，从追踪设置开始 | TauX"
+  description = "TauX 为中小企业规划与执行 Google、Meta（Facebook、Instagram）广告投放：先把转换追踪设置好，再设置目标、受众与预算，每月回报花费与成效。"
+  crumb       = "数字广告投放"
+  label       = "数字广告投放"
+
+[[page]]
 path        = "/geo-optimization"
 template    = "geo-optimization.html"
 section    = "marketing"
-date_modified = "2026-08-05"
+date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
-  title       = "GEO 生成式引擎優化服務｜讓品牌成為 AI 的答案 | TauX"
-  description = "TauX 的 GEO 服務：結構化資料建置、內容分塊、llms.txt 與引用率量測，讓品牌成為 ChatGPT、Perplexity 與 Google AI 摘要的引用來源。含現況稽核、實作與 6–8 週後的成效對照。"
-  label       = "GEO 優化服務"
-  crumb       = "GEO 生成式引擎優化服務"
+  title       = "SEO 與 GEO 搜尋優化｜讓搜尋引擎與 AI 都找得到、引用得了 | TauX"
+  description = "TauX 為中小企業提供 SEO 與 GEO（生成式引擎優化）：技術 SEO、內容與關鍵字、結構化資料、llms.txt 與 AI 爬蟲政策，並在動工前記錄基準線，之後量測被引用的變化。"
+  crumb       = "SEO 與 GEO 搜尋優化"
+  label       = "SEO 與 GEO 搜尋優化"
 
   [page.locale.zh-Hans-CN]
-  title       = "GEO 生成式引擎优化服务｜让品牌成为 AI 的答案 | TauX"
-  description = "TauX 的 GEO 服务：结构化数据搭建、内容分块、llms.txt 与引用率量测，让品牌成为 ChatGPT、Perplexity 与 Google AI 摘要的引用来源。含现况审计、实作与 6–8 周后的成效对照。"
-  label       = "GEO 优化服务"
-  crumb       = "GEO 生成式引擎优化服务"
+  title       = "SEO 与 GEO 搜索优化｜让搜索引擎与 AI 都找得到、引用得了 | TauX"
+  description = "TauX 为中小企业提供 SEO 与 GEO（生成式引擎优化）：技术 SEO、内容与关键字、结构化数据、llms.txt 与 AI 爬虫政策，并在动工前记录基准线，之后量测被引用的变化。"
+  crumb       = "SEO 与 GEO 搜索优化"
+  label       = "SEO 与 GEO 搜索优化"
 
   [page.locale.ja-JP]
   title       = "GEO 生成エンジン最適化サービス｜AI の答えの中に入る | TauX"
@@ -411,22 +444,41 @@ date_modified = "2026-08-05"
   crumb       = "Generative Engine Optimization"
 
 [[page]]
+path        = "/google-workspace-training"
+template    = "google-workspace-training.html"
+section    = "training"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "Google Workspace 教育訓練｜企業與政府機關課程 | TauX"
+  description = "TauX 為企業與政府機關規劃 Google Workspace 教育訓練：雲端協作、文件與試算表、會議與日曆、Workspace 內建 AI（Gemini），以及管理者設定，依實際工作流程設計練習。"
+  crumb       = "Google Workspace 教育訓練"
+  label       = "Google Workspace 教育訓練"
+
+  [page.locale.zh-Hans-CN]
+  title       = "Google Workspace 教育训练｜企业与政府机关课程 | TauX"
+  description = "TauX 为企业与政府机关规划 Google Workspace 教育训练：云端协作、文档与试算表、会议与日历、Workspace 内置 AI（Gemini），以及管理者设置，依实际工作流程设计练习。"
+  crumb       = "Google Workspace 教育训练"
+  label       = "Google Workspace 教育训练"
+
+[[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
 section    = "training"
 date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
-  title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
-  description = "用 AI 自動化工作流程、提升團隊生產力。TauX 提供企業 AI 導入顧問與內訓，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。"
-  label       = "AI 智能辦公"
-  crumb       = "AI 數智化內訓"
+  title       = "生成式 AI 實務課程｜企業內訓：問法、推理與專屬助理 | TauX"
+  description = "TauX 為企業規劃生成式 AI 內訓：結構化的提示詞寫法、讓 AI 協助推理與決策、用 NotebookLM 整理知識庫，以及把一組問法固定成可重複使用的專屬助理（Gem）。"
+  crumb       = "生成式 AI 實務課程"
+  label       = "生成式 AI 實務課程"
 
   [page.locale.zh-Hans-CN]
-  title       = "AI 智能办公解决方案｜企业 AI 导入与内训 | TauX"
-  description = "用 AI 自动化工作流程、提升团队生产力。TauX 提供企业 AI 导入顾问与内训，教授 PTCF 提示词架构、CoT 深度推理与专属 Agent 打造。"
-  label       = "AI 智能办公"
-  crumb       = "AI 数智化内训"
+  title       = "生成式 AI 实务课程｜企业内训：问法、推理与专属助理 | TauX"
+  description = "TauX 为企业规划生成式 AI 内训：结构化的提示词写法、让 AI 协助推理与决策、用 NotebookLM 整理知识库，以及把一组问法固定成可重复使用的专属助理（Gem）。"
+  crumb       = "生成式 AI 实务课程"
+  label       = "生成式 AI 实务课程"
 
   [page.locale.ja-JP]
   title       = "企業向け AI 実務研修｜導入と社内トレーニング | TauX"
@@ -515,22 +567,117 @@ date_published = "2026-08-06"
   crumb       = "Post-Quantum Cryptography Migration"
 
 [[page]]
+path        = "/ai-consulting"
+template    = "ai-consulting.html"
+section    = "ai"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "企業 AI 導入顧問｜從盤點、PoC 到成效量測 | TauX"
+  description = "TauX 為中小企業提供 AI 導入顧問與技術導入：盤點值得用 AI 做的工作、排定優先序、做 PoC、導入前先量基線，事後用同一把尺驗收成效。"
+  crumb       = "企業 AI 導入顧問"
+  label       = "企業 AI 導入顧問"
+
+  [page.locale.zh-Hans-CN]
+  title       = "企业 AI 导入顾问｜从盘点、PoC 到成效量测 | TauX"
+  description = "TauX 为中小企业提供 AI 导入顾问与技术导入：盘点值得用 AI 做的工作、排定优先序、做 PoC、导入前先量基线，事后用同一把尺验收成效。"
+  crumb       = "企业 AI 导入顾问"
+  label       = "企业 AI 导入顾问"
+
+[[page]]
+path        = "/mcp-integration"
+template    = "mcp-integration.html"
+section    = "ai"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "舊系統與 AI 串接｜用 MCP 打通資料孤島 | TauX"
+  description = "資料散在 ERP、Excel、共用資料夾與各部門系統裡，AI 看不到。TauX 用 MCP（Model Context Protocol）把舊系統接給 AI，唯讀優先、沿用既有權限並留下紀錄。"
+  crumb       = "舊系統與 AI 串接"
+  label       = "舊系統與 AI 串接（MCP）"
+
+  [page.locale.zh-Hans-CN]
+  title       = "旧系统与 AI 串接｜用 MCP 打通数据孤岛 | TauX"
+  description = "数据散在 ERP、Excel、共用文件夹与各部门系统里，AI 看不到。TauX 用 MCP（Model Context Protocol）把旧系统接给 AI，只读优先、沿用既有权限并留下记录。"
+  crumb       = "旧系统与 AI 串接"
+  label       = "旧系统与 AI 串接（MCP）"
+
+[[page]]
+path        = "/ai-agents"
+template    = "ai-agents.html"
+section    = "ai"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "AI Agent 開發｜把重複的工作流程交給會執行的 AI | TauX"
+  description = "TauX 為中小企業開發 AI Agent：把規則清楚、步驟重複的工作流程，交給能呼叫工具、依步驟執行、在需要人判斷時停下來並留下紀錄的 AI。"
+  crumb       = "AI Agent 開發"
+  label       = "AI Agent 開發"
+
+  [page.locale.zh-Hans-CN]
+  title       = "AI Agent 开发｜把重复的工作流程交给会执行的 AI | TauX"
+  description = "TauX 为中小企业开发 AI Agent：把规则清楚、步骤重复的工作流程，交给能调用工具、依步骤执行、在需要人判断时停下来并留下记录的 AI。"
+  crumb       = "AI Agent 开发"
+  label       = "AI Agent 开发"
+
+[[page]]
+path        = "/ai-red-teaming"
+template    = "ai-red-teaming.html"
+section    = "security"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "AI 對抗測試｜依 OWASP LLM Top 10 測試你的 AI 應用 | TauX"
+  description = "TauX 為 AI 客服、內部 AI 助理與 AI Agent 提供對抗測試：提示詞注入、資料外洩、越權操作等 LLM 特有風險，依 OWASP LLM Top 10 逐項測試，並提供重現步驟與修補建議。"
+  crumb       = "AI 對抗測試"
+  label       = "AI 對抗測試"
+
+  [page.locale.zh-Hans-CN]
+  title       = "AI 对抗测试｜依 OWASP LLM Top 10 测试你的 AI 应用 | TauX"
+  description = "TauX 为 AI 客服、内部 AI 助理与 AI Agent 提供对抗测试：提示词注入、数据外泄、越权操作等 LLM 特有风险，依 OWASP LLM Top 10 逐项测试，并提供重现步骤与修补建议。"
+  crumb       = "AI 对抗测试"
+  label       = "AI 对抗测试"
+
+[[page]]
+path        = "/google-secops"
+template    = "google-secops.html"
+section    = "security"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "Google SecOps 導入｜日誌接入、偵測規則與維運交接 | TauX"
+  description = "TauX 協助中小企業導入 Google Security Operations（Google SecOps）：評估日誌來源、接入並正規化為 UDM、撰寫與調整偵測規則、建立告警處理流程，並交接給團隊維運。"
+  crumb       = "Google SecOps 導入"
+  label       = "Google SecOps 導入"
+
+  [page.locale.zh-Hans-CN]
+  title       = "Google SecOps 导入｜日志接入、侦测规则与维运交接 | TauX"
+  description = "TauX 协助中小企业导入 Google Security Operations（Google SecOps）：评估日志来源、接入并正规化为 UDM、撰写与调整侦测规则、建立告警处理流程，并交接给团队维运。"
+  crumb       = "Google SecOps 导入"
+  label       = "Google SecOps 导入"
+
+[[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
 section    = "ai"
 date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
-  title       = "資料治理與 AI 資安｜Data Governance | TauX"
-  description = "用合乎 AI 標準的使用政策與治理框架保護企業資料。涵蓋從資料管理到數位治理的成熟度評估與導入路徑，專為傳統產業數位轉型設計。"
+  title       = "資料治理｜AI 導入之前，先讓資料可以信任 | TauX"
+  description = "TauX 為中小企業提供資料治理顧問與導入：盤點資料、統一標準、監控品質、訂出存取權限與個資規則，讓 AI 導入有可以信任的資料可用。"
+  crumb       = "資料治理"
   label       = "資料治理"
-  crumb       = "數據治理"
 
   [page.locale.zh-Hans-CN]
-  title       = "数据治理与 AI 网络安全｜Data Governance | TauX"
-  description = "用合乎 AI 标准的使用政策与治理框架保护企业数据。涵盖从数据管理到数字治理的成熟度评估与导入路径，专为传统产业数字转型设计。"
-  label       = "数据治理"
+  title       = "数据治理｜AI 导入之前，先让数据可以信任 | TauX"
+  description = "TauX 为中小企业提供数据治理顾问与导入：盘点数据、统一标准、监控质量、订出访问权限与个资规则，让 AI 导入有可以信任的数据可用。"
   crumb       = "数据治理"
+  label       = "数据治理"
 
   [page.locale.ja-JP]
   title       = "データガバナンスと AI セキュリティ｜Data Governance | TauX"

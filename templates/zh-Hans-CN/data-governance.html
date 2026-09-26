@@ -1,135 +1,60 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["同一份数据在不同部门有不同版本，数字对不起来", "想导入 AI 或 BI 报表，但不确定数据能不能用", "不清楚公司有哪些个人资料、放在哪里、谁可以看", "正在规划串接旧系统，想先把数据整理好"] %}
+{%- set scope = [{"t": "数据盘点", "d": "列出公司有哪些数据、放在哪个系统、谁负责、谁在使用。"}, {"t": "标准化", "d": "统一字段定义、代码与命名，让不同系统的同一笔数据对得起来。"}, {"t": "质量监控", "d": "订出质量规则（完整性、正确性、实时性），并建立定期检查的方式。"}, {"t": "权限与个资", "d": "依角色设置访问权限，标出个人资料与敏感数据，对照个人资料保护法的要求。"}] %}
+{%- set process = [{"t": "盘点", "d": "访谈与系统调查，完成数据清册。"}, {"t": "订规则", "d": "制定标准、质量规则与权限原则。"}, {"t": "导入", "d": "在系统与流程中落实，并处理最关键的数据问题。"}, {"t": "监控与交接", "d": "建立定期检查，交付文档给负责的同仁。"}] %}
+{%- set deliverables = ["数据清册（位置、拥有者、用户）", "数据标准与命名规则", "质量规则与检查方式", "权限与个资分类表", "治理文档与交接说明"] %}
+{%- set faqs = [{"q": "中小企业也需要做数据治理吗？", "a": "需要，但范围可以小。先从最常用、最常出错的几份数据开始，例如客户、产品与订单数据，而不是一次整理全公司。"}, {"q": "数据治理跟导入 AI 有什么关系？", "a": "AI 只能用它拿得到、而且正确的数据。数据不一致或权限不清楚时，AI 的答案也不会可靠；先治理数据，导入才有基础。"}, {"q": "要换掉现在的系统吗？", "a": "通常不需要。数据治理主要是订规则、整理数据与流程，大多可以在既有系统上完成。"}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: 数据治理. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/zh-Hans-CN/data-governance#service",
-            "serviceType": "Data Governance Strategy",
-            "provider": {% include "_org-ref.html" %},
-            "name": "企业数据治理服务",
-            "description": "提供数据盘点、标准化与质量监控服务，协助企业建立完善磁铁般的数据资产管理体系。",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "数据治理", "serviceType": "数据治理", "description": "TauX 为中小企业提供数据治理顾问与导入：盘点数据、统一标准、监控质量、订出访问权限与个资规则，让 AI 导入有可以信任的数据可用。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企业"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-<span class="tag mb-4">Data Strategy</span>
-            <h1 class="mb-4">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Govern the Data First</span>
-            <span class="display-sub">数据治理指南</span>
-        </h1>
-            <p class="text-base tablet:text-lg max-w-prose mx-auto">从混乱到洞察：构建企业级的数据资产管理体系</p>
-        </header>
-
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm" lang="en">Why Governance First</span>
-                <span class="display-sub">为什么需要数据治理？</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-prose">
-                数据是新时代的石油，但未经提炼的石油无法驱动引擎。数据治理 (Data Governance) 是一套确保数据质量、安全性与可用性的管理框架。
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 准确性
-                    </div>
-                    <p class="text-sm leading-relaxed">确保决策基于事实而非杂讯。</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                        </span> 合规性
-                    </div>
-                    <p class="text-sm leading-relaxed">符合 GDPR、台湾个资法规范。</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 可用性
-                    </div>
-                    <p class="text-sm leading-relaxed">打破数据孤岛，让业务端随取随用。</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
-                <span class="display-sub">核心服务流程</span>
-            {% endcall %}
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        1</div>
-                    <div>
-                        <h3 class="mb-3">
-                            数据盘点 (Data Inventory)</h3>
-                        <p class="leading-relaxed">像盘点仓库一样，搞清楚你有哪些数据、存在哪里、谁在负责。我们协助企业建立完整的数据目录 (Data
-                            Catalog)。</p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        2</div>
-                    <div>
-                        <h3 class="mb-3">
-                            标准化 (Standardization)</h3>
-                        <p class="leading-relaxed">定义统一的数据语言。例如：「营收」是含税还是未税？「客户」是指下单客户还是潜在客户？消除跨部门的鸡同鸭讲。
-                        </p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        3</div>
-                    <div>
-                        <h3 class="mb-3">
-                            数据质量监控 (Data Quality)</h3>
-                        <p class="leading-relaxed">建立自动化监测机制，实时发现空值、异常值或重复数据，在污染分析报表前就拦截修正。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section>
-                <div>
-                    {% call cover() %}
-                        <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
-                        <span class="display-sub">准备好启动数据治理了吗？</span>
-                    {% endcall %}
-                    <p class="mb-6 max-w-prose mx-auto text-lg">AI 导入卡住的地方通常不是模型，是数据——放在哪、谁在用、能不能信。可以先聊聊你现在的状况。</p>
-
-                    <a href="mailto:hello@taux.io" class="btn">
-                        预约咨询
-                    </a>
-                </div>
-            </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Data governance</span>
+        <span class="display-sub">AI 导入之前，先让数据可以信任</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">AI 导入卡住的地方通常不是模型，是数据：放在哪、谁在用、能不能信。先把这三件事弄清楚。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}适合谁{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服务内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}执行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常见问题{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸阅读{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/mcp-integration" class="underline underline-offset-4">旧系统与 AI 串接</a></li>
+        <li><a href="/{{ locale }}/ai-consulting" class="underline underline-offset-4">企业 AI 导入顾问</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">PQC 后量子密码迁移</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

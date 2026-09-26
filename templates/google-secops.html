@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["日誌分散在防火牆、端點、雲端服務，事件發生時查不到", "想建立資安監控，但沒有大型資安維運團隊", "已採用或正在評估 Google SecOps", "偵測規則太多誤報，告警沒有人處理"] %}
+{%- set scope = [{"t": "現況評估", "d": "盤點日誌來源、保存需求，以及最需要偵測的威脅情境。"}, {"t": "日誌接入與正規化", "d": "把各來源的日誌接進平台，轉成 UDM（統一資料模型），並確認欄位對應正確。"}, {"t": "偵測規則", "d": "依風險撰寫與調整偵測規則，逐步降低誤報。"}, {"t": "告警處理流程", "d": "定義誰收到告警、怎麼判斷、怎麼處理，以及儀表板要看什麼。"}, {"t": "交接與訓練", "d": "操作手冊與維運訓練，讓團隊能自己調整規則與處理事件。"}] %}
+{%- set process = [{"t": "評估", "d": "確認日誌來源、優先順序與要偵測的情境。"}, {"t": "接入", "d": "依優先序接入日誌並完成正規化。"}, {"t": "偵測與調整", "d": "上線偵測規則，依實際告警調整。"}, {"t": "交接", "d": "交付流程文件、操作手冊與訓練。"}] %}
+{%- set deliverables = ["現況評估報告", "日誌來源清單與欄位對應文件", "偵測規則與測試紀錄", "告警處理流程", "操作手冊與訓練"] %}
+{%- set faqs = [{"q": "什麼是 Google SecOps？", "a": "Google Security Operations，Google Cloud 的資安維運平台，整合日誌收集與分析（SIEM）以及自動化回應（SOAR）。本服務協助導入、設定與交接。"}, {"q": "中小企業需要 SIEM 嗎？", "a": "不一定。我們會先評估日誌量、法規要求與人力；如果現階段更適合較輕量的做法，會直接告訴你。"}, {"q": "導入之後由誰監控？", "a": "可以由你的團隊接手，我們提供操作手冊與訓練；也可以另外討論持續的維運支援。"}] %}
+{% include "header.html" %}
+<!-- Service page: Google SecOps 導入. The page is the lists above rendered through the
+     service macros in _blocks.html; cycle and pricing are shared
+     (_service-terms.html), and the FAQ is written once and rendered twice —
+     visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google SecOps 導入", "serviceType": "資安維運導入", "description": "TauX 協助中小企業導入 Google Security Operations（Google SecOps）：評估日誌來源、接入並正規化為 UDM、撰寫與調整偵測規則、建立告警處理流程，並交接給團隊維運。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google SecOps deployment</span>
+        <span class="display-sub">日誌接入、偵測規則與維運交接</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">導入 Google Security Operations（Google 的雲端資安維運平台）：把分散的日誌收進來、正規化，寫好偵測規則，讓團隊接手後能自己維運。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}適合誰{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}服務內容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}執行方式{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}交付物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}常見問題{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}延伸閱讀{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/threat-landscape" class="underline underline-offset-4">全球威脅情勢判讀</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">PQC 後量子密碼遷移</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

@@ -11,7 +11,7 @@ htmd = "0.5.5"
 # {{ template "header.html" . }} becomes {% include "header.html" %}. The HTML
 # itself — 70 inline SVGs, two page-specific style blocks, fifteen distinct
 # JSON-LD shapes — is the asset here, and none of it is touched.
-minijinja = { version = "2", features = ["loader"] }
+minijinja = { version = "2", features = ["loader", "json"] }
 serde = { version = "1", features = ["derive"] }
 # The breadcrumb JSON-LD is built here rather than written in the templates:
 # minijinja autoescapes `{{ … }}` in .html, so a URL interpolated into a JSON
