@@ -555,6 +555,91 @@ function ruleFaqIsVisible(files) {
   return found;
 }
 
+// THE PAGE'S OWN NODES NAME THE PAGE'S OWN URL.
+//
+// Breadcrumbs, the Article and its `mainEntityOfPage` are hand-written in about
+// a hundred templates, and the generator will take them over one day (NOTES,
+// 「模板結構大改」). Either way they must agree with the route table:
+//
+//   · a BreadcrumbList starts at this locale's home and ends at this page's
+//     canonical, and every item is the canonical of a declared page — never
+//     `https://taux.io`, which is a 302, and 38 of 75 breadcrumbs pointed at it
+//     until this rule arrived;
+//   · every node this page declares with a taux.io `@id`, `url` or
+//     `mainEntityOfPage` names this page's canonical (the site-wide `/#…` nodes
+//     excepted). A bare `{"@id": …}` is a reference to another node, not a
+//     declaration, and is left to `@id references resolve`.
+function rulePageNodesNameTheirCanonical(files) {
+  const found = [];
+  const pageOf = new Map(PAGES.map((p) => [p.file, p]));
+  const declared = new Set(PAGES.map((p) => p.canonical));
+  const siteWide = (u) => u.startsWith(`${ORIGIN}/#`);
+  const ours = (u) => typeof u === "string" && u.startsWith(ORIGIN) && !siteWide(u);
+  const base = (u) => u.split("#")[0];
+
+  for (const { rel, html } of files) {
+    const page = pageOf.get(rel);
+    if (!page) continue;
+    const home = `${ORIGIN}/${page.locale}`;
+    const visit = (node) => {
+      if (Array.isArray(node)) return node.forEach(visit);
+      if (!node || typeof node !== "object") return;
+      const isReference = Object.keys(node).length === 1 && "@id" in node;
+      if (node["@type"] === "BreadcrumbList") {
+        const items = (node.itemListElement || []).map((i) => i.item);
+        if (items[0] !== home) {
+          found.push({ file: rel, detail: `breadcrumb starts at ${items[0]}, not this locale's home ${home}` });
+        }
+        if (items[items.length - 1] !== page.canonical) {
+          found.push({ file: rel, detail: `breadcrumb ends at ${items[items.length - 1]}, not ${page.canonical}` });
+        }
+        for (const u of items) {
+          if (!declared.has(u)) found.push({ file: rel, detail: `breadcrumb item ${u} is not a declared page` });
+        }
+      }
+      if (!isReference && ours(node["@id"]) && base(node["@id"]) !== page.canonical) {
+        found.push({ file: rel, detail: `${node["@type"] || "node"} declares @id ${node["@id"]} on ${page.canonical}` });
+      }
+      // Only the page's own nodes: the site-wide Organization and WebSite rightly
+      // carry `url: https://taux.io`, and an ImageObject's url is its file.
+      const ownNode = !isReference && ours(node["@id"]);
+      if (ownNode && ours(node.url) && node.url !== page.canonical) {
+        found.push({ file: rel, detail: `${node["@type"] || "node"} url ${node.url} is not ${page.canonical}` });
+      }
+      const m = node.mainEntityOfPage;
+      const mid = typeof m === "string" ? m : m && m["@id"];
+      if (mid && mid !== page.canonical) {
+        found.push({ file: rel, detail: `mainEntityOfPage ${mid} is not ${page.canonical}` });
+      }
+      for (const v of Object.values(node)) visit(v);
+    };
+    for (const doc of graphs(html, rel)) visit(doc);
+  }
+  return found;
+}
+
+// JSON-LD IS JSON, NOT HTML.
+//
+// minijinja autoescapes `{{ … }}` in an .html template, so `"{{ canonical }}"`
+// written inside a JSON-LD block renders as `https:&#x2f;&#x2f;taux.io/…` —
+// still valid JSON, so check:jsonld is green, and still a string, so every rule
+// above is green too; only a consumer that expected a URL notices. Found by
+// the evaluation of generating breadcrumbs, before anything generated them.
+// An entity inside a JSON-LD block is always this defect: the text is data.
+function ruleJsonLdCarriesNoHtmlEscapes(files) {
+  const found = [];
+  const ENTITY = /&(?:#x?[0-9a-f]+|amp|lt|gt|quot|apos);/i;
+  for (const { rel, html } of files) {
+    for (const body of jsonLdBlocks(html, rel)) {
+      const m = ENTITY.exec(body);
+      if (m) {
+        found.push({ file: rel, detail: `HTML entity ${m[0]} inside JSON-LD — autoescaped template output?` });
+      }
+    }
+  }
+  return found;
+}
+
 async function ruleSameAsResolves(files) {
   const found = [];
   const urls = new Map();
@@ -637,6 +722,22 @@ const RULES = [
     turnedOnBy: "the audit follow-up — 25 pages marked up an FAQ nobody could read",
     run: ruleFaqIsVisible,
     summary: "every FAQPage question and answer appears, word for word, on the page",
+  },
+  {
+    name: "page nodes name their canonical",
+    enabled: true,
+    network: false,
+    turnedOnBy: "the breadcrumb prerequisites — 38 of 75 breadcrumbs started at a redirect",
+    run: rulePageNodesNameTheirCanonical,
+    summary: "breadcrumbs run from this locale's home to this page; the page's own nodes name its canonical",
+  },
+  {
+    name: "json-ld carries no html escapes",
+    enabled: true,
+    network: false,
+    turnedOnBy: "the breadcrumb prerequisites — autoescape turns a URL into https:&#x2f;&#x2f;…",
+    run: ruleJsonLdCarriesNoHtmlEscapes,
+    summary: "structured data is JSON; an HTML entity in it is autoescaped template output",
   },
   {
     name: "sameAs resolves",
