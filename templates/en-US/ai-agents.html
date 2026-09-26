@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Your processes are fixed but have many steps, such as compiling quotes, checking orders or assembling reports", "You’ve tried a chatbot, but what you need is something that does the work, not just answers", "Work involves copying and pasting back and forth between several systems", "You want to try one workflow first and expand once it works"] %}
+{%- set scope = [{"t": "Process analysis", "d": "We break down each step of the current process and find the points that need human judgment and can’t be handed to AI."}, {"t": "Agent design", "d": "We define its role, the tools it may use, when it stops, and when it hands back to a person."}, {"t": "Development and tool integration", "d": "Built on models such as Claude and Gemini, with tools provided over MCP, so switching models later doesn’t mean rewriting the integrations."}, {"t": "Testing and evaluation", "d": "We test accuracy on real cases and list the known failure modes and how each is handled."}, {"t": "Launch and monitoring", "d": "Every action is logged, the person responsible is notified when something goes wrong, and results are reviewed regularly."}] %}
+{%- set process = [{"t": "Process analysis", "d": "Pick one workflow and record how it’s done today, how long it takes and where mistakes happen most."}, {"t": "Design and spec", "d": "Write down what the agent does, what it doesn’t, and when it stops."}, {"t": "Build and test", "d": "Build it and test it repeatedly against real cases."}, {"t": "Pilot and launch", "d": "Let a few staff use it first, then launch it and hand over how it is monitored."}] %}
+{%- set deliverables = ["Process analysis and agent design document", "Agent code, prompts and tool configuration", "Test cases and evaluation results", "Launch, logging and alert configuration", "Maintenance documentation"] %}
+{%- set faqs = [{"q": "How is an AI agent different from a chatbot?", "a": "A chatbot answers questions. An AI agent carries out work step by step, such as looking up data, calling a system or producing a document, and stops where a person needs to decide."}, {"q": "What if the AI agent gets something wrong?", "a": "We decide at design time which steps must be confirmed by a person, and every action is logged. Before launch we test on real cases and list the known failure modes and how each is handled."}, {"q": "Are we locked into one AI company’s models?", "a": "No. We choose the model based on the task, cost and your data rules. Tools are provided over MCP, so switching models later doesn’t mean rewriting the integrations."}] %}
+{% include "header.html" %}
+<!-- Service page: ai-agents (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI agent development", "serviceType": "AI agent development", "description": "TauX builds AI agents for SMEs: repetitive, rule-based workflows run by AI that calls tools, follows the steps, keeps a record, and stops where a person must decide.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI agent development</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Hand a repetitive, rule-based workflow to an AI agent that calls tools, works through the steps and keeps a record. Where a person needs to make the call, it stops.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-dev-workflow" class="underline underline-offset-4">An agent development workflow</a></li>
+        <li><a href="/{{ locale }}/claude-skills-guide" class="underline underline-offset-4">A practical guide to building Claude Skills</a></li>
+        <li><a href="/{{ locale }}/adk-skill-patterns" class="underline underline-offset-4">ADK Skill Patterns</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">Prompting Guide</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

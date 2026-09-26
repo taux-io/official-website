@@ -1,189 +1,59 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["サイトへの流入が少ない、あるいは社名で検索しないと見つからない", "顧客が ChatGPT や Perplexity に質問するようになったが、AI の答えにあなたの会社が出てこない", "サイトを何年も手入れしておらず、構成も内容も今の検索のされ方に追いついていない", "広告を出しつつ、費用のかからない自然流入も積み上げたい"] %}
+{%- set scope = [{"t": "テクニカル SEO", "d": "表示速度、モバイル対応、インデックスの状況、URL と内部リンクの構成。まず、検索エンジンがあなたのサイトを読めなくなっている問題を取り除きます。"}, {"t": "コンテンツとキーワード", "d": "顧客が実際に検索している問いを見つけ、コンテンツを企画・改稿して、どのページも一つの明確な問いに答えるようにします。"}, {"t": "構造化データ", "d": "スキーマの記述、エンティティの特定、ナレッジグラフへの接続。あなたが何者で、何を売り、誰が書いたのかを、機械が見た目から推測せずに済むようにします。"}, {"t": "分割と、引用されやすさ", "d": "コンテンツをモデルが取り出せる単位に整えます。決まった構造、はっきりした定義、そしてどの段落も単独で引用に耐えること。"}, {"t": "AI クローラの扱いと llms.txt", "d": "AI クローラのアクセス方針を洗い出し、llms.txt を用意します。どこまでをモデルに開き、どんな形で開くかを決めます。"}, {"t": "計測", "d": "着手前に基準を記録します。検索順位と流入、そして主要な生成エンジンでの言及と引用の状況です。その後も変化を追い続けます。"}] %}
+{%- set process = [{"t": "現状の監査と基準", "d": "技術、コンテンツ、構造化データ、クローラのアクセスを洗い出し、着手前の数字を記録します。基準がなければ、あとの変更が効いたかどうか判断できません。"}, {"t": "優先度の高い修正", "d": "影響の最も大きい技術的な問題と、最も重要なページから手をつけます。"}, {"t": "コンテンツと構造", "d": "コンテンツを改稿・追加し、構造化データと llms.txt を整えます。"}, {"t": "計測と調整", "d": "定期的に基準と比べ、次に取り組むコンテンツを決めます。"}] %}
+{%- set deliverables = ["サイト監査レポートと基準の数字", "修正の一覧と優先順位", "構造化データと llms.txt", "コンテンツの企画と改稿", "定期的な計測レポート"] %}
+{%- set faqs = [{"q": "GEO と SEO は何が違いますか？", "a": "SEO の目標は、検索結果のリンクの中で上位に入ることです。GEO の目標は、ChatGPT、Perplexity、Google の AI 要約などの生成エンジンの答えの中で言及され、引用されることです。土台は同じで、内容がはっきりしていて、構造が明確で、機械が読めることです。"}, {"q": "SEO と GEO は、どれくらいで効果が見えますか？", "a": "技術的な問題を直したあと、検索エンジンがインデックスし直すまでに通常数週間かかります。コンテンツを積み上げる効果は月単位です。だからこそ着手前に基準を記録し、数字で変化を比べます。"}, {"q": "検索順位や AI からの引用を保証できますか？", "a": "できません。順位と引用を決めるのは検索エンジンと AI の会社で、誰にも保証はできません。私たちにできるのは、あなたのコンテンツを読み取られやすく、信頼されやすくし、結果をありのままに測ることです。"}] %}
 {% include "header.html" %}
-
-<!-- Service schema. This page answers a buying intent, so what it declares is a
-     Service with a provider — not an Article. /geo-guide keeps the Article and
-     the informational intent; the two pages take different queries on purpose
-     and are linked to each other rather than competing.
-
-     provider references the organisation declared in the header instead of
-     restating it. -->
+<!-- Service page: geo-optimization (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/ja-JP/geo-optimization#service",
-            "serviceType": "Generative Engine Optimization",
-            "name": "GEO 生成エンジン最適化サービス",
-            "description": "生成 AI の検索と引用の仕組みに合わせてサイトを整え、ChatGPT・Perplexity・Google の AI 要約が答えるときの引用元になることを目指します。構造化データの整備、コンテンツの分割、エンティティの関連づけ、引用されやすさの監査までを含みます。",
-            "provider": {% include "_org-ref.html" %},
-            "areaServed": "TW",
-            "availableChannel": {
-                "@type": "ServiceChannel",
-                "serviceUrl": "https://taux.io/ja-JP/geo-optimization",
-                "servicePhone": "+886-7-6211033"
-            },
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock",
-                "priceCurrency": "TWD",
-                "priceSpecification": {
-                    "@type": "PriceSpecification",
-                    "priceCurrency": "TWD",
-                    "minPrice": 80000,
-                    "maxPrice": 600000,
-                    "description": "サイトの規模と分量によります。単発の監査と導入プロジェクトで幅があり、継続運用は別途お見積もりします。"
-                }
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "SEO と GEO の検索最適化", "serviceType": "検索エンジン最適化と生成エンジン最適化", "description": "TauX は中小企業向けに SEO と GEO（生成エンジン最適化）を提供します。テクニカル SEO、コンテンツとキーワード、構造化データ、llms.txt と AI クローラの方針を扱い、着手前に基準を記録して、その後の引用の変化を測ります。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <span class="tag mb-4">GEO Service</span>
-            <h1 class="mb-4">
-                <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Be the Answer</span>
-                <span class="display-sub">GEO 生成エンジン最適化</span>
-            </h1>
-            <p class="text-base tablet:text-lg max-w-[42ch] leading-relaxed">
-                検索は「十本のリンクを返す」から「答えそのものを返す」へ動いています。この仕事は、その答えの中にあなたを入れることです。
-            </p>
-        </header>
-
-<!-- What the work is -->
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm" lang="en">What We Do</span>
-                <span class="display-sub">やること</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
-                GEO は SEO の言い換えではありません。問いが違います——言語モデルが利用者の質問に答えるとき、あなたのコンテンツは見つけられ、理解され、安心して引用できる状態にあるか。
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">構造化データの整備</h3>
-                    <p class="text-sm leading-relaxed">
-                        スキーマの記述、エンティティの特定、ナレッジグラフへの接続。あなたが何者で、何を売り、誰が書いたのかを、機械が見た目から推測せずに済むようにします。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">分割と、引用されやすさ</h3>
-                    <p class="text-sm leading-relaxed">
-                        モデルが取り出せる単位に整えます。決まった構造、はっきりした定義、そしてどの段落も単独で引用に耐えること。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">クローラの扱いと llms.txt</h3>
-                    <p class="text-sm leading-relaxed">
-                        AI クローラのアクセス方針を洗い出し、llms.txt を用意します。どこまでをモデルに開き、どんな形で開くかを決めます。
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">引用率の計測</h3>
-                    <p class="text-sm leading-relaxed">
-                        基準を取り、追い続けます。主要な生成エンジンの上で、あなたのブランドが言及され引用される度合いがどう動いたか。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- How it runs -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
-                <span class="display-sub">進め方</span>
-            {% endcall %}
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    1</div>
-                <div>
-                    <h3 class="mb-3">現状の監査</h3>
-                    <p class="leading-relaxed">
-                        構造化データ、コンテンツの構造、クローラのアクセス、エンティティ宣言を洗い出し、着手前に引用されやすさの基準を記録します。基準がなければ、あとの変更が効いたかどうか判断できません。
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    2</div>
-                <div>
-                    <h3 class="mb-3">修正と実装</h3>
-                    <p class="leading-relaxed">
-                        監査の結果に沿ってエンティティ宣言と構造化データを直し、分割を組み直し、llms.txt を用意します。変更はまとめて一度に出し、効果の切り分けができるようにします。
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    3</div>
-                <div>
-                    <h3 class="mb-3">計測と納品</h3>
-                    <p class="leading-relaxed">
-                        6〜8 週間後に基準と突き合わせ、主張ではなく実際の変化をお渡しします。直したものが次の改修で静かに戻らないよう、自動チェックも付けます。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- Deliverables and price -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">What You Get</span>
-                <span class="display-sub">納品物</span>
-            {% endcall %}
-            <ul class="space-y-4 max-w-[46ch]">
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>現状監査のレポート。具体的な問題の一覧と優先順位つき</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>構造化データとエンティティ宣言の実装（助言だけでなく、こちらで手を動かします）</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt と AI クローラのアクセス方針</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>継続して回る自動チェック。御社の CI に組み込みます</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>基準値と、6〜8 週間後の比較レポート</span></li>
-            </ul>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">What It Costs</span>
-                <span class="display-sub">費用の目安</span>
-            {% endcall %}
-            <div class="border-t border-line pt-6 max-w-[46ch]">
-                <p class="font-sans text-xl tabular-nums mb-4">NT$ 80,000 – 600,000</p>
-                <p class="leading-relaxed">
-                    幅はサイトの規模、分量、いまの構造の状態で決まります。単発の監査が下限、実装と計測まで含む導入が中位から上、継続運用は別途です。
-                </p>
-                <p class="leading-relaxed mt-4">
-                    まず一度お話しさせてください。範囲を見てから数字を出します。数字を先に出して範囲を合わせにいくことはしません。
-                </p>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
-                <span class="display-sub">いまのサイトがどこに立っているか</span>
-            {% endcall %}
-            <p class="mb-6 max-w-[42ch] text-lg">
-                URL をお知らせいただければ、まず無料で一次診断を行い、先に直す価値のある三点をお伝えします。
-            </p>
-            <a href="mailto:hello@taux.io" class="btn">GEO の相談を予約する</a>
-        </section>
-
-        <section>
-            <p>
-                GEO が何かを知るところからなら、まずは
-                <a href="/{{ locale }}/geo-guide" class="underline">GEO 入門ガイド</a>
-                を。自分で進めるための手引きです。
-            </p>
-        </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Search optimisation</span>
+        <span class="display-sub">SEO と GEO の検索最適化</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">検索は「十本のリンクを返す」から「答えそのものを返す」へ動いています。SEO はリンクの中に、GEO は答えの中にあなたを載せます。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO ガイド</a></li>
+        <li><a href="/{{ locale }}/what-is-llms-txt" class="underline underline-offset-4">LLMs.txt とは</a></li>
+        <li><a href="/{{ locale }}/digital-advertising" class="underline underline-offset-4">デジタル広告の運用</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

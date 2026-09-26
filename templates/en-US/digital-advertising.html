@@ -1,0 +1,57 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["You already run ads but can’t say how many inquiries or orders they bring in", "You want to start advertising but aren’t sure which platform to use or how much to budget", "An outside agency runs your ads, and you can’t make sense of the reports", "You want to plan paid ads together with organic search (SEO, GEO)"] %}
+{%- set scope = [{"t": "Tracking setup", "d": "We set up conversion tracking, analytics and URL parameters so every inquiry or purchase is recorded with its source."}, {"t": "Goals, audiences and budget", "d": "We set ad goals, audiences and budget allocation based on your products and customers."}, {"t": "Campaign planning and delivery", "d": "We plan ad copy, creative specs and placements, and run ads on Google (Search, Display, YouTube) and Meta (Facebook, Instagram)."}, {"t": "Optimization", "d": "We adjust bids, audiences and creative based on the data, and switch off combinations that don’t work."}, {"t": "Monthly report", "d": "Each month we report spend, results and next steps, and explain the basis for every decision."}] %}
+{%- set process = [{"t": "Current state and goals", "d": "Review your existing accounts, tracking and website, and settle which results to aim for."}, {"t": "Tracking and planning", "d": "Fill the gaps in tracking and finish the campaign strategy and budget plan."}, {"t": "Launch and test", "d": "Launch the first set of ads and use the data to compare audiences and creative."}, {"t": "Optimize and report", "d": "Keep adjusting, report monthly, and plan the next month."}] %}
+{%- set deliverables = ["Tracking setup checklist", "Campaign strategy and budget plan", "Campaign setup and creative specs", "Monthly results report"] %}
+{%- set faqs = [{"q": "How much ad budget is enough?", "a": "It depends on your industry, goals and region. We first estimate a budget large enough to produce measurable results for your goal, then adjust based on actual performance."}, {"q": "How are ads different from SEO and GEO?", "a": "Ads buy visibility, and it stops when you stop paying. SEO and GEO get your content found and cited by search engines and AI; they build more slowly but keep working. Most businesses use both."}, {"q": "How soon will we see results?", "a": "Data starts coming in soon after ads launch, but getting to stable performance usually takes a few weeks of testing. We report monthly and explain the reasoning behind each decision."}, {"q": "Do we need to prepare our own ad creative?", "a": "Copy and creative planning are included. If you need a photo or video shoot, or a large volume of video production, we scope that separately."}] %}
+{% include "header.html" %}
+<!-- Service page: digital-advertising (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Digital advertising", "serviceType": "Digital advertising", "description": "Google and Meta (Facebook, Instagram) ads for SMEs: conversion tracking first, then goals, audiences and budget, with a monthly report on spend and results.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Digital advertising</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Ads on Google and Meta (Facebook, Instagram). We set up tracking first so every part of the budget has a measurable result, then talk about how to run the ads.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-optimization" class="underline underline-offset-4">SEO and GEO</a></li>
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO Guide</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

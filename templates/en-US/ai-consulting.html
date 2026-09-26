@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Staff are each using tools like ChatGPT on their own, but the company has no shared practice or rules", "You want to adopt AI but aren’t sure which department or task to start with", "You’ve tried an AI tool or two and can’t say how much time it actually saved", "You’re worried about the risk of giving company data to AI and want the rules settled first"] %}
+{%- set scope = [{"t": "Current-state audit", "d": "We interview each department and list the work that is repetitive, rule-based and has data available, along with how much time each task takes today."}, {"t": "Use-case assessment and ranking", "d": "We rank use cases by benefit, risk and data readiness, pick the first batch, and write down why the others were left out."}, {"t": "Tools and architecture", "d": "We first check whether the AI built into tools you already pay for (such as Google Workspace or Microsoft 365) can do the job. Only where it can’t do we recommend building or buying."}, {"t": "PoC and rollout", "d": "We start with one task in one department and expand only once it works, rather than changing the whole company at once."}, {"t": "Measuring results", "d": "Before rollout we take a baseline (items handled, handling time, rework rate); afterward we measure with the same yardstick. Staff self-assessments are recorded separately from objective numbers."}, {"t": "Usage policy", "d": "Which data can go to AI, which plan to use, and who reviews the output, written as rules your staff can actually follow."}] %}
+{%- set process = [{"t": "Audit and interviews", "d": "Understand your current processes, tools and data, and produce a list of work AI could handle."}, {"t": "Selection and baseline", "d": "Set priorities, define metrics for the first batch, and record the numbers before rollout."}, {"t": "PoC and rollout", "d": "Build, adjust, and train the staff who will actually use it."}, {"t": "Measure and decide", "d": "Compare before and after on the same metrics, then decide to expand, adjust or stop."}] %}
+{%- set deliverables = ["Current-state report and a list of work AI could handle", "Use-case priorities and the reasoning behind them", "PoC results and feasibility assessment", "AI usage policy", "Before-and-after results report"] %}
+{%- set faqs = [{"q": "We’re a small company. Do we need AI adoption consulting?", "a": "Being small makes it easier to start: processes are short and decisions are quick. We begin with the one or two repetitive tasks that take the most time, rather than changing the whole company at once."}, {"q": "Does adopting AI mean buying new software?", "a": "Not necessarily. Many needs can be met with tools you already pay for, such as the AI built into Google Workspace or Microsoft 365. We recommend building or buying something else only when your existing tools can’t do the job."}, {"q": "How do we know whether AI is working?", "a": "Measure a baseline first: pick metrics you can count objectively, such as items handled, handling time and rework rate. After rollout, measure with the same yardstick, and keep staff self-assessments separate from the objective numbers."}, {"q": "Is it safe to give company data to AI?", "a": "That’s a rule to settle before you start. We help you decide which data can be used, which plan and contract terms to choose, and who reviews the output."}] %}
+{% include "header.html" %}
+<!-- Service page: ai-consulting (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI adoption consulting", "serviceType": "AI adoption consulting", "description": "AI adoption consulting for SMEs: find the work worth giving to AI, set priorities, run a PoC, and measure a baseline before rollout and results after.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI adoption consulting</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">First find the work worth handing to AI, then decide how. Measure a baseline before you start, so afterward you can say whether it worked.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI: reading the ROI</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">Prompting Guide</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">Data governance</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

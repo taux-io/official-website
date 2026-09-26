@@ -8,7 +8,7 @@
 
 ## 專案概覽
 
-TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發、軟體平台建置與企業 AI 內訓。
+TauX（拓思科技）為中小企業提供 AI 顧問與技術導入，服務分四類：AI 導入與整合、行銷（數位廣告、SEO 與 GEO）、教育訓練（Google Workspace、生成式 AI）、資安（AI 對抗測試、Google SecOps）。
 
 ## 架構
 
@@ -40,7 +40,7 @@ TauX（拓思科技）專注於 GEO（生成式引擎優化）、AI Agent 開發
 
 選單由產生器組出（`Site::nav_for`）：每頁的 `section` 決定它在哪一欄（`ai`／`marketing`／`training`／`security`）或列在 `/insights`（`article`），每個 locale 只列它自己有的頁面，空的欄位不顯示。欄名是 `[locale.strings]` 的 `nav_col_<key>`，05 公司欄仍寫在 `header.html`。**選單只列服務**（2026-09 擁有者的決定）：技術文章在 `/insights`，服務頁的「延伸閱讀」連到支撐它的文章。
 
-服務頁都是同一個形狀：開頭 `{% set %}` 五份清單（適合誰、服務內容、執行方式、交付物、FAQ），經 `_blocks.html` 的 macro 渲染；合作週期與計價是 `_service-terms.html`（三個月／半年／一年為一個週期、依個案估價——擁有者的回答），聯絡是 `_service-contact.html`。**FAQ 只寫一次**：`faq_list` 畫在頁面上，`faq_jsonld` 用 `tojson` 寫進 FAQPage（minijinja 開了 `json` feature），兩者不可能分歧。**服務頁不寫認證、合作夥伴或採購資格，也不放案例**，直到擁有者提供可查證的內容。
+服務頁都是同一個形狀：開頭 `{% set %}` 五份清單（適合誰、服務內容、執行方式、交付物、FAQ），經 `_blocks.html` 的 macro 渲染；合作週期與計價是 `_service-terms.html`（三個月／半年／一年為一個週期、依個案估價——擁有者的回答），聯絡是 `_service-contact.html`。**FAQ 只寫一次**：`faq_list` 畫在頁面上，`faq_jsonld` 用 `tojson` 寫進 FAQPage（minijinja 開了 `json` feature），兩者不可能分歧。五個 locale 都有十個服務頁：en／ja／ko 的內容同樣寫在 `{% set %}` 裡，所以 `check:classes` 不讀 `set` 的字串（英文散文裡的 list、start、order 會被當成 utility）。**服務頁不寫認證、合作夥伴或採購資格，也不放案例**，直到擁有者提供可查證的內容。
 
 ### 目錄
 

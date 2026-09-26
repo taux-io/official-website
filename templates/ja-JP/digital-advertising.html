@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["すでに広告を出しているが、問い合わせや注文がどれだけ増えたか説明できない", "広告を始めたいが、どのプラットフォームに出し、予算をどれくらいにすればよいかわからない", "広告運用を外部に任せているが、レポートが読めない", "有料の広告と自然検索（SEO、GEO）をあわせて計画したい"] %}
+{%- set scope = [{"t": "計測の設定", "d": "コンバージョン計測、分析ツール、URL パラメータを設定し、問い合わせや購入のたびに流入元が記録されるようにします。"}, {"t": "目標、オーディエンス、予算", "d": "製品と顧客層に合わせて、広告の目標、オーディエンス、予算の配分を決めます。"}, {"t": "広告の企画と配信", "d": "広告文、クリエイティブの仕様、掲載面を企画し、Google（検索、ディスプレイ、YouTube）と Meta（Facebook、Instagram）で配信します。"}, {"t": "成果の改善", "d": "データに基づいて入札、オーディエンス、クリエイティブを調整し、効果のない組み合わせは止めます。"}, {"t": "月次レポート", "d": "毎月、費用、成果、次の一手を報告し、それぞれの判断の根拠も説明します。"}] %}
+{%- set process = [{"t": "現状と目標", "d": "既存のアカウント、計測、ウェブサイトを確認し、追いかける成果指標を決めます。"}, {"t": "計測と企画", "d": "計測の設定を補い、配信戦略と予算計画を仕上げます。"}, {"t": "配信開始とテスト", "d": "最初の広告を出し、オーディエンスやクリエイティブの違いをデータで比べます。"}, {"t": "改善と報告", "d": "調整を続け、毎月報告して翌月の計画を立てます。"}] %}
+{%- set deliverables = ["計測設定のチェックリスト", "配信戦略と予算計画", "キャンペーンの設定とクリエイティブの仕様", "毎月の成果レポート"] %}
+{%- set faqs = [{"q": "広告の予算はどれくらいあれば足りますか？", "a": "業種、目標、地域によります。まずお客様の目標に合わせて、結果を測るのに十分な予算を見積もり、実際の成果を見て調整します。"}, {"q": "広告と SEO・GEO は何が違いますか？", "a": "広告はお金を払って露出を得るもので、支払いを止めれば露出も止まります。SEO と GEO は、コンテンツが検索エンジンや AI に見つけられ、引用されるようにするもので、積み上がるのは遅いものの効果が続きます。多くの企業は両方を併用しています。"}, {"q": "成果はどれくらいで見えますか？", "a": "広告を出せばデータはすぐに集まりますが、安定するまで調整するには、通常数週間のテストが必要です。毎月報告し、判断の根拠も説明します。"}, {"q": "広告のクリエイティブは自分たちで用意する必要がありますか？", "a": "広告文とクリエイティブの企画はサービスに含まれます。撮影や大量の動画制作が必要な場合は、範囲を別途ご相談します。"}] %}
+{% include "header.html" %}
+<!-- Service page: digital-advertising (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "デジタル広告の運用", "serviceType": "デジタル広告の運用", "description": "TauX は中小企業向けに Google と Meta（Facebook、Instagram）の広告を企画・運用します。まずコンバージョン計測を整え、そのうえで目標、オーディエンス、予算を設定し、毎月の費用と成果を報告します。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Digital advertising</span>
+        <span class="display-sub">Google と Meta の広告運用</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Google と Meta（Facebook、Instagram）に広告を出します。まず計測を整えて、どの予算からも結果が測れるようにしてから、出し方を考えます。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-optimization" class="underline underline-offset-4">SEO と GEO の検索最適化</a></li>
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO ガイド</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

@@ -22,8 +22,8 @@
 
 ## 關於我們
 
-TauX（法定名稱：拓思科技股份有限公司）是一家協助企業 AI First 落地與技術開發服務的公司，位於台灣高雄。
-我們專注於 GEO (Generative Engine Optimization)、AI Agent 開發、軟體平台建置與企業 AI 內訓，協助品牌在生成式 AI 時代保持競爭力。
+TauX（法定名稱：拓思科技股份有限公司）是一家協助中小企業 AI First 落地的顧問與技術導入公司，位於台灣高雄。
+我們為中小企業提供顧問與技術導入，服務分四類：AI 導入與整合、行銷（數位廣告、SEO 與 GEO）、教育訓練（Google Workspace、生成式 AI）、資安（AI 對抗測試、Google SecOps）。
 
 ---
 
@@ -100,11 +100,18 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 Every route on the site has an English edition. These are all of them.
 
--   [TauX — AI that earns its place | Generative Engine Optimization](https://taux.io/en-US): TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, AI agent development, software platforms and in-house AI training, from Kaohsiung, Taiwan.
+-   [TauX — AI that earns its place | Generative Engine Optimization](https://taux.io/en-US): Kaohsiung-based TauX helps SMEs turn AI into systems they can run, not demos: AI adoption, ads, SEO and GEO, Workspace and AI training, and security.
+-   [AI Adoption Consulting: From Audit and PoC to Results | TauX](https://taux.io/en-US/ai-consulting): AI adoption consulting for SMEs: find the work worth giving to AI, set priorities, run a PoC, and measure a baseline before rollout and results after.
+-   [Connecting Legacy Systems to AI with MCP | TauX](https://taux.io/en-US/mcp-integration): Data in ERP, Excel and shared folders is invisible to AI. TauX connects legacy systems to AI with MCP: read-only first, existing permissions, every query logged.
+-   [AI Agent Development: Hand Repetitive Workflows to AI | TauX](https://taux.io/en-US/ai-agents): TauX builds AI agents for SMEs: repetitive, rule-based workflows run by AI that calls tools, follows the steps, keeps a record, and stops where a person must decide.
+-   [Data Governance: Make Your Data Trustworthy Before AI | TauX](https://taux.io/en-US/data-governance): Data governance for SMEs: inventory and standardize your data, monitor quality, and set access and personal data rules, so AI has data you can trust.
+-   [Digital Advertising: Google and Meta Ads, Tracking First | TauX](https://taux.io/en-US/digital-advertising): Google and Meta (Facebook, Instagram) ads for SMEs: conversion tracking first, then goals, audiences and budget, with a monthly report on spend and results.
+-   [SEO and GEO: Get Found and Cited by Search and AI | TauX](https://taux.io/en-US/geo-optimization): SEO and GEO for SMEs: technical SEO, content, structured data, llms.txt and AI crawler policy, with a baseline recorded first and citations tracked after.
+-   [Google Workspace Training for Businesses and Government | TauX](https://taux.io/en-US/google-workspace-training): Google Workspace training for businesses and agencies: collaboration, Docs and Sheets, Meet and Calendar, Gemini, and admin settings, practiced on your own workflows.
+-   [Generative AI Training: Prompts, Reasoning and Gems | TauX](https://taux.io/en-US/ai-smart-work): In-house generative AI training: structured prompting, AI-assisted reasoning, a NotebookLM knowledge base, and turning a set of prompts into a reusable Gem.
+-   [AI Red Teaming: Test Your AI App Against OWASP LLM Top 10 | TauX](https://taux.io/en-US/ai-red-teaming): Red teaming for AI chatbots, assistants and agents: prompt injection, data leakage and overreach, tested against the OWASP LLM Top 10, with repro steps and fixes.
+-   [Google SecOps Deployment: Logs, Detections and Handover | TauX](https://taux.io/en-US/google-secops): Google Security Operations (Google SecOps) for SMEs: assess log sources, normalize to UDM, write and tune detection rules, set up alert handling, and hand over.
 -   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.
--   [Generative Engine Optimization Service | TauX](https://taux.io/en-US/geo-optimization): Structured data, content chunking, entity declarations and citation measurement — with a baseline recorded before the work starts, so the result can be checked.
--   [AI Training for Teams | TauX](https://taux.io/en-US/ai-smart-work): In-house AI training: build assistants that hold a role and follow a structure, and learn the prompt patterns that make them reliable rather than impressive.
--   [Data Governance for Enterprises | TauX](https://taux.io/en-US/data-governance): Data inventory, standardisation and quality monitoring — the groundwork that decides whether your AI projects have anything trustworthy to run on.
 -   [What is llms.txt? | TauX](https://taux.io/en-US/what-is-llms-txt): What llms.txt is, what it expresses that robots.txt cannot, and an honest account of its status: a proposal in use, not a ratified standard.
 -   [What is Prompt Injection? The security flaw every LLM app inherits | TauX](https://taux.io/en-US/what-is-prompt-injection): How prompt injection works, how it differs from jailbreaking, and the layered defences that actually reduce the risk.
 -   [AI Prompting Guide: from first prompt to agents | TauX](https://taux.io/en-US/agent-prompting-guide): What to specify, what to leave open, and how to tell whether it worked. Covers role and task framing, step instructions, output formats, and designing agents.
@@ -172,16 +179,30 @@ Every route on the site has an English edition. These are all of them.
 -   [技術記事](https://taux.io/ja-JP/insights): サイト内のすべての技術記事（GEO、MCP、AI エージェント、LLM セキュリティ、ポスト量子暗号）と、公開で保守しているオープンソースプロジェクトの一覧。
 -   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
 -   [기술 문서](https://taux.io/ko-KR/insights): 사이트의 모든 기술 문서(GEO, MCP, AI 에이전트, LLM 보안, 포스트 양자 암호)와 공개적으로 관리하는 오픈소스 프로젝트 목록.
--   [GEO 生成エンジン最適化サービス](https://taux.io/ja-JP/geo-optimization): 構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。
--   [GEO 생성형 엔진 최적화 서비스](https://taux.io/ko-KR/geo-optimization): 구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다.
--   [企業向け AI 実務研修](https://taux.io/ja-JP/ai-smart-work): 役割を保ち構造に従う AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型。
--   [기업 대상 AI 실무 교육](https://taux.io/ko-KR/ai-smart-work): 역할을 유지하고 구조를 따르는 AI 어시스턴트를 만드는 법과, 보기 좋은 것이 아니라 꾸준히 통하는 프롬프트의 형태.
--   [データガバナンスと AI セキュリティ](https://taux.io/ja-JP/data-governance): データの棚卸し、標準化、品質監視。AI に載せられるだけの信頼できるデータがあるかどうかを決める下ごしらえ。
--   [데이터 거버넌스와 AI 보안](https://taux.io/ko-KR/data-governance): 데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업.
+-   [AI 導入コンサルティング](https://taux.io/ja-JP/ai-consulting): TauX は中小企業向けに AI 導入のコンサルティングと技術導入を行います。AI に任せる価値のある業務を洗い出し、優先順位を決めて PoC を行います。導入前に基準値を取り、導入後も同じ物差しで効果を検証します。
+-   [기업 AI 도입 컨설팅](https://taux.io/ko-KR/ai-consulting): TauX는 중소기업에 AI 도입 컨설팅과 기술 구현을 제공합니다. AI로 할 가치가 있는 업무를 찾고, 우선순위를 정하고, PoC를 진행하며, 도입 전에 기준값을 측정해 두었다가 도입 후 같은 잣대로 성과를 확인합니다.
+-   [既存システムと AI の連携](https://taux.io/ja-JP/mcp-integration): データが ERP、Excel、共有フォルダ、各部署のシステムに散らばり、AI から見えない。TauX は MCP（Model Context Protocol）で既存システムを AI につなぎます。読み取り専用を基本とし、既存の権限を引き継ぎ、記録を残します。
+-   [기존 시스템과 AI 연결](https://taux.io/ko-KR/mcp-integration): 데이터가 ERP, Excel, 공유 폴더, 부서별 시스템에 흩어져 있어 AI가 볼 수 없습니다. TauX는 MCP(Model Context Protocol)로 기존 시스템을 AI에 연결합니다. 읽기 전용을 우선하고, 기존 권한을 그대로 쓰며, 기록을 남깁니다.
+-   [AI エージェント開発](https://taux.io/ja-JP/ai-agents): TauX は中小企業向けに AI エージェントを開発します。ルールが明確で手順が繰り返される業務フローを、ツールを呼び出し、手順どおりに実行し、人の判断が必要な所で止まり、記録を残す AI に任せます。
+-   [AI Agent 개발](https://taux.io/ko-KR/ai-agents): TauX는 중소기업을 위해 AI Agent를 개발합니다. 규칙이 분명하고 단계가 반복되는 업무 흐름을, 도구를 호출하고 단계대로 실행하며 사람의 판단이 필요할 때 멈추고 기록을 남기는 AI에게 맡깁니다.
+-   [データガバナンス](https://taux.io/ja-JP/data-governance): TauX は中小企業向けにデータガバナンスのコンサルティングと導入を行います。データの棚卸し、基準の統一、品質の監視、アクセス権限と個人情報のルールづくりを通じて、AI 導入に使える信頼できるデータを整えます。
+-   [데이터 거버넌스](https://taux.io/ko-KR/data-governance): TauX는 중소기업에 데이터 거버넌스 컨설팅과 구현을 제공합니다. 데이터를 파악하고, 기준을 통일하고, 품질을 모니터링하고, 접근 권한과 개인정보 규칙을 정해 AI 도입에 믿을 수 있는 데이터를 마련합니다.
+-   [デジタル広告の運用](https://taux.io/ja-JP/digital-advertising): TauX は中小企業向けに Google と Meta（Facebook、Instagram）の広告を企画・運用します。まずコンバージョン計測を整え、そのうえで目標、オーディエンス、予算を設定し、毎月の費用と成果を報告します。
+-   [디지털 광고 운영](https://taux.io/ko-KR/digital-advertising): TauX는 중소기업을 위해 Google, Meta(Facebook, Instagram) 광고를 기획하고 운영합니다. 먼저 전환 추적을 설정한 뒤 목표, 타깃, 예산을 정하고, 매달 지출과 성과를 보고합니다.
+-   [SEO と GEO の検索最適化](https://taux.io/ja-JP/geo-optimization): TauX は中小企業向けに SEO と GEO（生成エンジン最適化）を提供します。テクニカル SEO、コンテンツとキーワード、構造化データ、llms.txt と AI クローラの方針を扱い、着手前に基準を記録して、その後の引用の変化を測ります。
+-   [SEO와 GEO 검색 최적화](https://taux.io/ko-KR/geo-optimization): TauX는 중소기업에 SEO와 GEO(생성형 엔진 최적화)를 제공합니다. 기술 SEO, 콘텐츠와 키워드, 구조화 데이터, llms.txt와 AI 크롤러 정책을 다루며, 착수 전에 기준을 기록하고 이후 인용의 변화를 측정합니다.
+-   [Google Workspace 研修](https://taux.io/ja-JP/google-workspace-training): TauX は企業と行政機関向けに Google Workspace の研修を企画します。クラウドでの共同作業、ドキュメントとスプレッドシート、会議とカレンダー、Workspace に組み込まれた AI（Gemini）、管理者の設定まで、実際の業務の流れに合わせて演習を組み立てます。
+-   [Google Workspace 교육](https://taux.io/ko-KR/google-workspace-training): TauX는 기업과 공공기관을 위해 Google Workspace 교육을 설계합니다. 클라우드 협업, 문서와 스프레드시트, 회의와 캘린더, Workspace에 들어 있는 AI(Gemini), 관리자 설정을 다루며, 실제 업무 흐름에 맞춰 실습을 설계합니다.
+-   [生成 AI 実務講座](https://taux.io/ja-JP/ai-smart-work): TauX は企業向けに生成 AI の社内研修を企画します。構造化したプロンプトの書き方、AI に推論と意思決定を手伝わせる方法、NotebookLM でのナレッジベースづくり、そして一組の問い方を繰り返し使える専用アシスタント（Gem）にまとめる方法です。
+-   [생성형 AI 실무 과정](https://taux.io/ko-KR/ai-smart-work): TauX는 기업을 위해 생성형 AI 사내 교육을 설계합니다. 구조화된 프롬프트 작성법, AI의 도움을 받는 추론과 의사 결정, NotebookLM으로 지식 베이스 정리, 그리고 질문 방식을 다시 쓸 수 있는 전용 어시스턴트(Gem)로 고정하는 법을 다룹니다.
+-   [AI レッドチーミング](https://taux.io/ja-JP/ai-red-teaming): TauX は AI カスタマーサポート、社内 AI アシスタント、AI エージェントに対してレッドチーミングを行います。プロンプトインジェクション、データ漏えい、権限外の操作など LLM 特有のリスクを OWASP LLM Top 10 に沿って一項目ずつテストし、再現手順と修正の提案をお渡しします。
+-   [AI 레드팀 테스트](https://taux.io/ko-KR/ai-red-teaming): TauX는 AI 고객 상담, 사내 AI 어시스턴트, AI Agent를 대상으로 레드팀 테스트를 제공합니다. 프롬프트 인젝션, 데이터 유출, 권한을 넘는 동작 같은 LLM 고유의 위험을 OWASP LLM Top 10에 따라 항목별로 테스트하고, 재현 절차와 수정 권고를 드립니다.
+-   [Google SecOps の導入](https://taux.io/ja-JP/google-secops): TauX は中小企業の Google Security Operations（Google SecOps）導入を支援します。ログソースの評価、取り込みと UDM への正規化、検知ルールの作成と調整、アラート対応の流れづくりを行い、チームの運用へ引き継ぎます。
+-   [Google SecOps 도입](https://taux.io/ko-KR/google-secops): TauX는 중소기업의 Google Security Operations(Google SecOps) 도입을 돕습니다. 로그 출처를 평가하고, 수집해 UDM으로 정규화하고, 탐지 규칙을 작성하고 조정하며, 경보 처리 절차를 만들고, 팀이 운영할 수 있도록 인계합니다.
 -   [llms.txt とは何か](https://taux.io/ja-JP/what-is-llms-txt): llms.txt が何を表明できて robots.txt には何ができないのか。使われている提案であって、批准された標準ではありません。
 -   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
--   [TauX 拓思科技](https://taux.io/ja-JP): AI を、一度きりのデモではなく企業が実際に運用できるシステムに。GEO、AI エージェント開発、ソフトウェア開発、企業向け AI 研修。台湾・高雄から。
--   [TauX 拓思科技](https://taux.io/ko-KR): AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로. GEO, AI 에이전트 개발, 소프트웨어 개발, 기업 AI 교육. 대만 가오슝에서.
+-   [TauX 拓思科技](https://taux.io/ja-JP): TauX は台湾・高雄を拠点に、中小企業が AI をデモで終わらせず、実際に業務で回せる仕組みにするお手伝いをしています。AI 導入と統合、マーケティング（広告、SEO・GEO）、Google Workspace と AI の研修、セキュリティ（AI レッドチーミング、Google SecOps）の四つの分野を扱います。
+-   [TauX 拓思科技](https://taux.io/ko-KR): TauX는 중소기업이 AI를 시연용이 아니라 회사가 실제로 운영할 수 있는 시스템으로 만들도록 돕습니다. AI 도입과 통합, 마케팅(광고, SEO·GEO), Google Workspace와 AI 교육, 보안(AI 레드팀, Google SecOps)의 네 분야를 다루며, 대만 가오슝에 있습니다.
 -   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。
 -   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.
 -   [Agent Skill の五つの設計パターン](https://taux.io/ja-JP/adk-skill-patterns): Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。それぞれが実際に解いている問題。

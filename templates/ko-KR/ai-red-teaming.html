@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["이미 운영 중이거나 운영을 앞둔 AI 고객 상담, 챗봇, 사내 AI 어시스턴트", "AI 애플리케이션이 사내 데이터에 연결되어 있거나, 메일 발송이나 주문 같은 동작을 실행할 수 있다", "고객, 감사인, 감독 기관에 AI의 보안 조치를 설명해야 한다", "모델이나 기능이 바뀐 뒤, 원래의 방어가 아직 효과가 있는지 확신이 없다"] %}
+{%- set scope = [{"t": "범위 정의", "d": "애플리케이션 구조, AI가 접근할 수 있는 데이터와 도구, 사용자별 권한을 확인합니다."}, {"t": "프롬프트 인젝션 테스트", "d": "직접 인젝션과 간접 인젝션(문서, 웹 페이지, 이메일에 숨긴 지시)으로 AI의 동작이 바뀌는지 확인합니다."}, {"t": "데이터 유출과 권한 초과", "d": "시스템 프롬프트와 민감한 데이터를 빼낼 수 있는지, AI가 유도되어 권한을 넘는 동작을 실행할 수 있는지 봅니다."}, {"t": "출력 처리", "d": "AI의 출력을 다른 시스템이 쓸 때 인젝션이나 잘못된 실행이 일어나는지 확인합니다."}, {"t": "보고와 재테스트", "d": "발견 사항마다 심각도, 재현 절차, 수정 권고를 붙이고, 수정 후 다시 테스트합니다."}] %}
+{%- set process = [{"t": "범위와 규칙", "d": "테스트 범위, 환경, 시간대, 중단 조건을 합의합니다."}, {"t": "테스트", "d": "OWASP LLM Top 10에 따라 항목별로 테스트하고, 시도 하나하나를 기록합니다."}, {"t": "보고", "d": "발견 사항, 영향, 수정 권고를 설명하고, 개발 팀과 항목별로 논의합니다."}, {"t": "재테스트", "d": "수정 후 다시 테스트해 문제가 처리되었는지 확인합니다."}] %}
+{%- set deliverables = ["테스트 범위와 방법 설명", "발견 사항 목록(심각도, 재현 절차, 수정 권고)", "재테스트 보고서"] %}
+{%- set faqs = [{"q": "AI 레드팀 테스트란 무엇인가요?", "a": "공격자를 흉내 내어 AI 애플리케이션이 해서는 안 될 일을 하게 만들어 보는 것입니다. 데이터를 유출하거나, 원래의 지시를 무시하거나, 권한을 넘는 동작을 실행하게 하는 식입니다. 목적은 실제 공격자보다 먼저 문제를 찾는 것입니다."}, {"q": "AI 레드팀 테스트는 일반 침투 테스트와 무엇이 다른가요?", "a": "일반 침투 테스트는 네트워크, 서버, 웹의 취약점을 대상으로 합니다. AI 레드팀 테스트는 텍스트 내용으로 모델의 동작을 바꾸는 프롬프트 인젝션처럼 언어 모델 고유의 위험을 대상으로 합니다. 둘은 서로를 보완합니다."}, {"q": "테스트가 운영 환경에 영향을 주나요?", "a": "테스트 환경에서 진행할 것을 권합니다. 운영 환경에서 테스트해야 한다면 범위, 시간대, 중단 조건을 미리 합의합니다."}, {"q": "수정하고 나면 안전한가요?", "a": "프롬프트 인젝션은 지금으로서는 한 번에 뿌리 뽑는 방법이 없습니다. 핵심은 위험을 낮추고 AI가 쓸 수 있는 권한과 데이터를 제한하는 것입니다. 모델이나 기능이 바뀌면 다시 테스트할 것을 권합니다."}] %}
+{% include "header.html" %}
+<!-- Service page: ai-red-teaming (ko-KR). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI 레드팀 테스트", "serviceType": "보안 테스트", "description": "TauX는 AI 고객 상담, 사내 AI 어시스턴트, AI Agent를 대상으로 레드팀 테스트를 제공합니다. 프롬프트 인젝션, 데이터 유출, 권한을 넘는 동작 같은 LLM 고유의 위험을 OWASP LLM Top 10에 따라 항목별로 테스트하고, 재현 절차와 수정 권고를 드립니다.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "중소기업"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI red teaming</span>
+        <span class="display-sub">OWASP LLM Top 10에 따라 AI 애플리케이션을 테스트</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">운영에 들어가기 전에 공격자의 방법으로 AI 애플리케이션을 테스트합니다. 프롬프트 인젝션, 데이터 유출, 권한을 넘는 동작을 OWASP LLM Top 10에 따라 항목별로 점검합니다.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}이런 분께 맞습니다{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}서비스 내용{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}진행 방식{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}납품물{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}자주 묻는 질문{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}더 읽을거리{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="/{{ locale }}/what-is-prompt-injection" class="underline underline-offset-4">프롬프트 인젝션이란</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

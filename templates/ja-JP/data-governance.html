@@ -1,133 +1,59 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["同じデータが部署ごとに別のバージョンになっていて、数字が合わない", "AI や BI レポートを導入したいが、データが使える状態かわからない", "会社にどんな個人情報があり、どこに置かれ、誰が見られるのかがはっきりしない", "既存システムの連携を計画していて、先にデータを整理しておきたい"] %}
+{%- set scope = [{"t": "データの棚卸し", "d": "会社にどんなデータがあり、どのシステムに置かれ、誰が担当し、誰が使っているかを一覧にします。"}, {"t": "標準化", "d": "項目の定義、コード、命名を統一し、別々のシステムにある同じデータを突き合わせられるようにします。"}, {"t": "品質の監視", "d": "品質のルール（完全性、正確性、適時性）を決め、定期的に点検する仕組みを作ります。"}, {"t": "権限と個人情報", "d": "役割ごとにアクセス権限を設定し、個人情報と機微なデータに印をつけ、台湾の個人資料保護法の要件と照らし合わせます。"}] %}
+{%- set process = [{"t": "棚卸し", "d": "ヒアリングとシステム調査を行い、データ台帳を完成させます。"}, {"t": "ルールづくり", "d": "基準、品質ルール、権限の原則を定めます。"}, {"t": "導入", "d": "システムと業務の流れに落とし込み、最も重要なデータの問題に対処します。"}, {"t": "監視と引き継ぎ", "d": "定期点検の仕組みを作り、担当の社員に文書をお渡しします。"}] %}
+{%- set deliverables = ["データ台帳（置き場所、担当者、利用者）", "データ基準と命名ルール", "品質ルールと点検方法", "権限と個人情報の分類表", "ガバナンス文書と引き継ぎ資料"] %}
+{%- set faqs = [{"q": "中小企業でもデータガバナンスは必要ですか？", "a": "必要です。ただし範囲は小さくて構いません。会社全体を一度に整理するのではなく、顧客、製品、受注のデータなど、最もよく使い、最も間違いが起きやすいいくつかのデータから始めます。"}, {"q": "データガバナンスと AI の導入には、どんな関係がありますか？", "a": "AI が使えるのは、手に入り、しかも正しいデータだけです。データに食い違いがあったり権限があいまいだったりすると、AI の答えも信頼できません。先にデータを整えることが、導入の土台になります。"}, {"q": "今のシステムを入れ替える必要がありますか？", "a": "通常は必要ありません。データガバナンスの中心は、ルールを決め、データと業務の流れを整理することで、ほとんどは既存のシステムの上で進められます。"}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: data-governance (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/ja-JP/data-governance#service",
-            "serviceType": "Data Governance Strategy",
-            "provider": {% include "_org-ref.html" %},
-            "name": "企業向けデータガバナンス支援",
-            "description": "データの棚卸し、標準化、品質監視を通じて、企業のデータ資産を管理できる体制づくりを支援します。",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "データガバナンス", "serviceType": "データガバナンス", "description": "TauX は中小企業向けにデータガバナンスのコンサルティングと導入を行います。データの棚卸し、基準の統一、品質の監視、アクセス権限と個人情報のルールづくりを通じて、AI 導入に使える信頼できるデータを整えます。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-<span class="tag mb-4">Data Strategy</span>
-            <h1 class="mb-4">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Govern the Data First</span>
-            <span class="display-sub">データガバナンスの手引き</span>
-        </h1>
-            <p class="text-base tablet:text-lg max-w-prose mx-auto">混沌から示唆へ。企業レベルのデータ資産管理をつくる</p>
-        </header>
-
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm" lang="en">Why Governance First</span>
-                <span class="display-sub">なぜガバナンスが先なのか</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-prose">
-                データは新しい時代の石油だと言われますが、精製していない石油はエンジンを回しません。データガバナンスとは、データの品質・安全性・可用性を担保するための管理の枠組みです。
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 正確性
-                    </div>
-                    <p class="text-sm leading-relaxed">判断のよりどころを、ノイズではなく事実にします。</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                        </span> コンプライアンス
-                    </div>
-                    <p class="text-sm leading-relaxed">GDPR と台湾の個人資料保護法に適合させます。</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 可用性
-                    </div>
-                    <p class="text-sm leading-relaxed">サイロを崩し、現場が必要なときに取り出せるようにします。</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
-                <span class="display-sub">進め方</span>
-            {% endcall %}
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        1</div>
-                    <div>
-                        <h3 class="mb-3">
-                            データの棚卸し（Data Inventory）</h3>
-                        <p class="leading-relaxed">倉庫の棚卸しと同じで、どんなデータがあり、どこにあり、誰が持っているのかをはっきりさせます。データカタログの整備までお手伝いします。</p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        2</div>
-                    <div>
-                        <h3 class="mb-3">
-                            標準化（Standardization）</h3>
-                        <p class="leading-relaxed">データの言葉をそろえます。「売上」は税込みか税抜きか。「顧客」は発注した相手か、見込みも含むのか。部門どうしの話がかみ合わない原因を潰します。</p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        3</div>
-                    <div>
-                        <h3 class="mb-3">
-                            データ品質の監視（Data Quality）</h3>
-                        <p class="leading-relaxed">自動で見張る仕組みをつくり、欠損・外れ値・重複をその場で見つけます。レポートを汚す前に止めて直します。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section>
-                <div>
-                    {% call cover() %}
-                        <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
-                        <span class="display-sub">はじめる準備はできましたか</span>
-                    {% endcall %}
-                    <p class="mb-6 max-w-prose mx-auto text-lg">AI 導入でつまずくのは、たいていモデルではなくデータです——どこにあるのか、誰が使っているのか、信頼できるのか。まずは今の状況をお聞かせください。</p>
-
-                    <a href="mailto:hello@taux.io" class="btn">
-                        相談を予約する
-                    </a>
-                </div>
-            </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Data governance</span>
+        <span class="display-sub">AI 導入の前に、信頼できるデータを</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">AI 導入でつまずくのは、たいていモデルではなくデータです。どこにあるのか、誰が使っているのか、信頼できるのか。まずこの三つをはっきりさせます。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/mcp-integration" class="underline underline-offset-4">既存システムと AI の連携</a></li>
+        <li><a href="/{{ locale }}/ai-consulting" class="underline underline-offset-4">AI 導入コンサルティング</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">PQC ポスト量子暗号への移行</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

@@ -1,0 +1,57 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Logs are spread across firewalls, endpoints and cloud services, and can’t be searched when an incident happens", "You want security monitoring but don’t have a large security operations team", "You have adopted, or are evaluating, Google SecOps", "Your detection rules produce too many false positives, and no one handles the alerts"] %}
+{%- set scope = [{"t": "Assessment", "d": "We inventory log sources and retention needs, and the threat scenarios you most need to detect."}, {"t": "Log ingestion and normalization", "d": "We bring logs from each source into the platform, convert them to UDM (Unified Data Model), and verify the field mappings."}, {"t": "Detection rules", "d": "We write and tune detection rules based on risk, reducing false positives step by step."}, {"t": "Alert handling", "d": "We define who receives alerts, how they are triaged and handled, and what the dashboards should show."}, {"t": "Handover and training", "d": "An operations manual and training, so your team can tune rules and handle incidents on its own."}] %}
+{%- set process = [{"t": "Assess", "d": "Confirm log sources, priorities and the scenarios to detect."}, {"t": "Ingest", "d": "Bring logs in by priority and normalize them."}, {"t": "Detect and tune", "d": "Put detection rules live and tune them against real alerts."}, {"t": "Hand over", "d": "Deliver process documents, an operations manual and training."}] %}
+{%- set deliverables = ["Assessment report", "Log source list and field mapping document", "Detection rules and test records", "Alert handling process", "Operations manual and training"] %}
+{%- set faqs = [{"q": "What is Google SecOps?", "a": "Google Security Operations, Google Cloud’s security operations platform, which combines log collection and analysis (SIEM) with automated response (SOAR). This service covers deployment, configuration and handover."}, {"q": "Do small and medium-sized businesses need a SIEM?", "a": "Not necessarily. We first look at your log volume, regulatory requirements and staffing; if a lighter approach suits you better for now, we’ll tell you."}, {"q": "Who monitors it after deployment?", "a": "Your team can take it over, with the operations manual and training we provide, or we can discuss ongoing operations support separately."}] %}
+{% include "header.html" %}
+<!-- Service page: google-secops (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google SecOps deployment", "serviceType": "Security operations deployment", "description": "Google Security Operations (Google SecOps) for SMEs: assess log sources, normalize to UDM, write and tune detection rules, set up alert handling, and hand over.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google SecOps deployment</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Deploying Google Security Operations (Google’s cloud security operations platform): bring scattered logs in, normalize them, write the detection rules, and leave your team able to run it themselves.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/threat-landscape" class="underline underline-offset-4">Reading the Threat Landscape</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">Post-Quantum Cryptography Migration</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

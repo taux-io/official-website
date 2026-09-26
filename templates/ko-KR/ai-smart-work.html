@@ -1,156 +1,58 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["직원들이 AI를 쓰기는 하지만, 답이 평범해서 많이 고쳐야 한다", "각자 알아서 익히고 있어 회사에 공통된 사용법이 없다", "AI가 문구 작성뿐 아니라 분석과 의사 결정도 돕게 하고 싶다", "사내 문서가 많아, AI가 그 문서를 바탕으로 답하게 하고 싶다"] %}
+{%- set scope = [{"t": "구조화된 프롬프트", "d": "역할, 과제, 배경, 형식의 네 가지 요소로 분명한 지시를 써서 결과를 예측할 수 있게 합니다."}, {"t": "추론과 의사 결정", "d": "AI가 단계적으로 추론(Chain of Thought)하도록 이끌어, 내용을 만드는 데 그치지 않고 대안을 비교하고 사각지대를 찾게 합니다."}, {"t": "지식 베이스", "d": "NotebookLM으로 회사 문서를 대화할 수 있고 출처를 표시하는 지식 베이스로 정리합니다."}, {"t": "전용 어시스턴트(Gem)", "d": "부서에서 자주 쓰는 질문 방식을 다시 쓸 수 있는 Gemini 어시스턴트로 고정해, 팀 전체가 같은 방식을 쓰게 합니다."}, {"t": "사용 규칙", "d": "어떤 데이터를 AI에 넘겨도 되는지, 결과물은 어떻게 검증하는지."}] %}
+{%- set process = [{"t": "요구 사항 인터뷰", "d": "부서의 업무와 직원들이 지금 AI를 어떻게 쓰는지 파악합니다."}, {"t": "과정 설계", "d": "귀사의 실제 업무 상황으로 실습을 설계합니다."}, {"t": "강의와 실습", "d": "단원마다 실습이 있고, 수업 중에 돌아가서 바로 쓸 수 있는 결과물을 만듭니다."}, {"t": "교육 후 후속 관리", "d": "자주 묻는 질문을 정리하고, 필요하면 심화 과정을 마련합니다."}] %}
+{%- set deliverables = ["과정 설계", "교재와 프롬프트 템플릿", "수업 중 실습 결과물(예: 부서 전용 어시스턴트)", "교육 후 설문과 피드백 정리"] %}
+{%- set faqs = [{"q": "AI를 한 번도 써 본 적 없는 직원도 들을 수 있나요?", "a": "가능합니다. 직원의 수준에 따라 조를 나누고, 기본 조작부터 시작해 구조화된 질문법으로 넘어갑니다."}, {"q": "과정에서는 어떤 AI 도구를 쓰나요?", "a": "Google의 Gemini와 NotebookLM을 중심으로 합니다. 방법 자체는 다른 AI 도구에도 적용되며, 교육 전에 회사가 쓰는 도구에 맞춰 조정합니다."}, {"q": "과정을 마치면 무엇을 가져가나요?", "a": "단원마다 실습이 있습니다. 과정이 끝나면 직원들은 프롬프트 템플릿과 수업 중에 만든 부서 전용 어시스턴트를 가져갑니다."}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: ai-smart-work (ko-KR). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/ko-KR/ai-smart-work#service",
-            "serviceType": "AI Corporate Training",
-            "provider": {% include "_org-ref.html" %},
-            "name": "기업 대상 AI 실무 교육",
-            "description": "자사 전용 AI 어시스턴트(Gem)를 만들고, 프롬프트 설계와 CoT 추론을 다룰 수 있게 하는 교육입니다.",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "생성형 AI 실무 과정", "serviceType": "교육", "description": "TauX는 기업을 위해 생성형 AI 사내 교육을 설계합니다. 구조화된 프롬프트 작성법, AI의 도움을 받는 추론과 의사 결정, NotebookLM으로 지식 베이스 정리, 그리고 질문 방식을 다시 쓸 수 있는 전용 어시스턴트(Gem)로 고정하는 법을 다룹니다.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "중소기업"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <div>
-<span class="tag mb-2">AI Corporate Training</span>
-
-                <h1 class="mb-2">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">From Generating to Deciding</span>
-            <span class="display-sub">95%는 AI에 글을 쓰게 한다. 5%는 AI와 함께 판단한다</span>
-        </h1>
-
-                <p class="text-base tablet:text-lg leading-relaxed max-w-prose mb-3">
-                    이 페이지는 묻는 법, 그리고 한 묶음의 묻는 법을 되풀이해 쓸 수 있는 어시스턴트(Gem)로 굳히는 법을 다룹니다. 사내 교육에서 하는 일이 바로 이것입니다.
-                </p>
-
-                <a href="mailto:hello@taux.io" class="btn">
-                    교육 상담 예약하기
-                </a>
-            </div>
-
-        </header>
-
-<!-- Problem Section -->
-<section>
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-            <span class="display-sub">왜 AI의 답은 늘 무난하기만 한가</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-                <h3 class="mb-4">Garbage In, Garbage Out</h3>
-                <p class="leading-relaxed">지시가 흐릿하면 답도 흐릿합니다. 원하는 것을 정확히 쓰지 못하면 돌아오는 것은 일반론뿐입니다.</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">말하는 방식이 어긋난다</h3>
-                <p class="leading-relaxed">검색창에 넣듯 말하고 있지는 않은가요. AI에 필요한 것은 잡담이 아니라 구조를 갖춘 글입니다.</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">역할을 주지 않았다</h3>
-                <p class="leading-relaxed">페르소나가 없는 AI는 관점이 없는 기계입니다. 역할을 줘야 비로소 입장을 바꿔 생각합니다.</p>
-            </div>
-        </div>
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Generative AI in practice</span>
+        <span class="display-sub">사내 교육: 질문법, 추론, 전용 어시스턴트</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">같은 질문이라도 묻는 방식에 따라 답을 쓸 수 있는 정도가 크게 달라집니다. 이 과정에서는 질문법을 배우고, 한 묶음의 질문법을 다시 쓸 수 있는 어시스턴트(Gem)로 고정하는 방법을 익힙니다.</p>
 </section>
-
-<!-- Methodology -->
-<section id="methodology">
-        <div class="mb-8">
-            <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
-                Methodology</span>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
-                <span class="display-sub">AI에 통하는 글쓰기를 익힌다</span>
-            {% endcall %}
-        </div>
-
-        <div class="space-y-6">
-            <!-- Method 1 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">PTCF로 짜는 프롬프트</h3>
-                <p class="mb-6">역할(Persona), 과제(Task), 배경(Context), 형식(Format). 이 넷으로 출력을 원하는 대로 잡습니다.</p>
-            </div>
-
-            <!-- Method 2 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">깊이 생각하게 하기 (CoT)</h3>
-                <p class="mb-6">사고의 연쇄(Chain of Thought)를 써서, 복잡한 판단과 논리 전개까지 AI와 함께 밀고 나갑니다.</p>
-            </div>
-
-            <!-- Method 3 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">사내 지식 활용 (RAG)</h3>
-                <p class="mb-6">NotebookLM으로 전용 두뇌를 만듭니다. 천 쪽짜리 자료를 말을 걸 수 있는 자산으로 바꿉니다.</p>
-            </div>
-        </div>
+<section id="audience">
+    {% call cover("01") %}이런 분께 맞습니다{% endcall %}
+    {{ lines(audience) }}
 </section>
-
-<!-- Use Cases -->
-<section id="cases">
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
-            <span class="display-sub">AI를 역할별 분신으로</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-<h3 class="mb-2">주문을 정확히 받는다</h3>
-                <p class="text-sm mb-4 font-semibold">쓰이는 곳: 고객 응대, 주문 처리</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "구어체 요청을 정해진 형식의 표로 그대로 옮긴다. 숙련된 점원처럼 놓치지 않는다."
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">회의를 미리 돌려본다</h3>
-                <p class="text-sm mb-4 font-semibold">쓰이는 곳: 프로젝트 관리, 리스크 평가</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "PM, 현장 소장, 품질 관리 셋이 논쟁하게 두고, 프로젝트 리스크를 서로 캐묻게 한다."
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">보도자료 자동 작성</h3>
-                <p class="text-sm mb-4 font-semibold">쓰이는 곳: 홍보, 행정 문서</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "근거가 되는 규정과 사실만 넣으면, 행정 문체와 형식에 맞는 원고가 나온다."
-                </p>
-            </div>
-        </div>
+<section id="scope">
+    {% call cover("02") %}서비스 내용{% endcall %}
+    {{ items(scope) }}
 </section>
-
-<!-- CTA -->
-<section>
-        <div class="relative overflow-hidden">
-            <div class="relative z-10">
-                {% call cover() %}
-                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                    <span class="display-sub">물을 줄 알면 답이 오고, 생각할 줄 알면 도움이 된다</span>
-                {% endcall %}
-                <p class="text-lg mb-6 max-w-prose mx-auto">같은 질문이라도 묻는 법을 바꾸면 답이 쓸모 있는 정도가 크게 달라집니다. 그것을 팀의 공통된 방식으로 만드는 건 또 다른 일입니다. 이야기 나눠 보세요.</p>
-                <a href="mailto:hello@taux.io" class="btn">
-                    상담 시작하기
-                </a>
-            </div>
-        </div>
+<section id="process">
+    {% call cover("03") %}진행 방식{% endcall %}
+    {{ steps(process) }}
 </section>
-
+<section id="deliverables">
+    {% call cover("04") %}납품물{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}자주 묻는 질문{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}더 읽을거리{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">프롬프트 안내</a></li>
+        <li><a href="/{{ locale }}/google-workspace-training" class="underline underline-offset-4">Google Workspace 교육</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

@@ -1,0 +1,60 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["ERP, 재고 관리, 자체 구축 데이터베이스 같은 기존 시스템이 있고, 데이터가 여러 곳에 흩어져 있다", "직원이 매번 전산 담당자에게 보고서를 뽑아 달라고 하지 않고, 자연어로 사내 데이터를 조회하게 하고 싶다", "AI 어시스턴트를 이미 쓰고 있지만, 사람이 손으로 붙여 넣은 내용만 읽을 수 있다", "기존 시스템에 API가 없거나, 어떻게 돌아가는지 아는 사람이 없다"] %}
+{%- set scope = [{"t": "데이터 사일로 파악", "d": "시스템과 데이터마다 위치, 소유자, 접근 방식(API, 데이터베이스, 파일)을 정리하고, 어떤 데이터를 AI에 열어도 되는지 적습니다."}, {"t": "연결 아키텍처 설계", "d": "어떤 데이터를 MCP server로 제공할지, 어떤 AI 애플리케이션이 쓸지, 연결 방식은 로컬 실행인지 HTTP 제공인지를 정합니다."}, {"t": "MCP server 개발", "d": "기존 시스템용 MCP server를 개발해 조회 도구와 데이터 리소스를 제공합니다. 기본은 읽기 전용이고, 쓰기가 필요한 동작에는 확인 단계를 따로 설계합니다."}, {"t": "권한과 감사", "d": "기존 계정과 권한을 그대로 쓰고, 모든 조회에 기록을 남겨 누가 AI를 통해 무엇을 조회했는지 볼 수 있게 합니다."}, {"t": "보안 테스트", "d": "프롬프트 인젝션 같은 LLM 고유의 위험을 대상으로 연결을 테스트해, AI가 데이터 내용에 유도되어 해서는 안 될 일을 하지 않는지 확인합니다."}] %}
+{%- set process = [{"t": "파악", "d": "데이터 출처와 접근 방식을 정리하고, 처음 연결할 시스템을 고릅니다."}, {"t": "설계", "d": "제공할 조회와 데이터, 권한과 기록 방식을 정합니다."}, {"t": "개발과 시범 사용", "d": "첫 번째 데이터 출처의 MCP server를 완성하고, 소수의 직원이 실제로 써 보며 의견을 줍니다."}, {"t": "확장과 인계", "d": "사용 상황에 따라 다음 시스템을 연결하고, 문서와 유지 관리 방법을 넘깁니다."}] %}
+{%- set deliverables = ["데이터 출처 목록과 연결 아키텍처 문서", "MCP server 소스 코드와 배포 안내", "권한과 감사 기록 설정", "보안 테스트 보고서", "운영과 유지 관리 문서"] %}
+{%- set faqs = [{"q": "MCP란 무엇인가요?", "a": "Model Context Protocol, AI 애플리케이션이 같은 방식으로 외부 데이터와 도구에 연결되게 하는 공개 프로토콜입니다. 한 시스템에 MCP server를 만들어 두면 MCP를 지원하는 AI 애플리케이션은 모두 그것을 쓸 수 있습니다."}, {"q": "기존 시스템에 API가 없는데 연결할 수 있나요?", "a": "대부분 가능합니다. MCP server는 데이터베이스, 내보낸 파일, 사내 웹 페이지를 읽을 수 있습니다. API가 없으면 가장 안정적이고 원래 시스템에 영향이 가장 적은 읽기 방식을 먼저 검토합니다."}, {"q": "AI가 우리 데이터를 바꿀 수도 있나요?", "a": "기본은 읽기 전용 조회만 합니다. 쓰기가 필요한 동작에는 확인 단계와 권한을 따로 설계하고 기록을 남깁니다."}, {"q": "데이터가 회사 밖으로 전송되나요?", "a": "어떤 AI 애플리케이션과 배포 방식을 고르느냐에 달려 있습니다. MCP server는 회사 내부에서 돌릴 수 있습니다. 설계 단계에서 데이터 하나하나가 어디를 거치는지 설명하고, 결정은 귀사가 합니다."}] %}
+{% include "header.html" %}
+<!-- Service page: mcp-integration (ko-KR). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "기존 시스템과 AI 연결", "serviceType": "시스템 통합", "description": "데이터가 ERP, Excel, 공유 폴더, 부서별 시스템에 흩어져 있어 AI가 볼 수 없습니다. TauX는 MCP(Model Context Protocol)로 기존 시스템을 AI에 연결합니다. 읽기 전용을 우선하고, 기존 권한을 그대로 쓰며, 기록을 남깁니다.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "중소기업"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Connecting legacy systems to AI</span>
+        <span class="display-sub">MCP로 데이터 사일로를 잇기</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">데이터가 ERP, Excel, 공유 폴더, 부서별 시스템에 흩어져 있어 AI가 볼 수 없습니다. MCP로 이를 연결해, AI가 권한 범위 안에서 직접 조회하게 합니다.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}이런 분께 맞습니다{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}서비스 내용{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}진행 방식{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}납품물{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}자주 묻는 질문{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}더 읽을거리{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/what-is-mcp" class="underline underline-offset-4">MCP란</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">데이터 거버넌스</a></li>
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">TWSE MCP(저희가 공개로 유지 관리하는 MCP server)</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

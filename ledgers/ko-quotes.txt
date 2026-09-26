@@ -212,9 +212,6 @@ agent-prompting-guide.html	""	과가 오면 평가하게 합니다. "이 정보�
 agent-prompting-guide.html	''	둔한 것이 아닙니다. 우리가 '일을 맡기는'
 agent-prompting-guide.html	''	 기초편의 AI는 '대답하는 기계'
 agent-prompting-guide.html	''	는 기계'입니다. 에이전트는 '스스로 움직이는 담당자'
-ai-smart-work.html	""	 "구어체 요청을 정해진 형식의 표로 그대로 옮긴다. 숙련된 점원처럼 놓치지 않는다…"
-ai-smart-work.html	""	 "PM, 현장 소장, 품질 관리 셋이 논쟁하게 두고, 프로젝트 리스크를 서로 캐묻…"
-ai-smart-work.html	""	 "근거가 되는 규정과 사실만 넣으면, 행정 문체와 형식에 맞는 원고가 나온다."
 claude-skills-guide.html	""	 예: "디자인 원고를 읽어 낼 때 쓴다. 사용자가 fig 파일을 올렸을 때, 또는 『디…"
 claude-skills-guide.html	""	 막연한 지시는 피합니다. "데이터를 잘 검증한다"
 claude-skills-guide.html	""	"가 아니라 이렇게 씁니다. "scripts/validate.py을 실행하고, 오류가 나면 필수 항목이 빠졌는…"
@@ -232,13 +229,11 @@ claude-skills-guide.html	''	일에 어울립니다. 예를 들어 '고객을 등
 claude-skills-guide.html	''	ve Refinement): '초안을 낸다 → 스크립트로 검증한다 → 자동으로 고친다'
 claude-skills-guide.html	「」	법까지 적어 둡니다. 예컨대 「자주 있는 문제」
 claude-skills-guide.html	『』	g 파일을 올렸을 때, 또는 『디자인 사양』
-data-governance.html	''	터의 말을 하나로 맞춥니다. '매출'
-data-governance.html	''	'은 세금 포함인가 아닌가. '고객'
 geo-guide.html	""	 "예전에는 검색 엔진에 보이려고 다듬었습니다. 지금은 답하는 엔진이 이해하도록 다…"
 geo-guide.html	""	 "AI 검색 시대에 겨루는 것은 믿을 만한가와 의미의 연결입니다. AI는 없는 브…"
 geo-guide.html	''	 인용(citations)과 '추천되는 출처'
-geo-optimization.html	''	 검색은 '링크 열 개를 주는 것'
-geo-optimization.html	''	링크 열 개를 주는 것'에서 '답을 바로 주는 것'
+geo-optimization.html	‘’	적화 검색은 ‘링크 열 개를 주는 것’
+geo-optimization.html	‘’	링크 열 개를 주는 것’에서 ‘답을 바로 주는 것’
 google-workspace-with-ai.html	''	 흔히 '직원 1인당'
 google-workspace-with-ai.html	''	 바뀌어 전해집니다. 원문은 '사용자 1인당'
 google-workspace-with-ai.html	''	 '전 세계 정량 조사'

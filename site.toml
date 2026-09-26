@@ -141,7 +141,7 @@ script = "Hant"
   nav_main = "主導覽"
   nav_home_link = "TauX 首頁"
   skip_to_content = "跳到主要內容"
-  org_description = "TauX（拓思科技股份有限公司）協助企業落地 AI First 策略，專注於 GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。"
+  org_description = "TauX（拓思科技股份有限公司）協助中小企業落地 AI First 策略，提供顧問與技術導入：AI 導入與整合、數位廣告與 SEO／GEO、Google Workspace 與 AI 教育訓練，以及 AI 對抗測試與 Google SecOps 導入。"
 
 [[locale]]
 tag    = "zh-Hans-CN"
@@ -196,7 +196,7 @@ script = "Hans"
   skip_to_content = "跳到主要内容"
   # 搭建 rather than 建置, matching what the Simplified pages already say about
   # the same service — the glyph converter would have left 建置 standing.
-  org_description = "TauX（拓思科技股份有限公司）协助企业落地 AI First 策略，专注于 GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。"
+  org_description = "TauX（拓思科技股份有限公司）协助中小企业落地 AI First 策略，提供顾问与技术导入：AI 导入与整合、数字广告与 SEO／GEO、Google Workspace 与 AI 教育培训，以及 AI 对抗测试与 Google SecOps 导入。"
 
 [[locale]]
 tag    = "ja-JP"
@@ -225,6 +225,13 @@ og     = "ja_JP"
   insights_lead = "自分たちのために、そしてお客様のために書いている技術ノートです。どの記事にも出典と、結論が当てはまらなくなる範囲を書いています。"
   insights_articles = "記事"
   insights_open_source = "台湾証券取引所の公開データ（株価、ETF、140 以上の公開データセット）を AI アプリケーションから直接照会できる MCP サーバー。私たちが公開で保守しています。"
+  service_cycle_title = "契約の期間"
+  service_cycle_body = "3 か月、半年、1 年のいずれかを一つの期間とし、範囲に応じて決めます。期間が終わるたびに、お客様と一緒に最初に決めた目標と突き合わせ、次の期間に何をするか、あるいはここで終えるかを決めます。"
+  service_pricing_title = "料金の考え方"
+  service_pricing_body = "案件ごとに見積もります。扱うシステムとデータの量、必要な人員と時間、期間の長さによります。まず一度お話を伺い、実際の範囲に基づいて金額をお出しします。先に金額を出してから範囲を合わせることはしません。"
+  service_contact_title = "状況をお聞かせください"
+  service_contact_body = "今どこでつまずいているかをメールでお知らせください。実現できるやり方と次の一手をお返しします。"
+  service_contact_button = "メールで問い合わせる"
   nav_home = "ホーム"
   nav_about = "TauX について"
   nav_building = "公開しながらつくる"
@@ -243,7 +250,7 @@ og     = "ja_JP"
   nav_main = "メインナビゲーション"
   nav_home_link = "TauX ホーム"
   skip_to_content = "本文へ移動"
-  org_description = "TauX（拓思科技股份有限公司）は、AI First を掛け声で終わらせず、企業が実際に運用できるシステムにします。GEO 生成エンジン最適化、AI エージェント開発、ソフトウェアプラットフォーム構築、法人向け AI 研修を手がけています。"
+  org_description = "TauX 拓思科技は台湾・高雄を拠点とするコンサルティングと技術導入の会社です。中小企業が AI をデモではなく実際に業務で回せる仕組みにできるよう、AI 導入と統合、マーケティング（広告、SEO・GEO）、Google Workspace と AI の研修、セキュリティ（AI レッドチーミング、Google SecOps）を支援しています。"
 
 [[locale]]
 tag    = "ko-KR"
@@ -265,6 +272,13 @@ og     = "ko_KR"
   insights_lead = "우리 자신과 고객을 위해 쓰는 기술 노트입니다. 모든 글에 출처와, 결론이 더 이상 들어맞지 않는 범위를 적어 둡니다."
   insights_articles = "글"
   insights_open_source = "대만증권거래소 공개 데이터(주가, ETF, 140개 이상의 공개 데이터셋)를 AI 애플리케이션에서 바로 조회할 수 있게 하는 MCP 서버입니다. 우리가 공개적으로 관리합니다."
+  service_cycle_title = "협업 주기"
+  service_cycle_body = "범위에 따라 3개월, 6개월, 1년 중 하나를 한 주기로 합니다. 주기가 끝날 때마다 처음에 정한 목표와 함께 맞춰 보고, 다음 주기에 무엇을 할지, 아니면 여기서 마칠지 정합니다."
+  service_pricing_title = "비용 산정 방식"
+  service_pricing_body = "사례별로 산정합니다. 다룰 시스템과 데이터가 얼마나 되는지, 필요한 인력과 시간, 주기의 길이를 봅니다. 먼저 한 번 이야기를 나누면 실제 범위를 보고 숫자를 드립니다. 견적을 먼저 내고 범위를 거기에 맞추지 않습니다."
+  service_contact_title = "지금 상황을 들려주세요"
+  service_contact_body = "지금 어디에서 막혀 있는지 메일로 알려 주시면, 가능한 방법과 다음 단계를 답해 드립니다."
+  service_contact_button = "메일 보내기"
   nav_home = "홈"
   nav_about = "TauX 소개"
   nav_building = "공개하며 만드는 중"
@@ -283,7 +297,7 @@ og     = "ko_KR"
   nav_main = "주 내비게이션"
   nav_home_link = "TauX 홈"
   skip_to_content = "본문으로 건너뛰기"
-  org_description = "TauX(拓思科技股份有限公司)는 AI First 전략을 시연이 아니라 실제로 돌아가는 시스템으로 만듭니다. GEO 생성형 엔진 최적화, AI 에이전트 개발, 소프트웨어 플랫폼 구축, 기업 AI 교육을 합니다."
+  org_description = "TauX 拓思科技는 대만 가오슝에 있는 컨설팅 및 기술 구현 회사로, 중소기업이 AI를 시연용이 아니라 실제로 운영할 수 있는 시스템으로 만들도록 돕습니다. AI 도입과 통합, 마케팅(광고, SEO·GEO), Google Workspace와 AI 교육, 보안(AI 레드팀, Google SecOps)의 네 분야를 다룹니다."
 
 [[locale]]
 tag    = "en-US"
@@ -304,6 +318,13 @@ script = "Latn"
   insights_lead = "Technical notes we write for ourselves and for clients. Each one names its sources and says where its conclusions stop applying."
   insights_articles = "Articles"
   insights_open_source = "An MCP server for the Taiwan Stock Exchange's open data — quotes, ETFs and 140+ public datasets — so AI applications can query it directly. We maintain it in the open."
+  service_cycle_title = "Engagement cycle"
+  service_cycle_body = "Each cycle runs three months, six months or a year, depending on scope. At the end of each cycle we sit down with you and compare the results against the goals set at the start, then decide what the next cycle should cover, or whether to stop there."
+  service_pricing_title = "Pricing"
+  service_pricing_body = "Each engagement is estimated on its own: how many systems and how much data are involved, the people and time needed, and how long the cycle runs. Talk to us first and we’ll give you a number based on the actual scope, rather than quoting a price and then fitting the scope to it."
+  service_contact_title = "Tell us where you are"
+  service_contact_body = "Email us about where you’re stuck, and we’ll reply with what could work and the next step."
+  service_contact_button = "Email us"
   nav_home = "Home"
   nav_about = "About"
   nav_building = "Building in Public"
@@ -326,35 +347,35 @@ script = "Latn"
   # own footer already decided. The registered Chinese name is still on every
   # English page — `legalName` in the same node carries it, which is where a
   # consumer looks for it.
-  org_description = "TauX Co., Ltd. turns an AI First strategy into systems a business can run on, rather than a demo that impresses once: Generative Engine Optimization, AI agent development, software platform delivery, and AI training for in-house teams. Based in Kaohsiung, Taiwan."
+  org_description = "TauX is a consulting and technical implementation firm in Kaohsiung, Taiwan, that helps small and medium-sized businesses turn AI into systems they can actually run, rather than demos. It works in four areas: AI adoption and integration; marketing (ads, SEO and GEO); Google Workspace and AI training; and security, including AI red teaming and Google SecOps."
 
 [[page]]
 path        = "/"
 template    = "index.html"
-date_modified = "2026-08-09"
+date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
   # The claim leads and the keyword follows. "GEO" is the highest-value term this
   # site ranks for and the new lead line does not contain it, so dropping it from
   # the title to make room would trade measured traffic for a slogan. Both fit.
   title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎優化"
-  description = "拓思科技（TauX）協助企業把 AI 變成能用的系統，而不是一場展示：GEO 生成式引擎優化、AI Agent 開發、軟體平台建置與企業 AI 內訓。總部位於高雄，服務全台企業。"
+  description = "拓思科技（TauX）協助中小企業把 AI 變成能用的系統，而不是一場展示：AI 導入與整合、數位廣告與 SEO／GEO、Google Workspace 與 AI 教育訓練、AI 對抗測試與 Google SecOps。總部位於高雄，服務全台企業。"
 
   [page.locale.zh-Hans-CN]
   title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎优化"
-  description = "拓思科技（TauX）协助企业把 AI 变成能用的系统，而不是一场展示：GEO 生成式引擎优化、AI Agent 开发、软件平台搭建与企业 AI 内训。总部位于高雄，服务全台企业。"
+  description = "拓思科技（TauX）协助中小企业把 AI 变成能用的系统，而不是一场展示：AI 导入与整合、数字广告与 SEO／GEO、Google Workspace 与 AI 教育培训、AI 对抗测试与 Google SecOps。总部位于高雄，服务全台企业。"
 
   [page.locale.ja-JP]
   title       = "TauX 拓思科技｜AI を、会社が本当に使える力に｜GEO 生成エンジン最適化"
-  description = "TauX は AI を、一度きりのデモではなく企業が実際に運用できるシステムに変えます。GEO、AI エージェント開発、ソフトウェア開発、企業向け AI 研修。台湾・高雄から。"
+  description = "TauX は台湾・高雄を拠点に、中小企業が AI をデモで終わらせず、実際に業務で回せる仕組みにするお手伝いをしています。AI 導入と統合、マーケティング（広告、SEO・GEO）、Google Workspace と AI の研修、セキュリティ（AI レッドチーミング、Google SecOps）の四つの分野を扱います。"
 
   [page.locale.ko-KR]
   title       = "TauX 拓思科技｜AI를 회사가 진짜 쓸 수 있는 힘으로｜GEO 생성형 엔진 최적화"
-  description = "TauX는 AI를 한 번 보여 주는 데모가 아니라 기업이 실제로 굴릴 수 있는 시스템으로 바꿉니다. GEO, AI 에이전트 개발, 소프트웨어 개발, 기업 AI 교육. 대만 가오슝에서."
+  description = "TauX는 중소기업이 AI를 시연용이 아니라 회사가 실제로 운영할 수 있는 시스템으로 만들도록 돕습니다. AI 도입과 통합, 마케팅(광고, SEO·GEO), Google Workspace와 AI 교육, 보안(AI 레드팀, Google SecOps)의 네 분야를 다루며, 대만 가오슝에 있습니다."
 
   [page.locale.en-US]
   title       = "TauX — AI that earns its place | Generative Engine Optimization"
-  description = "TauX turns AI into systems a business can run on, rather than a demo that impresses once. GEO, AI agent development, software platforms and in-house AI training, from Kaohsiung, Taiwan."
+  description = "Kaohsiung-based TauX helps SMEs turn AI into systems they can run, not demos: AI adoption, ads, SEO and GEO, Workspace and AI training, and security."
 
 [[page]]
 path        = "/geo-guide"
@@ -407,6 +428,24 @@ date_published = "2026-09-26"
   crumb       = "数字广告投放"
   label       = "数字广告投放"
 
+  [page.locale.en-US]
+  title       = "Digital Advertising: Google and Meta Ads, Tracking First | TauX"
+  description = "Google and Meta (Facebook, Instagram) ads for SMEs: conversion tracking first, then goals, audiences and budget, with a monthly report on spend and results."
+  crumb       = "Digital advertising"
+  label       = "Digital advertising"
+
+  [page.locale.ja-JP]
+  title       = "デジタル広告の運用｜Google と Meta の広告を、計測の設定から | TauX"
+  description = "TauX は中小企業向けに Google と Meta（Facebook、Instagram）の広告を企画・運用します。まずコンバージョン計測を整え、そのうえで目標、オーディエンス、予算を設定し、毎月の費用と成果を報告します。"
+  crumb       = "デジタル広告の運用"
+  label       = "デジタル広告の運用"
+
+  [page.locale.ko-KR]
+  title       = "디지털 광고 운영｜Google과 Meta 광고, 추적 설정부터 | TauX"
+  description = "TauX는 중소기업을 위해 Google, Meta(Facebook, Instagram) 광고를 기획하고 운영합니다. 먼저 전환 추적을 설정한 뒤 목표, 타깃, 예산을 정하고, 매달 지출과 성과를 보고합니다."
+  crumb       = "디지털 광고 운영"
+  label       = "디지털 광고 운영"
+
 [[page]]
 path        = "/geo-optimization"
 template    = "geo-optimization.html"
@@ -426,22 +465,22 @@ date_modified = "2026-09-26"
   label       = "SEO 与 GEO 搜索优化"
 
   [page.locale.ja-JP]
-  title       = "GEO 生成エンジン最適化サービス｜AI の答えの中に入る | TauX"
-  description = "構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。"
-  label       = "GEO 最適化"
-  crumb       = "GEO 生成エンジン最適化サービス"
+  title       = "SEO と GEO の検索最適化｜検索エンジンにも AI にも見つけられ、引用されるように | TauX"
+  description = "TauX は中小企業向けに SEO と GEO（生成エンジン最適化）を提供します。テクニカル SEO、コンテンツとキーワード、構造化データ、llms.txt と AI クローラの方針を扱い、着手前に基準を記録して、その後の引用の変化を測ります。"
+  crumb       = "SEO と GEO の検索最適化"
+  label       = "SEO と GEO の検索最適化"
 
   [page.locale.ko-KR]
-  title       = "GEO 생성형 엔진 최적화 서비스｜AI의 답 안으로 | TauX"
-  description = "구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다."
-  label       = "GEO 최적화"
-  crumb       = "GEO 생성형 엔진 최적화 서비스"
+  title       = "SEO와 GEO 검색 최적화｜검색 엔진과 AI 모두에게 찾아지고 인용되도록 | TauX"
+  description = "TauX는 중소기업에 SEO와 GEO(생성형 엔진 최적화)를 제공합니다. 기술 SEO, 콘텐츠와 키워드, 구조화 데이터, llms.txt와 AI 크롤러 정책을 다루며, 착수 전에 기준을 기록하고 이후 인용의 변화를 측정합니다."
+  crumb       = "SEO와 GEO 검색 최적화"
+  label       = "SEO와 GEO 검색 최적화"
 
   [page.locale.en-US]
-  title       = "Generative Engine Optimization Service | TauX"
-  description = "Structured data, content chunking, entity declarations and citation measurement — with a baseline recorded before the work starts, so the result can be checked."
-  label       = "GEO Optimization"
-  crumb       = "Generative Engine Optimization"
+  title       = "SEO and GEO: Get Found and Cited by Search and AI | TauX"
+  description = "SEO and GEO for SMEs: technical SEO, content, structured data, llms.txt and AI crawler policy, with a baseline recorded first and citations tracked after."
+  crumb       = "SEO and GEO"
+  label       = "SEO and GEO"
 
 [[page]]
 path        = "/google-workspace-training"
@@ -462,6 +501,24 @@ date_published = "2026-09-26"
   crumb       = "Google Workspace 教育训练"
   label       = "Google Workspace 教育训练"
 
+  [page.locale.en-US]
+  title       = "Google Workspace Training for Businesses and Government | TauX"
+  description = "Google Workspace training for businesses and agencies: collaboration, Docs and Sheets, Meet and Calendar, Gemini, and admin settings, practiced on your own workflows."
+  crumb       = "Google Workspace training"
+  label       = "Google Workspace training"
+
+  [page.locale.ja-JP]
+  title       = "Google Workspace 研修｜企業と行政機関向けの講座 | TauX"
+  description = "TauX は企業と行政機関向けに Google Workspace の研修を企画します。クラウドでの共同作業、ドキュメントとスプレッドシート、会議とカレンダー、Workspace に組み込まれた AI（Gemini）、管理者の設定まで、実際の業務の流れに合わせて演習を組み立てます。"
+  crumb       = "Google Workspace 研修"
+  label       = "Google Workspace 研修"
+
+  [page.locale.ko-KR]
+  title       = "Google Workspace 교육｜기업과 공공기관 과정 | TauX"
+  description = "TauX는 기업과 공공기관을 위해 Google Workspace 교육을 설계합니다. 클라우드 협업, 문서와 스프레드시트, 회의와 캘린더, Workspace에 들어 있는 AI(Gemini), 관리자 설정을 다루며, 실제 업무 흐름에 맞춰 실습을 설계합니다."
+  crumb       = "Google Workspace 교육"
+  label       = "Google Workspace 교육"
+
 [[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
@@ -481,22 +538,22 @@ date_modified = "2026-09-26"
   label       = "生成式 AI 实务课程"
 
   [page.locale.ja-JP]
-  title       = "企業向け AI 実務研修｜導入と社内トレーニング | TauX"
-  description = "役割を保ち、構造に従って動く AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型を学ぶ社内研修です。"
-  label       = "AI 実務研修"
-  crumb       = "AI 実務研修"
+  title       = "生成 AI 実務講座｜企業内研修：問い方、推論、専用アシスタント | TauX"
+  description = "TauX は企業向けに生成 AI の社内研修を企画します。構造化したプロンプトの書き方、AI に推論と意思決定を手伝わせる方法、NotebookLM でのナレッジベースづくり、そして一組の問い方を繰り返し使える専用アシスタント（Gem）にまとめる方法です。"
+  crumb       = "生成 AI 実務講座"
+  label       = "生成 AI 実務講座"
 
   [page.locale.ko-KR]
-  title       = "기업 대상 AI 실무 교육｜도입과 사내 트레이닝 | TauX"
-  description = "역할을 유지하고 구조를 따르는 AI 어시스턴트를 만드는 법과, 보기 좋은 것이 아니라 꾸준히 통하는 프롬프트의 형태를 익히는 사내 교육입니다."
-  label       = "AI 실무 교육"
-  crumb       = "AI 실무 교육"
+  title       = "생성형 AI 실무 과정｜사내 교육: 질문법, 추론, 전용 어시스턴트 | TauX"
+  description = "TauX는 기업을 위해 생성형 AI 사내 교육을 설계합니다. 구조화된 프롬프트 작성법, AI의 도움을 받는 추론과 의사 결정, NotebookLM으로 지식 베이스 정리, 그리고 질문 방식을 다시 쓸 수 있는 전용 어시스턴트(Gem)로 고정하는 법을 다룹니다."
+  crumb       = "생성형 AI 실무 과정"
+  label       = "생성형 AI 실무 과정"
 
   [page.locale.en-US]
-  title       = "AI Training for Teams | TauX"
-  description = "In-house AI training: build assistants that hold a role and follow a structure, and learn the prompt patterns that make them reliable rather than impressive."
-  label       = "Smart Work"
-  crumb       = "AI Training for Teams"
+  title       = "Generative AI Training: Prompts, Reasoning and Gems | TauX"
+  description = "In-house generative AI training: structured prompting, AI-assisted reasoning, a NotebookLM knowledge base, and turning a set of prompts into a reusable Gem."
+  crumb       = "Generative AI in practice"
+  label       = "Generative AI in practice"
 
 [[page]]
 path        = "/threat-landscape"
@@ -585,6 +642,24 @@ date_published = "2026-09-26"
   crumb       = "企业 AI 导入顾问"
   label       = "企业 AI 导入顾问"
 
+  [page.locale.en-US]
+  title       = "AI Adoption Consulting: From Audit and PoC to Results | TauX"
+  description = "AI adoption consulting for SMEs: find the work worth giving to AI, set priorities, run a PoC, and measure a baseline before rollout and results after."
+  crumb       = "AI adoption consulting"
+  label       = "AI adoption consulting"
+
+  [page.locale.ja-JP]
+  title       = "企業の AI 導入コンサルティング｜棚卸し、PoC から効果測定まで | TauX"
+  description = "TauX は中小企業向けに AI 導入のコンサルティングと技術導入を行います。AI に任せる価値のある業務を洗い出し、優先順位を決めて PoC を行います。導入前に基準値を取り、導入後も同じ物差しで効果を検証します。"
+  crumb       = "AI 導入コンサルティング"
+  label       = "企業の AI 導入コンサルティング"
+
+  [page.locale.ko-KR]
+  title       = "기업 AI 도입 컨설팅｜현황 파악, PoC에서 성과 측정까지 | TauX"
+  description = "TauX는 중소기업에 AI 도입 컨설팅과 기술 구현을 제공합니다. AI로 할 가치가 있는 업무를 찾고, 우선순위를 정하고, PoC를 진행하며, 도입 전에 기준값을 측정해 두었다가 도입 후 같은 잣대로 성과를 확인합니다."
+  crumb       = "기업 AI 도입 컨설팅"
+  label       = "기업 AI 도입 컨설팅"
+
 [[page]]
 path        = "/mcp-integration"
 template    = "mcp-integration.html"
@@ -603,6 +678,24 @@ date_published = "2026-09-26"
   description = "数据散在 ERP、Excel、共用文件夹与各部门系统里，AI 看不到。TauX 用 MCP（Model Context Protocol）把旧系统接给 AI，只读优先、沿用既有权限并留下记录。"
   crumb       = "旧系统与 AI 串接"
   label       = "旧系统与 AI 串接（MCP）"
+
+  [page.locale.en-US]
+  title       = "Connecting Legacy Systems to AI with MCP | TauX"
+  description = "Data in ERP, Excel and shared folders is invisible to AI. TauX connects legacy systems to AI with MCP: read-only first, existing permissions, every query logged."
+  crumb       = "Legacy systems and AI"
+  label       = "Legacy systems + AI (MCP)"
+
+  [page.locale.ja-JP]
+  title       = "既存システムと AI の連携｜MCP でデータのサイロをつなぐ | TauX"
+  description = "データが ERP、Excel、共有フォルダ、各部署のシステムに散らばり、AI から見えない。TauX は MCP（Model Context Protocol）で既存システムを AI につなぎます。読み取り専用を基本とし、既存の権限を引き継ぎ、記録を残します。"
+  crumb       = "既存システムと AI の連携"
+  label       = "既存システムと AI の連携（MCP）"
+
+  [page.locale.ko-KR]
+  title       = "기존 시스템과 AI 연결｜MCP로 데이터 사일로를 잇기 | TauX"
+  description = "데이터가 ERP, Excel, 공유 폴더, 부서별 시스템에 흩어져 있어 AI가 볼 수 없습니다. TauX는 MCP(Model Context Protocol)로 기존 시스템을 AI에 연결합니다. 읽기 전용을 우선하고, 기존 권한을 그대로 쓰며, 기록을 남깁니다."
+  crumb       = "기존 시스템과 AI 연결"
+  label       = "기존 시스템과 AI 연결(MCP)"
 
 [[page]]
 path        = "/ai-agents"
@@ -623,6 +716,24 @@ date_published = "2026-09-26"
   crumb       = "AI Agent 开发"
   label       = "AI Agent 开发"
 
+  [page.locale.en-US]
+  title       = "AI Agent Development: Hand Repetitive Workflows to AI | TauX"
+  description = "TauX builds AI agents for SMEs: repetitive, rule-based workflows run by AI that calls tools, follows the steps, keeps a record, and stops where a person must decide."
+  crumb       = "AI agent development"
+  label       = "AI agent development"
+
+  [page.locale.ja-JP]
+  title       = "AI エージェント開発｜繰り返しの業務フローを、実行する AI に任せる | TauX"
+  description = "TauX は中小企業向けに AI エージェントを開発します。ルールが明確で手順が繰り返される業務フローを、ツールを呼び出し、手順どおりに実行し、人の判断が必要な所で止まり、記録を残す AI に任せます。"
+  crumb       = "AI エージェント開発"
+  label       = "AI エージェント開発"
+
+  [page.locale.ko-KR]
+  title       = "AI Agent 개발｜반복되는 업무 흐름을 실행하는 AI에게 | TauX"
+  description = "TauX는 중소기업을 위해 AI Agent를 개발합니다. 규칙이 분명하고 단계가 반복되는 업무 흐름을, 도구를 호출하고 단계대로 실행하며 사람의 판단이 필요할 때 멈추고 기록을 남기는 AI에게 맡깁니다."
+  crumb       = "AI Agent 개발"
+  label       = "AI Agent 개발"
+
 [[page]]
 path        = "/ai-red-teaming"
 template    = "ai-red-teaming.html"
@@ -641,6 +752,24 @@ date_published = "2026-09-26"
   description = "TauX 为 AI 客服、内部 AI 助理与 AI Agent 提供对抗测试：提示词注入、数据外泄、越权操作等 LLM 特有风险，依 OWASP LLM Top 10 逐项测试，并提供重现步骤与修补建议。"
   crumb       = "AI 对抗测试"
   label       = "AI 对抗测试"
+
+  [page.locale.en-US]
+  title       = "AI Red Teaming: Test Your AI App Against OWASP LLM Top 10 | TauX"
+  description = "Red teaming for AI chatbots, assistants and agents: prompt injection, data leakage and overreach, tested against the OWASP LLM Top 10, with repro steps and fixes."
+  crumb       = "AI red teaming"
+  label       = "AI red teaming"
+
+  [page.locale.ja-JP]
+  title       = "AI レッドチーミング｜OWASP LLM Top 10 に沿って AI アプリケーションをテスト | TauX"
+  description = "TauX は AI カスタマーサポート、社内 AI アシスタント、AI エージェントに対してレッドチーミングを行います。プロンプトインジェクション、データ漏えい、権限外の操作など LLM 特有のリスクを OWASP LLM Top 10 に沿って一項目ずつテストし、再現手順と修正の提案をお渡しします。"
+  crumb       = "AI レッドチーミング"
+  label       = "AI レッドチーミング"
+
+  [page.locale.ko-KR]
+  title       = "AI 레드팀 테스트｜OWASP LLM Top 10에 따라 AI 애플리케이션을 테스트 | TauX"
+  description = "TauX는 AI 고객 상담, 사내 AI 어시스턴트, AI Agent를 대상으로 레드팀 테스트를 제공합니다. 프롬프트 인젝션, 데이터 유출, 권한을 넘는 동작 같은 LLM 고유의 위험을 OWASP LLM Top 10에 따라 항목별로 테스트하고, 재현 절차와 수정 권고를 드립니다."
+  crumb       = "AI 레드팀 테스트"
+  label       = "AI 레드팀 테스트"
 
 [[page]]
 path        = "/google-secops"
@@ -661,6 +790,24 @@ date_published = "2026-09-26"
   crumb       = "Google SecOps 导入"
   label       = "Google SecOps 导入"
 
+  [page.locale.en-US]
+  title       = "Google SecOps Deployment: Logs, Detections and Handover | TauX"
+  description = "Google Security Operations (Google SecOps) for SMEs: assess log sources, normalize to UDM, write and tune detection rules, set up alert handling, and hand over."
+  crumb       = "Google SecOps deployment"
+  label       = "Google SecOps deployment"
+
+  [page.locale.ja-JP]
+  title       = "Google SecOps の導入｜ログの取り込み、検知ルール、運用の引き継ぎ | TauX"
+  description = "TauX は中小企業の Google Security Operations（Google SecOps）導入を支援します。ログソースの評価、取り込みと UDM への正規化、検知ルールの作成と調整、アラート対応の流れづくりを行い、チームの運用へ引き継ぎます。"
+  crumb       = "Google SecOps の導入"
+  label       = "Google SecOps の導入"
+
+  [page.locale.ko-KR]
+  title       = "Google SecOps 도입｜로그 수집, 탐지 규칙, 운영 인계 | TauX"
+  description = "TauX는 중소기업의 Google Security Operations(Google SecOps) 도입을 돕습니다. 로그 출처를 평가하고, 수집해 UDM으로 정규화하고, 탐지 규칙을 작성하고 조정하며, 경보 처리 절차를 만들고, 팀이 운영할 수 있도록 인계합니다."
+  crumb       = "Google SecOps 도입"
+  label       = "Google SecOps 도입"
+
 [[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
@@ -680,22 +827,22 @@ date_modified = "2026-09-26"
   label       = "数据治理"
 
   [page.locale.ja-JP]
-  title       = "データガバナンスと AI セキュリティ｜Data Governance | TauX"
-  description = "データの棚卸し、標準化、品質監視。AI に載せられるだけの信頼できるデータがあるかどうかを決める、その下ごしらえの部分です。"
-  label       = "データガバナンス"
+  title       = "データガバナンス｜AI 導入の前に、信頼できるデータを | TauX"
+  description = "TauX は中小企業向けにデータガバナンスのコンサルティングと導入を行います。データの棚卸し、基準の統一、品質の監視、アクセス権限と個人情報のルールづくりを通じて、AI 導入に使える信頼できるデータを整えます。"
   crumb       = "データガバナンス"
+  label       = "データガバナンス"
 
   [page.locale.ko-KR]
-  title       = "데이터 거버넌스와 AI 보안｜Data Governance | TauX"
-  description = "데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업입니다."
-  label       = "데이터 거버넌스"
+  title       = "데이터 거버넌스｜AI 도입 전에 믿을 수 있는 데이터부터 | TauX"
+  description = "TauX는 중소기업에 데이터 거버넌스 컨설팅과 구현을 제공합니다. 데이터를 파악하고, 기준을 통일하고, 품질을 모니터링하고, 접근 권한과 개인정보 규칙을 정해 AI 도입에 믿을 수 있는 데이터를 마련합니다."
   crumb       = "데이터 거버넌스"
+  label       = "데이터 거버넌스"
 
   [page.locale.en-US]
-  title       = "Data Governance for Enterprises | TauX"
-  description = "Data inventory, standardisation and quality monitoring — the groundwork that decides whether your AI projects have anything trustworthy to run on."
-  label       = "Data Governance"
-  crumb       = "Data Governance"
+  title       = "Data Governance: Make Your Data Trustworthy Before AI | TauX"
+  description = "Data governance for SMEs: inventory and standardize your data, monitor quality, and set access and personal data rules, so AI has data you can trust."
+  crumb       = "Data governance"
+  label       = "Data governance"
 
 [[page]]
 path        = "/google-workspace-with-ai"

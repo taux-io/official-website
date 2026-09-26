@@ -1,0 +1,57 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["AI customer service, chatbots or internal AI assistants that are live or about to launch", "AI applications connected to internal data, or able to take actions such as sending email or placing orders", "You need to explain your AI security measures to customers, auditors or regulators", "After a model or feature update, you’re not sure your existing safeguards still work"] %}
+{%- set scope = [{"t": "Scoping", "d": "We map the application’s architecture, the data and tools the AI can reach, and each type of user’s permissions."}, {"t": "Prompt injection testing", "d": "Direct injection and indirect injection (instructions hidden in documents, web pages or email), to see whether the AI’s behavior can be changed."}, {"t": "Data leakage and privilege abuse", "d": "Whether the system prompt and sensitive data can be extracted, and whether the AI can be led into actions beyond its permissions."}, {"t": "Output handling", "d": "Whether the AI’s output, when used by other systems, can cause injection or unintended execution."}, {"t": "Report and retest", "d": "Each finding comes with a severity, reproduction steps and a recommended fix; we retest after fixes."}] %}
+{%- set process = [{"t": "Scope and rules", "d": "Agree on the test scope, environment, time window and stop conditions."}, {"t": "Testing", "d": "Test item by item against the OWASP LLM Top 10, recording every attempt."}, {"t": "Report", "d": "Explain findings, impact and recommended fixes, and go through them one by one with your developers."}, {"t": "Retest", "d": "Test again after fixes to confirm the issues are resolved."}] %}
+{%- set deliverables = ["Test scope and methodology", "Findings list (severity, reproduction steps, recommended fixes)", "Retest report"] %}
+{%- set faqs = [{"q": "What is AI red teaming?", "a": "Simulating an attacker to try to make an AI application do what it shouldn’t: leak data, ignore its original instructions, or take actions beyond its permissions. The goal is to find the problems before a real attacker does."}, {"q": "How is AI red teaming different from a regular penetration test?", "a": "A regular penetration test targets weaknesses in networks, servers and web applications. AI red teaming targets risks specific to language models, such as prompt injection, where text content changes the model’s behavior. The two complement each other."}, {"q": "Will testing affect our production environment?", "a": "We recommend testing in a test environment. If production must be tested, we agree on the scope, time window and stop conditions in advance."}, {"q": "Are we safe once the fixes are in?", "a": "There is currently no one-time cure for prompt injection. The aim is to reduce risk and limit the permissions and data the AI can use. After a model or feature update, we recommend testing again."}] %}
+{% include "header.html" %}
+<!-- Service page: ai-red-teaming (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI red teaming", "serviceType": "Security testing", "description": "Red teaming for AI chatbots, assistants and agents: prompt injection, data leakage and overreach, tested against the OWASP LLM Top 10, with repro steps and fixes.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI red teaming</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Before launch, test your AI application the way an attacker would: prompt injection, data leakage, actions beyond its permissions, checked item by item against the OWASP LLM Top 10.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="/{{ locale }}/what-is-prompt-injection" class="underline underline-offset-4">Prompt Injection Explained</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

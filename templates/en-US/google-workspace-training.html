@@ -1,0 +1,57 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Businesses and government agencies that have just adopted, or are about to adopt, Google Workspace", "Organizations already using it where most staff only use Gmail", "Files sit in personal drives, making handovers hard when people change roles", "You want to start using Gemini, but staff don’t know how or aren’t sure they’re allowed to"] %}
+{%- set scope = [{"t": "Cloud collaboration basics", "d": "Drive and shared drives, sharing and permission settings, so files belong to the organization rather than to individuals."}, {"t": "Docs, Sheets and Slides", "d": "Co-editing, comments and assignments, version history; in Sheets, functions, data cleanup and pivot tables."}, {"t": "Meetings and Calendar", "d": "Google Meet, appointment scheduling, meeting notes and calendar sharing."}, {"t": "AI in Workspace", "d": "Using Gemini to write, summarize and analyze documents, and which data can and can’t be given to AI."}, {"t": "Admin course", "d": "Accounts and groups, shared drive policies, data protection and security settings."}] %}
+{%- set process = [{"t": "Needs interview", "d": "Learn how your team works, which tools you use now and how familiar staff are with them."}, {"t": "Course planning", "d": "Separate tracks for general users and admins, with exercises built on your own documents and processes."}, {"t": "Teaching", "d": "In person or online, mostly hands-on practice."}, {"t": "Feedback", "d": "A survey and a list of common questions, to decide whether an advanced or follow-up course is needed."}] %}
+{%- set deliverables = ["Pre-course needs interview and course plan", "Handouts and practice files", "Post-course survey and feedback summary", "Common questions and how-to notes"] %}
+{%- set faqs = [{"q": "Can the course be tailored to our work?", "a": "Yes. We interview you first and build the exercises on your actual documents and processes, not generic examples."}, {"q": "Can government agencies take this course?", "a": "Yes. We adjust what AI may be used for, and the exercises, to fit the agency’s data protection rules."}, {"q": "Can we take just the Gemini course?", "a": "Yes. Modules can be taken on their own or combined into full rollout training."}] %}
+{% include "header.html" %}
+<!-- Service page: google-workspace-training (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google Workspace training", "serviceType": "Training", "description": "Google Workspace training for businesses and agencies: collaboration, Docs and Sheets, Meet and Calendar, Gemini, and admin settings, practiced on your own workflows.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google Workspace training</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Courses built around how your organization actually works: cloud collaboration, Docs and Sheets, meetings and Calendar, and how to use the AI built into Workspace (Gemini), with rules for using it.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI: reading the ROI</a></li>
+        <li><a href="/{{ locale }}/ai-smart-work" class="underline underline-offset-4">Generative AI in practice</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

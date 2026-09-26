@@ -130,8 +130,14 @@ function main() {
       // 37 forbids a macro from putting an argument into a class attribute, so
       // `{% call faq("Why discount self-reported time savings?") %}` is a
       // question, and `self-reported` read as a utility is a false report.
+      //
+      // Nor are the strings of a `{% set %}`. The service pages keep their
+      // content as data at the top of the file (`{% set scope = [...] %}`) and
+      // render it through the macros in _blocks.html, which — rule 37 again —
+      // never put an argument into a class. On the English pages that data is
+      // prose, and "list", "start" and "order" read as utilities.
       const withStrings = [...html.matchAll(/\{%-?[^%]*?%\}/g)]
-        .filter((tag) => !/^\{%-?\s*(?:call|from|import)\b/.test(tag[0]))
+        .filter((tag) => !/^\{%-?\s*(?:call|from|import|set)\b/.test(tag[0]))
         .flatMap((tag) => [...tag[0].matchAll(/"([^"]*)"/g)].map((m) => m[1]))
         .filter((v) => !v.endsWith(".html")); // include targets, not classes
 

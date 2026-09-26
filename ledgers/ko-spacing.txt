@@ -536,9 +536,6 @@ claude-skills-guide.html	·· code>README.md</code>에
 claude-skills-guide.html	   . 앱을 개발한다면 API의 <code>
 claude-skills-guide.html	·· ntainer.skills</code>로
 claude-skills-guide.html	   ng>어떻게 보일 것인가:</strong> 알
-data-governance.html	    </span> 정
-data-governance.html	    </span> 규
-data-governance.html	    </span> 가
 geo-guide.html	·· n, 생성형 엔진 최적화)</strong>는
 geo-guide.html	    <p>AI의 답 안에서 <span class="font-semibold">
 geo-guide.html	·· >인용(citations)</span>과
