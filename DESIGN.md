@@ -278,7 +278,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 | # | 事情 | 現況 | 為什麼要寫下來 |
 |---|---|---|---|
 | 1 | **深色模式** | `prefers-color-scheme` 全站 **0 個** | 墨版模型的答案是**紙就是紙，不反轉**——反轉會讓 `#FAFAF7` 變成一個沒有名字的深色表面。原本 `static/` 下留著 `taux-logo-light.png` 與 `taux-logo-dark.png` 兩個沒有使用者的變體，暗示兩個表面；dark 已刪除，light 移到 `brand-src/`（只給 `build-logo.js` 當裁切來源，不發佈） |
-| 2 | **`forced-colors`（Windows 高對比）** | 全站 **0 個** | 作業系統會**直接換掉墨版的顏色**。**這是兩塊版的模型唯一會被外力整個推翻的地方**，而本站今天對它沒有任何宣告 |
+| 2 | **`forced-colors`（Windows 高對比）** | ✅ `src/input.css` 一個區塊（決策 #152） | 作業系統會**直接換掉墨版的顏色**。**這是兩塊版的模型唯一會被外力整個推翻的地方**。⚠️ 這一格原本寫「全站 **0 個**」，區塊落地（階段 ③，只補行內 `code`）之後一直沒改；決策 #152 用模擬實測過全站後補齊。答案不是保住顏色，是**把只靠底色說的話改用系統色的邊框與實心形狀說** |
 | 3 | **列印樣式 `@media print`** | 全站 **0 個** | **這一格最諷刺**：參考站是印刷規範，而本站按 Cmd+P 印出來的東西不受這份文件管。**這是唯一一個「參考站的主場」，而本站在那裡是空的** |
 | 4 | **`::selection` / `caret-color` / `accent-color`** | 全站 **0 個** | **沒有宣告不等於沒有顏色**，是用作業系統的藍。規則 25 讀樣式表，讀不到沒有宣告的東西——**三個逃出兩塊版的顏色，而閘門看不見它們** |
 | 5 | **`<meta name="theme-color">`** | 全站 **0 個** | 手機瀏覽器的網址列會用它上色。同上：那是第四個逃出去的表面 |
@@ -818,8 +818,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **35** | **hover is guarded** | ✅ | **v5.1** |
 | **36** | **tags nest** | ✅ | **v5.3** |
 | **37** | **no parameterised markup** | ✅ | **閘門改讀建置產物** |
+| **38** | **ink marks hold no text** | ✅ | **決策 #152** |
 
-**36 條啟用，0 條待實作，1 條退掉。** ⚠️ v5.1 寫 34、v5.0 寫 32：`check:design` 現在印「35 of 35」，加上 `cards` 那一條是 36。
+**37 條啟用，0 條待實作，1 條退掉。** ⚠️ v5.1 寫 34、v5.0 寫 32：`check:design` 現在印「36 of 36」，加上 `cards` 那一條是 37。
 
 **四條結構規則讀建置後的頁面，不讀模板原始碼**：`section cover screens`、`tags nest`、`anchor integrity`、`heading structure`（`scripts/design/rendered.js`）。原因是評估模板大改時量到的：規則沿著 `{% include %}` 讀原始碼，看不穿 macro、`import` 與 `extends`——macro 拿掉 `data-cover`、留一個沒關的 `<div>`，都是綠的。建置產物裡有讀者拿到的每一個標籤。回報時用文字比對指回原始模板，找不到唯一位置（例如 macro 產生的標記）就指向 `dist/` 的行號；`tags nest` 另外保留原始碼那一趟，因為它能指出交錯的兩個標籤各在哪個檔案。**`check:design` 因此要先 `build:site`**，`dist/` 比任何模板或 site.toml 舊時直接拒絕，不會對上一次的建置報綠。
 
@@ -909,13 +910,15 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 **35 `hover is guarded`** ✅ — 作者 CSS 裡每一條含 `:hover` 的規則都要在 `@media (hover: hover)` 裡（`stylesheet.js` 現在記錄每條規則的祖先 at-rule），**而且** `tailwind.config.js` 的 `future.hoverOnlyWhenSupported` 必須是 `true`——那個 flag 守著 63 個 `hover:`／`group-hover:` utility，而一個 flag 是一次「順手簡化」就會消失的東西。上線前對舊樣式表跑：紅 8 條。
 
+**38 `ink marks hold no text`** ✅ — class 含 `bg-ink` 的元素裡面不得有文字（去掉子標籤、註解與 `{% %}` 之後；`{{ }}` 算文字，因為它會渲染成字）。**它守的是 `forced-colors` 區塊唯一的假設**：高對比模式把所有底色壓成 Canvas，263 個 `bg-ink` 圓點與橫條（清單符號、時間軸節點、漢堡選單的三條線）因此消失，區塊把它們改畫成 `CanvasText`——**這只在它們全是空的形狀時成立**。放一個字進去，同一條規則就在 CanvasText 上畫 CanvasText，字在使用者為了看清楚而選的模式裡消失。⚠️ **這不是對區塊本身的存在檢查**（決策 #113 退掉的那種）：它檢查的是區塊會壞的方式。**落地時用突變驗過**：在漢堡的一條線裡放 `{{ strings.nav_menu }}` → 紅 1 筆，撤掉 → 綠。
+
 ### 沒有東西檢查的事
 
 - **空白比例。** `npm run blank` 量得出來，但沒有門檻可辯護（決策 #145）；`first-paragraph` 探針守的是它的一個切面。
 - **`claude-skills-guide` 那副投影片的刻度。** 內嵌樣式 809 行、五份相同、自己的 px 字級與 700 字重，不在規則 27 讀的 config 刻度上，也不在任何規則的視野裡（`stylesheet.js` 讀得到它，但沒有規則問「字級在不在刻度上」）。v5.1 刻意不動；它要的是一張自己的票，先決定它是不是還要當投影片。
 - **inert 的範圍對不對、skip link 有沒有作用。** 兩者都是「存在檢查無效」的形狀（決策 #113 的判準）：`inert` 屬性在 markup 上有沒有，說不出腳本開關的順序對不對；`.skip-link` 這個 class 在不在，說不出它是不是第一個 Tab stop。**用 Playwright 手動驗過**：開啟後 40 次 Tab 全在 overlay 內、Escape 把焦點還給漢堡、第一次 Tab 落在 skip link 且 x=16、Enter 之後 `location.hash` 是 `#main`。腳本在 PR 說明裡，不在 repo。
 
-- **`forced-colors` 區塊真的修好了東西沒有。** 它把行內 `code` 只靠 `bg-ink/5` 傳達的區別換成 `1px solid CanvasText`，因為高對比模式會抹平背景，而那層底是 11 個 chip 與 16 個表格列**唯一的記號**。⚠️ **刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。**手動驗過**：`forcedColors: 'active'` 下 border-width 從 `0px` 變 `1px`。
+- **`forced-colors` 區塊真的修好了東西沒有。** 決策 #152 之後它做五件事：行內 `code`、`pre` 與投影片的三種底色塊改畫 `1px solid CanvasText` 的邊框；`bg-ink` 的圓點與橫條、`.nav-link::after` 的底線、投影片的 `.timeline-line` 與 `hr` 改畫 `CanvasText` 實心；`.btn`／`.btn-quiet` 用 `ButtonText`／`ButtonFace`，hover 改由邊框的 `Highlight` 表達；focus ring 明寫 `Highlight`；章節 rail 與語言切換器的 `aria-current` 改成 3px 的 `Highlight` 前緣。⚠️ **區塊本身刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。規則 37 守的是它唯一的假設（`bg-ink` 裡沒有字），**不是它有沒有生效**——少一行、選擇器改名、串接順序輸給後面的 `<style>`，都沒有東西會紅。⚠️ **最後一種真的發生過**：投影片的 `.timeline-line` 規則在頁面自己的 `<style>` 裡、在樣式表之後，同樣特異度時贏過 forced 區塊，第一次實測它仍然消失。**手動驗過**：Playwright `forcedColors: 'active'` 對 20 條 zh-Hant-TW 路由逐元素掃「正常模式有底色、forced 模式沒有底色也沒有邊框」的元素，1440 寬之下前 79 個（52 個圓點、9 個 `pre`、投影片 18 個）→ 後 0 個，手機寬另有漢堡的 3 條線；探針腳本不在 repo 裡。**`contrast` 不在 forced 模式下跑**，要讓它跑得先決定系統色的對比門檻算誰的——那是使用者的配色，不是本站的。
 - **`@media print` 印出來對不對。** 它藏掉 nav、footer、`.locale-switcher`，並把 `main` 的 `pt-16` 歸零。⚠️ 同樣刻意不寫成規則。**手動驗過**：`media: 'print'` 下三者 `display: none`、`main` 的 `padding-top` 是 `0px`。⚠️ **那個歸零一開始是壞的**——`main { padding-top: 0 }` 是型別選擇器，輸給 `pt-16` 這個 class，導覽藏掉之後頂端留了 64px 的空洞。**是模擬驗證抓到的，不是讀串接順序讀出來的。**
 - **focus ring 還在不在、夠不夠粗。** 現況是 `outline: 2px solid var(--ink)` 加 `outline-offset: 2px`，對紙 **11.97:1**（WCAG 非文字門檻的四倍），而 offset 讓環畫在元素外面的紙上、不壓在藍色按鈕上。⚠️ **34 條規則沒有一條在看它**：`contrast` 明文看不見 border 與 outline 的顏色。⚠️ **刻意不寫成規則**——存在檢查對它無效（`outline: 1px solid` 也會通過「有宣告」而那不到 2px），要真的守住得同時斷言粗細、offset 與對比三件事，那是一條會過度指定的規則。**記下來比寫錯好**（決策 #120）。
 - **等權重的重複區塊。** 參考站的 hard avoid 列 card grids 與 never distribute objects evenly like a template，而**能抓到它的判準抓到的就是網格本身**——21 個 `grid-cols-*` 元素，禁掉沒有替代方案。⚠️ 規則 28 曾經是這條的候選，判準是「每格同時帶邊框＋圓角＋內距」，實測**全站 0 個**——不是因為沒有等權重區塊，是因為這個站不用那個簽名表達（決策 #112）。
@@ -1131,6 +1134,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 149 | 全站一個 68ch 欄，桌機跟手機同一個結構（使用者選擇） | 同一頁三種欄寬、hero 與正文不對齊，是截圖裡「擠成一坨」的另一半。文字卡片與數字列改單欄（65 個網格）。**代價：桌機右邊留白變多；三欄變一欄後頁面變長——長度換閱讀** |
 | 150 | 四種 absolute 裝飾拿掉 | 模糊方塊（`blur-3xl`，DESIGN.md 本來就禁模糊）在 section 失去 `overflow-hidden` 後撐出視窗，geometry 抓到；點陣底用了具名色 `white`（規則 1 看不見具名色）；右上角淡水印與 h3 前的孤立圖示是「預留給圖片的位置」。**代價：無** |
 | 151 | ⚠️ **`div` 的數目對了，而頁面是壞的：規則 36 `tags nest`** | v5.3 的骨架改動在 `/geo-guide` 留下中間多一個 `</div>`、結尾少一個：**總數相等**，所以腳本自己的平衡檢查放行。閱讀欄因此提早兩節關掉，那兩節以 x=0、寬 1280px 渲染，其餘內容在 680px 的欄裡——**使用者從線上截圖回報的**。⚠️ **十六道閘門全綠**：`check:classes` 讀類別名、`check:design` 讀屬性、`check:md` 讀轉換後的 Markdown（`htmd` 解析時自己把樹補平）、`contrast` 與 `geometry` 量瀏覽器渲染的結果——**而瀏覽器對交錯標籤的處理就是安靜地修好它**，所以損害是視覺的不是致命的。規則 36 先展開 `{% include %}` 再檢查（否則 `header.html` 會被讀成一份沒關 `<html>` 的文件），並保留位移對照表讓報告指回作者會打開的那個檔。**先對壞掉的版本跑：五個 locale 各 2 處交錯，共 10 筆。代價：規則要自己組頁面，是本檔第一條需要解析 include 的規則** |
+| 152 | **`forced-colors`：讓給系統色，只補回只靠底色說的話**（擁有者定的方向） | Playwright `forcedColors: 'active'` 對全站實測：**邊框本來就活著**（Chromium 改畫成 CanvasText／LinkText，連 `.btn` 的透明邊框都變成可見的 1px），**死掉的是底色**——手機上的**漢堡選單是空的 44px 方塊**（三條線是 1px 的 `bg-ink`）、章節 rail 的目前項與其他項**完全相同**（墨色邊對髮絲線邊，兩者都被換成同一個系統色）、52 個 `bg-ink` 圓點、「探索服務」展開時唯一的記號（`.nav-link::after` 的底線）、9 個 `pre` 與投影片的五種底色塊。修法兩種：實心形狀照樣是實心，改填 `CanvasText`（作者寫的系統色是 forced 模式唯一保留的底色）；文字下面的淡底改成邊框。「你在這裡」統一成 3px 的 `Highlight` 前緣，rail 與語言切換器同一個裝置；按鈕用 `ButtonText`／`ButtonFace`，hover 由邊框的 `Highlight` 表達；focus ring 明寫 `Highlight`（Chromium 本來就這樣畫，寫下來是讓它成為決定而不是預設）。新增規則 37 `ink marks hold no text` 守區塊唯一的假設。⚠️ **語言切換器的目前語言在正常模式下也沒有任何記號**——`aria-current` 在 markup 裡，沒有任何樣式讀它。這次只在 forced 模式補上，正常模式要不要標、怎麼標是另一個決定，**沒有在這裡做**。⚠️ `.bg-ink` 寫成屬性選擇器 `[class~="bg-ink"]`：Tailwind 的 `@apply` 會把含該 class 的**每一條**規則（連同 media query）複製進套用它的元件，`.nav-link::after` 因此多出第二個 forced 區塊。**代價：forced 模式下語言切換器的目前項內縮 11px（rail 用 padding 補回，不位移）；區塊本身仍然沒有閘門，靠手動模擬** |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋

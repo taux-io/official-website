@@ -1160,23 +1160,121 @@
    In forced-colors mode the OS replaces every colour with its own, and the
    two-plate model simply does not apply — that is not a failure to guard
    against, it is the user asking for something this vocabulary does not get a
-   vote on. What DOES break is anything whose only mark was a background:
-   backgrounds are flattened, and the inline code chip's sole distinction is
-   `bg-ink/5` — eleven chips and sixteen table rows lose the one thing that
-   separated them from prose.
+   vote on. So nothing here tries to keep a colour. Every value below is a
+   system colour, and the whole block answers one question: what did this site
+   say with a colour that forced colours throws away?
    
-   So the fix is not to keep a colour. It is to re-carry the distinction in
-   something forced-colors preserves: a border. CanvasText is the OS's own text
-   colour, so the chip stays legible in whatever palette the user chose.
+   Measured with Playwright's `forcedColors: 'active'` over every zh-Hant-TW
+   route (DESIGN.md decision #152). Borders survive — Chromium repaints them in
+   CanvasText or LinkText, and even the `.btn`'s transparent 1px border turns
+   visible, which is the old high-contrast trick working by accident. What does
+   NOT survive is a background: it is flattened to Canvas. Before this block
+   that cost, on the reader's side:
+   
+   - the hamburger. Its three bars are 1px `bg-ink` spans, so on a phone the
+     only way into the navigation was an empty 44px square;
+   - every dot drawn with `bg-ink` — list bullets, timeline nodes, the status
+     dots: 52 on the zh-Hant-TW routes alone — and the nav link's underline,
+     which is the ONLY mark that the Explore menu is open;
+   - the section rail's current entry. `[aria-current]` was an ink edge against
+     a hairline edge, and forced colours paints both the same colour, so the
+     rail was ten identical links;
+   - code blocks and the slide deck's washes (`.highlight`, `.contact-info`,
+     `.tile .icon`) and its two rules (`.timeline-line`, `hr`), all of which were
+     a background and nothing else.
+   
+   Two devices carry it all. A mark that WAS a filled shape stays a filled
+   shape, in CanvasText — author system colours are the one background forced
+   colours keeps. A mark that was a wash under text becomes a border. "You are
+   here" becomes a thick leading edge in Highlight, the colour the OS itself
+   uses for the current item, and it is the same device in the rail and in the
+   language switcher.
    
    NOT GATED, AND SAID SO OUT LOUD. There is no rule watching this block,
    deliberately: an empty `@media (forced-colors: active) {}` would satisfy any
    presence check while fixing nothing, which is rule 28's defect (decision
-   #112). It was verified by hand with a forced-colors emulation and is recorded
-   in DESIGN.md under "沒有東西檢查的事". */
+   #112). It is recorded in DESIGN.md under "沒有東西檢查的事". What IS
+   gated is the one assumption the `bg-ink` line below rests on — that no
+   `bg-ink` element holds text — because that is how this block would break
+   (rule 38, `ink marks hold no text`). */
 @media (forced-colors: active) {
-  code:not(pre code) {
+  /* Machine text: the wash that separated it from prose is gone, so the
+     boundary is drawn instead. `pre` too — a block of code on a flattened page
+     is otherwise indistinguishable from the paragraph above it. */
+  code:not(pre code),
+  pre,
+  .skills-guide-body :is(.highlight, .contact-info, .tile .icon) {
     border: 1px solid CanvasText;
+  }
+
+  /* Marks that are shapes, not surfaces. `bg-ink` is on nothing but empty
+     dots and bars (263 of them, no text inside any), so painting the utility
+     itself reaches all of them without naming each one.
+     
+     An attribute selector, not `.bg-ink`, ON PURPOSE: Tailwind's @apply copies
+     every rule whose selector contains the class it applies, media queries
+     included, so a `.bg-ink` here was silently cloned into `.nav-link::after`
+     (which applies bg-ink) as a second forced-colors block inside the
+     components layer. */
+  [class~="bg-ink"] {
+    background-color: CanvasText;
+  }
+
+  .nav-link::after {
+    background-color: CanvasText;
+  }
+
+  /* `main` in front for one element of specificity: the deck's own stylesheet
+     is a <style> block later in the page, and at equal specificity its
+     `var(--line)` background — flattened to Canvas — wins over this. */
+  main .skills-guide-body .timeline-layout .timeline-line,
+  main .skills-guide-body .section-title-layout hr {
+    background-color: CanvasText;
+  }
+
+  /* Controls look like the system's controls. The border was already there;
+     naming ButtonText keeps the label and its edge the same colour, where a
+     link-button would otherwise draw a LinkText label inside a LinkText box on
+     one page and a ButtonText box on another (<a> versus <button>). */
+  .btn,
+  .btn-quiet {
+    color: ButtonText;
+    background-color: ButtonFace;
+    border-color: ButtonText;
+  }
+
+  /* The hover was a fill change, which is exactly what this mode discards. The
+     edge carries it instead. Guarded like every other hover (rule 35). */
+  @media (hover: hover) {
+    .btn:hover,
+    .btn-quiet:hover {
+      border-color: Highlight;
+    }
+  }
+
+  /* Already what Chromium draws — it forces outline-color to Highlight — but
+     written down, so the ring's colour in this mode is a decision in the
+     source rather than a browser default nobody chose. */
+  :focus-visible {
+    outline-color: Highlight;
+  }
+
+  /* "You are here." Width, not only colour: forced colours makes every edge
+     one colour, so a current entry distinguished by colour alone is the defect
+     this block exists to undo. The padding gives back what the extra 2px of
+     edge takes, so the label does not shift. */
+  .section-index-link[aria-current] {
+    border-inline-start: 3px solid Highlight;
+    padding-inline-start: calc(0.75rem - 2px);
+  }
+
+  /* The language you are reading, in the switcher's list. ⚠️ Outside this mode
+     it is NOT marked at all — `aria-current` is in the markup and no rule reads
+     it (DESIGN.md decision #152). Marked here because this is the mode where a
+     reader is least able to tell the entries apart by anything else. */
+  .locale-switcher li a[aria-current] {
+    border-inline-start: 3px solid Highlight;
+    padding-inline-start: 0.5rem;
   }
 }
 
