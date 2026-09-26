@@ -34,16 +34,14 @@
         </header>
 
         <section>
-            <div class="cover" data-cover>
-                <h2 class="mb-0 relative z-10">
+            {% call cover(flush=true) %}
                 <span class="display-lead text-display-sm" lang="en">Why Governance First</span>
                 <span class="display-sub">为什么需要数据治理？</span>
-            </h2>
-            </div>
-            <p class="text-lg leading-relaxed mb-6 relative z-10 max-w-prose">
+            {% endcall %}
+            <p class="text-lg leading-relaxed mb-6 max-w-prose">
                 数据是新时代的石油，但未经提炼的石油无法驱动引擎。数据治理 (Data Governance) 是一套确保数据质量、安全性与可用性的管理框架。
             </p>
-            <div class="space-y-6 mt-8 relative z-10">
+            <div class="space-y-6 mt-8">
                 <div class="border-t border-line pt-6">
                     <div class="text-xl mb-3 font-semibold flex items-center">
                         <span class="me-2 font-semibold">
@@ -119,7 +117,7 @@
 
             <!-- CTA -->
             <section>
-                <div class="relative z-10">
+                <div>
                     {% call cover() %}
                         <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
                         <span class="display-sub">准备好启动数据治理了吗？</span>

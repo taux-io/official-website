@@ -466,7 +466,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 - `slide_cover()`——claude-skills-guide 的投影片封面（`h2.slide-title`、沒有眉標）
 - `faq(question, last=false)`——FAQ 一題；答案是 call 本體，`last=true` 是最後一題的 `border-b`
 
-轉換前先量了變形：570 個 `<div class="cover" data-cover>` 分成 14 種外殼（眉標：數字、數字加英文名、無；h2：無 class、`mb-0`、`mb-0 relative z-10`、`slide-title`、`eyebrow` 帶 id），另有 7 處在眉標與 h2 之間夾著 HTML 註解（註解移到 call 上方，產生器本來就會剝掉）。**轉了 525 處（`cover` 470、`slide_cover` 55），手寫留下 45 處**：what-is-mcp 五個 locale 的 35 個（h2 本身是 `class="eyebrow"` 還帶 `id`，是單頁的版式）與 data-governance、geo-optimization 的 10 個（h2 是 `mb-0 relative z-10`；兩頁上都沒有絕對定位的東西要它疊過去，看起來是殘留，但拿掉會改變輸出，不在這次範圍）——各為一頁多開一個參數，就是評估時說的「6 個參數的巨集」。FAQ 125 題全轉（兩種變形只差 `border-b`）。`data-cover="sr"` 的 12 個只給螢幕閱讀器的 h2 不是這個外殼，沒動。模板少了約 2,500 行。
+轉換前先量了變形：570 個 `<div class="cover" data-cover>` 分成 14 種外殼（眉標：數字、數字加英文名、無；h2：無 class、`mb-0`、`mb-0 relative z-10`、`slide-title`、`eyebrow` 帶 id），另有 7 處在眉標與 h2 之間夾著 HTML 註解（註解移到 call 上方，產生器本來就會剝掉）。**轉了 525 處（`cover` 470、`slide_cover` 55），手寫留下 45 處**：what-is-mcp 五個 locale 的 35 個（h2 本身是 `class="eyebrow"` 還帶 `id`，是單頁的版式）與 data-governance、geo-optimization 的 10 個（h2 是 `mb-0 relative z-10`；兩頁上都沒有絕對定位的東西要它疊過去，看起來是殘留，但拿掉會改變輸出，不在這次範圍）——各為一頁多開一個參數，就是評估時說的「6 個參數的巨集」。**這 45 個後來也收進 `cover()`（#330）**，是改版式而不是加參數：what-is-mcp 的 h2 從眉標字級改成跟其他長文頁一樣的「數字眉標＋一般 h2」，錨點 id 移到外層 `<section>`；data-governance、geo-optimization 拿掉沒有作用的 `relative z-10`，成為 `cover(flush=true)`。現在所有可見的封面都經過 macro。FAQ 125 題全轉（兩種變形只差 `border-b`）。`data-cover="sr"` 的 12 個只給螢幕閱讀器的 h2 不是這個外殼，沒動。模板少了約 2,500 行。
 
 **驗收用「產物相同」**：改動前後的 `dist/` 320 個檔，245 個逐位元組相同（全部 100 份 Markdown 在內），75 個 HTML 只差空白——macro 的輸出不知道呼叫處的縮排，所以封面與 FAQ 內部的縮排變了，空白有無不變（連續空白收成一個之後逐字相同）。`styles.min.css` 不變。突變測試：macro 裡拿掉 `data-cover` → `section cover screens` 紅、指向 `_blocks.html` 的行；macro 的 div 加 `rounded-[7px]` → `radius scale` 紅。
 
@@ -482,7 +482,7 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 
 ### 需要擁有者決定
 
-- **模板結構大改的 B（base layout）。** A 的 cover 與 FAQ 已做；B 幾乎不省行數，建議不做，要做仍需擁有者決定。手寫留下的 45 個封面（what-is-mcp 的 eyebrow 式 h2、data-governance／geo-optimization 的 `relative z-10`）要不要改成一般封面是視覺決定，改了就能進 `cover()`（見「模板結構大改」）
+- **模板結構大改的 B（base layout）。** A 的 cover 與 FAQ 已做，所有可見封面都經過 `cover()`；B 幾乎不省行數，建議不做，要做仍需擁有者決定（見「模板結構大改」）
 - **法律頁與兩頁導言框的標題層級。** 目前用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級；改成可見的 h2 就要各開一個封面區塊
 
 ### 有日期

@@ -57,16 +57,14 @@
 
 <!-- What the work is -->
         <section>
-            <div class="cover" data-cover>
-                <h2 class="mb-0 relative z-10">
+            {% call cover(flush=true) %}
                 <span class="display-lead text-display-sm" lang="en">What We Do</span>
                 <span class="display-sub">方案內容</span>
-            </h2>
-            </div>
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch] relative z-10">
+            {% endcall %}
+            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
                 GEO 不是把 SEO 的做法換個名字。它問的是另一個問題：當語言模型要回答使用者的問題時，你的內容是否可被檢索、可被理解、可被安全引用。
             </p>
-            <div class="space-y-6 mt-8 relative z-10">
+            <div class="space-y-6 mt-8">
                 <div class="border-t border-line pt-6">
                     <h3 class="mb-3">結構化資料建置</h3>
                     <p class="text-sm leading-relaxed">

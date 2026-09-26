@@ -57,16 +57,14 @@
 
 <!-- What the work is -->
         <section>
-            <div class="cover" data-cover>
-                <h2 class="mb-0 relative z-10">
+            {% call cover(flush=true) %}
                 <span class="display-lead text-display-sm" lang="en">What We Do</span>
                 <span class="display-sub">하는 일</span>
-            </h2>
-            </div>
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch] relative z-10">
+            {% endcall %}
+            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
                 GEO는 SEO를 다르게 부른 것이 아닙니다. 묻는 것이 다릅니다. 언어 모델이 사용자의 질문에 답할 때, 당신의 콘텐츠가 찾아지고 이해되고 안심하고 인용될 수 있는 상태인가.
             </p>
-            <div class="space-y-6 mt-8 relative z-10">
+            <div class="space-y-6 mt-8">
                 <div class="border-t border-line pt-6">
                     <h3 class="mb-3">구조화 데이터 정비</h3>
                     <p class="text-sm leading-relaxed">

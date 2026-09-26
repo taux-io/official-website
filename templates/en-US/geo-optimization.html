@@ -60,15 +60,13 @@
 
 <!-- What the work is -->
         <section>
-            <div class="cover" data-cover>
-                <h2 class="mb-0 relative z-10">
+            {% call cover(flush=true) %}
                 <span class="display-lead text-display-sm">What We Do</span>
-            </h2>
-            </div>
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch] relative z-10">
+            {% endcall %}
+            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
                 GEO is not SEO under a new name. It asks a different question: when a language model goes to answer someone, can your content be retrieved, understood, and quoted without the model having to guess?
             </p>
-            <div class="space-y-6 mt-8 relative z-10">
+            <div class="space-y-6 mt-8">
                 <div class="border-t border-line pt-6">
                     <h3 class="mb-3">Structured data</h3>
                     <p class="text-sm leading-relaxed">

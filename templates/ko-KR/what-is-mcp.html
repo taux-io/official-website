@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <script type="application/ld+json">
@@ -26,10 +27,8 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="what">01 — 한마디로</h2>
-            </div>
+        <section id="what">
+            {% call cover("01") %}한마디로{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 어떤 AI 애플리케이션에서든 같은 방식으로 어떤 데이터 원본에도 이을 수 있게 한다. 그것이 MCP입니다.
             </p>
@@ -39,10 +38,8 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="why">02 — 왜 필요한가</h2>
-            </div>
+        <section id="why">
+            {% call cover("02") %}왜 필요한가{% endcall %}
             <p class="max-w-prose leading-relaxed mb-5">
                 AI 애플리케이션이 4개, 잇고 싶은 곳이 5개 있다고 합시다. Google Drive, GitHub, 데이터베이스, Slack, 사내 API.
             </p>
@@ -66,10 +63,8 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="roles">03 — 세 가지 역할</h2>
-            </div>
+        <section id="roles">
+            {% call cover("03") %}세 가지 역할{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP에는 세 가지 역할이 있습니다. <strong>헷갈리는 것은 대개 앞의 둘</strong>입니다. 'MCP 클라이언트'라고 말할 때 머릿속에 떠오르는 것은 보통 Claude Desktop이지만, 그것은 호스트입니다.
             </p>
@@ -147,10 +142,8 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="primitives">04 — 서버가 내놓는 것</h2>
-            </div>
+        <section id="primitives">
+            {% call cover("04") %}서버가 내놓는 것{% endcall %}
             <p class="max-w-prose leading-relaxed mb-4">
                 서버가 내놓는 것은 세 종류. 그 차이는 <strong>'읽기' 대 '쓰기'가 아닙니다</strong>. 거기가 가장 흔한 착각입니다.
             </p>
@@ -208,10 +201,8 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="transport">05 — 어떻게 나르는가</h2>
-            </div>
+        <section id="transport">
+            {% call cover("05") %}어떻게 나르는가{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 표준은 둘입니다. <strong>stdio</strong>는 서버를 자식 프로세스로 띄우고 표준 입출력으로 주고받습니다. <strong>Streamable HTTP</strong>는 메시지 하나가 HTTP POST 한 번이 됩니다. <strong>이것은 '어떻게 나르는가'의 차이지 '어디에 있는가'의 차이가 아닙니다.</strong> 내 기계에서 도는 서버도 Streamable HTTP를 말할 수 있습니다.
             </p>
@@ -221,10 +212,8 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="whats-new">06 — 이 판에서 바뀐 것</h2>
-            </div>
+        <section id="whats-new">
+            {% call cover("06") %}이 판에서 바뀐 것{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 서버는 이제 아무것도 기억하지 않습니다.
             </p>
@@ -258,10 +247,8 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="version">07 — 이 페이지가 가리키는 판</h2>
-            </div>
+        <section id="version">
+            {% call cover("07") %}이 페이지가 가리키는 판{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP의 버전은 <strong>날짜 그 자체</strong>입니다. 가리키는 것은 '마지막으로 호환을 깨는 변경을 한 날'이지 릴리스 주기가 아닙니다. 그래서 손에 든 MCP 자료는 대응하는 날짜만 보면 얼마나 새것인지 알 수 있습니다. <strong>이 페이지에서 가져갈 값어치가 가장 큰 것이 이 한 가지입니다.</strong>
             </p>
