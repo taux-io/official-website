@@ -28,6 +28,7 @@
 /en-US/geo-guide
 /en-US/geo-optimization
 /en-US/google-workspace-with-ai
+/en-US/insights
 /en-US/owasp-llm-top-10
 /en-US/pqc-migration
 /en-US/privacy-policy
@@ -51,6 +52,7 @@
 /ja-JP/geo-guide
 /ja-JP/geo-optimization
 /ja-JP/google-workspace-with-ai
+/ja-JP/insights
 /ja-JP/owasp-llm-top-10
 /ja-JP/pqc-migration
 /ja-JP/privacy-policy
@@ -71,6 +73,7 @@
 /ko-KR/geo-guide
 /ko-KR/geo-optimization
 /ko-KR/google-workspace-with-ai
+/ko-KR/insights
 /ko-KR/owasp-llm-top-10
 /ko-KR/pqc-migration
 /ko-KR/privacy-policy
@@ -100,6 +103,7 @@
 /zh-Hans-CN/geo-guide
 /zh-Hans-CN/geo-optimization
 /zh-Hans-CN/google-workspace-with-ai
+/zh-Hans-CN/insights
 /zh-Hans-CN/owasp-llm-top-10
 /zh-Hans-CN/pqc-migration
 /zh-Hans-CN/privacy-policy
@@ -120,6 +124,7 @@
 /zh-Hant-TW/geo-guide
 /zh-Hant-TW/geo-optimization
 /zh-Hant-TW/google-workspace-with-ai
+/zh-Hant-TW/insights
 /zh-Hant-TW/owasp-llm-top-10
 /zh-Hant-TW/pqc-migration
 /zh-Hant-TW/privacy-policy

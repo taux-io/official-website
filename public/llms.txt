@@ -121,9 +121,11 @@ Every route on the site has an English edition. These are all of them.
 
 -   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。 ([Markdown](https://taux.io/zh-Hant-TW.md))
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
+-   [技術文章](https://taux.io/zh-Hant-TW/insights): 本站全部技術文章的總覽（GEO、MCP、AI Agent、LLM 資安、後量子密碼），以及公開維護的開源專案。 ([Markdown](https://taux.io/zh-Hant-TW/insights.md))
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。 ([Markdown](https://taux.io/zh-Hant-TW/building.md))
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
 -   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
+-   [Insights](https://taux.io/en-US/insights): Every technical article on the site — GEO, MCP, AI agents, LLM security, post-quantum cryptography — and the open-source projects we maintain.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
 -   [隱私權政策](https://taux.io/zh-Hant-TW/privacy-policy): 資料保護與隱私權承諾。 ([Markdown](https://taux.io/zh-Hant-TW/privacy-policy.md))
@@ -150,6 +152,7 @@ Every route on the site has an English edition. These are all of them.
 -   [AI Agent 开发流程实战](https://taux.io/zh-Hans-CN/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一条可重复的开发流程。主干七步（grill、spec、tickets、implement、code-review）、四个完整剧本、31 个已知坑与 14 天练习计划。依该 pack 1.2.3 版撰写，为独立编写的中文教学而非官方文档翻译。
 -   [首页](https://taux.io/zh-Hans-CN): TauX 拓思科技股份有限公司官方网站。
 -   [关于我们](https://taux.io/zh-Hans-CN/about): TauX 拓思科技的定位、名字的由来（希腊字母 τ，控制科学里的时间常数）与联系方式。
+-   [技术文章](https://taux.io/zh-Hans-CN/insights): 本站全部技术文章的总览（GEO、MCP、AI Agent、LLM 网络安全、后量子密码），以及公开维护的开源项目。
 -   [Building in Public](https://taux.io/zh-Hans-CN/building): TauX 的公开开发日志，透明度至上。
 -   [隐私权政策](https://taux.io/zh-Hans-CN/privacy-policy): 数据保护与隐私权承诺。
 -   [服务条款](https://taux.io/zh-Hans-CN/terms-of-service): 使用 TauX 服务之条款与条件。
@@ -159,7 +162,9 @@ Every route on the site has an English edition. These are all of them.
 翻訳は route ごとに進めています。以下が現在公開されているものです。／번역은 라우트 단위로 진행 중이며, 아래가 현재 공개된 것입니다.
 
 -   [TauX 拓思科技について](https://taux.io/ja-JP/about): GEO（生成エンジン最適化）と企業の AI 導入を手がける台湾・高雄の技術会社。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。
+-   [技術記事](https://taux.io/ja-JP/insights): サイト内のすべての技術記事（GEO、MCP、AI エージェント、LLM セキュリティ、ポスト量子暗号）と、公開で保守しているオープンソースプロジェクトの一覧。
 -   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
+-   [기술 문서](https://taux.io/ko-KR/insights): 사이트의 모든 기술 문서(GEO, MCP, AI 에이전트, LLM 보안, 포스트 양자 암호)와 공개적으로 관리하는 오픈소스 프로젝트 목록.
 -   [GEO 生成エンジン最適化サービス](https://taux.io/ja-JP/geo-optimization): 構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。
 -   [GEO 생성형 엔진 최적화 서비스](https://taux.io/ko-KR/geo-optimization): 구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다.
 -   [企業向け AI 実務研修](https://taux.io/ja-JP/ai-smart-work): 役割を保ち構造に従う AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型。

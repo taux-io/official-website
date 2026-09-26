@@ -219,8 +219,23 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         .filter(|tag| site.page.iter().any(|p| p.locale.contains_key(*tag)))
         .collect();
 
+    // The menu's service columns and the insights index, once per locale —
+    // generated from each page's `section` (see `Site::nav_for`).
+    let mut nav: BTreeMap<String, (Value, Value)> = BTreeMap::new();
+    for l in &site.locale {
+        let (columns, articles) = site.nav_for(&l.tag)?;
+        nav.insert(
+            l.tag.clone(),
+            (
+                Value::from_serialize(&columns),
+                Value::from_serialize(&articles),
+            ),
+        );
+    }
+
     let inputs = Inputs {
         site: &site,
+        nav: &nav,
         env: &env,
         out: &out,
         site_locales: &site_locales,
@@ -249,6 +264,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 #[derive(Clone, Copy)]
 struct Inputs<'a, 'env> {
     site: &'a Site,
+    nav: &'a BTreeMap<String, (Value, Value)>,
     env: &'a Environment<'env>,
     out: &'a Path,
     site_locales: &'a [&'a str],
@@ -267,6 +283,7 @@ fn render_pages(
 ) -> Result<usize, Box<dyn std::error::Error>> {
     let Inputs {
         site,
+        nav,
         env,
         out,
         site_locales,
@@ -401,6 +418,8 @@ fn render_pages(
                 year => year,
                 css_version => &css_v,
                 js_version => &js_v,
+                nav => &nav[locale.as_str()].0,
+                articles => &nav[locale.as_str()].1,
                 og_image => url_attr(&format!("{ORIGIN}/static/og/{}.png", text.slug())),
                 date_modified => &page.date_modified,
                 ..optional
@@ -536,6 +555,7 @@ fn render_documents(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let Inputs {
         site,
+        nav,
         env,
         out,
         site_locales,
@@ -572,6 +592,8 @@ fn render_documents(
             year => year,
             css_version => &css_v,
             js_version => &js_v,
+            nav => &nav[CANONICAL_LOCALE].0,
+            articles => &nav[CANONICAL_LOCALE].1,
             // The canonical locale's home card. This pointed at `og/index.png`,
             // a file build-og.js has never produced — the cards are named by
             // slug, and the home slug is the locale tag.

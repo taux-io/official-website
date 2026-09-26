@@ -100,39 +100,22 @@ script = "Hant"
   # second phrase for one idea.
   nav_explore = "探索服務"
 
-  # THE TWENTY ROUTE LABELS IN THE OVERLAY AND THE FOOTER.
-  #
-  # `_nav-columns.html` renders one list into both, so these were hard-coded
-  # English on all five locales — the same shape `nav_explore` had, at twenty
-  # times the size. They are shortened from this locale's OWN page titles in the
-  # [[page]] blocks below rather than translated afresh, so the vocabulary is
-  # the one each locale already uses.
-  #
-  # ⚠️ `display-sub` looks like the obvious source and is NOT one: it holds the
-  # page's tagline, not its name (「95% 的人只用 AI 生成內容，5% 的人懂得用 AI
-  # 輔助決策」), which is a sentence rather than a label.
-  #
-  # NAMES ARE NOT HERE. GEO, AI, Workspace AI, OWASP LLM Top 10, TWSE MCP,
-  # GitHub and llms.txt stay literal in the template — identity rather than
-  # prose, the same rule that keeps the registered company name out of this
-  # table. `llms.txt` is also lower-case now: the file is, and every locale's
-  # page title already said so; the menu's `LLMs.txt` was the one place spelling
-  # it differently.
+  # THE MENU'S COLUMN TITLES. The route labels that used to follow here (twenty
+  # `nav_*` strings, shortened from each locale's own page titles) are gone: the
+  # menu is generated from each page's `section`, and a page's menu name is its
+  # `label` (or its `crumb`) in its own [page.locale.*] block below — one name
+  # per page per locale, next to the title it is shortened from.
+  nav_col_ai = "AI 導入與整合"
+  nav_col_marketing = "行銷"
+  nav_col_training = "教育訓練"
   nav_col_security = "資安"
   nav_col_open_source = "開源"
   nav_col_company = "公司"
-  nav_geo_optimization = "GEO 優化服務"
-  nav_geo_guide = "GEO 入門指南"
-  nav_what_is_mcp = "MCP 是什麼"
-  nav_smart_work = "AI 智能辦公"
-  nav_prompt_guide = "提示詞指南"
-  nav_skills_guide = "Claude Skills 指南"
-  nav_adk_patterns = "ADK 設計模式"
-  nav_dev_workflow = "Agent 開發流程"
-  nav_data_governance = "資料治理"
-  nav_threat_landscape = "全球威脅報告"
-  nav_prompt_security = "提示詞注入"
-  nav_pqc_migration = "PQC 遷移"
+  nav_insights = "技術文章"
+  insights_sub = "技術文章"
+  insights_lead = "我們寫給自己、也寫給客戶的技術筆記。每一篇都附出處，並寫明結論在哪裡不再適用。"
+  insights_articles = "文章"
+  insights_open_source = "臺灣證券交易所公開資料的 MCP server：股價、ETF 與 140 多個公開資料集，讓 AI 應用程式直接查詢。我們公開維護。"
   nav_home = "首頁"
   nav_about = "關於 TauX"
   nav_building = "公開打造中"
@@ -168,22 +151,17 @@ script = "Hans"
   # keep the registered form and 版權所有 would still convert.
   copyright = "拓思科技股份有限公司 版权所有"
   nav_explore = "探索服务"
-
+  nav_col_ai = "AI 导入与整合"
+  nav_col_marketing = "营销"
+  nav_col_training = "教育培训"
   nav_col_security = "网络安全"
   nav_col_open_source = "开源"
   nav_col_company = "公司"
-  nav_geo_optimization = "GEO 优化服务"
-  nav_geo_guide = "GEO 入门指南"
-  nav_what_is_mcp = "MCP 是什么"
-  nav_smart_work = "AI 智能办公"
-  nav_prompt_guide = "提示词指南"
-  nav_skills_guide = "Claude Skills 指南"
-  nav_adk_patterns = "ADK 设计模式"
-  nav_dev_workflow = "Agent 开发流程"
-  nav_data_governance = "数据治理"
-  nav_threat_landscape = "全球威胁报告"
-  nav_prompt_security = "提示词注入"
-  nav_pqc_migration = "PQC 迁移"
+  nav_insights = "技术文章"
+  insights_sub = "技术文章"
+  insights_lead = "我们写给自己、也写给客户的技术笔记。每一篇都附出处，并写明结论在哪里不再适用。"
+  insights_articles = "文章"
+  insights_open_source = "台湾证券交易所公开数据的 MCP server：股价、ETF 与 140 多个公开数据集，让 AI 应用程序直接查询。我们公开维护。"
   nav_home = "首页"
   nav_about = "关于 TauX"
   nav_building = "公开打造中"
@@ -222,22 +200,17 @@ og     = "ja_JP"
   # English footer. Only the notice around it is Japanese.
   copyright = "拓思科技股份有限公司 無断転載を禁じます"
   nav_explore = "サービスを見る"
-
+  nav_col_ai = "AI 導入と統合"
+  nav_col_marketing = "マーケティング"
+  nav_col_training = "研修"
   nav_col_security = "セキュリティ"
   nav_col_open_source = "オープンソース"
   nav_col_company = "会社"
-  nav_geo_optimization = "GEO 最適化"
-  nav_geo_guide = "GEO 入門ガイド"
-  nav_what_is_mcp = "MCP とは"
-  nav_smart_work = "AI 実務研修"
-  nav_prompt_guide = "プロンプト設計ガイド"
-  nav_skills_guide = "Claude Skills ガイド"
-  nav_adk_patterns = "ADK 設計パターン"
-  nav_dev_workflow = "Agent 開発ワークフロー"
-  nav_data_governance = "データガバナンス"
-  nav_threat_landscape = "グローバル脅威レポート"
-  nav_prompt_security = "プロンプトインジェクション"
-  nav_pqc_migration = "PQC 移行"
+  nav_insights = "技術記事"
+  insights_sub = "技術記事"
+  insights_lead = "自分たちのために、そしてお客様のために書いている技術ノートです。どの記事にも出典と、結論が当てはまらなくなる範囲を書いています。"
+  insights_articles = "記事"
+  insights_open_source = "台湾証券取引所の公開データ（株価、ETF、140 以上の公開データセット）を AI アプリケーションから直接照会できる MCP サーバー。私たちが公開で保守しています。"
   nav_home = "ホーム"
   nav_about = "TauX について"
   nav_building = "公開しながらつくる"
@@ -267,22 +240,17 @@ og     = "ko_KR"
   [locale.strings]
   copyright = "拓思科技股份有限公司 무단 전재 및 재배포 금지"
   nav_explore = "서비스 보기"
-
+  nav_col_ai = "AI 도입과 통합"
+  nav_col_marketing = "마케팅"
+  nav_col_training = "교육"
   nav_col_security = "보안"
   nav_col_open_source = "오픈소스"
   nav_col_company = "회사"
-  nav_geo_optimization = "GEO 최적화"
-  nav_geo_guide = "GEO 입문 가이드"
-  nav_what_is_mcp = "MCP란"
-  nav_smart_work = "AI 실무 교육"
-  nav_prompt_guide = "프롬프트 설계 가이드"
-  nav_skills_guide = "Claude Skills 가이드"
-  nav_adk_patterns = "ADK 설계 패턴"
-  nav_dev_workflow = "Agent 개발 워크플로"
-  nav_data_governance = "데이터 거버넌스"
-  nav_threat_landscape = "글로벌 위협 보고서"
-  nav_prompt_security = "프롬프트 인젝션"
-  nav_pqc_migration = "PQC 이행"
+  nav_insights = "기술 문서"
+  insights_sub = "기술 문서"
+  insights_lead = "우리 자신과 고객을 위해 쓰는 기술 노트입니다. 모든 글에 출처와, 결론이 더 이상 들어맞지 않는 범위를 적어 둡니다."
+  insights_articles = "글"
+  insights_open_source = "대만증권거래소 공개 데이터(주가, ETF, 140개 이상의 공개 데이터셋)를 AI 애플리케이션에서 바로 조회할 수 있게 하는 MCP 서버입니다. 우리가 공개적으로 관리합니다."
   nav_home = "홈"
   nav_about = "TauX 소개"
   nav_building = "공개하며 만드는 중"
@@ -312,22 +280,16 @@ script = "Latn"
   [locale.strings]
   copyright = "TauX Co., Ltd. All rights reserved."
   nav_explore = "Explore"
-
+  nav_col_ai = "AI adoption & integration"
+  nav_col_marketing = "Marketing"
+  nav_col_training = "Training"
   nav_col_security = "Security"
   nav_col_open_source = "Open Source"
   nav_col_company = "Company"
-  nav_geo_optimization = "GEO Optimization"
-  nav_geo_guide = "GEO Guide"
-  nav_what_is_mcp = "What is MCP"
-  nav_smart_work = "Smart Work"
-  nav_prompt_guide = "Prompt Guide"
-  nav_skills_guide = "Skills Guide"
-  nav_adk_patterns = "ADK Patterns"
-  nav_dev_workflow = "Dev Workflow"
-  nav_data_governance = "Data Governance"
-  nav_threat_landscape = "Threat Landscape"
-  nav_prompt_security = "Prompt Security"
-  nav_pqc_migration = "PQC Migration"
+  nav_insights = "Insights"
+  insights_lead = "Technical notes we write for ourselves and for clients. Each one names its sources and says where its conclusions stop applying."
+  insights_articles = "Articles"
+  insights_open_source = "An MCP server for the Taiwan Stock Exchange's open data — quotes, ETFs and 140+ public datasets — so AI applications can query it directly. We maintain it in the open."
   nav_home = "Home"
   nav_about = "About"
   nav_building = "Building in Public"
@@ -383,6 +345,7 @@ date_modified = "2026-08-09"
 [[page]]
 path        = "/geo-guide"
 template    = "geo-guide.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2025-08-15"
 
@@ -414,66 +377,79 @@ date_published = "2025-08-15"
 [[page]]
 path        = "/geo-optimization"
 template    = "geo-optimization.html"
+section    = "marketing"
 date_modified = "2026-08-05"
 
   [page.locale.zh-Hant-TW]
   title       = "GEO 生成式引擎優化服務｜讓品牌成為 AI 的答案 | TauX"
   description = "TauX 的 GEO 服務：結構化資料建置、內容分塊、llms.txt 與引用率量測，讓品牌成為 ChatGPT、Perplexity 與 Google AI 摘要的引用來源。含現況稽核、實作與 6–8 週後的成效對照。"
+  label       = "GEO 優化服務"
   crumb       = "GEO 生成式引擎優化服務"
 
   [page.locale.zh-Hans-CN]
   title       = "GEO 生成式引擎优化服务｜让品牌成为 AI 的答案 | TauX"
   description = "TauX 的 GEO 服务：结构化数据搭建、内容分块、llms.txt 与引用率量测，让品牌成为 ChatGPT、Perplexity 与 Google AI 摘要的引用来源。含现况审计、实作与 6–8 周后的成效对照。"
+  label       = "GEO 优化服务"
   crumb       = "GEO 生成式引擎优化服务"
 
   [page.locale.ja-JP]
   title       = "GEO 生成エンジン最適化サービス｜AI の答えの中に入る | TauX"
   description = "構造化データ、コンテンツの分割、エンティティ宣言、引用率の計測。着手前に基準を記録するので、結果を後から確かめられます。"
+  label       = "GEO 最適化"
   crumb       = "GEO 生成エンジン最適化サービス"
 
   [page.locale.ko-KR]
   title       = "GEO 생성형 엔진 최적화 서비스｜AI의 답 안으로 | TauX"
   description = "구조화 데이터, 콘텐츠 분할, 엔티티 선언, 인용률 측정. 착수 전에 기준을 기록하므로 결과를 나중에 확인할 수 있습니다."
+  label       = "GEO 최적화"
   crumb       = "GEO 생성형 엔진 최적화 서비스"
 
   [page.locale.en-US]
   title       = "Generative Engine Optimization Service | TauX"
   description = "Structured data, content chunking, entity declarations and citation measurement — with a baseline recorded before the work starts, so the result can be checked."
+  label       = "GEO Optimization"
   crumb       = "Generative Engine Optimization"
 
 [[page]]
 path        = "/ai-smart-work"
 template    = "ai-smart-work.html"
+section    = "training"
 date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
   title       = "AI 智能辦公解決方案｜企業 AI 導入與內訓 | TauX"
   description = "用 AI 自動化工作流程、提升團隊生產力。TauX 提供企業 AI 導入顧問與內訓，教授 PTCF 提示詞架構、CoT 深度推理與專屬 Agent 打造。"
+  label       = "AI 智能辦公"
   crumb       = "AI 數智化內訓"
 
   [page.locale.zh-Hans-CN]
   title       = "AI 智能办公解决方案｜企业 AI 导入与内训 | TauX"
   description = "用 AI 自动化工作流程、提升团队生产力。TauX 提供企业 AI 导入顾问与内训，教授 PTCF 提示词架构、CoT 深度推理与专属 Agent 打造。"
+  label       = "AI 智能办公"
   crumb       = "AI 数智化内训"
 
   [page.locale.ja-JP]
   title       = "企業向け AI 実務研修｜導入と社内トレーニング | TauX"
   description = "役割を保ち、構造に従って動く AI アシスタントのつくり方と、見栄えではなく安定して効くプロンプトの型を学ぶ社内研修です。"
+  label       = "AI 実務研修"
   crumb       = "AI 実務研修"
 
   [page.locale.ko-KR]
   title       = "기업 대상 AI 실무 교육｜도입과 사내 트레이닝 | TauX"
   description = "역할을 유지하고 구조를 따르는 AI 어시스턴트를 만드는 법과, 보기 좋은 것이 아니라 꾸준히 통하는 프롬프트의 형태를 익히는 사내 교육입니다."
+  label       = "AI 실무 교육"
   crumb       = "AI 실무 교육"
 
   [page.locale.en-US]
   title       = "AI Training for Teams | TauX"
   description = "In-house AI training: build assistants that hold a role and follow a structure, and learn the prompt patterns that make them reliable rather than impressive."
+  label       = "Smart Work"
   crumb       = "AI Training for Teams"
 
 [[page]]
 path        = "/threat-landscape"
 template    = "threat-landscape.html"
+section    = "article"
 date_modified = "2026-09-26"
 date_published = "2026-08-06"
 
@@ -505,6 +481,7 @@ date_published = "2026-08-06"
 [[page]]
 path        = "/pqc-migration"
 template    = "pqc-migration.html"
+section    = "article"
 # 這個日期代表的是「法規狀態重新查過的日子」，不是排版改動的日子——這頁的
 # 規則沒有任何閘門守得住（法規變動不在版本控制裡），那個約定是唯一的防線。
 # 2026-08-15 重查：NIST IR 8547 仍是 initial public draft，金管會指引無滾動
@@ -540,36 +517,43 @@ date_published = "2026-08-06"
 [[page]]
 path        = "/data-governance"
 template    = "data-governance.html"
+section    = "ai"
 date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
   title       = "資料治理與 AI 資安｜Data Governance | TauX"
   description = "用合乎 AI 標準的使用政策與治理框架保護企業資料。涵蓋從資料管理到數位治理的成熟度評估與導入路徑，專為傳統產業數位轉型設計。"
+  label       = "資料治理"
   crumb       = "數據治理"
 
   [page.locale.zh-Hans-CN]
   title       = "数据治理与 AI 网络安全｜Data Governance | TauX"
   description = "用合乎 AI 标准的使用政策与治理框架保护企业数据。涵盖从数据管理到数字治理的成熟度评估与导入路径，专为传统产业数字转型设计。"
+  label       = "数据治理"
   crumb       = "数据治理"
 
   [page.locale.ja-JP]
   title       = "データガバナンスと AI セキュリティ｜Data Governance | TauX"
   description = "データの棚卸し、標準化、品質監視。AI に載せられるだけの信頼できるデータがあるかどうかを決める、その下ごしらえの部分です。"
+  label       = "データガバナンス"
   crumb       = "データガバナンス"
 
   [page.locale.ko-KR]
   title       = "데이터 거버넌스와 AI 보안｜Data Governance | TauX"
   description = "데이터 인벤토리, 표준화, 품질 모니터링. AI에 올릴 만한 믿을 수 있는 데이터가 있는지를 결정하는 밑작업입니다."
+  label       = "데이터 거버넌스"
   crumb       = "데이터 거버넌스"
 
   [page.locale.en-US]
   title       = "Data Governance for Enterprises | TauX"
   description = "Data inventory, standardisation and quality monitoring — the groundwork that decides whether your AI projects have anything trustworthy to run on."
+  label       = "Data Governance"
   crumb       = "Data Governance"
 
 [[page]]
 path        = "/google-workspace-with-ai"
 template    = "google-workspace-with-ai.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2026-07-26"
 
@@ -601,6 +585,7 @@ date_published = "2026-07-26"
 [[page]]
 path        = "/what-is-llms-txt"
 template    = "what-is-llms-txt.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2026-02-12"
 
@@ -632,6 +617,7 @@ date_published = "2026-02-12"
 [[page]]
 path        = "/what-is-mcp"
 template    = "what-is-mcp.html"
+section    = "article"
 date_modified = "2026-08-09"
 date_published = "2026-08-09"
 
@@ -663,6 +649,7 @@ date_published = "2026-08-09"
 [[page]]
 path        = "/what-is-prompt-injection"
 template    = "what-is-prompt-injection.html"
+section    = "article"
 date_modified = "2026-09-26"
 date_published = "2026-02-17"
 
@@ -694,6 +681,7 @@ date_published = "2026-02-17"
 [[page]]
 path        = "/owasp-llm-top-10"
 template    = "owasp-llm-top-10.html"
+section    = "article"
 date_modified = "2026-09-26"
 date_published = "2026-08-05"
 
@@ -725,6 +713,7 @@ date_published = "2026-08-05"
 [[page]]
 path        = "/agent-prompting-guide"
 template    = "agent-prompting-guide.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2026-02-17"
 
@@ -756,6 +745,7 @@ date_published = "2026-02-17"
 [[page]]
 path        = "/claude-skills-guide"
 template    = "claude-skills-guide.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2026-03-02"
 
@@ -782,6 +772,7 @@ date_published = "2026-03-02"
 [[page]]
 path        = "/adk-skill-patterns"
 template    = "adk-skill-patterns.html"
+section    = "article"
 date_modified = "2026-07-26"
 date_published = "2026-04-06"
 
@@ -813,6 +804,7 @@ date_published = "2026-04-06"
 [[page]]
 path        = "/agent-dev-workflow"
 template    = "agent-dev-workflow.html"
+section    = "article"
 date_modified = "2026-09-26"
 date_published = "2026-08-13"
 
@@ -845,6 +837,49 @@ date_published = "2026-08-13"
   title       = "The Agent Development Workflow | 25 Skills, Seven Steps | TauX"
   description = "Chain the 25 skills in mattpocock/skills into one repeatable development flow: grill, spec, tickets, implement, code-review. Four worked scenarios, 31 known pitfalls, and a 14-day plan."
   crumb       = "An agent development workflow"
+
+[[page]]
+path        = "/insights"
+template    = "insights.html"
+date_modified = "2026-09-26"
+date_published = "2026-09-26"
+
+  [page.locale.zh-Hant-TW]
+  title       = "技術文章｜GEO、AI 與資安的實作筆記 | TauX"
+  description = "TauX 的技術文章：GEO、MCP、AI Agent、LLM 資安與後量子密碼。每一篇都附出處，並寫明結論的適用範圍。"
+  crumb       = "技術文章"
+
+  [page.locale.zh-Hans-CN]
+  # One template for every locale: the page is a generated list, and its
+  # few sentences are [locale.strings]. Overrides the derived <locale>/ path.
+  template    = "insights.html"
+  title       = "技术文章｜GEO、AI 与网络安全的实作笔记 | TauX"
+  description = "TauX 的技术文章：GEO、MCP、AI Agent、LLM 网络安全与后量子密码。每一篇都附出处，并写明结论的适用范围。"
+  crumb       = "技术文章"
+
+  [page.locale.ja-JP]
+  # One template for every locale: the page is a generated list, and its
+  # few sentences are [locale.strings]. Overrides the derived <locale>/ path.
+  template    = "insights.html"
+  title       = "技術記事｜GEO・AI・セキュリティの実践ノート | TauX"
+  description = "TauX の技術記事：GEO、MCP、AI エージェント、LLM セキュリティ、ポスト量子暗号。どの記事にも出典と適用範囲を書いています。"
+  crumb       = "技術記事"
+
+  [page.locale.ko-KR]
+  # One template for every locale: the page is a generated list, and its
+  # few sentences are [locale.strings]. Overrides the derived <locale>/ path.
+  template    = "insights.html"
+  title       = "기술 문서｜GEO·AI·보안 실무 노트 | TauX"
+  description = "TauX의 기술 문서: GEO, MCP, AI 에이전트, LLM 보안, 포스트 양자 암호. 모든 글에 출처와 적용 범위를 적어 둡니다."
+  crumb       = "기술 문서"
+
+  [page.locale.en-US]
+  # One template for every locale: the page is a generated list, and its
+  # few sentences are [locale.strings]. Overrides the derived <locale>/ path.
+  template    = "insights.html"
+  title       = "Insights | GEO, AI and security notes | TauX"
+  description = "TauX's technical notes on GEO, MCP, AI agents, LLM security and post-quantum cryptography. Each names its sources and where its conclusions stop applying."
+  crumb       = "Insights"
 
 [[page]]
 path        = "/building"
