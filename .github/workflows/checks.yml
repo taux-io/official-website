@@ -124,6 +124,10 @@ jobs:
       # "fifteen" while the script printed 22 of 22, so the warning outlived
       # seven more. The number is printed on every run; this line is not where
       # to learn it.)
+      #
+      # AFTER `build the site`, AND IT HAS TO BE. Four structural rules read the
+      # built pages rather than template source (scripts/design/rendered.js),
+      # and refuse a dist/ older than the templates.
       - name: templates agree with DESIGN.md
         run: npm run check:design
 

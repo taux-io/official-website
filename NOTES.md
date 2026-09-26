@@ -82,7 +82,7 @@ npm run check:llms     # llms.txt 有沒有漏掉已發布的頁面（CI 閘門�
 npm run check:md       # 100 份 Markdown 雙生檔（CI 閘門）
 npm run check:dates    # 日期已宣告且自洽（CI 閘門）
 npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
-npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門）
+npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門；四條結構規則讀 dist/，要先 build:site）
 npm run check:routes   # 已發布路徑與 ledger 相符（CI 閘門）
 npm run routes:record  # 新增路由後把它寫進 ledgers/published-paths.txt
 npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
@@ -126,8 +126,8 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）。取區塊用 `scripts/lib/html.js` 的 `jsonLdBlocks()`，check:entity 與 i18n-extract 也用它：`<script>` 多一個屬性也認得，而頁面上 `ld+json` 標籤的數目與讀到的區塊數不符時直接丟錯——先前兩道閘門只認逐字的 `<script type="application/ld+json">`，多一個屬性就整段跳過還報綠
-- **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。⚠️ 其中規則 36 `tags nest` 是唯一會**展開 `{% include %}`** 的規則：巢狀是組合後的頁面才有的性質，而 `header.html` 單獨看是一份沒關 `<html>` 的半頁。它的 `compose()` 遇到找不到的 partial 或超過 16 層的 include 會**丟錯**——先前回傳空字串，第五層以下的內容沒檢查也報綠。
-  結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取，同一份模板只解析一次）。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆
+- **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。**但四條結構規則（section cover screens、tags nest、anchor integrity、heading structure）讀建置後的頁面**（`scripts/design/rendered.js`）：原始碼分析看不穿 macro、`import`、`extends`，評估模板大改時實測過三種全綠的破壞。所以 **`check:design` 要在 `build:site` 之後跑**，`dist/` 比模板或 site.toml 舊時它直接拒絕。回報先用文字比對指回原始模板，找不到唯一位置才指向 `dist/` 的行號。規則 36 `tags nest` 另外保留讀原始碼的那一趟（`compose()` 展開 `{% include %}`，找不到的 partial 或超過 16 層會丟錯），因為它能指出交錯的兩個標籤各在哪個檔；原始碼乾淨而建置產物交錯時，另外以 dist 行號回報。規則 37 `no parameterised markup` 禁止 macro 把參數放進 `class`／`href`——那是讀屬性的規則看不到的地方。
+  結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取），讀建置產物的共用部分在 `scripts/design/rendered.js`。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆；規則拿到 `(files, { rendered })`，要讀組合後的頁面就呼叫 `rendered()`
 - **check:entity** —— 讀**建置產物**的實體宣告，八條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）、**麵包屑從本 locale 首頁走到本頁的 canonical，且每一項都是已宣告的頁面；本頁自己宣告的節點（`@id`、`url`、`mainEntityOfPage`）指向本頁 canonical**（加這條之前 75 個麵包屑有 38 個起點是會 302 的 `https://taux.io`）、**JSON-LD 裡沒有 HTML 實體**（autoescape 會把模板裡的 `{{ … }}` 網址變成 `https:&#x2f;&#x2f;…`，而那仍是合法 JSON）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— **建置後的**英文頁（20 份 HTML 與 20 份 Markdown 雙生檔，清單取自路由表——英文首頁是 `dist/en-US.html`，不在 `dist/en-US/` 裡）沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。
@@ -177,7 +177,7 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 
 只改結構、不該改輸出的工作（抽 partial、推導 site.toml 欄位、拆 generator 或 check-design），驗收條件寫成：**改動前建一份 `dist/`，改動後 `diff -r` 無差異**。它比任何檢查表都完整——HTML、Markdown 雙生檔、sitemap、`_redirects` 全在裡面。一個多出來的空行（HTML 註解被剝掉後留下的換行）就會讓它紅，那正是要的靈敏度。
 
-閘門本身的重構換成**突變測試**：刻意製造違規，比對新舊實作的 stdout、stderr 與 exit code。check-design 拆檔時用了 28 種破壞，涵蓋全部 34 條規則。只在乾淨的樹上看到「全綠」證明不了什麼——一條被拆壞的規則在乾淨的樹上也是綠的。
+閘門本身的重構換成**突變測試**：刻意製造違規，比對新舊實作的 stdout、stderr 與 exit code。check-design 拆檔時用了 28 種破壞，涵蓋當時全部 34 條規則。只在乾淨的樹上看到「全綠」證明不了什麼——一條被拆壞的規則在乾淨的樹上也是綠的。
 
 ### 疊起來的 PR：一次一個進 main，下一個 rebase 上去
 
@@ -458,13 +458,13 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 | **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
 | **C. BreadcrumbList 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | ✅ **已做（#323）**：site.toml 每個 locale 的 `crumb`，generator 以 serde_json 組出節點、當 safe string 交給模板的 `{{ breadcrumb }}`。改動前後 101 頁的 JSON-LD 逐頁 deep-equal、其餘位元組不變。Article 的 `@id`／`mainEntityOfPage` 仍手寫，由 check:entity 的 `page nodes name their canonical` 守著 |
 
-**A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
+**A 與 B 的前置條件已完成**：四條結構規則改讀建置產物（用文字比對指回原檔），並加了規則 37 禁止 macro 接收 `class`／`href` 參數。用評估時的破壞重測：macro 拿掉 `data-cover`、macro 留一個沒關的 `<div>`、macro 把 class 當參數，現在都紅；macro 產生的 id 被連結時不再誤報。**要不要真的做 A、B 是另一個決定**——B 仍然幾乎不省行數，A 只值得做 cover 與 FAQ。
 
 **C 的四個前置條件都已完成**：JSON 由 Rust 序列化（不經模板插值，autoescape 碰不到）；check:entity 的兩條斷言；首層統一為 `https://taux.io/<locale>`；site.toml 的 `crumb`。
 
 ## 已知待辦
 
-- 模板結構大改：A（macro）與 B（base layout）的前置條件——check-design 的結構類規則改讀組合後的頁面（見上一節）
+- 模板結構大改：A（macro，建議只做 cover 與 FAQ）與 B（base layout）的前置條件已滿足，做不做待決定（見上一節）
 - CI runner 釘在 `ubuntu-24.04`：Ubuntu 26 image 穩定、Playwright 支援之後，在一個 PR 上試跑再切換（見「建置與檢查」）
 - Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
 - 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定

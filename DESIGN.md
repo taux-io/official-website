@@ -817,8 +817,13 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **34** | **state pairs keep contrast** | ✅ | **v5.1** |
 | **35** | **hover is guarded** | ✅ | **v5.1** |
 | **36** | **tags nest** | ✅ | **v5.3** |
+| **37** | **no parameterised markup** | ✅ | **閘門改讀建置產物** |
 
-**35 條啟用，0 條待實作，1 條退掉。** ⚠️ v5.1 寫 34、v5.0 寫 32：`check:design` 現在印「34 of 34」，加上 `cards` 那一條是 35。
+**36 條啟用，0 條待實作，1 條退掉。** ⚠️ v5.1 寫 34、v5.0 寫 32：`check:design` 現在印「35 of 35」，加上 `cards` 那一條是 36。
+
+**四條結構規則讀建置後的頁面，不讀模板原始碼**：`section cover screens`、`tags nest`、`anchor integrity`、`heading structure`（`scripts/design/rendered.js`）。原因是評估模板大改時量到的：規則沿著 `{% include %}` 讀原始碼，看不穿 macro、`import` 與 `extends`——macro 拿掉 `data-cover`、留一個沒關的 `<div>`，都是綠的。建置產物裡有讀者拿到的每一個標籤。回報時用文字比對指回原始模板，找不到唯一位置（例如 macro 產生的標記）就指向 `dist/` 的行號；`tags nest` 另外保留原始碼那一趟，因為它能指出交錯的兩個標籤各在哪個檔案。**`check:design` 因此要先 `build:site`**，`dist/` 比任何模板或 site.toml 舊時直接拒絕，不會對上一次的建置報綠。
+
+**37 `no parameterised markup`**：macro 不得把參數放進 `class` 或 `href`。讀 class 的十多條規則與 `check:classes` 都讀原始碼的屬性值，呼叫端傳進來的字串它們看不到。macro 要拼出自己的 class 與 href，只接受內容（文字、標題、id）。
 
 ⚠️ **啟用的 32 條不住在同一個地方，而這是本檔第一次有這種情況。** `scripts/check-design.js` 的 `RULES` 陣列有 **31 個 `name:`**（`check:design` 印「31 of 31」），第 32 條是規則 29 `og geometry`，住在 `scripts/visual/cards.js`（`npm run cards`）——它讀產出物不讀原始碼，見決策 #111。**兩個數字都對，而把「31 of 31」讀成「全部規則」會漏掉一條。** ⚠️ 這一段自己寫錯過一次：它寫「啟用的 30 條」與「把『29 of 29』讀成」，兩個都是規則 29、31、33 落地之前的數字——**在一段講「數目要對」的文字裡面**，由兩軸審查抓到，不是由任何閘門。
 

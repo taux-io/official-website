@@ -1,7 +1,7 @@
 // CANONICAL_LOCALE is the language the error document speaks; routes.js holds
 // it (mirroring the generator's constant) so it is written once on this side.
-const { PAGES, DOCUMENTS, isLatin, CANONICAL_LOCALE } = require("../../routes");
-const { templateKey, lineOf } = require("../lib");
+const { isLatin, CANONICAL_LOCALE } = require("../../routes");
+const { locate, markup } = require("../rendered");
 
 // CJK has no uppercase, so the typographic signature of this vocabulary — bold,
 // uppercase, set tighter than its own size — can only be carried by a Latin
@@ -23,46 +23,34 @@ const { templateKey, lineOf } = require("../lib");
 // The rule shrank to where it holds rather than being turned off. Turning it off
 // to get a green build is the same move as keeping an exemption list, and this
 // needed neither.
-function ruleHeadingStructure(files) {
+// READS THE BUILT PAGE, ONE ROW PER PAGE. It read each template and asked it
+// for the union of the locales it renders into; the built page has exactly one
+// locale, and an h1 that a base layout or a hero macro supplies is in it —
+// where the template-source version would have reported "no <h1>".
+function ruleHeadingStructure(files, { rendered }) {
   const found = [];
-  const byName = new Map(files.map((f) => [templateKey(f.rel), f]));
-
-  // Which languages each template actually renders into. A document has no
-  // locale of its own — one file answers every unmatched path — so it is held
-  // to the canonical locale's requirement.
-  const localesOf = new Map();
-  for (const p of PAGES) {
-    if (!localesOf.has(p.template)) localesOf.set(p.template, []);
-    localesOf.get(p.template).push(p.locale);
-  }
-  for (const d of DOCUMENTS) {
-    if (!localesOf.has(d.template)) localesOf.set(d.template, []);
-    localesOf.get(d.template).push(CANONICAL_LOCALE);
-  }
-
-  for (const [template, locales] of localesOf) {
-    const f = byName.get(template);
-    if (!f) {
-      found.push({ file: `site.toml`, line: 0, detail: `declares missing template ${template}` });
-      continue;
-    }
-    const headings = [...f.html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
+  for (const page of rendered()) {
+    // A document has no locale of its own — one file answers every unmatched
+    // path — so it is held to the canonical locale's requirement.
+    const locale = page.locale || CANONICAL_LOCALE;
+    const html = markup(page);
+    const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
     if (!headings.length) {
-      found.push({ file: f.rel, line: 0, detail: "no <h1>" });
+      found.push({ file: page.dist, line: 0, detail: `no <h1> (on ${page.url})` });
       continue;
     }
-    const needsSub = locales.some((tag) => !isLatin(tag));
+    const needsSub = !isLatin(locale);
     const required = needsSub ? ["display-lead", "display-sub"] : ["display-lead"];
 
     for (const h of headings) {
       const missing = required.filter((c) => !h[1].includes(c));
       if (missing.length) {
+        const open = /^<h1\b[^>]*>/.exec(h[0])[0];
         found.push({
-          file: f.rel,
-          line: lineOf(f.html, h.index),
+          ...locate(page, [h[0].length <= 400 ? h[0] : null, open], h.index),
           detail:
-            `<h1> missing ${missing.join(" and ")}` +
-            (needsSub ? "" : ` — ${locales.join(", ")} is Latin, so no sub-line is asked for`),
+            `<h1> missing ${missing.join(" and ")} (on ${page.url})` +
+            (needsSub ? "" : ` — ${locale} is Latin, so no sub-line is asked for`),
         });
       }
     }
