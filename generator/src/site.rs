@@ -169,6 +169,13 @@ pub(crate) struct LocaleText {
     /// it. Falls back to `crumb`, then to the title's first segment.
     #[serde(default)]
     pub(crate) label: Option<String>,
+    /// One or two sentences for the home page's service list, when the
+    /// description is the wrong register for it. A description is written
+    /// for a results page and opens with the company's name — ten of them in
+    /// a row on one page read "TauX … TauX … TauX". Falls back to the
+    /// description.
+    #[serde(default)]
+    pub(crate) summary: Option<String>,
 }
 
 impl LocaleText {
@@ -417,6 +424,7 @@ pub(crate) mod tests {
             template: None,
             crumb: None,
             label: None,
+            summary: None,
         }
     }
 
@@ -428,6 +436,7 @@ pub(crate) mod tests {
             template: None,
             crumb: None,
             label: None,
+            summary: None,
         }
     }
 
@@ -616,6 +625,7 @@ pub(crate) mod tests {
               title = "MCP 串接 | TauX"
               description = "d"
               label = "MCP 串接"
+              summary = "s"
             [[page]]
             path = "/what-is-mcp"
             template = "what-is-mcp.html"
@@ -636,7 +646,9 @@ pub(crate) mod tests {
         assert_eq!(cols[0].title, "AI 導入與整合");
         assert_eq!(cols[0].items[0].href, "/zh-Hant-TW/mcp-integration");
         assert_eq!(cols[0].items[0].label, "MCP 串接");
+        assert_eq!(cols[0].items[0].summary, "s");
         assert_eq!(articles[0].label, "MCP 是什麼？");
+        assert_eq!(articles[0].summary, "d", "falls back to the description");
         let (cols, articles) = site.nav_for("en-US").unwrap();
         assert!(
             cols.is_empty(),
@@ -705,6 +717,8 @@ pub(crate) struct NavItem {
     pub(crate) href: String,
     pub(crate) label: String,
     pub(crate) description: String,
+    /// `summary`, else `description` — see `LocaleText::summary`.
+    pub(crate) summary: String,
 }
 
 #[derive(serde::Serialize)]
@@ -746,6 +760,10 @@ impl Site {
             href: format!("/{locale}{}", page.path),
             label: text.short_name(),
             description: text.description.clone(),
+            summary: text
+                .summary
+                .clone()
+                .unwrap_or_else(|| text.description.clone()),
         };
         for page in &self.page {
             if let Some(s) = &page.section {
