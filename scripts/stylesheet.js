@@ -139,7 +139,10 @@ function readTemplateStyles() {
   return out;
 }
 
-// style="" attributes. Fifteen of them, twelve of which are SVG gradient stops.
+// style="" attributes. There are none left: the last 65 (13 per locale of the
+// slide deck, most of them SVG gradient stops) became classes when the CSP
+// dropped `style-src 'unsafe-inline'` (DESIGN.md decision #153). Still read, so
+// that a new one is seen by every rule here as well as refused by the browser.
 //
 // NO CATEGORY IS EXCLUDED, and that is deliberate. "SVG paint is not really CSS"
 // is a defensible sentence that establishes a precedent for the next exclusion,

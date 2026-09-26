@@ -87,10 +87,11 @@ function localClasses(html) {
 }
 
 // A <style> block reaches a page through an include as readily as inline: the
-// slide deck's stylesheet is `_skills-guide-style.html`, included by five
-// locales. Reading only the file's own text would report every deck class as
-// generating no CSS, so the includes are followed — recursively, and relative to
-// templates/, which is how minijinja resolves them.
+// slide deck's stylesheet was `_skills-guide-style.html`, included by five
+// locales, until it moved into src/input.css (the CSP no longer allows inline
+// styles, so today there are none). Reading only the file's own text would have
+// reported every deck class as generating no CSS, so the includes are followed —
+// recursively, and relative to templates/, which is how minijinja resolves them.
 const INCLUDE = /\{%-?\s*include\s*"([^"]+)"/g;
 function withIncludes(html, seen = new Set()) {
   let out = html;

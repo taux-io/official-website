@@ -17,7 +17,6 @@
 }
 </script>
 
-{% include "_skills-guide-style.html" %}
 <div class="skills-guide-body">
 
     <!-- Slide 1: Title_Slide -->
@@ -53,8 +52,8 @@
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                                    <stop offset="0%" class="stop-ink" />
+                                    <stop offset="100%" class="stop-ink" />
                                 </linearGradient>
                                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
@@ -123,10 +122,10 @@
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
-                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
+                    <div class="number-label number-label-lead">The
                         Connectivity</div>
                     <div class="number">MCP</div>
-                    <div class="number-label">바깥과 잇는 힘<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
+                    <div class="number-label">바깥과 잇는 힘<br><span class="number-label-sub">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
@@ -325,7 +324,7 @@
                         <li><span class="highlight">Objective(목적)</span>: 이 절차가 끝내 무엇을 이루는지 한 문장으로.</li>
                         <li><span class="highlight">도구를 부르는 지시</span>: 부를 도구의 이름을 분명히 쓴다(예: <code>linear_create_issue</code>).
                         </li>
-                        <li><span class="highlight">Fallback(퇴로)</span>: <strong style="color: var(--ink); font-weight: 600;">여기가 요점입니다.</strong>MCP는 끊긴다고 보고, 도구를 못 쓸 때 글로 출력하도록 바꾸는 법을 Claude에 미리 일러 둡니다. 흐름이 중간에 멎지 않습니다.</li>
+                        <li><span class="highlight">Fallback(퇴로)</span>: <strong class="text-ink font-semibold">여기가 요점입니다.</strong>MCP는 끊긴다고 보고, 도구를 못 쓸 때 글로 출력하도록 바꾸는 법을 Claude에 미리 일러 둡니다. 흐름이 중간에 멎지 않습니다.</li>
                     </ul>
                 </div>
             </div>
@@ -353,9 +352,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 25%;">관점</th>
-                            <th scope="col" style="width: 35%;">확인하려는 것</th>
-                            <th scope="col" style="width: 40%;">재는 법 (Metrics)</th>
+                            <th scope="col" class="w-1/4">관점</th>
+                            <th scope="col" class="w-[35%]">확인하려는 것</th>
+                            <th scope="col" class="w-2/5">재는 법 (Metrics)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -416,12 +415,12 @@
             <svg aria-hidden="true" focusable="false" class="bleed-image-side" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--surface);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--surface);stop-opacity:1" />
+                        <stop offset="0%" class="stop-surface" />
+                        <stop offset="100%" class="stop-surface" />
                     </linearGradient>
                     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                        <stop offset="0%" class="stop-ink" />
+                        <stop offset="100%" class="stop-ink" />
                     </linearGradient>
                 </defs>
                 <rect width="600" height="800" fill="url(#bgGrad)" />
@@ -463,7 +462,7 @@
             </div>
             <p>"지식으로 도구를 움직이고, 자동화를 팀의 표준으로"</p>
             <div class="contact-info">
-                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i>우선 내장된 skill-creator부터 시작해 보세요.</div>
+                <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i>우선 내장된 skill-creator부터 시작해 보세요.</div>
         </div>
     </div>
 

@@ -92,6 +92,7 @@ const ruleHoverIsGuarded = require("./design/rules/hover-is-guarded");
 const ruleThemeColourAgrees = require("./design/rules/theme-colour-agrees");
 const ruleNoParameterisedMarkup = require("./design/rules/no-parameterised-markup");
 const { renderedPages } = require("./design/rendered");
+const ruleInkMarksHoldNoText = require("./design/rules/ink-marks-hold-no-text");
 
 const RULES = [
   {
@@ -338,6 +339,13 @@ const RULES = [
     turnedOnBy: "v5.1 — better-accessibility: hover latches on touch; zero media queries guarded it",
     run: ruleHoverIsGuarded,
     summary: "every :hover in authored CSS sits inside @media (hover: hover)",
+  },
+  {
+    name: "ink marks hold no text",
+    enabled: true,
+    turnedOnBy: "decision #152 — forced colours flattened 263 bg-ink marks, the hamburger among them",
+    run: ruleInkMarksHoldNoText,
+    summary: "a bg-ink element is an empty shape; forced colours paints it CanvasText, so text inside would vanish",
   },
 ];
 
