@@ -131,6 +131,9 @@ async function walk({
   probes,
   scroll = false,
   reducedMotion = "reduce",
+  // "active" emulates Windows high contrast: the OS palette replaces the page's
+  // colours, and getComputedStyle reports the colours actually painted.
+  forcedColors = "none",
 } = {}) {
   if (!viewports?.length) throw new Error("walk: viewports is required");
   if (!probes?.length) throw new Error("walk: probes is required");
@@ -148,6 +151,7 @@ async function walk({
     viewport: { width: widest.width, height: widest.height },
     deviceScaleFactor: 1,
     reducedMotion,
+    forcedColors,
   });
   const page = await context.newPage();
 

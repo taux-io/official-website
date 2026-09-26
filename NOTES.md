@@ -115,7 +115,7 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 第二次：更正那次把總數改成十三，但緊接著寫「下面**十道**加上 `check:css`、`check:routes`、`geometry`」——**下面的清單早就含那三項了，一共就是十三**。所以那句加法把三項算了兩次，卻剛好因為總數是對的而讀起來成立。**寫在專門警告數錯閘門的段落裡，而且沒有人發現。** 教訓不是「要更小心」，是**別在文件裡放第二種數法**：清單是唯一的來源，總數是數它得到的，沒有需要相加的東西。**第三次**：清單漏了 `check:md`，總數也還停在十四。它是隨 Markdown 雙生檔（issue #259）加進 `checks.yml` 的，而這段文字沒有跟上——同一種漂移，第三次，寫在專門警告它的段落裡。**第四次**：`cards` 隨 v5 的規則 29 加進 `checks.yml`，而這段文字沒有跟上，總數還停在十五。**同一種漂移，第四次，寫在專門警告它的段落裡**——而且這一次是被兩軸審查抓到的，不是被任何閘門。**沒有東西數這個數字**，這就是它一直漂的原因。**第五次**：`test:worker` 隨稽核修正加進 `checks.yml`，這一次同一個 commit 就改了這裡。現在是**十七道**——下面的清單有幾項就是幾道。改 `checks.yml` 時請一併改這裡。
 
-- **contrast** —— 0 隱形元素、0 不符 WCAG AA
+- **contrast** —— 0 隱形元素、0 不符 WCAG AA，**跑兩趟**：一般配色，以及 Windows 高對比（Playwright `forcedColors: 'active'`，量到的是作業系統換上的系統色）。第二趟抓的是本站 CSS 把前景與背景畫成同一個系統色的地方——任何使用者配色下都是 1:1。`--mode normal|forced` 只跑其中一趟；兩趟合計約 6 分鐘
 - **contract** —— 每條路由的狀態碼、`lang`、canonical、分享圖、結構化資料、**所有引用資產（含 manifest 裡的圖示與 CSS 裡的字體）**、CSP 違規、JS 錯誤、`/` 的語言協商與 bot 豁免、**`asset versions`**（每個 `/static/css`、`/static/js` 引用都帶 16 位內容雜湊，immutable 快取的前提，見下）。⚠️ **後兩者不再限於 production。** 這一行先前寫「只在 `BASE_URL` 指向 production 時」，那在語言協商還是 zone Redirect Rule 的計畫裡是對的；改成 `src/worker.js` 之後它已經搬出 `AGAINST_ORIGIN` 分支，對 `wrangler dev` 每次都跑。仍然只在 production 驗得到的是**三件**：HSTS 與 www → apex（那兩條才是 zone 設定），以及純文字檔（`/llms.txt`、`/robots.txt`）的 `charset`。⚠️ 這一行第二次寫錯，形狀和第一次不同：`charset` **是**這個 repo 裡的規則，只是 `wrangler dev` 不管規則在不在都會自己補上，所以本機的斷言會在它從未檢查過的東西上顯示綠色。被模擬器藏起來，不是不存在
 - **geometry** —— 八個寬度下的水平溢出、圓角、44px 觸控目標（含 chrome 裡的普通 `<a>`：語言切換器、章節 rail、footer、skip link——探針原本只量 `a.btn` 與表單控制項，12px 高的下拉連結因此一直是綠的），以及依 locale 而定的行長上限；v5.2 起再加一根 `first-paragraph`：每條路由在三種手機高度下，第一段正文的第一行必須在第一屏內（投影片頁具名豁免；上線前對舊建置跑是 303 組裡 240 紅）
 - **cards** —— 100 張 OG 分享卡的外邊距（5–9% 版寬）、墨跡外框（45–80% 版面）與尺寸（1200×630）。**唯一一道讀產出物而不讀原始碼的設計閘門**：邊距從 `build-og.js` 的 `padding` 算得出來，墨跡外框算不出來——原始碼裡沒有任何東西說得出一個平衡斷行的三行標題會蓋掉多少版面（DESIGN.md 決策 #111）
@@ -479,7 +479,6 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 ### 可以直接做的工程項目
 
 - **翻譯漂移警示細到段落。** `check:locale-drift` 只比對檔案，「五個 locale 的檔都動了、但只改完一部分」看不到（#300 的 about）。可以改成比對同一條路由各 locale 改動的段落數；誤報率要實作後才知道
-- **`contrast` 在高對比模式下也跑一次。** 規則 38 守住了 `forced-colors` 區塊的唯一假設，但區塊本身沒有閘門，`contrast` 只量一般模式（DESIGN.md「沒有東西檢查的事」）
 - **Article／TechArticle 的 JSON-LD 也改由產生器組出。** 麵包屑已經是（#323）；約 55 個 Article 節點的 `@id`、`mainEntityOfPage` 仍手寫，目前由 check:entity 的 `page nodes name their canonical` 守著，不急
 
 ### 已知、刻意維持
