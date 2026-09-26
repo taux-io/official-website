@@ -126,7 +126,7 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）。取區塊用 `scripts/lib/html.js` 的 `jsonLdBlocks()`，check:entity 與 i18n-extract 也用它：`<script>` 多一個屬性也認得，而頁面上 `ld+json` 標籤的數目與讀到的區塊數不符時直接丟錯——先前兩道閘門只認逐字的 `<script type="application/ld+json">`，多一個屬性就整段跳過還報綠
 - **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。⚠️ 其中規則 36 `tags nest` 是唯一會**展開 `{% include %}`** 的規則：巢狀是組合後的頁面才有的性質，而 `header.html` 單獨看是一份沒關 `<html>` 的半頁。它的 `compose()` 遇到找不到的 partial 或超過 16 層的 include 會**丟錯**——先前回傳空字串，第五層以下的內容沒檢查也報綠。
   結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取，同一份模板只解析一次）。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆
-- **check:entity** —— 讀**建置產物**的實體宣告，六條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
+- **check:entity** —— 讀**建置產物**的實體宣告，八條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）、**麵包屑從本 locale 首頁走到本頁的 canonical，且每一項都是已宣告的頁面；本頁自己宣告的節點（`@id`、`url`、`mainEntityOfPage`）指向本頁 canonical**（加這條之前 75 個麵包屑有 38 個起點是會 302 的 `https://taux.io`）、**JSON-LD 裡沒有 HTML 實體**（autoescape 會把模板裡的 `{{ … }}` 網址變成 `https:&#x2f;&#x2f;…`，而那仍是合法 JSON）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— **建置後的**英文頁（20 份 HTML 與 20 份 Markdown 雙生檔，清單取自路由表——英文首頁是 `dist/en-US.html`，不在 `dist/en-US/` 裡）沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。
   它原本讀 `templates/en-US/`，理由是每一頁建出來都帶著全站 Organization 節點中文 `description` 的六個標點；issue #241 把那句改成 per-locale 之後理由就不成立了，而這道閘門多留在模板上一段時間。讀 `dist/` 會多守住模板守不住的事：共用 partial、site.toml 字串或 JSON-LD 把中文標點帶上英文頁——**那正是 #241 的形狀**
@@ -454,19 +454,19 @@ PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
 |---|---|---|---|
 | **A. Jinja macro**（cover、FAQ、CTA、hero） | cover 545 處／約 2,400 行，但有 14 種變形、巨集要約 6 個參數；FAQ 40 處；CTA 幾乎全是各頁文案；hero 沒有共用外殼 | `section-cover-screens` 跳過 `_*.html`、`tags-nest` 的 `compose()` 只展開 include——**巨集裡拿掉 `data-cover`、或留一個沒關的 `<div>`，check:design 與 check:md 全綠而且建置成功**。class／href 以參數傳入時，十多條讀屬性的規則與 check:classes 都看不到 | 前置條件滿足後只做 cover 與 FAQ |
 | **B. `{% extends %}` base layout** | 幾乎不省（每頁本來就只有兩行 include）；唯一收益是 JSON-LD 進 `<head>` | base 檔要命名成 `_*.html` 才不被當成頁面，而那就讓它失明：**刪掉 `_base.html` 的 `</main>` 時 check:design 是綠的**（現況在 footer.html 刪同一行會報 100 個違規） | 要做就和 A 一起、在同一個前置條件之後 |
-| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，先補下面四個前置條件 |
+| **C. BreadcrumbList／Article 由 site.toml 產生** | 75 塊麵包屑約 730 行、寫死的 locale URL 350 處 | check-design 不讀 JSON-LD，不受影響 | 可以做，下面四個前置條件已完成兩個 |
 
 **A 與 B 的前置條件**：check-design 的結構類規則（cover、nest、anchor、heading）改讀組合後的頁面並以 source map 指回原檔，或讓 `compose()` 也展開 `import`／`extends`／macro；另加一條規則禁止巨集接收 `class`／`href` 參數。
 
 **C 的前置條件**：
 1. JSON 字串要由 Rust 序列化或開 minijinja 的 `tojson`——**直接寫 `"{{ canonical }}"` 會被 autoescape 成 `https:&#x2f;&#x2f;taux.io…`，而 check:jsonld 與 check:entity 都是綠的**。不可用 `|safe` 繞過
-2. check:entity 補兩條斷言：麵包屑／Article 的 `@id` 與 `mainEntityOfPage` 等於 canonical；JSON-LD 裡不得出現 `&#x`
-3. 決定首頁那一層的 `item` 用 `https://taux.io` 還是 `/<locale>`——現在 38 個是前者、37 個是後者，統一會刻意改動其中一邊的 dist
+2. ✅ check:entity 的兩條斷言已加：`page nodes name their canonical`、`json-ld carries no html escapes`
+3. ✅ 首頁那一層統一成 `https://taux.io/<locale>`（語系首頁的 canonical；`https://taux.io` 本身是 302，結構化資料不該指向轉址）。原本 38 個是後者，已改
 4. site.toml 每個 locale 加一個麵包屑名稱：現有 75 個名稱只有 28 個與 title 開頭相同，推導不出來
 
 ## 已知待辦
 
-- 模板結構大改的前置條件（見上一節）
+- 模板結構大改的前置條件（見上一節）：C 還差 Rust 端的 JSON 序列化與每個 locale 的麵包屑名稱
 - Windows 中文渲染品質低於 macOS（見 DESIGN.md 的「字體」一節）
 - 標題層級：兩個法律頁與 agent-prompting-guide、adk-skill-patterns 的導言框用只給螢幕閱讀器的 h2（`data-cover="sr"`）補起 h1 → h3 的跳級。要改成可見的 h2，就得替它們各開一個封面區塊，那是設計決定
 - 法律頁內文維持英文（決定見 ja-JP 版模板的註解）
