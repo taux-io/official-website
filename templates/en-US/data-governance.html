@@ -37,15 +37,13 @@
         </header>
 
         <section>
-            <div class="cover" data-cover>
-                <h2 class="mb-0 relative z-10">
+            {% call cover(flush=true) %}
                 <span class="display-lead text-display-sm">Why Governance First</span>
-            </h2>
-            </div>
-            <p class="text-lg leading-relaxed mb-6 relative z-10 max-w-prose">
+            {% endcall %}
+            <p class="text-lg leading-relaxed mb-6 max-w-prose">
                 Data is only an asset once someone can trust it. Data governance is the framework that makes it trustworthy: who owns which data, what the words mean, and how you find out when it goes wrong.
             </p>
-            <div class="space-y-6 mt-8 relative z-10">
+            <div class="space-y-6 mt-8">
                 <div class="border-t border-line pt-6">
                     <div class="text-xl mb-3 font-semibold flex items-center">
                         <span class="me-2 font-semibold">
@@ -120,7 +118,7 @@
 
             <!-- CTA -->
             <section>
-                <div class="relative z-10">
+                <div>
                     {% call cover() %}
                         <span class="display-lead text-display-sm">Ready to Start</span>
                     {% endcall %}

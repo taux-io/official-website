@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <script type="application/ld+json">
@@ -26,10 +27,8 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="what">01 — 一句话</h2>
-            </div>
+        <section id="what">
+            {% call cover("01") %}一句话{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 MCP 让任何 AI 应用程序，用同一种方式接上任何数据来源。
             </p>
@@ -39,10 +38,8 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="why">02 — 为什么需要它</h2>
-            </div>
+        <section id="why">
+            {% call cover("02") %}为什么需要它{% endcall %}
             <p class="max-w-prose leading-relaxed mb-5">
                 假设有 4 个 AI 应用程序，和 5 个你想接上的东西：Google Drive、GitHub、数据库、Slack、公司内部 API。
             </p>
@@ -66,10 +63,8 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="roles">03 — 三个角色</h2>
-            </div>
+        <section id="roles">
+            {% call cover("03") %}三个角色{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP 里有三个角色。<strong>最多人搞混的是前两个</strong>——大家说「MCP client」的时候，心里想的通常是 Claude Desktop，但那是 host。
             </p>
@@ -147,10 +142,8 @@
         </section>
 
         <!-- ④ 交互 --------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="primitives">04 — 服务器提供什么</h2>
-            </div>
+        <section id="primitives">
+            {% call cover("04") %}服务器提供什么{% endcall %}
             <p class="max-w-prose leading-relaxed mb-4">
                 服务器提供三种东西。它们的差别<strong>不是</strong>「读 vs 写」——那是最常见的错误直觉。
             </p>
@@ -208,10 +201,8 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="transport">05 — 它怎么传输</h2>
-            </div>
+        <section id="transport">
+            {% call cover("05") %}它怎么传输{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 两种标准方式：<strong>stdio</strong>——服务器是一个子进程，透过标准输入输出沟通；与 <strong>Streamable HTTP</strong>——每则消息是一个 HTTP POST。<strong>这是「怎么传」的差别，不是「在哪里」的差别</strong>：一个跑在你自己机器上的服务器，一样可以讲 Streamable HTTP。
             </p>
@@ -221,10 +212,8 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="whats-new">06 — 这一版变了什么</h2>
-            </div>
+        <section id="whats-new">
+            {% call cover("06") %}这一版变了什么{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 服务器现在什么都不记得。
             </p>
@@ -258,10 +247,8 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="version">07 — 本页对应哪一版</h2>
-            </div>
+        <section id="version">
+            {% call cover("07") %}本页对应哪一版{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP 的版号<strong>就是日期</strong>。它标示的是「最后一次做出破坏性变更的日子」，不是发布周期。所以你手上任何一份 MCP 数据，看它对应哪个日期就知道新不新——<strong>这是这页最值得你带走的一件事</strong>。
             </p>

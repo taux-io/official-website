@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <script type="application/ld+json">
@@ -29,10 +30,8 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="what">01 — In one sentence</h2>
-            </div>
+        <section id="what">
+            {% call cover("01") %}In one sentence{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 MCP lets any AI application connect to any data source the same way.
             </p>
@@ -42,10 +41,8 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="why">02 — The problem it solves</h2>
-            </div>
+        <section id="why">
+            {% call cover("02") %}The problem it solves{% endcall %}
             <p class="max-w-prose leading-relaxed mb-5">
                 Four AI applications, and five things to connect them to: Google Drive, GitHub, a database, Slack, an internal API.
             </p>
@@ -69,10 +66,8 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="roles">03 — The three roles</h2>
-            </div>
+        <section id="roles">
+            {% call cover("03") %}The three roles{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 Three roles, and <strong>the first two are what everyone conflates</strong>. When people say "MCP client" they usually mean Claude Desktop — which is the host.
             </p>
@@ -150,10 +145,8 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="primitives">04 — What a server offers</h2>
-            </div>
+        <section id="primitives">
+            {% call cover("04") %}What a server offers{% endcall %}
             <p class="max-w-prose leading-relaxed mb-4">
                 Three things, and the difference between them is <strong>not</strong> read versus write. That is the intuition almost everyone arrives with, and it is wrong.
             </p>
@@ -211,10 +204,8 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="transport">05 — How it travels</h2>
-            </div>
+        <section id="transport">
+            {% call cover("05") %}How it travels{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 Two standard transports. <strong>stdio</strong>: the server is a subprocess, talking over standard input and output. <strong>Streamable HTTP</strong>: each message is an HTTP POST. <strong>This is a difference in how, not in where</strong>: a server running on your own machine can speak Streamable HTTP just as well.
             </p>
@@ -224,10 +215,8 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="whats-new">06 — What this revision changed</h2>
-            </div>
+        <section id="whats-new">
+            {% call cover("06") %}What this revision changed{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 Servers no longer remember anything.
             </p>
@@ -261,10 +250,8 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="version">07 — Which revision this page describes</h2>
-            </div>
+        <section id="version">
+            {% call cover("07") %}Which revision this page describes{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 An MCP version <strong>is a date</strong>. It marks the last day a breaking change was made, not a release cadence. So for any MCP material you come across, the date tells you how current it is — <strong>which is the single most useful thing on this page</strong>.
             </p>

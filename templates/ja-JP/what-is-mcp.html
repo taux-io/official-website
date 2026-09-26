@@ -1,3 +1,4 @@
+{% from "_blocks.html" import cover -%}
 {% include "header.html" %}
 
 <script type="application/ld+json">
@@ -26,10 +27,8 @@
         </header>
 
         <!-- ① ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="what">01 — ひとことで</h2>
-            </div>
+        <section id="what">
+            {% call cover("01") %}ひとことで{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 どの AI アプリケーションからでも、同じやり方でどのデータ源にもつなげる。それが MCP です。
             </p>
@@ -39,10 +38,8 @@
         </section>
 
         <!-- ② ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="why">02 — なぜ要るのか</h2>
-            </div>
+        <section id="why">
+            {% call cover("02") %}なぜ要るのか{% endcall %}
             <p class="max-w-prose leading-relaxed mb-5">
                 AI アプリケーションが 4 つ、つなぎたい先が 5 つあるとします。Google Drive、GitHub、データベース、Slack、社内 API。
             </p>
@@ -66,10 +63,8 @@
         </section>
 
         <!-- ③ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="roles">03 — 三つの役割</h2>
-            </div>
+        <section id="roles">
+            {% call cover("03") %}三つの役割{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP には三つの役割があります。<strong>取り違えられるのは、たいてい最初の二つ</strong>です。「MCP クライアント」と言うとき、頭に浮かんでいるのはたいてい Claude Desktop ですが、あれはホストです。
             </p>
@@ -147,10 +142,8 @@
         </section>
 
         <!-- ④ 互動 --------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="primitives">04 — サーバが出すもの</h2>
-            </div>
+        <section id="primitives">
+            {% call cover("04") %}サーバが出すもの{% endcall %}
             <p class="max-w-prose leading-relaxed mb-4">
                 サーバが出すものは三種類。その違いは<strong>「読み」対「書き」ではありません</strong>。そこがいちばんよくある取り違えです。
             </p>
@@ -208,10 +201,8 @@
         </section>
 
         <!-- ⑤ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="transport">05 — どう運ぶか</h2>
-            </div>
+        <section id="transport">
+            {% call cover("05") %}どう運ぶか{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 標準は二つ。<strong>stdio</strong> はサーバを子プロセスとして起動し、標準入出力でやり取りします。<strong>Streamable HTTP</strong> は一つのメッセージが一回の HTTP POST になります。<strong>これは「どう運ぶか」の違いであって、「どこにあるか」の違いではありません。</strong>手元で動くサーバでも Streamable HTTP は話せます。
             </p>
@@ -221,10 +212,8 @@
         </section>
 
         <!-- ⑥ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="whats-new">06 — この版で変わったこと</h2>
-            </div>
+        <section id="whats-new">
+            {% call cover("06") %}この版で変わったこと{% endcall %}
             <p class="text-xl font-display mb-5 max-w-prose">
                 サーバは、もう何も覚えていません。
             </p>
@@ -258,10 +247,8 @@
         </section>
 
         <!-- ⑦ ------------------------------------------------------------- -->
-        <section>
-            <div class="cover" data-cover>
-                <h2 class="eyebrow" id="version">07 — このページが指す版</h2>
-            </div>
+        <section id="version">
+            {% call cover("07") %}このページが指す版{% endcall %}
             <p class="max-w-prose leading-relaxed mb-6">
                 MCP のバージョンは<strong>日付そのもの</strong>です。示しているのは「最後に互換を壊す変更をした日」であって、リリースの周期ではありません。だから手元の MCP の資料は、対応する日付を見ればどれだけ新しいかがわかります。<strong>このページから持ち帰る価値がいちばん高いのは、この一点です。</strong>
             </p>
