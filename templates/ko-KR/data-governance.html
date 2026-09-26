@@ -1,133 +1,59 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["같은 데이터가 부서마다 버전이 달라 숫자가 맞지 않는다", "AI나 BI 보고서를 도입하고 싶지만 데이터를 쓸 수 있는 상태인지 모르겠다", "회사에 어떤 개인정보가 있고, 어디에 있으며, 누가 볼 수 있는지 분명하지 않다", "기존 시스템 연결을 계획하고 있어 데이터부터 정리하고 싶다"] %}
+{%- set scope = [{"t": "데이터 파악", "d": "회사에 어떤 데이터가 있고, 어느 시스템에 있으며, 누가 책임지고 누가 쓰는지 정리합니다."}, {"t": "표준화", "d": "필드 정의, 코드, 이름 규칙을 통일해 서로 다른 시스템의 같은 데이터가 맞아떨어지게 합니다."}, {"t": "품질 모니터링", "d": "품질 규칙(완전성, 정확성, 적시성)을 정하고 정기적으로 점검하는 방식을 만듭니다."}, {"t": "권한과 개인정보", "d": "역할에 따라 접근 권한을 설정하고, 개인정보와 민감한 데이터를 표시하며, 대만 개인정보보호법의 요구 사항과 대조합니다."}] %}
+{%- set process = [{"t": "파악", "d": "인터뷰와 시스템 조사로 데이터 목록을 완성합니다."}, {"t": "규칙 정하기", "d": "표준, 품질 규칙, 권한 원칙을 정합니다."}, {"t": "적용", "d": "시스템과 업무 흐름에 반영하고, 가장 중요한 데이터 문제를 처리합니다."}, {"t": "모니터링과 인계", "d": "정기 점검을 만들고, 담당 직원에게 문서를 넘깁니다."}] %}
+{%- set deliverables = ["데이터 목록(위치, 소유자, 사용자)", "데이터 표준과 이름 규칙", "품질 규칙과 점검 방법", "권한과 개인정보 분류표", "거버넌스 문서와 인계 안내"] %}
+{%- set faqs = [{"q": "중소기업도 데이터 거버넌스가 필요한가요?", "a": "필요합니다. 다만 범위는 작아도 됩니다. 회사 전체를 한 번에 정리하지 않고, 고객, 제품, 주문 데이터처럼 가장 자주 쓰고 가장 자주 틀리는 몇 가지부터 시작합니다."}, {"q": "데이터 거버넌스는 AI 도입과 어떤 관계가 있나요?", "a": "AI는 자신이 접근할 수 있고 정확한 데이터만 쓸 수 있습니다. 데이터가 일치하지 않거나 권한이 분명하지 않으면 AI의 답도 믿을 수 없습니다. 데이터를 먼저 정비해야 도입의 기반이 생깁니다."}, {"q": "지금 시스템을 바꿔야 하나요?", "a": "대개는 필요 없습니다. 데이터 거버넌스는 주로 규칙을 정하고 데이터와 업무 흐름을 정리하는 일이라, 대부분 기존 시스템에서 할 수 있습니다."}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: data-governance (ko-KR). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/ko-KR/data-governance#service",
-            "serviceType": "Data Governance Strategy",
-            "provider": {% include "_org-ref.html" %},
-            "name": "기업 데이터 거버넌스 지원",
-            "description": "데이터 인벤토리·표준화·품질 모니터링을 통해 기업이 데이터 자산을 관리할 수 있는 체계를 갖추도록 돕습니다.",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "데이터 거버넌스", "serviceType": "데이터 거버넌스", "description": "TauX는 중소기업에 데이터 거버넌스 컨설팅과 구현을 제공합니다. 데이터를 파악하고, 기준을 통일하고, 품질을 모니터링하고, 접근 권한과 개인정보 규칙을 정해 AI 도입에 믿을 수 있는 데이터를 마련합니다.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "중소기업"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-<span class="tag mb-4">Data Strategy</span>
-            <h1 class="mb-4">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Govern the Data First</span>
-            <span class="display-sub">데이터 거버넌스 안내</span>
-        </h1>
-            <p class="text-base tablet:text-lg max-w-prose mx-auto">혼란에서 통찰로. 기업 수준의 데이터 자산 관리 체계를 만듭니다</p>
-        </header>
-
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm" lang="en">Why Governance First</span>
-                <span class="display-sub">왜 거버넌스가 먼저인가</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-prose">
-                데이터는 새 시대의 석유라고들 합니다. 다만 정제하지 않은 석유는 엔진을 돌리지 못합니다. 데이터 거버넌스는 데이터의 품질·보안·가용성을 보장하기 위한 관리 틀입니다.
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 정확성
-                    </div>
-                    <p class="text-sm leading-relaxed">판단의 근거를 잡음이 아니라 사실에 둡니다.</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                        </span> 규제 준수
-                    </div>
-                    <p class="text-sm leading-relaxed">GDPR과 대만 개인정보보호법 요건에 맞춥니다.</p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <div class="text-xl mb-3 font-semibold flex items-center">
-                        <span class="me-2 font-semibold">
-                            <svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </span> 가용성
-                    </div>
-                    <p class="text-sm leading-relaxed">사일로를 허물어 현업이 필요할 때 바로 꺼내 쓰게 합니다.</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">How the Work Runs</span>
-                <span class="display-sub">진행 방식</span>
-            {% endcall %}
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        1</div>
-                    <div>
-                        <h3 class="mb-3">
-                            데이터 인벤토리 (Data Inventory)</h3>
-                        <p class="leading-relaxed">창고 재고를 세듯, 어떤 데이터가 어디에 있고 누가 맡고 있는지부터 분명히 합니다. 데이터 카탈로그를 갖추는 일까지 함께합니다.</p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        2</div>
-                    <div>
-                        <h3 class="mb-3">
-                            표준화 (Standardization)</h3>
-                        <p class="leading-relaxed">데이터의 말을 하나로 맞춥니다. '매출'은 세금 포함인가 아닌가. '고객'은 주문한 곳인가, 잠재 고객까지인가. 부서끼리 말이 어긋나는 원인을 없앱니다.</p>
-                    </div>
-                </div>
-
-                <div class="border-line ps-5 py-2 border-s border-line flex items-start group">
-                    <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                        3</div>
-                    <div>
-                        <h3 class="mb-3">
-                            데이터 품질 모니터링 (Data Quality)</h3>
-                        <p class="leading-relaxed">자동으로 감시하는 장치를 두어 결측·이상치·중복을 바로 찾아냅니다. 리포트를 오염시키기 전에 잡아 고칩니다.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section>
-                <div>
-                    {% call cover() %}
-                        <span class="display-lead text-display-sm" lang="en">Ready to Start</span>
-                        <span class="display-sub">시작할 준비가 되셨나요</span>
-                    {% endcall %}
-                    <p class="mb-6 max-w-prose mx-auto text-lg">AI 도입이 막히는 곳은 대개 모델이 아니라 데이터입니다. 어디에 있는지, 누가 쓰는지, 믿을 수 있는지. 먼저 지금 상황부터 들려주세요.</p>
-
-                    <a href="mailto:hello@taux.io" class="btn">
-                        상담 예약하기
-                    </a>
-                </div>
-            </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Data governance</span>
+        <span class="display-sub">AI 도입 전에 믿을 수 있는 데이터부터</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">AI 도입이 막히는 곳은 대개 모델이 아니라 데이터입니다. 어디에 있는지, 누가 쓰는지, 믿을 수 있는지. 이 세 가지부터 분명히 합니다.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}이런 분께 맞습니다{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}서비스 내용{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}진행 방식{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}납품물{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}자주 묻는 질문{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}더 읽을거리{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/mcp-integration" class="underline underline-offset-4">기존 시스템과 AI 연결</a></li>
+        <li><a href="/{{ locale }}/ai-consulting" class="underline underline-offset-4">기업 AI 도입 컨설팅</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">PQC 포스트 양자 암호 이행</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

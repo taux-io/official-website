@@ -1,0 +1,60 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["ERP、販売在庫管理、自社構築のデータベースなどの既存システムがあり、データが何か所にも分かれている", "社員が自然な言葉で社内データを調べられるようにしたい。毎回情報システム担当に集計を頼むのではなく", "AI アシスタントはすでに使っているが、人が手で貼り付けた内容しか読めない", "既存システムに API がない、あるいは仕組みを覚えている人がいない"] %}
+{%- set scope = [{"t": "データのサイロの棚卸し", "d": "システムとデータごとに、置き場所、担当者、アクセス方法（API、データベース、ファイル）と、どのデータを AI に開放してよいかを一覧にします。"}, {"t": "連携構成の設計", "d": "どのデータを MCP server として提供し、どの AI アプリケーションが使うか、そして接続方法（ローカルで動かすか、HTTP で提供するか）を決めます。"}, {"t": "MCP server の開発", "d": "既存システム向けに MCP server を開発し、照会ツールとデータリソースを提供します。既定は読み取り専用で、書き込みが必要な操作には確認の手順を別に設けます。"}, {"t": "権限と監査", "d": "既存のアカウントと権限をそのまま使い、照会のたびに記録を残します。誰が AI を通して何を調べたかがわかります。"}, {"t": "セキュリティテスト", "d": "プロンプトインジェクションなど LLM 特有のリスクに対して連携をテストし、AI がデータの内容に誘導されてすべきでないことをしないかを確かめます。"}] %}
+{%- set process = [{"t": "棚卸し", "d": "データソースとアクセス方法を一覧にし、最初に連携するシステムを選びます。"}, {"t": "設計", "d": "提供する照会とデータ、権限、記録の方法を定義します。"}, {"t": "開発と試用", "d": "最初のデータソースの MCP server を仕上げ、少人数の社員に実際に使ってもらい、意見をもらいます。"}, {"t": "拡張と引き継ぎ", "d": "利用状況に応じて次のシステムを連携し、文書と保守の方法をお渡しします。"}] %}
+{%- set deliverables = ["データソースの棚卸しと連携構成の文書", "MCP server のソースコードとデプロイ手順", "権限と監査ログの設定", "セキュリティテストのレポート", "操作と保守の文書"] %}
+{%- set faqs = [{"q": "MCP とは何ですか？", "a": "Model Context Protocol の略で、AI アプリケーションが外部のデータやツールに同じ方法でつながるためのオープンなプロトコルです。あるシステム向けに MCP server を一つ作れば、MCP に対応した AI アプリケーションならどれでも使えます。"}, {"q": "既存システムに API がなくても連携できますか？", "a": "多くの場合はできます。MCP server はデータベース、エクスポートファイル、社内のウェブページを読めます。API がない場合は、最も安定していて元のシステムへの影響が最も小さい読み取り方法をまず検討します。"}, {"q": "AI が私たちのデータを書き換えてしまうことはありませんか？", "a": "既定では読み取り専用の照会のみです。書き込みが必要な操作には、確認の手順と権限を別に設計し、記録を残します。"}, {"q": "データが社外に送られることはありますか？", "a": "選ぶ AI アプリケーションとデプロイの方法によります。MCP server は社内で動かすことができます。設計の段階で、それぞれのデータがどこを通るかを説明し、判断はお客様に委ねます。"}] %}
+{% include "header.html" %}
+<!-- Service page: mcp-integration (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "既存システムと AI の連携", "serviceType": "システム連携", "description": "データが ERP、Excel、共有フォルダ、各部署のシステムに散らばり、AI から見えない。TauX は MCP（Model Context Protocol）で既存システムを AI につなぎます。読み取り専用を基本とし、既存の権限を引き継ぎ、記録を残します。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Connecting legacy systems to AI</span>
+        <span class="display-sub">MCP でデータのサイロをつなぐ</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">データが ERP、Excel、共有フォルダ、各部署のシステムに散らばっていて、AI からは見えません。MCP でそれらをつなぎ、AI が権限の範囲内で直接調べられるようにします。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/what-is-mcp" class="underline underline-offset-4">MCP とは</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">データガバナンス</a></li>
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">TWSE MCP（TauX が公開して保守している MCP server）</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

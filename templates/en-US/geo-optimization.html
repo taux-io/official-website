@@ -1,187 +1,58 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Your site gets little traffic, or people only find it by searching your company name", "Customers have started asking ChatGPT and Perplexity, and you’re not in the answers", "Your site hasn’t been reworked in years, and its structure and content haven’t kept up with how search works now", "You run ads and want to build organic traffic you don’t pay for at the same time"] %}
+{%- set scope = [{"t": "Technical SEO", "d": "Site speed, mobile, indexing status, URL and internal link structure. First we remove whatever stops search engines from reading you."}, {"t": "Content and keywords", "d": "We find the questions your customers actually search for, then plan and rewrite content so each page answers one clear question."}, {"t": "Structured data", "d": "Schema markup, entity identification and knowledge-graph relationships, so a machine doesn’t have to guess from the layout who you are, what you sell and who wrote it."}, {"t": "Chunking and quotability", "d": "Content restructured into pieces a model can lift: consistent structure, clear definitions, each passage able to be cited on its own."}, {"t": "AI crawler access and llms.txt", "d": "We review your access policy for AI crawlers and set up llms.txt, deciding which content is open to models and in what form."}, {"t": "Measurement", "d": "Before work starts we record a baseline: search rankings and traffic, and how often the major generative engines mention and cite you. Then we track the change."}] %}
+{%- set process = [{"t": "Audit and baseline", "d": "Review technical setup, content, structured data and crawler access, and record the numbers before work begins. Without a baseline there’s no way to tell whether later changes helped."}, {"t": "Priority fixes", "d": "Fix the technical problems with the most impact and the most important pages first."}, {"t": "Content and structure", "d": "Rewrite or add content, and add structured data and llms.txt."}, {"t": "Measure and adjust", "d": "Compare against the baseline regularly and decide which content to work on next."}] %}
+{%- set deliverables = ["Site audit report and baseline numbers", "Prioritized fix list", "Structured data and llms.txt", "Content plan and rewrites", "Regular measurement reports"] %}
+{%- set faqs = [{"q": "How is GEO different from SEO?", "a": "SEO aims to rank among the links in search results. GEO aims to be mentioned and cited in the answers of generative engines such as ChatGPT, Perplexity and Google’s AI Overviews. Both rest on the same foundation: clear content, explicit structure, and pages machines can understand."}, {"q": "How long before SEO and GEO show results?", "a": "After technical problems are fixed, search engines usually take a few weeks to reindex; the effect of building content is measured in months. That’s why we record a baseline before starting and compare the numbers."}, {"q": "Can you guarantee rankings or AI citations?", "a": "No. Rankings and citations are decided by search engines and AI companies, and no one can guarantee them. What we can do is make your content easier to understand and trust, and measure the results honestly."}] %}
 {% include "header.html" %}
-
-<!-- Service schema. This page answers a buying intent, so what it declares is a
-     Service with a provider — not an Article. /geo-guide keeps the Article and
-     the informational intent; the two pages take different queries on purpose
-     and are linked to each other rather than competing.
-
-     provider references the organisation declared in the header instead of
-     restating it. -->
+<!-- Service page: geo-optimization (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/en-US/geo-optimization#service",
-            "serviceType": "Generative Engine Optimization",
-            "name": "Generative Engine Optimization",
-            "description": "Optimising a site for how generative engines retrieve and cite: structured data, content chunking, entity declarations, and an audit of whether your pages can be quoted at all.",
-            "provider": {% include "_org-ref.html" %},
-            "areaServed": "TW",
-            "availableChannel": {
-                "@type": "ServiceChannel",
-                "serviceUrl": "https://taux.io/en-US/geo-optimization",
-                "servicePhone": "+886-7-6211033"
-            },
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock",
-                "priceCurrency": "TWD",
-                "priceSpecification": {
-                    "@type": "PriceSpecification",
-                    "priceCurrency": "TWD",
-                    "minPrice": 80000,
-                    "maxPrice": 600000,
-                    "description": "Depends on site size and content volume. The range covers a one-off audit through to a full implementation; ongoing maintenance is quoted separately."
-                }
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "SEO and GEO", "serviceType": "Search engine optimization and generative engine optimization", "description": "SEO and GEO for SMEs: technical SEO, content, structured data, llms.txt and AI crawler policy, with a baseline recorded first and citations tracked after.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <span class="tag mb-4">GEO Service</span>
-            <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
-     because Chinese has no upper case; on an English page the lead IS the
-     content. `heading structure` asks for `display-sub` only from non-Latin
-     locales (decision #56). -->
-    <h1 class="mb-4">
-                <span class="display-lead text-display-sm tablet:text-display-md">Be the Answer</span>
-            </h1>
-            <p class="text-base tablet:text-lg max-w-[42ch] leading-relaxed">
-                Search is moving from ten blue links to one answer. This is the work of being in that answer.
-            </p>
-        </header>
-
-<!-- What the work is -->
-        <section>
-            {% call cover(flush=true) %}
-                <span class="display-lead text-display-sm">What We Do</span>
-            {% endcall %}
-            <p class="text-lg leading-relaxed mb-6 max-w-[42ch]">
-                GEO is not SEO under a new name. It asks a different question: when a language model goes to answer someone, can your content be retrieved, understood, and quoted without the model having to guess?
-            </p>
-            <div class="space-y-6 mt-8">
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">Structured data</h3>
-                    <p class="text-sm leading-relaxed">
-                        Schema markup, entity identification, knowledge-graph relationships. So a machine does not have to infer who you are, what you sell and who wrote it from the layout.
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">Chunking and quotability</h3>
-                    <p class="text-sm leading-relaxed">
-                        Content restructured into pieces a model can lift: consistent shape, explicit definitions, each passage able to stand on its own when quoted out of context.
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">Crawler access and llms.txt</h3>
-                    <p class="text-sm leading-relaxed">
-                        An audit of what AI crawlers can reach, and an llms.txt that states which content is open to models and on what terms.
-                    </p>
-                </div>
-                <div class="border-t border-line pt-6">
-                    <h3 class="mb-3">Measuring citations</h3>
-                    <p class="text-sm leading-relaxed">
-                        A baseline and then tracking against it: how often the major engines mention and cite you, and whether that is moving.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- How it runs -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm">How the Work Runs</span>
-            {% endcall %}
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    1</div>
-                <div>
-                    <h3 class="mb-3">Audit</h3>
-                    <p class="leading-relaxed">
-                        Structured data, content structure, crawler access and entity declarations — plus a quotability baseline recorded before anything is touched. Without a baseline there is no way to tell afterwards whether the work did anything.
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    2</div>
-                <div>
-                    <h3 class="mb-3">Implementation</h3>
-                    <p class="leading-relaxed">
-                        Entity declarations and structured data corrected, content re-chunked, llms.txt written. Shipped as one change, so the effect can be attributed to it.
-                    </p>
-                </div>
-            </div>
-
-            <div class="border-line ps-5 py-2 border-s border-line flex items-start">
-                <div class="w-12 h-12 flex items-center justify-center text-xl font-semibold flex-shrink-0 me-6">
-                    3</div>
-                <div>
-                    <h3 class="mb-3">Measurement</h3>
-                    <p class="leading-relaxed">
-                        After six to eight weeks, measured against the baseline — the actual change, not a claim about it. With automated checks so what was fixed does not quietly rot at the next redesign.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-<!-- Deliverables and price -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm">What You Get</span>
-            {% endcall %}
-            <ul class="space-y-4 max-w-[46ch]">
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">01</span><span>Audit report, with a concrete list of problems in priority order</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">02</span><span>Structured data and entity declarations, implemented — we do the work, not just advise on it</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">03</span><span>llms.txt and an AI crawler access policy</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">04</span><span>Automated checks wired into your CI so they keep running</span></li>
-                <li class="flex gap-4 border-t border-line pt-4"><span class="font-sans shrink-0">05</span><span>The baseline, and the comparison report six to eight weeks on</span></li>
-            </ul>
-        </section>
-
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm">What It Costs</span>
-            {% endcall %}
-            <div class="border-t border-line pt-6 max-w-[46ch]">
-                <p class="font-sans text-xl tabular-nums mb-4">NT$ 80,000 – 600,000</p>
-                <p class="leading-relaxed">
-                    The range depends on site size, content volume and the state of what is already there. A one-off audit sits at the bottom; a full engagement with implementation and measurement sits above the middle. Ongoing maintenance is quoted separately.
-                </p>
-                <p class="leading-relaxed mt-4">
-                    Talk to us first and you get a number derived from actual scope, rather than a number with the scope bent to fit it.
-                </p>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section>
-            {% call cover() %}
-                <span class="display-lead text-display-sm">Ready to Start</span>
-            {% endcall %}
-            <p class="mb-6 max-w-[42ch] text-lg">
-                Send us your URL. We will do a free first pass and tell you the three things most worth fixing.
-            </p>
-            <a href="mailto:hello@taux.io" class="btn">Book a GEO consultation</a>
-        </section>
-
-        <section>
-            <p>
-                Still working out what GEO is? Start with the
-                <a href="/{{ locale }}/geo-guide" class="underline">GEO guide</a>
-                — it walks through doing this yourself.
-            </p>
-        </section>
-
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Search optimisation</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Search is moving from “here are ten links” to “here is the answer.” SEO puts you in the links. GEO puts you in the answer.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/geo-guide" class="underline underline-offset-4">GEO Guide</a></li>
+        <li><a href="/{{ locale }}/what-is-llms-txt" class="underline underline-offset-4">LLMs.txt Explained</a></li>
+        <li><a href="/{{ locale }}/digital-advertising" class="underline underline-offset-4">Digital advertising</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

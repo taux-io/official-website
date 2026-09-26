@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["ログがファイアウォール、エンドポイント、クラウドサービスに散らばり、インシデントのときに調べられない", "セキュリティ監視を始めたいが、大きなセキュリティ運用チームはない", "Google SecOps をすでに採用している、または検討している", "検知ルールの誤検知が多く、アラートを誰も処理していない"] %}
+{%- set scope = [{"t": "現状評価", "d": "ログソース、保存の要件、そして最も検知したい脅威のシナリオを洗い出します。"}, {"t": "ログの取り込みと正規化", "d": "各ソースのログをプラットフォームに取り込み、UDM（統合データモデル）に変換して、項目の対応が正しいかを確かめます。"}, {"t": "検知ルール", "d": "リスクに応じて検知ルールを作成・調整し、誤検知を段階的に減らします。"}, {"t": "アラート対応の流れ", "d": "誰がアラートを受け取り、どう判断し、どう対応するか、そしてダッシュボードで何を見るかを定義します。"}, {"t": "引き継ぎとトレーニング", "d": "操作マニュアルと運用トレーニングで、チームが自分たちでルールを調整し、インシデントに対応できるようにします。"}] %}
+{%- set process = [{"t": "評価", "d": "ログソース、優先順位、検知したいシナリオを確かめます。"}, {"t": "取り込み", "d": "優先順位に沿ってログを取り込み、正規化を済ませます。"}, {"t": "検知と調整", "d": "検知ルールを稼働させ、実際のアラートを見て調整します。"}, {"t": "引き継ぎ", "d": "対応の流れの文書、操作マニュアル、トレーニングをお渡しします。"}] %}
+{%- set deliverables = ["現状評価レポート", "ログソースの一覧と項目対応の文書", "検知ルールとテストの記録", "アラート対応の流れ", "操作マニュアルとトレーニング"] %}
+{%- set faqs = [{"q": "Google SecOps とは何ですか？", "a": "Google Security Operations は Google Cloud のセキュリティ運用プラットフォームで、ログの収集と分析（SIEM）と、自動化された対応（SOAR）を一つにまとめています。このサービスでは、導入、設定、引き継ぎを支援します。"}, {"q": "中小企業に SIEM は必要ですか？", "a": "必ずしも必要ではありません。まずログの量、法規制の要件、人員を評価します。今の段階ではもっと軽いやり方が合っているなら、そうはっきりお伝えします。"}, {"q": "導入後は誰が監視しますか？", "a": "お客様のチームが引き継ぐことができ、私たちは操作マニュアルとトレーニングを提供します。継続的な運用支援について別途ご相談いただくこともできます。"}] %}
+{% include "header.html" %}
+<!-- Service page: google-secops (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google SecOps の導入", "serviceType": "セキュリティ運用の導入", "description": "TauX は中小企業の Google Security Operations（Google SecOps）導入を支援します。ログソースの評価、取り込みと UDM への正規化、検知ルールの作成と調整、アラート対応の流れづくりを行い、チームの運用へ引き継ぎます。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google SecOps deployment</span>
+        <span class="display-sub">ログの取り込み、検知ルール、運用の引き継ぎ</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Google Security Operations を導入します。散らばったログを取り込んで正規化し、検知ルールを整え、引き継いだチームが自分たちで運用できるようにします。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/threat-landscape" class="underline underline-offset-4">世界の脅威情勢を読む</a></li>
+        <li><a href="/{{ locale }}/pqc-migration" class="underline underline-offset-4">PQC ポスト量子暗号への移行</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

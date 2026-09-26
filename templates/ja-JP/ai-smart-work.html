@@ -1,156 +1,58 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["社員は AI を使えるが、返ってくる答えがありきたりで、大きく手直しが必要なことが多い", "一人ひとりが手探りで、会社として共通の使い方がない", "文章を書かせるだけでなく、分析や意思決定も AI に手伝わせたい", "社内文書が大量にあり、それに基づいて AI に答えさせたい"] %}
+{%- set scope = [{"t": "構造化したプロンプト", "d": "役割、タスク、背景、形式の四つの要素で明確な指示を書き、出力が予測できるようにします。"}, {"t": "推論と意思決定", "d": "AI に段階を追って推論させ（Chain of Thought）、内容を生成させるだけでなく、選択肢の比較や見落としの発見を手伝わせます。"}, {"t": "ナレッジベース", "d": "NotebookLM で会社の文書を、対話でき、出典を示してくれるナレッジベースにまとめます。"}, {"t": "専用アシスタント（Gem）", "d": "部署でよく使う問い方を、繰り返し使える Gemini のアシスタントにまとめ、チーム全体で同じやり方を使えるようにします。"}, {"t": "利用ルール", "d": "どのデータを AI に渡してよいか、出力をどう確かめるか。"}] %}
+{%- set process = [{"t": "ヒアリング", "d": "部署の業務と、社員が今 AI をどう使っているかを把握します。"}, {"t": "講座の企画", "d": "皆さんの実際の業務の場面で演習を組み立てます。"}, {"t": "講義と実習", "d": "どの単元にも実習があり、持ち帰って使える成果を講座の中で作ります。"}, {"t": "受講後のフォロー", "d": "よくある質問をまとめ、必要に応じて応用講座を組みます。"}] %}
+{%- set deliverables = ["講座の企画", "テキストとプロンプトのテンプレート", "講座内の実習の成果（たとえば部署専用のアシスタント）", "受講後アンケートとフィードバックのまとめ"] %}
+{%- set faqs = [{"q": "AI をまったく使ったことのない社員でも受講できますか？", "a": "できます。社員の習熟度に合わせてグループを分け、基本操作から始めて、構造化した問い方へ進みます。"}, {"q": "講座ではどの AI ツールを使いますか？", "a": "Google の Gemini と NotebookLM が中心です。方法そのものは他の AI ツールにも使えるので、事前に会社で使っているツールに合わせて調整します。"}, {"q": "受講すると何を持ち帰れますか？", "a": "どの単元にも実習があります。講座が終わるとき、社員はプロンプトのテンプレートと、講座の中で作った部署専用のアシスタントを持ち帰ります。"}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: ai-smart-work (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/ja-JP/ai-smart-work#service",
-            "serviceType": "AI Corporate Training",
-            "provider": {% include "_org-ref.html" %},
-            "name": "企業向け AI 実務研修",
-            "description": "自社専用の AI アシスタント（Gem）をつくり、プロンプト設計と CoT 推論を使いこなせるようにする研修です。",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "生成 AI 実務講座", "serviceType": "研修", "description": "TauX は企業向けに生成 AI の社内研修を企画します。構造化したプロンプトの書き方、AI に推論と意思決定を手伝わせる方法、NotebookLM でのナレッジベースづくり、そして一組の問い方を繰り返し使える専用アシスタント（Gem）にまとめる方法です。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <div>
-<span class="tag mb-2">AI Corporate Training</span>
-
-                <h1 class="mb-2">
-            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">From Generating to Deciding</span>
-            <span class="display-sub">95% の人は AI に文章を書かせている。5% の人は AI と判断している</span>
-        </h1>
-
-                <p class="text-base tablet:text-lg leading-relaxed max-w-prose mb-3">
-                    このページで扱うのは問い方と、ひとまとまりの問い方を繰り返し使えるアシスタント（Gem）として固める方法です。社内研修でやっているのは、そのことです。
-                </p>
-
-                <a href="mailto:hello@taux.io" class="btn">
-                    研修の相談を予約する
-                </a>
-            </div>
-
-        </header>
-
-<!-- Problem Section -->
-<section>
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Why the Answers Are Average</span>
-            <span class="display-sub">なぜ AI の答えは、いつも当たりさわりがないのか</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-                <h3 class="mb-4">Garbage In, Garbage Out</h3>
-                <p class="leading-relaxed">指示があいまいなら、答えもあいまいになります。求めるものを正確に書けなければ、返ってくるのは一般論だけです。</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">話し方が合っていない</h3>
-                <p class="leading-relaxed">検索窓に打ち込むように話していませんか。AI に要るのは雑談ではなく、構造をもった書き方です。</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">役割を与えていない</h3>
-                <p class="leading-relaxed">ペルソナのない AI は、視点を持たない機械です。役割を渡してはじめて、立場を変えて考えられます。</p>
-            </div>
-        </div>
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Generative AI in practice</span>
+        <span class="display-sub">企業内研修：問い方、推論、専用アシスタント</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">同じ質問でも、問い方で答えの使いやすさは大きく変わります。この講座では問い方と、それを繰り返し使えるアシスタント（Gem）にまとめる方法を教えます。</p>
 </section>
-
-<!-- Methodology -->
-<section id="methodology">
-        <div class="mb-8">
-            <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
-                Methodology</span>
-            {% call cover() %}
-                <span class="display-lead text-display-sm" lang="en">The Craft of Asking</span>
-                <span class="display-sub">AI に伝わる書き方を身につける</span>
-            {% endcall %}
-        </div>
-
-        <div class="space-y-6">
-            <!-- Method 1 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">PTCF で組み立てるプロンプト</h3>
-                <p class="mb-6">役割（Persona）、課題（Task）、背景（Context）、形式（Format）。この四つで出力を思いどおりに制御します。</p>
-            </div>
-
-            <!-- Method 2 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">深く考えさせる（CoT）</h3>
-                <p class="mb-6">思考の連鎖（Chain of Thought）を使い、込み入った判断や筋道の検討まで AI に付き合わせます。</p>
-            </div>
-
-            <!-- Method 3 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">社内知識の活用（RAG）</h3>
-                <p class="mb-6">NotebookLM で専用の頭脳をつくります。千ページの資料を、話しかけられる資産に変えます。</p>
-            </div>
-        </div>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
 </section>
-
-<!-- Use Cases -->
-<section id="cases">
-        {% call cover() %}
-            <span class="display-lead text-display-sm" lang="en">Many Roles, One Assistant</span>
-            <span class="display-sub">AI を、役割ごとの分身にする</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-<h3 class="mb-2">注文を正確に取る</h3>
-                <p class="text-sm mb-4 font-semibold">使いどころ：カスタマーサポート、受注処理</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    「話し言葉の要望を、そのまま決まった形式の表に落とす。熟練した店員のように取りこぼさない。」
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">会議を先に回す</h3>
-                <p class="text-sm mb-4 font-semibold">使いどころ：プロジェクト管理、リスク評価</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    「PM、現場監督、品質管理の三者に議論させ、案件のリスクを互いに問い詰めさせる。」
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">プレスリリースの自動作成</h3>
-                <p class="text-sm mb-4 font-semibold">使いどころ：広報、行政文書</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    「根拠となる規程と事実を渡せば、行政の文体と形式に沿った原稿が出てくる。」
-                </p>
-            </div>
-        </div>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
 </section>
-
-<!-- CTA -->
-<section>
-        <div class="relative overflow-hidden">
-            <div class="relative z-10">
-                {% call cover() %}
-                    <span class="display-lead text-display-sm" lang="en">Ask Well, Think Better</span>
-                    <span class="display-sub">問い方がわかれば答えが返る。考え方がわかれば助けになる</span>
-                {% endcall %}
-                <p class="text-lg mb-6 max-w-prose mx-auto">同じ質問でも、問い方を変えるだけで答えの使える度合いは大きく変わります。それをチームの共通のやり方にするのは、また別の話です——ご相談ください。</p>
-                <a href="mailto:hello@taux.io" class="btn">
-                    相談をはじめる
-                </a>
-            </div>
-        </div>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
 </section>
-
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">プロンプトの手引き</a></li>
+        <li><a href="/{{ locale }}/google-workspace-training" class="underline underline-offset-4">Google Workspace 研修</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

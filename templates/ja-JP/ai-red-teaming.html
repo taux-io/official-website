@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["公開済み、または公開予定の AI カスタマーサポート、チャットボット、社内 AI アシスタントがある", "AI アプリケーションが社内データとつながっている、あるいはメール送信や発注などの操作を実行できる", "顧客、監査、監督官庁に対して AI のセキュリティ対策を説明する必要がある", "モデルや機能を更新したあと、もとの防御がまだ効いているかわからない"] %}
+{%- set scope = [{"t": "範囲の確定", "d": "アプリケーションの構成、AI がアクセスできるデータとツール、利用者ごとの権限を明らかにします。"}, {"t": "プロンプトインジェクションのテスト", "d": "直接インジェクションと間接インジェクション（文書、ウェブページ、メールに仕込まれた指示）で、AI のふるまいが変えられてしまうかを確かめます。"}, {"t": "データ漏えいと権限外の操作", "d": "システムプロンプトや機微なデータを引き出されないか、AI が誘導されて権限を超える操作をしないかを確かめます。"}, {"t": "出力の扱い", "d": "AI の出力を別のシステムが使うとき、インジェクションや誤った実行につながらないかを確かめます。"}, {"t": "レポートと再テスト", "d": "発見ごとに深刻度、再現手順、修正の提案を添えます。修正後に再テストします。"}] %}
+{%- set process = [{"t": "範囲とルール", "d": "テストの範囲、環境、時間帯、停止条件を取り決めます。"}, {"t": "テスト", "d": "OWASP LLM Top 10 に沿って一項目ずつテストし、試行をすべて記録します。"}, {"t": "レポート", "d": "発見、影響、修正の提案を説明し、開発チームと一項目ずつ話し合います。"}, {"t": "再テスト", "d": "修正後にもう一度テストし、問題が解消したことを確かめます。"}] %}
+{%- set deliverables = ["テストの範囲と方法の説明", "発見の一覧（深刻度、再現手順、修正の提案）", "再テストのレポート"] %}
+{%- set faqs = [{"q": "AI レッドチーミングとは何ですか？", "a": "攻撃者になりきって、AI アプリケーションにすべきでないことをさせようと試みます。データを漏らす、もとの指示を無視する、権限を超える操作をする、といったことです。本物の攻撃者より先に問題を見つけるのが目的です。"}, {"q": "AI レッドチーミングと通常のペネトレーションテストは何が違いますか？", "a": "通常のペネトレーションテストは、ネットワーク、サーバー、ウェブの弱点を対象にします。AI レッドチーミングは、テキストの内容でモデルのふるまいを変えるプロンプトインジェクションなど、言語モデル特有のリスクを対象にします。両者は補い合う関係です。"}, {"q": "テストは本番環境に影響しますか？", "a": "テスト環境で行うことをおすすめします。本番環境でテストする必要がある場合は、範囲、時間帯、停止条件を事前に取り決めます。"}, {"q": "修正すれば安全になりますか？", "a": "プロンプトインジェクションには、今のところ一度で根本的に解決する方法はありません。大切なのは、リスクを下げ、AI が使える権限とデータを絞ることです。モデルや機能を更新したあとは、あらためてテストすることをおすすめします。"}] %}
+{% include "header.html" %}
+<!-- Service page: ai-red-teaming (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI レッドチーミング", "serviceType": "セキュリティテスト", "description": "TauX は AI カスタマーサポート、社内 AI アシスタント、AI エージェントに対してレッドチーミングを行います。プロンプトインジェクション、データ漏えい、権限外の操作など LLM 特有のリスクを OWASP LLM Top 10 に沿って一項目ずつテストし、再現手順と修正の提案をお渡しします。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_security }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI red teaming</span>
+        <span class="display-sub">OWASP LLM Top 10 に沿って AI アプリケーションをテスト</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">本番公開の前に、攻撃者のやり方で AI アプリケーションをテストします。プロンプトインジェクション、データ漏えい、権限外の操作を、OWASP LLM Top 10 に沿って一項目ずつ確認します。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="/{{ locale }}/what-is-prompt-injection" class="underline underline-offset-4">プロンプトインジェクションとは</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

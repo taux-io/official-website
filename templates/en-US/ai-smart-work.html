@@ -1,155 +1,57 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Staff use AI, but the answers are often generic and need heavy editing", "Everyone is figuring it out alone, and the company has no shared way of using it", "You want AI to help with analysis and decisions, not just write copy", "You have a lot of internal documents and want AI to answer based on them"] %}
+{%- set scope = [{"t": "Structured prompts", "d": "Writing clear instructions with four elements, role, task, context and format, so the output is predictable."}, {"t": "Reasoning and decisions", "d": "Guiding AI to reason step by step (chain of thought) to compare options and spot blind spots, not just generate content."}, {"t": "Knowledge base", "d": "Using NotebookLM to turn company documents into a knowledge base you can talk to, with sources cited."}, {"t": "Custom assistants (Gems)", "d": "Turning a department’s common prompts into a reusable Gemini assistant, so the whole team works the same way."}, {"t": "Usage policy", "d": "Which data can be given to AI, and how to check its output."}] %}
+{%- set process = [{"t": "Needs interview", "d": "Learn what the department does and how staff use AI today."}, {"t": "Course planning", "d": "Design exercises around your actual work."}, {"t": "Teaching and practice", "d": "Every module includes hands-on work, and staff leave class with something they can use."}, {"t": "Follow-up", "d": "Collect common questions and arrange an advanced course if needed."}] %}
+{%- set deliverables = ["Course plan", "Handouts and prompt templates", "In-class results (such as a department assistant)", "Post-course survey and feedback summary"] %}
+{%- set faqs = [{"q": "Can staff who have never used AI take the course?", "a": "Yes. We group staff by level and start from the basics before moving to structured prompting."}, {"q": "Which AI tools does the course use?", "a": "Mainly Google’s Gemini and NotebookLM. The methods apply to other AI tools too, and we adjust to the tools your company uses before the course."}, {"q": "What do we take away from the course?", "a": "Every module includes hands-on work. By the end, staff leave with prompt templates and the department assistant they built in class."}] %}
 {% include "header.html" %}
-
-<!-- Service Schema -->
+<!-- Service page: ai-smart-work (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {{ breadcrumb }},
-        {
-            "@type": "Service",
-            "@id": "https://taux.io/en-US/ai-smart-work#service",
-            "serviceType": "AI Corporate Training",
-            "provider": {% include "_org-ref.html" %},
-            "name": "AI Training for Teams",
-            "description": "In-house AI training: build your own assistants, and learn the prompt structures and reasoning techniques that make them reliable rather than impressive.",
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock"
-            }
-        }
-    ]
-}
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Generative AI in practice", "serviceType": "Training", "description": "In-house generative AI training: structured prompting, AI-assisted reasoning, a NotebookLM knowledge base, and turning a set of prompts into a reusable Gem.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
 </script>
-
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
-    <header class="band">
-            <div>
-<span class="tag mb-2">AI Corporate Training</span>
-
-                <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
-     because Chinese has no upper case; on an English page the lead IS the
-     content. `heading structure` asks for `display-sub` only from non-Latin
-     locales (decision #56). -->
-    <h1 class="mb-2">
-            <span class="display-lead text-display-sm tablet:text-display-md">From Generating to Deciding</span>
-        </h1>
-
-                <p class="text-base tablet:text-lg leading-relaxed max-w-prose mb-3">
-                    Most teams stop at "we tried ChatGPT". We train yours to build assistants that hold a role, follow a structure, and produce work you can hand on without rewriting it.
-                </p>
-
-                <a href="mailto:hello@taux.io" class="btn">
-                    Book a training consultation
-                </a>
-            </div>
-
-        </header>
-
-<!-- Problem Section -->
-<section>
-        {% call cover() %}
-            <span class="display-lead text-display-sm">Why the Answers Are Average</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-                <h3 class="mb-4">Garbage In, Garbage Out</h3>
-                <p class="leading-relaxed">A vague instruction gets a vague answer. If you cannot state precisely what you need, the model will give you something that sounds right and says nothing.</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">Talking to it like a search box</h3>
-                <p class="leading-relaxed">Keywords worked on Google. A model needs structure — a role, a task, the context, the shape of the output.</p>
-            </div>
-
-            <div class="space-y-2">
-                <h3 class="mb-4">No role assigned</h3>
-                <p class="leading-relaxed">Without a persona the model answers as nobody in particular. Give it a role and it can take a position, and change it when you ask.</p>
-            </div>
-        </div>
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Generative AI in practice</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Ask the same question a different way and the answer can be far more useful. This course teaches how to ask, and how to turn a set of prompts into a reusable assistant (a Gem).</p>
 </section>
-
-<!-- Methodology -->
-<section id="methodology">
-        <div class="mb-8">
-            <span class="font-semibold tracking-wider uppercase text-sm mb-2 block">Our
-                Methodology</span>
-            {% call cover() %}
-                <span class="display-lead text-display-sm">The Craft of Asking</span>
-            {% endcall %}
-        </div>
-
-        <div class="space-y-6">
-            <!-- Method 1 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">The PTCF prompt structure</h3>
-                <p class="mb-6">Persona, Task, Context, Format. Four slots that turn "write me something about X" into an instruction with only one reasonable reading.</p>
-            </div>
-
-            <!-- Method 2 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">Chain-of-thought reasoning</h3>
-                <p class="mb-6">Make the model show its working. For decisions with several moving parts, the reasoning is the part you need to check — not the conclusion.</p>
-            </div>
-
-            <!-- Method 3 -->
-            <div class="space-y-2">
-                <h3 class="mb-4">Knowledge bases and RAG</h3>
-                <p class="mb-6">Turn a thousand pages of internal documents into something you can ask questions of, with answers that cite the page they came from.</p>
-            </div>
-        </div>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
 </section>
-
-<!-- Use Cases -->
-<section id="cases">
-        {% call cover() %}
-            <span class="display-lead text-display-sm">Many Roles, One Assistant</span>
-        {% endcall %}
-
-        <div class="space-y-6">
-            <div class="space-y-2">
-<h3 class="mb-2">Structured intake</h3>
-                <p class="text-sm mb-4 font-semibold">Used in: customer service, order handling</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "Turn how a customer actually talks into a clean, structured record — the way a good order-taker does it."
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">Simulated review meeting</h3>
-                <p class="text-sm mb-4 font-semibold">Used in: project management, risk assessment</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "Have the model argue a project risk as the PM, the site manager and the QA lead in turn, and cross-examine each."
-                </p>
-            </div>
-
-            <div class="space-y-2">
-<h3 class="mb-2">Drafting to a house style</h3>
-                <p class="text-sm mb-4 font-semibold">Used in: PR, public-sector documents</p>
-                <p class="text-sm p-4 border-s-2 border-line">
-                    "Give it the regulation and the facts; get back a release in the format the recipient expects."
-                </p>
-            </div>
-        </div>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
 </section>
-
-<!-- CTA -->
-<section>
-        <div class="relative overflow-hidden">
-            <div class="relative z-10">
-                {% call cover() %}
-                    <span class="display-lead text-display-sm">Ask Well, Think Better</span>
-                {% endcall %}
-                <p class="text-lg mb-6 max-w-prose mx-auto">The gap is not access to AI — everyone has that. It is knowing how to instruct it. That part is teachable.</p>
-                <a href="mailto:hello@taux.io" class="btn">
-                    Start a conversation
-                </a>
-            </div>
-        </div>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
 </section>
-
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">Prompting Guide</a></li>
+        <li><a href="/{{ locale }}/google-workspace-training" class="underline underline-offset-4">Google Workspace training</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
 </div>
 
 {% include "footer.html" %}

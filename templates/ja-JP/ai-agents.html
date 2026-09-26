@@ -1,0 +1,60 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["流れは決まっているが手順が多い業務がある。たとえば見積もりの整理、受注の照合、レポートの集計", "チャットボットは試したが、必要なのは答えるだけでなく実際に作業してくれること", "複数のシステムの間でコピーと貼り付けを行き来する作業がある", "まず一つの業務フローで試し、うまくいくと確認してから広げたい"] %}
+{%- set scope = [{"t": "業務フローの分析", "d": "今の業務フローを一つずつの手順に分解し、人の判断が必要で AI に任せられない箇所を見つけます。"}, {"t": "エージェントの設計", "d": "役割、使えるツール、停止条件、そしてどんな場合に人へ戻すかを定義します。"}, {"t": "開発とツール連携", "d": "Claude や Gemini などのモデルで実装し、ツールは MCP で提供します。あとでモデルを替えるときも、連携部分を書き直す必要はありません。"}, {"t": "テストと評価", "d": "実際の事例で正答率をテストし、わかっている失敗のパターンとその対処を一覧にします。"}, {"t": "本番運用と監視", "d": "すべての操作を記録し、異常があれば担当者に通知し、定期的に効果を見直します。"}] %}
+{%- set process = [{"t": "業務フローの分析", "d": "一つの業務フローを選び、今どう進めているか、どれだけ時間がかかるか、どこで間違いが起きやすいかを記録します。"}, {"t": "設計と仕様", "d": "エージェントが何をするか、何をしないか、いつ止まるかを書き出します。"}, {"t": "開発とテスト", "d": "実装し、実際の事例でくり返しテストします。"}, {"t": "試行と本番運用", "d": "まず少数の社員に使ってもらい、確認できたら本番運用に移し、監視の方法をお渡しします。"}] %}
+{%- set deliverables = ["業務フローの分析とエージェントの設計文書", "エージェントのプログラム、プロンプト、ツール設定", "テストケースと評価結果", "本番運用、ログ、異常通知の設定", "保守の文書"] %}
+{%- set faqs = [{"q": "AI エージェントとチャットボットは何が違いますか？", "a": "チャットボットは質問に答えます。AI エージェントは手順に沿って作業を実行します。たとえばデータを調べ、システムを呼び出し、文書を作成し、人の判断が必要な所で止まります。"}, {"q": "AI エージェントが間違えたらどうなりますか？", "a": "どの手順を必ず人が確認するかを設計の段階で決め、すべての操作を記録します。本番運用の前に実際の事例でテストし、わかっている失敗のパターンと対処方法を一覧にします。"}, {"q": "特定の AI 企業のモデルに縛られますか？", "a": "縛られません。タスク、コスト、データに関する規定に応じてモデルを選びます。ツールは MCP で提供するので、あとでモデルを替えるときも連携部分を書き直す必要はありません。"}] %}
+{% include "header.html" %}
+<!-- Service page: ai-agents (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI エージェント開発", "serviceType": "AI エージェント開発", "description": "TauX は中小企業向けに AI エージェントを開発します。ルールが明確で手順が繰り返される業務フローを、ツールを呼び出し、手順どおりに実行し、人の判断が必要な所で止まり、記録を残す AI に任せます。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI agent development</span>
+        <span class="display-sub">繰り返しの業務フローを、実行する AI に任せる</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">繰り返し発生する業務フローを、ツールを呼び出し、手順どおりに実行し、記録を残す AI エージェントに任せます。人の判断が必要な所では止まります。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/agent-dev-workflow" class="underline underline-offset-4">AI Agent 開発ワークフロー実践</a></li>
+        <li><a href="/{{ locale }}/claude-skills-guide" class="underline underline-offset-4">Claude Skills 実践ガイド</a></li>
+        <li><a href="/{{ locale }}/adk-skill-patterns" class="underline underline-offset-4">ADK Skill Patterns</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">プロンプトの手引き</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

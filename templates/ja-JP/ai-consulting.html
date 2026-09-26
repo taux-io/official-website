@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["社員がそれぞれ ChatGPT のようなツールを使っているが、会社として共通のやり方やルールがない", "AI を導入したいが、どの部署のどの業務から始めればよいかわからない", "AI ツールを一つ二つ試したが、実際にどれだけ時間が減ったのか説明できない", "会社のデータを AI に渡すリスクが心配で、先にルールをはっきりさせたい"] %}
+{%- set scope = [{"t": "現状の棚卸し", "d": "各部署にヒアリングし、繰り返しが多く、ルールが明確で、データを取り出せる業務と、それぞれに今どれだけ時間がかかっているかを一覧にします。"}, {"t": "ユースケースの評価と優先順位づけ", "d": "効果、リスク、データの準備状況で順位をつけ、最初に取り組む項目を選びます。やらない項目には、その理由も書き残します。"}, {"t": "ツールと構成の提案", "d": "まず、すでに費用を払っているツール（たとえば Google Workspace や Microsoft 365）に組み込まれた AI でできるかを確かめます。できない部分についてのみ、開発や購入を提案します。"}, {"t": "PoC と導入", "d": "一つの部署の一つの業務で先に試し、実現できると確認してから広げます。会社全体を一度に変えることは避けます。"}, {"t": "効果測定", "d": "導入前に基準値（処理件数、処理時間、手戻り率）を取り、導入後も同じ物差しで測ります。社員の自己評価と客観的な数字は分けて記録します。"}, {"t": "利用ルール", "d": "どのデータを AI に渡してよいか、どのプランを使うか、出力を誰が確認するかを、社員が読んでわかるルールにまとめます。"}] %}
+{%- set process = [{"t": "棚卸しとヒアリング", "d": "今の業務の流れ、ツール、データを把握し、AI で処理できる業務の一覧を作ります。"}, {"t": "テーマ選定と基準値", "d": "優先順位を決め、最初の項目について測定指標を設定し、導入前の数字を取ります。"}, {"t": "PoC と導入", "d": "実装と調整を行い、実際に使う社員へのトレーニングを行います。"}, {"t": "測定と次の一手", "d": "同じ指標で導入前後を比べ、拡大するか、調整するか、やめるかを決めます。"}] %}
+{%- set deliverables = ["現状の棚卸しレポートと、AI で処理できる業務の一覧", "ユースケースの優先順位と評価の根拠", "PoC の成果と実現可能性の評価", "AI 利用ルール", "導入前後の効果測定レポート"] %}
+{%- set faqs = [{"q": "規模の小さい会社でも、AI 導入のコンサルティングは必要ですか？", "a": "規模が小さいほうがかえって始めやすいです。業務の流れが短く、決定も速いからです。まず最も時間のかかっている繰り返し業務を一つ二つ見つけ、そこから始めます。会社全体を一度に変えることはしません。"}, {"q": "AI を導入するには、新しいソフトウェアを買う必要がありますか？", "a": "必ずしも必要ありません。多くの用途は、すでに費用を払っているツールでまかなえます。たとえば Google Workspace や Microsoft 365 に組み込まれた AI です。今のツールでできない場合にのみ、別途の開発や購入を提案します。"}, {"q": "AI の導入が効いたかどうかは、どうやって判断しますか？", "a": "導入前に基準値を取ります。処理件数、処理時間、手戻り率など、客観的に数えられる指標を選びます。導入後も同じ物差しで測り、社員の自己評価と客観的な数字は分けて記録します。"}, {"q": "会社のデータを AI に渡しても安全ですか？", "a": "これは導入前に決めておくべきルールです。どのデータを使ってよいか、どのプランと契約条件を選ぶか、出力を誰が確認するかを決めるお手伝いをします。"}] %}
+{% include "header.html" %}
+<!-- Service page: ai-consulting (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "AI 導入コンサルティング", "serviceType": "AI 導入コンサルティング", "description": "TauX は中小企業向けに AI 導入のコンサルティングと技術導入を行います。AI に任せる価値のある業務を洗い出し、優先順位を決めて PoC を行います。導入前に基準値を取り、導入後も同じ物差しで効果を検証します。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">AI adoption consulting</span>
+        <span class="display-sub">企業の AI 導入コンサルティング</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">まず AI に任せる価値のある業務を見つけ、それからやり方を決めます。導入前に基準値を取っておけば、導入後に効いたかどうかを言えます。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI の導入効果</a></li>
+        <li><a href="/{{ locale }}/agent-prompting-guide" class="underline underline-offset-4">プロンプトの手引き</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">データガバナンス</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

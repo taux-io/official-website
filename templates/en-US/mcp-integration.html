@@ -1,0 +1,59 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["You run legacy systems such as ERP, inventory software or an in-house database, and data lives in several places", "You want staff to query internal data in plain language instead of asking IT for a report every time", "You already use an AI assistant, but it only sees what someone pastes in by hand", "Your legacy system has no API, or no one remembers how it works"] %}
+{%- set scope = [{"t": "Mapping data silos", "d": "We list where each system and dataset lives, who owns it, how it is accessed (API, database, files), and which data can be opened to AI."}, {"t": "Integration architecture", "d": "We decide which data is served through an MCP server, which AI application uses it, and how it connects: running locally or served over HTTP."}, {"t": "MCP server development", "d": "We build MCP servers for your legacy systems that provide query tools and data resources. They are read-only by default; any action that writes data gets its own confirmation step."}, {"t": "Permissions and audit", "d": "Existing accounts and permissions carry over, and every query is logged, so you can see who asked what through AI."}, {"t": "Security testing", "d": "We test the integration against LLM-specific risks such as prompt injection, to confirm the AI can’t be led by the data it reads into doing what it shouldn’t."}] %}
+{%- set process = [{"t": "Map", "d": "List data sources and how they’re accessed, and pick the first system to connect."}, {"t": "Design", "d": "Define the queries and data to expose, the permissions, and how activity is logged."}, {"t": "Build and trial", "d": "Finish the MCP server for the first data source and have a small group of staff use it and give feedback."}, {"t": "Expand and hand over", "d": "Connect the next system based on how it’s used, and deliver documentation and a maintenance plan."}] %}
+{%- set deliverables = ["Data source inventory and integration architecture document", "MCP server source code and deployment guide", "Permission and audit log configuration", "Security test report", "Operations and maintenance documentation"] %}
+{%- set faqs = [{"q": "What is MCP?", "a": "The Model Context Protocol, an open protocol that lets AI applications connect to outside data and tools in one standard way. Once a system has an MCP server, any AI application that supports MCP can use it."}, {"q": "Our legacy system has no API. Can it still be connected?", "a": "Usually, yes. An MCP server can read from a database, exported files or internal web pages. Without an API, we first work out the most stable way to read the data with the least impact on the original system."}, {"q": "Could the AI change our data?", "a": "By default it only runs read-only queries. Any action that writes data gets its own confirmation step and permissions, and is logged."}, {"q": "Will our data leave the company?", "a": "That depends on the AI application you choose and how it’s deployed. The MCP server can run inside your company; during design we show where each piece of data goes, and you decide."}] %}
+{% include "header.html" %}
+<!-- Service page: mcp-integration (en-US). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Legacy systems and AI", "serviceType": "Systems integration", "description": "Data in ERP, Excel and shared folders is invisible to AI. TauX connects legacy systems to AI with MCP: read-only first, existing permissions, every query logged.", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "Small and medium-sized businesses"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_ai }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Connecting legacy systems to AI</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">Your data is spread across ERP, Excel, shared folders and each department’s systems, where AI can’t see it. MCP connects them, so AI can query them directly within the permissions you set.</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}Who it’s for{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}What we do{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}How it works{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}Deliverables{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}Common questions{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}Further reading{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/what-is-mcp" class="underline underline-offset-4">What is MCP</a></li>
+        <li><a href="/{{ locale }}/data-governance" class="underline underline-offset-4">Data governance</a></li>
+        <li><a href="/{{ locale }}/owasp-llm-top-10" class="underline underline-offset-4">OWASP LLM Top 10</a></li>
+        <li><a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">TWSE MCP (an MCP server we maintain publicly)</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}

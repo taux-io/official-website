@@ -1,0 +1,58 @@
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{%- set audience = ["Google Workspace を導入したばかり、または導入を準備している企業と行政機関", "すでに使っているが、ほとんどの職員が Gmail しか使っていない", "ファイルが個人のドライブに散らばり、人の異動のたびに引き継ぎが難しい", "Gemini を使い始めたいが、職員が使い方を知らない、あるいは使ってよいのかわからない"] %}
+{%- set scope = [{"t": "クラウドでの共同作業の基礎", "d": "ドライブと共有ドライブ、共有と権限の設定。ファイルが個人ではなく組織のものになるようにします。"}, {"t": "ドキュメント、スプレッドシート、スライド", "d": "共同編集、コメントと割り当て、版の履歴。スプレッドシートの関数、データの整理、ピボットテーブル。"}, {"t": "会議とカレンダー", "d": "Google Meet、予約スケジュール、議事録、カレンダーの共有。"}, {"t": "Workspace の中の AI", "d": "Gemini で文書を書き、要約し、分析する方法。そして、どのデータを AI に渡してよく、どのデータは渡してはいけないか。"}, {"t": "管理者向け講座", "d": "アカウントとグループ、共有ドライブのポリシー、データ保護とセキュリティの設定。"}] %}
+{%- set process = [{"t": "ヒアリング", "d": "部署の業務の流れ、今使っているツール、職員の習熟度を把握します。"}, {"t": "講座の企画", "d": "一般利用者と管理者に分け、皆さんが実際に使っている文書と業務の流れで演習を組み立てます。"}, {"t": "講義", "d": "対面またはオンラインで、操作の演習を中心に行います。"}, {"t": "受講後のフィードバック", "d": "アンケートとよくある質問をまとめ、応用講座や補足の講座が必要かを決めます。"}] %}
+{%- set deliverables = ["事前ヒアリングと講座の企画", "テキストと演習ファイル", "受講後アンケートとフィードバックのまとめ", "よくある質問と操作説明のまとめ"] %}
+{%- set faqs = [{"q": "講座を私たちの業務内容に合わせてもらえますか？", "a": "できます。事前にヒアリングを行い、汎用の例ではなく、皆さんが実際に使っている文書と業務の流れで演習を組み立てます。"}, {"q": "行政機関でも受講できますか？", "a": "できます。機関のデータ保護の規定に合わせて、AI を使う範囲と演習の内容を調整します。"}, {"q": "Gemini の講座だけを受けることはできますか？", "a": "できます。講座のモジュールは単独で選ぶことも、組み合わせて一通りの導入研修にすることもできます。"}] %}
+{% include "header.html" %}
+<!-- Service page: google-workspace-training (ja-JP). Same structure as the zh-Hant-TW page;
+     cycle and pricing are shared (_service-terms.html), and the FAQ is written
+     once and rendered twice — visible below and as FAQPage in the graph. -->
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [
+    {{ breadcrumb }},
+    {"@type": "Service", "@id": "{{ canonical }}#service", "name": "Google Workspace 研修", "serviceType": "研修", "description": "TauX は企業と行政機関向けに Google Workspace の研修を企画します。クラウドでの共同作業、ドキュメントとスプレッドシート、会議とカレンダー、Workspace に組み込まれた AI（Gemini）、管理者の設定まで、実際の業務の流れに合わせて演習を組み立てます。", "url": "{{ canonical }}", "provider": {% include "_org-ref.html" %}, "areaServed": {"@type": "Country", "name": "TW"}, "audience": {"@type": "BusinessAudience", "audienceType": "中小企業"}},
+    {{ faq_jsonld(faqs, canonical) }}
+]}
+</script>
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<section class="band">
+    <span class="tag mb-4 inline-block">{{ strings.nav_col_training }}</span>
+    <h1 class="mb-6">
+        <span class="display-lead" lang="en">Google Workspace training</span>
+        <span class="display-sub">企業と行政機関向けの講座</span>
+    </h1>
+    <p class="text-xl max-w-[42ch] leading-relaxed">実際の業務の流れに合わせて講座を組み立てます。共同作業、ドキュメントとスプレッドシート、会議、そして Workspace の AI（Gemini）の使い方とルールです。</p>
+</section>
+<section id="audience">
+    {% call cover("01") %}こんな方に{% endcall %}
+    {{ lines(audience) }}
+</section>
+<section id="scope">
+    {% call cover("02") %}サービス内容{% endcall %}
+    {{ items(scope) }}
+</section>
+<section id="process">
+    {% call cover("03") %}進め方{% endcall %}
+    {{ steps(process) }}
+</section>
+<section id="deliverables">
+    {% call cover("04") %}納品物{% endcall %}
+    {{ lines(deliverables) }}
+</section>
+{% include "_service-terms.html" %}
+<section id="faq">
+    {% call cover("07") %}よくある質問{% endcall %}
+    {{ faq_list(faqs) }}
+</section>
+<section id="reading">
+    {% call cover("08") %}関連記事{% endcall %}
+    <ul class="space-y-3">
+        <li><a href="/{{ locale }}/google-workspace-with-ai" class="underline underline-offset-4">Workspace AI の導入効果</a></li>
+        <li><a href="/{{ locale }}/ai-smart-work" class="underline underline-offset-4">生成 AI 実務講座</a></li>
+    </ul>
+</section>
+{% include "_service-contact.html" %}
+</div>
+
+{% include "footer.html" %}
