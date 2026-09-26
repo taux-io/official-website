@@ -121,7 +121,7 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 - **cards** —— 100 張 OG 分享卡的外邊距（5–9% 版寬）、墨跡外框（45–80% 版面）與尺寸（1200×630）。**唯一一道讀產出物而不讀原始碼的設計閘門**：邊距從 `build-og.js` 的 `padding` 算得出來，墨跡外框算不出來——原始碼裡沒有任何東西說得出一個平衡斷行的三行標題會蓋掉多少版面（DESIGN.md 決策 #111）
 - **check:css** —— 已提交的 `styles.min.css` 與目前的模板一致
 - **check:routes** —— 已發布的路徑與 `ledgers/published-paths.txt` 這份 ledger 相符，退役的路徑仍在 `[[redirect]]` 裡
-- **check:classes** —— 沒有任何類別產生不出 CSS。模板自己的 `<style>` 宣告的 class 不算未知，**include 進來的 partial 的 `<style>` 也算**——claude-skills-guide 的投影片樣式住在 `_skills-guide-style.html`
+- **check:classes** —— 沒有任何類別產生不出 CSS。模板自己的 `<style>` 宣告的 class 不算未知，**include 進來的 partial 的 `<style>` 也算**。今天全站 0 個 `<style>`：claude-skills-guide 的投影片樣式原本住在 `_skills-guide-style.html`，已搬進 `src/input.css`（CSP 不再允許 inline 樣式，見「幾個必須知道的細節」）
 - **check:md** —— 一百份 Markdown 雙生檔的 front matter、正文、標題存在與否、殘留標記、連結、程式碼區塊、由兩部分組成的標題（雙語兩半、章節編號徽章）有沒有分開、裝飾藥丸有沒有變成內文、用字母編號的標題有沒有從 A 開始且不跳號，以及 HTML 有沒有指向它們。連結必須是 `https://`、`mailto:` 或 `tel:+`（完整國際號碼，複製到哪裡都成立）。斷言與檢查的數量寫在 `check-md.js` 裡，也只寫在那裡——這份清單刻意不重複它，理由跟上面那段一樣。沒有人用瀏覽器逛 `.md`，所以這是唯一會看它們一眼的東西。⚠️ 最後三道是**有人讀了十五行**才加的：九道斷言與 1564 條 production 斷言全綠的時候，`dist/ja-JP/about.md` 的第 13 行有一個當成句子的裝飾藥丸（共六十個），第 15 行有一個兩半黏在一起的標題（`with AI AI を`，共一百六十個）。兩者都不隱蔽，只是沒有人看。第三道是那次審查補的：修法差一點寫成「丟掉英文那半」，那會讓二十份英文頁失去標題，而當時沒有任何斷言看得見。**字母編號那道是第四道這樣來的**：`agent-dev-workflow` 五個語系都把四個案例編成 B C D E，標題卻寫「四個完整劇本」，從頁面上線以來沒有人發現——HTML 也寫 B，所以它不是轉換缺陷，稽核工具比對兩邊的那一趟從頭到尾都是綠的
 - **check:llms** —— 每一個已發布的頁面都在 llms.txt 裡
 - **check:dates** —— 每頁都宣告日期，沒有未來日期，發布日不晚於修改日
@@ -360,7 +360,7 @@ production 建置是**唯一一個在真正的部署環境裡驗證建置**的�
 ### 幾個必須知道的細節
 
 - **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
-- **CSS／JS 快取一年、immutable；分享卡、brand、圖示七天。** 前者安全是因為 `?v=` 是內容雜湊（見「建置與檢查」）。`script-src` 只有 `'self'` 與 Cloudflare 的 beacon 來源——prompt injection 頁的圖表改成建置時產生的 SVG 之後，`cdn.jsdelivr.net` 已經拿掉，站上沒有任何第三方腳本。
+- **CSS／JS 快取一年、immutable；分享卡、brand、圖示七天。** 前者安全是因為 `?v=` 是內容雜湊（見「建置與檢查」）。`script-src` 只有 `'self'` 與 Cloudflare 的 beacon 來源——prompt injection 頁的圖表改成建置時產生的 SVG 之後，`cdn.jsdelivr.net` 已經拿掉，站上沒有任何第三方腳本。**`style-src` 只有 `'self'`**：`'unsafe-inline'` 是為了投影片頁的 `<style>` 區塊與 65 個 `style=""` 留著的，兩者搬進 `src/input.css` 之後拿掉（DESIGN.md 決策 #153）。`dist/` 裡 0 個 `<style>`、0 個 `style=`；JS 用 `element.style.x = …` 走 CSSOM，不受 CSP 管。新寫一個 inline 樣式會被瀏覽器擋下，`contract` 的 CSP 違規斷言會紅。
 - **`_headers` 的規則必須互不重疊。** Cloudflare **合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中會產生 `max-age=3600, max-age=31536000` —— 瀏覽器取第一個，字體實際只快取一小時。這已經發生過一次。
 - **`404.html` 不是路由。** 它在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑並附上 404 狀態。**靜態主機最常見的錯誤是用 200 送出 404 頁面**，Google 視為 soft 404 並可能連帶降權周邊路徑。契約測試會斷言這一點。
 - **靜態站沒有 500。** 沒有應用程式可以失敗，該頁已移除。

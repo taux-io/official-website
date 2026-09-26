@@ -17,7 +17,6 @@
 }
 </script>
 
-{% include "_skills-guide-style.html" %}
 <div class="skills-guide-body">
 
     <!-- Slide 1: Title_Slide -->
@@ -54,8 +53,8 @@
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                                    <stop offset="0%" class="stop-ink" />
+                                    <stop offset="100%" class="stop-ink" />
                                 </linearGradient>
                                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
@@ -124,10 +123,10 @@
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
-                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
+                    <div class="number-label number-label-lead">The
                         Connectivity</div>
                     <div class="number">MCP</div>
-                    <div class="number-label">提供外部连接能力<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
+                    <div class="number-label">提供外部连接能力<br><span class="number-label-sub">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
@@ -331,7 +330,7 @@
                         <li><span class="highlight">Objective (目标)</span>：一句话讲明这个脚本的最终目的。</li>
                         <li><span class="highlight">工具调用指示</span>：明确写出要调用的工具名称 (如 <code>linear_create_issue</code>)。
                         </li>
-                        <li><span class="highlight">Fallback (回退机制)</span>：<strong style="color: var(--ink); font-weight: 600;">极度重要！</strong>默认 MCP 可能会断线，告诉 Claude 在工具失效时该如何改用纯文字输出，避免流程中断。
+                        <li><span class="highlight">Fallback (回退机制)</span>：<strong class="text-ink font-semibold">极度重要！</strong>默认 MCP 可能会断线，告诉 Claude 在工具失效时该如何改用纯文字输出，避免流程中断。
                         </li>
                     </ul>
                 </div>
@@ -360,9 +359,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 25%;">测试维度</th>
-                            <th scope="col" style="width: 35%;">测试目标</th>
-                            <th scope="col" style="width: 40%;">衡量与检验标准 (Metrics)</th>
+                            <th scope="col" class="w-1/4">测试维度</th>
+                            <th scope="col" class="w-[35%]">测试目标</th>
+                            <th scope="col" class="w-2/5">衡量与检验标准 (Metrics)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -430,12 +429,12 @@
             <svg aria-hidden="true" focusable="false" class="bleed-image-side" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--surface);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--surface);stop-opacity:1" />
+                        <stop offset="0%" class="stop-surface" />
+                        <stop offset="100%" class="stop-surface" />
                     </linearGradient>
                     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                        <stop offset="0%" class="stop-ink" />
+                        <stop offset="100%" class="stop-ink" />
                     </linearGradient>
                 </defs>
                 <rect width="600" height="800" fill="url(#bgGrad)" />
@@ -477,7 +476,7 @@
             </div>
             <p>「用知识驱动工具，让自动化成为团队标准」</p>
             <div class="contact-info">
-                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> 善用内置的 skill-creator 快速起步！
+                <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i> 善用内置的 skill-creator 快速起步！
             </div>
         </div>
     </div>

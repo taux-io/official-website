@@ -17,7 +17,6 @@
 }
 </script>
 
-{% include "_skills-guide-style.html" %}
 <div class="skills-guide-body">
 
     <!-- Slide 1: Title_Slide -->
@@ -53,8 +52,8 @@
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                                    <stop offset="0%" class="stop-ink" />
+                                    <stop offset="100%" class="stop-ink" />
                                 </linearGradient>
                                 <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                                     <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1" />
@@ -123,10 +122,10 @@
         <div class="content-area">
             <div class="two-column highlight-numbers-layout">
                 <div>
-                    <div class="number-label" style="font-size: 32px; margin-bottom: 20px; color:var(--ink);">The
+                    <div class="number-label number-label-lead">The
                         Connectivity</div>
                     <div class="number">MCP</div>
-                    <div class="number-label">Connectivity to the outside<br><span style="font-size: 18px; font-weight:normal; color:var(--ink); margin-top:10px; display:block;">(What
+                    <div class="number-label">Connectivity to the outside<br><span class="number-label-sub">(What
                             Claude can do)</span></div>
                 </div>
                 <div>
@@ -329,7 +328,7 @@
                         <li><span class="highlight">Objective</span>: one sentence saying what this is ultimately for.</li>
                         <li><span class="highlight">Naming the tool</span>: name the tool explicitly (<code>linear_create_issue</code>).
                         </li>
-                        <li><span class="highlight">Fallback</span>: <strong style="color: var(--ink); font-weight: 600;">this is the important one.</strong> Assume the MCP connection can drop. Tell Claude what to produce in plain text when the tool is unavailable, so the process does not simply stop.
+                        <li><span class="highlight">Fallback</span>: <strong class="text-ink font-semibold">this is the important one.</strong> Assume the MCP connection can drop. Tell Claude what to produce in plain text when the tool is unavailable, so the process does not simply stop.
                         </li>
                     </ul>
                 </div>
@@ -358,9 +357,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 25%;">Dimension</th>
-                            <th scope="col" style="width: 35%;">What you are checking</th>
-                            <th scope="col" style="width: 40%;">How you know</th>
+                            <th scope="col" class="w-1/4">Dimension</th>
+                            <th scope="col" class="w-[35%]">What you are checking</th>
+                            <th scope="col" class="w-2/5">How you know</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -426,12 +425,12 @@
             <svg aria-hidden="true" focusable="false" class="bleed-image-side" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--surface);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--surface);stop-opacity:1" />
+                        <stop offset="0%" class="stop-surface" />
+                        <stop offset="100%" class="stop-surface" />
                     </linearGradient>
                     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--ink);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--ink);stop-opacity:1" />
+                        <stop offset="0%" class="stop-ink" />
+                        <stop offset="100%" class="stop-ink" />
                     </linearGradient>
                 </defs>
                 <rect width="600" height="800" fill="url(#bgGrad)" />
@@ -473,7 +472,7 @@
             </div>
             <p>"Knowledge drives the tools, and automation becomes the team default."</p>
             <div class="contact-info">
-                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 10px;"></i> Use the built-in skill-creator to get moving.
+                <i class="fa-solid fa-wand-magic-sparkles me-2.5"></i> Use the built-in skill-creator to get moving.
             </div>
         </div>
     </div>

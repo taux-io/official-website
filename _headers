@@ -27,6 +27,14 @@
 # nothing. That host serves this one script, so restricting the path buys nothing
 # real and adds a way for a version bump to break it silently.
 #
+# style-src is 'self' and nothing else. It carried 'unsafe-inline' until the
+# slide deck on /claude-skills-guide stopped shipping its CSS as a <style> block
+# and 13 style="" attributes per locale; both now live in src/input.css, and
+# dist/ holds no <style> and no style="" at all. Scripts that set
+# `element.style.x` go through the CSSOM, which CSP does not govern, so they
+# need nothing. A new inline style is refused by the browser, and `contract`
+# fails on the violation it reports.
+#
 # connect-src needs no change: under automatic injection the beacon reports to
 # /cdn-cgi/rum on this origin, which 'self' already covers. Verified that
 # /cdn-cgi/* is answered by Cloudflare ahead of the Worker rather than falling
@@ -37,7 +45,7 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 # Stylesheet and scripts are immutable because their ?v= is a hash of their
 # bytes, computed by the generator (content_version in generator/src/main.rs) —

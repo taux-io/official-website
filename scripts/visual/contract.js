@@ -26,7 +26,7 @@ const EXPECTED_HEADERS = {
   "permissions-policy": "geolocation=(), microphone=(), camera=()",
   "content-security-policy":
     "default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; " +
-    "style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; " +
+    "style-src 'self'; font-src 'self'; img-src 'self' data:; " +
     "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 

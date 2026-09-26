@@ -535,7 +535,7 @@ display 走 **SF Pro Display**，內文走 **SF Pro Text**，兩者都不自架�
 
 **層級在每個寬度都遞減**：手機 40／34／24／21，tablet 以上 64／34／24／21。v5.1 之前手機是 36／36／24——h2 的拉丁行穿 `.display-lead`，與 h1 同一個 36px。
 
-⚠️ **`claude-skills-guide.html` 的 809 行內嵌樣式有自己的 px 刻度**（72／44／28／100／80…）與 700 字重，五份 locale 相同。它是一副投影片不是頁面，這一版刻意不動；記在「沒有東西檢查的事」。
+⚠️ **`claude-skills-guide` 那副投影片的樣式有自己的 px 刻度**（72／44／28／100／80…）與 700 字重。它原本是頁面裡的 `<style>`，決策 #153 之後是 `src/input.css` 裡以 `.skills-guide-body` 為範圍的一節——**搬了位置，刻度沒動**。它是一副投影片不是頁面，這一版刻意不動；記在「沒有東西檢查的事」。
 
 ### 級距：最大字必須是最小字的 5–12 倍
 
@@ -915,7 +915,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 ### 沒有東西檢查的事
 
 - **空白比例。** `npm run blank` 量得出來，但沒有門檻可辯護（決策 #145）；`first-paragraph` 探針守的是它的一個切面。
-- **`claude-skills-guide` 那副投影片的刻度。** 內嵌樣式 809 行、五份相同、自己的 px 字級與 700 字重，不在規則 27 讀的 config 刻度上，也不在任何規則的視野裡（`stylesheet.js` 讀得到它，但沒有規則問「字級在不在刻度上」）。v5.1 刻意不動；它要的是一張自己的票，先決定它是不是還要當投影片。
+- **`claude-skills-guide` 那副投影片的刻度。** 約 800 行、自己的 px 字級與 700 字重，不在規則 27 讀的 config 刻度上，也不在任何規則的視野裡（`stylesheet.js` 讀得到它，但沒有規則問「字級在不在刻度上」）。決策 #153 把它從頁面的 `<style>` 搬進 `src/input.css`，**只換位置**。⚠️ 搬進來之後規則 1 `zero literal colour` 不再讀它（規則 1 讀模板），字面色改由讀整份樣式表的規則 25 `two plates` 擋。v5.1 刻意不動；它要的是一張自己的票，先決定它是不是還要當投影片。
 - **inert 的範圍對不對、skip link 有沒有作用。** 兩者都是「存在檢查無效」的形狀（決策 #113 的判準）：`inert` 屬性在 markup 上有沒有，說不出腳本開關的順序對不對；`.skip-link` 這個 class 在不在，說不出它是不是第一個 Tab stop。**用 Playwright 手動驗過**：開啟後 40 次 Tab 全在 overlay 內、Escape 把焦點還給漢堡、第一次 Tab 落在 skip link 且 x=16、Enter 之後 `location.hash` 是 `#main`。腳本在 PR 說明裡，不在 repo。
 
 - **`forced-colors` 區塊真的修好了東西沒有。** 決策 #152 之後它做五件事：行內 `code`、`pre` 與投影片的三種底色塊改畫 `1px solid CanvasText` 的邊框；`bg-ink` 的圓點與橫條、`.nav-link::after` 的底線、投影片的 `.timeline-line` 與 `hr` 改畫 `CanvasText` 實心；`.btn`／`.btn-quiet` 用 `ButtonText`／`ButtonFace`，hover 改由邊框的 `Highlight` 表達；focus ring 明寫 `Highlight`；章節 rail 與語言切換器的 `aria-current` 改成 3px 的 `Highlight` 前緣。⚠️ **區塊本身刻意不寫成規則**：空的區塊會通過存在檢查（決策 #113）。規則 37 守的是它唯一的假設（`bg-ink` 裡沒有字），**不是它有沒有生效**——少一行、選擇器改名、串接順序輸給後面的 `<style>`，都沒有東西會紅。⚠️ **最後一種真的發生過**：投影片的 `.timeline-line` 規則在頁面自己的 `<style>` 裡、在樣式表之後，同樣特異度時贏過 forced 區塊，第一次實測它仍然消失。**手動驗過**：Playwright `forcedColors: 'active'` 對 20 條 zh-Hant-TW 路由逐元素掃「正常模式有底色、forced 模式沒有底色也沒有邊框」的元素，1440 寬之下前 79 個（52 個圓點、9 個 `pre`、投影片 18 個）→ 後 0 個，手機寬另有漢堡的 3 條線；探針腳本不在 repo 裡。**`contrast` 不在 forced 模式下跑**，要讓它跑得先決定系統色的對比門檻算誰的——那是使用者的配色，不是本站的。
@@ -947,7 +947,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **副標 / display-sub** | H1 的中文次行 |
 | **封面區塊 / cover block** | 章節標題專用的區塊，只有 eyebrow 與標題，沒有 CTA。內容高度，不是一屏 |
 | **`data-cover="sr"`** | 封面區塊的唯一變體：只給螢幕閱讀器的 h2（`sr-only`），不畫任何區塊。用在 h3 原本直接接在 h1 之下的地方——兩個法律頁 partial 的條文、agent-prompting-guide 與 adk-skill-patterns 開頭的導言框——讓大綱不跳級而版面不變。**不要拿它包可見的標題**：可見的 h2 就該開一個封面區塊 |
-| **樣式表 / stylesheet** | 本站出貨的所有作者寫的 CSS，不論來自 `input.css`、模板的 `<style>` 或 `style=""` |
+| **樣式表 / stylesheet** | 本站出貨的所有作者寫的 CSS，不論來自 `input.css`、模板的 `<style>` 或 `style=""`。決策 #153 之後後兩者都是 0 個，CSP 也不再允許它們 |
 | **走訪 / walk** | 一次瀏覽器工作階段走過每條路由 × 每個視窗 |
 | **探針 / probe** | 掛在走訪上的一筆資料：`inPage` 或 `onPage` |
 | **路由表 / route table** | `site.toml` 的唯一 JS 讀者是 `routes.js`，匯出 PAGES / DOCUMENTS / ROUTES |
@@ -1135,6 +1135,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 150 | 四種 absolute 裝飾拿掉 | 模糊方塊（`blur-3xl`，DESIGN.md 本來就禁模糊）在 section 失去 `overflow-hidden` 後撐出視窗，geometry 抓到；點陣底用了具名色 `white`（規則 1 看不見具名色）；右上角淡水印與 h3 前的孤立圖示是「預留給圖片的位置」。**代價：無** |
 | 151 | ⚠️ **`div` 的數目對了，而頁面是壞的：規則 36 `tags nest`** | v5.3 的骨架改動在 `/geo-guide` 留下中間多一個 `</div>`、結尾少一個：**總數相等**，所以腳本自己的平衡檢查放行。閱讀欄因此提早兩節關掉，那兩節以 x=0、寬 1280px 渲染，其餘內容在 680px 的欄裡——**使用者從線上截圖回報的**。⚠️ **十六道閘門全綠**：`check:classes` 讀類別名、`check:design` 讀屬性、`check:md` 讀轉換後的 Markdown（`htmd` 解析時自己把樹補平）、`contrast` 與 `geometry` 量瀏覽器渲染的結果——**而瀏覽器對交錯標籤的處理就是安靜地修好它**，所以損害是視覺的不是致命的。規則 36 先展開 `{% include %}` 再檢查（否則 `header.html` 會被讀成一份沒關 `<html>` 的文件），並保留位移對照表讓報告指回作者會打開的那個檔。**先對壞掉的版本跑：五個 locale 各 2 處交錯，共 10 筆。代價：規則要自己組頁面，是本檔第一條需要解析 include 的規則** |
 | 152 | **`forced-colors`：讓給系統色，只補回只靠底色說的話**（擁有者定的方向） | Playwright `forcedColors: 'active'` 對全站實測：**邊框本來就活著**（Chromium 改畫成 CanvasText／LinkText，連 `.btn` 的透明邊框都變成可見的 1px），**死掉的是底色**——手機上的**漢堡選單是空的 44px 方塊**（三條線是 1px 的 `bg-ink`）、章節 rail 的目前項與其他項**完全相同**（墨色邊對髮絲線邊，兩者都被換成同一個系統色）、52 個 `bg-ink` 圓點、「探索服務」展開時唯一的記號（`.nav-link::after` 的底線）、9 個 `pre` 與投影片的五種底色塊。修法兩種：實心形狀照樣是實心，改填 `CanvasText`（作者寫的系統色是 forced 模式唯一保留的底色）；文字下面的淡底改成邊框。「你在這裡」統一成 3px 的 `Highlight` 前緣，rail 與語言切換器同一個裝置；按鈕用 `ButtonText`／`ButtonFace`，hover 由邊框的 `Highlight` 表達；focus ring 明寫 `Highlight`（Chromium 本來就這樣畫，寫下來是讓它成為決定而不是預設）。新增規則 37 `ink marks hold no text` 守區塊唯一的假設。⚠️ **語言切換器的目前語言在正常模式下也沒有任何記號**——`aria-current` 在 markup 裡，沒有任何樣式讀它。這次只在 forced 模式補上，正常模式要不要標、怎麼標是另一個決定，**沒有在這裡做**。⚠️ `.bg-ink` 寫成屬性選擇器 `[class~="bg-ink"]`：Tailwind 的 `@apply` 會把含該 class 的**每一條**規則（連同 media query）複製進套用它的元件，`.nav-link::after` 因此多出第二個 forced 區塊。**代價：forced 模式下語言切換器的目前項內縮 11px（rail 用 padding 補回，不位移）；區塊本身仍然沒有閘門，靠手動模擬** |
+| 153 | **CSP 拿掉 `style-src 'unsafe-inline'`：投影片的樣式搬進 `input.css`，65 個 `style=""` 換成 class** | `'unsafe-inline'` 只為一個頁面留著：`/claude-skills-guide` 五個 locale 各 include 一份約 800 行的 `<style>`（`_skills-guide-style.html`），外加各 13 個 `style=""`（6 個 SVG 漸層 stop、3 個表頭寬度、兩個 `.number-label` 的字級、一個 `strong`、一個圖示的間距）。全站其餘 95 頁一個都沒有。樣式搬進 `src/input.css` 成為以 `.skills-guide-body` 為範圍的一節，**不進 `@layer`、放在使用者偏好之前**：`<style>` 原本在整份樣式表之後，同特異度贏過所有 Tailwind 層，而不分層的 CSS 輸出在 utilities 之後，保住了這件事；放在偏好之前，forced-colors 區塊才能在同特異度下蓋過投影片的 `.timeline-line`（決策 #152 原本為此在選擇器前加的 `main` 因此拿掉）。全域的 `* { box-sizing: border-box }` 刪掉——preflight 已經對每個元素說了同一句話。`style=""` 換成 utility（`w-1/4`、`w-[35%]`、`w-2/5`、`me-2.5`、`text-ink font-semibold`）或該節裡的 class（`.number-label-lead`／`-sub` 帶著它們要蓋過的選擇器權重，因為 inline 樣式原本連 media query 都贏；`.stop-ink`／`.stop-surface`）。**驗證**：100 條路由 × 3 寬度＋投影片頁的 forced 模式，每張都重新導航、reduced motion，改前改後 **315 張逐像素相同（容差 0）**；`dist/` 0 個 `<style>`、0 個 `style=`；headless Chromium 逐頁 0 則 CSP 樣式違規。⚠️ `npm run screenshot` 的兩組截圖比出 63 張不同，**全是工具的雜訊**：它對每條路由只載入一次、在寬度之間 resize，手機寬的全頁高度隨之不穩定（zh-Hant-TW 與 zh-Hans-CN 同一頁的高度在兩次之間互換）；`npm run diff` 也只比對 `.visual/<label>/` 第一層的 18 張首頁。**代價：投影片的 CSS 送到每一頁——`styles.min.css` 32.0 → 45.0 KB，gzip 7.1 → 9.1 KB（immutable 快取，一次）；規則 1 不再讀它** |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋
