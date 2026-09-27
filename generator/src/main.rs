@@ -413,6 +413,9 @@ fn render_pages(
                 // The page's short name — the menu's label for it — for the
                 // service pages' sidebar, which names the page it summarises.
                 label => text.short_name(),
+                // The menu column this page sits in, or none — which of the
+                // four category illustrations the service sidebar draws.
+                section => page.section.as_deref(),
                 canonical => url_attr(&text.canonical),
                 // Passed explicitly rather than defaulted in the template because
                 // UndefinedBehavior::Strict makes an absent variable a build error,
@@ -591,6 +594,7 @@ fn render_documents(
             alternates => Vec::<Value>::new(),
             // A document is never an article, so it names no service.
             related => (),
+            section => (),
             title => &doc.title,
             description => &doc.description,
             canonical => url_attr(&doc.canonical),
