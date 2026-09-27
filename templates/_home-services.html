@@ -15,11 +15,8 @@
         <div class="grid laptop:grid-cols-2 gap-x-16 gap-y-12">
             {%- for col in nav %}
             <div>
-                <div class="flex items-center gap-3 mb-3">
-                    {%- if col.key == "ai" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><circle cx="24" cy="8" r="3"/><circle cx="16" cy="24" r="3"/><path d="M11 8h10M9.5 10.5l5 11M22.5 10.5l-5 11"/></svg>{% endif %}
-                    {%- if col.key == "marketing" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1.5"/></svg>{% endif %}
-                    {%- if col.key == "training" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><path d="M4 6h24v15H4z"/><path d="M16 21v5M11 26h10M9 11h9M9 15h6"/></svg>{% endif %}
-                    {%- if col.key == "security" %}<svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="w-8 h-8 shrink-0 fill-none stroke-primary" stroke-width="1.5"><path d="M16 4l10 4v7c0 7-4.5 11-10 13-5.5-2-10-6-10-13V8z"/><path d="M11.5 16l3 3 6-6"/></svg>{% endif %}
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-24 shrink-0">{% set art = col.key %}{% include "_art.html" %}</div>
                     <h3 class="mb-0">{{ col.title }}</h3>
                 </div>
                 <p class="text-lg leading-relaxed mb-5">{{ strings["home_problem_" ~ col.key] }}</p>

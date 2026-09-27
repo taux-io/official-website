@@ -4,6 +4,7 @@
      rendered at all: the same terms are sections 05 and 06 in the column, and a
      phone has no second column to put it in. -->
 <aside class="hidden laptop:block w-72 shrink-0 sticky top-24 mt-10 border-t-2 border-ink pt-5 space-y-5" aria-label="{{ label }}">
+    {% set art = section %}{% include "_art.html" %}
     <p class="font-semibold text-lg">{{ label }}</p>
     <div>
         <p class="text-sm text-ink-soft">{{ strings.service_cycle_title }}</p>
