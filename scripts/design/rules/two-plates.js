@@ -35,7 +35,31 @@ function ruleTwoPlates(files) {
     }
   }
 
+  // THE SPOT PLATE PRINTS IN ONE FILE (decision 165). The illustrations in
+  // templates/_art.html take it through a `text-spot` group; anywhere else —
+  // a stylesheet rule, a class on text, a fill behind text — it would be a
+  // third colour in the page's own vocabulary, which is exactly what this rule
+  // exists to refuse. So it is allowed by place, not by shape.
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    if (d.prop.startsWith("--")) continue;
+    if (!plates.stepsIn(value, sheet).some((st) => st.plate === "spot")) continue;
+    found.push({
+      file: d.file,
+      line: d.line,
+      detail: `${d.selector} paints the spot plate — it belongs to the illustrations in templates/_art.html and nowhere else`,
+    });
+  }
+
   for (const u of colourUtilities(files, sheet)) {
+    const hit = plates.plateUtility(u.name);
+    if (hit && hit.plate === "spot" && !/(^|\/)_art\.html$/.test(u.file)) {
+      found.push({
+        file: u.file,
+        line: u.line(),
+        detail: `${u.name} uses the spot plate outside templates/_art.html — it is for the illustrations only (decision 165)`,
+      });
+      continue;
+    }
     if (!plates.foreignColourUtility(u.name)) continue;
     found.push({
       file: u.file,

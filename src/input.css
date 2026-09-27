@@ -85,6 +85,13 @@
      Tailwind colour it backs does not dangle. */
   --on-primary-rgb: var(--surface-rgb);
   --primary-rgb: 33 72 184;
+
+  /* SPOT — the third plate, for the illustrations only (DESIGN.md decision
+     165). A warm coral opposite Cobalt on the wheel: the owner asked for the
+     pictures to be livelier, and a second hue does that in a way more tints
+     of blue cannot. It prints nowhere else — no text, no fill behind text, no
+     control — and `two plates` (rule 25) holds it to templates/_art.html. */
+  --spot-rgb: 242 107 58;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
