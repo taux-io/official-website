@@ -887,6 +887,21 @@ async function main() {
     const url = BASE_URL + route.path + ".md";
     const r = await fetch(url, { redirect: "manual" });
 
+    // A noindex route has no twin, and must not: a `.md` cannot say noindex,
+    // so a twin would be an indexable copy of the one page asked to stay out
+    // (Page::relative_markdown). The HTML does not advertise one either.
+    if (route.noindex) {
+      checked++;
+      if (r.status !== 404) {
+        failures.push({
+          route: route.path + ".md",
+          check: "markdown twin",
+          problem: `${r.status} — a noindex route must have no twin, or the twin is indexed in its place`,
+        });
+      }
+      continue;
+    }
+
     checked++;
     if (r.status !== 200) {
       failures.push({
