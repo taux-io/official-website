@@ -1,0 +1,27 @@
+<!-- The home hero's right column, laptop width and up (DESIGN.md decision 162):
+     who the work is for, what it is, how long, how it is priced — the terms a
+     first visit wants before anything else, in the same shape as the service
+     pages' sidebar. The hero's left column is the company line and its story;
+     this column had been empty paper. Below laptop it is not rendered: the
+     phone's first screen keeps its button, and the same terms open the
+     services section a scroll further down. -->
+<aside class="hidden laptop:block laptop:col-start-2 laptop:row-start-1 laptop:row-span-3 laptop:self-center border-t-2 border-ink pt-5 space-y-5" aria-label="{{ strings.home_facts_title }}">
+    <p class="font-semibold text-lg">{{ strings.home_facts_title }}</p>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.home_facts_audience_title }}</p>
+        <p>{{ strings.home_facts_audience }}</p>
+    </div>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.home_facts_scope_title }}</p>
+        <p>{{ strings.home_facts_scope }}</p>
+    </div>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.service_cycle_title }}</p>
+        <p>{{ strings.service_aside_cycle }}</p>
+    </div>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.service_pricing_title }}</p>
+        <p>{{ strings.service_aside_pricing }}</p>
+    </div>
+    <a href="#services" class="inline-block underline underline-offset-4 font-semibold">{{ strings.home_facts_link }}<span aria-hidden="true"> &darr;</span></a>
+</aside>

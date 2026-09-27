@@ -889,6 +889,48 @@
     text-wrap: pretty;
   }
 
+  /* V6: THE READER'S LANGUAGE CARRIES THE TITLE (decision 161).
+     Decision #6 split every h1 into a Latin lead over a local sub, and the
+     structure stays — `heading structure` still asks for both. What reverses
+     is the weight: on a Chinese, Japanese or Korean page the lead was 64px of
+     English and the page's real name sat under it at 24px, so a reader in
+     Taipei met "AI adoption consulting" before 企業 AI 導入顧問. Here the sub
+     takes the display step and the lead becomes the kicker above it.
+     Scoped to the page's h1 inside <main>: the about page and one article use
+     the same two classes for other things. The home hero opts out with
+     `data-claim` — its lead is the company line decision #43 keeps in every
+     language. English pages have no sub and are untouched. */
+  :root:not(:lang(en)) main h1:not([data-claim]) .display-lead {
+    @apply font-display text-base tablet:text-lg mb-1 text-ink-muted;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  :root:not(:lang(en)) main h1:not([data-claim]) .display-sub {
+    @apply font-display text-display-sm tablet:text-display-md mt-0 text-ink;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  /* The same reversal for the few section headings that use the pair (the
+     about page's contact heading, one article's covers): the local line takes
+     the h2's own size, the Latin line becomes its kicker. */
+  :root:not(:lang(en)) main h2 .display-lead {
+    @apply font-display text-base tablet:text-lg mb-1 text-ink-muted;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  :root:not(:lang(en)) main h2 .display-sub {
+    @apply mt-0 text-ink;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
   /* Eyebrow label — section numbers, column headings, kickers.
      text-ink rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
