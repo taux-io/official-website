@@ -131,7 +131,7 @@ Every route on the site has an English edition. These are all of them.
 -   [技術文章](https://taux.io/zh-Hant-TW/insights): 本站全部技術文章的總覽（GEO、MCP、AI Agent、LLM 資安、後量子密碼），以及公開維護的開源專案。 ([Markdown](https://taux.io/zh-Hant-TW/insights.md))
 -   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
--   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
+-   [About TauX | AI consulting and implementation in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
 -   [Insights](https://taux.io/en-US/insights): Every technical article on the site — GEO, MCP, AI agents, LLM security, post-quantum cryptography — and the open-source projects we maintain.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
 -   [Terms of Service | TauX](https://taux.io/en-US/terms-of-service): The terms governing use of the TauX website and services: your rights, your obligations, and the scope of what we provide.
@@ -175,9 +175,9 @@ Every route on the site has an English edition. These are all of them.
 
 翻訳は route ごとに進めています。以下が現在公開されているものです。／번역은 라우트 단위로 진행 중이며, 아래가 현재 공개된 것입니다.
 
--   [TauX 拓思科技について](https://taux.io/ja-JP/about): GEO（生成エンジン最適化）と企業の AI 導入を手がける台湾・高雄の技術会社。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。
+-   [TauX 拓思科技について](https://taux.io/ja-JP/about): 中小企業向けに AI のコンサルティングと技術導入を行う台湾・高雄の会社。社名の由来（ギリシャ文字 τ、制御工学の時定数）と連絡先。
 -   [技術記事](https://taux.io/ja-JP/insights): サイト内のすべての技術記事（GEO、MCP、AI エージェント、LLM セキュリティ、ポスト量子暗号）と、公開で保守しているオープンソースプロジェクトの一覧。
--   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): GEO(생성형 엔진 최적화)와 기업 AI 도입을 하는 대만 가오슝의 기술 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
+-   [TauX 拓思科技 소개](https://taux.io/ko-KR/about): 중소기업을 위해 AI 컨설팅과 기술 구현을 하는 대만 가오슝의 회사. 회사 이름의 유래(그리스 문자 τ, 제어공학의 시정수)와 연락처.
 -   [기술 문서](https://taux.io/ko-KR/insights): 사이트의 모든 기술 문서(GEO, MCP, AI 에이전트, LLM 보안, 포스트 양자 암호)와 공개적으로 관리하는 오픈소스 프로젝트 목록.
 -   [AI 導入コンサルティング](https://taux.io/ja-JP/ai-consulting): TauX は中小企業向けに AI 導入のコンサルティングと技術導入を行います。AI に任せる価値のある業務を洗い出し、優先順位を決めて PoC を行います。導入前に基準値を取り、導入後も同じ物差しで効果を検証します。
 -   [기업 AI 도입 컨설팅](https://taux.io/ko-KR/ai-consulting): TauX는 중소기업에 AI 도입 컨설팅과 기술 구현을 제공합니다. AI로 할 가치가 있는 업무를 찾고, 우선순위를 정하고, PoC를 진행하며, 도입 전에 기준값을 측정해 두었다가 도입 후 같은 잣대로 성과를 확인합니다.
