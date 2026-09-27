@@ -410,6 +410,9 @@ fn render_pages(
                 alternates => &alternates,
                 title => &text.title,
                 description => &text.description,
+                // The page's short name — the menu's label for it — for the
+                // service pages' sidebar, which names the page it summarises.
+                label => text.short_name(),
                 canonical => url_attr(&text.canonical),
                 // Passed explicitly rather than defaulted in the template because
                 // UndefinedBehavior::Strict makes an absent variable a build error,
