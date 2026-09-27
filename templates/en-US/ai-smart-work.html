@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["Staff use AI, but the answers are often generic and need heavy editing", "Everyone is figuring it out alone, and the company has no shared way of using it", "You want AI to help with analysis and decisions, not just write copy", "You have a lot of internal documents and want AI to answer based on them"] %}
 {%- set scope = [{"t": "Structured prompts", "d": "Writing clear instructions with four elements, role, task, context and format, so the output is predictable."}, {"t": "Reasoning and decisions", "d": "Guiding AI to reason step by step (chain of thought) to compare options and spot blind spots, not just generate content."}, {"t": "Knowledge base", "d": "Using NotebookLM to turn company documents into a knowledge base you can talk to, with sources cited."}, {"t": "Custom assistants (Gems)", "d": "Turning a department’s common prompts into a reusable Gemini assistant, so the whole team works the same way."}, {"t": "Usage policy", "d": "Which data can be given to AI, and how to check its output."}] %}
 {%- set process = [{"t": "Needs interview", "d": "Learn what the department does and how staff use AI today."}, {"t": "Course planning", "d": "Design exercises around your actual work."}, {"t": "Teaching and practice", "d": "Every module includes hands-on work, and staff leave class with something they can use."}, {"t": "Follow-up", "d": "Collect common questions and arrange an advanced course if needed."}] %}
 {%- set deliverables = ["Course plan", "Handouts and prompt templates", "In-class results (such as a department assistant)", "Post-course survey and feedback summary"] %}
 {%- set faqs = [{"q": "Can staff who have never used AI take the course?", "a": "Yes. We group staff by level and start from the basics before moving to structured prompting."}, {"q": "Which AI tools does the course use?", "a": "Mainly Google’s Gemini and NotebookLM. The methods apply to other AI tools too, and we adjust to the tools your company uses before the course."}, {"q": "What do we take away from the course?", "a": "Every module includes hands-on work. By the end, staff leave with prompt templates and the department assistant they built in class."}] %}
+{%- set flow_nodes = [{"t": "A question", "d": "Something your work really needs solved"}, {"t": "Structured prompt", "d": "Role, task, format"}, {"t": "AI-assisted reasoning", "d": "Compare options, spot blind spots"}, {"t": "Custom assistant", "d": "Saved as a reusable Gem"}] %}
 {% include "header.html" %}
 <!-- Service page: ai-smart-work (en-US). Same structure as the zh-Hant-TW page;
      cycle and pricing are shared (_service-terms.html), and the FAQ is written
@@ -28,6 +29,7 @@
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "For the same question, how you ask decides whether the answer is usable; a prompt that works well can be saved and reused.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}
     {{ items(scope) }}

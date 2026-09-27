@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["同仁會用 AI，但得到的答案常常很普通、還要大改", "每個人各自摸索，公司沒有共同的用法", "想讓 AI 協助分析與決策，而不只是寫文案", "有大量內部文件，想讓 AI 依這些文件回答"] %}
 {%- set scope = [{"t": "結構化提示詞", "d": "用角色、任務、背景、格式四個要素寫出清楚的指令，讓輸出可以預期。"}, {"t": "推理與決策", "d": "引導 AI 逐步推理（Chain of Thought），協助比較方案、找出盲點，而不只是產生內容。"}, {"t": "知識庫", "d": "用 NotebookLM 把公司文件整理成可以對話、會標示出處的知識庫。"}, {"t": "專屬助理（Gem）", "d": "把部門常用的問法固定成可重複使用的 Gemini 助理，讓整個團隊用同一套做法。"}, {"t": "使用規範", "d": "哪些資料可以交給 AI、輸出要怎麼查證。"}] %}
 {%- set process = [{"t": "需求訪談", "d": "了解部門工作與同仁目前怎麼用 AI。"}, {"t": "課程規劃", "d": "用你們實際的工作情境設計練習。"}, {"t": "授課與實作", "d": "每個單元都有實作，課堂上做出可以帶回去用的成果。"}, {"t": "課後追蹤", "d": "整理常見問題，視需要安排進階課程。"}] %}
 {%- set deliverables = ["課程規劃", "講義與提示詞範本", "課堂實作成果（例如部門專屬助理）", "課後問卷與回饋整理"] %}
 {%- set faqs = [{"q": "完全沒用過 AI 的同仁也能上嗎？", "a": "可以。課程會依同仁程度分組，從基本操作開始，再進到結構化的問法。"}, {"q": "課程用哪一套 AI 工具？", "a": "以 Google 的 Gemini 與 NotebookLM 為主；方法本身適用於其他 AI 工具，課前會依公司使用的工具調整。"}, {"q": "上完課能帶回什麼？", "a": "每個單元都有實作。課程結束時，同仁會帶走提示詞範本，以及課堂上做出的部門專屬助理。"}] %}
+{%- set flow_nodes = [{"t": "一個問題", "d": "工作上真正要解決的事"}, {"t": "結構化問法", "d": "角色、任務、格式"}, {"t": "AI 協助推理", "d": "比較方案、找出盲點"}, {"t": "專屬助理", "d": "固定成可重複使用的 Gem"}] %}
 {% include "header.html" %}
 <!-- Service page: 生成式 AI 實務課程. The page is the lists above rendered through the
      service macros in _blocks.html; cycle and pricing are shared
@@ -30,6 +31,7 @@
     {% call cover("01") %}適合誰{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "同一個問題，問法決定答案能不能用；問得好的問法可以固定下來，重複使用。") }}
 <section id="scope">
     {% call cover("02") %}服務內容{% endcall %}
     {{ items(scope) }}

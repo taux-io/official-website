@@ -455,8 +455,8 @@ fn separate_display_halves_within(heading: &str) -> String {
 /// Depth-counted rather than matched to the first close tag. Nothing nests one
 /// inside another today; nothing stops a chip gaining a wrapper tomorrow, and
 /// the failure would be a silently truncated page rather than a build error.
-/// The offset of the next `<name …>` whose `class` attribute carries the token.
-fn find_pill(html: &str, name: &str) -> Option<usize> {
+/// The offset of the next `<name …>` whose attribute text passes `matches`.
+fn find_element(html: &str, name: &str, matches: fn(&str) -> bool) -> Option<usize> {
     let open = format!("<{name}");
     let mut from = 0usize;
     while let Some(at) = html[from..].find(&open).map(|i| from + i) {
@@ -467,7 +467,7 @@ fn find_pill(html: &str, name: &str) -> Option<usize> {
             continue;
         }
         let gt = after.find('>')?;
-        if class_has_token(&after[..gt], "tag") {
+        if matches(&after[..gt]) {
             return Some(at);
         }
         from = at + open.len() + gt;
@@ -491,12 +491,35 @@ fn class_has_token(attrs: &str, token: &str) -> bool {
 }
 
 fn drop_tag_pills(html: &str) -> String {
+    drop_elements(html, &["div", "span"], |attrs| {
+        class_has_token(attrs, "tag")
+    })
+}
+
+/// Drops every element a screen reader is told to skip.
+///
+/// `aria-hidden="true"` marks what is only drawn: the arrows between the boxes
+/// of a flow diagram (one for the column layout, one for the row, both in the
+/// markup), the → after a service link. Converted, they came out as `↓→` on a
+/// line of their own and as a stray arrow inside link text. The twin is text
+/// for a reader that does not see the layout, which is exactly who the
+/// attribute was written for.
+fn drop_aria_hidden(html: &str) -> String {
+    drop_elements(html, &["div", "p", "span"], |attrs| {
+        attrs.contains("aria-hidden=\"true\"")
+    })
+}
+
+/// Removes each element named in `names` whose opening tag's attributes pass
+/// `matches`, with everything inside it. Nesting of the same name is counted,
+/// so an element that holds another of its kind is removed whole.
+fn drop_elements(html: &str, names: &[&str], matches: fn(&str) -> bool) -> String {
     let mut out = String::with_capacity(html.len());
     let mut rest = html;
     'scan: loop {
-        let Some((at, name)) = ["div", "span"]
+        let Some((at, name)) = names
             .iter()
-            .filter_map(|n| find_pill(rest, n).map(|i| (i, *n)))
+            .filter_map(|n| find_element(rest, n, matches).map(|i| (i, *n)))
             .min_by_key(|(i, _)| *i)
         else {
             break;
@@ -661,7 +684,9 @@ pub(crate) fn markdown_body(
 ) -> Result<String, Box<dyn std::error::Error>> {
     let main = main_content(html)?;
     let prepared = absolutise(
-        &separate_display_halves(&drop_tag_pills(&flatten_heading_breaks(main))),
+        &separate_display_halves(&drop_aria_hidden(&drop_tag_pills(&flatten_heading_breaks(
+            main,
+        )))),
         canonical,
     );
     let converter = HtmlToMarkdown::builder()
@@ -930,6 +955,10 @@ pub(crate) mod tests {
         // too, so a template written either way would have been missed twice.
         let html = r#"<p>a</p><div id="x" class="mb-6 tag">Label</div><p>b</p>"#;
         assert_eq!(drop_tag_pills(html), "<p>a</p><p>b</p>");
+        let flow = r#"<div>A</div><p aria-hidden="true"><span>&darr;</span><span>&rarr;</span></p><div>B</div>"#;
+        assert_eq!(drop_aria_hidden(flow), "<div>A</div><div>B</div>");
+        let link = r#"<a href="/x">Label<span aria-hidden="true"> &rarr;</span></a>"#;
+        assert_eq!(drop_aria_hidden(link), r#"<a href="/x">Label</a>"#);
     }
 
     #[test]

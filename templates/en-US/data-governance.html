@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["The same data has different versions in different departments, and the numbers don’t match", "You want to adopt AI or BI reporting but aren’t sure your data is usable", "You’re not sure what personal data the company holds, where it is, or who can see it", "You’re planning to connect legacy systems and want your data in order first"] %}
 {%- set scope = [{"t": "Data inventory", "d": "We list what data the company has, which system it’s in, who is responsible for it and who uses it."}, {"t": "Standardization", "d": "We unify field definitions, codes and naming so the same record matches across systems."}, {"t": "Quality monitoring", "d": "We set quality rules (completeness, accuracy, timeliness) and a routine for checking them."}, {"t": "Access and personal data", "d": "We set role-based access, flag personal and sensitive data, and check it against the requirements of Taiwan’s Personal Data Protection Act."}] %}
 {%- set process = [{"t": "Inventory", "d": "Interviews and a review of your systems, resulting in a data catalog."}, {"t": "Set the rules", "d": "Define standards, quality rules and access principles."}, {"t": "Implement", "d": "Put them into your systems and processes, and fix the most critical data problems."}, {"t": "Monitor and hand over", "d": "Set up regular checks and hand documentation to the staff responsible."}] %}
 {%- set deliverables = ["Data catalog (location, owner, users)", "Data standards and naming rules", "Quality rules and how they are checked", "Access and personal data classification", "Governance documentation and handover notes"] %}
 {%- set faqs = [{"q": "Do small and medium-sized businesses need data governance?", "a": "Yes, but the scope can be small. Start with the few datasets used most and wrong most often, such as customer, product and order data, rather than the whole company at once."}, {"q": "What does data governance have to do with adopting AI?", "a": "AI can only use data it can reach, and that data has to be correct. If data is inconsistent or permissions are unclear, the AI’s answers won’t be reliable either. Governing the data first gives adoption something to stand on."}, {"q": "Do we have to replace our current systems?", "a": "Usually not. Data governance is mostly about setting rules and organizing data and processes, and most of it can be done on the systems you already have."}] %}
+{%- set flow_nodes = [{"t": "Scattered data", "d": "ERP, Excel, department systems"}, {"t": "Catalog and standards", "d": "Location, owner, field definitions"}, {"t": "Quality and access", "d": "Regular checks, personal data classes"}, {"t": "Data you can trust", "d": "For reports and for AI"}] %}
 {% include "header.html" %}
 <!-- Service page: data-governance (en-US). Same structure as the zh-Hant-TW page;
      cycle and pricing are shared (_service-terms.html), and the FAQ is written
@@ -28,6 +29,7 @@
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "Know where your data is, who owns it and whether it can be trusted, and AI and reporting have a reliable foundation.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}
     {{ items(scope) }}

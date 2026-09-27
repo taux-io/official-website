@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["刚导入或准备导入 Google Workspace 的企业与政府机关", "已经在用，但多数同仁只用到 Gmail", "文件散在个人云端硬盘，人员异动时交接困难", "想开始用 Gemini，但同仁不会用或不确定能不能用"] %}
 {%- set scope = [{"t": "云端协作基础", "d": "云端硬盘与共用云端硬盘、分享与权限设置，让文件属于组织而不是个人。"}, {"t": "文档、试算表与演示文稿", "d": "共同编辑、留言与指派、版本记录；试算表的函数、数据整理与枢纽分析。"}, {"t": "会议与日历", "d": "Google Meet、预约时段、会议记录与日历共享。"}, {"t": "Workspace 中的 AI", "d": "用 Gemini 撰写、摘要与分析文档，以及哪些数据可以、哪些不可以交给 AI。"}, {"t": "管理者课程", "d": "帐号与群组、共用云端硬盘政策、数据保护与安全性设置。"}] %}
 {%- set process = [{"t": "需求访谈", "d": "了解单位的工作流程、现有工具与同仁程度。"}, {"t": "课程规划", "d": "依对象分为一般用户与管理者，用你们实际的文档与流程设计练习。"}, {"t": "授课", "d": "实体或线上，以操作练习为主。"}, {"t": "课后反馈", "d": "问卷与常见问题整理，决定是否需要高级或补充课程。"}] %}
 {%- set deliverables = ["课前需求访谈与课程规划", "讲义与练习档", "课后问卷与反馈整理", "常见问题与操作说明整理"] %}
 {%- set faqs = [{"q": "课程可以依我们的业务内容客制吗？", "a": "可以。课前会先访谈，用你们实际的文档与流程设计练习，而不是通用的范例。"}, {"q": "政府机关可以上这个课程吗？", "a": "可以。课程会依机关的数据保护规定，调整使用 AI 的范围与练习内容。"}, {"q": "可以只上 Gemini 的课程吗？", "a": "可以。课程模块可以单独选择，也可以组合成完整的导入训练。"}] %}
+{%- set flow_nodes = [{"t": "现况访谈", "d": "了解实际的工作流程"}, {"t": "客制课程", "d": "协作、文档、会议、Gemini"}, {"t": "实作练习", "d": "用自己的工作情境操作"}, {"t": "使用规范", "d": "哪些数据可以交给 AI"}] %}
 {% include "header.html" %}
 <!-- Service page: Google Workspace 教育训练. The page is the lists above rendered through the
      service macros in _blocks.html; cycle and pricing are shared
@@ -30,6 +31,7 @@
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "课程依组织实际的工作流程设计，学员练习的是自己每天会用到的情境。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}
     {{ items(scope) }}

@@ -305,13 +305,16 @@
                 page with no jobs on it; a visitor clicking API got a page with
                 no API. Those two are gone rather than repointed, because there
                 is nothing to point them at: adding them back is a job for
-                whoever builds the pages they promised. -->
+                whoever builds the pages they promised. The same now holds for
+                /building itself: it is noindex until the log it promises is
+                written, and a menu link would send every visitor to the
+                placeholder Google was told to skip. Put the link back with the
+                log. -->
                         <h2 class="eyebrow mb-8">05 — {{ strings.nav_col_company }}</h2>
                         <ul class="space-y-5">
                             <li><a href="/{{ locale }}" class="menu-link">{{ strings.nav_home }}</a></li>
                             <li><a href="/{{ locale }}/about" class="menu-link">{{ strings.nav_about }}</a></li>
                             <li><a href="/{{ locale }}/insights" class="menu-link">{{ strings.nav_insights }}</a></li>
-                            <li><a href="/{{ locale }}/building" class="menu-link">{{ strings.nav_building }}</a></li>
                             <li>
                             <a href="https://github.com/taux-io" target="_blank" rel="noopener noreferrer" class="menu-link">GitHub</a>
                             </li>
