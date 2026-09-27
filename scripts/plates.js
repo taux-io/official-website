@@ -33,7 +33,7 @@
 // Every plate this vocabulary has. The substrate is listed because a colour may
 // legitimately BE the paper, but it is not an ink: DESIGN.md counts two plates,
 // and paper is what they are printed on.
-const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb" };
+const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb", spot: "spot-rgb" };
 
 // THE DECLARED LADDER, and like `tracking scale` and `radius scale` before it,
 // the point is that it is closed. Every value here was measured off a colour
@@ -201,7 +201,7 @@ function foreignColourUtility(className) {
 // `from-primary` onto a plain <div>, which the gate passed. One list, read by
 // everything that needs it.
 const PLATE_UTILITY = new RegExp(
-  `^(?:[a-z-]+:)*(?:${COLOUR_PREFIX})-(surface|ink|primary|line)(?:-[a-z]+)?(?:\\/(\\d{1,3}))?$`
+  `^(?:[a-z-]+:)*(?:${COLOUR_PREFIX})-(surface|ink|primary|line|spot)(?:-[a-z]+)?(?:\\/(\\d{1,3}))?$`
 );
 
 // `null` coverage means the utility names a plate without a density — `text-ink`

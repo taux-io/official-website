@@ -44,6 +44,8 @@ module.exports = {
           focus: "rgb(var(--primary-focus-rgb) / <alpha-value>)",
         },
         line: "rgb(var(--line-rgb) / <alpha-value>)",
+        // Illustrations only (decision 165); rule 25 keeps it in _art.html.
+        spot: "rgb(var(--spot-rgb) / <alpha-value>)",
       },
       fontFamily: {
         // SF Pro on Apple platforms, system-ui everywhere else, CJK from the

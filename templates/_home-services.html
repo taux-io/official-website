@@ -16,7 +16,7 @@
             {%- for col in nav %}
             <div>
                 <div class="flex items-center gap-4 mb-3">
-                    <div class="w-24 shrink-0">{% set art = col.key %}{% include "_art.html" %}</div>
+                    <div class="w-32 shrink-0">{% set art = col.key %}{% include "_art.html" %}</div>
                     <h3 class="mb-0">{{ col.title }}</h3>
                 </div>
                 <p class="text-lg leading-relaxed mb-5">{{ strings["home_problem_" ~ col.key] }}</p>
