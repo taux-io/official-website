@@ -1345,6 +1345,10 @@ date_published = "2026-09-26"
 [[page]]
 path        = "/building"
 template    = "building.html"
+# An "under construction" page in every locale: Google reports it as a soft
+# 404 (Search Console, 2026-09-27). Out of the index and the sitemap until the
+# log it promises exists; delete this line then.
+noindex     = true
 date_modified = "2026-07-26"
 
   [page.locale.zh-Hant-TW]

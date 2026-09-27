@@ -129,7 +129,7 @@ Every route on the site has an English edition. These are all of them.
 -   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。 ([Markdown](https://taux.io/zh-Hant-TW.md))
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
 -   [技術文章](https://taux.io/zh-Hant-TW/insights): 本站全部技術文章的總覽（GEO、MCP、AI Agent、LLM 資安、後量子密碼），以及公開維護的開源專案。 ([Markdown](https://taux.io/zh-Hant-TW/insights.md))
--   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。 ([Markdown](https://taux.io/zh-Hant-TW/building.md))
+-   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。
 -   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
 -   [About TauX | A technology company in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
 -   [Insights](https://taux.io/en-US/insights): Every technical article on the site — GEO, MCP, AI agents, LLM security, post-quantum cryptography — and the open-source projects we maintain.
