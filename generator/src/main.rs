@@ -422,6 +422,7 @@ fn render_pages(
                 css_version => &css_v,
                 js_version => &js_v,
                 nav => &nav[locale.as_str()].0,
+                related => site.related_for(page, locale)?,
                 articles => &nav[locale.as_str()].1,
                 og_image => url_attr(&format!("{ORIGIN}/static/og/{}.png", text.slug())),
                 date_modified => &page.date_modified,
@@ -588,6 +589,8 @@ fn render_documents(
             // No alternates: the error document is one file for every language,
             // so it has no translations to point at.
             alternates => Vec::<Value>::new(),
+            // A document is never an article, so it names no service.
+            related => (),
             title => &doc.title,
             description => &doc.description,
             canonical => url_attr(&doc.canonical),
