@@ -235,6 +235,12 @@ pub(crate) struct Page {
     /// that language's menu.
     #[serde(default)]
     pub(crate) section: Option<String>,
+    /// For an article: the path of the service it supports. The article then
+    /// closes with a link to that service (`Site::related_for`), which is how a
+    /// reader who came for the explanation finds the thing TauX sells — and how
+    /// a crawler learns which service page the topic belongs to.
+    #[serde(default)]
+    pub(crate) service: Option<String>,
     /// Emits `<meta name="robots" content="noindex, follow">`, same as on a
     /// document.
     ///
@@ -412,6 +418,7 @@ pub(crate) mod tests {
             date_modified: "2026-01-01".to_string(),
             date_published: None,
             section: None,
+            service: None,
             noindex: false,
         }
     }
@@ -630,6 +637,7 @@ pub(crate) mod tests {
             path = "/what-is-mcp"
             template = "what-is-mcp.html"
             section = "article"
+            service = "/mcp-integration"
             date_modified = "2026-01-01"
               [page.locale.zh-Hant-TW]
               title = "MCP 是什麼？ | TauX"
@@ -649,6 +657,19 @@ pub(crate) mod tests {
         assert_eq!(cols[0].items[0].summary, "s");
         assert_eq!(articles[0].label, "MCP 是什麼？");
         assert_eq!(articles[0].summary, "d", "falls back to the description");
+        let article = site.page.iter().find(|p| p.path == "/what-is-mcp").unwrap();
+        let related = site.related_for(article, "zh-Hant-TW").unwrap().unwrap();
+        assert_eq!(related.href, "/zh-Hant-TW/mcp-integration");
+        assert!(
+            site.related_for(article, "en-US").unwrap().is_none(),
+            "untranslated service"
+        );
+        let service = site
+            .page
+            .iter()
+            .find(|p| p.path == "/mcp-integration")
+            .unwrap();
+        assert!(site.related_for(service, "zh-Hant-TW").unwrap().is_none());
         let (cols, articles) = site.nav_for("en-US").unwrap();
         assert!(
             cols.is_empty(),
@@ -756,15 +777,7 @@ impl Site {
             .iter()
             .find(|l| l.tag == locale)
             .map(|l| &l.strings);
-        let item = |page: &Page, text: &LocaleText| NavItem {
-            href: format!("/{locale}{}", page.path),
-            label: text.short_name(),
-            description: text.description.clone(),
-            summary: text
-                .summary
-                .clone()
-                .unwrap_or_else(|| text.description.clone()),
-        };
+        let item = |page: &Page, text: &LocaleText| nav_item(locale, page, text);
         for page in &self.page {
             if let Some(s) = &page.section {
                 if s != "article" && !NAV_SECTIONS.contains(&s.as_str()) {
@@ -798,5 +811,46 @@ impl Site {
             .filter_map(|p| p.locale.get(locale).map(|t| item(p, t)))
             .collect();
         Ok((columns, articles))
+    }
+
+    /// The service an article links to at its end, in this locale — `None`
+    /// when the page names no service or the service is not translated into
+    /// this locale yet. A `service` that is not a service page is a build
+    /// error rather than a missing link.
+    pub(crate) fn related_for(&self, page: &Page, locale: &str) -> Result<Option<NavItem>, String> {
+        let Some(path) = &page.service else {
+            return Ok(None);
+        };
+        let target = self
+            .page
+            .iter()
+            .find(|p| &p.path == path)
+            .filter(|p| {
+                p.section
+                    .as_deref()
+                    .is_some_and(|s| NAV_SECTIONS.contains(&s))
+            })
+            .ok_or_else(|| {
+                format!(
+                    "{} names service {path:?}, which is not a service page",
+                    page.path
+                )
+            })?;
+        Ok(target
+            .locale
+            .get(locale)
+            .map(|t| nav_item(locale, target, t)))
+    }
+}
+
+fn nav_item(locale: &str, page: &Page, text: &LocaleText) -> NavItem {
+    NavItem {
+        href: format!("/{locale}{}", page.path),
+        label: text.short_name(),
+        description: text.description.clone(),
+        summary: text
+            .summary
+            .clone()
+            .unwrap_or_else(|| text.description.clone()),
     }
 }

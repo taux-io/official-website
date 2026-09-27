@@ -1,0 +1,15 @@
+{% from "_blocks.html" import cover -%}
+<!-- The service an article supports (site.toml `service`, resolved per locale
+     by Site::related_for). Inside <main>, so the Markdown twin carries it too:
+     a model reading the article learns which service page the topic belongs
+     to, the same way a reader does. -->
+<div class="max-w-prose mx-auto px-6 pb-16">
+    <section id="related-service">
+        <div class="bg-ink/5 px-6 py-8 -mx-6 tablet:mx-0">
+            {% call cover() %}{{ strings.related_service_title }}{% endcall %}
+            <p class="leading-relaxed mb-5">{{ strings.related_service_lead }}</p>
+            <a href="{{ related.href|safe }}" class="underline underline-offset-4 font-semibold text-lg">{{ related.label }}<span aria-hidden="true"> &rarr;</span></a>
+            <p class="leading-relaxed mt-2">{{ related.summary }}</p>
+        </div>
+    </section>
+</div>
