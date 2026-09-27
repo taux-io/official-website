@@ -15,7 +15,8 @@
     {{ faq_jsonld(faqs, canonical) }}
 ]}
 </script>
-<div class="max-w-prose mx-auto px-6 pt-2 pb-10 space-y-12 tablet:space-y-16">
+<div class="max-w-6xl mx-auto px-6 pt-2 pb-10 laptop:flex laptop:gap-16 laptop:items-start">
+<div class="max-w-prose mx-auto laptop:mx-0 laptop:flex-1 space-y-12 tablet:space-y-16">
 <section class="band">
     <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
     <h1 class="mb-6">
@@ -53,6 +54,8 @@
     </ul>
 </section>
 {% include "_service-contact.html" %}
+</div>
+{% include "_service-aside.html" %}
 </div>
 
 {% include "footer.html" %}

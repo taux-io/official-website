@@ -9,10 +9,10 @@
 {"@context": "https://schema.org", "@type": "OfferCatalog", "@id": {{ (canonical ~ "#services")|tojson }}, "name": {{ strings.home_services_title|tojson }}, "description": {{ strings.home_services_lead|tojson }}, "itemListElement": [{% set n = namespace(i=0) %}{% for col in nav %}{% for item in col.items %}{% set n.i = n.i + 1 %}{% if n.i > 1 %}, {% endif %}{"@type": "ListItem", "position": {{ n.i }}, "name": {{ item.label|tojson }}, "item": {{ ("https://taux.io" ~ item.href)|tojson }}}{% endfor %}{% endfor %}]}
 </script>
 <div class="max-w-6xl mx-auto px-6 pt-8 pb-10 tablet:pt-12 tablet:pb-16 space-y-16">
-    <section id="services" class="max-w-prose">
+    <section id="services">
         {% call cover() %}{{ strings.home_services_title }}{% endcall %}
-        <p class="text-lg leading-relaxed mb-10">{{ strings.home_services_lead }}</p>
-        <div class="space-y-12">
+        <p class="text-lg leading-relaxed mb-10 max-w-prose">{{ strings.home_services_lead }}</p>
+        <div class="grid laptop:grid-cols-2 gap-x-16 gap-y-12">
             {%- for col in nav %}
             <div>
                 <div class="flex items-center gap-3 mb-3">
@@ -35,9 +35,10 @@
             {%- endfor %}
         </div>
     </section>
-    <section id="proof" class="max-w-prose">
+    <section id="proof">
+    <div class="bg-ink/5 px-6 py-10 tablet:px-10 -mx-6 tablet:mx-0">
         {% call cover() %}{{ strings.home_proof_title }}{% endcall %}
-        <div class="space-y-6">
+        <div class="grid laptop:grid-cols-3 gap-8">
             <div class="border-t border-line pt-6">
                 <h3 class="mb-2">{{ strings.home_proof_1_title }}</h3>
                 <p class="leading-relaxed">{{ strings.home_proof_1_body }} <a href="https://github.com/taux-io/twse-mcp" class="underline underline-offset-4">github.com/taux-io/twse-mcp</a></p>
@@ -51,5 +52,6 @@
                 <p class="leading-relaxed">{{ strings.home_proof_3_body }}</p>
             </div>
         </div>
+    </div>
     </section>
 </div>

@@ -1,0 +1,17 @@
+<!-- The service pages' sidebar, laptop width and up: what the page sells, the
+     terms, and the way to ask — in view for the whole scroll, beside a reading
+     column that keeps its 68ch (DESIGN.md decision 157). Below laptop it is not
+     rendered at all: the same terms are sections 05 and 06 in the column, and a
+     phone has no second column to put it in. -->
+<aside class="hidden laptop:block w-72 shrink-0 sticky top-24 mt-10 border-t-2 border-ink pt-5 space-y-5" aria-label="{{ label }}">
+    <p class="font-semibold text-lg">{{ label }}</p>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.service_cycle_title }}</p>
+        <p>{{ strings.service_aside_cycle }}</p>
+    </div>
+    <div>
+        <p class="text-sm text-ink-soft">{{ strings.service_pricing_title }}</p>
+        <p>{{ strings.service_aside_pricing }}</p>
+    </div>
+    <a href="mailto:hello@taux.io" class="btn w-full">{{ strings.service_contact_button }}</a>
+</aside>
