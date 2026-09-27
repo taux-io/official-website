@@ -327,3 +327,22 @@ npx wrangler rollback <version-id> --message "為什麼"
 - **建置不讀 git。** 頁面日期宣告在 `site.toml`，所以淺層 clone 不影響任何輸出。先前的版本會讓每次部署把全站每一頁的修改日期蓋成部署當天——包括改個 README 錯字觸發的那次。
 - **沒有機密，執行期或建置期都沒有。** Workers Builds 用它自己的 Git 整合憑證，這個 repo 不需要任何 secret。若 Worker 的設定裡出現任何 binding、變數或機密，那是誤加的。
 - **沒有 `*.workers.dev` 網址。** `workers_dev` 設為 `false`：整個站掛在第二個永久網域上，等於每一頁都有一份 canonical 指向別處的完整複本。per-version 的 preview URL 仍然開著，推廣之前可以用它看一眼；它們不公開列出且每個版本都不同。
+
+## 10. 子網域：先刪 DNS，再停服務
+
+`taux.io` 的 zone 是 **2026-07-24** 才進這個 Cloudflare 帳號的（Cloudflare 簽發的憑證與帳號 Audit Log 都從那天開始），在那之前 DNS 在別處，**那段期間的紀錄在 Cloudflare 查不到**。
+
+**發生過的事（2026-09-27 查證）。** Search Console 回報 11 個 `apitmhsns.taux.io/cdn/…` 的 `.docx`／`.xls` 網址（5xx，未收錄）。憑證透明度紀錄（`crt.sh`，查 `%.taux.io`）顯示這個子網域在 2025-10-20 到 2026-06-13 之間每兩個月向 Let's Encrypt 續一次憑證——網域在持有期間，有一筆 DNS 紀錄指向一台自己管憑證的外部主機；搬進 Cloudflare 時那筆紀錄沒有帶過來，之後就是 NXDOMAIN。來源無法再追。那些檔案的日期早於網域註冊（2025-02-15），不像是自己的內容。
+
+**規則。** 停用任何外部服務（主機、雲端儲存、託管平台、CDN）時，**先刪掉 Cloudflare 裡指向它的 DNS 紀錄，再停服務**。順序反過來，子網域就會指向一個別人可以認領的位置——那正是子網域被拿去放別人檔案的方式。刪掉一個服務前後，都用 `crt.sh` 看一次 `%.taux.io`：列出來、但你說不出用途的名字，就是要查的那一筆。
+
+**目前的子網域（2026-09-27）。**
+
+| 名稱 | 指向 | 狀態 |
+|---|---|---|
+| `www` | Cloudflare（301 到 `taux.io`） | 正常 |
+| `twse-mcp` | Cloudflare Worker `twse-mcp` | 正常 |
+| `memora`、`memoracms` | Cloudflare 代理到一台外部 nginx | 回 503——後端服務停了，主機仍在續 Let's Encrypt 憑證 |
+| `memoraapi` | 同上 | 回 404 |
+
+`memora*` 的擁有者與用途要擁有者確認：還要用就修後端；不用了就依上面的規則先刪 DNS。
