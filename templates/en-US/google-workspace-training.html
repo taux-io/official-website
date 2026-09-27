@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["Businesses and government agencies that have just adopted, or are about to adopt, Google Workspace", "Organizations already using it where most staff only use Gmail", "Files sit in personal drives, making handovers hard when people change roles", "You want to start using Gemini, but staff don’t know how or aren’t sure they’re allowed to"] %}
 {%- set scope = [{"t": "Cloud collaboration basics", "d": "Drive and shared drives, sharing and permission settings, so files belong to the organization rather than to individuals."}, {"t": "Docs, Sheets and Slides", "d": "Co-editing, comments and assignments, version history; in Sheets, functions, data cleanup and pivot tables."}, {"t": "Meetings and Calendar", "d": "Google Meet, appointment scheduling, meeting notes and calendar sharing."}, {"t": "AI in Workspace", "d": "Using Gemini to write, summarize and analyze documents, and which data can and can’t be given to AI."}, {"t": "Admin course", "d": "Accounts and groups, shared drive policies, data protection and security settings."}] %}
 {%- set process = [{"t": "Needs interview", "d": "Learn how your team works, which tools you use now and how familiar staff are with them."}, {"t": "Course planning", "d": "Separate tracks for general users and admins, with exercises built on your own documents and processes."}, {"t": "Teaching", "d": "In person or online, mostly hands-on practice."}, {"t": "Feedback", "d": "A survey and a list of common questions, to decide whether an advanced or follow-up course is needed."}] %}
 {%- set deliverables = ["Pre-course needs interview and course plan", "Handouts and practice files", "Post-course survey and feedback summary", "Common questions and how-to notes"] %}
 {%- set faqs = [{"q": "Can the course be tailored to our work?", "a": "Yes. We interview you first and build the exercises on your actual documents and processes, not generic examples."}, {"q": "Can government agencies take this course?", "a": "Yes. We adjust what AI may be used for, and the exercises, to fit the agency’s data protection rules."}, {"q": "Can we take just the Gemini course?", "a": "Yes. Modules can be taken on their own or combined into full rollout training."}] %}
+{%- set flow_nodes = [{"t": "Needs interview", "d": "Learn how work actually gets done"}, {"t": "Tailored course", "d": "Collaboration, Docs, Meet, Gemini"}, {"t": "Hands-on practice", "d": "Using your own work scenarios"}, {"t": "Usage rules", "d": "Which data can be given to AI"}] %}
 {% include "header.html" %}
 <!-- Service page: google-workspace-training (en-US). Same structure as the zh-Hant-TW page;
      cycle and pricing are shared (_service-terms.html), and the FAQ is written
@@ -28,6 +29,7 @@
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "Courses are built around how your organization actually works, so staff practice the scenarios they use every day.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}
     {{ items(scope) }}

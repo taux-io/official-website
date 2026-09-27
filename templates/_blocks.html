@@ -146,3 +146,27 @@
 {"@type": "FAQPage", "@id": {{ (canonical ~ "#faq")|tojson }}, "mainEntity": [
 {%- for f in list %}{"@type": "Question", "name": {{ f.q|tojson }}, "acceptedAnswer": {"@type": "Answer", "text": {{ f.a|tojson }}}}{% if not loop.last %}, {% endif %}{% endfor %}]}
 {%- endmacro %}
+
+{#-
+  A service's flow: four boxes joined by arrows. A column below desktop and a
+  row at desktop, where the reading column beside the sidebar (decision 157)
+  is wide enough for four — at laptop width it is about 560px, too narrow for
+  a row. Content only, per rule 37: the data is `{% set flow_nodes %}` at the
+  top of the page, `t` the box title and `d` one line under it.
+-#}
+{% macro flow(nodes, caption) -%}
+<figure class="border-t border-line pt-6">
+    <div class="flex flex-col desktop:flex-row desktop:items-stretch gap-3">
+    {%- for n in nodes %}
+        <div class="border border-line px-4 py-3 text-center desktop:flex-1">
+            <p class="font-semibold mb-1">{{ n.t }}</p>
+            <p class="text-sm leading-relaxed">{{ n.d }}</p>
+        </div>
+        {%- if not loop.last %}
+        <p class="text-center text-ink-soft self-center" aria-hidden="true"><span class="desktop:hidden">&darr;</span><span class="hidden desktop:inline">&rarr;</span></p>
+        {%- endif %}
+    {%- endfor %}
+    </div>
+    <figcaption class="text-sm leading-relaxed mt-4">{{ caption }}</figcaption>
+</figure>
+{%- endmacro %}

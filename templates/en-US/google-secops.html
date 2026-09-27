@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["Logs are spread across firewalls, endpoints and cloud services, and can’t be searched when an incident happens", "You want security monitoring but don’t have a large security operations team", "You have adopted, or are evaluating, Google SecOps", "Your detection rules produce too many false positives, and no one handles the alerts"] %}
 {%- set scope = [{"t": "Assessment", "d": "We inventory log sources and retention needs, and the threat scenarios you most need to detect."}, {"t": "Log ingestion and normalization", "d": "We bring logs from each source into the platform, convert them to UDM (Unified Data Model), and verify the field mappings."}, {"t": "Detection rules", "d": "We write and tune detection rules based on risk, reducing false positives step by step."}, {"t": "Alert handling", "d": "We define who receives alerts, how they are triaged and handled, and what the dashboards should show."}, {"t": "Handover and training", "d": "An operations manual and training, so your team can tune rules and handle incidents on its own."}] %}
 {%- set process = [{"t": "Assess", "d": "Confirm log sources, priorities and the scenarios to detect."}, {"t": "Ingest", "d": "Bring logs in by priority and normalize them."}, {"t": "Detect and tune", "d": "Put detection rules live and tune them against real alerts."}, {"t": "Hand over", "d": "Deliver process documents, an operations manual and training."}] %}
 {%- set deliverables = ["Assessment report", "Log source list and field mapping document", "Detection rules and test records", "Alert handling process", "Operations manual and training"] %}
 {%- set faqs = [{"q": "What is Google SecOps?", "a": "Google Security Operations, Google Cloud’s security operations platform, which combines log collection and analysis (SIEM) with automated response (SOAR). This service covers deployment, configuration and handover."}, {"q": "Do small and medium-sized businesses need a SIEM?", "a": "Not necessarily. We first look at your log volume, regulatory requirements and staffing; if a lighter approach suits you better for now, we’ll tell you."}, {"q": "Who monitors it after deployment?", "a": "Your team can take it over, with the operations manual and training we provide, or we can discuss ongoing operations support separately."}] %}
+{%- set flow_nodes = [{"t": "Log sources", "d": "Firewalls, endpoints, cloud services"}, {"t": "Google SecOps", "d": "Ingested and normalized to UDM"}, {"t": "Detection rules", "d": "Written and tuned for threat scenarios"}, {"t": "Alert handling", "d": "Who receives, triages and handles"}] %}
 {% include "header.html" %}
 <!-- Service page: google-secops (en-US). Same structure as the zh-Hant-TW page;
      cycle and pricing are shared (_service-terms.html), and the FAQ is written
@@ -28,6 +29,7 @@
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "Scattered logs come into one platform, rules find the threats, and your team knows what to do when an alert arrives.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}
     {{ items(scope) }}

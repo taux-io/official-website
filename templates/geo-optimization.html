@@ -1,9 +1,10 @@
-{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld -%}
+{% from "_blocks.html" import cover, items, steps, lines, faq_list, faq_jsonld, flow -%}
 {%- set audience = ["網站流量少，或只有搜尋公司名稱才找得到", "客戶開始問 ChatGPT、Perplexity，而 AI 的回答裡沒有你", "網站多年沒整理，結構與內容都跟不上現在的搜尋方式", "投了廣告，想同時累積不必付費的自然流量"] %}
 {%- set scope = [{"t": "技術 SEO", "d": "網站速度、行動版、索引狀態、網址與內部連結結構，先排除讓搜尋引擎讀不到你的問題。"}, {"t": "內容與關鍵字", "d": "找出客戶實際在搜尋的問題，規劃與改寫內容，讓每一頁回答一個明確的問題。"}, {"t": "結構化資料", "d": "Schema 標記、實體識別與知識圖譜關聯，讓機器不必從版面猜你是誰、賣什麼、誰寫的。"}, {"t": "內容分塊與可引用性", "d": "把內容整理成模型擷取得動的區塊：固定結構、明確定義、每段都能單獨被引用。"}, {"t": "AI 爬蟲存取與 llms.txt", "d": "盤點 AI 爬蟲的存取政策並建置 llms.txt，決定哪些內容開放給模型、以什麼形式開放。"}, {"t": "量測", "d": "在動工前記錄基準線：搜尋排名與流量，以及在主要生成式引擎上被提及與被引用的情況，之後持續追蹤變化。"}] %}
 {%- set process = [{"t": "現況稽核與基準線", "d": "盤點技術、內容、結構化資料與爬蟲存取，並記錄動工前的數字。沒有基準線，就無法判斷之後的改動有沒有用。"}, {"t": "優先修正", "d": "先處理影響最大的技術問題與最重要的頁面。"}, {"t": "內容與結構", "d": "改寫或新增內容、補上結構化資料與 llms.txt。"}, {"t": "量測與調整", "d": "定期比對基準線，決定下一批要處理的內容。"}] %}
 {%- set deliverables = ["網站稽核報告與基準線數字", "修正清單與優先序", "結構化資料與 llms.txt", "內容規劃與改寫", "定期量測報告"] %}
 {%- set faqs = [{"q": "GEO 和 SEO 有什麼不同？", "a": "SEO 的目標是在搜尋結果的連結裡排名；GEO 的目標是在 ChatGPT、Perplexity、Google AI 摘要等生成式引擎的回答中被提及與引用。兩者的基礎相同：內容清楚、結構明確、機器讀得懂。"}, {"q": "做 SEO 與 GEO 多久看得到效果？", "a": "技術問題修正後，搜尋引擎重新索引通常需要幾週；內容累積的效果則以月計。所以我們在動工前就記錄基準線，用數字比對變化。"}, {"q": "可以保證排名或被 AI 引用嗎？", "a": "不能。排名與引用由搜尋引擎與 AI 公司決定，任何人都無法保證。我們能做的是讓你的內容更容易被讀懂、被信任，並如實量測結果。"}] %}
+{%- set flow_nodes = [{"t": "網站內容與結構", "d": "技術 SEO、結構化資料、llms.txt"}, {"t": "搜尋引擎與 AI 爬蟲", "d": "讀得到、看得懂"}, {"t": "搜尋結果與 AI 答案", "d": "出現在連結裡，也出現在答案裡"}, {"t": "量測", "d": "動工前記錄基準，之後比對變化"}] %}
 {% include "header.html" %}
 <!-- Service page: SEO 與 GEO 搜尋優化. The page is the lists above rendered through the
      service macros in _blocks.html; cycle and pricing are shared
@@ -30,6 +31,7 @@
     {% call cover("01") %}適合誰{% endcall %}
     {{ lines(audience) }}
 </section>
+{{ flow(flow_nodes, "SEO 讓你出現在搜尋結果的連結裡，GEO 讓你出現在 AI 的答案裡；兩者都從同一個網站開始。") }}
 <section id="scope">
     {% call cover("02") %}服務內容{% endcall %}
     {{ items(scope) }}
