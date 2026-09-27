@@ -1487,6 +1487,21 @@ noindex     = true
 # **When a destination is retired, every redirect that names it has to move
 # too.** Nothing checks for chains — the contract test asserts each entry's own
 # status and Location, which a chain satisfies at every link.
+# Pre-#58 page files. Search Console (2026-09-27) still reports these three as
+# 404s, so something links to them; 301 hands those links to the page's
+# current home in the canonical locale.
+[[redirect]]
+from = "/index.html"
+to   = "/zh-Hant-TW"
+
+[[redirect]]
+from = "/ai-smart-work.html"
+to   = "/zh-Hant-TW/ai-smart-work"
+
+[[redirect]]
+from = "/what-is-llms-txt.html"
+to   = "/zh-Hant-TW/what-is-llms-txt"
+
 [[redirect]]
 from   = "/workspace-ai-roi"
 to     = "/zh-Hant-TW/google-workspace-with-ai"
