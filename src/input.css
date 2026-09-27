@@ -914,6 +914,23 @@
     text-wrap: balance;
   }
 
+  /* The same reversal for the few section headings that use the pair (the
+     about page's contact heading, one article's covers): the local line takes
+     the h2's own size, the Latin line becomes its kicker. */
+  :root:not(:lang(en)) main h2 .display-lead {
+    @apply font-display text-base tablet:text-lg mb-1 text-ink-muted;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  :root:not(:lang(en)) main h2 .display-sub {
+    @apply mt-0 text-ink;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
   /* Eyebrow label — section numbers, column headings, kickers.
      text-ink rather than muted: with one ink and no --text-muted role
      left, the step below body is made by size, case and tracking rather than by
