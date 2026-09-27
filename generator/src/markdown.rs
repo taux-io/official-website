@@ -529,7 +529,11 @@ fn drop_elements(html: &str, names: &[&str], matches: fn(&str) -> bool) -> Strin
         let mut depth = 1usize;
         let mut cursor = at + open.len();
         loop {
-            let next_open = rest[cursor..].find(&open).map(|i| cursor + i);
+            // Through `find_element`, not a bare `find(&open)`: with "p" in a
+            // name list, `<p` also matches `<path`, `<pre` and `<polygon`, and
+            // one of those inside the element would leave depth above zero
+            // and swallow text up to some later `</p>`.
+            let next_open = find_element(&rest[cursor..], name, |_| true).map(|i| cursor + i);
             let Some(next_close) = rest[cursor..].find(&close).map(|i| cursor + i) else {
                 // Unbalanced markup. Leaving the chip in place is a visible
                 // defect; swallowing the rest of the page is not.
@@ -957,6 +961,8 @@ pub(crate) mod tests {
         assert_eq!(drop_tag_pills(html), "<p>a</p><p>b</p>");
         let flow = r#"<div>A</div><p aria-hidden="true"><span>&darr;</span><span>&rarr;</span></p><div>B</div>"#;
         assert_eq!(drop_aria_hidden(flow), "<div>A</div><div>B</div>");
+        let icon = r#"<p aria-hidden="true"><svg><path d="M0"/></svg></p><p>kept</p>"#;
+        assert_eq!(drop_aria_hidden(icon), "<p>kept</p>", "<path is not a <p");
         let link = r#"<a href="/x">Label<span aria-hidden="true"> &rarr;</span></a>"#;
         assert_eq!(drop_aria_hidden(link), r#"<a href="/x">Label</a>"#);
     }
