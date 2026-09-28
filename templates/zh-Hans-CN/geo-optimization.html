@@ -20,7 +20,7 @@
 <div class="max-w-6xl mx-auto px-6 pt-2 pb-10 laptop:flex laptop:gap-16 laptop:items-start">
 <div class="max-w-prose mx-auto laptop:mx-0 laptop:flex-1 space-y-12 tablet:space-y-16">
 <section class="band">
-    <span class="tag mb-4 inline-block">{{ strings.nav_col_marketing }}</span>
+    <span class="tag mb-4 gap-1.5">{% set icon = section %}{% include "_tag-icon.html" %}{{ strings.nav_col_marketing }}</span>
     <h1 class="mb-6">
         <span class="display-lead" lang="en">Search optimization</span>
         <span class="display-sub">{{ label }}</span>

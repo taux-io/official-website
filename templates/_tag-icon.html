@@ -1,0 +1,12 @@
+{#-
+  A service category's mark inside its tag (DESIGN.md decision 168): the same
+  line drawing, at the tag's own size, so the chip and the category's
+  illustration read as one family. `set icon = section` first; anything that
+  is not one of the four keys draws nothing. aria-hidden: the tag's words
+  carry the meaning.
+-#}
+{% if icon == "ai" %}<svg viewBox="0 0 32 32" class="w-3.5 h-3.5 shrink-0 fill-none stroke-primary" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3"/><circle cx="24" cy="8" r="3"/><circle cx="16" cy="24" r="3"/><path d="M11 8h10M9.5 10.5l5 11M22.5 10.5l-5 11"/></svg>
+{% elif icon == "marketing" %}<svg viewBox="0 0 32 32" class="w-3.5 h-3.5 shrink-0 fill-none stroke-primary" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1.5"/></svg>
+{% elif icon == "training" %}<svg viewBox="0 0 32 32" class="w-3.5 h-3.5 shrink-0 fill-none stroke-primary" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h24v15H4z"/><path d="M16 21v5M11 26h10M9 11h9M9 15h6"/></svg>
+{% elif icon == "security" %}<svg viewBox="0 0 32 32" class="w-3.5 h-3.5 shrink-0 fill-none stroke-primary" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 4l10 4v7c0 7-4.5 11-10 13-5.5-2-10-6-10-13V8z"/><path d="M11.5 16l3 3 6-6"/></svg>
+{%- endif %}

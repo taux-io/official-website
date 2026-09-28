@@ -44,6 +44,8 @@ const TYPE_SCALE = {
 // decision #93 records the branch as a known defect rather than a design: it
 // makes a card's type size depend on how long its title happens to be, which is
 // why the same page's card is set at 80px in one locale and 62px in another.
-const TITLE_LONG_THRESHOLD = 34;
+// 34 → 24 with decision 167: beside the picture the title column is 760px, and
+// a 25-34 character title at 80px ran to four lines there.
+const TITLE_LONG_THRESHOLD = 24;
 
 module.exports = { WIDTH, HEIGHT, OUT_DIR, TYPE_SCALE, TITLE_LONG_THRESHOLD };

@@ -219,7 +219,7 @@
                  and the wordmark is a control, so its target should fill the
                  bar rather than stop at the cap height. -->
             <a href="/{{ locale }}" class="wordmark" aria-label="{{ strings.nav_home_link }}">
-                TauX
+                {% include "_logo.html" %}
             </a>
 
             <!-- One item now. Explore opens what the site contains; the
@@ -288,7 +288,7 @@
     <div id="menuOverlay" inert class="menu-surface fixed inset-0 z-[60] opacity-0 pointer-events-none overflow-y-auto" role="dialog" aria-modal="true" aria-label="{{ strings.nav_menu }}">
         <div class="max-w-6xl mx-auto px-6 py-6">
             <div class="flex items-center justify-between h-10">
-                <span class="font-display text-lg uppercase tracking-[0.09em]">TauX</span>
+                <span class="inline-flex items-center">{% include "_logo.html" %}<span class="sr-only">TauX</span></span>
                 <button type="button" id="menuClose" class="nav-link min-h-12 min-w-12 inline-flex items-center justify-end" aria-label="{{ strings.nav_menu_close }}">
                     {{ strings.nav_menu_close }}
                 </button>
