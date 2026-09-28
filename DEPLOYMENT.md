@@ -342,7 +342,9 @@ npx wrangler rollback <version-id> --message "為什麼"
 |---|---|---|
 | `www` | Cloudflare（301 到 `taux.io`） | 正常 |
 | `twse-mcp` | Cloudflare Worker `twse-mcp` | 正常 |
-| `memora`、`memoracms` | Cloudflare 代理到一台外部 nginx | 回 503——後端服務停了，主機仍在續 Let's Encrypt 憑證 |
-| `memoraapi` | 同上 | 回 404 |
+| `memora`、`memoracms` | Cloudflare 代理到一台外部 nginx | 擁有者的另一套開發系統，給客戶看的 demo（2026-09-28 確認）。當時回 503——後端服務停了，主機仍在續 Let's Encrypt 憑證 |
+| `memoraapi` | 同上 | 同上，回 404 |
 
-`memora*` 的擁有者與用途要擁有者確認：還要用就修後端；不用了就依上面的規則先刪 DNS。
+`memora*` 不再使用時，依上面的規則**先刪這三筆 DNS，再關主機**。
+
+**`apitmhsns` 的重新解讀（2026-09-28）。** 擁有者確認 `memora*` 是自己的 demo 之後，`apitmhsns` 更可能也是同一類東西——較早一版開發系統的 API 子網域：兩者都在外部主機上自己續 Let's Encrypt，`apitmhsns` 最後一次續憑證（06-13）和 `memora` 第一張憑證（06-10）幾乎同時，名稱也像部署工具自動產生的。果真如此，那些 `.docx`／`.xls` 是那套系統自己的檔案，要確認的是其中有沒有客戶資料，而不是誰放的。
