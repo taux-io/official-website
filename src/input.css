@@ -705,6 +705,33 @@
     }
   }
 
+  /* THE ARROW LEANS INTO THE CLICK (DESIGN.md decision 168). A service or
+     related-service link ends in an arrow; on hover it moves 4px the way the
+     link goes, and 2px on press, so a pointer and a finger both get an
+     answer. Hover only where hover exists (rule 35), press after hover (rule
+     34), and no movement for a reader who asked for less. The arrow is
+     aria-hidden and outside the words, so the link text never moves. */
+  .nudge {
+    display: inline-block;
+    transition: transform 0.2s var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    a:hover .nudge {
+      transform: translateX(4px);
+    }
+  }
+
+  a:active .nudge {
+    transform: translateX(2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nudge {
+      transition: none;
+    }
+  }
+
   /* The wordmark and the hamburger are controls without a component class —
      they were styled entirely by utilities. They get one here rather than an
      `active:opacity-[0.55]` utility, for two reasons. The press value belongs

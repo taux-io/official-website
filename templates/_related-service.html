@@ -10,7 +10,7 @@
             <div class="flex-1">
             {% call cover() %}{{ strings.related_service_title }}{% endcall %}
             <p class="leading-relaxed mb-5">{{ strings.related_service_lead }}</p>
-            <a href="{{ related.href|safe }}" class="underline underline-offset-4 font-semibold text-lg">{{ related.label }}<span aria-hidden="true"> &rarr;</span></a>
+            <a href="{{ related.href|safe }}" class="underline underline-offset-4 font-semibold text-lg">{{ related.label }} <span class="nudge" aria-hidden="true">&rarr;</span></a>
             <p class="leading-relaxed mt-2">{{ related.summary }}</p>
             </div>
         </div>
