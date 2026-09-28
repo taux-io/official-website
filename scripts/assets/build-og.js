@@ -18,7 +18,7 @@ const path = require("path");
 const { chromium } = require("playwright");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
-const { ROUTES, LOCALES } = require("../routes");
+const { ROUTES, LOCALES, PAGES } = require("../routes");
 
 const ROOT = path.join(__dirname, "..", "..");
 const { WIDTH, HEIGHT, OUT_DIR, TYPE_SCALE, TITLE_LONG_THRESHOLD } = require("./og-card");
@@ -48,7 +48,39 @@ function routes() {
     description: r.description,
     name: r.name,
     locale: r.locale,
+    art: artFor(PAGES.find((p) => p.canonical === r.canonical)),
   }));
+}
+
+// WHICH PICTURE A CARD CARRIES (DESIGN.md decision 167). The same drawings the
+// pages use, read out of templates/_art.html so a card and its page can never
+// show two versions of one illustration. A service card shows its category, an
+// article its reading mascot, home the τ curve; the legal pages carry none —
+// a picture beside a privacy policy says nothing.
+function artFor(page) {
+  if (!page) return null;
+  if (page.path === "/") return "tau";
+  if (page.path === "/about" || page.path === "/building") return "bot-wave";
+  if (page.path === "/insights" || page.section === "article") return "bot-read";
+  if (["ai", "marketing", "training", "security"].includes(page.section)) return page.section;
+  return null;
+}
+
+const ART_SOURCE = fs.readFileSync(path.join(ROOT, "templates", "_art.html"), "utf8");
+// The mark, from the same partial the pages include (decision 169), so a card
+// and the site header can never show two versions of the logo.
+function logoSvg() {
+  const src = fs.readFileSync(path.join(ROOT, "templates", "_logo.html"), "utf8");
+  const open = src.indexOf("<svg");
+  return src.slice(open, src.indexOf("</svg>", open) + "</svg>".length).replace('class="h-7 w-auto"', 'class="logo"');
+}
+
+function artSvg(key) {
+  const at = ART_SOURCE.indexOf(`art == "${key}" %}`);
+  if (at === -1) throw new Error(`build-og: no "${key}" in templates/_art.html`);
+  const open = ART_SOURCE.indexOf("<svg", at);
+  const close = ART_SOURCE.indexOf("</svg>", open);
+  return ART_SOURCE.slice(open, close + "</svg>".length);
 }
 
 // THE CJK FACE FOLLOWS THE CARD'S LANGUAGE, THE SAME WAY THE SITE'S DOES.
@@ -96,7 +128,7 @@ const CARD = (item, fontCss, tokenCss) => `
     padding: 72px 80px;
     position: relative; overflow: hidden;
   }
-  .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: baseline; }
+  .row { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; }
   .mark { font-family: "SF Pro Display", system-ui, -apple-system, sans-serif; font-weight: 700; font-size: ${TYPE_SCALE.mark}px; letter-spacing: 0.09em; text-transform: uppercase; }
   .kicker { font-family: "SF Pro Display", system-ui, -apple-system, var(--cjk), sans-serif; font-weight: 400; font-size: ${TYPE_SCALE.kicker}px; letter-spacing: 0.09em; text-transform: uppercase; color: rgb(var(--ink-rgb)); }
   h1 {
@@ -119,9 +151,21 @@ const CARD = (item, fontCss, tokenCss) => `
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
   .rule { position: relative; z-index: 1; height: 1px; background: rgb(var(--line-rgb)); margin-bottom: 28px; }
+  /* The picture sits top right inside the same 80px frame, so the outer
+     margin and the ink box the cards gate measures do not move; the title and
+     description narrow to 760px beside it. */
+  .art { position: absolute; top: 128px; right: 80px; width: 240px; }
+  .with-art h1, .with-art p, .with-art .rule { max-width: 760px; }
+  .logo { display: block; height: 34px; width: auto; color: rgb(var(--ink-rgb)); }
+  .block { display: block; } .w-full { width: 100%; } .h-auto { height: auto; }
+  .text-primary { color: rgb(var(--primary-rgb)); }
+  .text-ink { color: rgb(var(--ink-rgb)); }
+  .text-surface { color: rgb(var(--surface-rgb)); }
+  .text-spot { color: rgb(var(--spot-rgb)); }
 </style>
-<div class="row"><span class="mark">TauX</span><span class="kicker">拓思科技</span></div>
-<div>
+${item.art ? `<div class="art">${artSvg(item.art)}</div>` : ""}
+<div class="row"><span class="mark">${logoSvg()}</span><span class="kicker">拓思科技</span></div>
+<div class="${item.art ? "with-art" : ""}">
   <div class="rule"></div>
   <h1>${item.title.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</h1>
   <p style="margin-top:22px">${item.description.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</p>
@@ -175,7 +219,9 @@ async function main() {
   };
   const tokenCss = `:root{--ink-rgb:${token("ink-rgb")};--line-rgb:${token(
     "line-rgb"
-  )};--surface-rgb:${token("surface-rgb")};}`;
+  )};--surface-rgb:${token("surface-rgb")};--primary-rgb:${token(
+    "primary-rgb"
+  )};--spot-rgb:${token("spot-rgb")};}`;
 
   const browser = await chromium.launch();
   const context = await browser.newContext({
