@@ -21,22 +21,20 @@
 }
 </script>
 
-<!-- Hero. Single column over a full-bleed tau curve: the two-column
-     copy-plus-illustration layout is SaaS landing-page grammar, and the
-     mock product shell that used to sit on the right was fabricated
-     evidence for a product that does not exist. -->
+<!-- Hero. The company line and its story on the left; from laptop width the
+     terms of working together sit right beside it (_home-facts.html). The
+     left column is sized to its content, not stretched, so the two read as
+     one group instead of two edges of an empty page. -->
 <section id="about-us" class="band relative overflow-hidden">
 
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[1fr_18rem] laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-16">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24">
 {% include "_home-facts.html" %}
 
         <h1 class="mb-6 max-w-3xl" data-claim>
-            <!-- The break is written rather than left to the container. D-DIN
-                 Condensed carries the Latin and the CJK faces fall through, so
-                 the measured width of this line differs by machine; an
-                 unforced break lands in a different place on each. Breaking
-                 before "with AI" also puts the only content word in the
-                 sentence on a line of its own. -->
+            <!-- The break is written rather than left to the container. The
+                 display face is the platform's (SF Pro, then system-ui), so the
+                 measured width of this line differs by machine; an unforced
+                 break lands in a different place on each. -->
             <span class="display-lead" lang="en">AI that earns<br>its place</span>
             <span class="display-sub">AI를 회사가 진짜 쓸 수 있는 힘으로</span>
         </h1>
@@ -52,17 +50,12 @@
             </p>
         </div>
 
-        <div class="mt-6 tablet:mt-8 flex flex-col mobile:flex-row gap-4">
-            <!-- Opens the overlay rather than jumping down the page. This was
-                 a fragment link into the services section, and that section is
-                 gone: a fragment pointing at an id the page no longer has
-                 scrolls nowhere and says nothing about having failed. The
-                 overlay is where those links live now, and it names the overlay
-                 in `aria-controls`, which is also how script.js finds every
-                 trigger. (The rule that would have caught the stale form is
-                 check-design's `anchor integrity` — it reads this file, so the
-                 old href cannot be quoted here either.) -->
-            <button type="button" class="btn" aria-expanded="false" aria-controls="menuOverlay">서비스 보기</button>
+        <div class="mt-6 tablet:mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 laptop:self-start">
+            <!-- The one primary action is the one that starts work: a letter.
+                 The services are a scroll away, so they get a plain link, not
+                 a second button (DESIGN.md decision 170). -->
+            <a href="mailto:hello@taux.io" class="btn">{{ strings.service_contact_button }}</a>
+            <a href="#services" class="underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true"> &darr;</span></a>
         </div>
     </div>
 </section>

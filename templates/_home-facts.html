@@ -5,7 +5,7 @@
      this column had been empty paper. Below laptop it is not rendered: the
      phone's first screen keeps its button, and the same terms open the
      services section a scroll further down. -->
-<div class="hidden laptop:block laptop:col-start-2 laptop:row-start-1 laptop:row-span-3 laptop:self-center space-y-8">
+<div class="hidden laptop:block laptop:col-start-2 laptop:row-start-1 laptop:row-span-3 laptop:self-start space-y-8">
 {% set art = "tau" %}{% include "_art.html" %}
 <aside class="border-t-2 border-ink pt-5 space-y-5" aria-label="{{ strings.home_facts_title }}">
     <p class="font-semibold text-lg">{{ strings.home_facts_title }}</p>
@@ -25,6 +25,5 @@
         <p class="text-sm text-ink-soft">{{ strings.service_pricing_title }}</p>
         <p>{{ strings.service_aside_pricing }}</p>
     </div>
-    <a href="#services" class="inline-block underline underline-offset-4 font-semibold">{{ strings.home_facts_link }}<span aria-hidden="true"> &darr;</span></a>
 </aside>
 </div>

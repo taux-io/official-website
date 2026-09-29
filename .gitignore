@@ -48,3 +48,8 @@ skills-lock.json
 
 # 稽核工具的輸出（scripts/md-audit）——一次性調查的產物，不進版控
 .scratch/
+
+# impeccable: per-machine state and run archives; config.json and PRODUCT.md are shared
+.impeccable/live/
+.impeccable/critique/
+.impeccable/config.local.json
