@@ -642,6 +642,12 @@
     content: "→";
   }
 
+  /* A letter is not a page: the arrow promises navigation, and a mailto link
+     opens another program instead (DESIGN.md decision 171). */
+  .btn[href^="mailto:"]::after {
+    content: none;
+  }
+
   /* THE HOVER USED TO ERASE THE LABEL. This was `rgb(var(--ink-rgb) / 0.12)` —
      a 12% wash inherited from the black era, when the button was transparent
      with a hairline and the wash was the lift. On paper it is #E2E2E0, and the

@@ -251,9 +251,12 @@
                      became exactly 44px when that was fixed — sitting on the
                      probe's floor with no margin at all. 12 is 48px and matches
                      .btn's height, so the floor has somewhere to be. -->
-                <button type="button" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
+                <!-- A link that script.js turns into a button: without JavaScript the
+                     overlay never opens, so the trigger still goes somewhere —
+                     the home page's service list (decision 171). -->
+                <a href="/{{ locale }}#services" id="menuTrigger" class="nav-link min-h-12 inline-flex items-center" aria-expanded="false" aria-controls="menuOverlay">
                     {{ strings.nav_explore }}
-                </button>
+                </a>
 {% with link_class = "nav-link", list_class = "absolute top-full right-0 mt-2 bg-surface border border-line p-4 space-y-1 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
             </div>
 
@@ -261,17 +264,17 @@
                  the site on a phone, and under the minimum target on both
                  axes. The bars keep their own size; the button grows around
                  them and centres them. -->
-            <button type="button" id="hamburger" class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50" aria-label="{{ strings.nav_menu_open }}" data-label-open="{{ strings.nav_menu_open }}" data-label-close="{{ strings.nav_menu_close }}" aria-expanded="false" aria-controls="menuOverlay">
+            <a href="/{{ locale }}#services" id="hamburger" class="mobile:hidden flex flex-col items-center justify-center gap-1.5 min-w-11 min-h-11 transition-opacity z-50" aria-label="{{ strings.nav_menu_open }}" data-label-open="{{ strings.nav_menu_open }}" data-label-close="{{ strings.nav_menu_close }}" aria-expanded="false" aria-controls="menuOverlay">
                 <span class="w-6 h-px bg-ink origin-center transition-transform duration-200"></span>
                 <span class="w-6 h-px bg-ink opacity-100 transition-opacity duration-200"></span>
                 <span class="w-6 h-px bg-ink origin-center transition-transform duration-200"></span>
-            </button>
+            </a>
         </div>
     </nav>
 
     <!-- Full-screen menu. One overlay serves every trigger that names it in
-         `aria-controls`: the hamburger on small screens, Explore on large ones,
-         and the home page's hero call to action.
+         `aria-controls`: the hamburger on small screens and Explore on large
+         ones.
 
          SHIPS INERT, AND THE SCRIPT LIFTS IT. opacity-0 and pointer-events-none
          hide it from eyes and mice and do nothing for a keyboard: the twenty

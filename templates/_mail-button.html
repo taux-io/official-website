@@ -1,0 +1,4 @@
+<!-- The one action every page ends on (DESIGN.md decision 171). The draft
+     carries step one of "how to start" as its body, so the three questions the
+     page asks are already in the letter when the mail app opens. -->
+<a href="mailto:hello@taux.io?subject={{ strings.mail_subject|urlencode }}&amp;body={{ strings.mail_body|replace("\n", "\r\n")|urlencode }}" class="btn">{{ strings.service_contact_button }}</a>
