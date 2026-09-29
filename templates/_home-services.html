@@ -51,4 +51,19 @@
         </div>
     </div>
     </section>
+    <!-- How to start: steps only, no promised turnaround (DESIGN.md decision 170).
+         Untinted and without the mascot — the tint belongs to the proof band
+         above and the service pages' contact block (decisions 158, 159, 166). -->
+    <section id="start">
+        {% call cover() %}{{ strings.home_start_title }}{% endcall %}
+        <ol class="grid laptop:grid-cols-3 gap-8 mb-10">
+            {%- for i in [1, 2, 3] %}
+            <li class="border-t-2 border-ink pt-6">
+                <h3 class="mb-2">{{ strings["home_start_" ~ i ~ "_title"] }}</h3>
+                <p class="leading-relaxed">{{ strings["home_start_" ~ i ~ "_body"] }}</p>
+            </li>
+            {%- endfor %}
+        </ol>
+        <a href="mailto:hello@taux.io" class="btn">{{ strings.service_contact_button }}</a>
+    </section>
 </div>
