@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Full-screen menu. One overlay, and however many triggers the markup declares:
-// the hamburger on small screens, the Explore item on large ones, and the
-// home page's hero call to action.
+// the hamburger on small screens and the Explore item on large ones.
 //
 // FOUND BY THE MARKUP RATHER THAN LISTED HERE. This was `[hamburger, trigger]`,
 // which meant adding a third trigger was two edits in two files with nothing
@@ -90,8 +89,18 @@ function initMenu() {
         overlay.setAttribute('inert', '');
     }
 
+    // The header's triggers are links in the markup, so they still lead to the
+    // service list when this script never runs. Here they become what they now
+    // do: a button, announced as one and pressed with Space as well as Enter.
     triggers.forEach(t => {
+        if (t.tagName === 'A') {
+            t.setAttribute('role', 'button');
+            t.addEventListener('keydown', (e) => {
+                if (e.key === ' ') { e.preventDefault(); t.click(); }
+            });
+        }
         t.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             isOpen() ? close() : open();
         });
