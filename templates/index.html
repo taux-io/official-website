@@ -27,7 +27,7 @@
      one group instead of two edges of an empty page. -->
 <section id="about-us" class="band relative overflow-hidden">
 
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24" itemscope itemtype="https://schema.org/Organization" itemid="https://taux.io/#organization">
 {% include "_home-facts.html" %}
 
         <h1 class="mb-6 max-w-3xl" data-claim>
@@ -39,14 +39,10 @@
             <span class="display-sub">把 AI 變成公司真正用得上的能力</span>
         </h1>
 
-        <div class="max-w-[42ch]" itemscope itemtype="https://schema.org/Organization">
+        <div class="max-w-[42ch]">
 
-            <p class="text-lg leading-relaxed mb-5 max-w-prose">
-                <strong itemprop="name" class="font-semibold">TauX</strong> 協助企業把 AI 變成能用的系統，而不是一場展示。
-            </p>
-
-            <p class="text-sm leading-relaxed max-w-prose" itemprop="description">
-                我們的名字源自希臘字母 <span class="font-sans">&tau;</span>（Tau，在物理學與控制工程中代表<strong class="font-normal">時間常數 Time Constant</strong>，象徵系統對外部變革的響應速度與回歸穩定的效率）。導入 AI 也有這個常數，而縮短它就是我們在做的事。
+            <p class="text-lg leading-relaxed max-w-prose">
+                <strong itemprop="name" class="font-semibold">TauX</strong> 為<span class="whitespace-nowrap">中小企業</span>做 <span class="whitespace-nowrap">AI 導入</span>、<span class="whitespace-nowrap">行銷</span>、<span class="whitespace-nowrap">教育訓練</span>與<span class="whitespace-nowrap">資安</span>——<span class="whitespace-nowrap">顧問</span>與<span class="whitespace-nowrap">實際開發</span>一起做。
             </p>
         </div>
 
@@ -56,9 +52,15 @@
                  a second button (DESIGN.md decisions 170 and 171). -->
             <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
 {% include "_mail-button.html" %}
-                <a href="#services" class="inline-flex items-center min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true"> &darr;</span></a>
+                <a href="#services" class="inline-flex items-center gap-1 min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true">&darr;</span></a>
             </div>
 {% include "_mail-note.html" %}
+            <!-- The name story, after the action rather than before it (DESIGN.md
+                 decision 173): word for word as decision 43 keeps it, but a first
+                 visit reads who and what, then how to start, then why the name. -->
+            <p class="mt-8 text-sm leading-relaxed max-w-[42ch]" itemprop="description">
+                我們的名字源自希臘字母 <span class="font-sans">&tau;</span>（Tau，在物理學與控制工程中代表<strong class="font-normal">時間常數 Time Constant</strong>，象徵系統對外部變革的響應速度與回歸穩定的效率）。導入 AI 也有這個常數，而縮短它就是我們在做的事。
+            </p>
         </div>
     </div>
 </section>

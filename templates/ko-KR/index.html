@@ -27,7 +27,7 @@
      one group instead of two edges of an empty page. -->
 <section id="about-us" class="band relative overflow-hidden">
 
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24" itemscope itemtype="https://schema.org/Organization" itemid="https://taux.io/#organization">
 {% include "_home-facts.html" %}
 
         <h1 class="mb-6 max-w-3xl" data-claim>
@@ -39,14 +39,10 @@
             <span class="display-sub">AI를 회사가 진짜 쓸 수 있는 힘으로</span>
         </h1>
 
-        <div class="max-w-[42ch]" itemscope itemtype="https://schema.org/Organization">
+        <div class="max-w-[42ch]">
 
-            <p class="text-lg leading-relaxed mb-5 max-w-prose">
-                <strong itemprop="name" class="font-semibold">TauX</strong>는 AI를 한 번 보여 주는 데모가 아니라, 실제로 업무가 돌아가는 시스템으로 바꿉니다.
-            </p>
-
-            <p class="text-sm leading-relaxed max-w-prose" itemprop="description">
-                회사 이름은 그리스 문자 <span class="font-sans">&tau;</span>에서 왔습니다. Tau는 물리학과 제어공학에서 말하는 <strong class="font-normal">시정수</strong> — 바깥의 변화에 얼마나 빨리 반응하고 얼마나 차분하게 새 안정으로 들어가는가입니다. TauX가 다루는 것은 기업이 AI를 마주할 때의 시정수입니다.
+            <p class="text-lg leading-relaxed max-w-prose">
+                <strong itemprop="name" class="font-semibold">TauX</strong>는 중소기업을 위해 AI 도입, 마케팅, 교육, 보안을 맡습니다. 컨설팅과 실제 개발을 함께 합니다.
             </p>
         </div>
 
@@ -56,9 +52,15 @@
                  a second button (DESIGN.md decisions 170 and 171). -->
             <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
 {% include "_mail-button.html" %}
-                <a href="#services" class="inline-flex items-center min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true"> &darr;</span></a>
+                <a href="#services" class="inline-flex items-center gap-1 min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true">&darr;</span></a>
             </div>
 {% include "_mail-note.html" %}
+            <!-- The name story, after the action rather than before it (DESIGN.md
+                 decision 173): word for word as decision 43 keeps it, but a first
+                 visit reads who and what, then how to start, then why the name. -->
+            <p class="mt-8 text-sm leading-relaxed max-w-[42ch]" itemprop="description">
+                회사 이름은 그리스 문자 <span class="font-sans">&tau;</span>에서 왔습니다. Tau는 물리학과 제어공학에서 말하는 <strong class="font-normal">시정수</strong> — 바깥의 변화에 얼마나 빨리 반응하고 얼마나 차분하게 새 안정으로 들어가는가입니다. TauX가 다루는 것은 기업이 AI를 마주할 때의 시정수입니다.
+            </p>
         </div>
     </div>
 </section>
