@@ -1,7 +1,6 @@
-# TauX 拓思科技: AI First 技術落地
+# TauX 拓思科技：AI that earns its place
 
-> Code the future.
-> 用科技定義未來。
+> 把 AI 變成公司真正用得上的能力。拓思科技股份有限公司（TauX）為中小企業提供顧問與技術導入，服務分四類：AI 導入與整合、行銷、教育訓練、資安。
 
 ## Markdown 版本
 
@@ -22,8 +21,14 @@
 
 ## 關於我們
 
-TauX（法定名稱：拓思科技股份有限公司）是一家協助中小企業 AI First 落地的顧問與技術導入公司，位於台灣高雄。
-我們為中小企業提供顧問與技術導入，服務分四類：AI 導入與整合、行銷（數位廣告、SEO 與 GEO）、教育訓練（Google Workspace、生成式 AI）、資安（AI 對抗測試、Google SecOps）。
+TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成能用的系統，而不是一場展示。公司位於台灣高雄岡山。
+我們為中小企業提供顧問與技術導入，服務分四類：AI 導入與整合、行銷（數位廣告、SEO 與 GEO）、教育訓練（Google Workspace、生成式 AI）、資安（AI 對抗測試、Google SecOps）。Google Workspace 教育訓練也服務政府機關。
+
+- **顧問加技術導入一起做**：不只給建議，也實際開發與串接（MCP server、AI Agent、SecOps 導入）。
+- **先量基線，再動工**：導入前記錄現況數字，週期結束時用同一把尺驗收。
+- **公開的技術作品**：公開維護 [TWSE MCP](https://github.com/taux-io/twse-mcp)（臺灣證交所公開資料的 MCP server）；技術文章每篇附出處，並寫明結論的適用範圍。
+- **五種語言**：網站與服務內容提供繁體中文、简体中文、日本語、한국어、English。
+- 名字源自希臘字母 τ（時間常數）：導入 AI 也有這個常數，縮短它就是我們在做的事。
 
 ---
 
@@ -64,6 +69,14 @@ TauX（法定名稱：拓思科技股份有限公司）是一家協助中小企�
 ### 資安
 -   [AI 對抗測試](https://taux.io/zh-Hant-TW/ai-red-teaming): TauX 為 AI 客服、內部 AI 助理與 AI Agent 提供對抗測試：提示詞注入、資料外洩、越權操作等 LLM 特有風險，依 OWASP LLM Top 10 逐項測試，並提供重現步驟與修補建議。 ([Markdown](https://taux.io/zh-Hant-TW/ai-red-teaming.md))
 -   [Google SecOps 導入](https://taux.io/zh-Hant-TW/google-secops): TauX 協助中小企業導入 Google Security Operations（Google SecOps）：評估日誌來源、接入並正規化為 UDM、撰寫與調整偵測規則、建立告警處理流程，並交接給團隊維運。 ([Markdown](https://taux.io/zh-Hant-TW/google-secops.md))
+---
+
+## 怎麼開始
+
+1. 寫信到 hello@taux.io，說明目前卡在哪裡、用了哪些系統、最想先解決什麼。
+2. 我們回覆可行的做法，以及哪一項服務適合。
+3. 先量基線，再依實際範圍估算合作週期（三個月、半年或一年）與費用。
+
 ---
 
 ## 技術資源
@@ -129,8 +142,6 @@ Every route on the site has an English edition. These are all of them.
 -   [首頁](https://taux.io/zh-Hant-TW): TauX 拓思科技股份有限公司官方網站。 ([Markdown](https://taux.io/zh-Hant-TW.md))
 -   [關於我們](https://taux.io/zh-Hant-TW/about): TauX 拓思科技的定位、名字的由來（希臘字母 τ，控制科學裡的時間常數）與聯絡方式。 ([Markdown](https://taux.io/zh-Hant-TW/about.md))
 -   [技術文章](https://taux.io/zh-Hant-TW/insights): 本站全部技術文章的總覽（GEO、MCP、AI Agent、LLM 資安、後量子密碼），以及公開維護的開源專案。 ([Markdown](https://taux.io/zh-Hant-TW/insights.md))
--   [Building in Public](https://taux.io/zh-Hant-TW/building): TauX 的公開開發日誌，透明度至上。
--   [Building in Public](https://taux.io/en-US/building): The English edition of the TauX development log. This route is a placeholder while the log itself is written.
 -   [About TauX | AI consulting and implementation in Kaohsiung](https://taux.io/en-US/about): What TauX works on, where the name comes from (the Greek letter τ, the time constant in control theory), and how to reach us. Based in Kaohsiung, Taiwan.
 -   [Insights](https://taux.io/en-US/insights): Every technical article on the site — GEO, MCP, AI agents, LLM security, post-quantum cryptography — and the open-source projects we maintain.
 -   [Privacy Policy | TauX](https://taux.io/en-US/privacy-policy): How TauX collects, uses and protects your personal data, and the rights you hold over it.
@@ -140,7 +151,7 @@ Every route on the site has an English edition. These are all of them.
 
 ## 简体中文版
 
-以下为全站二十条路由的简体中文版本，内容与繁体版一致，词汇按大陆用法改写。
+以下为全站二十七条公开路由的简体中文版本，内容与繁体版一致，词汇按大陆用法改写。
 
 -   [企业 AI 导入顾问](https://taux.io/zh-Hans-CN/ai-consulting): TauX 为中小企业提供 AI 导入顾问与技术导入：盘点值得用 AI 做的工作、排定优先序、做 PoC、导入前先量基线，事后用同一把尺验收成效。
 -   [旧系统与 AI 串接](https://taux.io/zh-Hans-CN/mcp-integration): 数据散在 ERP、Excel、共用文件夹与各部门系统里，AI 看不到。TauX 用 MCP（Model Context Protocol）把旧系统接给 AI，只读优先、沿用既有权限并留下记录。
@@ -167,7 +178,6 @@ Every route on the site has an English edition. These are all of them.
 -   [首页](https://taux.io/zh-Hans-CN): TauX 拓思科技股份有限公司官方网站。
 -   [关于我们](https://taux.io/zh-Hans-CN/about): TauX 拓思科技的定位、名字的由来（希腊字母 τ，控制科学里的时间常数）与联系方式。
 -   [技术文章](https://taux.io/zh-Hans-CN/insights): 本站全部技术文章的总览（GEO、MCP、AI Agent、LLM 网络安全、后量子密码），以及公开维护的开源项目。
--   [Building in Public](https://taux.io/zh-Hans-CN/building): TauX 的公开开发日志，透明度至上。
 -   [隐私权政策](https://taux.io/zh-Hans-CN/privacy-policy): 数据保护与隐私权承诺。
 -   [服务条款](https://taux.io/zh-Hans-CN/terms-of-service): 使用 TauX 服务之条款与条件。
 
@@ -225,8 +235,6 @@ Every route on the site has an English edition. These are all of them.
 -   [AI 프롬프트 설계 가이드](https://taux.io/ko-KR/agent-prompting-guide): 무엇을 지정하고 무엇을 맡기며 잘됐는지 어떻게 확인하는가. 역할과 과제, 단계 지시, 출력 형식, 에이전트 설계까지.
 -   [プロンプトインジェクションとは](https://taux.io/ja-JP/what-is-prompt-injection): 仕組み、ジェイルブレイクとの違い、そして実際にリスクを下げる多層の防ぎ方。
 -   [프롬프트 인젝션이란](https://taux.io/ko-KR/what-is-prompt-injection): 작동 방식, 탈옥과의 차이, 그리고 실제로 위험을 낮추는 여러 겹의 방어.
--   [公開しながらつくる](https://taux.io/ja-JP/building): TauX の開発の記録。準備中のページです。
--   [공개하며 만드는 중](https://taux.io/ko-KR/building): TauX의 개발 기록. 준비 중인 페이지입니다.
 -   [プライバシーポリシー](https://taux.io/ja-JP/privacy-policy): 個人データをどのように収集し、利用し、保護しているか。本文は英語です。
 -   [개인정보 처리방침](https://taux.io/ko-KR/privacy-policy): 개인정보를 어떻게 수집하고 이용하며 보호하는지. 본문은 영어입니다.
 -   [サービス利用規約](https://taux.io/ja-JP/terms-of-service): ウェブサイトとサービスの利用条件。本文は英語です。
@@ -238,4 +246,3 @@ Every route on the site has an English edition. These are all of them.
 -   **Email**: hello@taux.io
 -   **電話**: 07-6211033
 -   **地址**: 高雄市岡山區文賢路 57 號 2 樓
--   **服務時間**: 週一至週五 09:00 - 18:00
