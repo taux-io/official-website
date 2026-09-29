@@ -93,6 +93,7 @@ const ruleThemeColourAgrees = require("./design/rules/theme-colour-agrees");
 const ruleNoParameterisedMarkup = require("./design/rules/no-parameterised-markup");
 const { renderedPages } = require("./design/rendered");
 const ruleInkMarksHoldNoText = require("./design/rules/ink-marks-hold-no-text");
+const ruleCopyShipsHidden = require("./design/rules/copy-ships-hidden");
 
 const RULES = [
   {
@@ -346,6 +347,13 @@ const RULES = [
     turnedOnBy: "decision #152 — forced colours flattened 263 bg-ink marks, the hamburger among them",
     run: ruleInkMarksHoldNoText,
     summary: "a bg-ink element is an empty shape; forced colours paints it CanvasText, so text inside would vanish",
+  },
+  {
+    name: "copy ships hidden",
+    enabled: true,
+    turnedOnBy: "decision #174 — the fallback address's copy button",
+    run: ruleCopyShipsHidden,
+    summary: "a data-copy control ships hidden, names what it copies, and carries both outcomes",
   },
 ];
 
