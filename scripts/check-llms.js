@@ -39,7 +39,15 @@ function main() {
     linked.add(m[1] || "/");
   }
 
-  const published = ROUTES.filter((r) => !r.standalone);
+  // A noindex route asks search engines to leave it out, so this file leaves
+  // it out too — and listing one is the error, not omitting it.
+  const published = ROUTES.filter((r) => !r.standalone && !r.noindex);
+  const hidden = ROUTES.filter((r) => r.noindex && linked.has(r.path));
+  if (hidden.length) {
+    for (const r of hidden) console.log(`  ${r.path} is noindex but listed in llms.txt`);
+    process.exitCode = 1;
+    return;
+  }
   const missing = published.filter((r) => !linked.has(r.path));
 
   if (missing.length) {
