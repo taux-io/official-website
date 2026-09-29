@@ -27,7 +27,7 @@
      one group instead of two edges of an empty page. -->
 <section id="about-us" class="band relative overflow-hidden">
 
-    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24" itemscope itemtype="https://schema.org/Organization" itemid="https://taux.io/#organization">
 {% include "_home-facts.html" %}
 
         <!-- ONE LINE, NOT TWO. Decision #6 gave the h1 a Latin lead over a Chinese sub
@@ -42,14 +42,10 @@
             <span class="display-lead">AI that earns<br>its place</span>
         </h1>
 
-        <div class="max-w-[42ch]" itemscope itemtype="https://schema.org/Organization">
+        <div class="max-w-[42ch]">
 
-            <p class="text-lg leading-relaxed mb-5 max-w-prose">
-                <strong itemprop="name" class="font-semibold">TauX</strong> turns AI into systems a business can run on, rather than a demo that impresses once.
-            </p>
-
-            <p class="text-sm leading-relaxed max-w-prose" itemprop="description">
-                The name comes from the Greek letter <span class="font-sans">&tau;</span> — Tau, the <strong class="font-normal">time constant</strong> in physics and control engineering: how quickly a system responds to a change and settles again. TauX works on a company's time constant for AI — not whether it adapts, but how long that takes, and how steady it is on the way through.
+            <p class="text-lg leading-relaxed max-w-prose">
+                <strong itemprop="name" class="font-semibold">TauX</strong> helps small and medium-sized businesses with AI adoption, marketing, training and security — consulting and hands-on implementation together.
             </p>
         </div>
 
@@ -59,9 +55,15 @@
                  a second button (DESIGN.md decisions 170 and 171). -->
             <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
 {% include "_mail-button.html" %}
-                <a href="#services" class="inline-flex items-center min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true"> &darr;</span></a>
+                <a href="#services" class="inline-flex items-center gap-1 min-h-11 underline underline-offset-4 font-semibold">{{ strings.home_see_services }}<span aria-hidden="true">&darr;</span></a>
             </div>
 {% include "_mail-note.html" %}
+            <!-- The name story, after the action rather than before it (DESIGN.md
+                 decision 173): word for word as decision 43 keeps it, but a first
+                 visit reads who and what, then how to start, then why the name. -->
+            <p class="mt-8 text-sm leading-relaxed max-w-[42ch]" itemprop="description">
+                The name comes from the Greek letter <span class="font-sans">&tau;</span> — Tau, the <strong class="font-normal">time constant</strong> in physics and control engineering: how quickly a system responds to a change and settles again. TauX works on a company's time constant for AI — not whether it adapts, but how long that takes, and how steady it is on the way through.
+            </p>
         </div>
     </div>
 </section>
