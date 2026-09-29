@@ -113,7 +113,7 @@ AI First 是一種企業策略，指在產品規劃、流程設計、團隊協�
 
 Every route on the site has an English edition. These are all of them.
 
--   [TauX — AI that earns its place | Generative Engine Optimization](https://taux.io/en-US): Kaohsiung-based TauX helps SMEs turn AI into systems they can run, not demos: AI adoption, ads, SEO and GEO, Workspace and AI training, and security.
+-   [TauX — AI adoption, marketing, training and security](https://taux.io/en-US): Kaohsiung-based TauX helps SMEs turn AI into systems they can run, not demos: AI adoption, ads, SEO and GEO, Workspace and AI training, and security.
 -   [AI Adoption Consulting: From Audit and PoC to Results | TauX](https://taux.io/en-US/ai-consulting): AI adoption consulting for SMEs: find the work worth giving to AI, set priorities, run a PoC, and measure a baseline before rollout and results after.
 -   [Connecting Legacy Systems to AI with MCP | TauX](https://taux.io/en-US/mcp-integration): Data in ERP, Excel and shared folders is invisible to AI. TauX connects legacy systems to AI with MCP: read-only first, existing permissions, every query logged.
 -   [AI Agent Development: Hand Repetitive Workflows to AI | TauX](https://taux.io/en-US/ai-agents): TauX builds AI agents for SMEs: repetitive, rule-based workflows run by AI that calls tools, follows the steps, keeps a record, and stops where a person must decide.
