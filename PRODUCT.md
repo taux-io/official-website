@@ -39,7 +39,7 @@ taux.io 是拓思科技股份有限公司（TauX）的官網，讓第一次來�
 
 - 靜態網站：Rust 產生器依 `site.toml` 產生五種語言、140 頁，部署在 Cloudflare Workers；合併到 main 即上線。
 - 五種語言：zh-Hant-TW（正本）、zh-Hans-CN、ja-JP、ko-KR、en-US。
-- 36 條自動設計檢查與四道瀏覽器稽核（對比含高對比模式、路由規格、版面、分享卡），規則寫在 DESIGN.md。
+- 37 條自動設計檢查與四道瀏覽器稽核（對比含高對比模式、路由規格、版面、分享卡），規則寫在 DESIGN.md。
 - 聯絡管道只有 email；電話、LINE、線上預約尚未決定，不可自行新增。
 - `/building`（公開開發日誌）尚未有內容，目前 noindex 且不在選單。
 

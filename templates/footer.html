@@ -37,7 +37,13 @@
                  neither. -->
             <address class="not-italic mt-6 text-sm leading-relaxed">
                 {{ strings.footer_address }}<br>
-                <a href="mailto:hello@taux.io" class="inline-flex items-center min-h-11 underline underline-offset-4">hello@taux.io</a>
+                <!-- Text and a copy button, not a mailto link: the same fallback as
+                     the page's own contact blocks (decisions 172 and 174). -->
+                <span class="inline-flex flex-wrap items-center gap-x-3">
+                    <span class="select-all">hello@taux.io</span>
+                    <button type="button" class="copy-email hidden" aria-label="{{ strings.copy_email }} hello@taux.io" data-copy="hello@taux.io" data-copied="{{ strings.copied_email }}" data-failed="{{ strings.copy_failed }}">{{ strings.copy_email }}</button>
+                    <span class="sr-only" role="status" data-copy-status></span>
+                </span>
             </address>
         </div>
 
