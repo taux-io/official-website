@@ -648,6 +648,24 @@
     content: none;
   }
 
+  /* The fallback address's copy button (decision 172). A text control, not a
+     second .btn: the section's one button is the letter. 44px tall like every
+     other target; the press dims as the footer's icon links do. */
+  .copy-email {
+    @apply inline-flex items-center justify-center min-h-11 min-w-11 underline underline-offset-4 font-semibold;
+    transition: opacity 0.2s var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .copy-email:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .copy-email:active {
+    opacity: 0.55;
+  }
+
   /* THE HOVER USED TO ERASE THE LABEL. This was `rgb(var(--ink-rgb) / 0.12)` —
      a 12% wash inherited from the black era, when the button was transparent
      with a hairline and the wash was the lift. On paper it is #E2E2E0, and the

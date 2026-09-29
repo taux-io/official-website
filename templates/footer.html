@@ -41,7 +41,9 @@
             </address>
         </div>
 
-        <!-- NO LINK COLUMNS HERE. The menu overlay is the only navigation.
+        <!-- NO LINK COLUMNS HERE. The menu overlay is the site's map; the bottom
+             row carries only the two pages it must not be the only route to
+             (about and the articles, decision 172).
 
              The footer used to close every page with a five-column grid of
              eighteen links — the sixteen in the four topic columns the header
@@ -59,8 +61,10 @@
              (9762 -> 8794). The grid was most of the footer, not a strip on it.
 
              What stays below is what the footer is actually for: the brand
-             block above (wordmark, GitHub, Facebook), the locale switcher, and
-             the legal pair. Company's two links, /about and /building, are in
+             block above (wordmark, GitHub, Facebook), the locale switcher, the
+             about page and the articles (decision 172: without JavaScript the
+             overlay never opens, and these two had no other route), and the
+             legal pair. Company's two links, /about and /building, are in
              the overlay's own Company column, so nothing lost its only route.
 
              _nav-columns.html now has exactly one caller, header.html. It stays
@@ -75,6 +79,8 @@
                  than break its own label. -->
             <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 items-center">
 {% with link_class = "footer-link", list_class = "absolute bottom-full left-0 mb-2 bg-surface border border-line p-4 space-y-1 min-w-[10rem] z-10" %}{% include "_locale-switcher.html" %}{% endwith %}
+                <a href="/{{ locale }}/about" class="footer-link">{{ strings.nav_about }}</a>
+                <a href="/{{ locale }}/insights" class="footer-link">{{ strings.nav_insights }}</a>
                 <a href="/{{ locale }}/privacy-policy" class="footer-link">{{ strings.nav_privacy }}</a>
                 <a href="/{{ locale }}/terms-of-service" class="footer-link">{{ strings.nav_terms }}</a>
             </div>
