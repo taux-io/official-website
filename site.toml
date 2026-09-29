@@ -557,29 +557,30 @@ script = "Latn"
 [[page]]
 path        = "/"
 template    = "index.html"
-date_modified = "2026-09-26"
+date_modified = "2026-09-29"
 
   [page.locale.zh-Hant-TW]
-  # The claim leads and the keyword follows. "GEO" is the highest-value term this
-  # site ranks for and the new lead line does not contain it, so dropping it from
-  # the title to make room would trade measured traffic for a slogan. Both fit.
-  title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎優化"
+  # The four service areas, not GEO (DESIGN.md decision 175, owner's call). The
+  # title used to end on "GEO 生成式引擎優化" to hold that term's traffic, which
+  # told a searcher TauX was a GEO shop. The GEO guide keeps the term in its own
+  # title, which is where that query should land.
+  title       = "拓思科技股份有限公司｜TauX - AI 導入、行銷、教育訓練與資安"
   description = "拓思科技（TauX）協助中小企業把 AI 變成能用的系統，而不是一場展示：AI 導入與整合、數位廣告與 SEO／GEO、Google Workspace 與 AI 教育訓練、AI 對抗測試與 Google SecOps。總部位於高雄，服務全台企業。"
 
   [page.locale.zh-Hans-CN]
-  title       = "拓思科技股份有限公司｜TauX - AI that earns its place｜GEO 生成式引擎优化"
+  title       = "拓思科技股份有限公司｜TauX - AI 导入、营销、教育培训与网络安全"
   description = "拓思科技（TauX）协助中小企业把 AI 变成能用的系统，而不是一场展示：AI 导入与整合、数字广告与 SEO／GEO、Google Workspace 与 AI 教育培训、AI 对抗测试与 Google SecOps。总部位于高雄，服务全台企业。"
 
   [page.locale.ja-JP]
-  title       = "TauX 拓思科技｜AI を、会社が本当に使える力に｜GEO 生成エンジン最適化"
+  title       = "TauX 拓思科技｜AI 導入、マーケティング、研修、セキュリティ"
   description = "TauX は台湾・高雄を拠点に、中小企業が AI をデモで終わらせず、実際に業務で回せる仕組みにするお手伝いをしています。AI 導入と統合、マーケティング（広告、SEO・GEO）、Google Workspace と AI の研修、セキュリティ（AI レッドチーミング、Google SecOps）の四つの分野を扱います。"
 
   [page.locale.ko-KR]
-  title       = "TauX 拓思科技｜AI를 회사가 진짜 쓸 수 있는 힘으로｜GEO 생성형 엔진 최적화"
+  title       = "TauX 拓思科技｜AI 도입, 마케팅, 교육, 보안"
   description = "TauX는 중소기업이 AI를 시연용이 아니라 회사가 실제로 운영할 수 있는 시스템으로 만들도록 돕습니다. AI 도입과 통합, 마케팅(광고, SEO·GEO), Google Workspace와 AI 교육, 보안(AI 레드팀, Google SecOps)의 네 분야를 다루며, 대만 가오슝에 있습니다."
 
   [page.locale.en-US]
-  title       = "TauX — AI that earns its place | Generative Engine Optimization"
+  title       = "TauX — AI adoption, marketing, training and security"
   description = "Kaohsiung-based TauX helps SMEs turn AI into systems they can run, not demos: AI adoption, ads, SEO and GEO, Workspace and AI training, and security."
 
 [[page]]
