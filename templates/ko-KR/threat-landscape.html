@@ -276,9 +276,10 @@
             {% call cover() %}이 흐름이 내 환경에 무엇을 뜻하는지 알고 싶다면{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">보고서가 말하는 것은 세계의 모습입니다. 필요한 것은 자기 자산 목록과 드러난 면. 그것은 점검에서 시작합니다.</p>
             <div class="flex flex-col mobile:flex-row gap-4">
-                <a href="mailto:hello@taux.io" class="btn">상담 예약하기</a>
+                {% include "_mail-button.html" %}
                 <a href="/{{ locale }}/data-governance" class="btn-quiet">데이터 거버넌스 서비스 보기</a>
             </div>
+{% include "_mail-note.html" %}
         </section>
     </div>
     </div>

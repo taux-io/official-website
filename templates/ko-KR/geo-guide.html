@@ -309,10 +309,9 @@
                     <a href="/{{ locale }}/geo-optimization" class="btn">
                         GEO 서비스 내용과 비용
                     </a>
-                    <a href="mailto:hello@taux.io" class="btn-quiet">
-                        GEO 상담 예약하기
-                    </a>
+                    {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
                 </div>
+{% include "_mail-note.html" %}
                 <!-- This page keeps its informational intent and its rankings;
                      the link is here for the reader who has finished it and
                      concluded they would rather not do this themselves. The

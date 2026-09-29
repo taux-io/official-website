@@ -39,7 +39,7 @@
         <div class="w-48 mt-8">{% set art = "bot-wave" %}{% include "_art.html" %}</div>
 </section>
 
-<section>
+<section id="contact">
 
         <!-- Contact Info -->
         <div>
@@ -55,7 +55,9 @@
                             </path>
                         </svg>
                     </span>
-                    <a href="mailto:hello@taux.io" class="underline underline-offset-4">hello@taux.io</a>
+                    <span class="select-all">hello@taux.io</span>
+                    <button type="button" class="copy-email hidden" data-event="copy" aria-label="{{ strings.copy_email }} hello@taux.io" data-copy="hello@taux.io" data-copied="{{ strings.copied_email }}" data-failed="{{ strings.copy_failed }}">{{ strings.copy_email }}</button>
+                    <span class="sr-only" role="status" data-copy-status></span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span>

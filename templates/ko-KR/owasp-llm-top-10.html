@@ -552,8 +552,9 @@
             {% call cover() %}자사 LLM 앱이 걱정된다면{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">TauX는 LLM 보안 점검과 레드팀 훈련으로 이 열 조항에 따라 하나씩 훑습니다.</p>
             <div class="flex flex-col mobile:flex-row gap-4">
-                <a href="mailto:hello@taux.io" class="btn">보안 상담 예약하기</a>
+                {% include "_mail-button.html" %}
             </div>
+{% include "_mail-note.html" %}
         </section>
     </div>
     </div>

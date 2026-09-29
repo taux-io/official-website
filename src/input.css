@@ -644,7 +644,8 @@
 
   /* A letter is not a page: the arrow promises navigation, and a mailto link
      opens another program instead (DESIGN.md decision 171). */
-  .btn[href^="mailto:"]::after {
+  .btn[href^="mailto:"]::after,
+  .btn-quiet[href^="mailto:"]::after {
     content: none;
   }
 

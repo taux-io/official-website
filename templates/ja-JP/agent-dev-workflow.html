@@ -1345,9 +1345,10 @@ gh label create enhancement</code></pre>
             {% call cover() %}このワークフローを自分のチームに組み込みたい方へ{% endcall %}
             <p class="mb-6 max-w-[42ch] text-lg">ツールは公開されています。難しいのは、すでにある tracker、規範、納品のリズムにつなぎ込むところです。そこは私たちがやってきました。</p>
             <div class="flex flex-col mobile:flex-row gap-4">
-                <a href="mailto:hello@taux.io" class="btn">相談を予約する</a>
+                {% include "_mail-button.html" %}
                 <a href="/{{ locale }}/ai-smart-work" class="btn-quiet">企業向け AI 導入と社内研修を見る</a>
             </div>
+{% include "_mail-note.html" %}
         </section>
     </div>
     </div>

@@ -315,10 +315,9 @@
                     <a href="/{{ locale }}/geo-optimization" class="btn">
                         See the GEO service and pricing
                     </a>
-                    <a href="mailto:hello@taux.io" class="btn-quiet">
-                        Book a GEO consultation
-                    </a>
+                    {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
                 </div>
+{% include "_mail-note.html" %}
                 <!-- This page keeps its informational intent and its rankings;
                      the link is here for the reader who has finished it and
                      concluded they would rather not do this themselves. The
