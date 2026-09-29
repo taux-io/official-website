@@ -348,3 +348,23 @@ npx wrangler rollback <version-id> --message "為什麼"
 `memora*` 不再使用時，依上面的規則**先刪這三筆 DNS，再關主機**。
 
 **`apitmhsns` 的重新解讀（2026-09-28）。** 擁有者確認 `memora*` 是自己的 demo 之後，`apitmhsns` 更可能也是同一類東西——較早一版開發系統的 API 子網域：兩者都在外部主機上自己續 Let's Encrypt，`apitmhsns` 最後一次續憑證（06-13）和 `memora` 第一張憑證（06-10）幾乎同時，名稱也像部署工具自動產生的。果真如此，那些 `.docx`／`.xls` 是那套系統自己的檔案，要確認的是其中有沒有客戶資料，而不是誰放的。
+
+## 11. 轉換計數（D1 `taux-events`，DESIGN.md 決策 #176）
+
+Workers Builds 只部署程式，**不會套用 D1 migration**。新增或修改 `migrations/` 時，合併前先手動套用：
+
+    npx wrangler d1 migrations apply taux-events --remote
+
+本機開發（`wrangler dev`）前套用本機版：
+
+    npx wrangler d1 migrations apply taux-events --local
+
+讀數字（也可以在 Cloudflare 後台 D1 → taux-events → Console 執行同一句 SQL）：
+
+    npx wrangler d1 execute taux-events --remote --command "SELECT event, page, SUM(n) AS n FROM events GROUP BY event, page ORDER BY n DESC"
+
+按日：
+
+    npx wrangler d1 execute taux-events --remote --command "SELECT day, event, SUM(n) AS n FROM events GROUP BY day, event ORDER BY day DESC"
+
+表裡只有（日、事件、頁、語系、次數），沒有任何訪客資料。預覽網址不寫入；本機 `wrangler dev` 只寫本機資料庫。

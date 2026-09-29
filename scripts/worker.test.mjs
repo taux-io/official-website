@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { preferred } from "../src/worker.js";
+import { preferred, parseEvent } from "../src/worker.js";
 
 const SOURCE = fs.readFileSync(
   path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "src", "worker.js"),
@@ -59,17 +59,29 @@ test("matching is case-insensitive", () => {
   assert.equal(preferred("ZH-cn"), "/zh-Hans-CN");
 });
 
+test("a beacon is counted only for a known event on a locale path", () => {
+  assert.deepEqual(parseEvent('{"e":"mail","p":"/zh-Hant-TW"}'), { event: "mail", page: "/zh-Hant-TW", locale: "zh-Hant-TW" });
+  assert.deepEqual(parseEvent('{"e":"copy","p":"/ja-JP/ai-agents"}'), { event: "copy", page: "/ja-JP/ai-agents", locale: "ja-JP" });
+  assert.equal(parseEvent('{"e":"visit","p":"/zh-Hant-TW"}'), null);
+  assert.equal(parseEvent('{"e":"mail","p":"/fr-FR"}'), null);
+  assert.equal(parseEvent('{"e":"mail","p":"https://evil.example/zh-Hant-TW"}'), null);
+  assert.equal(parseEvent('{"e":"mail","p":"/zh-Hant-TW/../x"}'), null);
+  assert.equal(parseEvent("not json"), null);
+});
+
 // Every Response the Worker constructs must wrap one the assets layer produced
 // (`new Response(x.body, x)`), so the headers `_headers` put there survive. A
-// response built from a literal body carries none of them.
-test("the Worker never builds a response from scratch", () => {
+// response built from a literal body carries none of them. The one exception
+// is a response with no body at all (`new Response(null, …)`, the event
+// endpoint's 204/405): there is no document for those headers to govern.
+test("the Worker never builds a response with a body from scratch", () => {
   const code = SOURCE.replace(/\/\/.*$/gm, "");
   const built = [...code.matchAll(/new\s+Response\s*\(([^)]*)\)/g)].map((m) => m[1].trim());
   assert.ok(built.length > 0, "expected the Worker to re-wrap asset responses");
   for (const args of built) {
     assert.match(
       args,
-      /^(\w+)\.body\s*,\s*\1$/,
+      /^(?:(\w+)\.body\s*,\s*\1|null\s*,[\s\S]*)$/,
       `new Response(${args}) does not wrap an asset response — _headers would not apply to it`
     );
   }

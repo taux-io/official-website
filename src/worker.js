@@ -7,10 +7,15 @@
 // security headers. The fix is not to re-attach them here — that would put the
 // policy in two places, which is the failure the file was written to avoid.
 //
-// So this Worker never builds a response. It asks the assets layer for one —
+// So this Worker never builds a response with a body. It asks the assets layer for one —
 // either the one it would have served for this request, or the one it serves at
 // `/zh-Hant-TW` — and changes headers on the way out. Everything in `_headers`
 // arrives because the assets layer put it there.
+//
+// ONE EXCEPTION, AND IT HAS NO BODY. `POST /api/event` (decision 176) answers
+// with an empty 204. The headers `_headers` carries — CSP, framing, referrer —
+// govern a document; a response with nothing in it has nothing for them to
+// govern, so the two it does need (no-store, nosniff) are set where it is built.
 //
 // THE PROPERTY IS CHECKED. `npm run test:worker` (scripts/worker.test.mjs,
 // in CI) fails on any `new Response(...)` here that does not wrap an asset
@@ -151,11 +156,58 @@ const addVary = (response) => {
   response.headers.set("Vary", [...merged].join(", "));
 };
 
+// Conversion counts (DESIGN.md decision 176): which of the page's few actions
+// get pressed — write to us, copy the address, go to the services. script.js
+// sends one beacon per click; this adds one to a per-day aggregate. Nothing
+// about the visitor is read or stored.
+const EVENTS = new Set(["mail", "copy", "services"]);
+const LOCALES = new Set(MATCHERS.map(([, target]) => target.slice(1)));
+const COUNTED_HOSTS = new Set(["taux.io", "www.taux.io"]);
+const EMPTY = { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" };
+
+// Returns the { event, page, locale } a beacon names, or null. The page must be
+// a locale path of this site's shape; the locale is read from it, never taken
+// from the client.
+export function parseEvent(body) {
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    return null;
+  }
+  if (!data || !EVENTS.has(data.e) || typeof data.p !== "string") return null;
+  const m = /^\/([A-Za-z]{2}-[A-Za-z]{2,4}(?:-[A-Z]{2})?)(\/[a-z0-9-]{1,80})?$/.exec(data.p);
+  if (!m || !LOCALES.has(m[1])) return null;
+  return { event: data.e, page: data.p, locale: m[1] };
+}
+
+// ponytail: anyone can POST valid beacons and inflate a count; the allowlists
+// bound what can be written, not how often. A rate-limiting binding is the
+// upgrade if the numbers ever look pumped.
+async function countEvent(request, env, url) {
+  if (request.method !== "POST") {
+    return new Response(null, { status: 405, headers: { ...EMPTY, Allow: "POST" } });
+  }
+  const hit = parseEvent(await request.text());
+  // Preview builds share this database; only the real site writes to it.
+  if (hit && COUNTED_HOSTS.has(url.hostname) && env.EVENTS) {
+    const day = new Date().toISOString().slice(0, 10);
+    await env.EVENTS.prepare(
+      "INSERT INTO events (day, event, page, locale, n) VALUES (?, ?, ?, ?, 1) " +
+        "ON CONFLICT (day, event, page, locale) DO UPDATE SET n = n + 1"
+    )
+      .bind(day, hit.event, hit.page, hit.locale)
+      .run();
+  }
+  return new Response(null, { status: 204, headers: EMPTY });
+}
+
 export default {
   async fetch(request, env) {
     // Only `/` negotiates. Every other path is an asset or one of the twenty
     // stable 301s, and both are decided without looking at the reader.
     const url = new URL(request.url);
+    if (url.pathname === "/api/event") return countEvent(request, env, url);
     if (url.pathname !== "/") return env.ASSETS.fetch(request);
 
     // THE BOT EXEMPTION (decision #59, acceptance condition in issue #200).
