@@ -5,6 +5,6 @@
      button. Same channel the site already has, not a new one. -->
 <p class="mt-4 text-sm flex flex-wrap items-center gap-x-3">
     <span>{{ strings.contact_or_email }} <span class="select-all font-semibold">hello@taux.io</span></span>
-    <button type="button" class="copy-email hidden" aria-label="{{ strings.copy_email }} hello@taux.io" data-copy="hello@taux.io" data-copied="{{ strings.copied_email }}" data-failed="{{ strings.copy_failed }}">{{ strings.copy_email }}</button>
+    <button type="button" class="copy-email hidden" data-event="copy" aria-label="{{ strings.copy_email }} hello@taux.io" data-copy="hello@taux.io" data-copied="{{ strings.copied_email }}" data-failed="{{ strings.copy_failed }}">{{ strings.copy_email }}</button>
     <span class="sr-only" role="status" data-copy-status></span>
 </p>

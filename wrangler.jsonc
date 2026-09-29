@@ -47,7 +47,7 @@
     // the assets layer, it matches first, and the request is answered before
     // any script runs. That is the default and it is the right default — it is
     // also why this line is not optional rather than a tuning knob.
-    "run_worker_first": ["/"],
+    "run_worker_first": ["/", "/api/*"],
 
     // Serve 404.html's *contents* with a 404 status. Without this the status is
     // already 404 but the body is Cloudflare's, not the site's. The status is
@@ -94,6 +94,16 @@
     { "pattern": "www.taux.io", "custom_domain": true }
   ],
 
+  // Conversion counts (DESIGN.md decision 176). Workers Builds does not run
+  // migrations: apply them with `npx wrangler d1 migrations apply taux-events
+  // --remote` before merging a change that needs them (DEPLOYMENT.md).
+  "d1_databases": [
+    {
+      "binding": "EVENTS",
+      "database_name": "taux-events",
+      "database_id": "1d72bec2-7237-4295-a852-6463d58324b2"
+    }
+  ],
   "observability": {
     "enabled": true
   }

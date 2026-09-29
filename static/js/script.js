@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMenu();
     initCopyEmail();
+    initEventCount();
     initScrollNavigation();
     initLocaleSwitcherDismiss();
     initEasterEggs();
@@ -150,6 +151,21 @@ function initCopyEmail() {
                 if (status) status.textContent = '';
             }, 3000);
         });
+    });
+}
+
+// Conversion counts (DESIGN.md decision 176). An element carrying
+// data-event="mail|copy|services" sends one beacon when pressed; the Worker adds
+// one to a per-day total for that page. sendBeacon, because the mail button
+// hands the page to another program and an ordinary request could be cut off.
+// Nothing about the visitor is sent: the event name and the path, and the
+// path's query string and fragment are left off.
+function initEventCount() {
+    if (!navigator.sendBeacon) return;
+    document.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-event]');
+        if (!el) return;
+        navigator.sendBeacon('/api/event', JSON.stringify({ e: el.dataset.event, p: location.pathname }));
     });
 }
 
