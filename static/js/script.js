@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initMenu();
+    initCopyEmail();
     initScrollNavigation();
     initLocaleSwitcherDismiss();
     initEasterEggs();
@@ -93,6 +94,7 @@ function initMenu() {
     // service list when this script never runs. Here they become what they now
     // do: a button, announced as one and pressed with Space as well as Enter.
     triggers.forEach(t => {
+        t.setAttribute('aria-expanded', 'false');
         if (t.tagName === 'A') {
             t.setAttribute('role', 'button');
             t.addEventListener('keydown', (e) => {
@@ -119,6 +121,35 @@ function initMenu() {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen()) close();
+    });
+}
+
+// The copy button beside the fallback address. Hidden in the markup: without
+// this script, or without the clipboard API, it would be a button that does
+// nothing, and the address is already selectable text.
+function initCopyEmail() {
+    if (!navigator.clipboard) return;
+    document.querySelectorAll('[data-copy]').forEach((btn) => {
+        const label = btn.textContent;
+        const status = btn.parentElement.querySelector('[data-copy-status]');
+        btn.classList.remove('hidden');
+        btn.addEventListener('click', async () => {
+            // A refusal (a locked-down office browser, a denied permission)
+            // says so and points at the fallback, rather than leaving the
+            // button unchanged and the reader guessing.
+            let message = btn.dataset.copied;
+            try {
+                await navigator.clipboard.writeText(btn.dataset.copy);
+            } catch {
+                message = btn.dataset.failed;
+            }
+            btn.textContent = message;
+            if (status) status.textContent = message;
+            setTimeout(() => {
+                btn.textContent = label;
+                if (status) status.textContent = '';
+            }, 3000);
+        });
     });
 }
 

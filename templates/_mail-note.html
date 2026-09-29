@@ -1,4 +1,10 @@
-<!-- The address as text beside the button. A mailto link on a machine with no
-     mail app set up does nothing and says nothing; the address is the fallback
-     that still works, and it is the channel the site already has, not a new one. -->
-<p class="mt-4 text-sm">{{ strings.contact_or_email }} <a href="mailto:hello@taux.io" class="underline underline-offset-4 select-all">hello@taux.io</a></p>
+<!-- The address beside the button, as text rather than a second mailto link:
+     a link here would fail exactly where the button fails, on a machine with
+     no mail app set up (DESIGN.md decisions 171 and 172). It selects whole on
+     one tap, and where the clipboard API exists script.js reveals a copy
+     button. Same channel the site already has, not a new one. -->
+<p class="mt-4 text-sm flex flex-wrap items-center gap-x-3">
+    <span>{{ strings.contact_or_email }} <span class="select-all font-semibold">hello@taux.io</span></span>
+    <button type="button" class="copy-email hidden" aria-label="{{ strings.copy_email }} hello@taux.io" data-copy="hello@taux.io" data-copied="{{ strings.copied_email }}" data-failed="{{ strings.copy_failed }}">{{ strings.copy_email }}</button>
+    <span class="sr-only" role="status" data-copy-status></span>
+</p>
