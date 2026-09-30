@@ -31,6 +31,7 @@
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "上线前用攻击者的方法测一次，依 OWASP LLM Top 10 逐项检查，修补后再测。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}
