@@ -1,0 +1,9 @@
+<!-- Below laptop the sidebar is not rendered (decision 157), which left a phone
+     reader six screens from the first way to write in. This is the sidebar's
+     two terms and its button, one line under the lead, for the widths that have
+     no sidebar (DESIGN.md decision 178). Quiet button: the page's one .btn is
+     the contact block at the end. -->
+<div class="laptop:hidden mt-6 space-y-4">
+    <p class="text-sm leading-relaxed"><span class="text-ink-soft">{{ strings.service_cycle_title }}</span> {{ strings.service_aside_cycle }}<span aria-hidden="true"> · </span><span class="text-ink-soft">{{ strings.service_pricing_title }}</span> {{ strings.service_aside_pricing }}</p>
+{% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
+</div>

@@ -249,6 +249,12 @@
 
   :root:lang(ja-JP) {
     --cjk: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP";
+    /* Japanese has no spaces, so every character is a break opportunity and
+       コンサルティング split as コンサルティン／グ in the service sidebar and
+       flow boxes (decision 178). auto-phrase breaks between phrases where the
+       browser can segment them (Chromium); elsewhere it is ignored and the
+       default applies, so nothing is worse than before. */
+    word-break: auto-phrase;
   }
 
   :root:lang(ko-KR) {

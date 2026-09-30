@@ -4,7 +4,7 @@
 {%- set process = [{"t": "Audit and interviews", "d": "Understand your current processes, tools and data, and produce a list of work AI could handle."}, {"t": "Selection and baseline", "d": "Set priorities, define metrics for the first batch, and record the numbers before rollout."}, {"t": "PoC and rollout", "d": "Build, adjust, and train the staff who will actually use it."}, {"t": "Measure and decide", "d": "Compare before and after on the same metrics, then decide to expand, adjust or stop."}] %}
 {%- set deliverables = ["Current-state report and a list of work AI could handle", "Use-case priorities and the reasoning behind them", "PoC results and feasibility assessment", "AI usage policy", "Before-and-after results report"] %}
 {%- set faqs = [{"q": "We’re a small company. Do we need AI adoption consulting?", "a": "Being small makes it easier to start: processes are short and decisions are quick. We begin with the one or two repetitive tasks that take the most time, rather than changing the whole company at once."}, {"q": "Does adopting AI mean buying new software?", "a": "Not necessarily. Many needs can be met with tools you already pay for, such as the AI built into Google Workspace or Microsoft 365. We recommend building or buying something else only when your existing tools can’t do the job."}, {"q": "How do we know whether AI is working?", "a": "Measure a baseline first: pick metrics you can count objectively, such as items handled, handling time and rework rate. After rollout, measure with the same yardstick, and keep staff self-assessments separate from the objective numbers."}, {"q": "Is it safe to give company data to AI?", "a": "That’s a rule to settle before you start. We help you decide which data can be used, which plan and contract terms to choose, and who reviews the output."}] %}
-{%- set flow_nodes = [{"t": "Work in each department", "d": "Repetitive, rule-based, data available"}, {"t": "Use-case ranking", "d": "Benefit, risk, data readiness"}, {"t": "PoC", "d": "One task in one department first"}, {"t": "Results report", "d": "Before and after, same yardstick"}] %}
+{%- set flow_nodes = [{"t": "Work in each department", "d": "Repetitive, rule-based, data available"}, {"t": "Use-case ranking", "d": "Benefit, risk, data readiness"}, {"t": "PoC", "d": "A small trial: one task in one department first"}, {"t": "Results report", "d": "Before and after, same yardstick"}] %}
 {% include "header.html" %}
 <!-- Service page: ai-consulting (en-US). Same structure as the zh-Hant-TW page;
      cycle and pricing are shared (_service-terms.html), and the FAQ is written
@@ -24,6 +24,7 @@
         <span class="display-lead" lang="en">AI adoption consulting</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">First find the work worth handing to AI, then decide how. Measure a baseline before you start, so afterward you can say whether it worked.</p>
+{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}Who it’s for{% endcall %}
