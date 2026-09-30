@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">在上線前，用攻擊者的方法測你的 AI 應用：提示詞注入、資料外洩、越權操作，依 OWASP LLM Top 10 逐項檢查。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}適合誰{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "上線前用攻擊者的方法測一次，依 OWASP LLM Top 10 逐項檢查，修補後再測。") }}
 <section id="scope">
     {% call cover("02") %}服務內容{% endcall %}

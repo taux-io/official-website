@@ -24,12 +24,12 @@
         <span class="display-lead" lang="en">Google SecOps deployment</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Deploying Google Security Operations (Google’s cloud security operations platform): bring scattered logs in, normalize them, write the detection rules, and leave your team able to run it themselves.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "Scattered logs come into one platform, rules find the threats, and your team knows what to do when an alert arrives.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}

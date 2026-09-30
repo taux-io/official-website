@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">数据散在 ERP、Excel、共用文件夹与各部门的系统里，AI 看不到。用 MCP 把它们接起来，让 AI 在权限范围内直接查。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 <!-- How the pieces connect, drawn in HTML rather than SVG so it stacks on a
      phone and its labels are text this locale's reader can read. -->
 <figure class="border-t border-line pt-6">

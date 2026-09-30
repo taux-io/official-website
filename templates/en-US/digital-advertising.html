@@ -24,12 +24,12 @@
         <span class="display-lead" lang="en">Digital advertising</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Ads on Google and Meta (Facebook, Instagram). We set up tracking first so every part of the budget has a measurable result, then talk about how to run the ads.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "Tracking comes before ads: if results can’t be measured, there’s no way to tell which part of the budget is working.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}

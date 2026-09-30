@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">繰り返し発生する業務フローを、ツールを呼び出し、手順どおりに実行し、記録を残す AI エージェントに任せます。人の判断が必要な所では止まります。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}こんな方に{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "ルールが明確な手順は AI エージェントに任せ、判断が必要な箇所は人が決めます。すべての操作が記録されます。") }}
 <section id="scope">
     {% call cover("02") %}サービス内容{% endcall %}

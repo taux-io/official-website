@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">导入 Google Security Operations（Google 的云端网络安全维运平台）：把分散的日志收进来、正规化，写好侦测规则，让团队接手后能自己维运。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "分散的日志收进同一个平台，用规则找出威胁，并让团队知道告警来了该怎么做。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}

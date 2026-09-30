@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">先找出值得用 AI 做的工作，再決定怎麼做。導入前先記下現況的數字（基線），事後才說得出有沒有效。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}適合誰{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "先量現況，再決定用 AI 做什麼；結束時用同一組數字判斷要擴大、調整還是停止。") }}
 <section id="scope">
     {% call cover("02") %}服務內容{% endcall %}

@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">本番公開の前に、攻撃者のやり方で AI アプリケーションをテストします。プロンプトインジェクション、データ漏えい、権限外の操作を、OWASP LLM Top 10 に沿って一項目ずつ確認します。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}こんな方に{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "公開前に攻撃者の手法でテストし、OWASP LLM Top 10 に沿って一項目ずつ確かめ、修正後にもう一度テストします。") }}
 <section id="scope">
     {% call cover("02") %}サービス内容{% endcall %}

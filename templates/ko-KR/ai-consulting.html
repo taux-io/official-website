@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">AI로 할 가치가 있는 업무를 먼저 찾고, 그다음에 방법을 정합니다. 도입 전에 기준값을 재 두어야 나중에 효과가 있었는지 말할 수 있습니다.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}이런 분께 맞습니다{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "먼저 현황을 재고 AI로 무엇을 할지 정하며, 끝날 때 같은 수치로 확대할지, 조정할지, 멈출지 판단합니다.") }}
 <section id="scope">
     {% call cover("02") %}서비스 내용{% endcall %}

@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Google Security Operations(Google의 클라우드 보안 운영 플랫폼)를 도입합니다. 흩어진 로그를 모아 정규화하고, 탐지 규칙을 작성해, 팀이 넘겨받은 뒤 스스로 운영할 수 있게 합니다.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}이런 분께 맞습니다{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "흩어진 로그를 한 플랫폼에 모아 규칙으로 위협을 찾고, 경보가 오면 무엇을 해야 할지 팀이 알게 합니다.") }}
 <section id="scope">
     {% call cover("02") %}서비스 내용{% endcall %}

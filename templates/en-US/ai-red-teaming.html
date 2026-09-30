@@ -24,12 +24,12 @@
         <span class="display-lead" lang="en">AI red teaming</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Before launch, test your AI application the way an attacker would: prompt injection, data leakage, actions beyond its permissions, checked item by item against the OWASP LLM Top 10.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "Before launch, test it the way an attacker would, item by item against the OWASP LLM Top 10, then test again after fixes.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}

@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Google と Meta（Facebook、Instagram）に広告を出します。まず計測を整えて、どの予算からも結果が測れるようにしてから、出し方を考えます。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}こんな方に{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "配信より計測が先です。成果を測れなければ、どの予算が効いたのか判断できません。") }}
 <section id="scope">
     {% call cover("02") %}サービス内容{% endcall %}

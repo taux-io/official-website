@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">在 Google 与 Meta（Facebook、Instagram）上投放广告。先把追踪设置好，让每一笔预算都量得到结果，再谈怎么投。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "追踪先于投放：没有量得到的结果，就无法判断哪一笔预算有效。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}

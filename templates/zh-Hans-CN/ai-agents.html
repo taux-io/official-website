@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">把一段有规则、会重复的工作流程，交给能调用工具、依步骤执行、并留下记录的 AI Agent；需要人判断的地方，它会停下来。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "规则清楚的步骤交给 AI Agent；需要判断的地方由人决定，每个动作都有记录。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}

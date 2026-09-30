@@ -24,12 +24,12 @@
         <span class="display-lead" lang="en">AI agent development</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">Hand a repetitive, rule-based workflow to an AI agent that calls tools, works through the steps and keeps a record. Where a person needs to make the call, it stops.</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}Who it’s for{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "Rule-based steps go to the AI agent; a person decides wherever judgment is needed, and every action is logged.") }}
 <section id="scope">
     {% call cover("02") %}What we do{% endcall %}

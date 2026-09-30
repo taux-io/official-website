@@ -25,12 +25,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">まず AI に任せる価値のある業務を見つけ、それからやり方を決めます。導入前に基準値を取っておけば、導入後に効いたかどうかを言えます。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}こんな方に{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "まず現状を測り、それから AI で何をするかを決めます。最後に同じ数字で、拡大するか、調整するか、やめるかを判断します。") }}
 <section id="scope">
     {% call cover("02") %}サービス内容{% endcall %}

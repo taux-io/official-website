@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">搜尋正在從「給你十條連結」變成「直接給你答案」。SEO 讓你出現在連結裡，GEO 讓你出現在答案裡。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}適合誰{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "SEO 讓你出現在搜尋結果的連結裡，GEO 讓你出現在 AI 的答案裡；兩者都從同一個網站開始。") }}
 <section id="scope">
     {% call cover("02") %}服務內容{% endcall %}

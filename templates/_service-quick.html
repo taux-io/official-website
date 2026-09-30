@@ -1,9 +1,11 @@
 <!-- Below laptop the sidebar is not rendered (decision 157), which left a phone
      reader six screens from the first way to write in. This is the sidebar's
-     two terms and its button, one line under the lead, for the widths that have
-     no sidebar (DESIGN.md decision 178). Quiet button: the page's one .btn is
-     the contact block at the end. -->
-<div class="laptop:hidden mt-6 space-y-4">
-    <p class="text-sm leading-relaxed"><span class="text-ink-soft">{{ strings.service_cycle_title }}</span> {{ strings.service_aside_cycle }}<span aria-hidden="true"> · </span><span class="text-ink-soft">{{ strings.service_pricing_title }}</span> {{ strings.service_aside_pricing }}</p>
+     two terms and its button, right after "who it's for", for the widths that
+     have no sidebar (DESIGN.md decision 178). Not in the band: on the pages
+     with the longest leads it pushed the first body paragraph off a 375x812
+     first screen. Quiet button: the page's one .btn is the contact block. -->
+<div class="laptop:hidden space-y-4">
+    <!-- Each term stays whole; the line breaks between the two, never inside one. -->
+    <p class="text-sm leading-relaxed"><span class="whitespace-nowrap"><span class="text-ink-soft">{{ strings.service_cycle_title }}</span> {{ strings.service_aside_cycle }}</span><span aria-hidden="true"> · </span><span class="whitespace-nowrap"><span class="text-ink-soft">{{ strings.service_pricing_title }}</span> {{ strings.service_aside_pricing }}</span></p>
 {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
 </div>

@@ -26,12 +26,12 @@
         <span class="display-sub">{{ label }}</span>
     </h1>
     <p class="text-xl max-w-[42ch] leading-relaxed">依组织实际的工作流程设计课程：云端协作、文档与试算表、会议与日历，以及 Workspace 内置 AI（Gemini）的用法与使用规范。</p>
-{% include "_service-quick.html" %}
 </section>
 <section id="audience">
     {% call cover("01") %}适合谁{% endcall %}
     {{ lines(audience) }}
 </section>
+{% include "_service-quick.html" %}
 {{ flow(flow_nodes, "课程依组织实际的工作流程设计，学员练习的是自己每天会用到的情境。") }}
 <section id="scope">
     {% call cover("02") %}服务内容{% endcall %}
