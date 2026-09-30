@@ -5,7 +5,8 @@
      with the longest leads it pushed the first body paragraph off a 375x812
      first screen. Quiet button: the page's one .btn is the contact block. -->
 <div class="laptop:hidden space-y-4">
-    <!-- Each term stays whole; the line breaks between the two, never inside one. -->
-    <p class="text-sm leading-relaxed"><span class="whitespace-nowrap"><span class="text-ink-soft">{{ strings.service_cycle_title }}</span> {{ strings.service_aside_cycle }}</span><span aria-hidden="true"> · </span><span class="whitespace-nowrap"><span class="text-ink-soft">{{ strings.service_pricing_title }}</span> {{ strings.service_aside_pricing }}</span></p>
+    <!-- One term per line. Not nowrap: at 320px the English cycle term is wider
+         than the column, and a line that cannot wrap scrolls the page sideways. -->
+    <p class="text-sm leading-relaxed"><span class="text-ink-soft">{{ strings.service_cycle_title }}</span> {{ strings.service_aside_cycle }}<br><span class="text-ink-soft">{{ strings.service_pricing_title }}</span> {{ strings.service_aside_pricing }}</p>
 {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
 </div>
