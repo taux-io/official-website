@@ -4,5 +4,9 @@
      opens. Variants are whole elements chosen by a boolean, not a class passed
      in (rule "no parameterised markup"): `mail_wide` for the service sidebar,
      `mail_quiet` where the section's one .btn is something else. -->
-{%- set mail_href = "mailto:hello@taux.io?subject=" ~ (strings.mail_subject|urlencode) ~ "&body=" ~ (strings.mail_body|replace("\n", "\r\n")|urlencode) %}
+{#- On a service or an article the subject names the page, so a letter says
+    where it came from (decision 179); the home page and the rest keep the
+    plain subject. -#}
+{%- set mail_subject_line = strings.mail_subject ~ (" | " ~ label if (section is defined and section) else "") %}
+{%- set mail_href = "mailto:hello@taux.io?subject=" ~ (mail_subject_line|urlencode) ~ "&body=" ~ (strings.mail_body|replace("\n", "\r\n")|urlencode) %}
 {% if mail_quiet is defined %}<a href="{{ mail_href }}" class="btn-quiet" data-event="mail">{{ strings.service_contact_button }}</a>{% elif mail_wide is defined %}<a href="{{ mail_href }}" class="btn w-full" data-event="mail">{{ strings.service_contact_button }}</a>{% else %}<a href="{{ mail_href }}" class="btn" data-event="mail">{{ strings.service_contact_button }}</a>{% endif %}
