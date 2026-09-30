@@ -1,4 +1,8 @@
-<!-- The one action every page ends on (DESIGN.md decision 171). The draft
-     carries step one of "how to start" as its body, so the three questions the
-     page asks are already in the letter when the mail app opens. -->
-<a href="mailto:hello@taux.io?subject={{ strings.mail_subject|urlencode }}&amp;body={{ strings.mail_body|replace("\n", "\r\n")|urlencode }}" class="btn" data-event="mail">{{ strings.service_contact_button }}</a>
+<!-- The one action every page ends on (DESIGN.md decisions 171 and 177). The
+     draft carries step one of "how to start" as its body, so the three
+     questions the home page asks are already in the letter when the mail app
+     opens. Variants are whole elements chosen by a boolean, not a class passed
+     in (rule "no parameterised markup"): `mail_wide` for the service sidebar,
+     `mail_quiet` where the section's one .btn is something else. -->
+{%- set mail_href = "mailto:hello@taux.io?subject=" ~ (strings.mail_subject|urlencode) ~ "&body=" ~ (strings.mail_body|replace("\n", "\r\n")|urlencode) %}
+{% if mail_quiet is defined %}<a href="{{ mail_href }}" class="btn-quiet" data-event="mail">{{ strings.service_contact_button }}</a>{% elif mail_wide is defined %}<a href="{{ mail_href }}" class="btn w-full" data-event="mail">{{ strings.service_contact_button }}</a>{% else %}<a href="{{ mail_href }}" class="btn" data-event="mail">{{ strings.service_contact_button }}</a>{% endif %}

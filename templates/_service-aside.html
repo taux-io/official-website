@@ -14,5 +14,6 @@
         <p class="text-sm text-ink-soft">{{ strings.service_pricing_title }}</p>
         <p>{{ strings.service_aside_pricing }}</p>
     </div>
-    <a href="mailto:hello@taux.io" class="btn w-full">{{ strings.service_contact_button }}</a>
+{% with mail_wide = true %}{% include "_mail-button.html" %}{% endwith %}
+{% include "_mail-note.html" %}
 </aside>
