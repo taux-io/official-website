@@ -5,7 +5,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
         {{ breadcrumb }},
-        {"@type":"Article","@id":"https://taux.io/ja-JP/geo-guide#article","headline":"GEO 入門ガイド。AI に引用してもらうには何が要るか","description":"生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
+        {"@type":"Article","@id":"https://taux.io/ja-JP/geo-guide#article","headline":"GEO 入門ガイド。AI に引用してもらうには何が要るか","description":"生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ja-JP/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"citation": {"@type":"ScholarlyArticle","name":"GEO: Generative Engine Optimization","url":"https://arxiv.org/abs/2311.09735","datePublished":"2024"},"mentions": [
                 {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
                 {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }
             ]
@@ -20,7 +20,8 @@
             <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Generative Engine Optimization</span>
             <span class="display-sub">GEO 入門ガイド</span>
         </h1>
-            <p class="text-lg tablet:text-xl mb-5 max-w-prose">AI を、無料の入り口にする</p>
+{% include "_article-date.html" %}
+            <p class="text-lg tablet:text-xl mb-5 max-w-prose">GEO とは何か、SEO と何が違うか、そして一本の論文が測ったこと</p>
 
             <div class="border-t border-line pt-4 pb-2 ps-6 border-s border-line text-start">
                 <blockquote class="text-lg">「かつては検索エンジンに見せるために整えていました。いまは答えるエンジンに理解させるために整えます。」
@@ -38,21 +39,12 @@
 
             <div class="space-y-6">
                 <div class="flex gap-4">
-                    <span class="font-semibold"><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">ねらい</strong>
                         <p>AI の回答の中で <span class="font-semibold">引用（citations）</span>と「勧められる出典」の位置を取ること。</p>
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <span><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
-                            </path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">違いはどこか</strong>
                         <p>SEO は検索語の順位を相手にします。<span class="font-semibold">GEO が相手にするのは、言語モデルの意味の理解とエンティティのつながり</span>です。</p>
@@ -66,40 +58,22 @@
             {% call cover("02", "Why GEO matters") %}なぜ、いま GEO なのか{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3 font-semibold"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg></span> 探し方が変わった
+                    <h3 class="mb-3 flex items-center"> 探し方が変わった
                     </h3>
                     <p>検索語を打ち込む代わりに、AI にそのまま尋ねる人が増えています。</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg></span> 質の高い流入
+                    <h3 class="mb-3 flex items-center"> 質の高い流入
                     </h3>
                     <p>具体的に尋ねてくる人は、決めるところまで近い。だから成約に結びつきやすい。</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg></span> 権威が積み上がる
+                    <h3 class="mb-3 flex items-center"> 権威が積み上がる
                     </h3>
                     <p>AI があなたの見解を答えとして引くなら、その分野での立ち位置はそこで決まります。</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
-                                </path>
-                            </svg></span> 中身を使い回せる
+                    <h3 class="mb-3 flex items-center"> 中身を使い回せる
                     </h3>
                     <p>GEO のために整えた構造のある内容は、そのまま質のよい発信の素材になります。</p>
                 </div>
@@ -114,9 +88,9 @@
                     <table class="w-full text-start">
                         <thead class="border-b border-line">
                             <tr>
-                                <th scope="col" class="p-6 font-display font-semibold">観点</th>
-                                <th scope="col" class="p-6 font-display font-semibold">SEO（検索エンジン最適化）</th>
-                                <th scope="col" class="p-6 font-display font-semibold font-semibold">GEO（生成エンジン最適化）</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">観点</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">SEO（検索エンジン最適化）</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">GEO（生成エンジン最適化）</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-line">
@@ -144,119 +118,77 @@
                     </table>
                 </div>
             </div>
-
-            <div class="mt-8 flex flex-col tablet:flex-row justify-center gap-4">
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="block text-sm uppercase tracking-wider mb-1">SEO Goal</strong>
-                    <span class="font-semibold">クリックを取りにいく</span>
-                </div>
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="font-semibold block text-sm uppercase tracking-wider mb-1">GEO Goal</strong>
-                    <span class="font-semibold">引用を取りにいく</span>
-                </div>
-            </div>
         </section>
 
         <!-- Princeton GEO Research Section -->
         <section id="princeton-geo-research">
-            {% call cover("04", "Princeton GEO research") %}測られた九つの手法：プリンストンの研究{% endcall %}
-                <p class="text-lg leading-relaxed max-w-prose">
-                    プリンストン大学、ジョージア工科大学、アレン人工知能研究所、インド工科大学デリー校が発表した論文 <strong>《Generative Engine Optimization》</strong> で、ChatGPT や Perplexity のような AI 検索に引用される確率をはっきり動かす手法が九つ、実測で確かめられています。
-                </p>
-            
-
-            <div class="overflow-hidden">
-                <div class="overflow-x-auto" tabindex="0">
-                    <table class="w-full text-start border-collapse">
-                        <thead class="border-b border-line">
-                            <tr>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">手法</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">見えやすさの伸び</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-2/4">具体的にやること</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-line">
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    確かな出典を引く
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+40%</td>
-                                <td class="py-3 px-4">信頼できる外部リンクと参考文献を本文に置き、主張を第三者に裏づけさせます。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    数字を入れる
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+37%</td>
-                                <td class="py-3 px-4">ぼかした言い方を避け、割合・統計・定量的な指標で主張を支えます。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    専門家の言葉を引く
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+30%</td>
-                                <td class="py-3 px-4">その分野の専門家や研究者、業界の権威の発言をそのまま引き、誰の言葉かを明記します。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    言い切る文体
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+25%</td>
-                                <td class="py-3 px-4">迷いのない、客観的で専門的な書き方をします。読み手に深さが伝わります。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    わかりやすく書く
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+20%</td>
-                                <td class="py-3 px-4">込み入った話を、平たく構造のはっきりした言葉で言い直します。読むのに要る前提を下げます。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    専門用語を正確に
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+18%</td>
-                                <td class="py-3 px-4">その分野で通っている技術用語を正確に使い、意味の単位（エンティティ）に当てにいきます。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    語彙に幅をもたせる
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15%</td>
-                                <td class="py-3 px-4">同じ言い回しの繰り返しを避け、語彙に幅をもたせます。要点が拾われやすくなります。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    読みの流れを整える
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15% ~ +30%</td>
-                                <td class="py-3 px-4">組み方と話のつながりを整えます。言語モデルの予測の仕組みに沿った形になります。</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    検索語の詰め込み
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">-10%</td>
-                                <td class="py-3 px-4">（やってはいけない）狙って詰め込むと、量産された低品質な内容と見なされ、引用率はむしろ下がります。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-</div>
-            <blockquote class="quote my-8">
-                <p class="max-w-prose">「AI 検索の時代に競われているのは、信頼できるかどうかと、意味のつながりです。AI は存在しないブランドをでっち上げたりしません。裏づけがあり、数字が具体的で、構造のはっきりした内容だけを引きます。」
-                </p>
-                <cite class="block mt-3 text-sm">— TauX 技術チーム</cite>
-            </blockquote>
+            {% call cover("04", "GEO research, KDD 2024") %}測られた九つの手法：KDD 2024 の研究{% endcall %}
+            <p class="text-lg leading-relaxed max-w-prose">プリンストン大学、インド工科大学デリー校と2人の独立研究者が KDD 2024 で発表した論文 <strong>《GEO: Generative Engine Optimization》</strong>（Aggarwal ほか）は、ウェブページを書き換える九つの手法を試し、生成エンジンの回答の中でその情報源がどれだけの比重を占めるかを測りました。九つのうち八つは上がり、一つは下がりました：</p>
+            <!-- Verified against Table 1 of arXiv:2311.09735v3 (DESIGN.md decision 180):
+                 relative change of the overall Position-Adjusted Word Count
+                 against the 19.3 baseline, sorted by effect. Below `mobile` the
+                 rows stack (.table-stack) so the third column is never cut. -->
+            <div class="overflow-x-auto mt-6" tabindex="0">
+                <table class="table-stack w-full text-start">
+                    <thead class="border-b border-line">
+                        <tr>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">手法</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">基準との差</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold">具体的にやること</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-line">
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">引用文の追加</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+41%</td>
+                        <td>関係者や専門家の発言をそのまま引用し、誰の言葉かを明記する。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">統計データの追加</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+31%</td>
+                        <td>あいまいな表現を、割合・件数・期間などの具体的な数字に置き換える。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">文章の流暢さの改善</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+28%</td>
+                        <td>文を読みやすく整え、段落のつながりを自然にする。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">出典の明記</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+27%</td>
+                        <td>主張に、確認できる外部の出典や参考文献を添える。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">専門用語の使用</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+18%</td>
+                        <td>その分野で通用している専門用語を、適切な箇所で使う。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">わかりやすい言い換え</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+14%</td>
+                        <td>難しい概念を、平易でまっすぐな言葉に言い換える。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">断定的な語調</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+10%</td>
+                        <td>より確信のある、説得力のある語調で書く。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">語彙の多様化</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+6%</td>
+                        <td>同じ語の繰り返しを避け、言葉づかいに変化をつける。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">キーワードの詰め込み</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">−8%</td>
+                        <td>検索キーワードを意図的に繰り返す。この実験では、何もしない場合より比重が小さくなった。</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm leading-relaxed max-w-prose mt-4">数字は、論文の表1を本サイトが相対変化に換算したものです。「位置で重みづけした語数」（Position-Adjusted Word Count：回答のうちその情報源に由来する部分がどれだけあり、どれだけ前に出るか）の総合値を、何も書き換えない基準値 19.3 と比べています。実験では GPT-3.5-turbo が Google の上位5件を読んで回答し、質問は論文が作った GEO-bench から取られています。出典：<a href="https://arxiv.org/abs/2311.09735" class="underline underline-offset-4">arXiv:2311.09735</a></p>
+            <h3 class="mt-8 mb-2">これらの数字の限界</h3>
+            <p class="leading-relaxed max-w-prose">一つのベンチマーク上の平均値であり、保証ではありません。論文自身が、生成エンジンは変わり続けるので手法も合わせて見直す必要があること、利用者の質問の仕方も変わることを挙げています。効果は分野によっても異なります。Perplexity.ai での検証でも方向は同じでしたが、幅は違いました。測っているのは回答の中での情報源の比重で、クリックや問い合わせ、売上ではありません。</p>
         </section>
 
         <!-- How it works -->
@@ -265,7 +197,7 @@
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 1. 答えの器をつくる
+                        1. 答えの器をつくる
                     </h3>
                     <p class="mb-4">ふつうのサイトではなく、機械のために設計した書庫だと考えてください。</p>
                     <ul class="list-none space-y-3">
@@ -277,7 +209,7 @@
 
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 2. 専門家の中身を入れる
+                        2. 専門家の中身を入れる
                     </h3>
                     <p class="mb-4">AI は独自の見解を好み、量産された文章を嫌います。</p>
                     <ul class="list-none space-y-3">
@@ -289,7 +221,7 @@
 
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 3. 信頼の網をつくる
+                        3. 信頼の網をつくる
                     </h3>
                     <p class="mb-4">確かな出典に、あなたの答えを裏づけさせます。</p>
                     <ul class="list-none space-y-3">
@@ -302,9 +234,9 @@
 
         <!-- CTA -->
         <section>
-            <div class="relative z-10">
-                {% call cover() %}AI 時代に手を打つ準備はできましたか{% endcall %}
-                <p class="mb-6 max-w-prose mx-auto">GEO は長く効く投資です。いま始めれば、AI に勧められる位置を先に取れます。</p>
+            <div>
+                {% call cover() %}次の一歩{% endcall %}
+                <p class="mb-6 max-w-prose">自分のサイトが AI の回答にどう出ているかを知りたいなら、まず現状を測るところから始められます。</p>
                 <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="/{{ locale }}/geo-optimization" class="btn">
                         GEO サービスの内容
@@ -312,15 +244,6 @@
                     {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
                 </div>
 {% include "_mail-note.html" %}
-                <!-- This page keeps its informational intent and its rankings;
-                     the link is here for the reader who has finished it and
-                     concluded they would rather not do this themselves. The
-                     service page takes the buying queries, this one does not
-                     chase them. -->
-                <p class="mt-8 text-sm max-w-prose">
-                    読んでみて、自分では難しいと思ったら
-                    <a href="/{{ locale }}/geo-optimization" class="underline">こちらで引き受けます</a>。
-                </p>
             </div>
         </section>
     </div>

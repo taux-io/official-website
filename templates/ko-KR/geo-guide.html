@@ -5,7 +5,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
         {{ breadcrumb }},
-        {"@type":"Article","@id":"https://taux.io/ko-KR/geo-guide#article","headline":"GEO 입문 가이드. AI가 인용하게 하려면 무엇이 필요한가","description":"생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 심사를 거친 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
+        {"@type":"Article","@id":"https://taux.io/ko-KR/geo-guide#article","headline":"GEO 입문 가이드. AI가 인용하게 하려면 무엇이 필요한가","description":"생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 심사를 거친 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/ko-KR/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"citation": {"@type":"ScholarlyArticle","name":"GEO: Generative Engine Optimization","url":"https://arxiv.org/abs/2311.09735","datePublished":"2024"},"mentions": [
                 {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
                 {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }
             ]
@@ -20,7 +20,8 @@
             <span class="display-lead text-display-sm tablet:text-display-md" lang="en">Generative Engine Optimization</span>
             <span class="display-sub">GEO 입문 가이드</span>
         </h1>
-            <p class="text-lg tablet:text-xl mb-5 max-w-prose">AI를 무료 유입 통로로</p>
+{% include "_article-date.html" %}
+            <p class="text-lg tablet:text-xl mb-5 max-w-prose">GEO란 무엇이고 SEO와 무엇이 다른지, 그리고 한 논문이 측정한 것</p>
 
             <div class="border-t border-line pt-4 pb-2 ps-6 border-s border-line text-start">
                 <blockquote class="text-lg">"예전에는 검색 엔진에 보이려고 다듬었습니다. 지금은 답하는 엔진이 이해하도록 다듬습니다."
@@ -38,21 +39,12 @@
 
             <div class="space-y-6">
                 <div class="flex gap-4">
-                    <span class="font-semibold"><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">노리는 것</strong>
                         <p>AI의 답 안에서 <span class="font-semibold">인용(citations)</span>과 '추천되는 출처' 자리를 얻는 것.</p>
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <span><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
-                            </path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">어디가 다른가</strong>
                         <p>SEO는 검색어 순위를 상대합니다. <span class="font-semibold">GEO가 상대하는 것은 언어 모델의 의미 이해와 엔티티의 연결</span>입니다.</p>
@@ -66,40 +58,22 @@
             {% call cover("02", "Why GEO matters") %}왜 지금 GEO인가{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3 font-semibold"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg></span> 찾는 방식이 바뀌었다
+                    <h3 class="mb-3 flex items-center"> 찾는 방식이 바뀌었다
                     </h3>
                     <p>검색어를 치는 대신 AI에 그대로 묻는 사람이 늘고 있습니다.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg></span> 질 높은 유입
+                    <h3 class="mb-3 flex items-center"> 질 높은 유입
                     </h3>
                     <p>구체적으로 묻는 사람은 결정에 가깝습니다. 그래서 성과로 이어지기 쉽습니다.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg></span> 권위가 쌓인다
+                    <h3 class="mb-3 flex items-center"> 권위가 쌓인다
                     </h3>
                     <p>AI가 당신의 견해를 답으로 인용한다면, 그 분야에서의 자리는 거기서 정해집니다.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
-                                </path>
-                            </svg></span> 내용을 다시 쓴다
+                    <h3 class="mb-3 flex items-center"> 내용을 다시 쓴다
                     </h3>
                     <p>GEO를 위해 정리한 구조 있는 내용은 그대로 좋은 발신 소재가 됩니다.</p>
                 </div>
@@ -114,9 +88,9 @@
                     <table class="w-full text-start">
                         <thead class="border-b border-line">
                             <tr>
-                                <th scope="col" class="p-6 font-display font-semibold">관점</th>
-                                <th scope="col" class="p-6 font-display font-semibold">SEO(검색 엔진 최적화)</th>
-                                <th scope="col" class="p-6 font-display font-semibold font-semibold">GEO(생성형 엔진 최적화)</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">관점</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">SEO(검색 엔진 최적화)</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">GEO(생성형 엔진 최적화)</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-line">
@@ -144,119 +118,77 @@
                     </table>
                 </div>
             </div>
-
-            <div class="mt-8 flex flex-col tablet:flex-row justify-center gap-4">
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="block text-sm uppercase tracking-wider mb-1">SEO Goal</strong>
-                    <span class="font-semibold">클릭을 얻으러 간다</span>
-                </div>
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="font-semibold block text-sm uppercase tracking-wider mb-1">GEO Goal</strong>
-                    <span class="font-semibold">인용을 얻으러 간다</span>
-                </div>
-            </div>
         </section>
 
         <!-- Princeton GEO Research Section -->
         <section id="princeton-geo-research">
-            {% call cover("04", "Princeton GEO research") %}측정된 아홉 가지: 프린스턴 연구{% endcall %}
-                <p class="text-lg leading-relaxed max-w-prose">
-                    프린스턴대학교, 조지아공과대학교, 앨런 인공지능 연구소, 인도공과대학교 델리가 발표한 논문 <strong>《Generative Engine Optimization》</strong>에서, ChatGPT나 Perplexity 같은 AI 검색에 인용될 확률을 뚜렷하게 움직이는 방법 아홉 가지가 실측으로 확인됐습니다.
-                </p>
-            
-
-            <div class="overflow-hidden">
-                <div class="overflow-x-auto" tabindex="0">
-                    <table class="w-full text-start border-collapse">
-                        <thead class="border-b border-line">
-                            <tr>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">방법</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">노출 상승폭</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-2/4">구체적으로 할 일</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-line">
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    확실한 출처를 인용한다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+40%</td>
-                                <td class="py-3 px-4">믿을 만한 외부 링크와 참고 문헌을 본문에 두어, 주장을 제삼자가 받쳐 주게 합니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    숫자를 넣는다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+37%</td>
-                                <td class="py-3 px-4">두루뭉술한 표현을 피하고 비율·통계·정량 지표로 주장을 받칩니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    전문가의 말을 인용한다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+30%</td>
-                                <td class="py-3 px-4">해당 분야 전문가, 연구자, 업계 권위자의 말을 그대로 인용하고 누구의 말인지 밝힙니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    단정하는 문체
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+25%</td>
-                                <td class="py-3 px-4">망설임 없이, 객관적이고 전문적으로 씁니다. 읽는 쪽에 깊이가 전해집니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    쉽게 쓴다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+20%</td>
-                                <td class="py-3 px-4">복잡한 이야기를 평이하고 구조가 분명한 말로 다시 씁니다. 읽는 데 필요한 전제를 낮춥니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    전문 용어를 정확히
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+18%</td>
-                                <td class="py-3 px-4">그 분야에서 통하는 기술 용어를 정확히 써서 의미 단위(엔티티)에 맞춥니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    어휘에 폭을 준다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15%</td>
-                                <td class="py-3 px-4">같은 표현의 반복을 피하고 어휘에 폭을 줍니다. 요점이 더 잘 잡힙니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    읽는 흐름을 다듬는다
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15% ~ +30%</td>
-                                <td class="py-3 px-4">짜임과 이야기의 연결을 다듬습니다. 언어 모델의 예측 방식에 맞는 형태가 됩니다.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    검색어 밀어넣기
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">-10%</td>
-                                <td class="py-3 px-4">(하면 안 됩니다) 노려서 밀어넣으면 양산된 저질 콘텐츠로 판정되어 인용률이 오히려 떨어집니다.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-</div>
-            <blockquote class="quote my-8">
-                <p class="max-w-prose">"AI 검색 시대에 겨루는 것은 믿을 만한가와 의미의 연결입니다. AI는 없는 브랜드를 지어내지 않습니다. 뒷받침이 있고 숫자가 구체적이며 구조가 분명한 내용만 인용합니다."
-                </p>
-                <cite class="block mt-3 text-sm">— TauX 기술팀</cite>
-            </blockquote>
+            {% call cover("04", "GEO research, KDD 2024") %}측정된 아홉 가지: KDD 2024 연구{% endcall %}
+            <p class="text-lg leading-relaxed max-w-prose">프린스턴대학교, 인도공과대학교 델리와 독립 연구자 두 명이 KDD 2024에서 발표한 논문 <strong>《GEO: Generative Engine Optimization》</strong>(Aggarwal 외)은 웹 페이지를 고쳐 쓰는 아홉 가지 방법을 시험하고, 생성형 엔진의 답변에서 그 출처가 얼마나 비중을 차지하는지 측정했습니다. 아홉 가지 중 여덟 가지는 올라갔고 한 가지는 내려갔습니다:</p>
+            <!-- Verified against Table 1 of arXiv:2311.09735v3 (DESIGN.md decision 180):
+                 relative change of the overall Position-Adjusted Word Count
+                 against the 19.3 baseline, sorted by effect. Below `mobile` the
+                 rows stack (.table-stack) so the third column is never cut. -->
+            <div class="overflow-x-auto mt-6" tabindex="0">
+                <table class="table-stack w-full text-start">
+                    <thead class="border-b border-line">
+                        <tr>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">방법</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">기준 대비</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold">구체적으로 할 일</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-line">
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">인용문 추가</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+41%</td>
+                        <td>관련 인물이나 전문가의 말을 그대로 인용하고, 누가 한 말인지 밝힌다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">통계 추가</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+31%</td>
+                        <td>모호한 표현을 비율, 건수, 기간 같은 구체적인 숫자로 바꾼다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">문장 유창성 개선</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+28%</td>
+                        <td>문장을 매끄럽게 다듬고 문단 사이의 연결을 자연스럽게 한다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">출처 인용</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+27%</td>
+                        <td>주장에 확인할 수 있는 외부 출처와 참고 문헌을 붙인다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">전문 용어 사용</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+18%</td>
+                        <td>그 분야에서 통용되는 전문 용어를 알맞은 곳에 쓴다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">쉬운 말로 풀어 쓰기</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+14%</td>
+                        <td>어려운 개념을 쉽고 직접적인 말로 다시 쓴다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">단정적인 어조</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+10%</td>
+                        <td>더 확신 있고 설득력 있는 어조로 쓴다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">어휘 다양화</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+6%</td>
+                        <td>같은 단어의 반복을 피하고 표현에 변화를 준다.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">키워드 반복 삽입</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">−8%</td>
+                        <td>검색 키워드를 일부러 반복해 넣는다. 이 실험에서는 아무것도 바꾸지 않았을 때보다 비중이 낮아졌다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm leading-relaxed max-w-prose mt-4">숫자는 이 사이트가 논문 표 1을 상대 변화로 환산한 것입니다. "위치 가중 단어 수"(Position-Adjusted Word Count: 답변 중 그 출처에서 온 부분이 얼마나 되고 얼마나 앞에 나오는지)의 종합 값을 아무것도 고치지 않은 기준값 19.3과 비교했습니다. 실험에서는 GPT-3.5-turbo가 Google 상위 5개 결과를 읽고 답했고, 질문은 논문이 만든 GEO-bench에서 가져왔습니다. 출처: <a href="https://arxiv.org/abs/2311.09735" class="underline underline-offset-4">arXiv:2311.09735</a></p>
+            <h3 class="mt-8 mb-2">이 숫자의 한계</h3>
+            <p class="leading-relaxed max-w-prose">하나의 벤치마크에서 나온 평균이며 보장이 아닙니다. 논문 스스로 생성형 엔진은 계속 바뀌므로 방법도 따라 바뀌어야 할 수 있고, 사람들이 묻는 방식도 달라진다고 밝힙니다. 효과는 분야에 따라서도 다릅니다. Perplexity.ai에서의 검증도 방향은 같았지만 폭은 달랐습니다. 측정한 것은 답변 속 출처의 비중이지, 클릭이나 문의, 매출이 아닙니다.</p>
         </section>
 
         <!-- How it works -->
@@ -265,7 +197,7 @@
             <div class="space-y-6">
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 1. 답의 그릇을 만든다
+                        1. 답의 그릇을 만든다
                     </h3>
                     <p class="mb-4">보통의 사이트가 아니라 기계를 위해 설계한 서고라고 생각하세요.</p>
                     <ul class="list-none space-y-3">
@@ -277,7 +209,7 @@
 
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 2. 전문가의 내용을 채운다
+                        2. 전문가의 내용을 채운다
                     </h3>
                     <p class="mb-4">AI는 고유한 견해를 좋아하고 양산된 글을 싫어합니다.</p>
                     <ul class="list-none space-y-3">
@@ -289,7 +221,7 @@
 
                 <div class="space-y-2">
                     <h3 class="mb-4">
-                        Step 3. 신뢰의 그물을 만든다
+                        3. 신뢰의 그물을 만든다
                     </h3>
                     <p class="mb-4">확실한 출처가 당신의 답을 받쳐 주게 합니다.</p>
                     <ul class="list-none space-y-3">
@@ -302,9 +234,9 @@
 
         <!-- CTA -->
         <section>
-            <div class="relative z-10">
-                {% call cover() %}AI 시대에 손을 쓸 준비가 되셨나요{% endcall %}
-                <p class="mb-6 max-w-prose mx-auto">GEO는 오래 가는 투자입니다. 지금 시작하면 AI가 권하는 자리를 먼저 잡을 수 있습니다.</p>
+            <div>
+                {% call cover() %}다음 단계{% endcall %}
+                <p class="mb-6 max-w-prose">내 사이트가 AI 답변에 어떻게 나오는지 알고 싶다면, 먼저 현재 상태를 재는 것부터 시작할 수 있습니다.</p>
                 <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="/{{ locale }}/geo-optimization" class="btn">
                         GEO 서비스 내용
@@ -312,15 +244,6 @@
                     {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
                 </div>
 {% include "_mail-note.html" %}
-                <!-- This page keeps its informational intent and its rankings;
-                     the link is here for the reader who has finished it and
-                     concluded they would rather not do this themselves. The
-                     service page takes the buying queries, this one does not
-                     chase them. -->
-                <p class="mt-8 text-sm max-w-prose">
-                    읽어 보고 직접은 어렵겠다 싶으면
-                    <a href="/{{ locale }}/geo-optimization" class="underline">저희가 맡습니다</a>.
-                </p>
             </div>
         </section>
     </div>

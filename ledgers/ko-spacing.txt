@@ -540,12 +540,7 @@ geo-guide.html	·· n, 생성형 엔진 최적화)</strong>는
 geo-guide.html	    <p>AI의 답 안에서 <span class="font-semibold">
 geo-guide.html	·· >인용(citations)</span>과
 geo-guide.html	·· 의미 이해와 엔티티의 연결</span>입
-geo-guide.html	    </svg></span> 찾
-geo-guide.html	    </svg></span> 질
-geo-guide.html	    </svg></span> 권
-geo-guide.html	    </svg></span> 내
-geo-guide.html	   과대학교 델리가 발표한 논문 <strong>
-geo-guide.html	··  Optimization》</strong>에
+geo-guide.html	   D 2024에서 발표한 논문 <strong>
 google-workspace-with-ai.html	   루는 것은 그 진위가 아니라 <strong class="font-normal">
 google-workspace-with-ai.html	·· mal">무엇을 측정했는가</strong>이
 google-workspace-with-ai.html	   00명·연매출 40억 달러의 <strong class="font-normal">

@@ -673,6 +673,44 @@
     opacity: 0.55;
   }
 
+  /* A three-column table that stacks below `mobile` (DESIGN.md decision 180).
+     At 327px the GEO guide's method table scrolled sideways with nothing to
+     say so, and its third column — the part a reader can act on — was cut
+     mid-word. Stacked, each row is the method and its figure on one line and
+     what to do on the next. The header is kept for assistive technology and
+     hidden from view, since each row now reads on its own. */
+  .table-stack td,
+  .table-stack th {
+    padding: 0.75rem 1rem;
+  }
+
+  @media (max-width: 599px) {
+    .table-stack thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .table-stack tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 1rem;
+      padding: 0.75rem 0;
+    }
+
+    .table-stack td {
+      padding: 0;
+    }
+
+    .table-stack td:nth-child(3) {
+      grid-column: 1 / -1;
+      margin-top: 0.25rem;
+    }
+  }
+
   /* THE HOVER USED TO ERASE THE LABEL. This was `rgb(var(--ink-rgb) / 0.12)` —
      a 12% wash inherited from the black era, when the button was transparent
      with a hairline and the wash was the lift. On paper it is #E2E2E0, and the

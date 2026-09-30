@@ -5,7 +5,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph": [
         {{ breadcrumb }},
-        {"@type":"Article","@id":"https://taux.io/en-US/geo-guide#article","headline":"A guide to Generative Engine Optimization: getting AI to send you traffic","description":"What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"mentions": [
+        {"@type":"Article","@id":"https://taux.io/en-US/geo-guide#article","headline":"A guide to Generative Engine Optimization: getting AI to send you traffic","description":"What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/en-US/geo-guide" },"image":"https://taux.io/static/brand/logo-on-light.png","isPartOf": {"@id":"https://taux.io/#website" },"citation": {"@type":"ScholarlyArticle","name":"GEO: Generative Engine Optimization","url":"https://arxiv.org/abs/2311.09735","datePublished":"2024"},"mentions": [
                 {"@type":"Thing","name":"Generative Artificial Intelligence","sameAs":"https://en.wikipedia.org/wiki/Generative_artificial_intelligence" },
                 {"@type":"Thing","name":"Search Engine Optimization","sameAs":"https://en.wikipedia.org/wiki/Search_engine_optimization" }
             ]
@@ -23,7 +23,8 @@
     <h1 class="mb-4">
             <span class="display-lead text-display-sm tablet:text-display-md">Generative Engine Optimization</span>
         </h1>
-            <p class="text-lg tablet:text-xl mb-5 max-w-prose">Turning AI into a channel that sends you readers</p>
+{% include "_article-date.html" %}
+            <p class="text-lg tablet:text-xl mb-5 max-w-prose">What GEO is, how it differs from SEO, and what one paper measured</p>
 
             <div class="border-t border-line pt-4 pb-2 ps-6 border-s border-line text-start">
                 <blockquote class="text-lg">“We used to optimise for a search engine to rank. Now we optimise for an answer engine to understand.”
@@ -42,10 +43,6 @@
 
             <div class="space-y-6">
                 <div class="flex gap-4">
-                    <span class="font-semibold"><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">The goal</strong>
                         <p>To be the <span class="font-semibold">cited source
@@ -53,11 +50,6 @@
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <span><svg aria-hidden="true" focusable="false" class="w-8 h-8" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3">
-                            </path>
-                        </svg></span>
                     <div>
                         <strong class="block mb-1">The difference</strong>
                         <p>SEO targets keyword rankings. <span class="font-semibold">GEO targets how a model
@@ -72,40 +64,22 @@
             {% call cover("02", "Why GEO matters") %}Why it matters now{% endcall %}
             <div class="space-y-6">
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3 font-semibold"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg></span> Search habits changed
+                    <h3 class="mb-3 flex items-center"> Search habits changed
                     </h3>
                     <p>More people ask a question outright than type keywords.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg></span> Better-qualified traffic
+                    <h3 class="mb-3 flex items-center"> Better-qualified traffic
                     </h3>
                     <p>Someone asking a specific question is usually closer to a decision.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg></span> Authority, demonstrated
+                    <h3 class="mb-3 flex items-center"> Authority, demonstrated
                     </h3>
                     <p>When an AI quotes your position as the answer, that is the claim being made for you.</p>
                 </div>
                 <div class="space-y-2">
-                    <h3 class="mb-3 flex items-center">
-                        <span class="me-3"><svg aria-hidden="true" focusable="false" class="w-6 h-6" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
-                                </path>
-                            </svg></span> Reusable by construction
+                    <h3 class="mb-3 flex items-center"> Reusable by construction
                     </h3>
                     <p>Content structured well for models turns out to be good social material too.</p>
                 </div>
@@ -120,9 +94,9 @@
                     <table class="w-full text-start">
                         <thead class="border-b border-line">
                             <tr>
-                                <th scope="col" class="p-6 font-display font-semibold">Dimension</th>
-                                <th scope="col" class="p-6 font-display font-semibold">SEO</th>
-                                <th scope="col" class="p-6 font-display font-semibold font-semibold">GEO</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">Dimension</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">SEO</th>
+                                <th scope="col" class="py-3 px-4 font-display font-semibold">GEO</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-line">
@@ -150,119 +124,77 @@
                     </table>
                 </div>
             </div>
-
-            <div class="mt-8 flex flex-col tablet:flex-row justify-center gap-4">
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="block text-sm uppercase tracking-wider mb-1">SEO Goal</strong>
-                    <span class="font-semibold">Competing for the click</span>
-                </div>
-                <div class="border-line px-6 py-3 border-t items-center justify-center flex flex-col">
-                    <strong class="font-semibold block text-sm uppercase tracking-wider mb-1">GEO Goal</strong>
-                    <span class="font-semibold">Competing for the citation</span>
-                </div>
-            </div>
         </section>
 
         <!-- Princeton GEO Research Section -->
         <section id="princeton-geo-research">
-            {% call cover("04", "Princeton GEO research") %}Nine methods, measured: the Princeton study{% endcall %}
-                <p class="text-lg leading-relaxed max-w-prose">
-                    A paper from Princeton, Georgia Tech, the Allen Institute for AI and IIT Delhi, <strong>"Generative Engine Optimization"</strong>, tested nine concrete tactics and measured how much each raised the odds of being cited by engines such as ChatGPT and Perplexity:
-                </p>
-            
-
-            <div class="overflow-hidden">
-                <div class="overflow-x-auto" tabindex="0">
-                    <table class="w-full text-start border-collapse">
-                        <thead class="border-b border-line">
-                            <tr>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">Method</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-1/4">Visibility gain</th>
-                                <th scope="col" class="p-5 font-display font-semibold w-2/4">What it means in practice</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-line">
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Cite authoritative sources
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+40%</td>
-                                <td class="py-3 px-4">Add credible outbound links and references so a claim has third-party backing.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Use concrete numbers
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+37%</td>
-                                <td class="py-3 px-4">Replace vague wording with percentages, counts and measured quantities.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Quote named experts
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+30%</td>
-                                <td class="py-3 px-4">Direct quotations from people in the field, attributed by name.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Write with authority
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+25%</td>
-                                <td class="py-3 px-4">A confident, objective register — the way someone who knows the field writes.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Say it plainly
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+20%</td>
-                                <td class="py-3 px-4">Restate hard ideas in clear, well-structured language so less is inferred.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Use the field's terms
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+18%</td>
-                                <td class="py-3 px-4">The accepted technical vocabulary, used precisely — those words are the entities a model matches on.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Vary the wording
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15%</td>
-                                <td class="py-3 px-4">A wider vocabulary and varied sentence shapes help a model pick out what matters.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Read well
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">+15% ~ +30%</td>
-                                <td class="py-3 px-4">Coherent structure and flow — the same properties a model is predicting against.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
-                                    Keyword stuffing
-                                </td>
-                                <td class="py-3 px-4 font-semibold font-sans text-lg">-10%</td>
-                                <td class="py-3 px-4">(Avoid.) Deliberate repetition reads as content-farm output and lowers your citation rate.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-</div>
-            <blockquote class="quote my-8">
-                <p class="max-w-prose">“AI search is a contest over credibility and entity relationships. A model does not invent a brand that is not there — it cites what is well-backed, well-evidenced and clearly structured.”
-                </p>
-                <cite class="block mt-3 text-sm">— TauX engineering</cite>
-            </blockquote>
+            {% call cover("04", "GEO research, KDD 2024") %}Nine methods, measured: the KDD 2024 study{% endcall %}
+            <p class="text-lg leading-relaxed max-w-prose">A paper presented at KDD 2024 by researchers at Princeton University and IIT Delhi and two independent researchers, <strong>"GEO: Generative Engine Optimization"</strong> (Aggarwal et al.), tested nine ways of rewriting a web page and measured how much of a generative engine's answer each one earned the source. Eight raised it; one lowered it:</p>
+            <!-- Verified against Table 1 of arXiv:2311.09735v3 (DESIGN.md decision 180):
+                 relative change of the overall Position-Adjusted Word Count
+                 against the 19.3 baseline, sorted by effect. Below `mobile` the
+                 rows stack (.table-stack) so the third column is never cut. -->
+            <div class="overflow-x-auto mt-6" tabindex="0">
+                <table class="table-stack w-full text-start">
+                    <thead class="border-b border-line">
+                        <tr>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">Method</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold whitespace-nowrap">Change vs. baseline</th>
+                            <th scope="col" class="py-3 px-4 font-display font-semibold">What it means in practice</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-line">
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Quotation addition</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+41%</td>
+                        <td>Add direct quotations from relevant people or experts, and say who said them.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Adding statistics</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+31%</td>
+                        <td>Replace vague wording with specific numbers — percentages, counts, durations.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Fluency optimization</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+28%</td>
+                        <td>Make the sentences read more smoothly and the paragraphs connect.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Citing sources</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+27%</td>
+                        <td>Back claims with external sources a reader can check.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Technical terms</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+18%</td>
+                        <td>Use the field's accepted technical terms where they fit.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Easy-to-understand</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+14%</td>
+                        <td>Rewrite complex ideas in plain, direct language.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Authoritative tone</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+10%</td>
+                        <td>Use a more assertive, persuasive tone.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Unique words</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">+6%</td>
+                        <td>Vary the wording instead of repeating the same terms.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold whitespace-nowrap">Keyword stuffing</td>
+                        <td class="font-semibold font-sans text-lg whitespace-nowrap">−8%</td>
+                        <td>Repeat the query's keywords on purpose. In this experiment it did worse than changing nothing.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm leading-relaxed max-w-prose mt-4">The figures are this site's conversion of the paper's Table 1 into relative change: the overall Position-Adjusted Word Count (how much of the answer comes from the source, weighted by how early it appears) against the unmodified baseline of 19.3. The engine was GPT-3.5-turbo answering from the top five Google results, on the paper's own GEO-bench queries. Source: <a href="https://arxiv.org/abs/2311.09735" class="underline underline-offset-4">arXiv:2311.09735</a></p>
+            <h3 class="mt-8 mb-2">What these numbers don't tell you</h3>
+            <p class="leading-relaxed max-w-prose">They are averages on one benchmark, not a promise. The paper itself notes that generative engines keep changing, so methods may need to change with them, and that the questions people ask change too; the effect also varies by domain. A check on Perplexity.ai pointed the same way, by different amounts. What was measured is a source's share of the answer — not clicks, enquiries or revenue.</p>
         </section>
 
         <!-- How it works -->
@@ -308,9 +240,9 @@
 
         <!-- CTA -->
         <section>
-            <div class="relative z-10">
-                {% call cover() %}Ready to start?{% endcall %}
-                <p class="mb-6 max-w-prose mx-auto">GEO compounds. Starting now means being the cited source while your competitors are still arguing about whether this matters.</p>
+            <div>
+                {% call cover() %}Next step{% endcall %}
+                <p class="mb-6 max-w-prose">If you want to know how your own site shows up in AI answers, the place to start is measuring where it stands now.</p>
                 <div class="flex flex-col mobile:flex-row gap-4">
                     <a href="/{{ locale }}/geo-optimization" class="btn">
                         See the GEO service
@@ -318,15 +250,6 @@
                     {% with mail_quiet = true %}{% include "_mail-button.html" %}{% endwith %}
                 </div>
 {% include "_mail-note.html" %}
-                <!-- This page keeps its informational intent and its rankings;
-                     the link is here for the reader who has finished it and
-                     concluded they would rather not do this themselves. The
-                     service page takes the buying queries, this one does not
-                     chase them. -->
-                <p class="mt-8 text-sm max-w-prose">
-                    Read it and would rather not do it yourself?
-                    <a href="/{{ locale }}/geo-optimization" class="underline">We can do it for you</a>.
-                </p>
             </div>
         </section>
     </div>

@@ -534,7 +534,7 @@ fn render_pages(
 
                 let markdown = format!(
                     "{}{}\n",
-                    text.front_matter(locale, &alternate_urls),
+                    text.front_matter(locale, &page.date_modified, &alternate_urls),
                     markdown_body(&html, &text.canonical)?,
                 );
                 fs::write(&dest_md, markdown)?;
