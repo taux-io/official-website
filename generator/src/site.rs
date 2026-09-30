@@ -294,6 +294,7 @@ impl LocaleText {
     pub(crate) fn front_matter(
         &self,
         locale: &str,
+        modified: &str,
         alternates: &BTreeMap<String, String>,
     ) -> String {
         let mut out = String::from("---\n");
@@ -304,6 +305,10 @@ impl LocaleText {
         ));
         out.push_str(&format!("url: {}\n", yaml_scalar(&self.canonical)));
         out.push_str(&format!("locale: {}\n", yaml_scalar(locale)));
+        // The date the HTML twin shows under an article's title (DESIGN.md
+        // decision 180). A model holding only the `.md` otherwise has no way to
+        // tell a 2025 page from a 2026 one.
+        out.push_str(&format!("date_modified: {}\n", yaml_scalar(modified)));
         if !alternates.is_empty() {
             out.push_str("alternates:\n");
             for (tag, url) in alternates {
@@ -482,6 +487,7 @@ pub(crate) mod tests {
     fn front_matter_carries_the_canonical_url() {
         let fm = titled("GEO 完整指南", "指南描述", CANON).front_matter(
             TEST_LOCALE,
+            "2026-01-01",
             &BTreeMap::from([(
                 "en-US".to_string(),
                 "https://taux.io/en-US/geo-guide".to_string(),
@@ -491,6 +497,7 @@ pub(crate) mod tests {
         assert!(fm.ends_with("---\n\n"));
         assert!(fm.contains(&format!("url: \"{CANON}\"\n")));
         assert!(fm.contains("locale: \"zh-Hant-TW\"\n"));
+        assert!(fm.contains("date_modified: \"2026-01-01\"\n"));
         assert!(fm.contains("  en-US: \"https://taux.io/en-US/geo-guide\"\n"));
     }
 
@@ -499,7 +506,7 @@ pub(crate) mod tests {
     #[test]
     fn front_matter_scalars_are_quoted_and_escaped() {
         let fm =
-            titled(r#"A "quoted": title"#, "d", CANON).front_matter(TEST_LOCALE, &BTreeMap::new());
+            titled(r#"A "quoted": title"#, "d", CANON).front_matter(TEST_LOCALE, "2026-01-01", &BTreeMap::new());
         assert!(fm.contains(r#"title: "A \"quoted\": title""#), "got:\n{fm}");
     }
 
@@ -507,7 +514,7 @@ pub(crate) mod tests {
     // the only thing standing in for hreflang, which Markdown has no form of.
     #[test]
     fn a_page_in_one_language_lists_no_alternates() {
-        let fm = titled("t", "d", CANON).front_matter(TEST_LOCALE, &BTreeMap::new());
+        let fm = titled("t", "d", CANON).front_matter(TEST_LOCALE, "2026-01-01", &BTreeMap::new());
         assert!(!fm.contains("alternates:"), "got:\n{fm}");
     }
 
