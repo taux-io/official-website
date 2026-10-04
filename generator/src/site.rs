@@ -505,8 +505,11 @@ pub(crate) mod tests {
     // and produce front matter that parses as something else — or not at all.
     #[test]
     fn front_matter_scalars_are_quoted_and_escaped() {
-        let fm =
-            titled(r#"A "quoted": title"#, "d", CANON).front_matter(TEST_LOCALE, "2026-01-01", &BTreeMap::new());
+        let fm = titled(r#"A "quoted": title"#, "d", CANON).front_matter(
+            TEST_LOCALE,
+            "2026-01-01",
+            &BTreeMap::new(),
+        );
         assert!(fm.contains(r#"title: "A \"quoted\": title""#), "got:\n{fm}");
     }
 
