@@ -1,0 +1,8 @@
+# Security contact for taux.io (RFC 9116).
+# Please report vulnerabilities in this website or in TauX's public services
+# to the address below. Reports in Traditional Chinese or English are welcome.
+
+Contact: mailto:dev@taux.io
+Expires: 2027-09-30T16:00:00.000Z
+Preferred-Languages: zh-TW, en
+Canonical: https://taux.io/.well-known/security.txt

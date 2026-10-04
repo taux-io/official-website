@@ -953,6 +953,36 @@ async function main() {
     }
   }
 
+  // ── SECURITY.TXT IS SERVED, PARSES, AND HAS NOT RUN OUT ─────────────────
+  //
+  // RFC 9116 requires `Contact` and `Expires`, and a file past its `Expires`
+  // is to be treated as stale — the contact in it no longer vouched for. A
+  // static file cannot renew itself, so this fails 30 days before the date,
+  // and zone.yml runs it daily against production: the alarm arrives while
+  // there is still a month to bump the date. It also fails on a date more than
+  // a year out, which the RFC recommends against.
+  //
+  // The upload is the other way it breaks: `.assetsignore` drops every dotfile
+  // and `.well-known` is one, let back in by name. A 404 here means that
+  // exception went missing.
+  {
+    checked++;
+    const file = "/.well-known/security.txt";
+    const res = await fetch(BASE_URL + file, { redirect: "manual" });
+    const text = res.status === 200 ? await res.text() : "";
+    const field = (name) => (new RegExp(`^${name}:\\s*(.+)$`, "mi").exec(text) || [])[1];
+    const expires = Date.parse(field("Expires") || "");
+    const days = (expires - Date.now()) / 86400000;
+    const problem =
+      res.status !== 200 ? `${res.status} — expected the file (is .well-known still allowed in .assetsignore?)`
+      : !/^mailto:\S+@\S+/.test(field("Contact") || "") ? "no Contact: mailto: line"
+      : Number.isNaN(expires) ? "no parseable Expires: line"
+      : days < 30 ? `Expires ${field("Expires")} is ${Math.floor(days)} days away — bump it in public/.well-known/security.txt`
+      : days > 366 ? `Expires ${field("Expires")} is more than a year out (RFC 9116 §2.5.5)`
+      : null;
+    if (problem) failures.push({ route: file, check: "security.txt", problem });
+  }
+
   // OBSERVABLE ONLY AGAINST PRODUCTION — WHICH IS NO LONGER THE SAME THING AS
   // "CONFIGURED AT THE ZONE", and this line said the latter. HSTS and the
   // www→apex redirect are zone settings; the plain-text charset below is a rule
@@ -986,7 +1016,7 @@ async function main() {
     // Content-Type assertion above has the same weakness for the same reason
     // and is left where it is: moving it is not this change.
     const TEXT_TYPE = "text/plain; charset=utf-8";
-    for (const file of ["/llms.txt", "/robots.txt"]) {
+    for (const file of ["/llms.txt", "/robots.txt", "/.well-known/security.txt"]) {
       checked++;
       const res = await fetch(BASE_URL + file, { redirect: "manual" });
       if (res.status !== 200) {

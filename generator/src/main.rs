@@ -684,9 +684,17 @@ fn copy_static(root: &Path, out: &Path) -> Result<(), Box<dyn std::error::Error>
     //
     // Flat, and never on top of something the build wrote: a public/sitemap.xml
     // silently replacing the generated one is the collision this refuses.
+    //
+    // ONE EXCEPTION, BY NAME: `.well-known/`, where RFC 8615 puts files whose
+    // URL a client already knows (security.txt, RFC 9116). It is copied as a
+    // tree; any other directory in public/ is still an error.
     for entry in fs::read_dir(root.join("public"))? {
         let entry = entry?;
         let name = entry.file_name();
+        if entry.file_type()?.is_dir() && name == ".well-known" {
+            copy_tree(&entry.path(), &out.join(&name))?;
+            continue;
+        }
         if !entry.file_type()?.is_file() {
             return Err(format!(
                 "public/{} is not a plain file — public/ is flat",
