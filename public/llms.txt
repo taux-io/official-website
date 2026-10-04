@@ -81,7 +81,7 @@ TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成
 
 ## 技術資源
 
--   [GEO 入門指南](https://taux.io/zh-Hant-TW/geo-guide): 深入了解 GEO 與 SEO 的差異及執行細節。 ([Markdown](https://taux.io/zh-Hant-TW/geo-guide.md))
+-   [GEO 入門指南](https://taux.io/zh-Hant-TW/geo-guide): GEO 是什麼、和 SEO 差在哪，以及 KDD 2024 論文（arXiv:2311.09735）實測 9 種改寫方法的結果、出處與限制。 ([Markdown](https://taux.io/zh-Hant-TW/geo-guide.md))
 -   [2026 全球威脅報告重點拆解](https://taux.io/zh-Hant-TW/threat-landscape): CrowdStrike 2026 全球威脅報告的八組關鍵數據，以及每一組的量測方法與適用限制。重點不只是數字本身，是廠商遙測資料能推論到多廣。 ([Markdown](https://taux.io/zh-Hant-TW/threat-landscape.md))
 -   [後量子密碼 PQC 遷移指南](https://taux.io/zh-Hant-TW/pqc-migration): 企業導入 PQC 的五步驟落地路徑（治理、CBOM 盤點、風險評估、加密敏捷性、供應鏈），對照金管會七大策略，並附美國、歐盟與台灣的法規時程與出處。法規狀態查證日期標於頁面上。 ([Markdown](https://taux.io/zh-Hant-TW/pqc-migration.md))
 -   [Agent Prompting Guide](https://taux.io/zh-Hant-TW/agent-prompting-guide): 從新手到高手的 AI 指令秘籍，包含提示詞工程與 Agent 設計模式。 ([Markdown](https://taux.io/zh-Hant-TW/agent-prompting-guide.md))
@@ -124,7 +124,7 @@ Every route on the site has an English edition. These are all of them.
 -   [Generative AI Training: Prompts, Reasoning and Gems | TauX](https://taux.io/en-US/ai-smart-work): In-house generative AI training: structured prompting, AI-assisted reasoning, a NotebookLM knowledge base, and turning a set of prompts into a reusable Gem.
 -   [AI Red Teaming: Test Your AI App Against OWASP LLM Top 10 | TauX](https://taux.io/en-US/ai-red-teaming): Red teaming for AI chatbots, assistants and agents: prompt injection, data leakage and overreach, tested against the OWASP LLM Top 10, with repro steps and fixes.
 -   [Google SecOps Deployment: Logs, Detections and Handover | TauX](https://taux.io/en-US/google-secops): Google Security Operations (Google SecOps) for SMEs: assess log sources, normalize to UDM, write and tune detection rules, set up alert handling, and hand over.
--   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and the nine methods a peer-reviewed study found actually move citation rates.
+-   [GEO Guide: how to get AI to cite you | TauX](https://taux.io/en-US/geo-guide): What Generative Engine Optimization is, how it differs from SEO, and what a KDD 2024 paper measured for nine ways of rewriting a page — with the source and the limits of the numbers.
 -   [What is llms.txt? | TauX](https://taux.io/en-US/what-is-llms-txt): What llms.txt is, what it expresses that robots.txt cannot, and an honest account of its status: a proposal in use, not a ratified standard.
 -   [What is Prompt Injection? The security flaw every LLM app inherits | TauX](https://taux.io/en-US/what-is-prompt-injection): How prompt injection works, how it differs from jailbreaking, and the layered defences that actually reduce the risk.
 -   [AI Prompting Guide: from first prompt to agents | TauX](https://taux.io/en-US/agent-prompting-guide): What to specify, what to leave open, and how to tell whether it worked. Covers role and task framing, step instructions, output formats, and designing agents.
@@ -163,7 +163,7 @@ Every route on the site has an English edition. These are all of them.
 -   [生成式 AI 实务课程](https://taux.io/zh-Hans-CN/ai-smart-work): TauX 为企业规划生成式 AI 内训：结构化的提示词写法、让 AI 协助推理与决策、用 NotebookLM 整理知识库，以及把一组问法固定成可重复使用的专属助理（Gem）。
 -   [AI 对抗测试](https://taux.io/zh-Hans-CN/ai-red-teaming): TauX 为 AI 客服、内部 AI 助理与 AI Agent 提供对抗测试：提示词注入、数据外泄、越权操作等 LLM 特有风险，依 OWASP LLM Top 10 逐项测试，并提供重现步骤与修补建议。
 -   [Google SecOps 导入](https://taux.io/zh-Hans-CN/google-secops): TauX 协助中小企业导入 Google Security Operations（Google SecOps）：评估日志来源、接入并正规化为 UDM、撰写与调整侦测规则、建立告警处理流程，并交接给团队维运。
--   [GEO 入门指南](https://taux.io/zh-Hans-CN/geo-guide): 深入了解 GEO 与 SEO 的差异及执行细节。
+-   [GEO 入门指南](https://taux.io/zh-Hans-CN/geo-guide): GEO 是什么、和 SEO 差在哪，以及 KDD 2024 论文（arXiv:2311.09735）实测 9 种改写方法的结果、出处与限制。
 -   [2026 全球威胁报告重点拆解](https://taux.io/zh-Hans-CN/threat-landscape): CrowdStrike 2026 全球威胁报告的八组关键数据，以及每一组的量测方法与适用限制。重点不只是数字本身，是厂商遥测数据能推论到多广。
 -   [后量子密码 PQC 迁移指南](https://taux.io/zh-Hans-CN/pqc-migration): 企业导入 PQC 的五步骤落地路径（治理、CBOM 盘点、风险评估、加密敏捷性、供应链），对照金管会七大策略，并附美国、欧盟与台湾的法规时程与出处。法规状态查证日期标于页面上。
 -   [Agent Prompting Guide](https://taux.io/zh-Hans-CN/agent-prompting-guide): 从新手到高手的 AI 指令秘籍，包含提示词工程与 Agent 设计模式。
@@ -213,8 +213,8 @@ Every route on the site has an English edition. These are all of them.
 -   [llms.txt란 무엇인가](https://taux.io/ko-KR/what-is-llms-txt): llms.txt가 무엇을 밝힐 수 있고 robots.txt로는 무엇이 안 되는지. 쓰이고 있는 제안이지, 비준된 표준은 아닙니다.
 -   [TauX 拓思科技](https://taux.io/ja-JP): TauX は台湾・高雄を拠点に、中小企業が AI をデモで終わらせず、実際に業務で回せる仕組みにするお手伝いをしています。AI 導入と統合、マーケティング（広告、SEO・GEO）、Google Workspace と AI の研修、セキュリティ（AI レッドチーミング、Google SecOps）の四つの分野を扱います。
 -   [TauX 拓思科技](https://taux.io/ko-KR): TauX는 중소기업이 AI를 시연용이 아니라 회사가 실제로 운영할 수 있는 시스템으로 만들도록 돕습니다. AI 도입과 통합, 마케팅(광고, SEO·GEO), Google Workspace와 AI 교육, 보안(AI 레드팀, Google SecOps)의 네 분야를 다루며, 대만 가오슝에 있습니다.
--   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか、そして査読を経た研究が引用率を実際に動かすと確かめた九つの手法。
--   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가, 그리고 연구가 인용률을 실제로 움직인다고 확인한 아홉 가지 방법.
+-   [GEO 入門ガイド](https://taux.io/ja-JP/geo-guide): 生成エンジン最適化とは何か、SEO と何が違うのか。そして KDD 2024 の論文が九つの書き換え手法について測ったこと、その出典と数字の限界。
+-   [GEO 입문 가이드](https://taux.io/ko-KR/geo-guide): 생성형 엔진 최적화란 무엇이고 SEO와 무엇이 다른가. 그리고 KDD 2024 논문이 아홉 가지 고쳐 쓰기 방법에 대해 측정한 것, 그 출처와 숫자의 한계.
 -   [Agent Skill の五つの設計パターン](https://taux.io/ja-JP/adk-skill-patterns): Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。それぞれが実際に解いている問題。
 -   [Agent Skill 설계 패턴 다섯 가지](https://taux.io/ko-KR/adk-skill-patterns): Tool Wrapper, Generator, Reviewer, Inversion, Pipeline. 각각이 실제로 푸는 문제.
 -   [Claude Skills 実践ガイド](https://taux.io/ja-JP/claude-skills-guide): SOP や専門知識を自動化された仕事の流れに変えるまで。構成、YAML の決まり、試し方、配り方。
