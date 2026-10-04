@@ -1586,6 +1586,12 @@ noindex     = true
 # Pre-#58 page files. Search Console (2026-09-27) still reports these three as
 # 404s, so something links to them; 301 hands those links to the page's
 # current home in the canonical locale.
+# RFC 9116 §3: the file lives at /.well-known/security.txt; the legacy root
+# location may redirect there.
+[[redirect]]
+from = "/security.txt"
+to   = "/.well-known/security.txt"
+
 [[redirect]]
 from = "/index.html"
 to   = "/zh-Hant-TW"

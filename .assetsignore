@@ -7,3 +7,9 @@
 # whose static/ picked up a .DS_Store from Finder — gitignored, therefore
 # invisible to `git status` and to review, and published anyway.
 **/.??*
+
+# ...except `.well-known/`, which RFC 8615 reserves for exactly the files a
+# client fetches by a known URL — security.txt (RFC 9116) lives there. The
+# pattern above matches the directory name, so it has to be let back in by name;
+# the files inside it are not dotfiles and pass on their own.
+!/.well-known

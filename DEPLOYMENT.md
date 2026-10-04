@@ -368,3 +368,11 @@ Workers Builds 只部署程式，**不會套用 D1 migration**。新增或修改
     npx wrangler d1 execute taux-events --remote --command "SELECT day, event, SUM(n) AS n FROM events GROUP BY day, event ORDER BY day DESC"
 
 表裡只有（日、事件、頁、語系、次數），沒有任何訪客資料。預覽網址不寫入；本機 `wrangler dev` 只寫本機資料庫。
+
+## 12. security.txt（RFC 9116）
+
+檔案在 `public/.well-known/security.txt`，發佈在 `https://taux.io/.well-known/security.txt`；舊位置 `/security.txt` 301 轉址過去。
+
+- **聯絡信箱**：`dev@taux.io`。這個信箱要真的有人收；換人或換信箱時改這一行。
+- **到期日（`Expires`）**：RFC 要求必填，過期後這份聯絡資訊視為不再有效。`contract` 在到期前 30 天就會失敗，`zone.yml` 每天對正式站跑一次，所以會提早一個月收到警告。續期方法：把日期改成一年內的新日期，開 PR 合併即可。
+- **上傳規則**：`.assetsignore` 排除所有隱藏檔，`.well-known` 是用名稱明確放行的例外；`contract` 讀不到檔案時會提示檢查這條例外。
