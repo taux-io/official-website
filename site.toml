@@ -665,14 +665,14 @@ section    = "marketing"
 date_modified = "2026-09-26"
 
   [page.locale.zh-Hant-TW]
-  title       = "SEO 與 GEO 搜尋優化｜讓搜尋引擎與 AI 都找得到、引用得了 | TauX"
+  title       = "SEO 與 GEO 優化｜讓搜尋引擎與 AI 都找得到、引用得了 | TauX"
   description = "TauX 為中小企業提供 SEO 與 GEO（生成式引擎優化）：技術 SEO、內容與關鍵字、結構化資料、llms.txt 與 AI 爬蟲政策，並在動工前記錄基準線，之後量測被引用的變化。"
   crumb       = "SEO 與 GEO 搜尋優化"
   label       = "SEO 與 GEO 搜尋優化"
   summary     = "搜尋正在從「給你十條連結」變成「直接給你答案」。SEO 讓你出現在連結裡，GEO 讓你出現在答案裡。"
 
   [page.locale.zh-Hans-CN]
-  title       = "SEO 与 GEO 搜索优化｜让搜索引擎与 AI 都找得到、引用得了 | TauX"
+  title       = "SEO 与 GEO 优化｜让搜索引擎与 AI 都找得到、引用得了 | TauX"
   description = "TauX 为中小企业提供 SEO 与 GEO（生成式引擎优化）：技术 SEO、内容与关键字、结构化数据、llms.txt 与 AI 爬虫政策，并在动工前记录基准线，之后量测被引用的变化。"
   crumb       = "SEO 与 GEO 搜索优化"
   label       = "SEO 与 GEO 搜索优化"
