@@ -8,6 +8,18 @@ npm-debug.log
 # Environment variables
 .env
 .env.*
+# wrangler's local secrets file, read by `wrangler dev`
+.dev.vars
+.dev.vars.*
+
+# Credentials. This repository is public: an OAuth client, a token or a private
+# key committed here is published, and deleting the commit does not unpublish it.
+# Keep them outside the working tree (the Search Console tooling reads
+# ~/.config/taux-gsc/); these patterns are the net under that habit.
+client_secret*.json
+token.json
+*.pem
+*.key
 
 
 # IDE
