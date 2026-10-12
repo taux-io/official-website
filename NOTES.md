@@ -148,12 +148,13 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
 
-### commit 前的密碼掃描（gitleaks）
+### 密碼掃描（gitleaks）：commit 前與 PR 上
 
 這個 repo 是公開的：密碼進了 commit 就是公開，刪掉 commit 也收不回，只能作廢
-重發。`.gitignore` 是第一張網（不該被加入的檔案），`.githooks/pre-commit` 是第二
-張（寫進本來就要 commit 的檔案裡的密碼）。它只掃**暫存的內容**，規則是 gitleaks
-內建的，設定在 `.gitleaks.toml`。
+重發。三張網：`.gitignore`（不該被加入的檔案）；`.githooks/pre-commit`（寫進本來
+就要 commit 的檔案裡的密碼，只掃**暫存的內容**，靠個人習慣）；
+`.github/workflows/secrets.yml`（PR 上掃這個 PR 加的 commit，不靠任何人的習慣）。
+規則是 gitleaks 內建的，設定在 `.gitleaks.toml`，hook 與 CI 讀同一份。
 
 - **啟用**：每個 clone 跑一次 `npm run hooks:install`（把 `core.hooksPath` 設成
   `.githooks`；worktree 共用同一份設定）。需要 `brew install gitleaks`。
@@ -164,8 +165,17 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
   不做的檢查，比沒有檢查更糟。真的要放行，`git commit --no-verify`。
 - **誤報**：把輸出裡印的 fingerprint 加進 `.gitleaksignore`，一筆一筆加，不要用
   整個路徑或整條規則的白名單——那是公開 repo 唯一一張網上的洞。
-- **它擋不住的**：只在本機跑，`--no-verify` 可以繞過；CI 沒有掃描。加 CI 掃描是
-  另一個決定（Pull request 上掃 diff，才是不靠個人習慣的那一道）。
+- **PR 上的掃描（`secrets.yml`，job 名 `gitleaks`）**：掃的是 `base..head` 的
+  **commit 歷史**，不是最後的檔案樹——同一個 PR 先 commit 密碼、後一個 commit 才刪
+  掉，歷史裡還在，檔案樹檢查會說乾淨。不用 `gitleaks-action`：組織的 repo 要付費
+  授權金鑰，而這個 job 不需要任何 secret；改成下載釘死版本、核對釘死 SHA-256 的
+  執行檔（升版時兩個一起改）。`--redact`，所以公開的 CI log 不會印出密碼。
+- **它不是必過檢查**：不在上面那份閘門清單裡，也沒有算進閘門總數。要讓它擋合併，
+  得在 repo 設定的 required status checks（現在是 `build`、`audit`）加上 `gitleaks`
+  ——那是設定，不是這個檔案能決定的。在那之前它只會報紅，人還是合併得了。
+- **它擋不住的**：已經在別的分支或歷史裡的舊密碼（它只看這個 PR 加的 commit）；
+  放進程式碼裡但規則認不得的字串（內建規則看格式與熵，不是萬能）；以及**已經外洩的
+  東西**——掃描只能擋下還沒進去的，進去了就是作廢重發。
 - 新增時對整段歷史（529 個 commit）與工作目錄各掃一次，**沒有任何命中**，所以
   沒有帶任何白名單進來。
 
