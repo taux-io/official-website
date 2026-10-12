@@ -565,6 +565,19 @@
     margin-top: 2rem;
   }
 
+  /* HOME HERO BACKGROUND (DESIGN.md decision 181). A field of 0s and 1s drawn
+     by static/js/home-digits.js; the only <canvas> the site ships. It is
+     decoration behind the hero's own text, so it takes no pointer events and
+     has no size of its own: the script sets left/top/width/height with a
+     margin so the drift never shows an edge. The mask fades it out toward the
+     bottom of the band so it does not run into the services section. */
+  .home-digits {
+    position: absolute;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
   /* A column flex container stretches its children, and the tag — an
      inline-flex pill — stretched to the full column: 327px on a phone, 896px
      on a desktop, for a label four characters long. */
@@ -2365,6 +2378,10 @@
    
    NOT GATED, for the same reason as the block above. */
 @media print {
+  .home-digits {
+    display: none;
+  }
+
   nav,
   footer,
   .locale-switcher {

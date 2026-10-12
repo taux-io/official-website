@@ -248,7 +248,7 @@ const RULES = [
     enabled: true,
     turnedOnBy: "#166 — the tau curve comes out",
     run: ruleZeroCanvas,
-    summary: "decorative depth is photography; this site ships none, so it ships nothing",
+    summary: "decorative depth is photography; this site ships none, so it ships nothing — except the home hero's <canvas data-home-digits> (decision 181)",
   },
   {
     name: "section cover screens",
