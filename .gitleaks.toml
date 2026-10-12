@@ -1,0 +1,10 @@
+# gitleaks configuration, read by .githooks/pre-commit.
+#
+# The built-in rules, unchanged. The whole history and the working tree were
+# scanned when this was added and nothing matched, so there is no allowlist to
+# carry. Add to it only for a measured false positive, and say which one: a
+# broad path or regex allowlist is a hole in a public repository's only net.
+title = "taux.io"
+
+[extend]
+useDefault = true

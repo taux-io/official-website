@@ -1,0 +1,26 @@
+#!/bin/sh
+# Stops a commit that adds a secret. Scans what is staged, nothing else.
+#
+# This repository is public: a credential that reaches a commit is published,
+# and deleting the commit does not unpublish it. .gitignore is the first net
+# (files that should never be added); this is the second (a secret typed into a
+# file that is meant to be committed).
+#
+# Turn it on once per clone:  npm run hooks:install
+# It is not wired to `npm ci` on purpose: Workers Builds runs `npm clean-install`
+# on the machine that holds the deploy credentials, and NOTES.md counts what
+# runs there. A lifecycle script of our own would be one more.
+#
+# gitleaks missing BLOCKS the commit rather than skipping the scan: a check that
+# silently does nothing on a machine without the tool is worse than no check.
+# A false positive: add its fingerprint to .gitleaksignore (the output prints it).
+# To commit anyway, once, knowingly: git commit --no-verify
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed, so this commit was NOT scanned for secrets." >&2
+  echo "  install it:  brew install gitleaks" >&2
+  echo "  or commit anyway, knowingly:  git commit --no-verify" >&2
+  exit 1
+fi
+
+exec gitleaks git --pre-commit --staged --redact --no-banner

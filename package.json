@@ -20,6 +20,7 @@
     "ko:record": "node scripts/check-ko.js --record",
     "check:design": "node scripts/check-design.js",
     "check:routes": "node scripts/check-routes.js",
+    "hooks:install": "git config core.hooksPath .githooks",
     "routes:record": "node scripts/check-routes.js --record",
     "dates": "node scripts/dates.js",
     "screenshot": "node scripts/visual/screenshot.js",

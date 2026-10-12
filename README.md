@@ -52,6 +52,8 @@ npm run serve        # wrangler dev，http://127.0.0.1:8099
 
 **預覽一定要用 `npm run serve`。** 一般的靜態伺服器不讀 `_headers`，一條永遠匹配不到的標頭規則在那裡看起來完全正常——這個站的 CSP 曾經因此一整年沒有生效而沒人發現。
 
+**每個 clone 做一次：** `brew install gitleaks`，然後 `npm run hooks:install`。這個 repo 是公開的，密碼一旦進了 commit 就等於公開、收不回；這個 pre-commit hook 會在 commit 前掃描暫存的檔案，發現密碼就擋下（細節見 [NOTES.md](NOTES.md)）。
+
 改 CSS 時開 `npm run watch:css`。改了模板裡的 class 要重建 CSS，`styles.min.css` 是進版控的建置產物，`npm run check:css` 會擋。
 
 ## 檢查
