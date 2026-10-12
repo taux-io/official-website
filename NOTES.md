@@ -94,6 +94,7 @@ npm run routes:record  # 新增路由後把它寫進 ledgers/published-paths.txt
 npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
 npm run check:entity:links  # sameAs 的 URL 是否解析得到（CI 閘門，需網路）
 npm run check:ko       # 韓文的空白與引號決定沒有改變（CI 閘門）
+npm run hooks:install # 啟用 .githooks/pre-commit：gitleaks 擋密碼（每個 clone 一次；不在 CI）
 npm run ko:record      # 把今天的韓文決定寫進兩份 ledger
 npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
 npm run test:worker    # src/worker.js 的語言協商與「不自組回應」（CI 閘門）
@@ -146,6 +147,27 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 **`check:entity` 會拒絕稽核不完整的 `dist/`。** 建置是一頁一頁寫的，遇到第一個解析不了的模板就結束，所以失敗的建置會留下半棵樹——而所有讀 `dist/` 的檢查都會對著它報綠。這實際發生過：一個壞掉的 include 讓十七頁只寫了八頁，三條規則全部「通過」。它現在會比對 `site.toml` 宣告的頁數。
 
 截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
+
+### commit 前的密碼掃描（gitleaks）
+
+這個 repo 是公開的：密碼進了 commit 就是公開，刪掉 commit 也收不回，只能作廢
+重發。`.gitignore` 是第一張網（不該被加入的檔案），`.githooks/pre-commit` 是第二
+張（寫進本來就要 commit 的檔案裡的密碼）。它只掃**暫存的內容**，規則是 gitleaks
+內建的，設定在 `.gitleaks.toml`。
+
+- **啟用**：每個 clone 跑一次 `npm run hooks:install`（把 `core.hooksPath` 設成
+  `.githooks`；worktree 共用同一份設定）。需要 `brew install gitleaks`。
+- **為什麼不掛在 `npm ci` 的 `prepare` 上**：Workers Builds 在持有部署憑證的機器上
+  自己跑 `npm clean-install`（見「縮小部署機器上的安裝範圍」），那裡會執行什麼是
+  被數過的；我們自己多一個生命週期腳本就是多一個。代價是**要有人記得跑一次**。
+- **沒裝 gitleaks 會擋下 commit**，而不是略過：一個在沒有工具的機器上默默什麼都
+  不做的檢查，比沒有檢查更糟。真的要放行，`git commit --no-verify`。
+- **誤報**：把輸出裡印的 fingerprint 加進 `.gitleaksignore`，一筆一筆加，不要用
+  整個路徑或整條規則的白名單——那是公開 repo 唯一一張網上的洞。
+- **它擋不住的**：只在本機跑，`--no-verify` 可以繞過；CI 沒有掃描。加 CI 掃描是
+  另一個決定（Pull request 上掃 diff，才是不靠個人習慣的那一道）。
+- 新增時對整段歷史（529 個 commit）與工作目錄各掃一次，**沒有任何命中**，所以
+  沒有帶任何白名單進來。
 
 ### 寫捲動斷言時，`scroll-smooth` 會讓探針說謊
 
