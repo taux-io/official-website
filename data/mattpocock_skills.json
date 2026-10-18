@@ -135,6 +135,246 @@
       "when": "一次建置做完、code-review 之後；修完 bug 後也可以跑，問「什麼本來能防止它」。要在被回顧的那個 session 裡、清掉 context 之前跑。",
       "before": ["code-review"],
       "after": []
+    },
+    {
+      "skill": "ask-matt",
+      "region": "router",
+      "invocation": "user",
+      "version": "1.0.0",
+      "one_liner": "不確定該走哪條流程時問它：它是整套 skill 的路由器，依你的處境指路。",
+      "problem": "skill 多到記不住，每個又只在特定的處境才用得上。它把整套分成一條主線、三條入口、程式碼健康、底層詞彙和獨立工具，並附上階段交界的決策樹。它自己的摘要只拿來認路：它要求先讀過某個 skill 的 SKILL.md，才能說那個 skill 做什麼，或建議跳過哪一步。",
+      "when": "不知道現在的處境該走哪條流程，或不確定某一步能不能省的時候。",
+      "before": [],
+      "after": ["grill-with-docs", "triage", "diagnosing-bugs", "wayfinder"]
+    },
+    {
+      "skill": "triage",
+      "region": "entry",
+      "invocation": "user",
+      "version": "1.1.0",
+      "merge_at": "implement",
+      "merge_note": "整理成「可交給代理」的 issue 之後，由 implement 接手去做。",
+      "one_liner": "把別人開的 issue 與外部 PR 依狀態機分類、驗證，必要時追問，再寫成代理能直接接手的簡報。",
+      "problem": "外面進來的 bug 回報和需求雜亂又不完整。它讓每一筆帶一個類別（bug 或 enhancement）和一個狀態（需要評估、等回報者補資訊、可交給代理、要人來做、不處理），先到程式碼裡確認需求是不是已經做過、以前有沒有被拒絕過，再照回報者的步驟重現問題；需要補強就用 grilling 和 domain-modeling 追問，最後寫成簡報，或列出還缺的資訊。它在 issue tracker 上留的每則留言，開頭都要標明是 AI 產生的。",
+      "when": "bug 回報和需求堆著、需要有人整理的時候。只處理不是你自己建立的 issue：to-tickets 產出的 ticket 本來就能直接交給代理，不要再 triage。第一次用之前要先跑過 setup-matt-pocock-skills，它才知道你的標籤實際叫什麼。",
+      "before": ["setup-matt-pocock-skills"],
+      "after": ["implement"]
+    },
+    {
+      "skill": "diagnosing-bugs",
+      "region": "entry",
+      "invocation": "model",
+      "version": null,
+      "renamed_from": "diagnose",
+      "merge_at": "retro",
+      "merge_note": "它不從主線的開頭進來，而是修好之後接到最後一步。在同一個 session 跑 retro，問「什麼本來能防止這個 bug」；如果發現是缺少能鎖住它的 seam，那一項再交給 improve-codebase-architecture。",
+      "one_liner": "遇到難纏的 bug 或效能退化，先做出一個一跑就紅的回饋迴圈，才准推理原因。",
+      "problem": "沒有穩定的重現方法就開始猜原因，只會白費力氣。它分六個階段：先建回饋迴圈，也就是一條跑得快、結果固定、能抓到你描述的那個症狀的命令，而且要已經實際跑過一次；再重現並縮到最小；列出三到五個可以被證偽的假設；一次只改一個變數去驗證；修之前先寫回歸測試；最後清掉除錯用的記錄。若找不到適合鎖住這個 bug 的 seam，它把這件事本身當成發現記下來。過程中出現的密碼之類，一律先遮掉再顯示。",
+      "when": "你說「diagnose」或「debug this」，或回報東西壞掉、拋錯、失敗、變慢的時候。越難的越適合：看一眼找不到原因的、時有時無的、在兩個已知正常的狀態之間冒出來的。",
+      "before": [],
+      "after": ["retro", "improve-codebase-architecture"]
+    },
+    {
+      "skill": "wayfinder",
+      "region": "entry",
+      "invocation": "user",
+      "version": null,
+      "renamed_from": "decision-mapping",
+      "merge_at": "to-spec",
+      "merge_note": "地圖清了，它不直接動手建，而是接到 to-spec，讓 to-spec 把地圖上一個個決定收成一份可以建的計畫，再走 to-tickets 和 implement。直接丟給 implement 會把地圖上的細節丟掉；只有最後發現工作其實很小時才例外。",
+      "one_liner": "把一個 session 裝不下的大工作，畫成一張 decision ticket 的共享地圖，一張張解決到路看得清為止。",
+      "problem": "大專案或超大功能，從現在到終點的路還在霧裡，直接動手只會亂衝。它先講清楚終點是什麼，再在 issue tracker 開一個標 wayfinder:map 的地圖 issue，底下掛子 ticket。每張 ticket 是一個要做決定的問題（查資料、做 prototype、追問，或補一件非做不可的前置工作），一個 session 只解一張，答案記在 ticket 上，摘要回寫到地圖。看得清楚的先開成 ticket，還說不清楚的寫在「尚未明確」那一區，等霧散了再開。它的產出是決定，不是成品。",
+      "when": "全新的大專案，或一個 session 容納不下的超大功能，而且連路都還看不見的時候。它是這裡最吃腦力的流程；範圍清楚的功能用 grill-with-docs 就好。畫地圖時如果發現其實沒有霧，它會停下來問你要怎麼進行。",
+      "before": [],
+      "after": ["to-spec"]
+    },
+    {
+      "skill": "improve-codebase-architecture",
+      "region": "health",
+      "invocation": "user",
+      "version": "1.0.0",
+      "one_liner": "掃過整個程式碼庫，找出可以變深的淺模組，做成一份 HTML 報告，再針對你挑的那一個追問。",
+      "problem": "淺模組（介面幾乎和實作一樣複雜）讓代理難以導航，也難以測試。它先看最近常改的地方，派子代理去探索，用刪除測試（把它刪掉，複雜度是集中起來，還是只是搬到別處）來檢驗，再把候選項做成帶前後對照圖的 HTML 報告，放在系統暫存目錄，不會進 repo。報告只提出候選，還不設計介面；你挑一個之後，才用 grilling 一路追問，需要比較幾種介面時再借 codebase-design 的做法。",
+      "when": "有空檔、想替程式碼庫做日常保養的時候，這不是在做新功能。diagnosing-bugs 之後若發現缺少能鎖住 bug 的 seam，也交給它。",
+      "before": ["diagnosing-bugs", "retro"],
+      "after": ["grill-with-docs"]
+    },
+    {
+      "skill": "domain-modeling",
+      "region": "vocab",
+      "invocation": "model",
+      "version": "1.0.0",
+      "one_liner": "主動磨利專案的領域用語，並維護 GLOSSARY.md 與 ADR。",
+      "problem": "同一個詞講三件事，人和代理都會搞混。它會對照 GLOSSARY.md 指出衝突、替含糊的詞提出精確的說法、用具體情境測試概念的邊界、檢查程式碼是不是和你說的一致，用語一確定就當場寫進 GLOSSARY.md。ADR 只在三件事同時成立時才提議：難以回頭、脫離脈絡會讓人困惑、是真的取捨過的結果。GLOSSARY.md 只放詞彙，不放實作細節。",
+      "when": "討論程式碼的用語、寫或改 GLOSSARY.md、記錄或修改 ADR 的時候。只是讀一下詞彙表不算，那只是任何 skill 都會做的小動作。通常不必手打，grill-with-docs、triage 這些 skill 會自己叫它。",
+      "before": ["grill-with-docs", "triage"],
+      "after": []
+    },
+    {
+      "skill": "codebase-design",
+      "region": "vocab",
+      "invocation": "model",
+      "version": "1.0.0",
+      "one_liner": "設計深模組的共用詞彙：module、interface、depth、seam、adapter。",
+      "problem": "大家把 component、service、API、boundary 混著講，設計討論就會失焦。它定下一組固定用詞：module、interface、implementation、depth、seam、adapter、leverage、locality，再附上幾條原則：刪除測試、介面就是測試面、只有一個 adapter 的 seam 只是假設，有兩個才是真的。想把介面設計得更好時，可以派幾個子代理各用截然不同的方式設計，再互相比較。",
+      "when": "要設計或改善模組的介面、找可以變深的地方、決定 seam 放哪裡、讓程式更好測試也更好讓代理導航的時候；或別的 skill 需要這套詞彙的時候。tdd 和 improve-codebase-architecture 都用它的詞。",
+      "before": ["tdd", "improve-codebase-architecture"],
+      "after": []
+    },
+    {
+      "skill": "grill-me",
+      "region": "standalone",
+      "invocation": "user",
+      "version": "1.0.0",
+      "one_liner": "不在 repo 裡時用的追問訪談：不存檔，也不建詞彙表。",
+      "problem": "計畫、設計或一篇文章還沒想透，但手邊沒有工作目錄可以留下紀錄。它本身只有一句話，叫出 grilling，所以訪談的方式和 grill-with-docs 一樣，只是什麼都不留在本機。",
+      "when": "手邊沒有工作目錄的時候，例如磨一份計畫、一個設計或一篇文章。在 repo 裡請改用 grill-with-docs：訪談一樣，還會留下文件。",
+      "before": [],
+      "after": []
+    },
+    {
+      "skill": "grilling",
+      "region": "standalone",
+      "invocation": "model",
+      "version": "1.0.0",
+      "one_liner": "追問訪談的基本機制：每輪把解鎖的問題一次問完，每題附上建議答案。",
+      "problem": "一題一題問太慢，也容易漏。它把決策畫成一棵樹，每輪把前提都已經確定的問題編號問完，每題附上建議答案，措辭讓你回「是」就等於接受。事實由代理自己去查，必要時派子代理，決定才由你回答。直到沒有任何問題待問、沒有悄悄的假設，訪談才算結束，而且要等你確認有共識才動手。",
+      "when": "想壓力測試一個想法，或說了任何「grill」類的話的時候。通常是 grill-me 或 grill-with-docs 把它叫進來，triage、wayfinder、improve-codebase-architecture 也在內部用它；只有想要不加任何外層包裝的訪談時，才直接用。",
+      "before": ["grill-me", "grill-with-docs"],
+      "after": []
+    },
+    {
+      "skill": "research",
+      "region": "standalone",
+      "invocation": "model",
+      "version": "1.1.0",
+      "one_liner": "派背景代理對照第一手資料查一個問題，把每個說法都附出處的結果寫成 repo 裡的 Markdown 檔。",
+      "problem": "查資料耗時，又吃 context。它把閱讀交給背景代理，你可以繼續做別的事。代理要對照官方文件、原始碼、規格這類第一手來源，不能只讀別人寫的整理文，每個說法都追到擁有它的來源，結果存成一份 Markdown，放在 repo 慣用的筆記位置。",
+      "when": "想研究某個主題、收集文件或 API 的事實，或把閱讀的苦工外包出去的時候。產出的檔案可以帶進 grill-with-docs 當素材；wayfinder 的查資料型 ticket 也靠它解。",
+      "before": [],
+      "after": ["grill-with-docs"]
+    },
+    {
+      "skill": "to-questionnaire",
+      "region": "standalone",
+      "invocation": "user",
+      "version": "1.2.0",
+      "one_liner": "把你自己答不出來的決定，寫成問卷交給知道的人填。",
+      "problem": "卡住的資訊在別人腦袋裡，不在你或程式碼裡。它只訪談「怎麼寄」：寄給誰、需要拿回什麼，而不是訪談主題本身，再針對缺口寫出問題，依重要性排序，存成目前目錄下的一份 Markdown。每題只問一件事，下面留空白給對方作答。",
+      "when": "需要的資訊在另一個人身上，而且可以非同步請他填，或開會時一起填的時候。填回來的內容可以帶進 grill-with-docs 或 to-spec。",
+      "before": [],
+      "after": ["grill-with-docs", "to-spec"]
+    },
+    {
+      "skill": "wizard",
+      "region": "standalone",
+      "invocation": "model",
+      "version": "1.2.0",
+      "one_liner": "產生互動式的 bash 精靈，帶人一步步完成只有人能做的步驟。",
+      "problem": "設定憑證、CI secrets、走陌生的第三方後台這類步驟，代理做不了，每次重新向它解釋又很煩。精靈是一支以現成範本為底的 bash 腳本：開網址、說明要點什麼、收下值（祕密值用隱藏輸入），再寫進 .env 和 GitHub secrets，每一關先確認，並顯示還剩幾關。代理只負責規劃步驟、寫出每一關，範本的共用部分不改。寫完只做靜態檢查，不會替你跑完，因為它會開瀏覽器、等你輸入。",
+      "when": "建立基礎設施、設定憑證或 CI secrets、走陌生的第三方後台，或做一次性遷移的時候。代理自己做得到的步驟，不要用它。",
+      "before": [],
+      "after": []
+    },
+    {
+      "skill": "wait-what",
+      "region": "standalone",
+      "invocation": "user",
+      "version": "1.2.0",
+      "one_liner": "上一則訊息沒看懂時打這個，代理會補上背景，改用簡化英文和你們的詞彙重講一次。",
+      "problem": "代理講了一堆行話，你卡住了。它只有一段話：要代理補一點背景，改用 ASD-STE100 簡化技術英文，並用 GLOSSARY.md 裡的用語重述（repo 有多份就沿著 GLOSSARY-MAP.md 找對的那份）。",
+      "when": "任何 skill 進行到一半，發現上一則訊息沒聽懂的時候。事先的解法是 grill-with-docs：早一點談定共同語言，行話就不會冒出來。",
+      "before": [],
+      "after": []
+    },
+    {
+      "skill": "teach",
+      "region": "standalone",
+      "invocation": "user",
+      "version": "1.0.1",
+      "one_liner": "把目前的資料夾當成教學工作區，跨多個 session 教你一個主題。",
+      "problem": "學東西需要跨 session 記住進度。它把學習狀態存在這個目錄裡：MISSION.md 記你為什麼想學，RESOURCES.md 列可靠的資源，learning-records 記學到的重點，reference 放可以印出來的速查頁，lessons 放一堂堂獨立的 HTML 課，assets 放各堂課共用的元件，NOTES.md 放工作筆記。它先去找可信的資源，不憑模型自己的記憶；課程用提取練習、間隔和穿插去鞏固長期記憶，而不只是求當下流暢。",
+      "when": "想花好幾個 session 學一項技能或一個概念的時候。",
+      "before": [],
+      "after": []
+    },
+    {
+      "skill": "writing-for-agents",
+      "region": "standalone",
+      "invocation": "model",
+      "version": null,
+      "renamed_from": "writing-great-skills",
+      "one_liner": "寫給代理讀的文件（skill、AGENTS.md、CLAUDE.md）的寫作參考。",
+      "problem": "同一份文件，代理每次走的過程若不一樣，多半是寫法的問題。它講的是：用 context pointer 控制代理什麼時候去讀哪份材料；分清常駐 context 的成本，和人要記得有哪些文件的負擔；依代理多快需要，把內容放進資訊階層，再用漸進揭露把次要的材料移到指標後面。寫 skill 時另有一份 SKILL-MECHANICS.md，講 frontmatter、呼叫方式怎麼選，以及路由 skill。",
+      "when": "建立或修改 skill，或修改 AGENTS.md、CLAUDE.md 的時候。",
+      "before": [],
+      "after": []
+    },
+    {
+      "skill": "git-guardrails-claude-code",
+      "region": "other",
+      "group": "misc",
+      "one_liner": "設定 Claude Code 的 hook，在 git push、reset --hard 這類危險的 git 命令執行前先擋下。"
+    },
+    {
+      "skill": "migrate-to-shoehorn",
+      "region": "other",
+      "group": "misc",
+      "one_liner": "把測試檔裡的 as 型別斷言改成 @total-typescript/shoehorn，只用在測試。"
+    },
+    {
+      "skill": "scaffold-exercises",
+      "region": "other",
+      "group": "misc",
+      "one_liner": "建立通過 lint 的練習題目錄結構：章節、題目、解答與說明。"
+    },
+    {
+      "skill": "setup-pre-commit",
+      "region": "other",
+      "group": "misc",
+      "one_liner": "在目前的 repo 設定 Husky pre-commit hook，跑 lint-staged（Prettier）、型別檢查和測試。"
+    },
+    {
+      "skill": "chief-of-staff",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "在單一 session 裡調度子代理與排程，持續推進一個長期目標。"
+    },
+    {
+      "skill": "claude-handoff",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "把目前的對話寫成交接摘要，交給新啟動的背景代理馬上接手。"
+    },
+    {
+      "skill": "loop-me",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "追問你想建立的工作流程，把結果寫成 workflow 規格。"
+    },
+    {
+      "skill": "setup-ts-deep-modules",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "在 TypeScript repo 接上 dependency-cruiser，讓每個 package 成為只能從入口檔進入的深模組。"
+    },
+    {
+      "skill": "writing-beats",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "寫作的定稿階段：把素材組成一條由 beat 串起來的路線，每個 beat 用到的詞先交代清楚。"
+    },
+    {
+      "skill": "writing-fragments",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "寫作的探索階段：先挖出零散的片段，還不決定結構。"
+    },
+    {
+      "skill": "writing-shape",
+      "region": "other",
+      "group": "in-progress",
+      "one_liner": "寫作的定稿階段：把素材一段一段塑造成一篇文章。"
     }
   ]
 }

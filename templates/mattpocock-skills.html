@@ -1,5 +1,6 @@
-{% from "_blocks.html" import cover -%}
+{% from "_blocks.html" import cover, faq -%}
 {% include "header.html" %}
+
 
 <!-- Structured data.
 
@@ -19,6 +20,7 @@
 
 {% set skills = data["mattpocock_skills"]["skills"] %}
 {% set written_for = data["mattpocock_skills"]["plugin_version"] %}
+{% set others = skills|selectattr("region", "equalto", "other")|list %}
 
 <!-- Hero -->
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 relative">
@@ -33,7 +35,7 @@
         </h1>
 {% include "_article-date.html" %}
         <p class="text-base tablet:text-lg mb-5 max-w-prose">
-            從想法到出貨，主線上有 12 個 skill。這一頁依序說明每一個解決什麼問題、什麼時候用、前後接誰，以及要自己手打還是交給模型。
+            整個外掛有 {{ skills|length }} 個 skill，從想法到出貨的主線上有 12 個。這一頁依序說明每一個解決什麼問題、什麼時候用、前後接誰，以及要自己手打還是交給模型。
         </p>
         <p class="font-sans text-eyebrow uppercase">依 {{ written_for }} 撰寫</p>
     </header>
@@ -43,6 +45,12 @@
             <ul class="space-y-1">
                 <li><a href="#overview" class="section-index-link"><span class="font-sans">01</span> 先看這幾件事</a></li>
                 <li><a href="#flow" class="section-index-link"><span class="font-sans">02</span> 從想法到出貨</a></li>
+                <li><a href="#router" class="section-index-link"><span class="font-sans">03</span> 不確定時問誰</a></li>
+                <li><a href="#entries" class="section-index-link"><span class="font-sans">04</span> 三條入口</a></li>
+                <li><a href="#health" class="section-index-link"><span class="font-sans">05</span> 程式碼健康</a></li>
+                <li><a href="#vocab" class="section-index-link"><span class="font-sans">06</span> 底層詞彙</a></li>
+                <li><a href="#standalone" class="section-index-link"><span class="font-sans">07</span> 獨立工具</a></li>
+                <li><a href="#others" class="section-index-link"><span class="font-sans">08</span> 其他</a></li>
             </ul>
         </div>
     </nav>
@@ -82,22 +90,99 @@
 
             <div class="space-y-12 mt-12">
                 {%- for s in skills if s.region == "main" %}
-                <div id="skill-{{ s.skill }}" class="border-t border-line pt-6 space-y-3 leading-relaxed">
-                    <h3>{{ s.skill }}</h3>
-                    <p><strong>一句話答案</strong>：{{ s.one_liner }}</p>
-                    <p><strong>解決什麼問題</strong>：{{ s.problem }}</p>
-                    <p><strong>什麼時候用</strong>：{{ s.when }}</p>
-                    <p><strong>前後接誰</strong>：
-                        {%- if s.before %}前面是{% for b in s.before %} <a href="#skill-{{ b }}">{{ b }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}前面沒有，這是起點{% endif %}；
-                        {%- if s.after %}後面是{% for a in s.after %} <a href="#skill-{{ a }}">{{ a }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}後面沒有，這是終點{% endif %}。</p>
-                    <p><strong>呼叫方式</strong>：
-                        {%- if s.invocation == "user" %}只能由你手打 <code>/{{ s.skill }}</code>，模型不會自己呼叫。
-                        {%- else %}模型會在需要時自己呼叫，你也可以手打 <code>/{{ s.skill }}</code>。{% endif %}</p>
-                    {%- if s.version %}
-                    <p><strong>加入於</strong>：{{ s.version }}</p>
-                    {%- endif %}
-                </div>
+                {% include "_mattpocock-skill.html" %}
                 {%- endfor %}
+            </div>
+        </section>
+
+        <section id="router">
+            {% call cover("03") %}不確定時問誰{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    skill 多到記不住的時候，不必自己背整張地圖。<code>ask-matt</code> 是整套的路由器，它的分類就是這一頁後面幾章的分法：一條主線、三條入口、程式碼健康、底層詞彙，加上獨立工具。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "router" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="entries">
+            {% call cover("04") %}三條入口{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    主線從 <a href="#skill-grill-with-docs">grill-with-docs</a> 開頭，但工作不一定從一個新想法開始：可能是一堆別人開的 issue，可能是一個壞掉的東西，也可能是大到連路都看不見的專案。下面三個 skill 各管一種起點，做完把成果接回主線的某一處；每一段都寫明接在哪裡。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "entry" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="health">
+            {% call cover("05") %}程式碼健康{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    這一章不是在做新功能，只是日常保養。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "health" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="vocab">
+            {% call cover("06") %}底層詞彙{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    這兩個由模型呼叫的參考墊在其他 skill 底下，各自是自己那一套用詞的唯一來源。問題出在用字、而不是流程的時候，才直接用它們；多半是上面的 skill 自己把它們叫進來。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "vocab" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="standalone">
+            {% call cover("07") %}獨立工具{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    不在主線上的 skill，各解一種獨立的問題。它們大多可以單獨使用，也有幾個會把成果交回主線。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "standalone" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="others">
+            {% call cover("08") %}其他{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    外掛的 <code>skills/</code> 目錄裡還有 {{ others|length }} 個 skill，但它們沒有列在外掛的 <code>plugin.json</code> 清單裡。這裡只列名稱和一句話，預設收起；要用其中哪一個之前，請先讀它自己的 SKILL.md。
+                </p>
+            </div>
+            <div class="mt-8">
+                {%- call faq("其他 " ~ others|length ~ " 個 skill", last=true) %}
+                {%- for g in ["misc", "in-progress"] %}
+                <p class="font-semibold mb-2">{{ g }}</p>
+                <ul class="list-disc ps-5 space-y-2 mb-6">
+                    {%- for s in others if s.group == g %}
+                    <li><code>{{ s.skill }}</code>：{{ s.one_liner }}</li>
+                    {%- endfor %}
+                </ul>
+                {%- endfor %}
+                {%- endcall %}
             </div>
         </section>
 
