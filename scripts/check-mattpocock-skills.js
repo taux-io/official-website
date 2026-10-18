@@ -2,7 +2,7 @@
 // nothing the Content-Security-Policy would refuse.
 //
 //   node scripts/check-mattpocock-skills.js
-//   node scripts/check-mattpocock-skills.js --dist <dir> --data <file> --plugin <dir>
+//   node scripts/check-mattpocock-skills.js --dist <dir> --data <file> --phase <file> --plugin <dir>
 //   MATTPOCOCK_SKILLS_DIR=<dir> node scripts/check-mattpocock-skills.js
 //
 // The page is written by a template looping over data/mattpocock_skills.json,
@@ -57,7 +57,7 @@ const text = (html) =>
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
-    .replace(/&#x27;/g, "'")
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
     .replace(/&quot;/g, '"');
 
 // Oldest changelog section that names `skill` in backticks, or null.
@@ -86,7 +86,9 @@ function checkPage(data, html, md) {
   const htmlSection = {};
   starts.forEach((m, i) => {
     const end = i + 1 < starts.length ? starts[i + 1].index : html.indexOf("</main>");
-    htmlSection[m[1]] = html.slice(m.index, end);
+    // A skill section also ends where the next chapter (<section>) begins.
+    const chapter = html.indexOf("<section", m.index);
+    htmlSection[m[1]] = html.slice(m.index, chapter !== -1 && chapter < end ? chapter : end);
   });
   const mdSection = {};
   for (const block of md.split(/^### /m).slice(1)) {
@@ -169,6 +171,111 @@ function checkPage(data, html, md) {
     "written-for",
     `the page and its twin must say 依 ${data.plugin_version} 撰寫`,
   );
+}
+
+// The phase-boundary tree. The order of the five options, the four cases that
+// justify a handoff and the smart-zone figure are claims about the upstream
+// (ask-matt's PHASE-BOUNDARIES.md); the page must carry them in its HTML and in
+// its twin, as a plain ordered list a reader can follow with no script.
+const PHASE_ORDER = ["continue", "clear", "handoff", "subagent", "compact"];
+const SMART_ZONE_K = 150;
+const HANDOFF_CASES = ["harness", "目錄", "同事", "中途"];
+
+function checkPhase(phase, html, md) {
+  const where = `/${LOCALE}/${SLUG}`;
+  const ids = phase.options.map((o) => o.id);
+  check(
+    JSON.stringify(ids) === JSON.stringify(PHASE_ORDER),
+    where,
+    "phase order",
+    `the options are ${ids.join(" > ")}; PHASE-BOUNDARIES.md orders them ${PHASE_ORDER.join(" > ")}`,
+  );
+  check(phase.questions.length === 5, where, "phase order", `the tree has ${phase.questions.length} questions, not 5`);
+  check(
+    JSON.stringify(phase.questions.map((q) => q.leads_to)) === JSON.stringify(PHASE_ORDER),
+    where,
+    "phase order",
+    "the questions do not lead to the options in order",
+  );
+
+  const tree = /<ol[^>]*data-phase-tree[^>]*>([\s\S]*?)<\/ol>/.exec(html);
+  check(!!tree, where, "phase tree", "no <ol data-phase-tree> on the page");
+  if (tree) {
+    const items = [...tree[1].matchAll(/<li\b[\s\S]*?<\/li>/g)].map((m) => m[0]);
+    check(items.length === 5, where, "phase tree", `the tree list has ${items.length} items, not 5`);
+    items.forEach((li, i) => {
+      const q = phase.questions[i];
+      if (!q) return;
+      check(text(li).includes(q.text), where, "phase tree", `item ${i + 1} does not carry the question the data gives`);
+      const o = phase.options[i];
+      check(li.includes(`href="#phase-${o.id}"`), where, "phase tree", `item ${i + 1} does not link to #phase-${o.id}`);
+    });
+    const first = items[0] ? text(items[0]) : "";
+    check(first.includes("先排除"), where, "phase tree", "the first question does not say continue is ruled out first");
+  }
+
+  for (const [kind, body] of [["page", text(html)], ["markdown twin", md]]) {
+    for (const o of phase.options) {
+      check(body.includes(o.does), where, "phase options", `${o.name} (${kind}) lost its description`);
+    }
+    const compact = phase.options.find((o) => o.id === "compact");
+    check(
+      compact && /預設/.test(compact.reason) && body.includes(compact.reason),
+      where,
+      "phase options",
+      `compact (${kind}) must be described as the default, not the first reach`,
+    );
+    const handoff = phase.options.find((o) => o.id === "handoff");
+    const cases = (handoff && handoff.valid_reasons) || [];
+    check(cases.length === 4, where, "handoff cases", `the data lists ${cases.length} handoff cases, not 4`);
+    HANDOFF_CASES.forEach((kw, i) => {
+      check(!!cases[i] && cases[i].includes(kw), where, "handoff cases", `handoff case ${i + 1} should be about "${kw}"`);
+    });
+    for (const c of cases) check(body.includes(c), where, "handoff cases", `handoff case "${c}" (${kind}) is missing`);
+    check(
+      body.includes(`${phase.smart_zone.tokens_k}k`) && phase.smart_zone.tokens_k === SMART_ZONE_K,
+      where,
+      "smart zone",
+      `the smart zone must read ${SMART_ZONE_K}k (${kind})`,
+    );
+    check(body.includes(phase.smart_zone.text), where, "smart zone", `the smart-zone explanation (${kind}) is missing`);
+  }
+}
+
+function checkPhasePlugin(phase, dir) {
+  const where = "plugin " + dir;
+  const askMatt = path.join(dir, "skills", "engineering", "ask-matt");
+  const boundaries = path.join(askMatt, "PHASE-BOUNDARIES.md");
+  const skill = path.join(askMatt, "SKILL.md");
+  if (!fs.existsSync(boundaries) || !fs.existsSync(skill)) {
+    check(false, where, "plugin", "ask-matt/PHASE-BOUNDARIES.md or SKILL.md is missing");
+    return;
+  }
+  const doc = fs.readFileSync(boundaries, "utf8");
+  const table = /## The five options([\s\S]*?)\n## /.exec(doc);
+  const names = table
+    ? [...table[1].matchAll(/^\|\s*\*\*([^*]+)\*\*/gm)].map((m) => m[1].toLowerCase().replace(/[`/]/g, ""))
+    : [];
+  check(
+    JSON.stringify(names) === JSON.stringify(PHASE_ORDER),
+    where,
+    "phase order",
+    `PHASE-BOUNDARIES.md lists ${names.join(" > ")}; the checker expects ${PHASE_ORDER.join(" > ")}`,
+  );
+  const tree = /## The tree([\s\S]*?)\n## /.exec(doc);
+  const order = tree ? [...tree[1].matchAll(/^\*\*(\d)\./gm)].length : 0;
+  check(order === 5, where, "phase order", "PHASE-BOUNDARIES.md no longer has five numbered questions");
+  const bullets = tree ? (/You need it only when you are:([\s\S]*?)That list is the whole clause/.exec(tree[1]) || [])[1] || "" : "";
+  check((bullets.match(/^- /gm) || []).length === 4, where, "handoff cases", "PHASE-BOUNDARIES.md no longer lists exactly four handoff cases");
+  for (const f of [boundaries, skill]) {
+    const k = [...fs.readFileSync(f, "utf8").matchAll(/~(\d+)k tokens/g)].map((m) => Number(m[1]));
+    check(
+      k.length > 0 && k.every((n) => n === phase.smart_zone.tokens_k),
+      where,
+      "smart zone",
+      `${path.basename(f)} says ~${k.join(", ")}k; the data says ${phase.smart_zone.tokens_k}k`,
+    );
+  }
 }
 
 // What the CSP refuses, and the dark mode the design forbids.
@@ -257,11 +364,18 @@ function main() {
   }
   const css = read(path.join(ROOT, "static", "css", "styles.min.css")) || "";
 
+  const phaseFile = path.resolve(arg("--phase") || path.join(ROOT, "data", "mattpocock_phase.json"));
+  const phase = JSON.parse(fs.readFileSync(phaseFile, "utf8"));
+
   checkPage(data, html, md);
+  checkPhase(phase, html, md);
   checkPolicy(html, css);
 
   const plugin = arg("--plugin") || process.env.MATTPOCOCK_SKILLS_DIR;
-  if (plugin) checkPlugin(data, path.resolve(plugin));
+  if (plugin) {
+    checkPlugin(data, path.resolve(plugin));
+    checkPhasePlugin(phase, path.resolve(plugin));
+  }
 
   if (failures.length) {
     console.log("");
