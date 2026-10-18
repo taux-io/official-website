@@ -2191,6 +2191,74 @@
 }
 
 /* ===========================================================================
+   The mattpocock-skills flow diagram (issue 370). Chapter 02 of
+   /mattpocock-skills lists its twelve main-line skills as an ordered list of
+   links; this is that list drawn as a column of boxes on a hairline rail, with
+   the number each box carries counted by CSS (the Markdown twin keeps the
+   <ol>'s own numbers).
+
+   Same rules as the deck above (decision 153): unlayered, ahead of the user
+   preferences, every selector scoped by a page-specific class. Components used
+   are the site's own — a hairline box, a hairline rail, an ink-5% hover — and
+   nothing is new: no radius, no colour but ink and the paper, and the blue is
+   not used here at all (a link's mark on this site is its underline).
+
+   The boxes are plain links in a plain list, not a <nav>: geometry holds every
+   `nav a` to 44px, and the join marks inside the list are inline links in prose.
+   --------------------------------------------------------------------------- */
+.skills-flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: skills-flow;
+}
+
+.skills-flow > li {
+    counter-increment: skills-flow;
+    margin-inline-start: 1.25rem;
+    padding-inline-start: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-inline-start: 1px solid var(--line);
+}
+
+.skills-flow > li:last-child {
+    padding-bottom: 0;
+    border-inline-start-color: transparent;
+}
+
+.skills-flow .skills-flow-node {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration-line: none;
+    overflow-wrap: anywhere;
+    transition: background-color 0.2s var(--ease-standard);
+}
+
+.skills-flow .skills-flow-node::before {
+    content: counter(skills-flow, decimal-leading-zero);
+    flex: none;
+    color: var(--ink);
+    font-weight: 400;
+}
+
+@media (hover: hover) {
+    .skills-flow .skills-flow-node:hover {
+        background-color: rgb(var(--ink-rgb) / 0.05);
+    }
+}
+
+.skills-flow .skills-flow-node:active {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+
+/* ===========================================================================
    User preferences. Three independent signals, none of which had a CSS
    answer before issue 154 — reduced motion was handled in two scripts that no
    longer exist and nowhere else, so the 300ms overlay fade, the nav's transform

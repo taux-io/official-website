@@ -21,6 +21,7 @@
 {% set skills = data["mattpocock_skills"]["skills"] %}
 {% set written_for = data["mattpocock_skills"]["plugin_version"] %}
 {% set others = skills|selectattr("region", "equalto", "other")|list %}
+{% set forks = data["mattpocock_skills"]["forks"] %}
 
 <!-- Hero -->
 <div class="max-w-prose mx-auto px-6 pt-2 pb-10 relative">
@@ -80,13 +81,46 @@
             {% call cover("02") %}從想法到出貨{% endcall %}
             <div class="space-y-6 leading-relaxed">
                 <p>
-                    主線從設定開始，經過磨想法、整理 spec 與 ticket，一路走到實作、審查、PR 和回顧。下面的順序可以點進每個 skill 的說明。<code>prototype</code> 與 <code>handoff</code> 是支線，只有對話裡講不定的問題才繞過去；<code>implement</code> 與 <code>implement-spec</code> 是二選一，<code>tdd</code> 則是實作時使用的做法。
+                    主線從設定開始，經過磨想法、整理 spec 與 ticket，一路走到實作、審查、PR 和回顧。下面的順序可以點進每個 skill 的說明。途中有兩個分岔問題，決定你要不要繞一段、要不要拆成多個 session；<code>implement</code> 與 <code>implement-spec</code> 是二選一，<a href="#compare">比較寫在順序後面</a>；<code>tdd</code> 則是實作時使用的做法。
                 </p>
-                <ol data-flow class="list-decimal ps-6 space-y-2">
+                <p>
+                    另外三條入口（<a href="#skill-triage">triage</a>、<a href="#skill-diagnosing-bugs">diagnosing-bugs</a>、<a href="#skill-wayfinder">wayfinder</a>）不從頭開始，各自併進主線的某一步，標在那一步的下面。
+                </p>
+                <ol data-flow class="skills-flow">
                     {%- for s in skills if s.region == "main" %}
-                    <li><a href="#skill-{{ s.skill }}">{{ s.skill }}</a>：{{ s.one_liner }}</li>
+                    <li>
+                        <a data-flow-node href="#skill-{{ s.skill }}" class="skills-flow-node">{{ s.skill }}</a>
+                        <p class="mt-2 text-sm text-ink-soft">{{ s.one_liner }}</p>
+                        {%- for e in skills if e.region == "entry" and e.merge_at == s.skill %}
+                        <p data-flow-join class="mt-2 text-sm"><strong>入口</strong>：<a href="#skill-{{ e.skill }}">{{ e.skill }}</a>在{{ e.merge_when }}併入這一步。</p>
+                        {%- endfor %}
+                        {%- for f in forks %}{% if f.after == s.skill %}
+                        <div data-fork class="mt-4 border-s border-line ps-6 space-y-2 text-sm">
+                            <p><strong>分岔 {{ loop.index }}</strong>：{{ f.question }}</p>
+                            {%- for side in [f.yes, f.no] %}
+                            <p><strong>{{ side.label }}</strong>：{{ side.text }}
+                                {%- if side.goes %} 接著：{% for g in side.goes %}<a href="#skill-{{ g }}">{{ g }}</a>{% if not loop.last %}、{% endif %}{% endfor %}。{% endif %}</p>
+                            {%- endfor %}
+                        </div>
+                        {%- endif %}{% endfor %}
+                    </li>
                     {%- endfor %}
                 </ol>
+            </div>
+
+            {%- set cmp = data["mattpocock_skills"]["comparison"] %}
+            <div id="compare" data-compare class="space-y-4 leading-relaxed border-t border-line pt-6 mt-12">
+                <h3>implement 對 implement-spec</h3>
+                <p>{{ cmp.intro }}</p>
+                <ul class="list-disc ps-6 space-y-4">
+                    {%- for r in cmp.rows %}
+                    <li>
+                        <p><strong>{{ r.aspect }}</strong></p>
+                        <p><code>implement</code>：{{ r.implement }}</p>
+                        <p><code>implement-spec</code>：{{ r.implement_spec }}</p>
+                    </li>
+                    {%- endfor %}
+                </ul>
             </div>
 
             <div class="space-y-12 mt-12">
