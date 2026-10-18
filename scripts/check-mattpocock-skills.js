@@ -520,6 +520,62 @@ function checkPolicy(html, css) {
   check(!dark.test(css), "static/css/styles.min.css", "dark mode", "the stylesheet carries a dark mode; the site has none (DESIGN.md)");
 }
 
+// The one script this page owns, and the hooks it reads. The script takes its
+// data from the page's own HTML, so the hooks are part of the contract: a
+// template edit that drops one turns the interaction off silently, and the
+// no-JS page looks fine, which is what hides it. Browser behaviour is not
+// asserted here (CI has no Chromium in this job); the markup it depends on is.
+function checkScript(data, html) {
+  const where = `/${LOCALE}/${SLUG}`;
+  const file = path.join(ROOT, "static", "js", "mattpocock-skills.js");
+  const tags = [...html.matchAll(/<script\b[^>]*\bsrc="\/static\/js\/mattpocock-skills\.js\?v=([0-9a-f]{16})"[^>]*>/g)];
+  check(tags.length === 1, where, "script", `expected exactly one <script src="/static/js/mattpocock-skills.js?v=…">, found ${tags.length}`);
+  check(tags.length !== 1 || /\bdefer\b/.test(tags[0][0]), where, "script", "the page script must be deferred");
+  check(fs.existsSync(file), "static/js/mattpocock-skills.js", "script", "the file does not exist");
+  if (fs.existsSync(file)) {
+    const bytes = fs.readFileSync(file);
+    // The generator's content_version: FNV-1a over 64 bits, 16 hex digits, with
+    // the multiplier main.rs spells 0x1000_0000_01b3 (not the textbook prime).
+    let h = 0xcbf29ce484222325n;
+    for (const b of bytes) h = ((h ^ BigInt(b)) * 0x1000000001b3n) & 0xffffffffffffffffn;
+    const want = h.toString(16).padStart(16, "0");
+    check(tags.length === 1 && tags[0][1] === want, where, "script version", `?v= is ${tags[0] && tags[0][1]}; the file hashes to ${want} (hand-written, or the site was not rebuilt)`);
+    const src = bytes.toString("utf8");
+    // The CSP refuses an inline style attribute only in a browser. These are
+    // the ways a script writes one, plus the other things the page must not do.
+    for (const [re, why] of [
+      [/\.style\b/, "touches .style"],
+      [/cssText/, "touches cssText"],
+      [/setAttribute\(\s*["']style["']/, "sets a style attribute"],
+      [/insertAdjacentHTML|\.innerHTML\s*=/, "writes markup from a string"],
+      [/\beval\(|new Function\(/, "evaluates a string"],
+      [/prefers-color-scheme|data-theme/, "carries a dark mode"],
+    ]) check(!re.test(src), "static/js/mattpocock-skills.js", "script source", `${why}; the page is held to the CSP and has no dark mode`);
+  }
+
+  const mainCount = data.skills.filter((s) => s.region === "main").length;
+  const nodes = [...html.matchAll(/<a\b[^>]*\bdata-flow-node\b[^>]*>/g)];
+  check(nodes.length === mainCount, where, "hooks", `${nodes.length} [data-flow-node] links for ${mainCount} main-line skills`);
+  check(/<ol\b[^>]*\bdata-flow\b/.test(html), where, "hooks", "no <ol data-flow>");
+  check(/<[a-z]+\b[^>]*\bdata-skills-flow\b/.test(html), where, "hooks", "no [data-skills-flow] wrapper");
+  const panel = /<[a-z]+\b[^>]*\bdata-flow-panel\b[^>]*>/.exec(html);
+  check(!!panel && /\bhidden\b/.test(panel[0]), where, "hooks", "the panel container must exist and ship hidden (no JS, no panel)");
+  const status = /<[a-z]+\b[^>]*\bdata-flow-status\b[^>]*>/.exec(html);
+  check(!!status && /role="status"/.test(status[0]), where, "hooks", "the live region [data-flow-status] with role=status must be in the HTML before the script runs");
+  for (const n of nodes) {
+    const id = /href="#(skill-[^"]+)"/.exec(n[0]);
+    check(!!id && html.includes(`id="${id[1]}"`), where, "hooks", `${n[0]} points at no section`);
+  }
+  const tree = /<ol\b[^>]*\bdata-phase-tree\b[^>]*>([\s\S]*?)<\/ol>/.exec(html);
+  const items = tree ? tree[1].split("</li>").slice(0, -1) : [];
+  check(items.length === 5, where, "hooks", `the decision tree has ${items.length} questions, expected 5`);
+  for (const li of items) {
+    check(/data-phase-question/.test(li), where, "hooks", "a decision-tree item has no [data-phase-question]");
+    const a = /<a\b[^>]*\bdata-phase-answer\b[^>]*href="#(phase-[a-z]+)"|<a\b[^>]*href="#(phase-[a-z]+)"[^>]*\bdata-phase-answer\b/.exec(li);
+    check(!!a && html.includes(`id="${a[1] || a[2]}"`), where, "hooks", "a decision-tree item has no [data-phase-answer] link to an option");
+  }
+}
+
 function checkPlugin(data, dir) {
   const where = "plugin " + dir;
   const root = path.join(dir, "skills");
@@ -607,6 +663,7 @@ function main() {
   checkPage(data, html, md);
   checkPhase(phase, html, md);
   checkPolicy(html, css);
+  checkScript(data, html);
 
   const plugin = arg("--plugin") || process.env.MATTPOCOCK_SKILLS_DIR;
   if (plugin) {

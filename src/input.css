@@ -2257,6 +2257,124 @@
     background-color: rgb(var(--ink-rgb) / 0.12);
 }
 
+/* The node whose panel is open. Ink edge and ink 12%: it reads in forced-colors
+   (the edge) and without colour (the edge is heavier than every other box). */
+.skills-flow .skills-flow-node[aria-current="true"] {
+    border-color: var(--ink);
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+/* The side panel and the decision-tree stepper (static/js/mattpocock-skills.js).
+   Both exist only once the script has run; the page is complete without them.
+   Below the laptop breakpoint the panel is a box under the diagram, empty until
+   the first node is pressed. From laptop up the diagram and the panel are two
+   columns and the panel is there from the start, so opening one moves nothing.
+
+   Buttons here are the site's utility rectangle (hairline edge, 8px corner),
+   written out because .btn-quiet carries an arrow after its label and "是" or
+   "關閉" are not going anywhere. Hover is guarded and followed by :active. */
+.skills-flow-panel,
+.skills-wizard {
+    border: 1px solid var(--line);
+    padding: 1rem 1.25rem;
+    overflow-wrap: anywhere;
+}
+
+.skills-flow-panel {
+    margin-top: 1.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.skills-flow-panel[data-empty] {
+    display: none;
+}
+
+.skills-flow-panel > * + *,
+.skills-wizard > * + * {
+    margin-top: 0.75rem;
+}
+
+.skills-flow-actions,
+.skills-wizard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.skills-wizard-actions {
+    margin-top: 0.75rem;
+}
+
+.skills-wizard {
+    margin-top: 1rem;
+}
+
+.skills-wizard-progress {
+    font-size: 0.875rem;
+    color: var(--ink);
+}
+
+.skills-wizard-question {
+    font-weight: 600;
+}
+
+.skills-flow-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration-line: underline;
+    text-underline-offset: 4px;
+}
+
+.skills-flow-tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease-standard);
+}
+
+@media (hover: hover) {
+    .skills-flow-tool:hover {
+        background-color: rgb(var(--ink-rgb) / 0.05);
+    }
+}
+
+.skills-flow-tool:active {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+@media (min-width: 961px) {
+    .skills-flow-layout[data-live] {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .skills-flow-layout[data-live] .skills-flow-panel {
+        position: sticky;
+        top: 6rem;
+        margin-top: 0;
+        max-height: calc(100vh - 8rem);
+        overflow-y: auto;
+    }
+
+    .skills-flow-layout[data-live] .skills-flow-panel[data-empty] {
+        display: block;
+    }
+}
+
 
 /* ===========================================================================
    User preferences. Three independent signals, none of which had a CSS

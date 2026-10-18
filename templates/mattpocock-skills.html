@@ -86,6 +86,7 @@
                 <p>
                     另外三條入口（<a href="#skill-triage">triage</a>、<a href="#skill-diagnosing-bugs">diagnosing-bugs</a>、<a href="#skill-wayfinder">wayfinder</a>）不從頭開始，各自併進主線的某一步，標在那一步的下面。
                 </p>
+                <div data-skills-flow class="skills-flow-layout">
                 <ol data-flow class="skills-flow">
                     {%- for s in skills if s.region == "main" %}
                     <li>
@@ -106,6 +107,14 @@
                     </li>
                     {%- endfor %}
                 </ol>
+                <!-- Filled by mattpocock-skills.js from the sections below. Ships
+                     hidden and empty: without the script there is no panel, and
+                     the nodes are the links to the sections. The live region is
+                     here, not made by the script, because a region inserted at
+                     the moment it first speaks is often not announced. -->
+                <div data-flow-panel hidden tabindex="-1" role="region" aria-label="skill 說明" class="skills-flow-panel"></div>
+                <p data-flow-status role="status" class="sr-only"></p>
+                </div>
             </div>
 
             {%- set cmp = data["mattpocock_skills"]["comparison"] %}
@@ -143,8 +152,8 @@
                     {%- for q in phase.questions %}
                     {%- set o = phase.options[loop.index0] %}
                     <li>
-                        <p>{{ q.text }}</p>
-                        <p>答「是」：選 <a href="#phase-{{ o.id }}">{{ o.name }}</a>。{% if not loop.last %}答「否」：問下一題。{% endif %}</p>
+                        <p data-phase-question>{{ q.text }}</p>
+                        <p>答「是」：選 <a data-phase-answer href="#phase-{{ o.id }}">{{ o.name }}</a>。{% if not loop.last %}答「否」：問下一題。{% endif %}</p>
                     </li>
                     {%- endfor %}
                 </ol>
@@ -266,5 +275,6 @@
 </div>
 
 <script src="/static/js/section-index.js?v={{ js_version["section-index.js"] }}" defer></script>
+<script src="/static/js/mattpocock-skills.js?v={{ js_version["mattpocock-skills.js"] }}" defer></script>
 
 {% include "footer.html" %}
