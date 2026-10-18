@@ -258,7 +258,7 @@
         focusTarget = el("p", { class: "skills-wizard-question", tabindex: "-1" }, el("strong", {}, `選 ${step.name}`));
         children.push(el("p", { class: "skills-wizard-progress" }, "答案"), focusTarget);
         for (const kid of copyOf(step.target).childNodes) children.push(kid);
-        children.push(el("p", {}, el("a", { href: "#" + step.target.id }, "看下方完整說明")));
+        children.push(el("p", {}, el("a", { href: "#" + step.target.id, class: "skills-flow-more" }, "看下方完整說明")));
       }
       const actions = el("div", { class: "skills-wizard-actions" });
       if (path.length > 1 || result !== null) {
