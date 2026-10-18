@@ -2200,8 +2200,12 @@
    Same rules as the deck above (decision 153): unlayered, ahead of the user
    preferences, every selector scoped by a page-specific class. Components used
    are the site's own — a hairline box, a hairline rail, an ink-5% hover — and
-   nothing is new: no radius, no colour but ink and the paper, and the blue is
-   not used here at all (a link's mark on this site is its underline).
+   nothing is new: no colour but ink and the paper, and the blue is not used
+   here at all (a link's mark on this site is its underline). The one corner on
+   the page is button-utility's 8px, on the script's buttons (.skills-flow-tool,
+   below); every box (node, panel, stepper) is square, because the site gives a
+   radius to controls and to nothing else (DESIGN.md, decision 9). The classes
+   are page-specific on purpose: DESIGN.md decision 182.
 
    The boxes are plain links in a plain list, not a <nav>: geometry holds every
    `nav a` to 44px, and the join marks inside the list are inline links in prose.
@@ -2270,8 +2274,8 @@
    the first node is pressed. From laptop up the diagram and the panel are two
    columns and the panel is there from the start, so opening one moves nothing.
 
-   Buttons here are the site's utility rectangle (hairline edge, 8px corner),
-   written out because .btn-quiet carries an arrow after its label and "是" or
+   Buttons here are the site's button-utility (hairline edge, 8px corner, ink
+   5% and 12%), written out because .btn-quiet carries an arrow after its label and "是" or
    "關閉" are not going anywhere. Hover is guarded and followed by :active. */
 .skills-flow-panel,
 .skills-wizard {
