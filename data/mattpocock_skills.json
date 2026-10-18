@@ -153,6 +153,7 @@
       "invocation": "user",
       "version": "1.1.0",
       "merge_at": "implement",
+      "merge_when": "整理成可交給代理的 issue 之後",
       "merge_note": "整理成「可交給代理」的 issue 之後，由 implement 接手去做。",
       "one_liner": "把別人開的 issue 與外部 PR 依狀態機分類、驗證，必要時追問，再寫成代理能直接接手的簡報。",
       "problem": "外面進來的 bug 回報和需求雜亂又不完整。它讓每一筆帶一個類別（bug 或 enhancement）和一個狀態（需要評估、等回報者補資訊、可交給代理、要人來做、不處理），先到程式碼裡確認需求是不是已經做過、以前有沒有被拒絕過，再照回報者的步驟重現問題；需要補強就用 grilling 和 domain-modeling 追問，最後寫成簡報，或列出還缺的資訊。它在 issue tracker 上留的每則留言，開頭都要標明是 AI 產生的。",
@@ -167,6 +168,7 @@
       "version": null,
       "renamed_from": "diagnose",
       "merge_at": "retro",
+      "merge_when": "修好 bug 之後",
       "merge_note": "它不從主線的開頭進來，而是修好之後接到最後一步。在同一個 session 跑 retro，問「什麼本來能防止這個 bug」；如果發現是缺少能鎖住它的 seam，那一項再交給 improve-codebase-architecture。",
       "one_liner": "遇到難纏的 bug 或效能退化，先做出一個一跑就紅的回饋迴圈，才准推理原因。",
       "problem": "沒有穩定的重現方法就開始猜原因，只會白費力氣。它分六個階段：先建回饋迴圈，也就是一條跑得快、結果固定、能抓到你描述的那個症狀的命令，而且要已經實際跑過一次；再重現並縮到最小；列出三到五個可以被證偽的假設；一次只改一個變數去驗證；修之前先寫回歸測試；最後清掉除錯用的記錄。若找不到適合鎖住這個 bug 的 seam，它把這件事本身當成發現記下來。過程中出現的密碼之類，一律先遮掉再顯示。",
@@ -181,6 +183,7 @@
       "version": null,
       "renamed_from": "decision-mapping",
       "merge_at": "to-spec",
+      "merge_when": "地圖清了之後",
       "merge_note": "地圖清了，它不直接動手建，而是接到 to-spec，讓 to-spec 把地圖上一個個決定收成一份可以建的計畫，再走 to-tickets 和 implement。直接丟給 implement 會把地圖上的細節丟掉；只有最後發現工作其實很小時才例外。",
       "one_liner": "把一個 session 裝不下的大工作，畫成一張 decision ticket 的共享地圖，一張張解決到路看得清為止。",
       "problem": "大專案或超大功能，從現在到終點的路還在霧裡，直接動手只會亂衝。它先講清楚終點是什麼，再在 issue tracker 開一個標 wayfinder:map 的地圖 issue，底下掛子 ticket。每張 ticket 是一個要做決定的問題（查資料、做 prototype、追問，或補一件非做不可的前置工作），一個 session 只解一張，答案記在 ticket 上，摘要回寫到地圖。看得清楚的先開成 ticket，還說不清楚的寫在「尚未明確」那一區，等霧散了再開。它的產出是決定，不是成品。",
@@ -376,5 +379,75 @@
       "group": "in-progress",
       "one_liner": "寫作的定稿階段：把素材一段一段塑造成一篇文章。"
     }
-  ]
+  ],
+  "forks": [
+    {
+      "after": "grill-with-docs",
+      "question": "這件事能不能在對話裡，把每個問題都談定？",
+      "yes": {
+        "label": "能",
+        "text": "不必繞路，略過 prototype 與 handoff，直接看第二個分岔。",
+        "goes": []
+      },
+      "no": {
+        "label": "不能",
+        "text": "有些問題得跑起來才答得出來，例如狀態怎麼流動、商業邏輯對不對、畫面要親眼看。先繞一段支線：交接檔寫下目前的進度，開新 session 做一個用完即丟的原型回答問題，再把學到的帶回原本的對話。",
+        "goes": ["handoff", "prototype"]
+      }
+    },
+    {
+      "after": "handoff",
+      "question": "這件事是不是要分成多個 session 才做得完？",
+      "yes": {
+        "label": "是",
+        "text": "先把對話整理成 spec，再拆成 ticket，然後二選一。要自己逐張帶，就一張 ticket 做一次、每張之間清掉 context；要整份交給調度者，就一次做完。",
+        "goes": ["to-spec", "to-tickets", "implement", "implement-spec"]
+      },
+      "no": {
+        "label": "不是",
+        "text": "不必整理 spec 和 ticket，就在現在這個 context 裡直接做。",
+        "goes": ["implement"]
+      }
+    }
+  ],
+  "comparison": {
+    "intro": "兩個都是把 spec 與 ticket 做成程式，差在誰來調度。想自己帶著一張一張做，用 implement；想交給調度者，並行處理整份 spec，用 implement-spec。",
+    "rows": [
+      {
+        "aspect": "做的單位",
+        "implement": "一次一張 ticket，或手上這件小工作。",
+        "implement_spec": "一次整份 spec，所有 ticket 都做完才算完。"
+      },
+      {
+        "aspect": "誰動手",
+        "implement": "這個 session 裡的代理自己做，你在旁邊帶。",
+        "implement_spec": "由調度者派出實作子代理，每個在自己的 worktree 與分支做一張 ticket；做完再由合併子代理收進整合分支。"
+      },
+      {
+        "aspect": "順序與並行",
+        "implement": "順序由你決定，一次只做一張；有阻擋關係的 ticket 先做沒被擋住的，每張之間清掉 context。",
+        "implement_spec": "把 ticket 看成有阻擋關係的任務圖，凡是沒被擋住的 ticket 同時開工；一張做完解開了別張，就接著派新的。"
+      },
+      {
+        "aspect": "程式碼落在哪",
+        "implement": "直接 commit 到目前的分支。",
+        "implement_spec": "全部合進同一條整合分支；如果 issue tracker 是用 PR 收工，第一次合併之後會開一個 draft PR。"
+      },
+      {
+        "aspect": "怎麼審查",
+        "implement": "每做完一張就呼叫 code-review，審這一張的變動。",
+        "implement_spec": "實作子代理各自用 tdd 做；全部做完後，對整條整合分支跑一次 code-review，問題交給一個實作子代理一次修完。"
+      },
+      {
+        "aspect": "前提",
+        "implement": "有 spec 或 ticket 就能開始，小工作也行。",
+        "implement_spec": "要先有 spec 和 ticket，也要先設定好 issue tracker；還沒設定就先跑 setup-matt-pocock-skills。"
+      },
+      {
+        "aspect": "怎麼選",
+        "implement": "工作小、不需要多個 session，或你想自己逐張控制節奏。",
+        "implement_spec": "spec 與 ticket 都齊了，ticket 之間有阻擋關係，你想調度整個建置，而不是逐張帶著做。"
+      }
+    ]
+  }
 }

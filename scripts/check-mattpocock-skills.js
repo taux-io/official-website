@@ -112,6 +112,7 @@ function checkData(data) {
       const target = data.skills.find((t) => t.skill === s.merge_at);
       check(!!target && target.region === "main", where, "merge point", `${s.skill}: an on-ramp must name the main-line skill it joins (merge_at)`);
       check(!!s.merge_note, where, "merge point", `${s.skill}: an on-ramp must say how it joins (merge_note)`);
+      check(!!s.merge_when, where, "merge point", `${s.skill}: an on-ramp must say when it joins, in a few words (merge_when)`);
     } else {
       check(!s.merge_at, where, "merge point", `${s.skill}: only on-ramps join the main line`);
     }
@@ -201,22 +202,7 @@ function checkPage(data, html, md) {
     }
   }
 
-  // The flow list: every node is a link to a section, and the nodes are the
-  // main line, in the data's order.
-  const flow = /<ol[^>]*data-flow[^>]*>([\s\S]*?)<\/ol>/.exec(html);
-  check(!!flow, where, "flow", 'no <ol data-flow> on the page');
-  if (flow) {
-    const nodes = [...flow[1].matchAll(/href="#skill-([a-z0-9-]+)"/g)].map((m) => m[1]);
-    const main = skills.filter((s) => s.region === "main").map((s) => s.skill);
-    check(
-      JSON.stringify(nodes) === JSON.stringify(main),
-      where,
-      "flow",
-      `the flow lists ${nodes.join(" > ")}; the data's main line is ${main.join(" > ")}`,
-    );
-    const mdFlow = main.filter((n) => !md.includes(`${where}#skill-${n}`.replace(/^/, ORIGIN)));
-    check(mdFlow.length === 0, where + ".md", "flow", `the twin's flow does not link ${mdFlow.join(", ")}`);
-  }
+  checkFlow(data, html, md);
 
   // Provenance and the correction.
   const firstCover = html.indexOf("data-cover");
@@ -350,6 +336,175 @@ function checkPhasePlugin(phase, dir) {
   }
 }
 
+// The flow diagram: chapter 02's main line as a list of links, with the
+// on-ramps marked where they join and the two forks and the implement /
+// implement-spec comparison beside it. The template writes all of it from the
+// data, so this asks the built page whether the twelve nodes are there in
+// order, whether each one lands on a section, and whether the twin (which has
+// no picture, only the list) says the same.
+const MAIN_LINE = [
+  "setup-matt-pocock-skills", "grill-with-docs", "prototype", "handoff", "to-spec", "to-tickets",
+  "implement", "implement-spec", "tdd", "code-review", "pr", "retro",
+];
+// Where the three on-ramps join, as ask-matt says it.
+const JOINS = { triage: "implement", "diagnosing-bugs": "retro", wayfinder: "to-spec" };
+
+function checkFlow(data, html, md) {
+  const where = `/${LOCALE}/${SLUG}`;
+  const main = data.skills.filter((s) => s.region === "main").map((s) => s.skill);
+  const entries = data.skills.filter((s) => s.region === "entry");
+  const hasId = (name) => html.includes(`id="skill-${name}"`);
+  const pageText = text(html);
+
+  check(
+    JSON.stringify(main) === JSON.stringify(MAIN_LINE),
+    "data/mattpocock_skills.json",
+    "flow",
+    `the data's main line is ${main.join(" > ")}; the issue and ask-matt give ${MAIN_LINE.join(" > ")}`,
+  );
+
+  const flow = /<ol[^>]*data-flow[^>]*>([\s\S]*?)<\/ol>/.exec(html);
+  check(!!flow, where, "flow", "no <ol data-flow> on the page");
+  let items = [];
+  if (flow) {
+    items = [...flow[1].matchAll(/<li\b[\s\S]*?<\/li>/g)].map((m) => m[0]);
+    check(items.length === main.length, where, "flow", `the flow has ${items.length} nodes, the main line has ${main.length}`);
+    const nodes = [...flow[1].matchAll(/<a\b[^>]*data-flow-node[^>]*>/g)].map((m) => (/href="#skill-([a-z0-9-]+)"/.exec(m[0]) || [])[1]);
+    check(
+      JSON.stringify(nodes) === JSON.stringify(main),
+      where,
+      "flow",
+      `the flow lists ${nodes.join(" > ")}; the data's main line is ${main.join(" > ")}`,
+    );
+    for (const n of nodes) check(hasId(n), where, "flow", `the node ${n} links to #skill-${n}, which is not on the page`);
+    check(!/<nav\b/.test(flow[0]), where, "flow", "the flow sits in a <nav>, which would hold every join link to 44px; keep it a plain list");
+
+    // Each on-ramp is marked inside the node it joins, with a working link.
+    for (const e of entries) {
+      const li = items.find((x) => x.includes(`data-flow-node href="#skill-${e.merge_at}"`)) || "";
+      const join = new RegExp(`<p\\b[^>]*data-flow-join[^>]*>(?:(?!</p>)[\\s\\S])*?href="#skill-${e.skill}"[\\s\\S]*?</p>`).exec(li);
+      check(!!join, where, "flow join", `${e.skill} is not marked on the ${e.merge_at} node, where the data says it joins`);
+      check(hasId(e.skill), where, "flow join", `the join mark for ${e.skill} links to a section that is not on the page`);
+      if (join) check(text(join[0]).includes(e.merge_when), where, "flow join", `${e.skill}: the join mark does not say when it joins (${e.merge_when})`);
+      check(JOINS[e.skill] === e.merge_at, "data/mattpocock_skills.json", "flow join", `${e.skill} joins ${e.merge_at}; ask-matt has it join ${JOINS[e.skill]}`);
+    }
+    check(
+      entries.length === Object.keys(JOINS).length,
+      where,
+      "flow join",
+      `the data has ${entries.length} on-ramps; ask-matt has ${Object.keys(JOINS).length}`,
+    );
+    check(
+      (flow[1].match(/data-flow-join/g) || []).length === entries.length,
+      where,
+      "flow join",
+      "the flow carries a join mark that is not an on-ramp, or lost one",
+    );
+  }
+
+  // The twin has no picture: chapter 02, up to the first skill section, is a
+  // numbered list, and it must read as one.
+  const open = md.search(/^## 從想法到出貨/m);
+  const close = md.indexOf("### " + main[0]);
+  const region = open === -1 || close === -1 ? "" : md.slice(open, close);
+  check(region !== "", where + ".md", "flow", "the twin has no chapter 02 before its first skill section");
+  const at = main.map((n) => region.search(new RegExp(`^\\d+\\.\\s+\\[${n}\\]\\(${ORIGIN}${where}#skill-${n}\\)`, "m")));
+  check(at.every((i) => i !== -1), where + ".md", "flow", `the twin's flow does not link ${main.filter((n, i) => at[i] === -1).join(", ")}`);
+  check(at.every((x, i) => i === 0 || x > at[i - 1]), where + ".md", "flow", "the twin lists the main line out of order");
+  check(/^1\.\s+\[setup-matt-pocock-skills\]/m.test(region), where + ".md", "flow", "the twin's flow is not a numbered list");
+  for (const e of entries) {
+    const line = region.split("\n").find((l) => l.includes("**入口**") && l.includes(`#skill-${e.skill})`)) || "";
+    check(line !== "", where + ".md", "flow join", `the twin's flow does not mention the on-ramp ${e.skill}`);
+    check(line === "" || line.includes(e.merge_when), where + ".md", "flow join", `the twin's mark for ${e.skill} does not say when it joins`);
+  }
+
+  // The two forks.
+  const forks = data.forks || [];
+  check(forks.length === 2, "data/mattpocock_skills.json", "forks", `the data has ${forks.length} forks, not 2`);
+  forks.forEach((f, i) => {
+    check(MAIN_LINE.includes(f.after), "data/mattpocock_skills.json", "forks", `fork ${i + 1}: "after" must name a main-line skill`);
+    for (const part of [f.question, f.yes && f.yes.label, f.yes && f.yes.text, f.no && f.no.label, f.no && f.no.text]) {
+      check(!!part, "data/mattpocock_skills.json", "forks", `fork ${i + 1} lacks a question or an answer`);
+      if (!part) continue;
+      check(pageText.includes(part), where, "forks", `fork ${i + 1}: "${part.slice(0, 20)}..." is not on the page`);
+      check(md.includes(part), where + ".md", "forks", `fork ${i + 1}: "${part.slice(0, 20)}..." is not in the twin`);
+    }
+    for (const side of ["yes", "no"]) {
+      for (const g of (f[side] && f[side].goes) || []) {
+        check(MAIN_LINE.includes(g) && hasId(g), where, "forks", `fork ${i + 1} (${side}) sends the reader to ${g}, which has no section`);
+      }
+    }
+    const li = items.find((x) => x.includes(`data-flow-node href="#skill-${f.after}"`)) || "";
+    check(li.includes("data-fork") && text(li).includes(f.question), where, "forks", `fork ${i + 1} is not drawn under the ${f.after} node`);
+  });
+  [["對話"], ["session"]].forEach((kw, i) => {
+    const q = (forks[i] && forks[i].question) || "";
+    check(kw.every((k) => q.includes(k)), "data/mattpocock_skills.json", "forks", `fork ${i + 1} should ask about "${kw.join(", ")}" (can it be settled in conversation; is it a multi-session build)`);
+  });
+
+  // implement against implement-spec.
+  const cmp = data.comparison;
+  check(!!cmp && Array.isArray(cmp.rows) && cmp.rows.length >= 4, "data/mattpocock_skills.json", "comparison", "the data needs a comparison with at least 4 rows");
+  if (cmp && cmp.rows) {
+    check(!!cmp.intro && pageText.includes(cmp.intro) && md.includes(cmp.intro), where, "comparison", "the comparison lost its introduction");
+    for (const r of cmp.rows) {
+      for (const [kind, body] of [["page", pageText], ["markdown twin", md]]) {
+        for (const part of [r.aspect, r.implement, r.implement_spec]) {
+          check(!!part && body.includes(part), where, "comparison", `the comparison row "${r.aspect}" (${kind}) is missing a part`);
+        }
+      }
+    }
+    check(/<[^>]*data-compare[^>]*>/.test(html), where, "comparison", "no element marked data-compare on the page");
+  }
+}
+
+// ask-matt is the source of the order, the joins and the forks.
+function checkFlowPlugin(data, dir) {
+  const where = "plugin " + dir;
+  const read = (n) => path.join(dir, "skills", "engineering", n, "SKILL.md");
+  for (const n of ["ask-matt", "implement", "implement-spec"]) {
+    if (!fs.existsSync(read(n))) {
+      check(false, where, "plugin", `${n}/SKILL.md is missing`);
+      return;
+    }
+  }
+  const ask = fs.readFileSync(read("ask-matt"), "utf8");
+  const mainFlow = (/## The main flow[\s\S]*?(?=\n## On-ramps)/.exec(ask) || [""])[0];
+  const names = data.skills.filter((s) => s.region === "main").map((s) => s.skill);
+  // The prototype detour is told as handoff, prototype, handoff, so for the
+  // order the two are one step.
+  const step = (n) => (["prototype", "handoff"].includes(n) ? "prototype+handoff" : n);
+  const told = [];
+  for (const m of mainFlow.matchAll(/`\/([a-z-]+)`/g)) {
+    if (names.includes(m[1]) && !told.includes(step(m[1]))) told.push(step(m[1]));
+  }
+  // Setup is not part of that story: ask-matt makes it the precondition.
+  const mine = names.filter((n) => n !== "setup-matt-pocock-skills").map(step).filter((n, i, a) => a.indexOf(n) === i);
+  check(
+    JSON.stringify(told) === JSON.stringify(mine),
+    where,
+    "flow order",
+    `ask-matt tells the main flow as ${told.join(" > ")}; the data has ${mine.join(" > ")}`,
+  );
+  check(names[0] === "setup-matt-pocock-skills", where, "flow order", "the data does not open the main line with setup-matt-pocock-skills");
+  check(/## Precondition\s+\*\*`\/setup-matt-pocock-skills`\*\*/.test(ask), where, "flow order", "ask-matt no longer makes setup-matt-pocock-skills the precondition of the main flow");
+
+  const ramps = (/## On-ramps([\s\S]*?)\n## /.exec(ask) || ["", ""])[1];
+  for (const e of data.skills.filter((s) => s.region === "entry")) {
+    const bullet = ramps.split(/\n- /).find((b) => b.includes("`/" + e.skill + "`"));
+    check(!!bullet, where, "flow join", `ask-matt has no on-ramp bullet for ${e.skill}`);
+    check(!!bullet && bullet.includes("`/" + e.merge_at + "`"), where, "flow join", `ask-matt's ${e.skill} bullet no longer names ${e.merge_at}`);
+  }
+
+  check(/Branch: can you settle every question in conversation\?/.test(ask), where, "forks", "ask-matt no longer asks whether every question can be settled in conversation");
+  check(/Branch: is this a multi-session build\?/.test(ask), where, "forks", "ask-matt no longer asks whether this is a multi-session build");
+
+  const impl = fs.readFileSync(read("implement"), "utf8");
+  const spec = fs.readFileSync(read("implement-spec"), "utf8");
+  check(/code-review/.test(impl) && /tdd/.test(impl), where, "comparison", "implement's SKILL.md no longer calls tdd and code-review");
+  check(/task graph/.test(spec) && /integration branch/.test(spec) && /subagent/i.test(spec), where, "comparison", "implement-spec's SKILL.md no longer describes a task graph, an integration branch and subagents");
+}
+
 // What the CSP refuses, and the dark mode the design forbids.
 function checkPolicy(html, css) {
   const where = `/${LOCALE}/${SLUG}`;
@@ -457,6 +612,7 @@ function main() {
   if (plugin) {
     checkPlugin(data, path.resolve(plugin));
     checkPhasePlugin(phase, path.resolve(plugin));
+    checkFlowPlugin(data, path.resolve(plugin));
   }
 
   if (failures.length) {
