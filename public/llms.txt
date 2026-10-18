@@ -93,6 +93,7 @@ TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成
 -   [ADK Agent Skill 設計模式](https://taux.io/zh-Hant-TW/adk-skill-patterns): Google Cloud 五種 ADK Agent Skill 設計模式整理：Tool Wrapper、Generator、Reviewer、Inversion、Pipeline。 ([Markdown](https://taux.io/zh-Hant-TW/adk-skill-patterns.md))
 -   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/zh-Hant-TW/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。 ([Markdown](https://taux.io/zh-Hant-TW/google-workspace-with-ai.md))
 -   [AI Agent 開發流程實戰](https://taux.io/zh-Hant-TW/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程。主幹七步（grill、spec、tickets、implement、code-review）、四個完整劇本、31 個已知坑與 14 天練習計畫。依該 pack 1.2.3 版撰寫，為獨立編寫的中文教學而非官方文件翻譯。 ([Markdown](https://taux.io/zh-Hant-TW/agent-dev-workflow.md))
+-   [mattpocock-skills 流程圖](https://taux.io/zh-Hant-TW/mattpocock-skills): Matt Pocock 的 mattpocock-skills 外掛，從想法到出貨的 12 個主線 skill，各自解決什麼問題、什麼時候用、前後接誰、怎麼呼叫。依該外掛 1.3.1 版撰寫，並更正 pr、retro、implement-spec 是 1.3.0 升進正式清單；為獨立編寫的中文教學而非官方文件翻譯，僅有繁體中文版。 ([Markdown](https://taux.io/zh-Hant-TW/mattpocock-skills.md))
 
 ---
 
