@@ -92,7 +92,7 @@
                         <a data-flow-node href="#skill-{{ s.skill }}" class="skills-flow-node">{{ s.skill }}</a>
                         <p class="mt-2 text-sm text-ink-soft">{{ s.one_liner }}</p>
                         {%- for e in skills if e.region == "entry" and e.merge_at == s.skill %}
-                        <p data-flow-join class="mt-2 text-sm"><strong>入口</strong>：<a href="#skill-{{ e.skill }}">{{ e.skill }}</a>在{{ e.merge_when }}併入這一步。</p>
+                        <p data-flow-join class="mt-2 text-sm"><strong>入口</strong>：<a href="#skill-{{ e.skill }}">{{ e.skill }}</a> 在{{ e.merge_when }}併入這一步。</p>
                         {%- endfor %}
                         {%- for f in forks %}{% if f.after == s.skill %}
                         <div data-fork class="mt-4 border-s border-line ps-6 space-y-2 text-sm">
