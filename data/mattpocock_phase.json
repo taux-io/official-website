@@ -1,0 +1,68 @@
+{
+  "intro": "一個階段（phase）是 session 裡的一塊工作，例如訪談、實作、QA。你心裡覺得「好，這段做完了」，這個階段就結束。兩個階段之間的空檔叫交界，要不要換 context 的決定，只在交界做。階段進行到一半時沒有決定要下：要嘛繼續做，要嘛把剩下的工作切給子代理。在中途 compact，代理會弄丟手上的線索。",
+  "order_note": "在交界從第一題問到第五題，第一個答「是」的就是答案。每一題都帶一點判斷，同一個交界在不同的日子可能走不同的路；有用的是照順序問，而且在交界問，不要在工作做到一半時問。",
+  "smart_zone": {
+    "tokens_k": 150,
+    "text": "smart zone 指的是模型還能清楚推理的那一段視窗，在目前最先進的模型上約 150k token。接近這個長度時，別硬撐著用變遲鈍的模型做下去；到最近的階段交界 compact，再繼續。"
+  },
+  "options": [
+    {
+      "id": "continue",
+      "name": "Continue",
+      "does": "留在這個 session，完全不換 context。",
+      "reason": "要先排除。繼續不花成本，也不丟東西，所以其他選項都排在它後面。從訪談接著做實作是標準的「可以繼續」：實作需要的是推理過程的原文，不是它的摘要。"
+    },
+    {
+      "id": "clear",
+      "name": "/clear",
+      "does": "清空 context window，從零開始。",
+      "reason": "這個 session 裡的探索、決定、走不通的路，對下一步都沒用了，就 /clear。這是最便宜的一步，不花時間，還把整個視窗還給你，舊的 session 之後仍可以 resume。要小心的是出錯的代價只有單向：清掉了有關的 context，你當初為什麼這樣做就沒了，事後再讀 diff 也讀不回來。"
+    },
+    {
+      "id": "handoff",
+      "name": "/handoff",
+      "does": "寫成一份可攜的 markdown 檔，讓任何地方都能用它開新 session。",
+      "reason": "適用範圍很窄，只有下面四種情況，這四種就是全部。它買到的是可攜性；沒有東西要帶到別處，就不需要它。",
+      "valid_reasons": [
+        "要換到另一個 harness，例如從 Claude 換到 Codex",
+        "要換到另一個目錄或另一個 repo",
+        "要把工作交給同事",
+        "階段中途冒出一個支線任務，想分出去做，又不想打斷手上的事"
+      ]
+    },
+    {
+      "id": "subagent",
+      "name": "子代理（Subagent）",
+      "does": "把任務送進它自己的 context window，做完回報結果。",
+      "reason": "任務的範圍夠窄，能在你離開鍵盤、不用盯著的情況下跑完，就交給子代理，這個 session 原封不動。標準例子是自動 review：代理讀 diff、回報意見，過程中不需要你。"
+    },
+    {
+      "id": "compact",
+      "name": "/compact",
+      "does": "壓縮目前的 context，用摘要開一個新的 session。",
+      "reason": "它是預設，不是第一個該伸手去拿的。前四題的做法都更便宜或更精準，所以它排在最後；前四題都不成立時，也就是 context 還有用、harness 與目錄都沒換、你要留在迴圈裡，答案常常就落在這裡。給它一句指示，例如 /compact we're going to QA this area，讓摘要留下下一階段要用的東西。一開始就用它的毛病是：新 session 對一個被摘要壓平的決定很有把握，卻是錯的。"
+    }
+  ],
+  "questions": [
+    {
+      "text": "能不能就在這個 session 繼續？下一階段需要把這一階段當第一手資料，或是 smart zone 還剩得夠、放得下下一階段，兩者有一個成立就是「是」。這一題要先排除，才輪得到其他選項。",
+      "leads_to": "continue"
+    },
+    {
+      "text": "這個 session 裡的 context，跟接下來要做的事完全無關嗎？探索、決定、死路是不是都可以丟？",
+      "leads_to": "clear"
+    },
+    {
+      "text": "需要 handoff 嗎？你是不是正要換 harness、換目錄或 repo、交給同事，或在階段中途分出一個支線任務？",
+      "leads_to": "handoff"
+    },
+    {
+      "text": "這個任務能不能在你不在場時做完？範圍夠窄，不用你在旁邊帶嗎？",
+      "leads_to": "subagent"
+    },
+    {
+      "text": "以上都不是：context 還有用、harness 與目錄都沒換，而且你要留在迴圈裡。這時走預設。",
+      "leads_to": "compact"
+    }
+  ]
+}

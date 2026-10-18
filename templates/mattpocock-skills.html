@@ -43,6 +43,7 @@
             <ul class="space-y-1">
                 <li><a href="#overview" class="section-index-link"><span class="font-sans">01</span> 先看這幾件事</a></li>
                 <li><a href="#flow" class="section-index-link"><span class="font-sans">02</span> 從想法到出貨</a></li>
+                <li><a href="#phase" class="section-index-link"><span class="font-sans">03</span> 階段交界怎麼選</a></li>
             </ul>
         </div>
     </nav>
@@ -98,6 +99,47 @@
                     {%- endif %}
                 </div>
                 {%- endfor %}
+            </div>
+        </section>
+
+        {%- set phase = data["mattpocock_phase"] %}
+        <section id="phase">
+            {% call cover("03") %}階段交界怎麼選{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>{{ phase.intro }}</p>
+                <p>{{ phase.order_note }}</p>
+                <p>交界上有五個選項：Continue、<code>/clear</code>、<code>/handoff</code>、子代理、<code>/compact</code>。下面的五個問題就照這個順序排。<strong>Continue 要先排除</strong>，<strong><code>/compact</code> 是預設，不是第一個該選的</strong>，<strong><code>/handoff</code> 只在四種情況才用</strong>。</p>
+
+                <h3>五個問題，由上往下問</h3>
+                <ol data-phase-tree class="list-decimal ps-6 space-y-4">
+                    {%- for q in phase.questions %}
+                    {%- set o = phase.options[loop.index0] %}
+                    <li>
+                        <p>{{ q.text }}</p>
+                        <p>答「是」：選 <a href="#phase-{{ o.id }}">{{ o.name }}</a>。{% if not loop.last %}答「否」：問下一題。{% endif %}</p>
+                    </li>
+                    {%- endfor %}
+                </ol>
+
+                <h3>五個選項各是什麼</h3>
+                <ul class="list-disc ps-6 space-y-4">
+                    {%- for o in phase.options %}
+                    <li id="phase-{{ o.id }}">
+                        <p><strong>{{ o.name }}</strong>：{{ o.does }}</p>
+                        <p>{{ o.reason }}</p>
+                        {%- if o.valid_reasons is defined %}
+                        <ul data-handoff-cases class="list-disc ps-6 space-y-1">
+                            {%- for r in o.valid_reasons %}
+                            <li>{{ r }}</li>
+                            {%- endfor %}
+                        </ul>
+                        {%- endif %}
+                    </li>
+                    {%- endfor %}
+                </ul>
+
+                <h3 id="smart-zone">smart zone</h3>
+                <p>{{ phase.smart_zone.text }}</p>
             </div>
         </section>
 
