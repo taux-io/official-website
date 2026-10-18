@@ -535,6 +535,25 @@ function checkLinkMarks(html) {
   }
 }
 
+// A full-width mark carries its own space: "、 grill-with-docs" is a stray gap
+// a template loop leaves when it writes " <a>" before every item, not only the
+// first. The page text is read line by line so a template's own indentation,
+// which starts a line, is not mistaken for one.
+function checkPunctuationSpacing(html, md) {
+  const where = `/${LOCALE}/${SLUG}`;
+  const main = /<main\b[\s\S]*<\/main>/.exec(html);
+  const body = (main ? main[0] : html).replace(/<script\b[\s\S]*?<\/script>/g, "");
+  const stray = /[、，；：。！？）」』] +\S/;
+  for (const [kind, src] of [["page", text(body)], ["markdown", md]]) {
+    const hits = new Set();
+    for (const line of src.split("\n")) {
+      const m = stray.exec(line);
+      if (m) hits.add(line.slice(Math.max(0, m.index - 12), m.index + 14).trim());
+    }
+    check(hits.size === 0, where, "punctuation spacing", `${kind}: a space follows a full-width mark in ${hits.size} place(s), e.g. 「${[...hits].slice(0, 3).join("」「")}」`);
+  }
+}
+
 // What the CSP refuses, and the dark mode the design forbids.
 function checkPolicy(html, css) {
   const where = `/${LOCALE}/${SLUG}`;
@@ -694,6 +713,7 @@ function main() {
   checkPhase(phase, html, md);
   checkPolicy(html, css);
   checkLinkMarks(html);
+  checkPunctuationSpacing(html, md);
   checkScript(data, html);
 
   const plugin = arg("--plugin") || process.env.MATTPOCOCK_SKILLS_DIR;

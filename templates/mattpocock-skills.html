@@ -100,7 +100,7 @@
                             <p><strong>分岔 {{ loop.index }}</strong>：{{ f.question }}</p>
                             {%- for side in [f.yes, f.no] %}
                             <p><strong>{{ side.label }}</strong>：{{ side.text }}
-                                {%- if side.goes %} 接著：{% for g in side.goes %}<a href="#skill-{{ g }}" class="underline">{{ g }}</a>{% if not loop.last %}、{% endif %}{% endfor %}。{% endif %}</p>
+                                {%- if side.goes %}接著：{% for g in side.goes %}<a href="#skill-{{ g }}" class="underline">{{ g }}</a>{% if not loop.last %}、{% endif %}{% endfor %}。{% endif %}</p>
                             {%- endfor %}
                         </div>
                         {%- endif %}{% endfor %}
