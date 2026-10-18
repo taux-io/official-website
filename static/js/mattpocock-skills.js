@@ -23,12 +23,23 @@
 (() => {
   "use strict";
 
+  // The width at which the stylesheet puts the panel beside the diagram instead
+  // of under it: the `laptop` breakpoint, the same 961px as the
+  // `@media (min-width: 961px)` rule for .skills-flow-layout in src/input.css
+  // and as tailwind.config.js. A script cannot read a stylesheet's number, so
+  // scripts/check-mattpocock-skills.js asserts the three are equal.
+  const LAPTOP_MIN_WIDTH_PX = 961;
+
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function el(tag, attrs, ...kids) {
+  // A press with a modifier key held asks the browser for something else (a new
+  // tab, a download); the script leaves it alone.
+  const hasModifierKey = (e) => e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+
+  function el(tag, attrs, ...content) {
     const node = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs || {})) node.setAttribute(k, v);
-    for (const kid of kids) node.append(kid);
+    for (const item of content) node.append(item);
     return node;
   }
 
@@ -55,12 +66,12 @@
     const nodes = [...root.querySelectorAll("[data-flow-node]")];
     if (!panel || !status || nodes.length === 0) return;
 
-    const byName = new Map();
+    const nodeById = new Map();
     for (const n of nodes) {
       const id = (n.getAttribute("href") || "").slice(1);
-      if (id.startsWith("skill-") && document.getElementById(id)) byName.set(id, n);
+      if (id.startsWith("skill-") && document.getElementById(id)) nodeById.set(id, n);
     }
-    if (byName.size === 0) return;
+    if (nodeById.size === 0) return;
 
     let current = null;
 
@@ -87,20 +98,20 @@
       panel.scrollIntoView({ block: "start", behavior: reduced() ? "auto" : "smooth" });
     }
 
-    function open(id, how) {
-      const node = byName.get(id);
+    function open(id, options) {
+      const node = nodeById.get(id);
       const section = document.getElementById(id);
       if (!node || !section) return;
       current = id;
-      byName.forEach((n, key) => {
+      nodeById.forEach((n, key) => {
         if (key === id) n.setAttribute("aria-current", "true");
         else n.removeAttribute("aria-current");
       });
 
       const body = copyOf(section);
-      const kids = [...body.childNodes];
-      const sentence = body.querySelector("p");
-      panel.replaceChildren(...kids);
+      const bodyNodes = [...body.childNodes];
+      const firstParagraph = body.querySelector("p");
+      panel.replaceChildren(...bodyNodes);
       panel.append(
         el(
           "div",
@@ -113,26 +124,26 @@
       panel.hidden = false;
 
       const name = id.slice("skill-".length);
-      announce(`${name} 的說明已顯示在流程圖${window.innerWidth >= 961 ? "旁邊" : "下方"}。${sentence ? sentence.textContent.trim() : ""}`);
+      announce(`${name} 的說明已顯示在流程圖${window.innerWidth >= LAPTOP_MIN_WIDTH_PX ? "旁邊" : "下方"}。${firstParagraph ? firstParagraph.textContent.trim() : ""}`);
 
-      if (how.push) history.pushState({ skillsFlow: id }, "", "#" + id);
-      if (how.scroll) reveal();
+      if (options.push) history.pushState({ skillsFlow: id }, "", "#" + id);
+      if (options.scroll) reveal();
       // Focus goes to the panel only when the reader got here by keyboard (or
       // an assistive technology, whose activation also reports detail 0). A
       // mouse reader's focus stays on the node they pressed.
-      if (how.focus) panel.focus({ preventScroll: true });
+      if (options.focus) panel.focus({ preventScroll: true });
     }
 
-    function close(how) {
+    function close(options) {
       const was = current;
       current = null;
-      byName.forEach((n) => n.removeAttribute("aria-current"));
+      nodeById.forEach((n) => n.removeAttribute("aria-current"));
       placeholder();
       announce("skill 說明已關閉。");
-      if (how.push) history.pushState({ skillsFlow: null }, "", location.pathname + location.search);
+      if (options.push) history.pushState({ skillsFlow: null }, "", location.pathname + location.search);
       // The panel held focus or the close button did; the node that opened it
       // is where the reader was, so that is where they go back to.
-      if (how.focus && was && byName.get(was)) byName.get(was).focus();
+      if (options.focus && was && nodeById.get(was)) nodeById.get(was).focus();
     }
 
     root.setAttribute("data-live", "");
@@ -141,17 +152,17 @@
 
     nodes.forEach((n) => {
       const id = (n.getAttribute("href") || "").slice(1);
-      if (!byName.has(id)) return;
+      if (!nodeById.has(id)) return;
       n.setAttribute("aria-controls", panel.id || (panel.id = "skills-flow-panel"));
       n.addEventListener("click", (e) => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        if (hasModifierKey(e) || e.button !== 0) return;
         e.preventDefault();
         open(id, { push: current !== id, scroll: true, focus: e.detail === 0 });
       });
       // A link answers Enter and not Space. The panel is a control in all but
       // tag, and a keyboard reader should not have to know the difference.
       n.addEventListener("keydown", (e) => {
-        if (e.key !== " " || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+        if (e.key !== " " || hasModifierKey(e)) return;
         e.preventDefault();
         n.click();
       });
@@ -161,9 +172,9 @@
     // target is another node they open its panel instead of scrolling away.
     panel.addEventListener("click", (e) => {
       const a = e.target.closest && e.target.closest("a[href^='#skill-']");
-      if (!a || !panel.contains(a) || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      if (!a || !panel.contains(a) || hasModifierKey(e) || e.button !== 0) return;
       const id = a.getAttribute("href").slice(1);
-      if (!byName.has(id) || a.classList.contains("skills-flow-more")) return;
+      if (!nodeById.has(id) || a.classList.contains("skills-flow-more")) return;
       e.preventDefault();
       open(id, { push: current !== id, scroll: true, focus: true });
     });
@@ -180,7 +191,7 @@
     // already put the reader where the history entry was.
     window.addEventListener("popstate", () => {
       const id = location.hash.slice(1);
-      if (byName.has(id)) {
+      if (nodeById.has(id)) {
         if (id !== current) open(id, { push: false, scroll: false, focus: false });
       } else if (current) {
         close({ push: false, focus: false });
@@ -191,7 +202,7 @@
     // section on its own; once the page has settled the panel is brought into
     // view too, because the panel is what the diagram is for.
     const start = location.hash.slice(1);
-    if (byName.has(start)) {
+    if (nodeById.has(start)) {
       open(start, { push: false, scroll: false, focus: false });
       const settle = () => reveal();
       if (document.readyState === "complete") settle();
@@ -229,6 +240,10 @@
     let path = [0];
     let result = null;
 
+    // True once the reader has moved off the first question: answered "no" at
+    // least once, or reached an answer. "上一步" and "重來" only make sense then.
+    const hasLeftStart = () => path.length > 1 || result !== null;
+
     function render(moveFocus) {
       const i = path[path.length - 1];
       const children = [];
@@ -261,7 +276,7 @@
         children.push(el("p", {}, el("a", { href: "#" + step.target.id, class: "skills-flow-more" }, "看下方完整說明")));
       }
       const actions = el("div", { class: "skills-wizard-actions" });
-      if (path.length > 1 || result !== null) {
+      if (hasLeftStart()) {
         actions.append(
           button("上一步", () => {
             if (result !== null) result = null;
@@ -270,7 +285,7 @@
           }),
         );
       }
-      if (path.length > 1 || result !== null) {
+      if (hasLeftStart()) {
         actions.append(
           button("重來", () => {
             path = [0];

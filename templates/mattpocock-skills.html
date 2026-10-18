@@ -36,7 +36,7 @@
         </h1>
 {% include "_article-date.html" %}
         <p class="text-base tablet:text-lg mb-5 max-w-prose">
-            整個外掛有 {{ skills|length }} 個 skill，從想法到出貨的主線上有 12 個。這一頁依序說明每一個解決什麼問題、什麼時候用、前後接誰，以及要自己手打還是交給模型。
+            <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">Matt Pocock 的 mattpocock-skills 外掛</a>整個有 {{ skills|length }} 個 skill，從想法到出貨的主線上有 12 個。這一頁依序說明每一個解決什麼問題、什麼時候用、前後接誰，以及要自己手打還是交給模型。
         </p>
         <p class="font-sans text-eyebrow uppercase">依 {{ written_for }} 撰寫</p>
     </header>
@@ -66,7 +66,7 @@
                     這一頁講的是 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">Matt Pocock 的 mattpocock-skills 外掛</a>（MIT 授權）。外掛和裡面的每個 skill 都是他的作品；這份中文教學是拓思（TauX）自己寫的，不是官方文件，也不是翻譯。每個 skill 都是讀過它的 SKILL.md 之後，用自己的話重新寫成的。
                 </p>
                 <p id="correction">
-                    <strong>先更正一個常見的說法</strong>：<code>pr</code>、<code>retro</code>、<code>implement-spec</code> 是 1.3.0 才升進正式清單，不是 1.3.1。1.3.1 只改了 <code>ask-matt</code> 的一段描述：診斷完 bug 之後，改指向 <code>/retro</code>，只有發現缺少 seam 時才指向 <code>/improve-codebase-architecture</code>。
+                    <strong>先更正一個常見的說法</strong>：<code>pr</code>、<code>retro</code>、<code>implement-spec</code> 是 1.3.0 才升進正式清單，不是 1.3.1。1.3.1 沒有升進任何 skill，只修正 <code>ask-matt</code> 對 <code>diagnosing-bugs</code> 後續動作的描述：診斷完 bug 之後，改指向 <code>/retro</code>，只有發現缺少 seam 時才指向 <code>/improve-codebase-architecture</code>。
                 </p>
                 <p>
                     用詞先說好。這一頁把外掛裡的每一份能力叫 skill；只有你親手在對話裡打的 <code>/名稱</code> 才叫指令。有些 skill 只能由你手打，有些由模型在適當的時機自己呼叫，你也可以手打。每一段的「呼叫方式」都會寫明是哪一種。

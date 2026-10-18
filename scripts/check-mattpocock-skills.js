@@ -216,6 +216,27 @@ function checkPage(data, html, md) {
   );
   check(md.includes(`](${UPSTREAM})`), where + ".md", "upstream", `the twin never links ${UPSTREAM}`);
 
+  // The hero's lead paragraph is what a reader (and the Markdown twin) meets
+  // first, before chapter 01. It names the upstream and links it with the
+  // site's prose-link underline, so the first thing read is whose work this is.
+  const header = /<header\b[\s\S]*?<\/header>/.exec(html);
+  const heroLead = header ? ([...header[0].matchAll(/<p\b[\s\S]*?<\/p>/g)].map((m) => m[0]).find((p) => !p.includes("<time")) || "") : "";
+  const heroLink = new RegExp(`<a\\b[^>]*href="${UPSTREAM}"[^>]*>`).exec(heroLead);
+  check(
+    !!heroLink && /\bclass="[^"]*\bunderline\b/.test(heroLink[0]) && text(heroLead).includes("Matt Pocock 的 mattpocock-skills 外掛"),
+    where,
+    "upstream",
+    `the hero lead paragraph must name 「Matt Pocock 的 mattpocock-skills 外掛」 and link ${UPSTREAM} with the underline class`,
+  );
+  const mdBody = md.replace(/^---\n[\s\S]*?\n---\n/, "");
+  const mdLead = mdBody.split("\n").find((l) => l.trim() && !l.startsWith("#") && !/^更新於/.test(l)) || "";
+  check(
+    mdLead.includes(`[Matt Pocock 的 mattpocock-skills 外掛](${UPSTREAM})`),
+    where + ".md",
+    "upstream",
+    "the twin's first paragraph after the title must name Matt Pocock's plugin and link the upstream",
+  );
+
   const correction = /<p[^>]*id="correction"[^>]*>([\s\S]*?)<\/p>/.exec(html);
   check(!!correction, where, "correction", 'no <p id="correction"> on the page');
   const claim = correction ? text(correction[1]) : "";
@@ -223,6 +244,18 @@ function checkPage(data, html, md) {
     check(claim.includes(needle), where, "correction", `the correction does not mention ${needle}`);
   }
   check(md.includes("1.3.0") && /implement-spec/.test(md), where + ".md", "correction", "the twin lost the correction");
+  // Precise, as the upstream CHANGELOG.md's 1.3.1 entry has it: no skill was
+  // promoted, and the only change is how ask-matt describes what follows
+  // diagnosing-bugs. The earlier "只改了 … 的一段描述" left the reader to infer both.
+  check(claim.includes("沒有升進任何 skill"), where, "correction", "the correction does not say 1.3.1 promoted no skill");
+  check(
+    /只修正\s*ask-matt\s*對\s*diagnosing-bugs\s*後續動作的描述/.test(claim),
+    where,
+    "correction",
+    "the correction does not say 1.3.1 only fixed ask-matt's description of diagnosing-bugs' follow-up",
+  );
+  check(!claim.includes("只改了"), where, "correction", "the correction still carries the old wording 只改了");
+  check(/沒有升進任何 skill/.test(md), where + ".md", "correction", "the twin lost the 1.3.1 wording");
   check(
     text(html).includes(`依 ${data.plugin_version} 撰寫`) && md.includes(`依 ${data.plugin_version} 撰寫`),
     where,
@@ -590,6 +623,18 @@ function checkScript(data, html) {
     const want = h.toString(16).padStart(16, "0");
     check(tags.length === 1 && tags[0][1] === want, where, "script version", `?v= is ${tags[0] && tags[0][1]}; the file hashes to ${want} (hand-written, or the site was not rebuilt)`);
     const src = bytes.toString("utf8");
+    // The script switches "旁邊" / "下方" at the same width the stylesheet puts
+    // the panel beside the diagram. The two are separate files and cannot share
+    // a value, so the number is asserted equal instead.
+    const bp = /const LAPTOP_MIN_WIDTH_PX = (\d+);/.exec(src);
+    check(!!bp, "static/js/mattpocock-skills.js", "breakpoint", "no `const LAPTOP_MIN_WIDTH_PX = <n>;` in the script");
+    check(!/innerWidth\s*[<>]=?\s*\d/.test(src), "static/js/mattpocock-skills.js", "breakpoint", "the script compares the window width with a literal; use LAPTOP_MIN_WIDTH_PX");
+    const css = fs.readFileSync(path.join(ROOT, "src", "input.css"), "utf8");
+    const cssBp = /@media \(min-width:\s*(\d+)px\)\s*\{\s*\.skills-flow-layout/.exec(css);
+    check(!!cssBp, "src/input.css", "breakpoint", "no `@media (min-width: <n>px) { .skills-flow-layout` in the stylesheet");
+    check(!!bp && !!cssBp && bp[1] === cssBp[1], "static/js/mattpocock-skills.js", "breakpoint", `the script says ${bp && bp[1]}px, the stylesheet's two-column media query says ${cssBp && cssBp[1]}px`);
+    const tw = /laptop:\s*"(\d+)px"/.exec(fs.readFileSync(path.join(ROOT, "tailwind.config.js"), "utf8"));
+    check(!!bp && !!tw && bp[1] === tw[1], "static/js/mattpocock-skills.js", "breakpoint", `the script says ${bp && bp[1]}px, tailwind.config.js says laptop is ${tw && tw[1]}px`);
     // The CSP refuses an inline style attribute only in a browser. These are
     // the ways a script writes one, plus the other things the page must not do.
     for (const [re, why] of [
