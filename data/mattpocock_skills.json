@@ -1,0 +1,140 @@
+{
+  "plugin_version": "1.3.1",
+  "skills": [
+    {
+      "skill": "setup-matt-pocock-skills",
+      "region": "main",
+      "invocation": "user",
+      "version": "1.1.0",
+      "one_liner": "替這個 repo 做一次性的設定：issue 放哪裡、標籤叫什麼、詞彙文件放哪裡。",
+      "problem": "工程類 skill 要讀寫 issue、標籤和詞彙文件，卻不知道這個 repo 把它們放在哪。它先看過 repo 現況，一次問一個問題，確認後把結果寫進 docs/agents/，再在 CLAUDE.md 或 AGENTS.md 加一小段指路。",
+      "when": "第一次用其他工程類 skill 之前跑一次。之後只有想換 issue tracker 或想從頭來過時，才需要再跑。",
+      "before": [],
+      "after": ["grill-with-docs"]
+    },
+    {
+      "skill": "grill-with-docs",
+      "region": "main",
+      "invocation": "user",
+      "version": "1.0.0",
+      "one_liner": "一路追問，把想法磨利，同時把用語和決定寫進 GLOSSARY.md 與 ADR。",
+      "problem": "想法還模糊、大家用詞不一致，聊完就散在對話裡，下次又得重講。它自己只是把兩個 skill 疊在一起：grilling 負責追問，domain-modeling 負責把共識寫成文件。",
+      "when": "在有 repo 的工作目錄裡，想把一個想法磨清楚時，從這裡開始。沒有工作目錄可以留下紀錄的話，改用 grill-me。",
+      "before": ["setup-matt-pocock-skills"],
+      "after": ["prototype", "to-spec", "implement"]
+    },
+    {
+      "skill": "prototype",
+      "region": "main",
+      "invocation": "model",
+      "version": "1.1.0",
+      "one_liner": "寫一小段用完即丟的程式，回答一個設計問題。",
+      "problem": "有些問題光靠討論答不出來，例如狀態模型對不對、畫面該長怎樣。它依問題分兩條路：邏輯問題做成一個可以雙擊打開的 HTML 檔，畫面問題做成同一個路由下的多個版本，用網址參數切換。",
+      "when": "對話裡講不定、需要跑得動才能回答時。問完把結論收進正式程式，prototype 本身留在不進主線的分支當第一手資料。講得定的問題不必做。",
+      "before": ["grill-with-docs", "handoff"],
+      "after": ["handoff"]
+    },
+    {
+      "skill": "handoff",
+      "region": "main",
+      "invocation": "user",
+      "version": null,
+      "one_liner": "把這段對話濃縮成一份文件，讓另一個 session 的代理接手。",
+      "problem": "換 harness、換目錄、交給同事或中途岔出支線時，新的 session 沒有舊脈絡。它把重點寫成檔案放在系統暫存目錄，附上建議下一個代理呼叫的 skill，已經記在 spec、issue 或 commit 裡的內容只放連結，並先遮掉密碼之類的敏感資訊。",
+      "when": "只在要換 harness、換目錄、交給同事，或中途岔出支線時用。留在同一個地方的話，繼續做或 compact 就好。",
+      "before": ["grill-with-docs", "prototype"],
+      "after": ["prototype", "to-spec"]
+    },
+    {
+      "skill": "to-spec",
+      "region": "main",
+      "invocation": "user",
+      "version": null,
+      "renamed_from": "to-prd",
+      "one_liner": "把目前的對話整理成一份 spec，發到 issue tracker，不再訪談。",
+      "problem": "討論完的想法散在對話裡，沒有一份可以依據的規格。它只整理已經談過的內容，不會再問你一輪；唯一要你確認的是測試要放在哪些 seam，並且盡量只有一個。",
+      "when": "要做的東西得分多個 session 才做得完時。還沒設定 issue tracker 的話，先跑 setup-matt-pocock-skills。",
+      "before": ["grill-with-docs", "handoff"],
+      "after": ["to-tickets"]
+    },
+    {
+      "skill": "to-tickets",
+      "region": "main",
+      "invocation": "user",
+      "version": null,
+      "renamed_from": "to-plan, to-issues",
+      "one_liner": "把 spec 切成曳光彈式的垂直切片 ticket，每張寫明被哪些 ticket 擋住。",
+      "problem": "一份大規格塞不進一個 context window，也看不出誰該先做。每個切片都穿過所有層（schema、API、UI、測試），做完就能單獨展示或驗證，大小剛好放進一個全新的 context window。切完會先給你看、等你同意才發出去。",
+      "when": "to-spec 之後。產出的 ticket 已經能直接交給代理做，不必再 triage。",
+      "before": ["to-spec"],
+      "after": ["implement", "implement-spec"]
+    },
+    {
+      "skill": "implement",
+      "region": "main",
+      "invocation": "user",
+      "version": "1.1.0",
+      "one_liner": "照著 spec 或 ticket 把東西做出來，盡量用 tdd，做完呼叫 code-review，再 commit。",
+      "problem": "有了規格或 ticket，還要有人照著做完並驗證。這個 skill 把順序規定好：能用 tdd 就用，過程中常跑型別檢查和單一測試檔，最後才跑完整測試，不會跳過審查。",
+      "when": "不需要多個 session 時，直接在同一個 context 裡做。要分多個 session 時，每張 ticket 各跑一次，中間用 /clear 清掉。",
+      "before": ["to-tickets", "grill-with-docs"],
+      "after": ["tdd", "code-review"]
+    },
+    {
+      "skill": "implement-spec",
+      "region": "main",
+      "invocation": "user",
+      "version": "1.3.0",
+      "one_liner": "把整份 spec 一次做完：ticket 當任務圖，子代理並行，全部合進同一條整合分支。",
+      "problem": "ticket 多的時候，一張一張手動 implement 太慢。它把 ticket 看成有阻擋關係的任務圖，讓沒被擋住的 ticket 同時由子代理在各自的 worktree 開工，做完再合進整合分支，最後整條分支跑一次 code-review。",
+      "when": "to-spec 和 to-tickets 都做完、ticket 之間有阻擋關係、你想調度整個建置而不是逐張帶著做時。想自己逐張做就用 implement。",
+      "before": ["to-tickets"],
+      "after": ["tdd", "code-review"]
+    },
+    {
+      "skill": "tdd",
+      "region": "main",
+      "invocation": "model",
+      "version": "1.0.0",
+      "one_liner": "測試先行：一次只做一個紅燈再綠燈的切片，測試只寫在事先約好的 seam。",
+      "problem": "測試常常綁死實作細節，或是一口氣先寫一大堆想像出來的測試。它要求測行為、走公開介面，一次只做一個切片；寫任何測試之前，先跟你確認要測哪些 seam。重構不在這個循環裡，留給審查階段。",
+      "when": "想先寫測試再做功能或修 bug、提到 red-green-refactor、要寫整合測試時。不需要完整的 spec 也能單獨用。",
+      "before": ["implement", "implement-spec"],
+      "after": ["code-review"]
+    },
+    {
+      "skill": "code-review",
+      "region": "main",
+      "invocation": "model",
+      "version": null,
+      "renamed_from": "review",
+      "one_liner": "沿兩個軸審查改動：合不合程式規範，合不合 spec。",
+      "problem": "一個改動可能一軸過、另一軸不過：完全合規範卻做錯了東西，或做對了東西卻破壞專案慣例。所以兩軸交給兩個子代理分頭審，分開報告，不合併也不重新排名。規範那一軸另外帶一組常見的程式壞味道當基準，但只當判斷參考。",
+      "when": "要審一條分支、一個 PR 或進行中的改動時，先給它一個固定的比較點（commit、分支或 tag）。找不到 spec 時只審規範那一軸。",
+      "before": ["implement", "implement-spec", "tdd"],
+      "after": ["pr", "retro"]
+    },
+    {
+      "skill": "pr",
+      "region": "main",
+      "invocation": "model",
+      "version": "1.3.0",
+      "one_liner": "PR 說明只寫三塊：最小的圖、前後證據、能不能回頭的判斷。",
+      "problem": "PR 說明常常寫成流水帳。它規定三塊：Summary 用能說清重點的最小視圖（虛擬碼、呼叫樹、檔案樹、Mermaid 或 diff）；Evidence 放改動前後的對照，截圖最好，其次是測試結果；Merge Danger 說明這是單向門還是雙向門，以及影響範圍。",
+      "when": "代理要寫 PR 說明的時候。它由模型自己呼叫，你不用手打。",
+      "before": ["code-review"],
+      "after": ["retro"]
+    },
+    {
+      "skill": "retro",
+      "region": "main",
+      "invocation": "user",
+      "version": "1.3.0",
+      "one_liner": "回頭看這次 session，建議怎麼改代理的環境，而不是改程式碼。",
+      "problem": "代理重複犯同樣的錯、找檔案很慢、工具呼叫很貴，原因多半在環境。它從導覽、自動檢查、程式規範、指引檔、工具成本、資訊取得這幾個面向找改進點。機械性的違規直接做成 linter 規則、pre-commit hook 或 CI 檢查，只有真的要靠判斷的才寫進規範文件。",
+      "when": "一次建置做完、code-review 之後；修完 bug 後也可以跑，問「什麼本來能防止它」。要在被回顧的那個 session 裡、清掉 context 之前跑。",
+      "before": ["code-review"],
+      "after": []
+    }
+  ]
+}
