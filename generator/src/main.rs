@@ -115,6 +115,31 @@ fn contained(out: &Path, rel: &str) -> Result<PathBuf, Box<dyn std::error::Error
     Ok(dest)
 }
 
+/// Every `*.json` under `data/`, keyed by file stem, handed to templates as `data`.
+/// A missing directory is an empty map; a file that does not parse fails the build.
+fn load_data(
+    dir: &Path,
+) -> Result<BTreeMap<String, serde_json::Value>, Box<dyn std::error::Error>> {
+    let mut data = BTreeMap::new();
+    if !dir.is_dir() {
+        return Ok(data);
+    }
+    for entry in fs::read_dir(dir)? {
+        let path = entry?.path();
+        if path.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        let Some(stem) = path.file_stem().and_then(|n| n.to_str()) else {
+            continue;
+        };
+        let text = fs::read_to_string(&path)?;
+        let value = serde_json::from_str(&text)
+            .map_err(|e| format!("{} is not valid JSON: {e}", path.display()))?;
+        data.insert(stem.to_string(), value);
+    }
+    Ok(data)
+}
+
 fn main() {
     if let Err(e) = run() {
         eprintln!("generate: {e}");
@@ -157,6 +182,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             js_v.insert(name.to_string(), content_version(&path)?);
         }
     }
+    let data = Value::from_serialize(load_data(&root.join("data"))?);
     let mut written = BTreeMap::new();
     let mut destinations: HashSet<PathBuf> = HashSet::new();
     let mut sitemap = Vec::new();
@@ -242,6 +268,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         year,
         css_v: &css_v,
         js_v: &js_v,
+        data: &data,
     };
     let markdown_written = render_pages(&inputs, &mut destinations, &mut written, &mut sitemap)?;
     render_documents(&inputs, &mut destinations, &mut written)?;
@@ -271,6 +298,7 @@ struct Inputs<'a, 'env> {
     year: i32,
     css_v: &'a str,
     js_v: &'a BTreeMap<String, String>,
+    data: &'a Value,
 }
 
 /// Every `[[page]]` in every locale it declares, with its Markdown twin.
@@ -290,6 +318,7 @@ fn render_pages(
         year,
         css_v,
         js_v,
+        data,
     } = *inputs;
     let mut markdown_written = 0usize;
     for page in &site.page {
@@ -424,6 +453,7 @@ fn render_pages(
                 year => year,
                 css_version => &css_v,
                 js_version => &js_v,
+                data => &data,
                 nav => &nav[locale.as_str()].0,
                 related => site.related_for(page, locale)?,
                 articles => &nav[locale.as_str()].1,
@@ -569,6 +599,7 @@ fn render_documents(
         year,
         css_v,
         js_v,
+        data,
     } = *inputs;
     for doc in &site.document {
         let tmpl = env.get_template(&doc.template)?;
@@ -602,6 +633,7 @@ fn render_documents(
             year => year,
             css_version => &css_v,
             js_version => &js_v,
+            data => &data,
             nav => &nav[CANONICAL_LOCALE].0,
             articles => &nav[CANONICAL_LOCALE].1,
             // The canonical locale's home card. This pointed at `og/index.png`,
