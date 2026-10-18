@@ -159,6 +159,7 @@
 /zh-Hant-TW/google-workspace-training
 /zh-Hant-TW/google-workspace-with-ai
 /zh-Hant-TW/insights
+/zh-Hant-TW/mattpocock-skills
 /zh-Hant-TW/mcp-integration
 /zh-Hant-TW/owasp-llm-top-10
 /zh-Hant-TW/pqc-migration
