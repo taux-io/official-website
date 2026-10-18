@@ -5,3 +5,17 @@
 - 改顏色、字體、間距、元件、動態：先讀 `DESIGN.md`，它是設計詞彙的唯一來源。
 - 部署、Cloudflare、`src/worker.js`：照 `DEPLOYMENT.md`。
 - 想知道某個決定為什麼這樣做：查 `NOTES.md`。
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues (via `gh`). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five labels, each named after its role. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+single-context. See `docs/agents/domain.md`.
