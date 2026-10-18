@@ -8,11 +8,11 @@
     <p><strong>解決什麼問題</strong>：{{ s.problem }}</p>
     <p><strong>什麼時候用</strong>：{{ s.when }}</p>
     {%- if s.merge_at is defined %}
-    <p><strong>併入主線</strong>：併入 <a href="#skill-{{ s.merge_at }}">{{ s.merge_at }}</a>。{{ s.merge_note }}</p>
+    <p><strong>併入主線</strong>：併入 <a href="#skill-{{ s.merge_at }}" class="underline">{{ s.merge_at }}</a>。{{ s.merge_note }}</p>
     {%- endif %}
     <p><strong>前後接誰</strong>：
-        {%- if s.before %}前面是{% for b in s.before %} <a href="#skill-{{ b }}">{{ b }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}前面沒有，這是起點{% endif %}；
-        {%- if s.after %}後面是{% for a in s.after %} <a href="#skill-{{ a }}">{{ a }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}後面沒有，這是終點{% endif %}。</p>
+        {%- if s.before %}前面是{% for b in s.before %} <a href="#skill-{{ b }}" class="underline">{{ b }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}前面沒有，這是起點{% endif %}；
+        {%- if s.after %}後面是{% for a in s.after %} <a href="#skill-{{ a }}" class="underline">{{ a }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}後面沒有，這是終點{% endif %}。</p>
     <p><strong>呼叫方式</strong>：
         {%- if s.invocation == "user" %}只能由你手打 <code>/{{ s.skill }}</code>，模型不會自己呼叫。
         {%- else %}模型會在需要時自己呼叫，你也可以手打 <code>/{{ s.skill }}</code>。{% endif %}</p>

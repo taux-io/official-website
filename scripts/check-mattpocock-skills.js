@@ -505,6 +505,36 @@ function checkFlowPlugin(data, dir) {
   check(/task graph/.test(spec) && /integration branch/.test(spec) && /subagent/i.test(spec), where, "comparison", "implement-spec's SKILL.md no longer describes a task graph, an integration branch and subagents");
 }
 
+// A link in running text is marked by its underline (DESIGN.md, "正文連結 —
+// 底線"; WCAG 1.4.1: colour alone is not a mark, and the link is the same
+// colour as the words). The site's baseline rule for it is :where(), so zero
+// specificity, and Tailwind's preflight `a { text-decoration: inherit }` beats
+// it: what actually underlines a prose link is the hand-written `underline`
+// class. So every <a> in <main> carries it, except the flow-diagram nodes,
+// which are boxes (a navigation control, not prose), and the section index.
+// `skills-flow-more` is this page's own underlined link, made by the script.
+function checkLinkMarks(html) {
+  const where = `/${LOCALE}/${SLUG}`;
+  const main = /<main\b[\s\S]*<\/main>/.exec(html);
+  check(!!main, where, "link marks", "no <main> to read the links from");
+  if (!main) return;
+  const body = main[0].replace(/<nav\b[\s\S]*?<\/nav>/g, "");
+  let seen = 0;
+  for (const m of body.matchAll(/<a\b[^>]*>/g)) {
+    if (/\bdata-flow-node\b/.test(m[0])) continue;
+    seen++;
+    const cls = /\bclass="([^"]*)"/.exec(m[0]);
+    const marked = !!cls && cls[1].split(/\s+/).some((c) => c === "underline" || c === "skills-flow-more");
+    check(marked, where, "link marks", `${m[0]} is a link in running text with no underline class; it is the same colour as the words around it`);
+  }
+  check(seen > 60, where, "link marks", `only ${seen} prose links found; the page has well over sixty, so the pattern no longer matches the markup`);
+  // The script makes links of its own (the decision-tree answer); each needs the same mark.
+  const src = fs.readFileSync(path.join(ROOT, "static", "js", "mattpocock-skills.js"), "utf8");
+  for (const m of src.matchAll(/el\(\s*"a"\s*,\s*\{([^}]*)\}/g)) {
+    check(/class:\s*"[^"]*\b(underline|skills-flow-more)\b/.test(m[1]), "static/js/mattpocock-skills.js", "link marks", `the script makes a link with no underline class: el("a", {${m[1]}})`);
+  }
+}
+
 // What the CSP refuses, and the dark mode the design forbids.
 function checkPolicy(html, css) {
   const where = `/${LOCALE}/${SLUG}`;
@@ -663,6 +693,7 @@ function main() {
   checkPage(data, html, md);
   checkPhase(phase, html, md);
   checkPolicy(html, css);
+  checkLinkMarks(html);
   checkScript(data, html);
 
   const plugin = arg("--plugin") || process.env.MATTPOCOCK_SKILLS_DIR;
