@@ -1,0 +1,22 @@
+{#- One skill, printed inside a loop whose variable is `s`: the same fields
+    wherever it lives, so the Markdown twin reads the same for all 38. An on-ramp
+    adds the field that says where it joins the main line. A partial, not a
+    macro: a macro may not carry an href (check:design, no parameterised markup). -#}
+<div id="skill-{{ s.skill }}" class="border-t border-line pt-6 space-y-3 leading-relaxed">
+    <h3>{{ s.skill }}</h3>
+    <p><strong>一句話答案</strong>：{{ s.one_liner }}</p>
+    <p><strong>解決什麼問題</strong>：{{ s.problem }}</p>
+    <p><strong>什麼時候用</strong>：{{ s.when }}</p>
+    {%- if s.merge_at is defined %}
+    <p><strong>併入主線</strong>：併入 <a href="#skill-{{ s.merge_at }}">{{ s.merge_at }}</a>。{{ s.merge_note }}</p>
+    {%- endif %}
+    <p><strong>前後接誰</strong>：
+        {%- if s.before %}前面是{% for b in s.before %} <a href="#skill-{{ b }}">{{ b }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}前面沒有，這是起點{% endif %}；
+        {%- if s.after %}後面是{% for a in s.after %} <a href="#skill-{{ a }}">{{ a }}</a>{% if not loop.last %}、{% endif %}{% endfor %}{% else %}後面沒有，這是終點{% endif %}。</p>
+    <p><strong>呼叫方式</strong>：
+        {%- if s.invocation == "user" %}只能由你手打 <code>/{{ s.skill }}</code>，模型不會自己呼叫。
+        {%- else %}模型會在需要時自己呼叫，你也可以手打 <code>/{{ s.skill }}</code>。{% endif %}</p>
+    {%- if s.version %}
+    <p><strong>加入於</strong>：{{ s.version }}</p>
+    {%- endif %}
+</div>

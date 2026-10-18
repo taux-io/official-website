@@ -38,6 +38,14 @@ const LOCALE = "zh-Hant-TW";
 const ORIGIN = "https://taux.io";
 const UPSTREAM = "https://github.com/mattpocock/skills";
 const LABELS = ["一句話答案", "解決什麼問題", "什麼時候用", "前後接誰", "呼叫方式"];
+// What the plugin held when the data was written. A skill dropped from the data
+// file is otherwise invisible in CI, where there is no plugin to compare with.
+const EXPECTED_SKILLS = 38;
+// "other" skills get a name and one sentence in a closed disclosure; every other
+// region gets a full section. The entries are the on-ramps, each of which must
+// say where it joins the main line.
+const REGIONS = ["main", "router", "entry", "health", "vocab", "standalone", "other"];
+const GROUPS = ["misc", "in-progress"];
 
 function arg(name) {
   const i = process.argv.indexOf(name);
@@ -77,23 +85,59 @@ function introducedIn(changelog, skill) {
   return hits.length ? hits[hits.length - 1].version : null;
 }
 
+function checkData(data) {
+  const where = "data/mattpocock_skills.json";
+  const names = data.skills.map((s) => s.skill);
+  check(
+    data.skills.length === EXPECTED_SKILLS,
+    where,
+    "skill count",
+    `the data holds ${data.skills.length} skills; the plugin ${data.plugin_version} has ${EXPECTED_SKILLS}`,
+  );
+  check(new Set(names).size === names.length, where, "skill count", "a skill is listed twice");
+  for (const s of data.skills) {
+    check(REGIONS.includes(s.region), where, "region", `${s.skill}: unknown region "${s.region}"`);
+    if (s.region === "other") {
+      check(GROUPS.includes(s.group), where, "region", `${s.skill}: group must be one of ${GROUPS.join(", ")}`);
+      check(!!s.one_liner, where, "region", `${s.skill}: an "other" skill still needs its one sentence`);
+      continue;
+    }
+    for (const f of ["one_liner", "problem", "when"]) check(!!s[f], where, "fields", `${s.skill}: no ${f}`);
+    check(s.invocation === "user" || s.invocation === "model", where, "fields", `${s.skill}: invocation must be user or model`);
+    for (const ref of [...(s.before || []), ...(s.after || [])]) {
+      const target = data.skills.find((t) => t.skill === ref);
+      check(!!target && target.region !== "other", where, "links", `${s.skill}: links to ${ref}, which has no section to land on`);
+    }
+    if (s.region === "entry") {
+      const target = data.skills.find((t) => t.skill === s.merge_at);
+      check(!!target && target.region === "main", where, "merge point", `${s.skill}: an on-ramp must name the main-line skill it joins (merge_at)`);
+      check(!!s.merge_note, where, "merge point", `${s.skill}: an on-ramp must say how it joins (merge_note)`);
+    } else {
+      check(!s.merge_at, where, "merge point", `${s.skill}: only on-ramps join the main line`);
+    }
+  }
+}
+
 function checkPage(data, html, md) {
   const where = `/${LOCALE}/${SLUG}`;
-  const skills = data.skills;
+  const skills = data.skills.filter((s) => s.region !== "other");
+  const others = data.skills.filter((s) => s.region === "other");
 
   // Sections of the HTML, cut at each skill anchor.
+  // A section ends at the next skill, at the next chapter, or where the
+  // closed "other" disclosure begins, whichever comes first.
   const starts = [...html.matchAll(/id="skill-([a-z0-9-]+)"/g)];
+  const stops = [...html.matchAll(/<section\b|<details\b/g)].map((m) => m.index);
   const htmlSection = {};
   starts.forEach((m, i) => {
-    const end = i + 1 < starts.length ? starts[i + 1].index : html.indexOf("</main>");
-    // A skill section also ends where the next chapter (<section>) begins.
-    const chapter = html.indexOf("<section", m.index);
-    htmlSection[m[1]] = html.slice(m.index, chapter !== -1 && chapter < end ? chapter : end);
+    const next = [i + 1 < starts.length ? starts[i + 1].index : Infinity, ...stops.filter((x) => x > m.index), html.indexOf("</main>")];
+    htmlSection[m[1]] = html.slice(m.index, Math.min(...next));
   });
+  // In the twin, a skill is a "### name" heading; a chapter ("## 03 ...") ends it.
   const mdSection = {};
   for (const block of md.split(/^### /m).slice(1)) {
     const name = block.split("\n", 1)[0].trim();
-    mdSection[name] = block;
+    mdSection[name] = block.split(/^## /m)[0];
   }
 
   for (const s of skills) {
@@ -110,6 +154,12 @@ function checkPage(data, html, md) {
       for (const label of LABELS) {
         const present = kind === "page" ? body.includes(`<strong>${label}</strong>`) : body.includes(`**${label}**`);
         check(present, where, "skill fields", `${s.skill} (${kind}) is missing the "${label}" field`);
+      }
+      if (s.region === "entry") {
+        const field = kind === "page" ? body.includes("<strong>併入主線</strong>") : body.includes("**併入主線**");
+        check(field, where, "merge point", `${s.skill} (${kind}) is an on-ramp and does not say where it joins the main line (併入主線)`);
+        const link = kind === "page" ? `href="#skill-${s.merge_at}"` : `${where.replace(/^/, ORIGIN)}#skill-${s.merge_at}`;
+        check(body.includes(link), where, "merge point", `${s.skill} (${kind}) does not link to ${s.merge_at}, where the data says it joins`);
       }
       const shown = kind === "page"
         ? (/<strong>加入於<\/strong>：\s*([\d.]+)/.exec(body) || [])[1] || null
@@ -128,6 +178,28 @@ function checkPage(data, html, md) {
 
   const unknown = Object.keys(htmlSection).filter((n) => !skills.some((s) => s.skill === n));
   check(unknown.length === 0, where, "skill section", `the page has sections the data does not: ${unknown.join(", ")}`);
+
+  // The "other" skills: a closed disclosure holding a name and one sentence each.
+  // The twin prints a disclosure open, so only the page can be asked if it is closed.
+  const details = /<details\b([^>]*)>([\s\S]*?)<\/details>/.exec(html.slice(html.indexOf("<main")));
+  check(!!details, where, "other skills", "no <details> disclosure holding the other skills");
+  if (details) {
+    check(!/\bopen\b/.test(details[1]), where, "other skills", "the disclosure of the other skills is open by default; it should start closed");
+    const shownText = text(details[2]);
+    for (const o of others) {
+      check(
+        shownText.includes(o.skill) && shownText.includes(o.one_liner),
+        where,
+        "other skills",
+        `${o.skill} is not in the disclosure with its one sentence`,
+      );
+      check(!htmlSection[o.skill], where, "other skills", `${o.skill} has a full section; the "other" skills are only a name and a sentence`);
+      check(md.includes(o.skill) && md.includes(o.one_liner), where + ".md", "other skills", `${o.skill} (markdown twin) is missing its name or its sentence`);
+    }
+    for (const label of LABELS) {
+      check(!details[2].includes(`<strong>${label}</strong>`), where, "other skills", `the disclosure carries the "${label}" field; it should hold only names and sentences`);
+    }
+  }
 
   // The flow list: every node is a link to a section, and the nodes are the
   // main line, in the data's order.
@@ -313,11 +385,20 @@ function checkPlugin(data, dir) {
   const manifest = JSON.parse(fs.readFileSync(path.join(dir, ".claude-plugin", "plugin.json"), "utf8"));
   check(manifest.version === data.plugin_version, where, "plugin version", `the plugin is ${manifest.version}, the data was written for ${data.plugin_version}`);
 
-  // Subset, not equality, while the data file holds only the main line.
+  // Equality, not subset: the data names exactly the skills that have a SKILL.md
+  // in the plugin directory. plugin.json lists fewer (the misc and in-progress
+  // skills are in the directory but not in the manifest); the directory is what
+  // the page describes, so it is what the data is held to.
+  const have = Object.keys(found).sort();
+  const named = data.skills.map((s) => s.skill).sort();
+  const missing = have.filter((n) => !named.includes(n));
+  const extra = named.filter((n) => !have.includes(n));
+  check(missing.length === 0, where, "skill set", `the plugin has skills the data does not: ${missing.join(", ")}`);
+  check(extra.length === 0, where, "skill set", `the data has skills the plugin does not: ${extra.join(", ")}`);
   for (const s of data.skills) {
     const src = found[s.skill];
     check(src !== undefined, where, "skill exists", `${s.skill} is not a skill in the plugin`);
-    if (src === undefined) continue;
+    if (src === undefined || s.region === "other") continue;
     const front = /^---\n([\s\S]*?)\n---/.exec(src);
     const userOnly = !!front && /^disable-model-invocation:\s*true\s*$/m.test(front[1]);
     check(
@@ -367,6 +448,7 @@ function main() {
   const phaseFile = path.resolve(arg("--phase") || path.join(ROOT, "data", "mattpocock_phase.json"));
   const phase = JSON.parse(fs.readFileSync(phaseFile, "utf8"));
 
+  checkData(data);
   checkPage(data, html, md);
   checkPhase(phase, html, md);
   checkPolicy(html, css);
