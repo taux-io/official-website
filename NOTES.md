@@ -148,6 +148,15 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 截圖與像素比對刻意不設為閘門：跨機器的字體渲染差異會產生假警報，它們是給人看的工具。
 
+### `data/*.json` 與模板變數 `data`
+
+`generator/src/main.rs` 的 `load_data` 讀 `data/` 底下的檔案，交給每個模板當作變數 `data`：
+
+- **檔名的 stem 就是 key。** `data/mattpocock_skills.json` 在模板裡是 `data["mattpocock_skills"]`；改檔名就是改 key，模板要一起改。
+- **`data/` 不進 `dist/`。** 它只是建置的輸入，不會被複製成靜態資產，線上讀不到。
+- **缺 key 時 build 失敗。** 產生器設了 `UndefinedBehavior::Strict`，模板取一個不存在的 key（檔案不見、檔名拼錯）是建置錯誤，不會渲染成空白。JSON 本身壞掉也是錯誤，訊息帶檔案路徑。
+- **副檔名不是 `.json` 的檔案會被略過**，不報錯也不警告。`mattpocock_skills.json.bak` 或 `.JSON` 因此讀不到，之後模板取它的 key 時才會失敗。
+
 ### 密碼掃描（gitleaks）：commit 前與 PR 上
 
 這個 repo 是公開的：密碼進了 commit 就是公開，刪掉 commit 也收不回，只能作廢

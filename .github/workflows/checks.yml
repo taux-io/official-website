@@ -97,6 +97,15 @@ jobs:
       - name: Markdown twins hold
         run: npm run check:md
 
+      # The page is written by a loop over data/mattpocock_skills.json, so a
+      # skill can vanish from it, or from its twin, without any other gate
+      # noticing: check:md asks whether the twin is well formed, never whether
+      # it is complete. This also reads the built page for the inline script,
+      # <style> and style= the CSP refuses, which no static gate covered. The
+      # upstream plugin is not on the runner, so its comparison is skipped here.
+      - name: mattpocock-skills page holds
+        run: npm run check:mattpocock
+
       # The build reads no git, so it cannot invent a date; this asserts every
       # page supplies one, that it parses, and that nothing claims to have been
       # revised in the future or published after it was revised.

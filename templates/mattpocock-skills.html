@@ -1,0 +1,280 @@
+{% from "_blocks.html" import cover, faq -%}
+{% include "header.html" %}
+
+
+<!-- Structured data.
+
+     TechArticle only. The page is a reading of someone else's MIT-licensed
+     plugin; the plugin is not ours, the teaching is. author/publisher is TauX
+     because TauX wrote the teaching, and the upstream is named in the first
+     paragraph of the body rather than in a footer. It is cited as an ordinary
+     citation, not through sameAs, which would state identity. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph": [
+  {{ breadcrumb }},
+  {"@type":"TechArticle","@id":"https://taux.io/zh-Hant-TW/mattpocock-skills#article","headline":"mattpocock-skills 流程圖：從想法到出貨該用哪個 skill","description":"Matt Pocock 的 mattpocock-skills 外掛，從想法到出貨的 12 個主線 skill：每個解決什麼問題、什麼時候用、前後接誰、怎麼呼叫。","author": {% include "_org-ref.html" %},"publisher": {% include "_org-ref.html" %},"datePublished":"{{ date_published }}","dateModified":"{{ date_modified }}","image":"https://taux.io/static/brand/logo-on-light.png","mainEntityOfPage": {"@type":"WebPage","@id":"https://taux.io/zh-Hant-TW/mattpocock-skills" },"proficiencyLevel":"Intermediate","inLanguage":"{{ locale }}","citation":"mattpocock/skills v1.3.1 (MIT)"
+  }
+  ]
+}
+</script>
+
+{% set skills = data["mattpocock_skills"]["skills"] %}
+{% set written_for = data["mattpocock_skills"]["plugin_version"] %}
+{% set others = skills|selectattr("region", "equalto", "other")|list %}
+{% set forks = data["mattpocock_skills"]["forks"] %}
+
+<!-- Hero -->
+<div class="max-w-prose mx-auto px-6 pt-2 pb-10 relative">
+    <header class="band mb-12 tablet:mb-16">
+        <div class="tag mb-4">
+            <span class="w-2 h-2 bg-ink rounded-full me-2"></span>
+            AI Engineering
+        </div>
+        <h1 class="mb-4">
+            <span class="display-lead text-display-sm tablet:text-display-md" lang="en">From idea to shipped</span>
+            <span class="display-sub">mattpocock-skills 流程圖：每一步該用哪個 skill</span>
+        </h1>
+{% include "_article-date.html" %}
+        <p class="text-base tablet:text-lg mb-5 max-w-prose">
+            <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">Matt Pocock 的 mattpocock-skills 外掛</a>整個有 {{ skills|length }} 個 skill，從想法到出貨的主線上有 12 個。這一頁依序說明每一個解決什麼問題、什麼時候用、前後接誰，以及要自己手打還是交給模型。
+        </p>
+        <p class="font-sans text-eyebrow uppercase">依 {{ written_for }} 撰寫</p>
+    </header>
+
+    <nav data-section-index aria-label="章節索引" class="hidden desktop:block absolute top-0 -start-56 w-48 h-full">
+        <div class="sticky top-24">
+            <ul class="space-y-1">
+                <li><a href="#overview" class="section-index-link"><span class="font-sans">01</span> 先看這幾件事</a></li>
+                <li><a href="#flow" class="section-index-link"><span class="font-sans">02</span> 從想法到出貨</a></li>
+                <li><a href="#phase" class="section-index-link"><span class="font-sans">03</span> 階段交界怎麼選</a></li>
+                <li><a href="#router" class="section-index-link"><span class="font-sans">04</span> 不確定時問誰</a></li>
+                <li><a href="#entries" class="section-index-link"><span class="font-sans">05</span> 三條入口</a></li>
+                <li><a href="#health" class="section-index-link"><span class="font-sans">06</span> 程式碼健康</a></li>
+                <li><a href="#vocab" class="section-index-link"><span class="font-sans">07</span> 底層詞彙</a></li>
+                <li><a href="#standalone" class="section-index-link"><span class="font-sans">08</span> 獨立工具</a></li>
+                <li><a href="#others" class="section-index-link"><span class="font-sans">09</span> 其他</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="space-y-12 tablet:space-y-16">
+
+        <section id="overview">
+            {% call cover("01") %}先看這幾件事{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    這一頁講的是 <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="underline">Matt Pocock 的 mattpocock-skills 外掛</a>（MIT 授權）。外掛和裡面的每個 skill 都是他的作品；這份中文教學是拓思（TauX）自己寫的，不是官方文件，也不是翻譯。每個 skill 都是讀過它的 SKILL.md 之後，用自己的話重新寫成的。
+                </p>
+                <p id="correction">
+                    <strong>先更正一個常見的說法</strong>：<code>pr</code>、<code>retro</code>、<code>implement-spec</code> 是 1.3.0 才升進正式清單，不是 1.3.1。1.3.1 沒有升進任何 skill，只修正 <code>ask-matt</code> 對 <code>diagnosing-bugs</code> 後續動作的描述：診斷完 bug 之後，改指向 <code>/retro</code>，只有發現缺少 seam 時才指向 <code>/improve-codebase-architecture</code>。
+                </p>
+                <p>
+                    用詞先說好。這一頁把外掛裡的每一份能力叫 skill；只有你親手在對話裡打的 <code>/名稱</code> 才叫指令。有些 skill 只能由你手打，有些由模型在適當的時機自己呼叫，你也可以手打。每一段的「呼叫方式」都會寫明是哪一種。
+                </p>
+                <p>
+                    想看這個外掛 1.2.3 版的完整用法、劇本和常見的坑，請讀 <a href="/{{ locale }}/agent-dev-workflow" class="underline">AI Agent 開發流程實戰</a>。它依 1.2.3 撰寫、涵蓋 25 支 skill，和這一頁分開維護。
+                </p>
+            </div>
+        </section>
+
+        <section id="flow">
+            {% call cover("02") %}從想法到出貨{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    主線從設定開始，經過磨想法、整理 spec 與 ticket，一路走到實作、審查、PR 和回顧。下面的順序可以點進每個 skill 的說明。途中有兩個分岔問題，決定你要不要繞一段、要不要拆成多個 session；<code>implement</code> 與 <code>implement-spec</code> 是二選一，<a href="#compare" class="underline">比較寫在順序後面</a>；<code>tdd</code> 則是實作時使用的做法。
+                </p>
+                <p>
+                    另外三條入口（<a href="#skill-triage" class="underline">triage</a>、<a href="#skill-diagnosing-bugs" class="underline">diagnosing-bugs</a>、<a href="#skill-wayfinder" class="underline">wayfinder</a>）不從頭開始，各自併進主線的某一步，標在那一步的下面。
+                </p>
+                <div data-skills-flow class="skills-flow-layout">
+                <ol data-flow class="skills-flow">
+                    {%- for s in skills if s.region == "main" %}
+                    <li>
+                        <a data-flow-node href="#skill-{{ s.skill }}" class="skills-flow-node">{{ s.skill }}</a>
+                        <p class="mt-2 text-sm text-ink-soft">{{ s.one_liner }}</p>
+                        {%- for e in skills if e.region == "entry" and e.merge_at == s.skill %}
+                        <p data-flow-join class="mt-2 text-sm"><strong>入口</strong>：<a href="#skill-{{ e.skill }}" class="underline">{{ e.skill }}</a> 在{{ e.merge_when }}併入這一步。</p>
+                        {%- endfor %}
+                        {%- for f in forks %}{% if f.after == s.skill %}
+                        <div data-fork class="mt-4 border-s border-line ps-6 space-y-2 text-sm">
+                            <p><strong>分岔 {{ loop.index }}</strong>：{{ f.question }}</p>
+                            {%- for side in [f.yes, f.no] %}
+                            <p><strong>{{ side.label }}</strong>：{{ side.text }}
+                                {%- if side.goes %}接著：{% for g in side.goes %}<a href="#skill-{{ g }}" class="underline">{{ g }}</a>{% if not loop.last %}、{% endif %}{% endfor %}。{% endif %}</p>
+                            {%- endfor %}
+                        </div>
+                        {%- endif %}{% endfor %}
+                    </li>
+                    {%- endfor %}
+                </ol>
+                <!-- Filled by mattpocock-skills.js from the sections below. Ships
+                     hidden and empty: without the script there is no panel, and
+                     the nodes are the links to the sections. The live region is
+                     here, not made by the script, because a region inserted at
+                     the moment it first speaks is often not announced. -->
+                <div data-flow-panel hidden tabindex="-1" role="region" aria-label="skill 說明" class="skills-flow-panel"></div>
+                <p data-flow-status role="status" class="sr-only"></p>
+                </div>
+            </div>
+
+            {%- set cmp = data["mattpocock_skills"]["comparison"] %}
+            <div id="compare" data-compare class="space-y-4 leading-relaxed border-t border-line pt-6 mt-12">
+                <h3>implement 對 implement-spec</h3>
+                <p>{{ cmp.intro }}</p>
+                <ul class="list-disc ps-6 space-y-4">
+                    {%- for r in cmp.rows %}
+                    <li>
+                        <p><strong>{{ r.aspect }}</strong></p>
+                        <p><code>implement</code>：{{ r.implement }}</p>
+                        <p><code>implement-spec</code>：{{ r.implement_spec }}</p>
+                    </li>
+                    {%- endfor %}
+                </ul>
+            </div>
+
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "main" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        {%- set phase = data["mattpocock_phase"] %}
+        <section id="phase">
+            {% call cover("03") %}階段交界怎麼選{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>{{ phase.intro }}</p>
+                <p>{{ phase.order_note }}</p>
+                <p>交界上有五個選項：Continue、<code>/clear</code>、<code>/handoff</code>、子代理、<code>/compact</code>。下面的五個問題就照這個順序排。<strong>Continue 要先排除</strong>，<strong><code>/compact</code> 是預設，不是第一個該選的</strong>，<strong><code>/handoff</code> 只在四種情況才用</strong>。</p>
+
+                <h3>五個問題，由上往下問</h3>
+                <ol data-phase-tree class="list-decimal ps-6 space-y-4">
+                    {%- for q in phase.questions %}
+                    {%- set o = phase.options[loop.index0] %}
+                    <li>
+                        <p data-phase-question>{{ q.text }}</p>
+                        <p>答「是」：選 <a data-phase-answer href="#phase-{{ o.id }}" class="underline">{{ o.name }}</a>。{% if not loop.last %}答「否」：問下一題。{% endif %}</p>
+                    </li>
+                    {%- endfor %}
+                </ol>
+
+                <h3>五個選項各是什麼</h3>
+                <ul class="list-disc ps-6 space-y-4">
+                    {%- for o in phase.options %}
+                    <li id="phase-{{ o.id }}">
+                        <p><strong>{{ o.name }}</strong>：{{ o.does }}</p>
+                        <p>{{ o.reason }}</p>
+                        {%- if o.valid_reasons is defined %}
+                        <ul data-handoff-cases class="list-disc ps-6 space-y-1">
+                            {%- for r in o.valid_reasons %}
+                            <li>{{ r }}</li>
+                            {%- endfor %}
+                        </ul>
+                        {%- endif %}
+                    </li>
+                    {%- endfor %}
+                </ul>
+
+                <h3 id="smart-zone">smart zone</h3>
+                <p>{{ phase.smart_zone.text }}</p>
+            </div>
+        </section>
+
+        <section id="router">
+            {% call cover("04") %}不確定時問誰{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    skill 多到記不住的時候，不必自己背整張地圖。<code>ask-matt</code> 是整套的路由器，它的分類就是這一頁後面幾章的分法：一條主線、三條入口、程式碼健康、底層詞彙，加上獨立工具。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "router" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="entries">
+            {% call cover("05") %}三條入口{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    主線從 <a href="#skill-grill-with-docs" class="underline">grill-with-docs</a> 開頭，但工作不一定從一個新想法開始：可能是一堆別人開的 issue，可能是一個壞掉的東西，也可能是大到連路都看不見的專案。下面三個 skill 各管一種起點，做完把成果接回主線的某一處；每一段都寫明接在哪裡。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "entry" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="health">
+            {% call cover("06") %}程式碼健康{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    這一章不是在做新功能，只是日常保養。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "health" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="vocab">
+            {% call cover("07") %}底層詞彙{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    這兩個是由模型呼叫的參考，墊在其他 skill 底下，各自是自己那一套用詞的唯一來源。問題出在用字而不是流程的時候，才直接用它們；多半是上面的 skill 自己把它們叫進來。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "vocab" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="standalone">
+            {% call cover("08") %}獨立工具{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    不在主線上的 skill，各解一種獨立的問題。它們大多可以單獨使用，也有幾個會把成果交回主線。
+                </p>
+            </div>
+            <div class="space-y-12 mt-12">
+                {%- for s in skills if s.region == "standalone" %}
+                {% include "_mattpocock-skill.html" %}
+                {%- endfor %}
+            </div>
+        </section>
+
+        <section id="others">
+            {% call cover("09") %}其他{% endcall %}
+            <div class="space-y-6 leading-relaxed">
+                <p>
+                    外掛的 <code>skills/</code> 目錄裡還有 {{ others|length }} 個 skill，但它們沒有列在外掛的 <code>plugin.json</code> 清單裡。這裡只列名稱和一句話，預設收起；要用其中哪一個之前，請先讀它自己的 SKILL.md。
+                </p>
+            </div>
+            <div class="mt-8">
+                {%- call faq("其他 " ~ others|length ~ " 個 skill", last=true) %}
+                {%- for g in ["misc", "in-progress"] %}
+                <p class="font-semibold mb-2">{{ g }}</p>
+                <ul class="list-disc ps-5 space-y-2 mb-6">
+                    {%- for s in others if s.group == g %}
+                    <li><code>{{ s.skill }}</code>：{{ s.one_liner }}</li>
+                    {%- endfor %}
+                </ul>
+                {%- endfor %}
+                {%- endcall %}
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script src="/static/js/section-index.js?v={{ js_version["section-index.js"] }}" defer></script>
+<script src="/static/js/mattpocock-skills.js?v={{ js_version["mattpocock-skills.js"] }}" defer></script>
+
+{% include "footer.html" %}

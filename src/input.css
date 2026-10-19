@@ -2191,6 +2191,196 @@
 }
 
 /* ===========================================================================
+   The mattpocock-skills flow diagram (issue 370). Chapter 02 of
+   /mattpocock-skills lists its twelve main-line skills as an ordered list of
+   links; this is that list drawn as a column of boxes on a hairline rail, with
+   the number each box carries counted by CSS (the Markdown twin keeps the
+   <ol>'s own numbers).
+
+   Same rules as the deck above (decision 153): unlayered, ahead of the user
+   preferences, every selector scoped by a page-specific class. Components used
+   are the site's own — a hairline box, a hairline rail, an ink-5% hover — and
+   nothing is new: no colour but ink and the paper, and the blue is not used
+   here at all (a link's mark on this site is its underline). The one corner on
+   the page is button-utility's 8px, on the script's buttons (.skills-flow-tool,
+   below); every box (node, panel, stepper) is square, because the site gives a
+   radius to controls and to nothing else (DESIGN.md, decision 9). The classes
+   are page-specific on purpose: DESIGN.md decision 182.
+
+   The boxes are plain links in a plain list, not a <nav>: geometry holds every
+   `nav a` to 44px, and the join marks inside the list are inline links in prose.
+   --------------------------------------------------------------------------- */
+.skills-flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: skills-flow;
+}
+
+.skills-flow > li {
+    counter-increment: skills-flow;
+    margin-inline-start: 1.25rem;
+    padding-inline-start: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-inline-start: 1px solid var(--line);
+}
+
+.skills-flow > li:last-child {
+    padding-bottom: 0;
+    border-inline-start-color: transparent;
+}
+
+.skills-flow .skills-flow-node {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration-line: none;
+    overflow-wrap: anywhere;
+    transition: background-color 0.2s var(--ease-standard);
+}
+
+.skills-flow .skills-flow-node::before {
+    content: counter(skills-flow, decimal-leading-zero);
+    flex: none;
+    color: var(--ink);
+    font-weight: 400;
+}
+
+@media (hover: hover) {
+    .skills-flow .skills-flow-node:hover {
+        background-color: rgb(var(--ink-rgb) / 0.05);
+    }
+}
+
+.skills-flow .skills-flow-node:active {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+/* The node whose panel is open. Ink edge and ink 12%: it reads in forced-colors
+   (the edge) and without colour (the edge is heavier than every other box). */
+.skills-flow .skills-flow-node[aria-current="true"] {
+    border-color: var(--ink);
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+/* The side panel and the decision-tree stepper (static/js/mattpocock-skills.js).
+   Both exist only once the script has run; the page is complete without them.
+   Below the laptop breakpoint the panel is a box under the diagram, empty until
+   the first node is pressed. From laptop up the diagram and the panel are two
+   columns and the panel is there from the start, so opening one moves nothing.
+
+   Buttons here are the site's button-utility (hairline edge, 8px corner, ink
+   5% and 12%), written out because .btn-quiet carries an arrow after its label and "是" or
+   "關閉" are not going anywhere. Hover is guarded and followed by :active. */
+.skills-flow-panel,
+.skills-wizard {
+    border: 1px solid var(--line);
+    padding: 1rem 1.25rem;
+    overflow-wrap: anywhere;
+}
+
+.skills-flow-panel {
+    margin-top: 1.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.skills-flow-panel[data-empty] {
+    display: none;
+}
+
+.skills-flow-panel > * + *,
+.skills-wizard > * + * {
+    margin-top: 0.75rem;
+}
+
+.skills-flow-actions,
+.skills-wizard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.skills-wizard-actions {
+    margin-top: 0.75rem;
+}
+
+.skills-wizard {
+    margin-top: 1rem;
+}
+
+.skills-wizard-progress {
+    font-size: 0.875rem;
+    color: var(--ink);
+}
+
+.skills-wizard-question {
+    font-weight: 600;
+}
+
+.skills-flow-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration-line: underline;
+    text-underline-offset: 4px;
+}
+
+.skills-flow-tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease-standard);
+}
+
+@media (hover: hover) {
+    .skills-flow-tool:hover {
+        background-color: rgb(var(--ink-rgb) / 0.05);
+    }
+}
+
+.skills-flow-tool:active {
+    background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+@media (min-width: 961px) {
+    .skills-flow-layout[data-live] {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .skills-flow-layout[data-live] .skills-flow-panel {
+        position: sticky;
+        top: 6rem;
+        margin-top: 0;
+        max-height: calc(100vh - 8rem);
+        overflow-y: auto;
+    }
+
+    .skills-flow-layout[data-live] .skills-flow-panel[data-empty] {
+        display: block;
+    }
+}
+
+
+/* ===========================================================================
    User preferences. Three independent signals, none of which had a CSS
    answer before issue 154 — reduced motion was handled in two scripts that no
    longer exist and nowhere else, so the 300ms overlay fade, the nav's transform
