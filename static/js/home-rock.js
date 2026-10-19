@@ -1,8 +1,10 @@
 /* Home hero background (DESIGN.md decision 182): slow teal ridges drawn with a
    WebGL fragment shader. Desktop only (a hover pointer, at least `laptop` wide,
    no prefers-reduced-motion); everywhere else this script does nothing and the
-   hero stays paper. It does not follow the pointer. The colour comes from the
-   stylesheet's --rock-rgb, never from this file. */
+   stylesheet shows the still (static/brand/hero-rock.webp). If WebGL fails
+   here it sets [data-fallback] on the still so the still takes over. It does
+   not follow the pointer. The colour comes from the stylesheet's --rock-rgb,
+   never from this file. */
 (() => {
   'use strict';
 
@@ -19,6 +21,7 @@
 
   const cv = document.querySelector('[data-home-rock]');
   if (!cv) return;
+  const still = document.querySelector('[data-home-rock-still]');
   const desktop = matchMedia('(min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference)'); // 961px = tailwind `laptop`
   let gl, uR, uT;
   const init = () => {
@@ -99,7 +102,10 @@
 
   const update = () => {
     const go = desktop.matches && visible && !document.hidden;
-    if (go && ready === null) ready = init();
+    if (go && ready === null) {
+      ready = init();
+      if (!ready && still) still.setAttribute('data-fallback', '');
+    }
     if (go && ready && !running) {
       size();
       running = true;
