@@ -93,18 +93,18 @@
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
 
-  /* ROCK — the hero background's one colour (DESIGN.md decision 182): a teal
-     for the slow ridge-noise that static/js/home-rock.js draws behind the home
+  /* WATER — the hero background's one colour (DESIGN.md decision 182): a teal
+     for the slow ridge-noise that static/js/home-water.js draws behind the home
      hero on a desktop. It is read by that script and by nothing else; no
      declaration, no class and no text may use it. 20 220 190 is chosen with
-     the script's ROCK_MAX_INTENSITY (0.9) under an 85% paper veil: the lightest
+     the script's WATER_MAX_INTENSITY (0.9) under an 85% paper veil: the lightest
      the stone ever gets is 13.5% of this aqua-teal over paper, and the smallest
-     text on it (ink-72) measures 4.69:1 (`npm run check:hero-rock` measures it
+     text on it (ink-72) measures 4.69:1 (`npm run check:hero-water` measures it
      from these three numbers). It is bright rather than deep on purpose: for the
      same darkening of the paper, a luminous colour moves further from paper in
      hue, so the ridges read where the old deep teal at 9% hardly did. `two plates` (rule 25) knows it as a
      plate and refuses it anywhere but this declaration. */
-  --rock-rgb: 20 220 190;
+  --water-rgb: 20 220 190;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -579,16 +579,16 @@
   }
 
   /* HOME HERO BACKGROUND (DESIGN.md decision 182). Slow teal ridges drawn by
-     static/js/home-rock.js on a desktop; the only <canvas> the site ships. The
+     static/js/home-water.js on a desktop; the only <canvas> the site ships. The
      canvas and the veil are SIBLINGS of the hero's content, never a background
      of an ancestor: `contrast` skips the text of any element whose ancestor has
      a background-image, and that would turn the audit green without measuring.
      The veil is paper at 85%, which is what keeps the text legible; it is the
-     contrast gate's (check:hero-rock) knob together with ROCK_MAX_INTENSITY
-     and --rock-rgb. Both
+     contrast gate's (check:hero-water) knob together with WATER_MAX_INTENSITY
+     and --water-rgb. Both
      take no pointer events. The mask fades the canvas out toward the bottom of
      the band so it does not run into the services section. */
-  .home-rock {
+  .home-water {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -598,19 +598,19 @@
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
-  /* THE STILL: the same shader drawn once (scripts/assets/build-rock.js, run
-     with `npm run build:rock`), for every visitor the canvas is not for. It is a
+  /* THE STILL: the same shader drawn once (scripts/assets/build-water.js, run
+     with `npm run build:water`), for every visitor the canvas is not for. It is a
      sibling like the canvas, under the same veil and the same fade. The script
      runs on a hover pointer, laptop width and no reduced-motion, so exactly
      there the still is hidden, and `display: none` also means the browser never
      fetches it. If WebGL turns out to be unavailable the script sets
      [data-fallback] and the still comes back. The three conditions below are the
      script's `desktop` query; change them together (961px = tailwind `laptop`). */
-  .home-rock-still {
+  .home-water-still {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-rock.webp");
+    background-image: url("/static/brand/hero-water.webp");
     background-size: cover;
     background-position: center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
@@ -618,12 +618,12 @@
   }
 
   @media (min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .home-rock-still:not([data-fallback]) {
+    .home-water-still:not([data-fallback]) {
       display: none;
     }
   }
 
-  .home-rock-veil {
+  .home-water-veil {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -2430,9 +2430,9 @@
    
    NOT GATED, for the same reason as the block above. */
 @media print {
-  .home-rock,
-  .home-rock-still,
-  .home-rock-veil {
+  .home-water,
+  .home-water-still,
+  .home-water-veil {
     display: none;
   }
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// check:hero-rock — the home hero's rock background may never make its text
+// check:hero-water — the home hero's water background may never make its text
 // fail WCAG AA. Needs no browser.
 //
 // WHY THIS EXISTS. The hero's background is a WebGL <canvas> plus a paper veil,
@@ -8,17 +8,17 @@
 // a sibling is not an ancestor: the audit would stay green with the veil at 0%.
 // So the worst case is computed here, from the numbers that make it.
 //
-// THE WORST BACKGROUND. The shader writes premultiplied colour = rock * a with
-// alpha a <= ROCK_MAX_INTENSITY, over paper; the veil is paper at alpha V over
+// THE WORST BACKGROUND. The shader writes premultiplied colour = water * a with
+// alpha a <= WATER_MAX_INTENSITY, over paper; the veil is paper at alpha V over
 // that. A pixel at full intensity is therefore
-//     paper * (1 - I*(1-V)) + rock * I*(1-V)
+//     paper * (1 - I*(1-V)) + water * I*(1-V)
 // and every other pixel is between that and plain paper. The canvas mask only
 // fades the bottom out, so it can only make things lighter. The check is the
 // brightest pixel, which is also the one the shader reaches somewhere on screen.
 //
 // WHERE EVERY NUMBER COMES FROM, none of it written here:
-//   · ROCK_MAX_INTENSITY  parsed from static/js/home-rock.js
-//   · --rock-rgb, --surface-rgb, the ink tokens, the veil alpha, the hero's
+//   · WATER_MAX_INTENSITY  parsed from static/js/home-water.js
+//   · --water-rgb, --surface-rgb, the ink tokens, the veil alpha, the hero's
 //     class colours   read from AUTHORED src/input.css through scripts/stylesheet
 //     rather than the built static/css/styles.min.css: this gate then runs in
 //     `npm run check` before or without a Tailwind build, and the authored file
@@ -39,7 +39,7 @@ const fs = require("fs");
 const path = require("path");
 const { contrastRatio } = require("./design/lib");
 const { read } = require("./stylesheet");
-const rockSource = require("./lib/rock-source");
+const waterSource = require("./lib/water-source");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -64,11 +64,11 @@ const TEXT_COLOUR = {
 };
 
 const fail = (msg) => {
-  console.error(`check:hero-rock FAIL: ${msg}`);
+  console.error(`check:hero-water FAIL: ${msg}`);
   process.exit(1);
 };
 
-// The shared readers (scripts/lib/rock-source.js) throw; this gate reports a
+// The shared readers (scripts/lib/water-source.js) throw; this gate reports a
 // throw as its own failure.
 const orFail = (fn) => (...args) => {
   try {
@@ -77,16 +77,16 @@ const orFail = (fn) => (...args) => {
     return fail(e.message);
   }
 };
-const channels = orFail(rockSource.channels);
+const channels = orFail(waterSource.channels);
 
 const mix = (fg, bg, a) => fg.map((f, i) => f * a + bg[i] * (1 - a));
 
-// The worst background for a given veil alpha, ridge ceiling and rock colour.
-function worstBackground({ paper, rock, maxIntensity, veil }) {
-  return mix(rock, paper, maxIntensity * (1 - veil));
+// The worst background for a given veil alpha, ridge ceiling and water colour.
+function worstBackground({ paper, water, maxIntensity, veil }) {
+  return mix(water, paper, maxIntensity * (1 - veil));
 }
 
-const readMaxIntensity = orFail(rockSource.readMaxIntensity);
+const readMaxIntensity = orFail(waterSource.readMaxIntensity);
 
 function readSheet(sheet) {
   const token = (name) => {
@@ -94,16 +94,16 @@ function readSheet(sheet) {
     if (v == null) fail(`src/input.css has no --${name}`);
     return v;
   };
-  const veilDecl = sheet.declarations.find((d) => d.selector === ".home-rock-veil" && d.prop === "background-color");
-  if (!veilDecl) fail("src/input.css has no .home-rock-veil background-color");
+  const veilDecl = sheet.declarations.find((d) => d.selector === ".home-water-veil" && d.prop === "background-color");
+  if (!veilDecl) fail("src/input.css has no .home-water-veil background-color");
   const vm = /^rgb\(\s*var\(--surface-rgb\)\s*\/\s*([0-9.]+%?)\s*\)$/.exec(veilDecl.raw || veilDecl.value);
-  if (!vm) fail(`.home-rock-veil background-color must be rgb(var(--surface-rgb) / <alpha>); found "${veilDecl.raw || veilDecl.value}"`);
+  if (!vm) fail(`.home-water-veil background-color must be rgb(var(--surface-rgb) / <alpha>); found "${veilDecl.raw || veilDecl.value}"`);
   const veil = vm[1].endsWith("%") ? Number(vm[1].slice(0, -1)) / 100 : Number(vm[1]);
   if (!(veil >= 0 && veil <= 1)) fail(`veil alpha ${vm[1]} is outside 0..1`);
   return {
     veil,
     paper: channels(token("surface-rgb"), "--surface-rgb"),
-    rock: channels(token("rock-rgb"), "--rock-rgb"),
+    water: channels(token("water-rgb"), "--water-rgb"),
     token: (n) => channels(token(n), `--${n}`),
   };
 }
@@ -121,7 +121,7 @@ function heroSource(rel) {
   };
   const full = expand(fs.readFileSync(path.join(TEMPLATES, rel), "utf8"), 0);
   const start = full.search(/<section\b[^>]*\bid="about-us"/);
-  if (start < 0) fail(`${rel}: no <section id="about-us"> (the hero); update scripts/check-hero-rock.js if it was renamed`);
+  if (start < 0) fail(`${rel}: no <section id="about-us"> (the hero); update scripts/check-hero-water.js if it was renamed`);
   const end = full.indexOf("</section>", start);
   if (end < 0) fail(`${rel}: the hero section is never closed`);
   // SVG illustrations (_art.html) are shapes, not text: `contrast` does not
@@ -152,7 +152,7 @@ function heroTextColours(sheet, rels) {
         if (/^text-/.test(bare) && !TEXT_NON_COLOUR.test(bare)) {
           const base = bare.replace(/\/\d+$/, "");
           if (bare !== base) fail(`${rel}: hero uses ${cls}, an opacity-modified text colour; mix it in this check or use a token`);
-          if (!TEXT_COLOUR[base]) fail(`${rel}: hero uses ${cls}, a text colour check:hero-rock does not know; add it to TEXT_COLOUR in scripts/check-hero-rock.js so its contrast is measured`);
+          if (!TEXT_COLOUR[base]) fail(`${rel}: hero uses ${cls}, a text colour check:hero-water does not know; add it to TEXT_COLOUR in scripts/check-hero-water.js so its contrast is measured`);
           add(`${TEXT_COLOUR[base]}|${bare}`, { label: bare, tokenName: TEXT_COLOUR[base], large: false }, rel);
           continue;
         }
@@ -173,13 +173,13 @@ function heroTextColours(sheet, rels) {
   return [...found.values()];
 }
 
-function evaluate(rock = {}) {
+function evaluate(water = {}) {
   const sheet = read();
   const s = readSheet(sheet);
-  const maxIntensity = rock.maxIntensity ?? readMaxIntensity();
-  const veil = rock.veil ?? s.veil;
-  const rockRgb = rock.rock ?? s.rock;
-  const bg = worstBackground({ paper: s.paper, rock: rockRgb, maxIntensity, veil });
+  const maxIntensity = water.maxIntensity ?? readMaxIntensity();
+  const veil = water.veil ?? s.veil;
+  const waterRgb = water.water ?? s.water;
+  const bg = worstBackground({ paper: s.paper, water: waterRgb, maxIntensity, veil });
   const colours = heroTextColours(sheet, HOME_TEMPLATES);
   const rows = colours.map((c) => {
     const rgb = s.token(c.tokenName);
@@ -187,14 +187,14 @@ function evaluate(rock = {}) {
     const need = c.large ? AA_LARGE : AA;
     return { ...c, ratio, need, ok: ratio >= need, roomy: ratio >= need + MARGIN };
   });
-  return { rows, bg, veil, maxIntensity, rock: rockRgb, paper: s.paper, paperRatio: (c) => contrastRatio(s.token(c), s.paper) };
+  return { rows, bg, veil, maxIntensity, water: waterRgb, paper: s.paper, paperRatio: (c) => contrastRatio(s.token(c), s.paper) };
 }
 
 function main() {
   const r = evaluate();
   const rgb = (c) => c.map((n) => Math.round(n)).join(" ");
-  console.log(`hero rock: veil ${(r.veil * 100).toFixed(0)}%, ROCK_MAX_INTENSITY ${r.maxIntensity}, --rock-rgb ${rgb(r.rock)}, paper ${rgb(r.paper)}`);
-  console.log(`worst background ${rgb(r.bg)} (paper under full-strength rock, under the veil); ${HOME_TEMPLATES.length} home templates read`);
+  console.log(`hero water: veil ${(r.veil * 100).toFixed(0)}%, WATER_MAX_INTENSITY ${r.maxIntensity}, --water-rgb ${rgb(r.water)}, paper ${rgb(r.paper)}`);
+  console.log(`worst background ${rgb(r.bg)} (paper under full-strength water, under the veil); ${HOME_TEMPLATES.length} home templates read`);
   let bad = 0;
   let thin = 0;
   for (const row of r.rows.sort((a, b) => a.ratio - b.ratio)) {
@@ -203,9 +203,9 @@ function main() {
     if (!row.ok) bad++;
     else if (!row.roomy) thin++;
   }
-  if (bad) fail(`${bad} hero text colour(s) fall below AA on the brightest rock; thicken the veil or lower ROCK_MAX_INTENSITY`);
+  if (bad) fail(`${bad} hero text colour(s) fall below AA on the brightest water; thicken the veil or lower WATER_MAX_INTENSITY`);
   if (thin) fail(`${thin} hero text colour(s) pass with less than ${MARGIN} to spare; keep the headroom so a token nudge does not turn the hero red`);
-  console.log("check:hero-rock ok");
+  console.log("check:hero-water ok");
 }
 
 module.exports = { evaluate, worstBackground };

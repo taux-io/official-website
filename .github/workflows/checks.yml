@@ -131,15 +131,15 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
-      # The home hero's rock background is a <canvas> and a paper veil that are
+      # The home hero's water background is a <canvas> and a paper veil that are
       # SIBLINGS of the hero's text, so `contrast` (which walks ancestors) cannot
       # see them: the veil could go to 0% with that audit still green. This
-      # computes the brightest background the rock can make from the numbers
-      # that make it (ROCK_MAX_INTENSITY, --rock-rgb, the veil alpha, the paper)
+      # computes the brightest background the water can make from the numbers
+      # that make it (WATER_MAX_INTENSITY, --water-rgb, the veil alpha, the paper)
       # and holds every text colour the five home templates use to AA, with
       # 0.1 to spare. No browser, no build.
-      - name: hero rock keeps its text legible
-        run: npm run check:hero-rock
+      - name: hero water keeps its text legible
+        run: npm run check:hero-water
 
       # main.rs promises that retiring a path without a redirect will be
       # caught. Nothing enforced that: every gate reads the current site.toml
@@ -264,16 +264,16 @@ jobs:
       - name: route contract
         run: npm run contract
 
-      # The home hero's rock background, driven in a real browser: check:hero-rock
+      # The home hero's water background, driven in a real browser: check:hero-water
       # never opens a page and contrast cannot see a <canvas>, so a shader that
       # draws nothing, one that starts on a phone, or a loop that never stops
       # when the hero scrolls away would leave both green. The runner has no
       # GPU; the desktop conditions start Chromium with SwiftShader and assert
       # WebGL exists first. If this fails with "WebGL is not available", the
       # runner's Chromium could not make a software context (environment, not
-      # the rock); any other message names the locale and the condition.
-      - name: hero rock runs where it should
-        run: npm run rock
+      # the water); any other message names the locale and the condition.
+      - name: hero water runs where it should
+        run: npm run water
 
       # Where things land, which neither of the two above can see. contrast
       # reads colour and contract reads what a route declares; a glyph coming

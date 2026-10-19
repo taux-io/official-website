@@ -1,23 +1,23 @@
-// Builds the still of the home hero's rock background.
+// Builds the still of the home hero's water background.
 //
-//   node scripts/assets/build-rock.js      (or: npm run build:rock)
+//   node scripts/assets/build-water.js      (or: npm run build:water)
 //
-// static/js/home-rock.js draws slow teal ridges with a WebGL fragment shader,
+// static/js/home-water.js draws slow teal ridges with a WebGL fragment shader,
 // but only on a desktop (a hover pointer, laptop width, no reduced-motion, and
 // a working WebGL). Everywhere else the hero shows this picture instead: the
 // SAME shader, drawn once at a fixed moment. The two are complementary — the
-// stylesheet hides this one exactly when the script runs (see .home-rock-still).
+// stylesheet hides this one exactly when the script runs (see .home-water-still).
 //
 // The picture is the stone ALONE: teal over a transparent background, at the
-// brightness the live canvas has. The paper veil (.home-rock-veil) and the fade
+// brightness the live canvas has. The paper veil (.home-water-veil) and the fade
 // toward the band's lower edge are laid over it by the stylesheet, as they are
 // over the canvas, so a change to the veil never needs this file rerun.
 //
 // Nothing here is a second copy of the look. The GLSL source and
-// ROCK_MAX_INTENSITY are read out of home-rock.js, and the colour out of
-// --rock-rgb in the authored CSS, so the still cannot drift from the canvas.
-// RERUN IT after changing any of: --rock-rgb, ROCK_MAX_INTENSITY, the fragment
-// shader. One line: `npm run build:rock`, then commit static/brand/hero-rock.webp.
+// WATER_MAX_INTENSITY are read out of home-water.js, and the colour out of
+// --water-rgb in the authored CSS, so the still cannot drift from the canvas.
+// RERUN IT after changing any of: --water-rgb, WATER_MAX_INTENSITY, the fragment
+// shader. One line: `npm run build:water`, then commit static/brand/hero-water.webp.
 //
 // Reproducible: the shader has no randomness (its noise is a sine hash of the
 // pixel coordinate) and time is a constant, STILL_T below, not a clock. The
@@ -26,17 +26,17 @@
 // machines; on one machine two runs are byte-identical.
 //
 // A local Chromium whose version does not match Playwright's:
-//   PLAYWRIGHT_CHANNEL=chrome npm run build:rock
+//   PLAYWRIGHT_CHANNEL=chrome npm run build:water
 
 const fs = require("fs");
 const path = require("path");
 const { launch } = require("../browser");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
-const rockSource = require("../lib/rock-source");
+const waterSource = require("../lib/water-source");
 
 const ROOT = path.join(__dirname, "..", "..");
-const OUT = path.join(ROOT, "static", "brand", "hero-rock.webp");
+const OUT = path.join(ROOT, "static", "brand", "hero-water.webp");
 
 // 1600x900 is wider than any hero is tall: the stylesheet shows it with
 // `background-size: cover`, so a phone sees a centred crop of it.
@@ -49,9 +49,9 @@ const QUALITY = 60;
 const MAX_BYTES = 100 * 1024;
 
 async function main() {
-  const rgb = rockSource.readRockRgb(stylesheet.read());
-  const frag = rockSource.readFrag();
-  const max = rockSource.readMaxIntensity();
+  const rgb = waterSource.readWaterRgb(stylesheet.read());
+  const frag = waterSource.readFrag();
+  const max = waterSource.readMaxIntensity();
 
   const browser = await launch();
   let dataUrl;
@@ -99,7 +99,7 @@ async function main() {
   const png = Buffer.from(dataUrl.split(",")[1], "base64");
   const webp = await sharp(png).webp({ quality: QUALITY, alphaQuality: 60, effort: 6 }).toBuffer();
   if (webp.length > MAX_BYTES) {
-    throw new Error(`build-rock: ${webp.length} bytes is over the ${MAX_BYTES} budget; lower QUALITY or the size`);
+    throw new Error(`build-water: ${webp.length} bytes is over the ${MAX_BYTES} budget; lower QUALITY or the size`);
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, webp);

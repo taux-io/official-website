@@ -394,7 +394,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 
 **最多兩塊墨版。** 一塊主墨版（Charcoal）、一塊副墨版（Cobalt）。**紙不算墨版。**
 
-**一個破例：岩紋（決策 #182）。** 首頁 hero 背景的青綠 `--rock-rgb: 20 220 190`（`#14DCBE`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-rock.js` 讀它、由著色器畫在 canvas 上（同一支著色器畫一次的靜態圖給其他情況用），且最亮只到 85% 紙色遮罩之下的 13.5%（上限 0.9 ×（1 − 0.85））。規則 25 把它關在 `--rock-rgb` 的宣告那一行。
+**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 20 220 190`（`#14DCBE`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-water.js` 讀它、由著色器畫在 canvas 上（同一支著色器畫一次的靜態圖給其他情況用），且最亮只到 85% 紙色遮罩之下的 13.5%（上限 0.9 ×（1 − 0.85））。規則 25 把它關在 `--water-rgb` 的宣告那一行。
 
 **深淺不是新的顏色，是同一塊版的密度階。** 參考站的原話：darker coverage may appear near-black and sparse halftones may appear pale — these are density changes, not extra inks。所以本站的三階墨色從「三個獨立的灰」改寫成「主墨版的三個覆蓋率」，而分隔線是第四個覆蓋率。
 
@@ -877,7 +877,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 11 | easing scale | ✅ | issue 156 |
 | 12 | press follows hover | ✅ | issue 156 |
 | 13 | zero mono | ✅ | #171 |
-| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-rock>`，決策 #182） | ✅ | #166 |
+| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-water>`，決策 #182） | ✅ | #166 |
 | 15 | section cover screens | ✅ | #182 |
 | 16 | sentence case display | ✅ | #193 |
 | 17 | single stylesheet | ✅ | #189 |
@@ -918,13 +918,13 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **仍然沒有涵蓋，具名寫在這裡而不是留成暗示**：`oklch()`、`lab()`、`color()` 與具名色（`white`、`red`）。**今天各實測 0 個**，所以沒有為不存在的情況長分支——但一個宣稱「沒有字面色」的 summary 會把這條規則原本的錯誤再犯一次，因此 summary 只列它真的讀得到的四個家族。
 
-⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-rock>`（決策 #182 取代 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
+⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-water>`（決策 #182 取代 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
 
 ### 八條新規則要檢查什麼
 
 （v5.1 加了兩條，寫在這一節的最後；標題的「八」是 v5 的數字，留著是為了讓「新」有時間座標。）
 
-**25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**v6.2 起的例外只有一個**：Spot `#F26B3A` 可以出現，但只在 `templates/_art.html` 的 `text-spot`——樣式表畫出它、或它出現在其他模板，都算違規（決策 #165）。另一個例外：岩紋 `#14DCBE`（`--rock-rgb: 20 220 190`）是第三個色票，只准出現在 `--rock-rgb` 的宣告，任何樣式宣告畫出它都算違規（決策 #182）。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
+**25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**v6.2 起的例外只有一個**：Spot `#F26B3A` 可以出現，但只在 `templates/_art.html` 的 `text-spot`——樣式表畫出它、或它出現在其他模板，都算違規（決策 #165）。另一個例外：水面 `#14DCBE`（`--water-rgb: 20 220 190`）是第三個色票，只准出現在 `--water-rgb` 的宣告，任何樣式宣告畫出它都算違規（決策 #182）。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
 
 **26 `accent carries interaction`** ✅ — Cobalt 只能出現在能點的東西上，**或在能點的東西裡面**。判準是位置不是名單：`<a>`、`<button>`、`<label>`、`<summary>`、`CONTROL_TAGS`、`.btn`、`.tag`，以及它們的後代——`<button>` 裡的 `<span class="text-primary">` 是那顆按鈕的記號的一部分，不是第二次用副墨版。跟規則 23 同一個形狀。
 
@@ -1028,10 +1028,10 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **副墨版 / accent plate** | Cobalt `#2148B8`，承載互動，沒有第二個用途 |
 | **挖空 / knockout** | 從墨版裡挖掉，露出紙。所以 `on-primary` ＝ `canvas` |
 | **髮絲線 / hairline** | 主墨版 12%，1px。唯一的分隔與邊框權重 |
-| **岩紋背景 / rock background** | 首頁 hero 後方的慢速青綠岩紋，上面蓋一層紙色遮罩。桌機是動的，其他情況是同一張畫面的靜態圖 |
-| **`.home-rock`** | 岩紋背景的 canvas（`<canvas data-home-rock>`），著色器畫在上面。只有桌機條件成立時才啟動 |
-| **`.home-rock-still`** | 岩紋背景的靜態圖層，同一支著色器畫一次的圖。canvas 不啟動時由它接手 |
-| **`.home-rock-veil`** | 蓋在岩紋上的紙色遮罩。決定岩紋看起來多淡，與 canvas、靜態圖同為 hero 內容的兄弟 |
+| **水面背景 / water background** | 首頁 hero 後方的慢速青綠水面，上面蓋一層紙色遮罩。桌機是動的，其他情況是同一張畫面的靜態圖 |
+| **`.home-water`** | 水面背景的 canvas（`<canvas data-home-water>`），著色器畫在上面。只有桌機條件成立時才啟動 |
+| **`.home-water-still`** | 水面背景的靜態圖層，同一支著色器畫一次的圖。canvas 不啟動時由它接手 |
+| **`.home-water-veil`** | 蓋在水面上的紙色遮罩。決定水面看起來多淡，與 canvas、靜態圖同為 hero 內容的兄弟 |
 | **eyebrow** | 標題上方的小型全大寫標籤。**也是級距規則的分母** |
 | **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |
@@ -1254,7 +1254,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 179 | **服務頁第二輪：少一套流程用語、信件主旨帶頁名、延伸閱讀分出服務**（v7.2，依服務頁第二次 critique） | 同一個四步流程在服務頁上有三套用語：各頁的流程圖、各頁的「03 執行方式」，以及十頁共用的週期說明「每個週期：盤點 → 設計 → 導入 → 對照目標」——「設計」這一步在任何一頁的流程裡都不存在。拿掉共用的那一句（`service_cycle_flow`），週期段落的內文已經說了「每個週期結束時對照目標、決定下一步」，橫條表示長度。各頁流程圖與 03 的重複（#160）這一輪不動。寫信按鈕的信件主旨在服務頁與技術文章加上頁名（`想和 TauX 談談 | 企業 AI 導入顧問`），收信時看得出是從哪一頁來的；首頁等沒有 `section` 的頁面維持原主旨。延伸閱讀裡連到服務頁的項目（8 頁 × 5 語系，共 40 個）加上小字「服務項目」，和文章區分 |
 | 180 | **GEO 指南照原文改寫；文章顯示更新日期；手機表格直排**（v7.3，依技術文章第一次 critique，擁有者裁示） | GEO 指南談的是「AI 會引用誰」，卻是全站唯一零出處、零適用範圍的一篇，數字也和論文對不上。依 arXiv:2311.09735v3（Aggarwal 等，KDD 2024）表 1 重寫第 04 節：作者單位改為論文所列（普林斯頓大學、印度理工學院德里分校與兩位獨立研究者；原文的喬治亞理工與艾倫研究所在論文中找不到）；九個數字改為本站換算的相對變化——依位置加權字數的總分對基準 19.3（加入引言 +41%、統計 +31%、流暢度 +28%、引用來源 +27%、術語 +18%、白話 +14%、權威語氣 +10%、詞彙變化 +6%、堆疊關鍵字 −8%；原文把引用來源寫成 +40%）；導言寫明 8 升 1 降；表下註明量測方式與出處連結；新增「這些數字的限制」。刪掉署名 TauX 的引言（「AI 不會瞎編一個不存在的品牌」與事實不符），刪掉 inline 線條圖示（#164／#168：aria-hidden 的 svg 只屬於 `_art.html` 與 `_tag-icon`）、重複表 1 的 Goal 小框、結尾第三個指向同一服務頁的連結；副標與結尾改為陳述語氣；JSON-LD 加 `citation`。`.table-stack`：三欄表格在 `mobile` 以下直排（方法與數字一行、做法一行，表頭只留給輔助技術），第三欄不再被切。十二篇文章在 h1 下顯示更新日期（`_article-date.html`，`<time>`，來自 `date_modified`），Markdown 版的 front matter 也加上 `date_modified`。**代價**：其餘文章（提示詞注入、llms.txt、MCP）仍缺出處或適用範圍，下一輪處理 |
 | 181 | **（已被 #182 取代）首頁 hero 背景：一片會被滑鼠照亮的 0 與 1（`<canvas data-home-digits>`），並為此在第 14 條開唯一的例外**（擁有者裁示） | 擁有者要首頁背景有「數字在動、滑鼠移過去被照亮」的效果，參考 Cloudflare Registrar 頁。**這與第 14 條 zero canvas 直接衝突**，擁有者在被告知後選擇改規則而不是用 JS 在執行期才建立 canvas 來繞過檢查。做法：`static/js/home-digits.js` 畫 0／1（約 3% 是符號），平常是 `--ink-72-rgb` 的 20% 濃度，被照到的字逐字變成 `--primary-rgb`（中心 45%；實測墨色正文壓在最亮處最差 4.6:1，只量了 zh-Hant-TW 首頁的四段文字）；顏色從樣式表讀，不在腳本裡寫死。游標離開時每個字各自慢慢退回（約 1.2 秒時間常數），背景以 48 秒一圈緩慢飄動；`prefers-reduced-motion` 下不緩動、不飄動，光只跟著游標。畫面外停止繪製，列印時隱藏。**例外只認一個元素**：`<canvas data-home-digits>`，且只在首頁模板（五個 locale）；`zero-canvas.js` 以屬性加檔名雙重限定，別處的 canvas 仍是 finding。**代價**：站上多了第一個 `<canvas>` 與一支只在首頁載入的腳本，持續的 `requestAnimationFrame`（飄動）有電力成本，所以用 IntersectionObserver 在離開畫面時停掉；背景字與正文重疊，靠低濃度與 45% 上限維持對比（`npm run contrast` 看不到 canvas，所以另用 Playwright 量像素：最差 4.6:1，沒有像素低於標準；只量了 zh-Hant-TW 首頁的大標題、中文副標、引言、名字由來四段，其他 locale、按鈕、右側面板未量） |
-| 182 | **首頁 hero 背景改為慢速飄動的青綠岩紋（WebGL 著色器 `static/js/home-rock.js`），取代 #181 的 0／1 動畫；新增色票 `--rock-rgb: 20 220 190`，為此改規則 25 與第 14 條的例外屬性為 `<canvas data-home-rock>`**（擁有者核准新增岩紋色票，父 spec #382；#181 已標「已被取代」，原文保留） | 擁有者要桌機首頁有質感的動態背景。**色票：這是對「最多兩塊墨版」的刻意破例，也是對「紙、墨、鈷藍」的破例**：`scripts/plates.js` 的 `PLATE_TOKENS` 加 `rock`，`two-plates.js`（規則 25 `two plates`，已更新）規定它只能是 `--rock-rgb` 的宣告，任何樣式畫出它都紅燈；腳本從樣式表讀色，不寫死。選亮青（20 220 190）而非深青（先前的 40 160 140）的理由：同樣把紙壓暗一點，發光的顏色在色相上離紙更遠，岩紋才「讀得出來」；代價是這個青與 Charcoal、Cobalt 都不相干，站上多了一個第三色。**最終值**：遮罩 `.home-rock-veil` 為紙色 85%；著色器最亮值上限 `ROCK_MAX_INTENSITY` 0.9；`--rock-rgb: 20 220 190`。最壞對比：最嚴的文字是右欄 `text-ink-soft` 小標（紙上 5.11:1），疊上最亮岩紋與遮罩後 4.69:1；正文（`text-ink`）10.99:1。**誠實的部分：看起來多淡取決於「上限 ×（1 − 遮罩）」，不是遮罩一個數字**——擁有者預期的「80–85%」實際就是這個組合（遮罩 85%、上限 0.9，最亮處只剩 13.5% 的青）。可見度只是「淡而看得見」（與紙的 Lab 色差約 11）；要更鮮明得用更亮的青，那是設計判斷，不是閘門能裁的。**行為**：著色器不跟隨滑鼠，內部解析度取一半、上限 30 fps；只在有 hover、寬度 ≥ `laptop`（961px）、未設 `prefers-reduced-motion`、WebGL 可用時啟動，且到那時才建立 WebGL context（手機從不建立）。其他情況 hero 顯示**靜態圖** `static/brand/hero-rock.webp`：`npm run build:rock` 用同一支著色器、固定時間（不是時鐘）畫一次，只含岩紋、**不含遮罩與底部淡出**（兩者仍由樣式表疊上去，改遮罩不必重產；改 `--rock-rgb`、`ROCK_MAX_INTENSITY` 或著色器要重產並提交圖）。WebGL 不可用或編譯失敗時腳本在靜態圖上加 `[data-fallback]`，靜態圖接手。遮罩與 canvas 必須是 hero 的兄弟，不可寫成祖先的 background-image，否則 `contrast` 會靜默略過 hero 文字。列印時隱藏。**為什麼需要新閘門**：`npm run contrast` 走祖先、看不到 canvas，遮罩調成 0% 它也是綠的，所以有 `npm run check:hero-rock`（從原始碼讀上限、色票、遮罩 alpha、紙與墨，算最亮處的有效背景，hero 內每種文字色須 ≥ AA 且留 0.1 餘裕；不需瀏覽器）。它不開頁面，所以另有 `npm run rock`（`scripts/visual/rock.js`，CI 的 `audit` job）：對五個語系首頁實測桌機條件下 canvas 確實畫出非空白、無 CSP 違規、靜態圖不可見也沒下載；手機寬度與 `prefers-reduced-motion` 下沒要 WebGL context、迴圈沒跑、靜態圖可見且回 200；hero 捲出畫面迴圈停止、捲回恢復；WebGL 關閉時靜態圖接手。**兩道新閘門：`check:hero-rock`、`rock`。** **代價與已知缺口**：(1) 站上第三個色票與一支首頁腳本；(2) 桌機關掉 JS 的訪客只有紙色：樣式表在桌機條件下把靜態圖藏起來，等著色器接手，而沒有 JS 就沒有人接手（hero 只是紙色，文字不受影響）；(3) 靜態圖檔名沒有雜湊，`/static/brand/*` 快取 7 天，改圖後回訪者最多一週才看到新圖；(4) WebGL 中途丟失（`webglcontextlost`）沒處理，畫面會停在最後一格或空白，重新整理即恢復；(5) 持續的 `requestAnimationFrame` 有電力成本，以 IntersectionObserver（離開畫面）與 `visibilitychange`（分頁隱藏）抑制，仍只是抑制不是消除；(6) Linux CI 沒有 GPU，`rock` 的桌機條件靠 SwiftShader 旗標（`--use-angle=swiftshader --enable-unsafe-swiftshader`）才有 WebGL，旗標或 Chromium 版本變動時它會以「WebGL is not available」明確失敗，而不是略過；(7) `rock` 量的是「畫出了不是紙的像素」，不是「好看」。 |
+| 182 | **首頁 hero 背景改為慢速飄動的青綠水面（WebGL 著色器 `static/js/home-water.js`），取代 #181 的 0／1 動畫；新增色票 `--water-rgb: 20 220 190`，為此改規則 25 與第 14 條的例外屬性為 `<canvas data-home-water>`**（擁有者核准新增水面色票，父 spec #382；#181 已標「已被取代」，原文保留） | 擁有者要桌機首頁有質感的動態背景。**色票：這是對「最多兩塊墨版」的刻意破例，也是對「紙、墨、鈷藍」的破例**：`scripts/plates.js` 的 `PLATE_TOKENS` 加 `water`，`two-plates.js`（規則 25 `two plates`，已更新）規定它只能是 `--water-rgb` 的宣告，任何樣式畫出它都紅燈；腳本從樣式表讀色，不寫死。選亮青（20 220 190）而非深青（先前的 40 160 140）的理由：同樣把紙壓暗一點，發光的顏色在色相上離紙更遠，水面才「讀得出來」；代價是這個青與 Charcoal、Cobalt 都不相干，站上多了一個第三色。**最終值**：遮罩 `.home-water-veil` 為紙色 85%；著色器最亮值上限 `WATER_MAX_INTENSITY` 0.9；`--water-rgb: 20 220 190`。最壞對比：最嚴的文字是右欄 `text-ink-soft` 小標（紙上 5.11:1），疊上最亮水面與遮罩後 4.69:1；正文（`text-ink`）10.99:1。**誠實的部分：看起來多淡取決於「上限 ×（1 − 遮罩）」，不是遮罩一個數字**——擁有者預期的「80–85%」實際就是這個組合（遮罩 85%、上限 0.9，最亮處只剩 13.5% 的青）。可見度只是「淡而看得見」（與紙的 Lab 色差約 11）；要更鮮明得用更亮的青，那是設計判斷，不是閘門能裁的。**行為**：著色器不跟隨滑鼠，內部解析度取一半、上限 30 fps；只在有 hover、寬度 ≥ `laptop`（961px）、未設 `prefers-reduced-motion`、WebGL 可用時啟動，且到那時才建立 WebGL context（手機從不建立）。其他情況 hero 顯示**靜態圖** `static/brand/hero-water.webp`：`npm run build:water` 用同一支著色器、固定時間（不是時鐘）畫一次，只含水面、**不含遮罩與底部淡出**（兩者仍由樣式表疊上去，改遮罩不必重產；改 `--water-rgb`、`WATER_MAX_INTENSITY` 或著色器要重產並提交圖）。WebGL 不可用或編譯失敗時腳本在靜態圖上加 `[data-fallback]`，靜態圖接手。遮罩與 canvas 必須是 hero 的兄弟，不可寫成祖先的 background-image，否則 `contrast` 會靜默略過 hero 文字。列印時隱藏。**為什麼需要新閘門**：`npm run contrast` 走祖先、看不到 canvas，遮罩調成 0% 它也是綠的，所以有 `npm run check:hero-water`（從原始碼讀上限、色票、遮罩 alpha、紙與墨，算最亮處的有效背景，hero 內每種文字色須 ≥ AA 且留 0.1 餘裕；不需瀏覽器）。它不開頁面，所以另有 `npm run water`（`scripts/visual/water.js`，CI 的 `audit` job）：對五個語系首頁實測桌機條件下 canvas 確實畫出非空白、無 CSP 違規、靜態圖不可見也沒下載；手機寬度與 `prefers-reduced-motion` 下沒要 WebGL context、迴圈沒跑、靜態圖可見且回 200；hero 捲出畫面迴圈停止、捲回恢復；WebGL 關閉時靜態圖接手。**兩道新閘門：`check:hero-water`、`water`。** **代價與已知缺口**：(1) 站上第三個色票與一支首頁腳本；(2) 桌機關掉 JS 的訪客只有紙色：樣式表在桌機條件下把靜態圖藏起來，等著色器接手，而沒有 JS 就沒有人接手（hero 只是紙色，文字不受影響）；(3) 靜態圖檔名沒有雜湊，`/static/brand/*` 快取 7 天，改圖後回訪者最多一週才看到新圖；(4) WebGL 中途丟失（`webglcontextlost`）沒處理，畫面會停在最後一格或空白，重新整理即恢復；(5) 持續的 `requestAnimationFrame` 有電力成本，以 IntersectionObserver（離開畫面）與 `visibilitychange`（分頁隱藏）抑制，仍只是抑制不是消除；(6) Linux CI 沒有 GPU，`water` 的桌機條件靠 SwiftShader 旗標（`--use-angle=swiftshader --enable-unsafe-swiftshader`）才有 WebGL，旗標或 Chromium 版本變動時它會以「WebGL is not available」明確失敗，而不是略過；(7) `water` 量的是「畫出了不是紙的像素」，不是「好看」。 |
 | 133 | 按下 `scale(0.96)` | better-ui 的精確值，永遠 0.96。轉場屬性寫 `background-color, scale` 不寫 `all`。**代價：`prefers-reduced-motion` 下 0.01ms，等於瞬間縮 4%，仍是一個可見的狀態變化——better-accessibility 說按下回饋屬於「保留」那一欄** |
 
 ## 附註：這一版尚未涵蓋
