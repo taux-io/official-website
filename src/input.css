@@ -92,6 +92,16 @@
      of blue cannot. It prints nowhere else — no text, no fill behind text, no
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
+
+  /* ROCK — the hero background's one colour (DESIGN.md decision 182): a teal
+     for the slow ridge-noise that static/js/home-rock.js draws behind the home
+     hero on a desktop. It is read by that script and by nothing else; no
+     declaration, no class and no text may use it. 40 160 140 is chosen with
+     the script's ROCK_MAX_INTENSITY (0.9) under a 90% paper veil: the lightest
+     the stone ever gets is 9% of this teal over paper, and the smallest text
+     on it (ink-72) still measures 4.66:1. `two plates` (rule 25) knows it as a
+     plate and refuses it anywhere but this declaration. */
+  --rock-rgb: 40 160 140;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -565,17 +575,30 @@
     margin-top: 2rem;
   }
 
-  /* HOME HERO BACKGROUND (DESIGN.md decision 181). A field of 0s and 1s drawn
-     by static/js/home-digits.js; the only <canvas> the site ships. It is
-     decoration behind the hero's own text, so it takes no pointer events and
-     has no size of its own: the script sets left/top/width/height with a
-     margin so the drift never shows an edge. The mask fades it out toward the
-     bottom of the band so it does not run into the services section. */
-  .home-digits {
+  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Slow teal ridges drawn by
+     static/js/home-rock.js on a desktop; the only <canvas> the site ships. The
+     canvas and the veil are SIBLINGS of the hero's content, never a background
+     of an ancestor: `contrast` skips the text of any element whose ancestor has
+     a background-image, and that would turn the audit green without measuring.
+     The veil is paper at 90%, which is what keeps the text legible; it is the
+     contrast gate's knob together with ROCK_MAX_INTENSITY in the script. Both
+     take no pointer events. The mask fades the canvas out toward the bottom of
+     the band so it does not run into the services section. */
+  .home-rock {
     position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  .home-rock-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: rgb(var(--surface-rgb) / 0.9);
   }
 
   /* A column flex container stretches its children, and the tag — an
@@ -2378,7 +2401,8 @@
    
    NOT GATED, for the same reason as the block above. */
 @media print {
-  .home-digits {
+  .home-rock,
+  .home-rock-veil {
     display: none;
   }
 
