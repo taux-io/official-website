@@ -1,7 +1,7 @@
 // Reads the home hero's water background out of its single sources, so the
 // checks and the still builder do not each keep their own regex for them.
 //
-//   · WATER_MAX_INTENSITY and the fragment shader   static/js/home-water.js
+//   · WATER_MAX_DEPTH and the fragment shader   static/js/home-water.js
 //   · --water-rgb (and any other three-channel token)   the authored CSS
 //
 // Used by scripts/check-hero-water.js and scripts/assets/build-water.js. Every
@@ -23,11 +23,11 @@ function channels(value, what) {
   return c;
 }
 
-function readMaxIntensity() {
-  const m = /const\s+WATER_MAX_INTENSITY\s*=\s*([0-9.]+)\s*;/.exec(source());
-  if (!m) throw new Error("static/js/home-water.js has no `const WATER_MAX_INTENSITY = <number>;`");
+function readMaxDepth() {
+  const m = /const\s+WATER_MAX_DEPTH\s*=\s*([0-9.]+)\s*;/.exec(source());
+  if (!m) throw new Error("static/js/home-water.js has no `const WATER_MAX_DEPTH = <number>;`");
   const v = Number(m[1]);
-  if (!(v > 0 && v <= 1)) throw new Error(`WATER_MAX_INTENSITY ${m[1]} is outside 0..1`);
+  if (!(v > 0 && v <= 1)) throw new Error(`WATER_MAX_DEPTH ${m[1]} is outside 0..1`);
   return v;
 }
 
@@ -44,4 +44,4 @@ function readWaterRgb(sheet) {
   return channels(v, "--water-rgb");
 }
 
-module.exports = { channels, readMaxIntensity, readFrag, readWaterRgb };
+module.exports = { channels, readMaxDepth, readFrag, readWaterRgb };

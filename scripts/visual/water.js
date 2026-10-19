@@ -30,11 +30,10 @@
 // Chromium could not make a software context: that is the environment, not the
 // water. Anything else red names the locale and the condition.
 //
-// The canvas is read by screenshot, with the veil hidden, against a screenshot
+// The canvas is read by screenshot, with the still hidden, against a screenshot
 // of the same box with the canvas hidden: gl.readPixels outside the frame that
-// drew returns zeros (the buffer is not preserved), and the veil is meant to
-// hide the canvas from a viewer, so neither reading it as a person sees it nor
-// reading the buffer later would measure the shader.
+// drew returns zeros (the buffer is not preserved), so reading the buffer later
+// would not measure the shader. What the canvas leaves behind it is paper.
 
 const sharp = require("sharp");
 const { launch } = require("../browser");
@@ -49,9 +48,10 @@ const PHONE = { width: 390, height: 844 };
 const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
 const NO_GL_ARGS = ["--disable-gpu", "--disable-webgl", "--disable-3d-apis", "--disable-software-rasterizer"];
 
-// Share of pixels in the canvas box that must differ from paper. The shader
-// colours a wide share of the box at full strength; a blank or a stray pixel
-// is far below this.
+// Share of pixels in the canvas box that must differ from paper. The water is
+// pale, but every facet of it is a visible step away from paper (the deepest
+// 176 222 212, the middle 236 248 244, the glints white), so nearly the whole
+// top half differs; a blank or a stray pixel is far below this.
 const MIN_INKED_SHARE = 0.02;
 const PIXEL_DELTA = 6;
 
@@ -114,7 +114,7 @@ const stillState = (page) =>
 async function inkedShare(page) {
   const box = page.locator("[data-home-water]");
   // Through the CSSOM: the page's CSP (style-src 'self') refuses an injected <style>.
-  await page.evaluate(() => document.querySelectorAll(".home-water-veil,.home-water-still").forEach((e) => e.style.setProperty("display", "none", "important")));
+  await page.evaluate(() => document.querySelectorAll(".home-water-still").forEach((e) => e.style.setProperty("display", "none", "important")));
   const clip = await box.boundingBox();
   const region = { x: clip.x, y: clip.y, width: clip.width, height: Math.min(clip.height * 0.5, DESKTOP.height - clip.y) };
   const read = async () => {

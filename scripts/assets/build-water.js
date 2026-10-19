@@ -2,25 +2,26 @@
 //
 //   node scripts/assets/build-water.js      (or: npm run build:water)
 //
-// static/js/home-water.js draws slow teal ridges with a WebGL fragment shader,
+// static/js/home-water.js draws slow low-poly water with a WebGL fragment shader,
 // but only on a desktop (a hover pointer, laptop width, no reduced-motion, and
 // a working WebGL). Everywhere else the hero shows this picture instead: the
 // SAME shader, drawn once at a fixed moment. The two are complementary — the
 // stylesheet hides this one exactly when the script runs (see .home-water-still).
 //
-// The picture is the stone ALONE: teal over a transparent background, at the
-// brightness the live canvas has. The paper veil (.home-water-veil) and the fade
-// toward the band's lower edge are laid over it by the stylesheet, as they are
-// over the canvas, so a change to the veil never needs this file rerun.
+// The picture is the water as the live canvas draws it: three tones mixed from
+// --water-rgb and the paper (--surface-rgb) by the shader itself, opaque. The
+// fade toward the band's lower edge is laid over it by the stylesheet, as it is
+// over the canvas.
 //
 // Nothing here is a second copy of the look. The GLSL source and
-// WATER_MAX_INTENSITY are read out of home-water.js, and the colour out of
-// --water-rgb in the authored CSS, so the still cannot drift from the canvas.
-// RERUN IT after changing any of: --water-rgb, WATER_MAX_INTENSITY, the fragment
-// shader. One line: `npm run build:water`, then commit static/brand/hero-water.webp.
+// WATER_MAX_DEPTH are read out of home-water.js, and the colours out of
+// --water-rgb and --surface-rgb in the authored CSS, so the still cannot drift
+// from the canvas.
+// RERUN IT after changing any of: --water-rgb, --surface-rgb, WATER_MAX_DEPTH, the
+// fragment shader. One line: `npm run build:water`, then commit static/brand/hero-water.webp.
 //
-// Reproducible: the shader has no randomness (its noise is a sine hash of the
-// pixel coordinate) and time is a constant, STILL_T below, not a clock. The
+// Reproducible: the shader has no randomness (its jitter is a sine hash of the
+// facet's lattice cell) and time is a constant, STILL_T below, not a clock. The
 // WebP encoder is deterministic at fixed settings. The only wobble left is the
 // GPU's float rounding, which can move a few pixels by one level between
 // machines; on one machine two runs are byte-identical.
@@ -42,16 +43,18 @@ const OUT = path.join(ROOT, "static", "brand", "hero-water.webp");
 // `background-size: cover`, so a phone sees a centred crop of it.
 const WIDTH = 800;
 const HEIGHT = 450;
-// Shader time, in the shader's own units (the script's `clock * SPEED`). Chosen
-// by eye: ridges spread across the whole frame, none of them parked on a corner.
+// Shader time, in the shader's own units (the script's `clock * WATER_SPEED`).
+// Chosen by eye: light and shade spread across the whole frame.
 const STILL_T = 4.8;
 const QUALITY = 60;
 const MAX_BYTES = 100 * 1024;
 
 async function main() {
-  const rgb = waterSource.readWaterRgb(stylesheet.read());
+  const sheet = stylesheet.read();
+  const rgb = waterSource.readWaterRgb(sheet);
+  const paper = waterSource.channels(sheet.token("surface-rgb"), "--surface-rgb");
   const frag = waterSource.readFrag();
-  const max = waterSource.readMaxIntensity();
+  const max = waterSource.readMaxDepth();
 
   const browser = await launch();
   let dataUrl;
@@ -59,7 +62,7 @@ async function main() {
     const page = await (await browser.newContext({ viewport: { width: WIDTH, height: HEIGHT } })).newPage();
     await page.setContent(`<canvas id="c" width="${WIDTH}" height="${HEIGHT}"></canvas>`);
     dataUrl = await page.evaluate(
-      ({ frag, rgb, max, t }) => {
+      ({ frag, rgb, paper, max, t }) => {
         const cv = document.getElementById("c");
         const gl = cv.getContext("webgl", { alpha: true, premultipliedAlpha: true, preserveDrawingBuffer: true, antialias: false });
         if (!gl) throw new Error("WebGL is not available in this browser");
@@ -84,13 +87,14 @@ async function main() {
         gl.uniform2f(gl.getUniformLocation(p, "r"), cv.width, cv.height);
         gl.uniform1f(gl.getUniformLocation(p, "t"), t);
         gl.uniform3f(gl.getUniformLocation(p, "c"), rgb[0] / 255, rgb[1] / 255, rgb[2] / 255);
+        gl.uniform3f(gl.getUniformLocation(p, "q"), paper[0] / 255, paper[1] / 255, paper[2] / 255);
         gl.uniform1f(gl.getUniformLocation(p, "m"), max);
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
         return cv.toDataURL("image/png");
       },
-      { frag, rgb, max, t: STILL_T }
+      { frag, rgb, paper, max, t: STILL_T }
     );
   } finally {
     await browser.close();
