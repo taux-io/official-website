@@ -101,6 +101,7 @@ npm run hooks:install # 啟用 .githooks/pre-commit：gitleaks 擋密碼（每�
 npm run ko:record      # 把今天的韓文決定寫進兩份 ledger
 npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
 npm run test:worker    # src/worker.js 的語言協商與「不自組回應」（CI 閘門）
+npm run test:browser   # scripts/browser.js 找不到 headless shell 時改用本機 Chrome（CI 閘門）
 npm run check:locale-drift  # 這次改動是不是只動了某條路由的部分 locale（CI 只警告，不擋）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
@@ -111,7 +112,7 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 **`geometry`、`contrast`、`contract`、`water`、`cards` 要先 `npm run serve`**，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port 起 `npx wrangler dev --port <n>`，再以 `BASE_URL` 指過去。
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-water` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `water` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-water` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker` / `test:browser`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `water` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
 
 **runner 釘在 `ubuntu-24.04`，不用 `ubuntu-latest`**（兩個 workflow 都是）。`ubuntu-latest` 自 2026-10-19 起改指 Ubuntu 26，而 `playwright install --with-deps` 是依發行版解析系統套件的——它還不認得的新版會讓 audit（必要檢查）在每個 PR 上同時失敗。要換版本時，先在一個 PR 上把 `runs-on` 改成新 image 跑綠，再合併。actions 用 `checkout@v7`、`setup-node@v7`、`cache@v6`（Node 24 runtime）。
 
@@ -445,10 +446,10 @@ curl 收到的 HTML    含 cloudflareinsights = false（位元組等同 dist/ind
 
 所以「對 production 跑一次完整契約測試」不是儀式。**這一項在別的地方一次都看不到**，而它在瀏覽器啟動後幾分鐘內就被抓到。
 
-這也是 `scripts/browser.js` 存在的理由：Playwright 自帶的 Chromium 在某些機器上下載不下來，而那會讓四個視覺工具全部無法使用——這個缺陷就是在那種狀態下藏了一整天。`PLAYWRIGHT_CHANNEL=chrome` 改用系統已安裝的瀏覽器，不設就是原本的行為。
+這也是 `scripts/browser.js` 存在的理由：Playwright 自帶的 Chromium 在某些機器上下載不下來，而那會讓四個視覺工具全部無法使用——這個缺陷就是在那種狀態下藏了一整天。找不到 headless shell 時 `scripts/browser.js` 會自動改用系統的 Google Chrome（印一行說明）；`PLAYWRIGHT_CHANNEL` 仍可明確指定瀏覽器，有設就不自動換。
 
 ```bash
-PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
+BASE_URL=https://taux.io npm run contract
 ```
 
 ---

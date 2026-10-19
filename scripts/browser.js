@@ -10,18 +10,52 @@
 // long as no browser could be started, and it was found within minutes of one
 // being started.
 //
-// PLAYWRIGHT_CHANNEL names an already-installed browser to use instead of the
-// downloaded one — `chrome` for Google Chrome, `msedge` for Edge. Unset, this is
-// exactly `chromium.launch()`, so CI and anyone whose download worked see no
-// change at all.
+// Which browser is used, in order:
+//   1. PLAYWRIGHT_CHANNEL, if set — `chrome` for Google Chrome, `msedge` for
+//      Edge. Used exactly as given; if it fails, that error is shown unchanged.
+//   2. Playwright's own downloaded headless shell — exactly `chromium.launch()`,
+//      so CI and anyone whose download worked see no change at all.
+//   3. If (2) is missing ("Executable doesn't exist"), the locally installed
+//      Google Chrome, with one line on stderr saying so. If Chrome is missing
+//      too, the error says what to install.
 //
-//   PLAYWRIGHT_CHANNEL=chrome BASE_URL=https://taux.io npm run contract
+// So on a machine without the download, no variable is needed:
+//
+//   BASE_URL=https://taux.io npm run contract
 
 const { chromium } = require("playwright");
 
+const MISSING = /Executable doesn't exist/;
+
+async function launchWith(
+  browserType,
+  { env = process.env, log = console.error, options = {} } = {},
+) {
+  const channel = env.PLAYWRIGHT_CHANNEL;
+  if (channel) return browserType.launch({ ...options, channel });
+  try {
+    return await browserType.launch(options);
+  } catch (err) {
+    if (!MISSING.test(err.message)) throw err;
+    try {
+      const browser = await browserType.launch({ ...options, channel: "chrome" });
+      log(
+        "browser: Playwright's headless shell is not installed; using local Google Chrome (channel=chrome).",
+      );
+      return browser;
+    } catch (chromeErr) {
+      if (!MISSING.test(chromeErr.message)) throw chromeErr;
+      throw new Error(
+        "No browser found: Playwright's headless shell is not installed and neither is Google Chrome.\n" +
+          "Install one of: `npx playwright install chromium`, or Google Chrome " +
+          "(https://www.google.com/chrome/); for Edge or another browser, set PLAYWRIGHT_CHANNEL=msedge.",
+      );
+    }
+  }
+}
+
 function launch(options = {}) {
-  const channel = process.env.PLAYWRIGHT_CHANNEL;
-  return chromium.launch(channel ? { ...options, channel } : options);
+  return launchWith(chromium, { options });
 }
 
 // SwiftShader: software GL for a browser with no GPU (CI). The second flag is
@@ -29,4 +63,4 @@ function launch(options = {}) {
 // Shared by the still builder and the water audit, which must draw the same way.
 const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
 
-module.exports = { launch, GPU_ARGS };
+module.exports = { launch, launchWith, GPU_ARGS };
