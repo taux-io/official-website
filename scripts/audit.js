@@ -1,7 +1,7 @@
 // `npm run audit`: the browser checks of CI's `audit` job, in one command, with
 // one exit code.
 //
-//   PLAYWRIGHT_CHANNEL=chrome npm run audit
+//   npm run audit
 //
 // It starts its own server (scripts/serve.js) on a free port the OS hands out,
 // so a preview on 8099 is neither used nor disturbed, waits until it answers,

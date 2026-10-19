@@ -28,7 +28,7 @@
     "dates": "node scripts/dates.js",
     "screenshot": "node scripts/visual/screenshot.js",
     "audit": "node scripts/audit.js",
-    "contrast":"node scripts/visual/contrast.js",
+    "contrast": "node scripts/visual/contrast.js",
     "contract": "node scripts/visual/contract.js",
     "water": "node scripts/visual/water.js",
     "geometry": "node scripts/visual/geometry.js",

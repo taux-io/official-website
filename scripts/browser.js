@@ -25,7 +25,9 @@
 
 const { chromium } = require("playwright");
 
-const MISSING = /Executable doesn't exist/;
+// Playwright words a missing browser two ways: no downloaded executable, and
+// no installed channel ("Chromium distribution 'chrome' is not found at …").
+const MISSING = /Executable doesn't exist|Chromium distribution '[^']*' is not found/;
 
 async function launchWith(
   browserType,

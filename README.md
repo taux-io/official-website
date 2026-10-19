@@ -47,7 +47,7 @@ Node 與 Rust 的版本由 `.nvmrc` 與 `rust-toolchain.toml` 釘住，nvm 與 r
 npm ci
 npm run build:css    # src/input.css → static/css/styles.min.css
 npm run build:site   # templates/ + site.toml → dist/
-npm run serve        # wrangler dev，http://127.0.0.1:8099
+npm run serve        # wrangler dev，http://127.0.0.1:8099（換 port：PORT=<n> npm run serve）
 ```
 
 **預覽一定要用 `npm run serve`。** 一般的靜態伺服器不讀 `_headers`，一條永遠匹配不到的標頭規則在那裡看起來完全正常——這個站的 CSP 曾經因此一整年沒有生效而沒人發現。
