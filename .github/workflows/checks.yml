@@ -131,6 +131,16 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
+      # The home hero's rock background is a <canvas> and a paper veil that are
+      # SIBLINGS of the hero's text, so `contrast` (which walks ancestors) cannot
+      # see them: the veil could go to 0% with that audit still green. This
+      # computes the brightest background the rock can make from the numbers
+      # that make it (ROCK_MAX_INTENSITY, --rock-rgb, the veil alpha, the paper)
+      # and holds every text colour the five home templates use to AA, with
+      # 0.1 to spare. No browser, no build.
+      - name: hero rock keeps its text legible
+        run: npm run check:hero-rock
+
       # main.rs promises that retiring a path without a redirect will be
       # caught. Nothing enforced that: every gate reads the current site.toml
       # and none of them remembers what used to be in it, so deleting a `path`

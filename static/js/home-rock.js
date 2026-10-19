@@ -7,9 +7,10 @@
   'use strict';
 
   // THE BRIGHTEST THE STONE EVER GETS: the share of --rock-rgb a pixel can
-  // reach over paper, 0..1. This is the contrast knob. Under the hero's 90%
+  // reach over paper, 0..1. This is the contrast knob. Under the hero's 85%
   // paper veil (.home-rock-veil) the worst text, ink-72 at 5.11:1 on paper,
-  // measures 4.66:1 with 0.9. Raise it only after re-measuring.
+  // measures 4.69:1 with 0.9. `npm run check:hero-rock` fails if a change here
+  // takes any hero text under AA, or leaves it less than 0.1 to spare.
   const ROCK_MAX_INTENSITY = 0.9;
 
   const FRAME_MS = 1000 / 30;   // at most 30 fps

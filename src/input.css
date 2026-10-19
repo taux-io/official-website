@@ -96,12 +96,15 @@
   /* ROCK — the hero background's one colour (DESIGN.md decision 182): a teal
      for the slow ridge-noise that static/js/home-rock.js draws behind the home
      hero on a desktop. It is read by that script and by nothing else; no
-     declaration, no class and no text may use it. 40 160 140 is chosen with
-     the script's ROCK_MAX_INTENSITY (0.9) under a 90% paper veil: the lightest
-     the stone ever gets is 9% of this teal over paper, and the smallest text
-     on it (ink-72) still measures 4.66:1. `two plates` (rule 25) knows it as a
+     declaration, no class and no text may use it. 20 220 190 is chosen with
+     the script's ROCK_MAX_INTENSITY (0.9) under an 85% paper veil: the lightest
+     the stone ever gets is 13.5% of this aqua-teal over paper, and the smallest
+     text on it (ink-72) measures 4.69:1 (`npm run check:hero-rock` measures it
+     from these three numbers). It is bright rather than deep on purpose: for the
+     same darkening of the paper, a luminous colour moves further from paper in
+     hue, so the ridges read where the old deep teal at 9% hardly did. `two plates` (rule 25) knows it as a
      plate and refuses it anywhere but this declaration. */
-  --rock-rgb: 40 160 140;
+  --rock-rgb: 20 220 190;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -580,8 +583,9 @@
      canvas and the veil are SIBLINGS of the hero's content, never a background
      of an ancestor: `contrast` skips the text of any element whose ancestor has
      a background-image, and that would turn the audit green without measuring.
-     The veil is paper at 90%, which is what keeps the text legible; it is the
-     contrast gate's knob together with ROCK_MAX_INTENSITY in the script. Both
+     The veil is paper at 85%, which is what keeps the text legible; it is the
+     contrast gate's (check:hero-rock) knob together with ROCK_MAX_INTENSITY
+     and --rock-rgb. Both
      take no pointer events. The mask fades the canvas out toward the bottom of
      the band so it does not run into the services section. */
   .home-rock {
@@ -598,7 +602,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-color: rgb(var(--surface-rgb) / 0.9);
+    background-color: rgb(var(--surface-rgb) / 0.85);
   }
 
   /* A column flex container stretches its children, and the tag — an
