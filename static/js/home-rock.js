@@ -66,7 +66,7 @@
     uR = gl.getUniformLocation(prog, 'r');
     uT = gl.getUniformLocation(prog, 't');
 
-    // --rock-rgb is three space-separated channels, e.g. "40 160 140".
+    // --rock-rgb is three space-separated 0-255 channels; the stylesheet owns the value.
     const raw = getComputedStyle(document.documentElement).getPropertyValue('--rock-rgb').trim().split(/\s+/).map(Number);
     if (raw.length !== 3 || !raw.every(Number.isFinite)) return false;
     gl.uniform3f(gl.getUniformLocation(prog, 'c'), raw[0] / 255, raw[1] / 255, raw[2] / 255);
