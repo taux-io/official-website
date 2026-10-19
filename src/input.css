@@ -97,15 +97,15 @@
      teal of the low-poly water that static/js/home-water.js draws behind the home
      hero on a desktop. It is read by that script and by nothing else; no
      declaration, no class and no text may use it. The script mixes it with
-     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.6)
-     of the way from paper to this colour, 0.4 * 250 250 247 + 0.6 * 127 203 189
-     = 176 222 212, a pale aqua; the middle tone is a fifth of that depth,
-     236 248 244; the glints are white. Nothing is darker than the deepest
-     facet, so the smallest hero text (ink, 8.5:1 there) is judged against it
+     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.7)
+     of the way from paper to this colour, 0.3 * 250 250 247 + 0.7 * 115 198 182
+     = 156 214 202, a soft aqua; the middle tone is 0.3 of that depth,
+     about 222 239 233; the glints are white. Nothing is darker than the deepest
+     facet, so the smallest hero text (ink, 7.65:1 there) is judged against it
      (`npm run check:hero-water` measures it from these numbers). `two plates`
      (rule 25) knows it as a plate and refuses it anywhere but this
      declaration. */
-  --water-rgb: 127 203 189;
+  --water-rgb: 115 198 182;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.

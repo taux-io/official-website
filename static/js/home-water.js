@@ -13,7 +13,7 @@
   // facet, the rest being paper, 0..1. This is the contrast knob (no veil sits
   // on top): `npm run check:hero-water` fails if a change here, or to
   // --water-rgb, takes any hero text under AA or leaves it less than 0.1 to spare.
-  const WATER_MAX_DEPTH = 0.6;
+  const WATER_MAX_DEPTH = 0.7;
 
   // Wave speed, a multiplier on the shader's clock. 1 is the pace the owner saw
   // in prototype B; 2 is twice as fast.
@@ -46,7 +46,7 @@
   vec2 u=gl_FragCoord.xy/r;
   vec2 p=(u-.5)*vec2(r.x/r.y,1.);
   p=mat2(.88,-.48,.48,.88)*p;
-  vec2 w=vec2(sin(p.y*2.3+t*.15)+.5*sin(p.y*5.1-t*.11),cos(p.x*2.1-t*.13)+.5*cos(p.x*4.7+t*.09))*.1;
+  vec2 w=vec2(sin(p.y*2.3+t*.15)+.5*sin(p.y*5.1-t*.11),cos(p.x*2.1-t*.13)+.5*cos(p.x*4.7+t*.09))*.08;
   w+=vec2(sin(dot(p,vec2(3.1,2.2))+t*.2),cos(dot(p,vec2(-2.6,3.7))-t*.17))*.05;
   vec2 x=(p+w)*13.;
   vec2 i=floor(x+(x.x+x.y)*.366),x0=x-i+(i.x+i.y)*.2113;
@@ -56,14 +56,14 @@
   float k=min(1.-b1-b2,min(b1,b2));
   vec2 f=i+(a+1.)/3.;f-=(f.x+f.y)*.2113;
   vec2 n=g((f/13.-w)*2.86,t)+(h(i+a*7.)-.5)*.5;
-  vec3 N=normalize(vec3(-n*.6,1.));
+  vec3 N=normalize(vec3(-n*.8,1.));
   vec3 L=normalize(vec3(.5,.4,.75));
-  float s=clamp((dot(N,L)-.55)/.4,0.,1.);
+  float s=clamp((dot(N,L)-.62)/.36,0.,1.);
   float sp=pow(max(dot(N,normalize(L+vec3(0,0,1))),0.),90.);
   float sw=u.x*.75+u.y*.65-(.85+.35*sin(t*.07));
   float bd=exp(-pow(sw*2.4,2.));
   vec3 hi=vec3(1);
-  vec3 o=mix(mix(q,c,m),mix(q,c,m*.2),s);
+  vec3 o=mix(mix(q,c,m),mix(q,c,m*.3),s);
   o=mix(o,hi,bd*.55*(.3+.7*s));
   o=mix(o,hi,clamp(sp*.66,0.,1.));
   o=mix(o,hi,(1.-smoothstep(0.,.05,k))*.08*(.3+.7*bd+.3*s));
