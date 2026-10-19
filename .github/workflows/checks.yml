@@ -264,6 +264,17 @@ jobs:
       - name: route contract
         run: npm run contract
 
+      # The home hero's rock background, driven in a real browser: check:hero-rock
+      # never opens a page and contrast cannot see a <canvas>, so a shader that
+      # draws nothing, one that starts on a phone, or a loop that never stops
+      # when the hero scrolls away would leave both green. The runner has no
+      # GPU; the desktop conditions start Chromium with SwiftShader and assert
+      # WebGL exists first. If this fails with "WebGL is not available", the
+      # runner's Chromium could not make a software context (environment, not
+      # the rock); any other message names the locale and the condition.
+      - name: hero rock runs where it should
+        run: npm run rock
+
       # Where things land, which neither of the two above can see. contrast
       # reads colour and contract reads what a route declares; a glyph coming
       # from the wrong face, a box whose lines disagree, or content clipped off

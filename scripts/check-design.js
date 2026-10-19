@@ -227,7 +227,7 @@ const RULES = [
     enabled: true,
     turnedOnBy: "#190 — the walk module's own adoption",
     run: ruleSingleWalker,
-    summary: "only walk.js starts a browser for the visual family, plus two named exemptions",
+    summary: "only walk.js starts a browser for the visual family, plus three named exemptions",
   },
   {
     name: "single stylesheet",
