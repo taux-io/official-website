@@ -93,18 +93,19 @@
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
 
-  /* WATER — the hero background's one colour (DESIGN.md decision 182): a teal
-     for the slow ridge-noise that static/js/home-water.js draws behind the home
+  /* WATER — the hero background's one colour (DESIGN.md decision 182): the
+     teal of the low-poly water that static/js/home-water.js draws behind the home
      hero on a desktop. It is read by that script and by nothing else; no
-     declaration, no class and no text may use it. 20 220 190 is chosen with
-     the script's WATER_MAX_INTENSITY (0.9) under an 85% paper veil: the lightest
-     the stone ever gets is 13.5% of this aqua-teal over paper, and the smallest
-     text on it (ink-72) measures 4.69:1 (`npm run check:hero-water` measures it
-     from these three numbers). It is bright rather than deep on purpose: for the
-     same darkening of the paper, a luminous colour moves further from paper in
-     hue, so the ridges read where the old deep teal at 9% hardly did. `two plates` (rule 25) knows it as a
-     plate and refuses it anywhere but this declaration. */
-  --water-rgb: 20 220 190;
+     declaration, no class and no text may use it. The script mixes it with
+     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.6)
+     of the way from paper to this colour, 0.4 * 250 250 247 + 0.6 * 127 203 189
+     = 176 222 212, a pale aqua; the middle tone is a fifth of that depth,
+     236 248 244; the glints are white. Nothing is darker than the deepest
+     facet, so the smallest hero text (ink, 8.5:1 there) is judged against it
+     (`npm run check:hero-water` measures it from these numbers). `two plates`
+     (rule 25) knows it as a plate and refuses it anywhere but this
+     declaration. */
+  --water-rgb: 127 203 189;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -578,16 +579,16 @@
     margin-top: 2rem;
   }
 
-  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Slow teal ridges drawn by
+  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Low-poly water drawn by
      static/js/home-water.js on a desktop; the only <canvas> the site ships. The
-     canvas and the veil are SIBLINGS of the hero's content, never a background
-     of an ancestor: `contrast` skips the text of any element whose ancestor has
-     a background-image, and that would turn the audit green without measuring.
-     The veil is paper at 85%, which is what keeps the text legible; it is the
-     contrast gate's (check:hero-water) knob together with WATER_MAX_INTENSITY
-     and --water-rgb. Both
-     take no pointer events. The mask fades the canvas out toward the bottom of
-     the band so it does not run into the services section. */
+     canvas is a SIBLING of the hero's content, never a background of an
+     ancestor: `contrast` skips the text of any element whose ancestor has a
+     background-image, and that would turn the audit green without measuring.
+     Nothing sits over it: how pale the water is comes from the script's
+     WATER_MAX_DEPTH and --water-rgb, which check:hero-water holds against the
+     hero's text. It takes no pointer events. The mask fades the canvas out
+     toward the bottom of the band so it does not run into the services
+     section. */
   .home-water {
     position: absolute;
     inset: 0;
@@ -600,7 +601,7 @@
 
   /* THE STILL: the same shader drawn once (scripts/assets/build-water.js, run
      with `npm run build:water`), for every visitor the canvas is not for. It is a
-     sibling like the canvas, under the same veil and the same fade. The script
+     sibling like the canvas, under the same fade. The script
      runs on a hover pointer, laptop width and no reduced-motion, so exactly
      there the still is hidden, and `display: none` also means the browser never
      fetches it. If WebGL turns out to be unavailable the script sets
@@ -621,13 +622,6 @@
     .home-water-still:not([data-fallback]) {
       display: none;
     }
-  }
-
-  .home-water-veil {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-color: rgb(var(--surface-rgb) / 0.85);
   }
 
   /* A column flex container stretches its children, and the tag — an
@@ -2431,8 +2425,7 @@
    NOT GATED, for the same reason as the block above. */
 @media print {
   .home-water,
-  .home-water-still,
-  .home-water-veil {
+  .home-water-still {
     display: none;
   }
 
