@@ -191,6 +191,34 @@ function evaluate(water = {}) {
   return { rows, bg, depth, water: waterRgb, paper: s.paper };
 }
 
+// THE STILL MUST BE DRAWN FROM THE SHADER THAT SHIPS. Phones, reduced-motion and
+// no-WebGL visitors see static/brand/hero-water.webp, a frame of the same
+// shader. Nobody notices the picture going stale: it still loads, it is merely
+// last season's water. The ledger holds a hash of what the picture was drawn
+// from (scripts/lib/water-source.js stillInputs); this recomputes it. No browser:
+// only the build-water script draws.
+const REBUILD = "run `PLAYWRIGHT_CHANNEL=chrome npm run build:water`, then commit static/brand/hero-water.webp, ledgers/hero-water-still.txt, src/input.css and static/css/styles.min.css";
+
+function checkStill() {
+  const inputs = orFail(waterSource.stillInputs)(read());
+  const ledger = waterSource.readLedger();
+  if (!ledger || !ledger.inputs || !ledger.image) fail(`ledgers/hero-water-still.txt is missing or unreadable; ${REBUILD}`);
+  if (waterSource.stillDigest(inputs) !== ledger.inputs) {
+    fail(`the hero's still is out of date: the shader, --water-rgb, --surface-rgb, WATER_MAX_DEPTH or the builder's constants changed since it was drawn; ${REBUILD}`);
+  }
+  if (!fs.existsSync(waterSource.STILL_IMAGE)) fail(`static/brand/hero-water.webp is missing; ${REBUILD}`);
+  const bytes = fs.readFileSync(waterSource.STILL_IMAGE);
+  if (waterSource.sha(bytes) !== ledger.image) {
+    fail(`static/brand/hero-water.webp is not the picture the ledger recorded (it was replaced or edited by hand); ${REBUILD}`);
+  }
+  const v = waterSource.imageVersion(bytes);
+  const css = fs.readFileSync(waterSource.INPUT_CSS, "utf8");
+  if (!css.includes(`url("/static/brand/hero-water.webp?v=${v}")`)) {
+    fail(`src/input.css does not ask for hero-water.webp?v=${v}; /static/brand is cached for a week, so a returning visitor keeps the old picture. ${REBUILD}`);
+  }
+  console.log(`still: drawn from the shipped shader (inputs ${ledger.inputs.slice(0, 10)}), ${(bytes.length / 1024).toFixed(1)} KB, ?v=${v}`);
+}
+
 function main() {
   const r = evaluate();
   const rgb = (c) => c.map((n) => Math.round(n)).join(" ");
@@ -206,6 +234,7 @@ function main() {
   }
   if (bad) fail(`${bad} hero text colour(s) fall below AA on the deepest water; lower WATER_MAX_DEPTH or the --water-rgb saturation`);
   if (thin) fail(`${thin} hero text colour(s) pass with less than ${MARGIN} to spare; keep the headroom so a token nudge does not turn the hero red`);
+  checkStill();
   console.log("check:hero-water ok");
 }
 

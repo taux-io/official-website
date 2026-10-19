@@ -611,7 +611,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-water.webp");
+    background-image: url("/static/brand/hero-water.webp?v=d5f1c0ebec");
     background-size: cover;
     background-position: center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
