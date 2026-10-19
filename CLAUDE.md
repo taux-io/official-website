@@ -3,7 +3,7 @@
 送 PR 前跑 `npm run check`：和 CI 的 `build` job 同一串。`audit` job（contrast、contract、geometry、cards）要 Chromium，另外跑。
 
 - 改顏色、字體、間距、元件、動態：先讀 `DESIGN.md`，它是設計詞彙的唯一來源。
-- 新增、搬動或刪除頁面：照 `docs/add-a-page.md`（路由、轉址、路徑清單、llms.txt、分享圖，以及本機 Chromium 版本對不上時怎麼辦）。
+- 新增、搬動或刪除頁面，或本機 Chromium 版本對不上、audit 起不來：照 `docs/add-a-page.md`。
 - 部署、Cloudflare、`src/worker.js`：照 `DEPLOYMENT.md`。
 - 想知道某個決定為什麼這樣做：查 `NOTES.md`。
 
