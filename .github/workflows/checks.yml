@@ -131,13 +131,13 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
-      # The home hero's water background is a <canvas> and a paper veil that are
-      # SIBLINGS of the hero's text, so `contrast` (which walks ancestors) cannot
-      # see them: the veil could go to 0% with that audit still green. This
-      # computes the brightest background the water can make from the numbers
-      # that make it (WATER_MAX_INTENSITY, --water-rgb, the veil alpha, the paper)
-      # and holds every text colour the five home templates use to AA, with
-      # 0.1 to spare. No browser, no build.
+      # The home hero's water background is a <canvas>, a SIBLING of the hero's
+      # text, so `contrast` (which walks ancestors) cannot see it: the water
+      # could be as deep as you like with that audit still green. This computes
+      # the deepest background the water can make from the numbers that make it
+      # (WATER_MAX_DEPTH, --water-rgb, the paper) and holds every text colour
+      # the five home templates use to AA, with 0.1 to spare; grey small print
+      # (text-ink-soft) in the hero is refused. No browser, no build.
       - name: hero water keeps its text legible
         run: npm run check:hero-water
 
