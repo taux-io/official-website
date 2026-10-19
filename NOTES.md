@@ -72,7 +72,7 @@ TauX（拓思科技）為中小企業提供 AI 顧問與技術導入，服務分
 ## 建置與檢查
 
 ```bash
-npm run build:site     # cargo build + 產生 dist/
+npm run build:site     # cargo run：建置並產生 dist/
 npm run serve          # wrangler dev（套用 _headers）
 npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
@@ -246,7 +246,7 @@ Tailwind 掃描模板產生它，所以**改完模板沒重建就會靜默失效
 **合併就是上線，而上線會落後 CI。** Workers Builds 在 `main` 收到推送後自己 clone、建置、`wrangler deploy`；它的建置會排隊，曾經一筆停在 `in_progress` 二十多分鐘才完成。確認某次合併是否已上線，看那個 commit 的 check run「Workers Builds: taux-io」是否 `completed`，或直接 `curl` 一個這次改動才有的值——不要只看 PR 的綠燈。
 
 ```bash
-npm run build:site   # cargo build + 產生 dist/
+npm run build:site   # cargo run：建置並產生 dist/
 npm run serve        # wrangler dev（本機，會套用 _headers）
 ```
 
