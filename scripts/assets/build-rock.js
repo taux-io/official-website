@@ -33,9 +33,9 @@ const path = require("path");
 const { launch } = require("../browser");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
+const rockSource = require("../lib/rock-source");
 
 const ROOT = path.join(__dirname, "..", "..");
-const SCRIPT = path.join(ROOT, "static", "js", "home-rock.js");
 const OUT = path.join(ROOT, "static", "brand", "hero-rock.webp");
 
 // 1600x900 is wider than any hero is tall: the stylesheet shows it with
@@ -48,20 +48,10 @@ const STILL_T = 4.8;
 const QUALITY = 60;
 const MAX_BYTES = 100 * 1024;
 
-function fromScript() {
-  const src = fs.readFileSync(SCRIPT, "utf8");
-  const frag = src.match(/const FRAG = `([\s\S]*?)`;/);
-  const max = src.match(/const ROCK_MAX_INTENSITY = ([0-9.]+);/);
-  if (!frag || !max) throw new Error("build-rock: FRAG or ROCK_MAX_INTENSITY not found in home-rock.js");
-  return { frag: frag[1], max: Number(max[1]) };
-}
-
 async function main() {
-  const rock = stylesheet.read().token("rock-rgb");
-  if (rock === null) throw new Error("build-rock: --rock-rgb not found in the authored CSS");
-  const rgb = rock.trim().split(/\s+/).map(Number);
-  if (rgb.length !== 3 || !rgb.every(Number.isFinite)) throw new Error(`build-rock: bad --rock-rgb "${rock}"`);
-  const { frag, max } = fromScript();
+  const rgb = rockSource.readRockRgb(stylesheet.read());
+  const frag = rockSource.readFrag();
+  const max = rockSource.readMaxIntensity();
 
   const browser = await launch();
   let dataUrl;

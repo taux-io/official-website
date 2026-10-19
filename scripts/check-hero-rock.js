@@ -39,9 +39,9 @@ const fs = require("fs");
 const path = require("path");
 const { contrastRatio } = require("./design/lib");
 const { read } = require("./stylesheet");
+const rockSource = require("./lib/rock-source");
 
 const ROOT = path.join(__dirname, "..");
-const SCRIPT = path.join(ROOT, "static", "js", "home-rock.js");
 const TEMPLATES = path.join(ROOT, "templates");
 const HOME_TEMPLATES = ["index.html", "en-US/index.html", "ja-JP/index.html", "ko-KR/index.html", "zh-Hans-CN/index.html"];
 
@@ -68,11 +68,16 @@ const fail = (msg) => {
   process.exit(1);
 };
 
-const channels = (value, what) => {
-  const c = String(value || "").trim().split(/\s+/).map(Number);
-  if (c.length !== 3 || !c.every((n) => Number.isInteger(n) && n >= 0 && n <= 255)) fail(`${what} is not three 0-255 channels: "${value}"`);
-  return c;
+// The shared readers (scripts/lib/rock-source.js) throw; this gate reports a
+// throw as its own failure.
+const orFail = (fn) => (...args) => {
+  try {
+    return fn(...args);
+  } catch (e) {
+    return fail(e.message);
+  }
 };
+const channels = orFail(rockSource.channels);
 
 const mix = (fg, bg, a) => fg.map((f, i) => f * a + bg[i] * (1 - a));
 
@@ -81,13 +86,7 @@ function worstBackground({ paper, rock, maxIntensity, veil }) {
   return mix(rock, paper, maxIntensity * (1 - veil));
 }
 
-function readMaxIntensity() {
-  const m = /const\s+ROCK_MAX_INTENSITY\s*=\s*([0-9.]+)\s*;/.exec(fs.readFileSync(SCRIPT, "utf8"));
-  if (!m) fail("static/js/home-rock.js has no `const ROCK_MAX_INTENSITY = <number>;`");
-  const v = Number(m[1]);
-  if (!(v > 0 && v <= 1)) fail(`ROCK_MAX_INTENSITY ${m[1]} is outside 0..1`);
-  return v;
-}
+const readMaxIntensity = orFail(rockSource.readMaxIntensity);
 
 function readSheet(sheet) {
   const token = (name) => {
