@@ -5,8 +5,8 @@ const { lineOf } = require("../lib");
 // drawing the tau curve. The rule is existence, not usage: a canvas with no
 // script behind it is still a canvas the next change will find a use for.
 //
-// ONE EXEMPTION, decided by the owner (DESIGN.md decision 181): the home hero's
-// background of 0s and 1s, `<canvas data-home-digits>`, and only in a home page
+// ONE EXEMPTION, decided by the owner (DESIGN.md decision 181, replaced by 182): the home
+// hero's water background, `<canvas data-home-water>`, and only in a home page
 // (templates/index.html and templates/<locale>/index.html). It is named by
 // attribute AND by file so a second canvas anywhere else is still a finding —
 // the exemption is a single element, not a category.
@@ -20,7 +20,7 @@ function ruleZeroCanvas(files) {
   const found = [];
   for (const { rel, html } of files) {
     for (const m of html.matchAll(/<canvas\b([^>]*)>/g)) {
-      if (HOME_PAGE.test(rel) && /\bdata-home-digits\b/.test(m[1])) continue;
+      if (HOME_PAGE.test(rel) && /\bdata-home-water\b/.test(m[1])) continue;
       found.push({
         file: rel,
         line: lineOf(html, m.index),

@@ -92,6 +92,20 @@
      of blue cannot. It prints nowhere else — no text, no fill behind text, no
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
+
+  /* WATER — the hero background's one colour (DESIGN.md decision 182): the
+     teal of the low-poly water that static/js/home-water.js draws behind the home
+     hero on a desktop. It is read by that script and by nothing else; no
+     declaration, no class and no text may use it. The script mixes it with
+     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.7)
+     of the way from paper to this colour, 0.3 * 250 250 247 + 0.7 * 115 198 182
+     = 156 214 202, a soft aqua; the middle tone is 0.3 of that depth,
+     about 222 239 233; the glints are white. Nothing is darker than the deepest
+     facet, so the smallest hero text (ink, 7.65:1 there) is judged against it
+     (`npm run check:hero-water` measures it from these numbers). `two plates`
+     (rule 25) knows it as a plate and refuses it anywhere but this
+     declaration. */
+  --water-rgb: 115 198 182;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -565,17 +579,49 @@
     margin-top: 2rem;
   }
 
-  /* HOME HERO BACKGROUND (DESIGN.md decision 181). A field of 0s and 1s drawn
-     by static/js/home-digits.js; the only <canvas> the site ships. It is
-     decoration behind the hero's own text, so it takes no pointer events and
-     has no size of its own: the script sets left/top/width/height with a
-     margin so the drift never shows an edge. The mask fades it out toward the
-     bottom of the band so it does not run into the services section. */
-  .home-digits {
+  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Low-poly water drawn by
+     static/js/home-water.js on a desktop; the only <canvas> the site ships. The
+     canvas is a SIBLING of the hero's content, never a background of an
+     ancestor: `contrast` skips the text of any element whose ancestor has a
+     background-image, and that would turn the audit green without measuring.
+     Nothing sits over it: how pale the water is comes from the script's
+     WATER_MAX_DEPTH and --water-rgb, which check:hero-water holds against the
+     hero's text. It takes no pointer events. The mask fades the canvas out
+     toward the bottom of the band so it does not run into the services
+     section. */
+  .home-water {
     position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  /* THE STILL: the same shader drawn once (scripts/assets/build-water.js, run
+     with `npm run build:water`), for every visitor the canvas is not for. It is a
+     sibling like the canvas, under the same fade. The script
+     runs on a hover pointer, laptop width and no reduced-motion, so exactly
+     there the still is hidden, and `display: none` also means the browser never
+     fetches it. If WebGL turns out to be unavailable the script sets
+     [data-fallback] and the still comes back. The three conditions below are the
+     script's `desktop` query; change them together (961px = tailwind `laptop`). */
+  .home-water-still {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/static/brand/hero-water.webp?v=d5f1c0ebec");
+    background-size: cover;
+    background-position: center;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  @media (min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .home-water-still:not([data-fallback]) {
+      display: none;
+    }
   }
 
   /* A column flex container stretches its children, and the tag — an
@@ -2378,7 +2424,8 @@
    
    NOT GATED, for the same reason as the block above. */
 @media print {
-  .home-digits {
+  .home-water,
+  .home-water-still {
     display: none;
   }
 

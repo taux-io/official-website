@@ -24,4 +24,9 @@ function launch(options = {}) {
   return chromium.launch(channel ? { ...options, channel } : options);
 }
 
-module.exports = { launch };
+// SwiftShader: software GL for a browser with no GPU (CI). The second flag is
+// required by recent Chromium, which gates the SwiftShader fallback behind it.
+// Shared by the still builder and the water audit, which must draw the same way.
+const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
+
+module.exports = { launch, GPU_ARGS };

@@ -50,6 +50,20 @@ function ruleTwoPlates(files) {
     });
   }
 
+  // THE WATER PLATE IS NEVER PAINTED (decision 182). --water-rgb exists so
+  // static/js/home-water.js can read it; the hero's water is drawn by that
+  // script's shader, so no stylesheet declaration has any business using it.
+  // The `--` token declaration is the only place it may appear.
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    if (d.prop.startsWith("--")) continue;
+    if (!plates.stepsIn(value, sheet).some((st) => st.plate === "water")) continue;
+    found.push({
+      file: d.file,
+      line: d.line,
+      detail: `${d.selector} paints the water plate — it is read by static/js/home-water.js and painted by nothing else (decision 182)`,
+    });
+  }
+
   for (const u of colourUtilities(files, sheet)) {
     const hit = plates.plateUtility(u.name);
     if (hit && hit.plate === "spot" && !/(^|\/)_art\.html$/.test(u.file)) {
