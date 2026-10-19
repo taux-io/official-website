@@ -1,27 +1,27 @@
 /* Home hero background (DESIGN.md decision 182): slow teal ridges drawn with a
    WebGL fragment shader. Desktop only (a hover pointer, at least `laptop` wide,
    no prefers-reduced-motion); everywhere else this script does nothing and the
-   stylesheet shows the still (static/brand/hero-rock.webp). If WebGL fails
+   stylesheet shows the still (static/brand/hero-water.webp). If WebGL fails
    here it sets [data-fallback] on the still so the still takes over. It does
-   not follow the pointer. The colour comes from the stylesheet's --rock-rgb,
+   not follow the pointer. The colour comes from the stylesheet's --water-rgb,
    never from this file. */
 (() => {
   'use strict';
 
-  // THE BRIGHTEST THE STONE EVER GETS: the share of --rock-rgb a pixel can
+  // THE BRIGHTEST THE STONE EVER GETS: the share of --water-rgb a pixel can
   // reach over paper, 0..1. This is the contrast knob. Under the hero's 85%
-  // paper veil (.home-rock-veil) the worst text, ink-72 at 5.11:1 on paper,
-  // measures 4.69:1 with 0.9. `npm run check:hero-rock` fails if a change here
+  // paper veil (.home-water-veil) the worst text, ink-72 at 5.11:1 on paper,
+  // measures 4.69:1 with 0.9. `npm run check:hero-water` fails if a change here
   // takes any hero text under AA, or leaves it less than 0.1 to spare.
-  const ROCK_MAX_INTENSITY = 0.9;
+  const WATER_MAX_INTENSITY = 0.9;
 
   const FRAME_MS = 1000 / 30;   // at most 30 fps
   const SCALE = 0.5;            // internal resolution: half the CSS size
   const SPEED = 0.12;           // ridge drift, noise units per second
 
-  const cv = document.querySelector('[data-home-rock]');
+  const cv = document.querySelector('[data-home-water]');
   if (!cv) return;
-  const still = document.querySelector('[data-home-rock-still]');
+  const still = document.querySelector('[data-home-water-still]');
   const desktop = matchMedia('(min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference)'); // 961px = tailwind `laptop`
   let gl, uR, uT;
   const init = () => {
@@ -66,11 +66,11 @@
     uR = gl.getUniformLocation(prog, 'r');
     uT = gl.getUniformLocation(prog, 't');
 
-    // --rock-rgb is three space-separated 0-255 channels; the stylesheet owns the value.
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--rock-rgb').trim().split(/\s+/).map(Number);
+    // --water-rgb is three space-separated 0-255 channels; the stylesheet owns the value.
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--water-rgb').trim().split(/\s+/).map(Number);
     if (raw.length !== 3 || !raw.every(Number.isFinite)) return false;
     gl.uniform3f(gl.getUniformLocation(prog, 'c'), raw[0] / 255, raw[1] / 255, raw[2] / 255);
-    gl.uniform1f(gl.getUniformLocation(prog, 'm'), ROCK_MAX_INTENSITY);
+    gl.uniform1f(gl.getUniformLocation(prog, 'm'), WATER_MAX_INTENSITY);
 
     return true;
   };

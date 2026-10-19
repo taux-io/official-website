@@ -6,7 +6,7 @@ const { lineOf } = require("../lib");
 // script behind it is still a canvas the next change will find a use for.
 //
 // ONE EXEMPTION, decided by the owner (DESIGN.md decision 181, replaced by 182): the home
-// hero's rock-ridge background, `<canvas data-home-rock>`, and only in a home page
+// hero's water-ridge background, `<canvas data-home-water>`, and only in a home page
 // (templates/index.html and templates/<locale>/index.html). It is named by
 // attribute AND by file so a second canvas anywhere else is still a finding —
 // the exemption is a single element, not a category.
@@ -20,7 +20,7 @@ function ruleZeroCanvas(files) {
   const found = [];
   for (const { rel, html } of files) {
     for (const m of html.matchAll(/<canvas\b([^>]*)>/g)) {
-      if (HOME_PAGE.test(rel) && /\bdata-home-rock\b/.test(m[1])) continue;
+      if (HOME_PAGE.test(rel) && /\bdata-home-water\b/.test(m[1])) continue;
       found.push({
         file: rel,
         line: lineOf(html, m.index),

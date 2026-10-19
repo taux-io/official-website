@@ -33,8 +33,8 @@
 // Every plate this vocabulary has. The substrate is listed because a colour may
 // legitimately BE the paper, but it is not an ink: DESIGN.md counts two plates,
 // and paper is what they are printed on.
-const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb", spot: "spot-rgb", rock: "rock-rgb" };
-// `rock` is the hero background's teal (decision 182). It is a plate here so the
+const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb", spot: "spot-rgb", water: "water-rgb" };
+// `water` is the hero background's teal (decision 182). It is a plate here so the
 // colour solves to something, and two-plates.js then lets it exist only as the
 // token declaration: the script reads it, no rule may paint it.
 
