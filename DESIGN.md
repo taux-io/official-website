@@ -1029,6 +1029,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **挖空 / knockout** | 從墨版裡挖掉，露出紙。所以 `on-primary` ＝ `canvas` |
 | **髮絲線 / hairline** | 主墨版 12%，1px。唯一的分隔與邊框權重 |
 | **岩紋背景 / rock background** | 首頁 hero 後方的慢速青綠岩紋，上面蓋一層紙色遮罩。桌機是動的，其他情況是同一張畫面的靜態圖 |
+| **`.home-rock`** | 岩紋背景的 canvas（`<canvas data-home-rock>`），著色器畫在上面。只有桌機條件成立時才啟動 |
+| **`.home-rock-still`** | 岩紋背景的靜態圖層，同一支著色器畫一次的圖。canvas 不啟動時由它接手 |
+| **`.home-rock-veil`** | 蓋在岩紋上的紙色遮罩。決定岩紋看起來多淡，與 canvas、靜態圖同為 hero 內容的兄弟 |
 | **eyebrow** | 標題上方的小型全大寫標籤。**也是級距規則的分母** |
 | **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |
