@@ -15,7 +15,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { chromium } = require("playwright");
+const { launch } = require("../browser");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
 const { ROUTES, LOCALES, PAGES } = require("../routes");
@@ -223,7 +223,7 @@ async function main() {
     "primary-rgb"
   )};--spot-rgb:${token("spot-rgb")};}`;
 
-  const browser = await chromium.launch();
+  const browser = await launch();
   const context = await browser.newContext({
     viewport: { width: WIDTH, height: HEIGHT },
     deviceScaleFactor: 1,
