@@ -37,7 +37,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { launch } = require("../browser");
+const { launch, GPU_ARGS } = require("../browser");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
 const waterSource = require("../lib/water-source");
@@ -49,10 +49,8 @@ const { ROOT, STILL, STILL_IMAGE: OUT, STILL_LEDGER, INPUT_CSS } = waterSource;
 // STILL.T is shader time in the shader's own units (the script's
 // `clock * WATER_SPEED`). All the constants live in scripts/lib/water-source.js
 // because the staleness gate hashes them too.
-const { WIDTH, HEIGHT, T: STILL_T, QUALITY, ALPHA_QUALITY, EFFORT, MAX_BYTES } = STILL;
-// The same software-GL flags scripts/visual/water.js uses, so a machine or CI
-// runner with no GPU still draws.
-const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
+const { WIDTH, HEIGHT, T: STILL_T, QUALITY, ALPHA_QUALITY, EFFORT } = STILL;
+const { STILL_MAX_BYTES: MAX_BYTES } = waterSource;
 
 async function main() {
   const sheet = stylesheet.read();
