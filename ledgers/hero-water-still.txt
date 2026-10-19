@@ -9,7 +9,7 @@
 # water-rgb  115 198 182
 # paper      250 250 247
 # max-depth  0.7
-# still      {"T":9,"WIDTH":800,"HEIGHT":450,"QUALITY":60,"ALPHA_QUALITY":60,"EFFORT":6,"MAX_BYTES":102400}
+# still      {"T":9,"WIDTH":800,"HEIGHT":450,"QUALITY":60,"ALPHA_QUALITY":60,"EFFORT":6}
 
-inputs 1cc63a6c606459547b13933c99621fc95ad064beb61c8559f9b56722d5e2a6bb
+inputs a8b4bafe3eaf967f2e8d28ea0454b31cc775eb3f021f82c8808fe0b678e93a07
 image d5f1c0ebec0985da5927b87eccffc9f29ccbf3c67b26b8549bd51fb5e9cf9a04

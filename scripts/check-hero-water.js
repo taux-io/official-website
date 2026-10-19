@@ -8,7 +8,8 @@
 // an ancestor: the audit would stay green with the water as dark as you like.
 // So the worst case is computed here, from the numbers that make it.
 //
-// THE WORST BACKGROUND. There is no veil: the water is drawn straight over the
+// THE WORST BACKGROUND. There is no darkening veil (the fade to
+// paper at the bottom edge is not one): the water is drawn straight over the
 // paper. The shader mixes three tones from --water-rgb and the paper (--surface-rgb)
 // and its deepest facet is WATER_MAX_DEPTH of the way from paper to water, so
 //     worst = paper * (1 - D) + water * D
@@ -228,7 +229,7 @@ function main() {
   let thin = 0;
   for (const row of r.rows.sort((a, b) => a.ratio - b.ratio)) {
     const flag = !row.ok ? "FAIL" : row.roomy ? "ok  " : "THIN";
-    console.log(`  ${flag} ${row.ratio.toFixed(2)}:1 (needs ${row.need}) ${row.label}  [${[...row.where].length === HOME_TEMPLATES.length ? "all 5 locales" : [...row.where].join(", ")}]`);
+    console.log(`  ${flag} ${row.ratio.toFixed(2)}:1 (needs ${row.need}) ${row.label}  [${[...row.where].length === HOME_TEMPLATES.length ? `all ${HOME_TEMPLATES.length} locales` : [...row.where].join(", ")}]`);
     if (!row.ok) bad++;
     else if (!row.roomy) thin++;
   }

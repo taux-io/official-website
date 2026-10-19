@@ -24,7 +24,11 @@ const INPUT_CSS = path.join(ROOT, "src", "input.css");
 // T = 9 was picked from a sweep of the shader over t = 0..60: the light mass sits
 // right and top, so the left, where the hero's text is, is calm water; and fewer
 // of its 20px blocks are a flat colour than at most other moments.
-const STILL = { T: 9, WIDTH: 800, HEIGHT: 450, QUALITY: 60, ALPHA_QUALITY: 60, EFFORT: 6, MAX_BYTES: 100 * 1024 };
+const STILL = { T: 9, WIDTH: 800, HEIGHT: 450, QUALITY: 60, ALPHA_QUALITY: 60, EFFORT: 6 };
+// The file-size budget is a threshold the builder checks, not an input to the
+// picture, so it is kept out of STILL and out of the ledger's hash: changing it
+// must not make a correct still look stale.
+const STILL_MAX_BYTES = 100 * 1024;
 
 const source = () => fs.readFileSync(SCRIPT, "utf8");
 
@@ -109,7 +113,7 @@ function readLedger() {
 }
 
 module.exports = {
-  ROOT, INPUT_CSS, STILL, STILL_IMAGE, STILL_LEDGER,
+  ROOT, INPUT_CSS, STILL, STILL_MAX_BYTES, STILL_IMAGE, STILL_LEDGER,
   channels, readMaxDepth, readFrag, readWaterRgb,
   stillInputs, stillDigest, imageVersion, ledgerText, readLedger, sha,
 };

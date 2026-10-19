@@ -36,16 +36,13 @@
 // would not measure the shader. What the canvas leaves behind it is paper.
 
 const sharp = require("sharp");
-const { launch } = require("../browser");
+const { launch, GPU_ARGS } = require("../browser");
 const { BASE_URL } = require("../routes");
 
 const LOCALES = ["zh-Hant-TW", "en-US", "zh-Hans-CN", "ja-JP", "ko-KR"];
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
 
-// SwiftShader: software GL for a browser with no GPU (CI). The second flag is
-// required by recent Chromium, which gates SwiftShader fallback behind it.
-const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
 const NO_GL_ARGS = ["--disable-gpu", "--disable-webgl", "--disable-3d-apis", "--disable-software-rasterizer"];
 
 // Share of pixels in the canvas box that must differ from paper. The water is

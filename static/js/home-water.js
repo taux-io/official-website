@@ -10,8 +10,8 @@
   'use strict';
 
   // THE DEEPEST THE WATER EVER GETS: the share of --water-rgb in the darkest
-  // facet, the rest being paper, 0..1. This is the contrast knob (no veil sits
-  // on top): `npm run check:hero-water` fails if a change here, or to
+  // facet, the rest being paper, 0..1. This is the contrast knob (no darkening veil sits
+  // on top; the fade to paper at the bottom edge does not count): `npm run check:hero-water` fails if a change here, or to
   // --water-rgb, takes any hero text under AA or leaves it less than 0.1 to spare.
   const WATER_MAX_DEPTH = 0.7;
 

@@ -394,7 +394,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 
 **最多兩塊墨版。** 一塊主墨版（Charcoal）、一塊副墨版（Cobalt）。**紙不算墨版。**
 
-**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 115 198 182`（`#73C6B6`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-water.js` 讀它、由著色器畫在 canvas 上（同一支著色器在固定時間畫一次的靜態圖給手機、減少動態與無 WebGL 用）。最深的那一面是「水面色占 `WATER_MAX_DEPTH`（0.7）、紙色占其餘」，即 `156 214 202`，上面**沒有任何遮罩**；hero 內的文字全是墨色，壓在它上面 7.65:1。規則 25 把它關在 `--water-rgb` 的宣告那一行。
+**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 115 198 182`（`#73C6B6`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-water.js` 讀它、由著色器畫在 canvas 上（同一支著色器在固定時間畫一次的靜態圖給手機、減少動態與無 WebGL 用）。最深的那一面是「水面色占 `WATER_MAX_DEPTH`（0.7）、紙色占其餘」，即 `156 214 202`，上面**沒有壓暗用的遮罩**（canvas 與靜態圖的底緣淡出到紙色的漸層不算）；hero 內的文字全是墨色，壓在它上面 7.65:1。規則 25 把它關在 `--water-rgb` 的宣告那一行。
 
 **深淺不是新的顏色，是同一塊版的密度階。** 參考站的原話：darker coverage may appear near-black and sparse halftones may appear pale — these are density changes, not extra inks。所以本站的三階墨色從「三個獨立的灰」改寫成「主墨版的三個覆蓋率」，而分隔線是第四個覆蓋率。
 

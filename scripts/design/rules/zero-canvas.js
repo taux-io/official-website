@@ -6,7 +6,7 @@ const { lineOf } = require("../lib");
 // script behind it is still a canvas the next change will find a use for.
 //
 // ONE EXEMPTION, decided by the owner (DESIGN.md decision 181, replaced by 182): the home
-// hero's water-ridge background, `<canvas data-home-water>`, and only in a home page
+// hero's water background, `<canvas data-home-water>`, and only in a home page
 // (templates/index.html and templates/<locale>/index.html). It is named by
 // attribute AND by file so a second canvas anywhere else is still a finding —
 // the exemption is a single element, not a category.

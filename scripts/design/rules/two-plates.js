@@ -51,7 +51,7 @@ function ruleTwoPlates(files) {
   }
 
   // THE WATER PLATE IS NEVER PAINTED (decision 182). --water-rgb exists so
-  // static/js/home-water.js can read it; the hero's ridges are drawn by that
+  // static/js/home-water.js can read it; the hero's water is drawn by that
   // script's shader, so no stylesheet declaration has any business using it.
   // The `--` token declaration is the only place it may appear.
   for (const { d, value } of colourBearing(sheet.declarations)) {
