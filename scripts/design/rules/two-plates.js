@@ -50,6 +50,20 @@ function ruleTwoPlates(files) {
     });
   }
 
+  // THE ROCK PLATE IS NEVER PAINTED (decision 182). --rock-rgb exists so
+  // static/js/home-rock.js can read it; the hero's ridges are drawn by that
+  // script's shader, so no stylesheet declaration has any business using it.
+  // The `--` token declaration is the only place it may appear.
+  for (const { d, value } of colourBearing(sheet.declarations)) {
+    if (d.prop.startsWith("--")) continue;
+    if (!plates.stepsIn(value, sheet).some((st) => st.plate === "rock")) continue;
+    found.push({
+      file: d.file,
+      line: d.line,
+      detail: `${d.selector} paints the rock plate — it is read by static/js/home-rock.js and painted by nothing else (decision 182)`,
+    });
+  }
+
   for (const u of colourUtilities(files, sheet)) {
     const hit = plates.plateUtility(u.name);
     if (hit && hit.plate === "spot" && !/(^|\/)_art\.html$/.test(u.file)) {

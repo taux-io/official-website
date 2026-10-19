@@ -26,7 +26,8 @@
      left column is sized to its content, not stretched, so the two read as
      one group instead of two edges of an empty page. -->
 <section id="about-us" class="band relative overflow-hidden">
-    <canvas class="home-digits" data-home-digits aria-hidden="true"></canvas>
+    <canvas class="home-rock" data-home-rock aria-hidden="true"></canvas>
+    <div class="home-rock-veil" aria-hidden="true"></div>
 
     <div class="max-w-6xl mx-auto px-6 relative z-10 w-full py-4 tablet:py-8 laptop:grid laptop:grid-cols-[auto_18rem] laptop:justify-start laptop:grid-rows-[auto_auto_1fr] laptop:gap-x-24" itemscope itemtype="https://schema.org/Organization" itemid="https://taux.io/#organization">
 {% include "_home-facts.html" %}
@@ -68,6 +69,6 @@
 
 {% include "_home-services.html" %}
 
-<script src="/static/js/home-digits.js?v={{ js_version["home-digits.js"] }}" defer></script>
+<script src="/static/js/home-rock.js?v={{ js_version["home-rock.js"] }}" defer></script>
 
 {% include "footer.html" %}
