@@ -18,7 +18,13 @@
 // --water-rgb and --surface-rgb in the authored CSS, so the still cannot drift
 // from the canvas.
 // RERUN IT after changing any of: --water-rgb, --surface-rgb, WATER_MAX_DEPTH, the
-// fragment shader. One line: `npm run build:water`, then commit static/brand/hero-water.webp.
+// fragment shader, or the constants in scripts/lib/water-source.js (STILL).
+// `npm run check:hero-water` goes red until you do. One line:
+// `PLAYWRIGHT_CHANNEL=chrome npm run build:water`, then `npm run build:css`, and
+// commit static/brand/hero-water.webp, ledgers/hero-water-still.txt, src/input.css
+// and static/css/styles.min.css. This script rewrites the `?v=` on the picture's
+// url() in src/input.css: /static/brand is cached for a week, and that is how a
+// visitor with the old picture fetches the new one.
 //
 // Reproducible: the shader has no randomness (its jitter is a sine hash of the
 // facet's lattice cell) and time is a constant, STILL_T below, not a clock. The
@@ -36,27 +42,24 @@ const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
 const waterSource = require("../lib/water-source");
 
-const ROOT = path.join(__dirname, "..", "..");
-const OUT = path.join(ROOT, "static", "brand", "hero-water.webp");
+const { ROOT, STILL, STILL_IMAGE: OUT, STILL_LEDGER, INPUT_CSS } = waterSource;
 
-// 1600x900 is wider than any hero is tall: the stylesheet shows it with
+// 800x450 is wider than any hero is tall: the stylesheet shows it with
 // `background-size: cover`, so a phone sees a centred crop of it.
-const WIDTH = 800;
-const HEIGHT = 450;
-// Shader time, in the shader's own units (the script's `clock * WATER_SPEED`).
-// Chosen by eye: light and shade spread across the whole frame.
-const STILL_T = 4.8;
-const QUALITY = 60;
-const MAX_BYTES = 100 * 1024;
+// STILL.T is shader time in the shader's own units (the script's
+// `clock * WATER_SPEED`). All the constants live in scripts/lib/water-source.js
+// because the staleness gate hashes them too.
+const { WIDTH, HEIGHT, T: STILL_T, QUALITY, ALPHA_QUALITY, EFFORT, MAX_BYTES } = STILL;
+// The same software-GL flags scripts/visual/water.js uses, so a machine or CI
+// runner with no GPU still draws.
+const GPU_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
 
 async function main() {
   const sheet = stylesheet.read();
-  const rgb = waterSource.readWaterRgb(sheet);
-  const paper = waterSource.channels(sheet.token("surface-rgb"), "--surface-rgb");
-  const frag = waterSource.readFrag();
-  const max = waterSource.readMaxDepth();
+  const inputs = waterSource.stillInputs(sheet);
+  const { frag, water: rgb, paper, depth: max } = inputs;
 
-  const browser = await launch();
+  const browser = await launch({ args: GPU_ARGS });
   let dataUrl;
   try {
     const page = await (await browser.newContext({ viewport: { width: WIDTH, height: HEIGHT } })).newPage();
@@ -101,13 +104,21 @@ async function main() {
   }
 
   const png = Buffer.from(dataUrl.split(",")[1], "base64");
-  const webp = await sharp(png).webp({ quality: QUALITY, alphaQuality: 60, effort: 6 }).toBuffer();
+  const webp = await sharp(png).webp({ quality: QUALITY, alphaQuality: ALPHA_QUALITY, effort: EFFORT }).toBuffer();
   if (webp.length > MAX_BYTES) {
     throw new Error(`build-water: ${webp.length} bytes is over the ${MAX_BYTES} budget; lower QUALITY or the size`);
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, webp);
-  console.log(`  ${path.relative(ROOT, OUT)}  ${WIDTH}x${HEIGHT}  ${(webp.length / 1024).toFixed(1)} KB`);
+  fs.writeFileSync(STILL_LEDGER, waterSource.ledgerText(inputs, webp));
+  // The picture's url() carries a ?v= of its own hash (see imageVersion).
+  const v = waterSource.imageVersion(webp);
+  const css = fs.readFileSync(INPUT_CSS, "utf8");
+  const next = css.replace(/url\("\/static\/brand\/hero-water\.webp(?:\?v=[0-9a-f]+)?"\)/, `url("/static/brand/hero-water.webp?v=${v}")`);
+  if (!next.includes(`hero-water.webp?v=${v}`)) throw new Error('src/input.css has no url("/static/brand/hero-water.webp") to version');
+  fs.writeFileSync(INPUT_CSS, next);
+  console.log(`  ${path.relative(ROOT, OUT)}  ${WIDTH}x${HEIGHT}  ${(webp.length / 1024).toFixed(1)} KB  ?v=${v}`);
+  console.log(`  ${path.relative(ROOT, STILL_LEDGER)} and the ?v= in src/input.css updated; now run npm run build:css and commit them with the picture`);
 }
 
 main().catch((e) => {

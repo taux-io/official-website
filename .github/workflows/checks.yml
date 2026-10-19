@@ -137,7 +137,10 @@ jobs:
       # the deepest background the water can make from the numbers that make it
       # (WATER_MAX_DEPTH, --water-rgb, the paper) and holds every text colour
       # the five home templates use to AA, with 0.1 to spare; grey small print
-      # (text-ink-soft) in the hero is refused. No browser, no build.
+      # (text-ink-soft) in the hero is refused. It also fails when the still
+      # shown on phones (static/brand/hero-water.webp) was drawn from an older
+      # shader or palette than the one in the tree (ledgers/hero-water-still.txt);
+      # the message names the rebuild command. No browser, no build.
       - name: hero water keeps its text legible
         run: npm run check:hero-water
 
