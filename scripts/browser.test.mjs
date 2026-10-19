@@ -13,15 +13,21 @@ const MISSING = new Error(
   "browserType.launch: Executable doesn't exist at /x/chromium_headless_shell-1234/chrome-headless-shell",
 );
 
+// What Playwright actually throws for a channel that is not installed.
+const NO_CHANNEL = new Error(
+  "browserType.launch: Chromium distribution 'chrome' is not found at /Applications/Google Chrome.app\nRun \"npx playwright install chrome\"",
+);
+
 // A fake chromium that records calls; `fail` lists the channels ("" = none)
-// that throw MISSING.
+// that throw MISSING (the channel launch throws NO_CHANNEL).
 function fake(fail) {
   const calls = [];
   return {
     calls,
     launch: async (opts) => {
       calls.push(opts);
-      if (fail.includes(opts.channel || "")) throw MISSING;
+      if (fail.includes(opts.channel || ""))
+        throw opts.channel ? NO_CHANNEL : MISSING;
       return { opts };
     },
   };
@@ -48,7 +54,7 @@ test("PLAYWRIGHT_CHANNEL set: used as-is, no fallback, no note", async () => {
 
 test("PLAYWRIGHT_CHANNEL set and failing: error propagates unchanged", async () => {
   const c = fake(["msedge"]);
-  await assert.rejects(run(c, { PLAYWRIGHT_CHANNEL: "msedge" }), MISSING);
+  await assert.rejects(run(c, { PLAYWRIGHT_CHANNEL: "msedge" }), NO_CHANNEL);
   assert.equal(c.calls.length, 1);
 });
 
