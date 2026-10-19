@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --minify",
-    "build:site": "cargo build --release --manifest-path generator/Cargo.toml && ./generator/target/release/generate",
+    "build:site": "cargo run --release --manifest-path generator/Cargo.toml",
     "serve": "wrangler dev --port 8099 --ip 127.0.0.1",
     "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/styles.min.css --watch",
     "check": "cargo fmt --manifest-path generator/Cargo.toml -- --check && cargo clippy --manifest-path generator/Cargo.toml --all-targets -- -D warnings && cargo test --manifest-path generator/Cargo.toml && npm run build:site && npm run check:css && npm run check:classes && npm run check:llms && npm run check:md && npm run check:dates && npm run check:jsonld && npm run check:design && npm run check:routes && npm run check:entity && npm run check:ko && npm run check:i18n && npm run test:worker",
