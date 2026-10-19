@@ -9,7 +9,7 @@ const { ROOT, lineOf } = require("../lib");
 // overflow gate from going red at random lived in exactly one of the three.
 // walk.js owns that now, and this keeps a fourth walker from appearing quietly.
 //
-// TWO NAMED EXEMPTIONS, and naming them is the point — a comment saying "we
+// THREE NAMED EXEMPTIONS, and naming them is the point — a comment saying "we
 // decided not to absorb these" has no teeth.
 //
 //   contract.js walks the same routes but asserts HTTP: headers, redirects,
@@ -17,7 +17,12 @@ const { ROOT, lineOf } = require("../lib");
 //
 //   diff.js walks nothing. It uses Chromium as a PNG decoder to compare two
 //   screenshot sets.
-const WALKER_EXEMPT = new Set(["walk.js", "contract.js", "diff.js"]);
+//
+//   rock.js walks no routes' layout either: it opens the five home pages under
+//   five conditions (desktop, phone, reduced motion, no WebGL) and needs its
+//   own launch flags per condition — SwiftShader on, then every GL path off —
+//   which a shared walker's one browser cannot offer.
+const WALKER_EXEMPT = new Set(["walk.js", "contract.js", "diff.js", "rock.js"]);
 
 function ruleSingleWalker() {
   const dir = path.join(ROOT, "scripts", "visual");
