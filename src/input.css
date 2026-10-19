@@ -594,6 +594,31 @@
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
+  /* THE STILL: the same shader drawn once (scripts/assets/build-rock.js, run
+     with `npm run build:rock`), for every visitor the canvas is not for. It is a
+     sibling like the canvas, under the same veil and the same fade. The script
+     runs on a hover pointer, laptop width and no reduced-motion, so exactly
+     there the still is hidden, and `display: none` also means the browser never
+     fetches it. If WebGL turns out to be unavailable the script sets
+     [data-fallback] and the still comes back. The three conditions below are the
+     script's `desktop` query; change them together (961px = tailwind `laptop`). */
+  .home-rock-still {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/static/brand/hero-rock.webp");
+    background-size: cover;
+    background-position: center;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  @media (min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .home-rock-still:not([data-fallback]) {
+      display: none;
+    }
+  }
+
   .home-rock-veil {
     position: absolute;
     inset: 0;
@@ -2402,6 +2427,7 @@
    NOT GATED, for the same reason as the block above. */
 @media print {
   .home-rock,
+  .home-rock-still,
   .home-rock-veil {
     display: none;
   }
