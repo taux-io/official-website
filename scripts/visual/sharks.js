@@ -3,58 +3,51 @@
 //   npm run serve        (another terminal)
 //   npm run sharks
 //
-// WHY THIS EXISTS. `check:hero-sharks` computes the worst contrast the water can
+// WHY THIS EXISTS. `check:hero-sharks` computes the worst contrast the sharks can
 // make from the numbers in the source; it never opens a page. `contrast` cannot
-// see a <canvas> at all. So a shader that compiles to nothing, a media query
-// that starts the shader on a phone, or a loop that never stops when the hero
-// scrolls away would each leave every other gate green. This drives a browser
-// and asks the page, for each of the five home pages:
+// see a <canvas> at all. So a script that draws nothing, a media query that
+// starts the loop on a phone, or a loop that never stops when the hero scrolls
+// away would each leave every other gate green. This drives a browser and asks
+// the page, for each of the five home pages:
 //
-//   desktop       1440x900, hover, no reduced-motion. WebGL must exist in the
-//                 browser (if it does not, this fails and says so; it never
-//                 skips). The canvas has to have drawn something that is not
-//                 paper, no CSP violation may have fired, and the still must be
-//                 hidden and not downloaded.
-//   scroll        the shader's frame loop stops when the hero is out of view and
-//                 resumes when it is back.
-//   phone         390x844: no one asked for a WebGL context on .home-sharks, the
-//                 loop never ran, the still is visible and answered 200.
+//   desktop       1440x900, hover, no reduced-motion. The canvas (canvas 2D, so
+//                 no GPU and no browser flags are needed) has to have drawn
+//                 something that is not paper, no CSP violation may have fired,
+//                 and the still must be hidden and not downloaded.
+//   scroll        the frame loop stops when the hero is out of view and resumes
+//                 when it is back.
+//   phone         390x844: no one asked for a context on .home-sharks, the loop
+//                 never ran, the still is visible and answered 200.
 //   reduced       desktop + prefers-reduced-motion: the same as the phone.
-//   no-webgl      desktop in a browser with WebGL switched off: the still takes
-//                 over (the script marks it [data-fallback]).
-//
-// A CI RUNNER HAS NO GPU. The first three groups use one browser started with
-// SwiftShader (a software WebGL), so a context exists on a bare Linux box. The
-// no-webgl group uses another, started with every GL path disabled. If the
-// desktop group goes red on CI with "WebGL is not available", the runner's
-// Chromium could not make a software context: that is the environment, not the
-// water. Anything else red names the locale and the condition.
+//   no-2d         desktop where the sharks' canvas cannot make a 2D context (an
+//                 init script makes getContext("2d") answer null for it): the
+//                 still takes over (the script marks it [data-fallback]).
 //
 // The canvas is read by screenshot, with the still hidden, against a screenshot
-// of the same box with the canvas hidden: gl.readPixels outside the frame that
-// drew returns zeros (the buffer is not preserved), so reading the buffer later
-// would not measure the shader. What the canvas leaves behind it is paper.
+// of the same box with the canvas hidden. What the canvas leaves behind it is
+// paper. The still is the OLD water picture until ticket #401, so only that it
+// shows and answers 200 is asserted, not what it looks like.
 
 const sharp = require("sharp");
-const { launch, GPU_ARGS } = require("../browser");
+const { launch } = require("../browser");
 const { BASE_URL } = require("../routes");
 
 const LOCALES = ["zh-Hant-TW", "en-US", "zh-Hans-CN", "ja-JP", "ko-KR"];
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
 
-const NO_GL_ARGS = ["--disable-gpu", "--disable-webgl", "--disable-3d-apis", "--disable-software-rasterizer"];
-
-// Share of pixels in the canvas box that must differ from paper. The water is
-// pale, but every facet of it is a visible step away from paper (the deepest
-// 176 222 212, the middle 236 248 244, the glints white), so nearly the whole
-// top half differs; a blank or a stray pixel is far below this.
-const MIN_INKED_SHARE = 0.02;
-const PIXEL_DELTA = 6;
+// Share of pixels in the part of the canvas box on screen that must differ from
+// paper by more than PIXEL_DELTA on a channel. The grid lines (1px lines at 5%
+// ink, about 11 on a channel) stay under it, so a canvas that drew only the
+// grid is blank; tiles (20% ink and up, about 45) and shark glyphs are over it.
+// The simulation starts from the same moment on every load: its three sharks are
+// 1.6-2.1% of the box here; a blank canvas measures 0.2% (the grid edges).
+const MIN_INKED_SHARE = 0.008;
+const PIXEL_DELTA = 20;
 
 // Frames the loop must make in the 700ms it is watched while it should run
-// (30 fps would be ~20; software GL is slower), and may make while it should
-// not (the one callback already queued when it stopped).
+// (30 fps would be ~20), and may make while it should not (the one callback
+// already queued when it stopped).
 const MIN_FRAMES_RUNNING = 3;
 const MAX_FRAMES_STOPPED = 1;
 
@@ -63,10 +56,10 @@ const notes = [];
 const fail = (locale, cond, msg) => failures.push(`[${locale}] [${cond}] ${msg}`);
 
 // Before any page script: count frames requested FROM home-sharks.js (the page has
-// other animation of its own), note every WebGL context asked of the sharks'
-// canvas, and keep CSP violations the page itself reports.
-function instrument() {
-  window.__sharks = { frames: 0, glOnSharks: 0, csp: [] };
+// other animation of its own), note every 2D context asked of the sharks' canvas
+// (and refuse it when `refuse2d`), and keep CSP violations the page itself reports.
+function instrument(refuse2d) {
+  window.__sharks = { frames: 0, asked: 0, csp: [] };
   const raf = window.requestAnimationFrame.bind(window);
   window.requestAnimationFrame = (f) => {
     if (new Error().stack.includes("home-sharks")) window.__sharks.frames++;
@@ -74,16 +67,19 @@ function instrument() {
   };
   const get = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
-    if (/webgl/.test(String(type)) && this.classList.contains("home-sharks")) window.__sharks.glOnSharks++;
+    if (String(type) === "2d" && this.classList.contains("home-sharks")) {
+      window.__sharks.asked++;
+      if (refuse2d) return null;
+    }
     return get.call(this, type, ...rest);
   };
   document.addEventListener("securitypolicyviolation", (e) => window.__sharks.csp.push(`${e.violatedDirective} ${e.blockedURI}`));
 }
 
-async function open(browser, locale, cond, contextOptions) {
+async function open(browser, locale, cond, contextOptions, refuse2d = false) {
   const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
-  await page.addInitScript(instrument);
+  await page.addInitScript(instrument, refuse2d);
   const seen = { stills: [], console: [], errors: [] };
   page.on("response", (r) => { if (/hero-sharks/.test(r.url())) seen.stills.push(r.status()); });
   page.on("console", (m) => { if (/Content Security Policy|violates the following/i.test(m.text())) seen.console.push(m.text()); });
@@ -113,7 +109,7 @@ async function inkedShare(page) {
   // Through the CSSOM: the page's CSP (style-src 'self') refuses an injected <style>.
   await page.evaluate(() => document.querySelectorAll(".home-sharks-still").forEach((e) => e.style.setProperty("display", "none", "important")));
   const clip = await box.boundingBox();
-  const region = { x: clip.x, y: clip.y, width: clip.width, height: Math.min(clip.height * 0.5, DESKTOP.height - clip.y) };
+  const region = { x: clip.x, y: clip.y, width: clip.width, height: Math.min(clip.height, DESKTOP.height - clip.y) };
   const read = async () => {
     const { data, info } = await sharp(await page.screenshot({ clip: region })).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     return { data, info };
@@ -132,20 +128,14 @@ async function inkedShare(page) {
 async function desktopGroups(browser, locale) {
   const cond = "desktop";
   const { context, page, seen } = await open(browser, locale, cond, { viewport: DESKTOP, reducedMotion: "no-preference" });
-  const webgl = await page.evaluate(() => !!document.createElement("canvas").getContext("webgl"));
-  if (!webgl) {
-    fail(locale, cond, `WebGL is not available in this browser (launched with ${GPU_ARGS.join(" ")}); the desktop check cannot run. On CI this means the runner's Chromium could not make a software context, which is the environment and not the water.`);
-    await context.close();
-    return;
-  }
   const fell = await stillState(page);
-  if (fell.fallback) fail(locale, cond, "WebGL exists but the script put the still up ([data-fallback]): the shader failed to compile or link");
-  if (fell.display !== "none" && !fell.fallback) fail(locale, cond, `the still is visible (display ${fell.display}) while the shader should be drawing`);
+  if (fell.fallback) fail(locale, cond, "the script put the still up ([data-fallback]) although the 2D context is available: init failed (a missing token or SharksSim?)");
+  if (fell.display !== "none" && !fell.fallback) fail(locale, cond, `the still is visible (display ${fell.display}) while the sharks should be drawing`);
   if (seen.stills.length && !fell.fallback) fail(locale, cond, `the still was downloaded (${seen.stills.join(",")}) although hidden`);
   const running = await framesOver(page, 700);
-  if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the shader is not running`);
+  if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the sharks are not running`);
   const share = await inkedShare(page);
-  if (!(share >= MIN_INKED_SHARE)) fail(locale, cond, `the canvas is blank: ${(share * 100).toFixed(2)}% of its top half differs from paper (needs ${MIN_INKED_SHARE * 100}%+)`);
+  if (!(share >= MIN_INKED_SHARE)) fail(locale, cond, `the canvas is blank: ${(share * 100).toFixed(2)}% of the canvas differs from paper (needs ${MIN_INKED_SHARE * 100}%+)`);
   const csp = [...seen.console, ...(await page.evaluate(() => window.__sharks.csp))];
   if (csp.length) fail(locale, cond, `CSP violation: ${csp.join(" | ")}`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
@@ -163,46 +153,42 @@ async function desktopGroups(browser, locale) {
   await context.close();
 }
 
-async function stillOnly(browser, locale, cond, contextOptions, expectGlAsked) {
+async function stillOnly(browser, locale, cond, contextOptions) {
   const { context, page, seen } = await open(browser, locale, cond, contextOptions);
-  const asked = await page.evaluate(() => window.__sharks.glOnSharks);
+  const asked = await page.evaluate(() => window.__sharks.asked);
   const ran = await framesOver(page, 700);
   const total = await frames(page);
-  if (!expectGlAsked && asked) fail(locale, cond, `${asked} WebGL context request(s) on .home-sharks: the shader started where it must not`);
-  if (!expectGlAsked && (total || ran > MAX_FRAMES_STOPPED)) fail(locale, cond, `the frame loop ran (${total} frames): the shader started where it must not`);
+  if (asked) fail(locale, cond, `${asked} 2D context request(s) on .home-sharks: the sharks started where they must not`);
+  if (total || ran > MAX_FRAMES_STOPPED) fail(locale, cond, `the frame loop ran (${total} frames): the sharks started where they must not`);
   const s = await stillState(page);
   if (s.display === "none" || s.h <= 0) fail(locale, cond, `the still is not visible (display ${s.display}, height ${s.h})`);
   if (!/hero-sharks/.test(s.image)) fail(locale, cond, `the still has no image (${s.image})`);
   if (!seen.stills.length) fail(locale, cond, "the still image was never requested");
   else if (seen.stills.some((c) => c !== 200)) fail(locale, cond, `the still answered ${seen.stills.join(",")}, not 200`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
-  notes.push(`${locale.padEnd(11)} ${cond}: asked WebGL ${asked}x, ${total} frames, still ${s.display} ${seen.stills.join(",")}`);
+  notes.push(`${locale.padEnd(11)} ${cond}: asked 2D ${asked}x, ${total} frames, still ${s.display} ${seen.stills.join(",")}`);
   await context.close();
 }
 
 (async () => {
-  const gpu = await launch({ args: GPU_ARGS });
-  const nogl = await launch({ args: NO_GL_ARGS });
+  const browser = await launch();
   for (const locale of LOCALES) {
-    await desktopGroups(gpu, locale);
-    await stillOnly(gpu, locale, "phone", { viewport: PHONE, isMobile: true, hasTouch: true }, false);
-    await stillOnly(gpu, locale, "reduced-motion", { viewport: DESKTOP, reducedMotion: "reduce" }, false);
+    await desktopGroups(browser, locale);
+    await stillOnly(browser, locale, "phone", { viewport: PHONE, isMobile: true, hasTouch: true });
+    await stillOnly(browser, locale, "reduced-motion", { viewport: DESKTOP, reducedMotion: "reduce" });
 
-    // The browser must truly have no WebGL, or the condition below tests nothing.
-    const probe = await open(nogl, locale, "no-webgl", { viewport: DESKTOP, reducedMotion: "no-preference" });
-    const has = await probe.page.evaluate(() => !!document.createElement("canvas").getContext("webgl"));
-    if (has) fail(locale, "no-webgl", `this browser still has WebGL despite ${NO_GL_ARGS.join(" ")}; the fallback cannot be tested here`);
-    else {
-      const s = await stillState(probe.page);
-      if (!s.fallback) fail(locale, "no-webgl", "WebGL is unavailable but the still was not marked [data-fallback]");
-      if (s.display === "none" || s.h <= 0) fail(locale, "no-webgl", `WebGL is unavailable and the still is not visible (display ${s.display}, height ${s.h})`);
-      if (probe.seen.stills.some((c) => c !== 200) || !probe.seen.stills.length) fail(locale, "no-webgl", `the still answered ${probe.seen.stills.join(",") || "nothing"}, not 200`);
-      notes.push(`${locale.padEnd(11)} no-webgl: still ${s.display}, data-fallback ${s.fallback}, ${probe.seen.stills.join(",")}`);
-    }
+    // The sharks' canvas gets no 2D context: the still must take over.
+    const probe = await open(browser, locale, "no-2d", { viewport: DESKTOP, reducedMotion: "no-preference" }, true);
+    const asked = await probe.page.evaluate(() => window.__sharks.asked);
+    if (!asked) fail(locale, "no-2d", "the script never asked for a 2D context, so the fallback was not exercised");
+    const s = await stillState(probe.page);
+    if (!s.fallback) fail(locale, "no-2d", "the 2D context was refused but the still was not marked [data-fallback]");
+    if (s.display === "none" || s.h <= 0) fail(locale, "no-2d", `the 2D context was refused and the still is not visible (display ${s.display}, height ${s.h})`);
+    if (probe.seen.stills.some((c) => c !== 200) || !probe.seen.stills.length) fail(locale, "no-2d", `the still answered ${probe.seen.stills.join(",") || "nothing"}, not 200`);
+    notes.push(`${locale.padEnd(11)} no-2d: still ${s.display}, data-fallback ${s.fallback}, ${probe.seen.stills.join(",")}`);
     await probe.context.close();
   }
-  await gpu.close();
-  await nogl.close();
+  await browser.close();
 
   console.log(notes.join("\n"));
   if (failures.length) {

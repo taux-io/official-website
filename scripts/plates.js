@@ -33,10 +33,14 @@
 // Every plate this vocabulary has. The substrate is listed because a colour may
 // legitimately BE the paper, but it is not an ink: DESIGN.md counts two plates,
 // and paper is what they are printed on.
-const PLATE_TOKENS = { surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb", spot: "spot-rgb", water: "water-rgb" };
-// `water` is the hero background's teal (decision 182). It is a plate here so the
-// colour solves to something, and two-plates.js then lets it exist only as the
-// token declaration: the script reads it, no rule may paint it.
+const PLATE_TOKENS = {
+  surface: "surface-rgb", ink: "ink-rgb", primary: "primary-rgb", spot: "spot-rgb",
+  shark1: "shark-1-rgb", shark2: "shark-2-rgb", shark3: "shark-3-rgb", shark4: "shark-4-rgb",
+};
+// `shark1`..`shark4` are the hero background's four glyph tints (decision 183;
+// they replace the water plate of 182). They are plates here so the colours
+// solve to something, and two-plates.js then lets them exist only as the
+// `--shark-N-rgb` declarations: static/js/home-sharks.js reads them, no rule may paint them.
 
 // THE DECLARED LADDER, and like `tracking scale` and `radius scale` before it,
 // the point is that it is closed. Every value here was measured off a colour

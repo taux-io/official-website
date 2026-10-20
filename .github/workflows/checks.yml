@@ -132,15 +132,15 @@ jobs:
         run: npm run check:design
 
       # The home hero's sharks background is a <canvas>, a SIBLING of the hero's
-      # text, so `contrast` (which walks ancestors) cannot see it: the water
-      # could be as deep as you like with that audit still green. This computes
-      # the deepest background the water can make from the numbers that make it
-      # (WATER_MAX_DEPTH, --water-rgb, the paper) and holds every text colour
-      # the five home templates use to AA, with 0.1 to spare; grey small print
-      # (text-ink-soft) in the hero is refused. It also fails when the still
-      # shown on phones (static/brand/hero-sharks.webp) was drawn from an older
-      # shader or palette than the one in the tree (ledgers/hero-sharks-still.txt);
-      # the message names the rebuild command. No browser, no build.
+      # text, so `contrast` (which walks ancestors) cannot see it. This computes
+      # the worst background the sharks can make behind text (the simulation's
+      # TEXT_FADE_MAX of ink plus the grid line over the paper) and holds every
+      # text colour the five home templates use to AA, with 0.1 to spare; grey
+      # small print (text-ink-soft) in the hero is refused. It also holds the
+      # palette (exactly four --shark-N-rgb, matching anything the scripts say)
+      # and the size of home-sharks.js + sharks-sim.js (14336 bytes together).
+      # The phone still is the OLD water picture until #401 and is not gated
+      # here. No browser, no build.
       - name: hero sharks keep their text legible
         run: npm run check:hero-sharks
 
@@ -273,13 +273,11 @@ jobs:
         run: npm run contract
 
       # The home hero's sharks background, driven in a real browser: check:hero-sharks
-      # never opens a page and contrast cannot see a <canvas>, so a shader that
+      # never opens a page and contrast cannot see a <canvas>, so a script that
       # draws nothing, one that starts on a phone, or a loop that never stops
-      # when the hero scrolls away would leave both green. The runner has no
-      # GPU; the desktop conditions start Chromium with SwiftShader and assert
-      # WebGL exists first. If this fails with "WebGL is not available", the
-      # runner's Chromium could not make a software context (environment, not
-      # the sharks); any other message names the locale and the condition.
+      # when the hero scrolls away would leave both green. It is canvas 2D, so
+      # the runner needs no GPU and no special Chromium flags; the message
+      # names the locale and the condition.
       - name: hero sharks run where it should
         run: npm run sharks
 

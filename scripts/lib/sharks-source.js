@@ -1,36 +1,24 @@
-// Reads the home hero's sharks background out of its single sources, so the
-// checks and the still builder do not each keep their own regex for them.
+// Reads the home hero's sharks background out of its single sources, so
+// check:hero-sharks keeps no regex of its own for them.
 //
-//   · WATER_MAX_DEPTH and the fragment shader   static/js/home-sharks.js
-//   · --water-rgb (and any other three-channel token)   the authored CSS
+//   · TEXT_FADE_MAX and the ladder             static/js/sharks-sim.js
+//   · the tint tokens the script reads         static/js/home-sharks.js
+//   · --shark-N-rgb, --ink-rgb, --surface-rgb  the authored CSS
 //
-// Used by scripts/check-hero-sharks.js and scripts/assets/build-sharks.js. Every
-// failure THROWS an Error; each caller decides how to report it.
+// Every failure THROWS an Error; the caller decides how to report it.
+// (The still's staleness ledger that used to live here hashed the water shader;
+// ticket #401 rebuilds that pipeline for the sharks.)
 
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
 
 const ROOT = path.join(__dirname, "..", "..");
 const SCRIPT = path.join(ROOT, "static", "js", "home-sharks.js");
-const STILL_IMAGE = path.join(ROOT, "static", "brand", "hero-sharks.webp");
-const STILL_LEDGER = path.join(ROOT, "ledgers", "hero-sharks-still.txt");
-const INPUT_CSS = path.join(ROOT, "src", "input.css");
+const SIM = path.join(ROOT, "static", "js", "sharks-sim.js");
+// home-sharks.js and sharks-sim.js TOGETHER (spec #396); a limit, not a target.
+const SIZE_LIMIT = 14336;
 
-// Everything in scripts/assets/build-sharks.js that decides what the still looks
-// like, kept here so the builder and the staleness gate read ONE copy. T is the
-// shader's own time; the rest is the canvas size and the encoder's settings.
-// Change any of them and the ledger no longer matches until the still is rebuilt.
-// T = 9 was picked from a sweep of the shader over t = 0..60: the light mass sits
-// right and top, so the left, where the hero's text is, is calm water; and fewer
-// of its 20px blocks are a flat colour than at most other moments.
-const STILL = { T: 9, WIDTH: 800, HEIGHT: 450, QUALITY: 60, ALPHA_QUALITY: 60, EFFORT: 6 };
-// The file-size budget is a threshold the builder checks, not an input to the
-// picture, so it is kept out of STILL and out of the ledger's hash: changing it
-// must not make a correct still look stale.
-const STILL_MAX_BYTES = 100 * 1024;
-
-const source = () => fs.readFileSync(SCRIPT, "utf8");
+const text = (file) => fs.readFileSync(file, "utf8");
 
 // "20 220 190" -> [20, 220, 190]. `what` names the token in the error.
 function channels(value, what) {
@@ -41,79 +29,59 @@ function channels(value, what) {
   return c;
 }
 
-function readMaxDepth() {
-  const m = /const\s+WATER_MAX_DEPTH\s*=\s*([0-9.]+)\s*;/.exec(source());
-  if (!m) throw new Error("static/js/home-sharks.js has no `const WATER_MAX_DEPTH = <number>;`");
-  const v = Number(m[1]);
-  if (!(v > 0 && v <= 1)) throw new Error(`WATER_MAX_DEPTH ${m[1]} is outside 0..1`);
-  return v;
+// What the simulation promises: the most ink a cell holds inside a text box,
+// and the first (lightest) ladder step, which is also the grid line's ink.
+function simConstants() {
+  delete require.cache[SIM];
+  const sim = require(SIM);
+  const fade = sim.TEXT_FADE_MAX;
+  const grid = sim.LADDER && sim.LADDER[0];
+  if (!(fade > 0 && fade < 1)) throw new Error(`static/js/sharks-sim.js TEXT_FADE_MAX ${fade} is not in 0..1`);
+  if (!(grid > 0 && grid < 1)) throw new Error("static/js/sharks-sim.js exports no LADDER whose first step is a coverage in 0..1");
+  return { fade, grid };
 }
 
-function readFrag() {
-  const m = /const FRAG = `([\s\S]*?)`;/.exec(source());
-  if (!m) throw new Error("static/js/home-sharks.js has no `const FRAG = \\`...\\`;`");
-  return m[1];
+// Every --shark-*-rgb the authored CSS declares, as { "--shark-1-rgb": [r,g,b] }.
+// Exactly four, numbered 1..4, or it throws.
+function readTints(sheet) {
+  const names = [...sheet.tokens.keys()].filter((k) => /^--shark-.*-rgb$/.test(k));
+  const want = [1, 2, 3, 4].map((n) => `--shark-${n}-rgb`);
+  const extra = names.filter((n) => !want.includes(n));
+  if (extra.length) throw new Error(`${extra.join(", ")} declared: the sharks have exactly four tints (--shark-1-rgb .. --shark-4-rgb); another one is a new colour, which needs the owner (DESIGN.md decision 183)`);
+  const out = {};
+  for (const n of want) {
+    const v = sheet.token(n);
+    if (v == null) throw new Error(`${n} is not declared in the authored CSS`);
+    out[n] = channels(v, n);
+  }
+  return out;
 }
 
-// --water-rgb from an authored-stylesheet reader (scripts/stylesheet `read()`).
-function readWaterRgb(sheet) {
-  const v = sheet.token("water-rgb");
-  if (v == null) throw new Error("--water-rgb not found in the authored CSS");
-  return channels(v, "--water-rgb");
+// The tints the scripts themselves know of, so a change in a script cannot
+// drift from the stylesheet. Three things are read, and each must be found:
+//   · every colour literal in either script (`rgb(r g b)`, `rgb(r, g, b)`,
+//     `#hex`, or a quoted `'r g b'` triple); each must be one of the
+//     stylesheet's four. The scripts are meant to hold none, so the usual
+//     answer is an empty list;
+//   · the number of tints the simulation can pick (`H(..., 4000) * N`);
+//   · the list of --shark-N tokens the script reads (`[1, 2, 3, 4].map`).
+function scriptTints() {
+  const strip = (s) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  const literals = [];
+  for (const file of [SCRIPT, SIM]) {
+    const src = strip(text(file));
+    const where = path.relative(ROOT, file);
+    for (const m of src.matchAll(/rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})/g)) literals.push({ where, rgb: [+m[1], +m[2], +m[3]], text: m[0] });
+    for (const m of src.matchAll(/#[0-9a-fA-F]{6}\b/g)) literals.push({ where, rgb: [1, 3, 5].map((i) => parseInt(m[0].slice(i, i + 2), 16)), text: m[0] });
+    for (const m of src.matchAll(/['"`](\d{1,3}) (\d{1,3}) (\d{1,3})['"`]/g)) literals.push({ where, rgb: [+m[1], +m[2], +m[3]], text: m[0] });
+  }
+  const pick = /H\([^()]*\b4000\b[^()]*\)\s*\*\s*(\d+)/.exec(strip(text(SIM)));
+  if (!pick) throw new Error("static/js/sharks-sim.js no longer picks a tint as `H(..., 4000) * <count>`; teach scripts/lib/sharks-source.js the new form so the tint count stays held");
+  const read = /\[([\d,\s]+)\]\.map\(\(n\) => `rgb\(\$\{token\(`--shark-\$\{n\}-rgb`\)\}\)`\)/.exec(text(SCRIPT));
+  if (!read) throw new Error("static/js/home-sharks.js no longer reads its tints as `[1, 2, 3, 4].map((n) => `rgb(${token(`--shark-${n}-rgb`)})`)`; teach scripts/lib/sharks-source.js the new form so the tint count stays held");
+  return { literals, simPicks: Number(pick[1]), scriptReads: read[1].split(",").map((s) => Number(s.trim())).filter(Number.isFinite) };
 }
 
-const sha = (data) => crypto.createHash("sha256").update(data).digest("hex");
+const sizes = () => ({ script: fs.statSync(SCRIPT).size, sim: fs.statSync(SIM).size, limit: SIZE_LIMIT });
 
-// What the still is made from: the fragment shader, the two colours it mixes
-// (--water-rgb, and the paper, --surface-rgb), WATER_MAX_DEPTH and STILL.
-// `sheet` is a scripts/stylesheet `read()`.
-function stillInputs(sheet) {
-  return {
-    frag: readFrag(),
-    water: readWaterRgb(sheet),
-    paper: channels(sheet.token("surface-rgb"), "--surface-rgb"),
-    depth: readMaxDepth(),
-    still: STILL,
-  };
-}
-
-const stillDigest = (inputs) => sha(JSON.stringify(inputs));
-
-// The first 10 hex digits of the image's own hash: the `?v=` on its url() in
-// src/input.css. /static/brand/* is cached for a week (_headers), and a url()
-// inside the stylesheet has no js_version to ride on, so this is what makes a
-// returning visitor ask for the new picture.
-const imageVersion = (bytes) => sha(bytes).slice(0, 10);
-
-const ledgerText = (inputs, image) =>
-  [
-    "# Which shader the home hero's still (static/brand/hero-sharks.webp) was drawn from.",
-    "#",
-    "# Generated by `PLAYWRIGHT_CHANNEL=chrome npm run build:sharks` and checked by",
-    "# `npm run check:hero-sharks`, which needs no browser: it hashes the shader, the",
-    "# two colours, WATER_MAX_DEPTH and the builder's constants again and fails if",
-    "# they differ from this file. The image's own hash is here too, so a picture",
-    "# swapped by hand is as stale as a shader changed without a rebuild.",
-    "#",
-    `# water-rgb  ${inputs.water.join(" ")}`,
-    `# paper      ${inputs.paper.join(" ")}`,
-    `# max-depth  ${inputs.depth}`,
-    `# still      ${JSON.stringify(inputs.still)}`,
-    "",
-    `inputs ${stillDigest(inputs)}`,
-    `image ${sha(image)}`,
-    "",
-  ].join("\n");
-
-function readLedger() {
-  if (!fs.existsSync(STILL_LEDGER)) return null;
-  const text = fs.readFileSync(STILL_LEDGER, "utf8");
-  const get = (k) => (new RegExp(`^${k} ([0-9a-f]{64})$`, "m").exec(text) || [])[1] || null;
-  return { inputs: get("inputs"), image: get("image") };
-}
-
-module.exports = {
-  ROOT, INPUT_CSS, STILL, STILL_MAX_BYTES, STILL_IMAGE, STILL_LEDGER,
-  channels, readMaxDepth, readFrag, readWaterRgb,
-  stillInputs, stillDigest, imageVersion, ledgerText, readLedger, sha,
-};
+module.exports = { ROOT, SCRIPT, SIM, SIZE_LIMIT, channels, simConstants, readTints, scriptTints, sizes };
