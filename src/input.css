@@ -632,7 +632,14 @@
 
   @media (max-width: 599px) {
     .home-sharks-still {
-      background-image: url("/static/brand/hero-sharks-portrait.webp?v=7c3d2f4e82");
+      background-image: url("/static/brand/hero-sharks-portrait.webp?v=e563442bf9");
+      /* 1 image px = 1 CSS px, from the top left: the picture's cells are 8x12
+         CSS px on every phone, and the faded cells sit under the text's lines
+         because build-sharks.js drew them from those very positions (ticket
+         #403). Not `cover`: scaling by the hero's height would slide them. */
+      background-size: 600px 900px;
+      background-position: left top;
+      background-repeat: no-repeat;
     }
   }
 
