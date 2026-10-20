@@ -14,6 +14,8 @@
 //                 no GPU and no browser flags are needed) has to have drawn
 //                 something that is not paper, no CSP violation may have fired,
 //                 and the still must be hidden and not downloaded.
+//   sharks        every frame the page asks SharksSim for holds 3 or 4 sharks (the
+//                 page's own calls are observed, not a re-run of the simulation).
 //   text lines    under every line of the hero's text the canvas holds at most
 //                 TEXT_CAP of alpha (12% ink and the 5% grid line, the numbers
 //                 check:hero-sharks computes its worst case from), read from
@@ -55,6 +57,9 @@ const PIXEL_DELTA = 20;
 // 1 - (1 - 0.12) * (1 - 0.05) = 0.164, plus rounding and glyph edges.
 const TEXT_CAP = Math.ceil(0.18 * 255);
 const MIN_FRAMES_RUNNING = 3;
+// Sharks in every frame the page draws (spec #396: 3, at most 4).
+const MIN_SHARKS = 3;
+const MAX_SHARKS = 4;
 const MAX_FRAMES_STOPPED = 1;
 
 const failures = [];
@@ -65,7 +70,20 @@ const fail = (locale, cond, msg) => failures.push(`[${locale}] [${cond}] ${msg}`
 // other animation of its own), note every 2D context asked of the sharks' canvas
 // (and refuse it when `refuse2d`), and keep CSP violations the page itself reports.
 function instrument(refuse2d) {
-  window.__sharks = { frames: 0, asked: 0, csp: [] };
+  window.__sharks = { frames: 0, asked: 0, csp: [], drawn: 0, minSharks: 99, maxSharks: 0 };
+  // Every frame the page asks SharksSim for: how many sharks it was handed.
+  let sim;
+  Object.defineProperty(window, "SharksSim", {
+    configurable: true,
+    get: () => sim,
+    set: (v) => {
+      sim = v && typeof v.frame === "function" ? { ...v, frame: (...a) => {
+        const out = v.frame(...a), n = out.sharks.length, s = window.__sharks;
+        s.drawn++; s.minSharks = Math.min(s.minSharks, n); s.maxSharks = Math.max(s.maxSharks, n);
+        return out;
+      } } : v;
+    },
+  });
   const raf = window.requestAnimationFrame.bind(window);
   window.requestAnimationFrame = (f) => {
     if (new Error().stack.includes("home-sharks")) window.__sharks.frames++;
@@ -170,6 +188,9 @@ async function desktopGroups(browser, locale) {
   if (seen.stills.length && !fell.fallback) fail(locale, cond, `the still was downloaded (${seen.stills.join(",")}) although hidden`);
   const running = await framesOver(page, 700);
   if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the sharks are not running`);
+  const sh = await page.evaluate(() => window.__sharks);
+  if (!sh.drawn) fail(locale, cond, "the page never asked SharksSim for a frame: no sharks were simulated");
+  else if (sh.minSharks < MIN_SHARKS || sh.maxSharks > MAX_SHARKS) fail(locale, cond, `${sh.minSharks}-${sh.maxSharks} sharks in the frames the page drew (needs ${MIN_SHARKS}-${MAX_SHARKS})`);
   const share = await inkedShare(page);
   if (!(share >= MIN_INKED_SHARE)) fail(locale, cond, `the canvas is blank: ${(share * 100).toFixed(2)}% of the canvas differs from paper (needs ${MIN_INKED_SHARE * 100}%+)`);
   const under = await maxAlphaUnderText(page);
@@ -188,7 +209,7 @@ async function desktopGroups(browser, locale) {
   const back = await framesOver(page, 700);
   if (away > MAX_FRAMES_STOPPED) fail(locale, "scroll", `${away} frames in 700ms with the hero out of view (allowed ${MAX_FRAMES_STOPPED}): the loop did not stop`);
   if (back < MIN_FRAMES_RUNNING) fail(locale, "scroll", `${back} frames in 700ms after scrolling back (needs ${MIN_FRAMES_RUNNING}+): the loop did not resume`);
-  notes.push(`${locale.padEnd(11)} desktop: ${running} frames/700ms, ${(share * 100).toFixed(1)}% inked, max alpha under ${under.lines} text lines ${under.alpha}/${TEXT_CAP}, scrolled away ${away}, back ${back}`);
+  notes.push(`${locale.padEnd(11)} desktop: ${running} frames/700ms, ${(share * 100).toFixed(1)}% inked, ${sh.minSharks}-${sh.maxSharks} sharks, max alpha under ${under.lines} text lines ${under.alpha}/${TEXT_CAP}, scrolled away ${away}, back ${back}`);
   await context.close();
 }
 
