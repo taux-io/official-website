@@ -28,7 +28,16 @@
 //   (c) `text-ink-soft` anywhere in the hero fails whatever the numbers say;
 //   (d) a hero text colour this file does not recognise ERRORS, it is never skipped;
 //   (e) static/js/home-sharks.js + static/js/sharks-sim.js together are at most
-//       14336 bytes. Raise nothing quietly: that number is the spec's.
+//       14336 bytes. Raise nothing quietly: that number is the spec's;
+//   (f) the stills. Phones, tablets, reduced-motion and the no-canvas fallback
+//       see two WebPs (static/brand/hero-sharks-landscape.webp and -portrait.webp)
+//       drawn from the simulation. Nobody notices a picture going stale: it still
+//       loads, it is merely last season's sharks. ledgers/hero-sharks-still.txt
+//       holds a hash of what they were drawn from (simulation source with
+//       comments stripped, the builder, the tints, paper, ink, cell sizes, the
+//       moments, the seeds, the encoder; never pixels) and of each image; this
+//       recomputes them, checks each url() in src/input.css carries ?v=<the
+//       image's hash>, and that each image is within its byte budget.
 //
 // WHERE EVERY NUMBER COMES FROM, none of it written here: TEXT_FADE_MAX and the
 // ladder from the simulation (required), the tokens from AUTHORED src/input.css
@@ -42,8 +51,6 @@
 // gates use. Large text (>= 24px, or >= 18.66px and bold; scripts/visual/
 // contrast.js) needs 3:1, everything else 4.5:1. MARGIN is the headroom the
 // shipped values must keep so a rounding change in a token does not flip it.
-// The still (static/brand/hero-sharks.webp) is the OLD water picture until
-// ticket #401 and has no gate here: NOTES.md says so.
 
 const fs = require("fs");
 const path = require("path");
@@ -220,13 +227,43 @@ function checkSize() {
   return { ...z, total };
 }
 
+const REBUILD = `run \`${sharksSource.REGEN}\`, then commit static/brand/hero-sharks-landscape.webp, static/brand/hero-sharks-portrait.webp, ledgers/hero-sharks-still.txt, src/input.css and static/css/styles.min.css`;
+
+// (f) the two stills against the ledger and the stylesheet.
+function checkStills() {
+  const inputs = orFail(sharksSource.stillInputs)(read());
+  const ledger = sharksSource.readLedger();
+  if (!ledger || !ledger.inputs || !ledger.landscape || !ledger.portrait) fail(`ledgers/hero-sharks-still.txt is missing or unreadable; ${REBUILD}`);
+  if (sharksSource.stillDigest(inputs) !== ledger.inputs) {
+    fail(`the hero's stills are out of date: the simulation, a tint, the paper or ink colour, the cell sizes, a still's moment or seed, or the builder changed since they were drawn (a comment alone does not count); ${REBUILD}`);
+  }
+  const css = fs.readFileSync(sharksSource.INPUT_CSS, "utf8");
+  const out = [];
+  for (const name of ["landscape", "portrait"]) {
+    const file = sharksSource.stillPath(name);
+    const rel = path.relative(ROOT, file);
+    if (!fs.existsSync(file)) fail(`${rel} is missing; ${REBUILD}`);
+    const bytes = fs.readFileSync(file);
+    if (sharksSource.sha(bytes) !== ledger[name]) fail(`${rel} is not the picture the ledger recorded (it was replaced or edited by hand); ${REBUILD}`);
+    if (bytes.length > sharksSource.STILL_MAX_BYTES) fail(`${rel} is ${bytes.length} bytes, over the ${sharksSource.STILL_MAX_BYTES} budget; ${REBUILD}`);
+    const v = sharksSource.imageVersion(bytes);
+    const url = new RegExp(`url\\("/static/brand/${sharksSource.STILLS[name].file.replace(".", "\\.")}\\?v=([0-9a-f]+)"\\)`).exec(css);
+    if (!url) fail(`src/input.css has no url("/static/brand/${sharksSource.STILLS[name].file}?v=...") for the ${name} still`);
+    if (url[1] !== v) fail(`src/input.css gives the ${name} still ?v=${url[1]}, but its content hash is ${v}; ${REBUILD}`);
+    out.push(`${name} ${(bytes.length / 1024).toFixed(1)} KB ?v=${v}`);
+  }
+  return { digest: ledger.inputs.slice(0, 10), out };
+}
+
 function main() {
   const r = evaluate();
   const rgb = (c) => c.map((n) => Math.round(n)).join(" ");
   const tints = checkTints();
   const z = checkSize();
+  const st = checkStills();
   console.log(`hero sharks: TEXT_FADE_MAX ${r.fade}, grid line ${r.grid}, ${Object.keys(tints).length} tints (${Object.values(tints).map(rgb).join(" | ")}), paper ${rgb(r.paper)}`);
   console.log(`worst background ${rgb(r.bg)} (ink ${(100 * inkCoverage(r.fade, r.grid)).toFixed(1)}% over paper); ${HOME_TEMPLATES.length} home templates read`);
+  console.log(`stills drawn from the shipped simulation (inputs ${st.digest}): ${st.out.join(", ")}`);
   console.log(`scripts ${z.script} + ${z.sim} = ${z.total} of ${z.limit} bytes`);
   let bad = 0;
   let thin = 0;

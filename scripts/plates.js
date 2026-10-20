@@ -38,7 +38,7 @@ const PLATE_TOKENS = {
   shark1: "shark-1-rgb", shark2: "shark-2-rgb", shark3: "shark-3-rgb", shark4: "shark-4-rgb",
 };
 // `shark1`..`shark4` are the hero background's four glyph tints (decision 183;
-// they replace the water plate of 182). They are plates here so the colours
+// they replace the teal plate of 182). They are plates here so the colours
 // solve to something, and two-plates.js then lets them exist only as the
 // `--shark-N-rgb` declarations: static/js/home-sharks.js reads them, no rule may paint them.
 
