@@ -40,6 +40,7 @@
 const sharp = require("sharp");
 const { launch } = require("../browser");
 const { BASE_URL } = require("../routes");
+const sharksSource = require("../lib/sharks-source");
 
 const LOCALES = ["zh-Hant-TW", "en-US", "zh-Hans-CN", "ja-JP", "ko-KR"];
 const DESKTOP = { width: 1440, height: 900 };
@@ -60,6 +61,11 @@ const PIXEL_DELTA = 20;
 // 1 - (1 - 0.12) * (1 - 0.05) = 0.164, plus rounding and glyph edges.
 const TEXT_CAP = Math.ceil(0.18 * 255);
 const MIN_FRAMES_RUNNING = 3;
+// The phone still (phoneFade): a pixel is "clearly inked" over SHOWN_COVER of 255
+// (the tiles and glyphs the fade leaves alone start at 20% ink, well above the
+// 12% it holds under text) and the share of such pixels must reach MIN_SHOWN.
+const SHOWN_COVER = Math.ceil(0.25 * 255);
+const MIN_SHOWN = 0.005;
 // Sharks in every frame the page draws (spec #396: 3, at most 4).
 const MIN_SHARKS = 3;
 const MAX_SHARKS = 4;
@@ -240,11 +246,65 @@ async function stillOnly(browser, locale, cond, which, contextOptions) {
   await context.close();
 }
 
+// A phone's still, read as the visitor sees it (ticket #403): under every line of
+// the hero's text the picture may hold at most TEXT_CAP of ink, as the desktop
+// canvas does. The page's text is hidden and the still's own box is
+// screenshotted, so what is measured is the picture as the stylesheet places and
+// scales it, not the file; the lines are the same boxes the sharks script fades
+// (lineBoxes). Run at PHONE_WIDTHS in every locale, because the lines wrap
+// differently in each. A picture that was faded by erasing the sharks would
+// pass the cap trivially, so it must also show MIN_SHOWN of its pixels clearly
+// inked somewhere (the unfaded parts).
+async function phoneFade(browser, locale, width) {
+  const cond = `phone-fade ${width}`;
+  const { context, page, seen } = await open(browser, locale, cond, { viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+  const loaded = await page.evaluate(async () => {
+    const still = document.querySelector("[data-home-sharks-still]");
+    const m = /url\("?([^")]+)"?\)/.exec(getComputedStyle(still).backgroundImage);
+    if (!m) return false;
+    return new Promise((done) => { const i = new Image(); i.onload = () => done(true); i.onerror = () => done(false); i.src = m[1]; });
+  });
+  if (!loaded) fail(locale, cond, "the still's picture did not load");
+  const { lines, hero } = await page.evaluate(sharksSource.lineBoxes);
+  const tokens = await page.evaluate(() => {
+    const t = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim().split(/\s+/).map(Number);
+    return { paper: t("--surface-rgb"), ink: t("--ink-rgb") };
+  });
+  if (lines.length < 5) fail(locale, cond, `only ${lines.length} text lines were measured; the hero's text boxes were not found`);
+  // What the visitor sees behind the text: everything but the still hidden.
+  await page.evaluate(() => document.querySelectorAll("#about-us > :not([data-home-sharks-still])").forEach((e) => e.style.setProperty("visibility", "hidden", "important")));
+  const box = await page.locator("[data-home-sharks-still]").boundingBox();
+  const { data, info } = await sharp(await page.screenshot({ fullPage: true, clip: box })).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const cover = (i) => {
+    let c = 0;
+    for (let k = 0; k < 3; k++) c = Math.max(c, ((tokens.paper[k] - data[i + k]) / (tokens.paper[k] - tokens.ink[k])) * 255);
+    return c;
+  };
+  let worst = 0, at = "", inked = 0;
+  for (let y = 0; y < info.height; y++) for (let x = 0; x < info.width; x++) if (cover((y * info.width + x) * 3) > SHOWN_COVER) inked++;
+  for (const l of lines) {
+    const x0 = Math.max(0, Math.floor(l.x)), y0 = Math.max(0, Math.floor(l.y));
+    const x1 = Math.min(info.width, Math.ceil(l.x + l.w)), y1 = Math.min(info.height, Math.ceil(l.y + l.h));
+    for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
+      const c = cover((y * info.width + x) * 3);
+      if (c > worst) { worst = c; at = `line @${Math.round(l.x)},${Math.round(l.y)} ${Math.round(l.w)}x${Math.round(l.h)} px (${x},${y})`; }
+    }
+  }
+  const share = inked / (info.width * info.height);
+  if (info.width !== Math.round(hero.w)) fail(locale, cond, `the still's box is ${info.width}px wide, the hero ${hero.w}px`);
+  if (worst > TEXT_CAP) fail(locale, cond, `the picture holds ${Math.round(worst)}/255 ink (limit ${TEXT_CAP}) under hero text, ${at}: a shark cell sits behind a line of text`);
+  if (share < MIN_SHOWN) fail(locale, cond, `only ${(share * 100).toFixed(2)}% of the still is clearly inked (needs ${MIN_SHOWN * 100}%+): the fade passes by erasing the sharks`);
+  if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
+  notes.push(`${locale.padEnd(11)} ${cond}: max ink under ${lines.length} text lines ${Math.round(worst)}/${TEXT_CAP}, ${(share * 100).toFixed(2)}% of the picture clearly inked`);
+  await context.close();
+}
+
 (async () => {
   const browser = await launch();
   for (const locale of LOCALES) {
     await desktopGroups(browser, locale);
     await stillOnly(browser, locale, "phone", "portrait", { viewport: PHONE, isMobile: true, hasTouch: true });
+    for (const width of sharksSource.PHONE_WIDTHS) await phoneFade(browser, locale, width);
     await stillOnly(browser, locale, "tablet", "landscape", { viewport: { width: 820, height: 1180 }, isMobile: true, hasTouch: true });
     await stillOnly(browser, locale, "reduced-motion", "landscape", { viewport: DESKTOP, reducedMotion: "reduce" });
 

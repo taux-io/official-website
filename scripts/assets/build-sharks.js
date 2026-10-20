@@ -40,22 +40,54 @@ const sharp = require("sharp");
 const { launch } = require("../browser");
 const stylesheet = require("../stylesheet");
 const src = require("../lib/sharks-source");
+const { startServer } = require("../audit");
 const Sim = require(src.SIM);
 
-const { STILLS, ENCODE, SELECTION, STILL_MAX_BYTES, ROOT } = src;
+const { STILLS, PHONE_WIDTHS, LOCALES, ENCODE, SELECTION, STILL_MAX_BYTES, ROOT } = src;
 const grid = (s) => ({ cols: Math.ceil(s.width / s.cw), rows: Math.ceil(s.height / s.ch) });
 
 // SELECTION: does the picture of `s` at (seed, t) show enough sharks, on the
-// right, with nothing on the text side? Returns the numbers either way.
-function judge(s, seed, t) {
+// right? A still without a fade (the landscape one) must also have no shark cell
+// in the left `leftClear` where the hero's text is; the portrait one fades under
+// its text instead (`rects`) and counts sharks in `view`, the part every phone
+// shows. Returns the numbers either way. `shown` is how many cells the fade
+// leaves inked over 12% in `view`: not a criterion, it ranks --scan.
+function judge(s, seed, t, rects) {
   const { cols, rows } = grid(s);
-  const f = Sim.frame(seed, t, cols, rows, []);
-  const inside = f.sharks.filter((k) => k.x > 0 && k.x < cols && k.y > 0 && k.y < rows * 1.5);
-  const right = inside.filter((k) => k.x > cols / 2).length;
-  const left = f.cells.filter((c) => c.x < cols * SELECTION.leftClear).length;
+  const view = s.view || { cols, rows };
+  const f = Sim.frame(seed, t, cols, rows, rects || []);
+  const inside = f.sharks.filter((k) => k.x > 0 && k.x < view.cols && k.y > 0 && k.y < view.rows * 1.5);
+  const right = inside.filter((k) => k.x > view.cols / 2).length;
+  const left = s.fade ? 0 : f.cells.filter((c) => c.x < cols * SELECTION.leftClear).length;
+  const shown = f.cells.filter((c) => c.x < view.cols && c.y < view.rows && c.tile > Sim.TEXT_FADE_MAX).length;
   const ok = inside.length >= SELECTION.minSharks && right >= SELECTION.minRight && left === 0;
-  const cut = f.cells.filter((c) => c.tile > 0 && (c.x >= cols - 2 || c.y <= 1 || c.y >= rows - 2)).length; // cells the picture's edge cuts off
-  return { ok, visible: inside.length, right, left, cut, cells: f.cells.length };
+  return { ok, visible: inside.length, right, left, cells: f.cells.length, shown };
+}
+
+// Every line of the hero's text on a phone, at every width in PHONE_WIDTHS and
+// every locale, as the simulation's text boxes (in cells, the hero's corner at
+// 0,0); lines that coincide are kept once. `baseUrl` serves the built site
+// (npm run build:site, npm run build:css).
+async function phoneZone(browser, baseUrl, s) {
+  const seen = new Map();
+  for (const locale of LOCALES) {
+    for (const width of PHONE_WIDTHS) {
+      const context = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+      const page = await context.newPage();
+      const res = await page.goto(`${baseUrl}/${locale}`, { waitUntil: "load" });
+      if (!res || res.status() !== 200) throw new Error(`build-sharks: GET /${locale} answered ${res && res.status()}; is the site built (npm run build:site, npm run build:css)?`);
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(300);
+      const { lines } = await page.evaluate(src.lineBoxes);
+      if (lines.length < 5) throw new Error(`build-sharks: only ${lines.length} text lines found on /${locale} at ${width}px`);
+      for (const l of lines) {
+        const r = { x: l.x / s.cw, y: l.y / s.ch, w: l.w / s.cw, h: l.h / s.ch };
+        seen.set([r.x, r.y, r.w, r.h].map((n) => n.toFixed(2)).join(), r);
+      }
+      await context.close();
+    }
+  }
+  return [...seen.values()];
 }
 
 // Runs in the page. Mirrors draw() and size() in static/js/home-sharks.js.
@@ -86,23 +118,51 @@ function paint({ s, frame, cols, rows, ink, paper, tints, font, fade, step }) {
   return cv.toDataURL("image/png");
 }
 
-function scan() {
+function scan(zone) {
   for (const [name, s] of Object.entries(STILLS)) {
     const hits = [];
     for (let seed = 1; seed <= 40; seed++) {
-      for (let t = 0; t <= 240; t++) {
-        const j = judge(s, seed, t);
+      for (let t = 0; t <= 180; t++) {
+        if (!judge(s, seed, t, []).ok) continue; // the sharks alone are cheap; the zone only matters for cells
+        const j = judge(s, seed, t, s.fade ? zone : []);
         if (j.ok) hits.push({ seed, t, ...j });
       }
     }
-    hits.sort((a, b) => b.visible - a.visible || a.cut - b.cut || b.cells - a.cells);
+    hits.sort(s.fade
+      ? (a, b) => b.shown - a.shown || b.visible - a.visible
+      : (a, b) => b.visible - a.visible || a.left - b.left || b.cells - a.cells);
     console.log(`${name} (${grid(s).cols}x${grid(s).rows} cells): ${hits.length} moments meet the selection; best:`);
-    for (const h of hits.slice(0, 8)) console.log(`  seed ${h.seed} t ${h.t}: ${h.visible} sharks, ${h.right} on the right, ${h.cells} cells, ${h.cut} at the edge`);
+    for (const h of hits.slice(0, 8)) console.log(`  seed ${h.seed} t ${h.t}: ${h.visible} sharks, ${h.right} on the right, ${h.cells} cells, ${h.shown} inked over 12% in view`);
+  }
+}
+
+// The text lines of the phone hero, measured on the built site. BASE_URL if set
+// (a server you already run), otherwise a server of our own, as `npm run audit`.
+async function measureZone(browser) {
+  const s = STILLS.portrait;
+  if (process.env.BASE_URL) return phoneZone(browser, process.env.BASE_URL.replace(/\/$/, ""), s);
+  const server = await startServer();
+  try {
+    return await phoneZone(browser, server.baseUrl, s);
+  } finally {
+    await server.stop();
   }
 }
 
 async function main() {
-  if (process.argv.includes("--scan")) return scan();
+  const scanning = process.argv.includes("--scan");
+  // Proof only (ticket #403): draw the portrait still WITHOUT the fade into the
+  // image file and touch nothing else, so `npm run sharks` can be shown red.
+  // Rerun `npm run build:sharks` to put it right.
+  const noFade = process.argv.includes("--no-fade");
+  if (scanning) {
+    const browser = await launch();
+    try {
+      return scan(await measureZone(browser));
+    } finally {
+      await browser.close();
+    }
+  }
   const sheet = stylesheet.read();
   const inputs = src.stillInputs(sheet);
   const decl = sheet.declarations.find((d) => d.selector === ".home-sharks" && d.prop === "font-family");
@@ -114,15 +174,17 @@ async function main() {
   const images = {};
   try {
     for (const [name, s] of Object.entries(STILLS)) {
-      const j = judge(s, s.seed, s.t);
+      const zone = s.fade && !noFade ? await measureZone(browser) : [];
+      const j = judge(s, s.seed, s.t, zone);
       if (!j.ok) {
         throw new Error(`build-sharks: the ${name} still (seed ${s.seed}, t ${s.t}) no longer meets the selection (${j.visible} sharks inside, ${j.right} on the right, ${j.left} shark cells in the left ${SELECTION.leftClear * 100}%); run \`node scripts/assets/build-sharks.js --scan\` and set a new seed/t in scripts/lib/sharks-source.js`);
       }
+      console.log(`  ${name}: ${j.visible} sharks in view, ${j.right} on the right${s.fade ? `, faded under ${zone.length} text lines, ${j.shown} cells left inked over 12% in view` : ""}`);
       const { cols, rows } = grid(s);
       const page = await (await browser.newContext({ viewport: { width: s.width, height: s.height } })).newPage();
       await page.setContent(`<canvas id="c" width="${s.width}" height="${s.height}"></canvas>`);
       const data = await page.evaluate(paint, {
-        s, frame: Sim.frame(s.seed, s.t, cols, rows, []), cols, rows, fade, step,
+        s, frame: Sim.frame(s.seed, s.t, cols, rows, zone), cols, rows, fade, step,
         ink: inputs.ink.join(" "), paper: inputs.paper.join(" "), tints, font: decl.value,
       });
       const png = Buffer.from(data.split(",")[1], "base64");
@@ -136,6 +198,11 @@ async function main() {
     await browser.close();
   }
 
+  if (noFade) {
+    fs.writeFileSync(src.stillPath("portrait"), images.portrait);
+    console.log(`  --no-fade: wrote only ${path.relative(ROOT, src.stillPath("portrait"))} (${(images.portrait.length / 1024).toFixed(1)} KB), unfaded; ledger and CSS untouched`);
+    return;
+  }
   let css = fs.readFileSync(src.INPUT_CSS, "utf8");
   for (const [name, s] of Object.entries(STILLS)) {
     fs.writeFileSync(src.stillPath(name), images[name]);

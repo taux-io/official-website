@@ -12,8 +12,8 @@
 # ink        48 52 58
 # tints      172 90 55 | 116 100 41 | 122 111 217 | 175 91 224
 # landscape  {"file":"hero-sharks-landscape.webp","width":1440,"height":720,"cw":11.808000000000002,"ch":17.712000000000003,"seed":17,"t":217}  19.5 KB
-# portrait   {"file":"hero-sharks-portrait.webp","width":392,"height":900,"cw":8,"ch":12,"seed":29,"t":11}  6.8 KB
+# portrait   {"file":"hero-sharks-portrait.webp","width":600,"height":900,"cw":8,"ch":12,"seed":24,"t":80,"fade":true,"view":{"cols":40,"rows":45}}  6.4 KB
 
-inputs e16313d323805ee3c2e1ad38535c7fd2caef04004e6c7cf38922671122a1822d
+inputs 486976eac27f056a94b42487d5e2af695afe8e4dcdb40558388f7b7435130d74
 landscape 5c3c67dfbe1c0864706b859d7509ae0283f3b5d60c09a4c32afcbf28b29e0557
-portrait 7c3d2f4e825c9ec38ffd2f78a2d2af3ef086c34a8fe4e6c53c2b3cb1057b8bf7
+portrait e563442bf9bcdceb1c06784d49b57d6704a426c45b6d478825b227ca8056a7df

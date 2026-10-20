@@ -109,11 +109,29 @@ const cellFor = (width) => {
   const cw = Math.min(14, Math.max(8, width * 0.0082));
   return { cw, ch: cw * 1.5 };
 };
+//
+// The portrait still (ticket #403) is drawn at 1 CSS px per image px and shown
+// that way (background-size: 600px 900px, top left; src/input.css), so a cell is
+// 8 x 12 CSS px whatever the phone and a text line sits at the same place in
+// the picture as on the page. It is 600 wide so the widest phone (599px) is
+// covered; a narrower phone crops the right. Its text lines are NOT avoided by
+// the choice of moment: build-sharks.js measures the hero's lines at every
+// PHONE_WIDTHS x LOCALES and fades the cells under the UNION of all of them
+// (the most conservative zone: a line at any width or language is clear), with
+// the same per-line boxes and the same 12% as the desktop. `view` is the part of
+// the picture every phone shows (the narrowest width checked, the shortest
+// hero), where SELECTION counts whales.
 const STILLS = {
   landscape: { file: "hero-sharks-landscape.webp", width: 1440, height: 720, ...cellFor(1440), seed: 17, t: 217 },
-  portrait: { file: "hero-sharks-portrait.webp", width: 392, height: 900, cw: 8, ch: 12, seed: 29, t: 11 },
+  portrait: { file: "hero-sharks-portrait.webp", width: 600, height: 900, cw: 8, ch: 12, seed: 24, t: 80, fade: true, view: { cols: 40, rows: 45 } },
 };
+// The phone widths the portrait still's fade is drawn for and then held to by
+// `npm run sharks`: a narrow phone, the 375 the issue names, and a wide one.
+const PHONE_WIDTHS = [320, 375, 430];
+const LOCALES = ["zh-Hant-TW", "en-US", "zh-Hans-CN", "ja-JP", "ko-KR"];
 const ENCODE = { quality: 62, alphaQuality: 60, effort: 6 };
+// leftClear applies to a still with no fade (the landscape one); the portrait
+// one fades under its text instead and needs no empty side.
 const SELECTION = { minSharks: 2, minRight: 2, leftClear: 0.4 };
 // A budget the builder checks, not an input to the pictures: kept out of the
 // ledger's hash so changing it cannot make a correct still look stale.
@@ -164,6 +182,7 @@ function stillInputs(sheet) {
     stills: STILLS,
     selection: SELECTION,
     encode: ENCODE,
+    phones: PHONE_WIDTHS,
   };
 }
 const stillDigest = (inputs) => sha(JSON.stringify(inputs));
@@ -207,10 +226,27 @@ function readLedger() {
   return { inputs: get("inputs"), landscape: get("landscape"), portrait: get("portrait") };
 }
 
+// Runs IN THE PAGE (pass it to page.evaluate; it must stay self-contained): one
+// box per line of the hero's text, in CSS px relative to the hero, as wide as
+// the line's glyphs. The same walk static/js/home-sharks.js measure() does, so
+// the builder, the gate and the desktop script all mean "a line of text" alike.
+function lineBoxes() {
+  const hero = document.querySelector("[data-home-sharks]").parentElement, o = hero.getBoundingClientRect();
+  const walker = document.createTreeWalker(hero, 4), range = document.createRange(), out = [];
+  for (let n; (n = walker.nextNode());) {
+    if (!n.textContent.trim()) continue;
+    range.selectNodeContents(n);
+    for (const r of range.getClientRects()) {
+      if (r.width > 0 && r.height > 0) out.push({ x: r.left - o.left, y: r.top - o.top, w: r.width, h: r.height });
+    }
+  }
+  return { hero: { w: o.width, h: o.height }, lines: out };
+}
+
 const sizes = () => ({ script: fs.statSync(SCRIPT).size, sim: fs.statSync(SIM).size, limit: SIZE_LIMIT });
 
 module.exports = {
-  ROOT, SCRIPT, SIM, SIZE_LIMIT, INPUT_CSS, STILL_LEDGER, STILLS, ENCODE, SELECTION, STILL_MAX_BYTES, REGEN,
+  ROOT, SCRIPT, SIM, SIZE_LIMIT, INPUT_CSS, STILL_LEDGER, STILLS, PHONE_WIDTHS, LOCALES, ENCODE, SELECTION, STILL_MAX_BYTES, REGEN, lineBoxes,
   channels, simConstants, readTints, scriptTints, sizes,
   stillPath, stillInputs, stillDigest, imageVersion, ledgerText, readLedger, sha, normalized,
 };
