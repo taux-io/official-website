@@ -96,19 +96,23 @@ function scriptTints() {
 //
 //   landscape  desktop fallback and tablets: the cell a 1440-wide hero gets
 //              (the script's 0.82% of the width, 8..14 px), 12 x 17.7 px.
-//   portrait   phones: fixed 8 x 12 px cells, 49 columns (spec #396).
+//   portrait   phones: fixed 8 x 12 px cells, 600 x 900 px, of which the 40 x 45 cells every phone shows
+//              are counted (spec #396, ticket #403).
 //
 // seed and t were picked by `node scripts/assets/build-sharks.js --scan`, which
 // sweeps the simulation and lists the moments that meet SELECTION: at least two
 // sharks inside the picture, at least two of them in its right half, and no
 // shark cell at all in its left `leftClear` (where the hero's text is). The
 // builder refuses a pair that does not meet it.
-// Re-picked for the humpback whales that replaced the sharks (top view, dive depth);
-// re-pick with `--scan` whenever the simulation's motion or sizes change.
+// The cell of the live canvas for a hero `width` px wide: 0.82% of it, 8..14 px.
 const cellFor = (width) => {
   const cw = Math.min(14, Math.max(8, width * 0.0082));
   return { cw, ch: cw * 1.5 };
 };
+
+// Seed and t were re-picked for the humpback whales that replaced the sharks (top
+// view, dive depth); re-pick with `--scan` whenever the simulation's motion or
+// sizes change.
 //
 // The portrait still (ticket #403) is drawn at 1 CSS px per image px and shown
 // that way (background-size: 600px 900px, top left; src/input.css), so a cell is

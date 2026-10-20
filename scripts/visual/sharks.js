@@ -14,14 +14,20 @@
 //                 no GPU and no browser flags are needed) has to have drawn
 //                 something that is not paper, no CSP violation may have fired,
 //                 and the still must be hidden and not downloaded.
-//   sharks        every frame the page asks SharksSim for holds 3 or 4 sharks (the
-//                 page's own calls are observed, not a re-run of the simulation).
+//   sharks        every frame the page asks SharksSim for holds the 3 whales
+//                 the simulation always makes (the page's own calls are observed,
+//                 not a re-run of the simulation).
+//   fps           over one second the page asks SharksSim for at most MAX_FPS
+//                 frames (the 30 fps cap; requestAnimationFrame itself ticks at
+//                 the display rate, so the simulation calls are what is counted).
 //   text lines    under every line of the hero's text the canvas holds at most
 //                 TEXT_CAP of alpha (12% ink and the 5% grid line, the numbers
 //                 check:hero-sharks computes its worst case from), read from
 //                 the canvas pixels at several moments.
 //   scroll        the frame loop stops when the hero is out of view and resumes
 //                 when it is back.
+//   print         with media emulated as print, neither the canvas nor the still
+//                 is displayed (@media print in src/input.css).
 //   phone         390x844: no one asked for a context on .home-sharks, the loop
 //                 never ran, the still is visible and answered 200.
 //   reduced       desktop + prefers-reduced-motion: the same as the phone.
@@ -55,21 +61,26 @@ const PHONE = { width: 390, height: 844 };
 const MIN_INKED_SHARE = 0.008;
 const PIXEL_DELTA = 20;
 
+// The most alpha the canvas may hold under a line of text:
+// 1 - (1 - 0.12) * (1 - 0.05) = 0.164, plus rounding and glyph edges.
+const TEXT_CAP = Math.ceil(0.18 * 255);
 // Frames the loop must make in the 700ms it is watched while it should run
 // (30 fps would be ~20), and may make while it should not (the one callback
 // already queued when it stopped).
-// 1 - (1 - 0.12) * (1 - 0.05) = 0.164, plus rounding and glyph edges.
-const TEXT_CAP = Math.ceil(0.18 * 255);
 const MIN_FRAMES_RUNNING = 3;
 // The phone still (phoneFade): a pixel is "clearly inked" over SHOWN_COVER of 255
 // (the tiles and glyphs the fade leaves alone start at 20% ink, well above the
 // 12% it holds under text) and the share of such pixels must reach MIN_SHOWN.
 const SHOWN_COVER = Math.ceil(0.25 * 255);
 const MIN_SHOWN = 0.005;
-// Sharks in every frame the page draws (spec #396: 3, at most 4).
+// Sharks in every frame the page draws: always 3 since revision 3 (spec #396 first
+// allowed 3 to 4); the range is kept as slack, the unit test pins exactly 3.
 const MIN_SHARKS = 3;
 const MAX_SHARKS = 4;
 const MAX_FRAMES_STOPPED = 1;
+// Frames drawn in one second: the page asks for 30 (a tick is skipped when it is
+// under 29.3 ms after the last); a few more allow for timer jitter.
+const MAX_FPS = 33;
 
 const failures = [];
 const notes = [];
@@ -197,6 +208,12 @@ async function desktopGroups(browser, locale) {
   if (seen.stills.length && !fell.fallback) fail(locale, cond, `the still was downloaded (${seen.stills.join(",")}) although hidden`);
   const running = await framesOver(page, 700);
   if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the sharks are not running`);
+  // At most 30 fps: count the frames SharksSim is asked for (rAF itself ticks at the
+  // display rate; the page skips ticks), over a whole second.
+  const drawnBefore = await page.evaluate(() => window.__sharks.drawn);
+  await page.waitForTimeout(1000);
+  const fps = (await page.evaluate(() => window.__sharks.drawn)) - drawnBefore;
+  if (fps > MAX_FPS) fail(locale, "fps", `${fps} frames drawn in 1s (limit ${MAX_FPS}): the 30 fps cap is gone`);
   const sh = await page.evaluate(() => window.__sharks);
   if (!sh.drawn) fail(locale, cond, "the page never asked SharksSim for a frame: no sharks were simulated");
   else if (sh.minSharks < MIN_SHARKS || sh.maxSharks > MAX_SHARKS) fail(locale, cond, `${sh.minSharks}-${sh.maxSharks} sharks in the frames the page drew (needs ${MIN_SHARKS}-${MAX_SHARKS})`);
@@ -208,6 +225,12 @@ async function desktopGroups(browser, locale) {
   const csp = [...seen.console, ...(await page.evaluate(() => window.__sharks.csp))];
   if (csp.length) fail(locale, cond, `CSP violation: ${csp.join(" | ")}`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
+
+  // On paper neither the canvas nor the still is shown (@media print, src/input.css).
+  await page.emulateMedia({ media: "print" });
+  const printed = await page.evaluate(() => [...document.querySelectorAll(".home-sharks, .home-sharks-still")].map((e) => getComputedStyle(e).display));
+  await page.emulateMedia({ media: "screen" });
+  if (printed.length < 2 || printed.some((d) => d !== "none")) fail(locale, "print", `printing shows the sharks (display ${printed.join(",") || "no elements"}; needs none for the canvas and the still)`);
 
   // The hero scrolls away: the loop must stop, and come back with it.
   await page.evaluate(() => window.scrollTo(0, 4000));
