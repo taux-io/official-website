@@ -34,16 +34,17 @@
     return !!ctx && !!ink && !paper.includes('()') && !tints.some((c) => c.includes('()'));
   };
 
-  // Boxes of the hero's text, in cells, relative to the canvas: the simulation
-  // fades its cells to TEXT_FADE_MAX inside them.
+  // One box per LINE of the hero's text, in cells, relative to the canvas, as
+  // wide as the line's glyphs: the simulation fades its cells to TEXT_FADE_MAX
+  // inside them. (An element's box would be a block that covers whole columns.)
   const measure = () => {
-    const o = cv.getBoundingClientRect();
+    const o = cv.getBoundingClientRect(), w = document.createTreeWalker(hero, 4), rg = document.createRange();
     rects = [];
-    hero.querySelectorAll('*').forEach((el) => {
-      if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return;
-      const r = el.getBoundingClientRect();
-      if (r.width > 0 && r.height > 0) rects.push({ x: (r.left - o.left) / cw, y: (r.top - o.top) / ch, w: r.width / cw, h: r.height / ch });
-    });
+    for (let n; (n = w.nextNode());) {
+      if (!n.textContent.trim()) continue;
+      rg.selectNodeContents(n);
+      for (const r of rg.getClientRects()) if (r.width > 0 && r.height > 0) rects.push({ x: (r.left - o.left) / cw, y: (r.top - o.top) / ch, w: r.width / cw, h: r.height / ch });
+    }
   };
 
   // Everything that depends on the size: the cell, the backing store, the grid
@@ -88,7 +89,7 @@
       // glyph only tops the tile up to it (check:hero-sharks relies on this).
       const faded = c.tile <= FADE;
       if (c.tint !== null && !faded) ctx.fillStyle = tints[c.tint];
-      else if (c.tile >= 0.35) ctx.fillStyle = paper;
+      else if (c.tile >= 0.4) ctx.fillStyle = paper;
       else ctx.fillStyle = inkA(faded ? Math.min(c.ink, Math.max(0, FADE - c.tile)).toFixed(3) : c.ink);
       ctx.fillText(c.ch, x + cw / 2, y + ch / 2);
     }
@@ -126,7 +127,10 @@
     clearTimeout(timer);
     timer = setTimeout(() => { if (running) size(); }, 120);
   });
-  if (document.fonts) document.fonts.ready.then(() => { if (running) measure(); });
+  const remeasure = () => { if (running) measure(); };   // the text moves when a font or the layout settles
+  if (document.fonts) { document.fonts.ready.then(remeasure); document.fonts.addEventListener('loadingdone', remeasure); }
+  addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(hero);
   if ('IntersectionObserver' in window) {
     new IntersectionObserver((entries) => {
       visible = entries[entries.length - 1].isIntersecting;

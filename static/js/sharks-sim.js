@@ -5,13 +5,13 @@
   else root.SharksSim = make();
 })(this, function () {
   "use strict";
-  var LEN = 28, SPEED = 6.5, ASPECT = 1.5, SEG = 3, STEP = 0.1, R = LEN / 2;
+  var LEN = 36, FAT = 2, SPEED = 6.5, ASPECT = 1.5, SEG = 8, STEP = 0.1, R = LEN / 2;
   var MAX_CELLS = 900, DUST_N = 140, TINT_SHARE = 0.1;
-  var TEXT_FADE_MAX = 0.12, TEXT_MARGIN = 1; // margin in cells, each side of a rect
-  var LADDER = [0.05, 0.12, 0.2, 0.35, 0.56, 0.72, 0.86, 1];
+  var TEXT_FADE_MAX = 0.12, TEXT_MARGIN = 0.4; // margin in cells, each side of a rect
+  var LADDER = [0.05, 0.12, 0.2, 0.26, 0.34, 0.44, 0.54, 0.66];
   var DENSE = "@8%#SXt;:"; // dark to light; the rest is sparse
   var INK = { "@": 1, 8: 0.9, "%": 0.8, "#": 0.7, S: 0.6, X: 0.5, t: 0.4, ";": 0.32, ":": 0.25, ",": 0.12, "'": 0.09, "-": 0.08, ".": 0.06 };
-  // Hand-drawn outlines: head at column 0, digit = darkness 1-9, space = water.
+  // Hand-drawn outlines: head at column 0, digit = darkness 1-9, space = empty.
   var SHAPES = [
     [ // top-down hammerhead: T head, swept fins, forked tail
       "44", "66", "88          3", "99     3   56", "99    56  678", "99  8999999999998887", "9999999999999999999887766",
@@ -63,11 +63,11 @@
     else if (e < 0.9) { x = f * W; y = -o; } else { x = f * W; y = Hh + o; }
     var L = {
       seed: seed, k: k, n: n, x: x, y: y, start: start, dur: 240,
-      th: Math.atan2(Hh / 2 - y, W / 2 - x) + (r(3) - 0.5) * 0.7,
+      th: Math.atan2(Hh / 2 - y, 0.6 * W - x) + (r(3) - 0.5) * 0.7,
       v: SPEED * (0.92 + 0.16 * r(4)), type: Math.floor(r(5) * 3),
       sign: r(6) < 0.5 ? -1 : 1, ph: r(7) * 6.2832
     };
-    for (var t = 2 * SEG; t <= 240; t += STEP) {
+    for (var t = 2; t <= 240; t += STEP) {
       var p = at(L, t);
       if (p.x < -R || p.x > W + R || p.y < -R || p.y > Hh + R) { L.dur = t; break; }
     }
@@ -111,8 +111,8 @@
           var col = LEN / 2 - (dx * ct + dy * st);
           if (col < 0 || col >= LEN) continue;
           var fu = col / LEN, v = -dx * st + dy * ct;
-          v -= (0.2 + 0.8 * fu) * Math.sin(6.2832 * (tau + L.ph) - 4.5 * fu) + BEND[L.type] * (Math.pow(2 * fu - 1, 2) - 0.33);
-          var row = Math.floor(v + hc), ch = row >= 0 && row < sh.length ? sh[row].charAt(Math.floor(col)) : " ";
+          v -= 1.3 * (0.2 + 0.8 * fu) * Math.sin(6.2832 * (tau + L.ph) - 4.5 * fu) + BEND[L.type] * (Math.pow(2 * fu - 1, 2) - 0.33);
+          var row = Math.floor(v / FAT + hc), ch = row >= 0 && row < sh.length ? sh[row].charAt(Math.floor(fu * 28)) : " ";
           if (ch > "0" && ch <= "9" && ch / 9 > dens[r * cols + c]) dens[r * cols + c] = ch / 9;
         }
       }
@@ -128,7 +128,7 @@
       if (cap) { tile = Math.min(tile, TEXT_FADE_MAX); d = Math.min(d, TEXT_FADE_MAX); }
       if (d >= 0.2) ch2 = DENSE.charAt(Math.min(8, Math.floor((1 - d) / 0.8 * 9)));
       else ch2 = sparse(d);
-      if (d >= 0.2 && tints < Math.floor(MAX_CELLS * TINT_SHARE) && H(seed, c, r, 3000 + Math.floor(t * 2)) < 0.05) tint = Math.floor(H(seed, c, r, 4000) * 4);
+      if (d >= 0.2 && tints < Math.floor(MAX_CELLS * TINT_SHARE) && H(seed, c, r, 3000 + Math.floor(t * 2)) < 0.14) tint = Math.floor(H(seed, c, r, 4000) * 4);
       cells.push({ x: c, y: r, ch: ch2, tile: tile, ink: INK[ch2], tint: tint, d: d });
       if (tint !== null) tints++;
     }

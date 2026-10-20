@@ -14,6 +14,10 @@
 //                 no GPU and no browser flags are needed) has to have drawn
 //                 something that is not paper, no CSP violation may have fired,
 //                 and the still must be hidden and not downloaded.
+//   text lines    under every line of the hero's text the canvas holds at most
+//                 TEXT_CAP of alpha (12% ink and the 5% grid line, the numbers
+//                 check:hero-sharks computes its worst case from), read from
+//                 the canvas pixels at several moments.
 //   scroll        the frame loop stops when the hero is out of view and resumes
 //                 when it is back.
 //   phone         390x844: no one asked for a context on .home-sharks, the loop
@@ -48,6 +52,8 @@ const PIXEL_DELTA = 20;
 // Frames the loop must make in the 700ms it is watched while it should run
 // (30 fps would be ~20), and may make while it should not (the one callback
 // already queued when it stopped).
+// 1 - (1 - 0.12) * (1 - 0.05) = 0.164, plus rounding and glyph edges.
+const TEXT_CAP = Math.ceil(0.18 * 255);
 const MIN_FRAMES_RUNNING = 3;
 const MAX_FRAMES_STOPPED = 1;
 
@@ -125,6 +131,36 @@ async function inkedShare(page) {
   return inked / (info.width * info.height);
 }
 
+// The most alpha the canvas holds under any line of hero text, over a few moments.
+// A line box is what Range.getClientRects reports for a text node, the same
+// boxes home-sharks.js fades; the canvas is read through its own 2D context.
+async function maxAlphaUnderText(page) {
+  let worst = { alpha: 0, lines: 0, at: "" };
+  for (let i = 0; i < 6; i++) {
+    const r = await page.evaluate(() => {
+      const cv = document.querySelector("[data-home-sharks]"), o = cv.getBoundingClientRect(), k = cv.width / o.width;
+      const ctx = cv.getContext("2d"), w = document.createTreeWalker(cv.parentElement, 4), rg = document.createRange();
+      let alpha = 0, lines = 0, at = "";
+      for (let n; (n = w.nextNode());) {
+        if (!n.textContent.trim()) continue;
+        rg.selectNodeContents(n);
+        for (const b of rg.getClientRects()) {
+          const x = Math.max(0, Math.floor((b.left - o.left) * k)), y = Math.max(0, Math.floor((b.top - o.top) * k));
+          const x2 = Math.min(cv.width, Math.ceil((b.right - o.left) * k)), y2 = Math.min(cv.height, Math.ceil((b.bottom - o.top) * k));
+          if (x2 <= x || y2 <= y || b.width < 2) continue;
+          lines++;
+          const d = ctx.getImageData(x, y, x2 - x, y2 - y).data;
+          for (let j = 3; j < d.length; j += 4) if (d[j] > alpha) { alpha = d[j]; at = `${n.textContent.trim().slice(0, 20)} @${x},${y}`; }
+        }
+      }
+      return { alpha, lines, at };
+    });
+    if (r.alpha >= worst.alpha) worst = r;
+    await page.waitForTimeout(900);
+  }
+  return worst;
+}
+
 async function desktopGroups(browser, locale) {
   const cond = "desktop";
   const { context, page, seen } = await open(browser, locale, cond, { viewport: DESKTOP, reducedMotion: "no-preference" });
@@ -136,6 +172,9 @@ async function desktopGroups(browser, locale) {
   if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the sharks are not running`);
   const share = await inkedShare(page);
   if (!(share >= MIN_INKED_SHARE)) fail(locale, cond, `the canvas is blank: ${(share * 100).toFixed(2)}% of the canvas differs from paper (needs ${MIN_INKED_SHARE * 100}%+)`);
+  const under = await maxAlphaUnderText(page);
+  if (under.lines < 5) fail(locale, "text lines", `only ${under.lines} text lines were measured; the hero's text boxes were not found`);
+  if (under.alpha > TEXT_CAP) fail(locale, "text lines", `the canvas holds alpha ${under.alpha} (limit ${TEXT_CAP}) under hero text "${under.at}": a shark leaks into a line of text`);
   const csp = [...seen.console, ...(await page.evaluate(() => window.__sharks.csp))];
   if (csp.length) fail(locale, cond, `CSP violation: ${csp.join(" | ")}`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
@@ -149,7 +188,7 @@ async function desktopGroups(browser, locale) {
   const back = await framesOver(page, 700);
   if (away > MAX_FRAMES_STOPPED) fail(locale, "scroll", `${away} frames in 700ms with the hero out of view (allowed ${MAX_FRAMES_STOPPED}): the loop did not stop`);
   if (back < MIN_FRAMES_RUNNING) fail(locale, "scroll", `${back} frames in 700ms after scrolling back (needs ${MIN_FRAMES_RUNNING}+): the loop did not resume`);
-  notes.push(`${locale.padEnd(11)} desktop: ${running} frames/700ms, ${(share * 100).toFixed(1)}% inked, scrolled away ${away}, back ${back}`);
+  notes.push(`${locale.padEnd(11)} desktop: ${running} frames/700ms, ${(share * 100).toFixed(1)}% inked, max alpha under ${under.lines} text lines ${under.alpha}/${TEXT_CAP}, scrolled away ${away}, back ${back}`);
   await context.close();
 }
 

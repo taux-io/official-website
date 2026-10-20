@@ -19,7 +19,7 @@ const Sim = require(FILE);
 const COLS = 120;
 const ROWS = 40;
 const SEED = 7;
-const LADDER = [0.05, 0.12, 0.2, 0.35, 0.56, 0.72, 0.86, 1];
+const LADDER = [0.05, 0.12, 0.2, 0.26, 0.34, 0.44, 0.54, 0.66];
 const times = Array.from({ length: 100 }, (_, i) => i * 1.13); // 0 .. ~112 s
 const RECTS = [
   { x: 6, y: 8, w: 50, h: 18 },
@@ -50,7 +50,7 @@ test("there are always 3 or 4 sharks, from t=0 on", () => {
   }
 });
 
-test("sharks swim about 6.5 cells/s, turn 2-20 deg/s, and are about 28 cells long", () => {
+test("sharks swim about 6.5 cells/s, turn 2-20 deg/s, and are about 36 cells long", () => {
   const dt = 0.25;
   let measured = 0;
   for (let t = 0; t < 100; t += 1.7) {
@@ -62,7 +62,7 @@ test("sharks swim about 6.5 cells/s, turn 2-20 deg/s, and are about 28 cells lon
       const speed = Math.hypot(n.x - s.x, n.y - s.y) / dt;
       assert.ok(speed >= 5.5 && speed <= 7.5, `speed ${speed}`);
       assert.ok(Math.abs(s.turn) >= 2 && Math.abs(s.turn) <= 20, `turn ${s.turn}`);
-      assert.ok(s.len >= 26 && s.len <= 30, `len ${s.len}`);
+      assert.ok(s.len >= 34 && s.len <= 38, `len ${s.len}`);
       measured++;
     }
   }
@@ -73,7 +73,7 @@ test("rendered sharks are body-sized: the fullest frame has 150+ cells, spanning
   const frames = times.map((t) => Sim.frame(SEED, t, COLS, ROWS, []));
   const best = frames.reduce((m, f) => (f.cells.length > m.cells.length ? f : m));
   const xs = best.cells.map((c) => c.x);
-  assert.ok(best.cells.length >= 150, `${best.cells.length}`);
+  assert.ok(best.cells.length >= 200, `${best.cells.length}`);
   assert.ok(Math.max(...xs) - Math.min(...xs) >= 20);
 });
 
@@ -98,8 +98,44 @@ test("every cell inside a text rect (plus margin) is capped at ink 0.12", () => 
 
 test("outside the rects the sharks are dark (the cap is not applied everywhere)", () => {
   const f = Sim.frame(SEED, 0, COLS, ROWS, []);
-  assert.ok(f.cells.some((c) => c.tile >= 0.56));
+  assert.ok(f.cells.some((c) => c.tile >= 0.44));
   assert.ok(f.cells.every((c) => c.tile === 0 || LADDER.includes(c.tile)));
+});
+
+test("tiles are a soft mid-grey: never darker than 66% ink, and the median tile is 35-55%", () => {
+  const tiles = [];
+  for (const t of times) for (const c of Sim.frame(SEED, t, COLS, ROWS, []).cells) if (c.tile >= 0.2) tiles.push(c.tile);
+  tiles.sort((a, b) => a - b);
+  assert.ok(tiles[tiles.length - 1] <= 0.66);
+  const med = tiles[Math.floor(tiles.length / 2)];
+  assert.ok(med >= 0.35 && med <= 0.55, `median ${med}`);
+});
+
+test("per-line text boxes fade only their own line: three rows away a shark is still dark", () => {
+  const line = [{ x: 10, y: 20, w: 30, h: 1 }];
+  let near = 0, far = 0;
+  for (const t of times) {
+    for (const c of Sim.frame(SEED, t, COLS, ROWS, line).cells) {
+      const dy = c.y < 20 ? 20 - c.y - 1 : c.y - 21;
+      if (c.x >= 9 && c.x <= 40 && dy <= 0) { near++; assert.ok(c.tile <= 0.12); }
+      else if (c.x >= 9 && c.x <= 40 && dy >= 2 && c.tile >= 0.34) far++;
+    }
+  }
+  assert.ok(near > 0 && far > 0, `near ${near} far ${far}`);
+});
+
+test("turns are arcs: a shark keeps one turn direction for at least 6 s at a time", () => {
+  let flips = 0, runs = 0;
+  for (let t0 = 0; t0 < 120; t0 += 0.5) {
+    const a = Sim.frame(SEED, t0, COLS, ROWS, []).sharks, b = Sim.frame(SEED, t0 + 0.5, COLS, ROWS, []).sharks;
+    for (const s of a) {
+      const n = b.find((o) => o.id === s.id);
+      if (n && Math.sign(n.turn) !== Math.sign(s.turn)) { flips++; assert.ok(s.age >= 5.5, `flip at age ${s.age}`); }
+      runs++;
+    }
+  }
+  assert.ok(runs > 200);
+  assert.ok(flips < runs / 10, `${flips} flips in ${runs} samples`);
 });
 
 test("a replacement shark arrives whenever one has left", () => {
