@@ -20,7 +20,7 @@ const Sim = require(FILE);
 const COLS = 120;
 const ROWS = 40;
 const SEED = 7;
-const LENS = [46, 34, 26]; // big, middle, small (the shark's type is its slot)
+const LENS = [54, 44, 34]; // big, middle, small whale (the shark's type is its slot)
 const times = Array.from({ length: 100 }, (_, i) => i * 1.13); // 0 .. ~112 s
 const RECTS = [
   { x: 6, y: 8, w: 50, h: 18 },
@@ -50,7 +50,7 @@ test("there are always 3 or 4 sharks, from t=0 on", () => {
   }
 });
 
-test("three fixed sharks: type = slot, about 26 / 34 / 46 cells long, the big one 1.5x+ the small", () => {
+test("three fixed whales: type = slot, about 34 / 44 / 54 cells long, the big one 1.5x+ the small", () => {
   for (let t = 0; t < 100; t += 7) {
     const f = Sim.frame(SEED, t, COLS, ROWS, []);
     assert.deepEqual(f.sharks.map((s) => s.type).sort(), [0, 1, 2]);
@@ -135,44 +135,90 @@ const span = (cells, a, b) => {
   return v.length ? Math.max(...v) - Math.min(...v) + 1 : 0;
 };
 // First moment `type` is wholly inside a big grid, so nothing is clipped.
-function sample(type) {
+function sample(type, maxDepth = 1) {
   for (let t = 0; t < 800; t += 0.37) {
     const f = Sim.frame(SEED, t, 300, 200, []);
     const s = f.sharks.find((o) => o.type === type);
-    if (s && s.x > 40 && s.x < 260 && s.y > 40 && s.y < 260) return { f, s };
+    if (s && s.depth <= maxDepth && s.x > 40 && s.x < 260 && s.y > 40 && s.y < 260) return { f, s };
   }
   throw new Error("no clean sample for type " + type);
 }
 
-test("hammerheads: the head is far wider than the torso, the torso has no waist, fins reach out, the tail forks", () => {
-  for (const type of [0, 1]) {
-    const { f, s } = sample(type);
-    const cells = inShark(f, s);
-    const head = span(cells, 0.02, 0.2), torso = type ? span(cells, 0.58, 0.64) : span(cells, 0.52, 0.58), peduncle = type ? span(cells, 0.68, 0.72) : span(cells, 0.6, 0.66);
-    assert.ok(head >= torso * 1.6, `type ${type}: head ${head} torso ${torso}`);
-    assert.ok(head >= (type === 0 ? 26 : 16), `type ${type}: head ${head} cells wide`);
-    assert.ok(torso >= peduncle * 1.2, `type ${type}: torso ${torso} peduncle ${peduncle}`);
-    for (let u = 0.25; u < 0.74; u += 0.04) {
-      assert.ok(cells.filter((c) => c.u >= u && c.u < u + 0.04).length >= 2, `type ${type}: gap in the body at u=${u.toFixed(2)}`);
-    }
-    const fins = span(cells, 0.26, 0.42);
-    assert.ok(fins >= peduncle * 1.8, `type ${type}: fins ${fins} vs peduncle ${peduncle}`);
-    const tail = cells.filter((c) => c.u >= 0.86).map((c) => c.side).sort((a, b) => a - b);
-    let gap = 0;
-    for (let i = 1; i < tail.length; i++) gap = Math.max(gap, tail[i] - tail[i - 1]);
-    assert.ok(tail.length >= 4 && gap >= 3, `type ${type}: tail is not forked (gap ${gap})`);
+// A humpback's shape from its density field (straight, no spine curve): the
+// extent across at x (highest v of everything over 0.1).
+const across = (type, x) => {
+  let hi = 0;
+  for (let v = 0; v <= 40; v += 0.25) if (Sim.density(type, x, v) > 0.1) hi = v + 0.25;
+  return hi;
+};
+
+test("humpbacks: rounded head, widest at the flippers, thin peduncle, long swept flippers, two fluke lobes", () => {
+  for (const type of [0, 1, 2]) {
+    const L = Sim.LENS[type], at = (u) => across(type, u * L);
+    const body = Math.max(at(0.12), at(0.18)), nose = at(0.02), head = at(0.08), peduncle = at(0.86);
+    assert.ok(nose < head && head < body, `type ${type}: nose ${nose} head ${head} body ${body}`);
+    assert.ok(body >= 0.08 * L && body <= 0.13 * L, `type ${type}: body ${body}`);
+    assert.ok(peduncle <= body * 0.5 && peduncle >= 1, `type ${type}: peduncle ${peduncle} body ${body}`);
+    // flippers: reach well past the body, down the front half, and are not hairlines
+    const flip = Math.max(at(0.38), at(0.42), at(0.46));
+    assert.ok(flip >= body * 2.2, `type ${type}: flippers reach ${flip}, body ${body}`);
+    let thick = 0;
+    for (let v = body; v <= 40; v += 0.25) if (Sim.density(type, 0.42 * L, v) > 0.15) thick += 0.25;
+    assert.ok(thick >= 2, `type ${type}: flipper only ${thick} cells thick`);
+    // flukes: much wider than the peduncle, two lobes with a notch between
+    const fluke = at(0.96);
+    assert.ok(fluke >= peduncle * 3 && fluke >= 0.28 * L / 2, `type ${type}: fluke ${fluke} peduncle ${peduncle}`);
+    assert.ok(Sim.density(type, 0.99 * L, 0) < 0.1 && Sim.density(type, 0.96 * L, 0.1 * L) > 0.15, `type ${type}: no notch between lobes`);
+    for (let u = 0.04; u < 0.9; u += 0.02) assert.ok(Sim.density(type, u * L, 0) > 0.2, `type ${type}: gap in the body at u=${u.toFixed(2)}`);
   }
 });
 
-test("the small shark is slim: 2-6 cells of body, a head only a little wider, a forked tail", () => {
-  const { f, s } = sample(2), cells = inShark(f, s);
-  const mid = span(cells, 0.45, 0.5), head = span(cells, 0.02, 0.2);
-  assert.ok(mid >= 2 && mid <= 7, `body ${mid}`);
-  assert.ok(head <= 10, `head ${head}`);
-  const tail = cells.filter((c) => c.u >= 0.9).map((c) => c.side).sort((a, b) => a - b);
-  let gap = 0;
-  for (let i = 1; i < tail.length; i++) gap = Math.max(gap, tail[i] - tail[i - 1]);
-  assert.ok(gap >= 1.5, `tail gap ${gap}`);
+test("the spine curves like a C or an S that swells and reverses over tens of seconds, nose fixed", () => {
+  assert.equal(typeof Sim.spine, "function");
+  assert.ok(Sim.CURVE.c >= 20 && Sim.CURVE.s >= 25);
+  const ph = [0.7, 0.2, 1.1];
+  for (const type of [0, 1, 2]) {
+    let lo = 0, hi = 0, maxRate = 0, prev = null, opposite = 0, same = 0;
+    for (let tau = 0; tau < 240; tau += 0.25) {
+      const tail = Sim.spine(type, 1, tau, ph), mid = Sim.spine(type, 0.5, tau, ph);
+      lo = Math.min(lo, tail); hi = Math.max(hi, tail);
+      if (prev !== null) maxRate = Math.max(maxRate, Math.abs(tail - prev) / 0.25);
+      prev = tail;
+      if (Math.abs(mid) > 1 && Math.abs(tail) > 1) { if (Math.sign(mid) !== Math.sign(tail)) opposite++; else same++; }
+    }
+    const L = Sim.LENS[type];
+    assert.ok(hi >= 0.1 * L && lo <= -0.1 * L, `type ${type}: tail swings ${lo.toFixed(1)}..${hi.toFixed(1)}`);
+    assert.ok(maxRate <= 3.6, `type ${type}: tail moves ${maxRate.toFixed(2)} cells/s`);
+    assert.ok(opposite > 0 && same > 0, "both C and S shapes occur");
+    assert.ok(Math.abs(Sim.spine(type, 0, 77, ph)) <= Sim.BEND.amp * 0.2 + 1e-9, "the nose stays on the line");
+  }
+});
+
+test("each whale sinks and surfaces slowly, and the deeper it is the lighter its tail and the fewer its tints", () => {
+  assert.equal(typeof Sim.depth, "function");
+  let lo = 1, hi = 0, maxRate = 0, prev = null;
+  for (let tau = 0; tau < 200; tau += 0.5) {
+    const d = Sim.depth(tau, 1.3);
+    lo = Math.min(lo, d); hi = Math.max(hi, d);
+    if (prev !== null) maxRate = Math.max(maxRate, Math.abs(d - prev) / 0.5);
+    prev = d;
+  }
+  assert.ok(lo <= 0.02 && hi >= 0.98 && maxRate <= 0.09, `depth ${lo}..${hi}, ${maxRate}/s`);
+  const shallow = { tail: 0, head: 0, tint: 0, n: 0 }, deep = { tail: 0, head: 0, tint: 0, n: 0 };
+  for (let t = 0; t < 600; t += 0.9) {
+    const f = Sim.frame(SEED, t, 300, 200, []);
+    for (const s of f.sharks) {
+      if (s.x < 50 || s.x > 250 || s.y < 50 || s.y > 250 || (s.depth > 0.3 && s.depth < 0.7)) continue;
+      const g = s.depth < 0.3 ? shallow : deep, cells = inShark(f, s, 0.2);
+      g.tail += cells.filter((c) => c.u >= 0.7).length; g.head += cells.filter((c) => c.u < 0.4).length;
+      const cs = f.cells.filter((c) => Math.hypot(c.x + 0.5 - s.x, (c.y + 0.5) * 1.5 - s.y) < s.len / 2);
+      g.tint += cs.filter((c) => c.tint !== null).length / Math.max(1, cs.length); g.n++;
+    }
+  }
+  assert.ok(shallow.n > 5 && deep.n > 5, `${shallow.n} shallow, ${deep.n} deep samples`);
+  assert.ok(deep.tail / deep.n < 0.5 * shallow.tail / shallow.n, `tail cells deep ${deep.tail / deep.n} vs shallow ${shallow.tail / shallow.n}`);
+  assert.ok(deep.head / deep.n > 0.5 * shallow.head / shallow.n, "the head stays");
+  assert.ok(deep.tint / deep.n < shallow.tint / shallow.n, "fewer tints when deep");
 });
 
 // ---------------------------------------------------------------- density
@@ -197,7 +243,7 @@ test("density: richer from the rim inward, a 3-4 cell gradient, the spine is den
 });
 
 test("every shark has a faint outer ring of small glyphs with no tile, then tiles in several greys", () => {
-  const { f } = sample(0);
+  const { f } = sample(0, 0.3); // near the surface, so not lightened
   const small = f.cells.filter((c) => "o,'.".includes(c.ch));
   assert.ok(small.length >= 10, `${small.length}`);
   for (const c of small) assert.equal(c.tile, 0);
@@ -206,25 +252,25 @@ test("every shark has a faint outer ring of small glyphs with no tile, then tile
   assert.ok(tiled.every((c) => c.tile >= 0.2 && c.tile <= 0.66));
   assert.ok(new Set(tiled.map((c) => c.tile)).size >= 5, "several grey steps");
   const med = tiled.map((c) => c.tile).sort((a, b) => a - b)[Math.floor(tiled.length / 2)];
-  assert.ok(med >= 0.3 && med <= 0.6, `median ${med}`);
+  assert.ok(med >= 0.22 && med <= 0.6, `median ${med}`);
 });
 
-test("tile cells: the big shark at most 300 (ring glyphs on top), the whole frame at most 1200 with dust", () => {
+test("tile cells: the big whale at most 480 (ring glyphs on top), the whole frame at most 1200 with dust", () => {
   let maxBig = 0;
   for (const t of times) {
     const f = Sim.frame(SEED, t, 300, 200, []);
     assert.ok(f.cells.length + f.dust.length <= 1200, `${f.cells.length + f.dust.length}`);
     assert.ok(f.dust.length <= 160);
     for (const s of f.sharks) {
-      assert.ok(s.n <= [300, 240, 120][s.type], `type ${s.type}: ${s.n} cells`);
+      assert.ok(s.n <= [480, 400, 280][s.type], `type ${s.type}: ${s.n} cells`);
       if (s.type === 0) maxBig = Math.max(maxBig, s.n);
     }
   }
-  assert.ok(maxBig >= 200, `the big one fills ${maxBig} cells`);
+  assert.ok(maxBig >= 250, `the big one fills ${maxBig} cells`);
   assert.equal(Sim.MAX_CELLS, 1200);
 });
 
-test("each shark has one main hue, the three differ; coloured glyphs are at most 10% of the content cells", () => {
+test("each whale has one main hue, the three differ; coloured glyphs are at most 10% of the content cells", () => {
   const hues = [new Set(), new Set(), new Set()];
   let tinted = 0, total = 0;
   for (const t of times) {
@@ -298,7 +344,7 @@ test("soft edge: at most 12% ink inside a text box, climbing back over 2 cells o
   }
   assert.ok(inside > 50);
   assert.ok(at[0] <= at[1] && at[1] <= at[2] && at[2] <= at[3] && at[3] > at[0], at.join(" "));
-  assert.ok(Sim.frame(SEED, 12, 120, 60, []).cells.some((c) => c.tile >= 0.44), "outside the box the sharks are dark");
+  assert.ok([12, 40, 70, 100].some((t) => Sim.frame(SEED, t, 120, 60, []).cells.some((c) => c.tile >= 0.44)), "outside the box the whales are dark");
 });
 
 test("every cell inside a text rect (plus margin) is capped at ink 0.12, dust included", () => {

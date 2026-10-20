@@ -623,7 +623,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-sharks-landscape.webp?v=557161896e");
+    background-image: url("/static/brand/hero-sharks-landscape.webp?v=5c3c67dfbe");
     background-size: cover;
     background-position: right center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
@@ -632,7 +632,7 @@
 
   @media (max-width: 599px) {
     .home-sharks-still {
-      background-image: url("/static/brand/hero-sharks-portrait.webp?v=ec952115b1");
+      background-image: url("/static/brand/hero-sharks-portrait.webp?v=7c3d2f4e82");
     }
   }
 

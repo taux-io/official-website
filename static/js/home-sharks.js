@@ -1,10 +1,6 @@
-/* Home hero background (DESIGN.md decision 183): ASCII sharks on a cell grid,
-   drawn with canvas 2D from the pure simulation in sharks-sim.js (load that first).
-   Desktop only (a hover pointer, at least `laptop` wide, no prefers-reduced-motion);
-   elsewhere this script does nothing and the stylesheet shows the still. If the 2D
-   context cannot be made it sets [data-fallback] on the still. Colours and the glyph
-   face come from the stylesheet (--ink-rgb, --surface-rgb, --shark-N-rgb, the canvas'
-   font-family), never from this file. Budget: with sharks-sim.js, 16384 bytes. */
+/* Home hero background (DESIGN.md decision 183): ASCII humpback whales on a cell grid, drawn with canvas 2D from
+   sharks-sim.js (load first). Desktop only (hover, >= laptop, no reduced-motion); elsewhere the stylesheet shows the
+   still; if 2D fails [data-fallback] goes on the still. Colours and font come from the stylesheet. Budget: 16384 bytes with the sim. */
 (() => {
   'use strict';
   const cv = document.querySelector('[data-home-sharks]');
@@ -15,7 +11,8 @@
   if (!Sim) { if (still) still.setAttribute('data-fallback', ''); return; }
   const desktop = matchMedia('(min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference)'); // 961px = tailwind `laptop`
   const FRAME_MS = 1000 / 30 - 4;   // at most 30 fps
-  const SEED = 7;
+  const SEED = 36;                  // starts with whales in view
+
   const FADE = Sim.TEXT_FADE_MAX;
   const GRID = Sim.LADDER[0];       // grid lines: the ink ladder's first step
   let ctx, grid, cw, ch, cols, rows, rects, ink, paper, tints, font, dpr;
@@ -34,9 +31,7 @@
     return !!ctx && !!ink && !paper.includes('()') && !tints.some((c) => c.includes('()'));
   };
 
-  // One box per LINE of the hero's text, in cells, relative to the canvas, as
-  // wide as the line's glyphs: the simulation fades its cells to TEXT_FADE_MAX
-  // inside them. (An element's box would be a block that covers whole columns.)
+  // One box per LINE of hero text (cells, glyph-wide): the sim fades cells to TEXT_FADE_MAX inside them.
   const measure = () => {
     const o = cv.getBoundingClientRect(), w = document.createTreeWalker(hero, 4), rg = document.createRange();
     rects = [];
@@ -47,8 +42,7 @@
     }
   };
 
-  // Everything that depends on the size: the cell, the backing store, the grid
-  // layer (drawn once here, blitted every frame) and the text boxes.
+  // Everything that depends on size: cell, backing store, grid layer, text boxes.
   const size = () => {
     const w = cv.clientWidth, h = cv.clientHeight;
     dpr = Math.min(window.devicePixelRatio || 1, 2);

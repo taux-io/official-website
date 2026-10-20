@@ -28,7 +28,7 @@
 //   (c) `text-ink-soft` anywhere in the hero fails whatever the numbers say;
 //   (d) a hero text colour this file does not recognise ERRORS, it is never skipped;
 //   (e) static/js/home-sharks.js + static/js/sharks-sim.js together are at most
-//       16384 bytes. Raise nothing quietly: that number is the spec's;
+//       16384 bytes. Raise nothing quietly: that number is the spec's (16384 -> 16384 for the whales, DESIGN.md decision 183 revision 3);
 //   (f) the stills. Phones, tablets, reduced-motion and the no-canvas fallback
 //       see two WebPs (static/brand/hero-sharks-landscape.webp and -portrait.webp)
 //       drawn from the simulation. Nobody notices a picture going stale: it still

@@ -54,7 +54,8 @@ function judge(s, seed, t) {
   const right = inside.filter((k) => k.x > cols / 2).length;
   const left = f.cells.filter((c) => c.x < cols * SELECTION.leftClear).length;
   const ok = inside.length >= SELECTION.minSharks && right >= SELECTION.minRight && left === 0;
-  return { ok, visible: inside.length, right, left, cells: f.cells.length };
+  const cut = f.cells.filter((c) => c.tile > 0 && (c.x >= cols - 2 || c.y <= 1 || c.y >= rows - 2)).length; // cells the picture's edge cuts off
+  return { ok, visible: inside.length, right, left, cut, cells: f.cells.length };
 }
 
 // Runs in the page. Mirrors draw() and size() in static/js/home-sharks.js.
@@ -88,15 +89,15 @@ function paint({ s, frame, cols, rows, ink, paper, tints, font, fade, step }) {
 function scan() {
   for (const [name, s] of Object.entries(STILLS)) {
     const hits = [];
-    for (const seed of [7, 1, 2, 3, 9]) {
-      for (let t = 0; t <= 120; t++) {
+    for (let seed = 1; seed <= 40; seed++) {
+      for (let t = 0; t <= 240; t++) {
         const j = judge(s, seed, t);
         if (j.ok) hits.push({ seed, t, ...j });
       }
     }
-    hits.sort((a, b) => b.visible - a.visible || a.left - b.left || b.cells - a.cells);
+    hits.sort((a, b) => b.visible - a.visible || a.cut - b.cut || b.cells - a.cells);
     console.log(`${name} (${grid(s).cols}x${grid(s).rows} cells): ${hits.length} moments meet the selection; best:`);
-    for (const h of hits.slice(0, 8)) console.log(`  seed ${h.seed} t ${h.t}: ${h.visible} sharks, ${h.right} on the right, ${h.cells} cells`);
+    for (const h of hits.slice(0, 8)) console.log(`  seed ${h.seed} t ${h.t}: ${h.visible} sharks, ${h.right} on the right, ${h.cells} cells, ${h.cut} at the edge`);
   }
 }
 
