@@ -139,8 +139,12 @@ jobs:
       # small print (text-ink-soft) in the hero is refused. It also holds the
       # palette (exactly four --shark-N-rgb, matching anything the scripts say)
       # and the size of home-sharks.js + sharks-sim.js (14336 bytes together).
-      # The phone still is the OLD water picture until #401 and is not gated
-      # here. No browser, no build.
+      # It also holds the two stills (phone portrait, landscape elsewhere): the
+      # ledger of what they were drawn from must match the simulation, tints,
+      # paper, ink, cell sizes, moments and seeds as they are now, each image
+      # must be under 80 KB and its url() in src/input.css must carry its own
+      # content-hash ?v=. A red here says to run
+      # `npm run build:sharks && npm run build:css`. No browser, no build.
       - name: hero sharks keep their text legible
         run: npm run check:hero-sharks
 

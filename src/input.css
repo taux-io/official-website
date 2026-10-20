@@ -94,7 +94,7 @@
   --spot-rgb: 242 107 58;
 
   /* SHARK TINTS — the hero background's four colours (DESIGN.md decision 183,
-     which replaces the water of 182): amber, olive, indigo, purple. They tint
+     which replaces the teal plate of 182): amber, olive, indigo, purple. They tint
      about one glyph in ten of the ASCII sharks that static/js/home-sharks.js
      draws behind the home hero on a desktop. The script reads them with
      getComputedStyle and nothing else does; no declaration, no class and no
@@ -605,23 +605,35 @@
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
-  /* THE STILL, for every visitor the canvas is not for. TEMPORARILY it is still
-     the old water picture (NOTES.md, ticket #401 replaces it with a frame of
-     the sharks). It is a sibling like the canvas, under the same fade. The script
-     runs on a hover pointer, laptop width and no reduced-motion, so exactly
-     there the still is hidden, and `display: none` also means the browser never
-     fetches it. If the 2D context cannot be made the script sets
-     [data-fallback] and the still comes back. The three conditions below are the
-     script's `desktop` query; change them together (961px = tailwind `laptop`). */
+  /* THE STILLS, for every visitor the canvas is not for (DESIGN.md decision
+     183): two frames of the same simulation, drawn once at a fixed moment by
+     `npm run build:sharks` (scripts/assets/build-sharks.js). The landscape one
+     serves tablets, a desktop that asked for reduced motion and the fallback
+     when the canvas cannot start; below `mobile` (600px) the portrait one,
+     drawn on 8x12px cells so its glyphs stay crisp on a phone instead of a
+     shrunken wide picture. The ?v= on each url() is that image's own hash
+     (/static/brand is cached for a week; check:hero-sharks holds it). It is a
+     sibling like the canvas, under the same fade. The script runs on a hover
+     pointer, laptop width and no reduced-motion, so exactly there the still is
+     hidden, and `display: none` also means the browser never fetches it. If the
+     2D context cannot be made the script sets [data-fallback] and the still
+     comes back. The three conditions below are the script's `desktop` query;
+     change them together (961px = tailwind `laptop`). */
   .home-sharks-still {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-sharks.webp?v=d5f1c0ebec");
+    background-image: url("/static/brand/hero-sharks-landscape.webp?v=ce70ef82fa");
     background-size: cover;
-    background-position: center;
+    background-position: right center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  @media (max-width: 599px) {
+    .home-sharks-still {
+      background-image: url("/static/brand/hero-sharks-portrait.webp?v=8251080a88");
+    }
   }
 
   @media (min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference) {

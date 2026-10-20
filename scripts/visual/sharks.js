@@ -29,8 +29,11 @@
 //
 // The canvas is read by screenshot, with the still hidden, against a screenshot
 // of the same box with the canvas hidden. What the canvas leaves behind it is
-// paper. The still is the OLD water picture until ticket #401, so only that it
-// shows and answers 200 is asserted, not what it looks like.
+// paper. The still is asserted by where it comes from, not by what it looks like
+// (check:hero-sharks holds the picture against its ledger): a phone (< 600px)
+// must be shown and download the PORTRAIT one and only that, everything else
+// that shows a still (a wide screen asking for reduced motion, the no-canvas
+// fallback) the LANDSCAPE one.
 
 const sharp = require("sharp");
 const { launch } = require("../browser");
@@ -86,8 +89,8 @@ async function open(browser, locale, cond, contextOptions, refuse2d = false) {
   const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   await page.addInitScript(instrument, refuse2d);
-  const seen = { stills: [], console: [], errors: [] };
-  page.on("response", (r) => { if (/hero-sharks/.test(r.url())) seen.stills.push(r.status()); });
+  const seen = { stills: [], stillUrls: [], console: [], errors: [] };
+  page.on("response", (r) => { if (/hero-sharks/.test(r.url())) { seen.stills.push(r.status()); seen.stillUrls.push(r.url()); } });
   page.on("console", (m) => { if (/Content Security Policy|violates the following/i.test(m.text())) seen.console.push(m.text()); });
   page.on("pageerror", (e) => seen.errors.push(e.message));
   const res = await page.goto(`${BASE_URL}/${locale}`, { waitUntil: "load" });
@@ -192,7 +195,14 @@ async function desktopGroups(browser, locale) {
   await context.close();
 }
 
-async function stillOnly(browser, locale, cond, contextOptions) {
+// `which` is the picture this condition must get: "portrait" or "landscape".
+function stillIs(locale, cond, which, s, seen) {
+  if (!new RegExp(`hero-sharks-${which}\\.webp\\?v=[0-9a-f]{10}`).test(s.image)) fail(locale, cond, `the still shows ${s.image}, not the ${which} picture with its ?v=`);
+  const other = seen.stillUrls.filter((u) => !u.includes(`hero-sharks-${which}.webp`));
+  if (other.length) fail(locale, cond, `the ${which} picture was expected but the page also downloaded ${other.join(", ")}`);
+}
+
+async function stillOnly(browser, locale, cond, which, contextOptions) {
   const { context, page, seen } = await open(browser, locale, cond, contextOptions);
   const asked = await page.evaluate(() => window.__sharks.asked);
   const ran = await framesOver(page, 700);
@@ -201,7 +211,7 @@ async function stillOnly(browser, locale, cond, contextOptions) {
   if (total || ran > MAX_FRAMES_STOPPED) fail(locale, cond, `the frame loop ran (${total} frames): the sharks started where they must not`);
   const s = await stillState(page);
   if (s.display === "none" || s.h <= 0) fail(locale, cond, `the still is not visible (display ${s.display}, height ${s.h})`);
-  if (!/hero-sharks/.test(s.image)) fail(locale, cond, `the still has no image (${s.image})`);
+  stillIs(locale, cond, which, s, seen);
   if (!seen.stills.length) fail(locale, cond, "the still image was never requested");
   else if (seen.stills.some((c) => c !== 200)) fail(locale, cond, `the still answered ${seen.stills.join(",")}, not 200`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
@@ -213,8 +223,9 @@ async function stillOnly(browser, locale, cond, contextOptions) {
   const browser = await launch();
   for (const locale of LOCALES) {
     await desktopGroups(browser, locale);
-    await stillOnly(browser, locale, "phone", { viewport: PHONE, isMobile: true, hasTouch: true });
-    await stillOnly(browser, locale, "reduced-motion", { viewport: DESKTOP, reducedMotion: "reduce" });
+    await stillOnly(browser, locale, "phone", "portrait", { viewport: PHONE, isMobile: true, hasTouch: true });
+    await stillOnly(browser, locale, "tablet", "landscape", { viewport: { width: 820, height: 1180 }, isMobile: true, hasTouch: true });
+    await stillOnly(browser, locale, "reduced-motion", "landscape", { viewport: DESKTOP, reducedMotion: "reduce" });
 
     // The sharks' canvas gets no 2D context: the still must take over.
     const probe = await open(browser, locale, "no-2d", { viewport: DESKTOP, reducedMotion: "no-preference" }, true);
@@ -223,6 +234,7 @@ async function stillOnly(browser, locale, cond, contextOptions) {
     const s = await stillState(probe.page);
     if (!s.fallback) fail(locale, "no-2d", "the 2D context was refused but the still was not marked [data-fallback]");
     if (s.display === "none" || s.h <= 0) fail(locale, "no-2d", `the 2D context was refused and the still is not visible (display ${s.display}, height ${s.h})`);
+    stillIs(locale, "no-2d", "landscape", s, probe.seen);
     if (probe.seen.stills.some((c) => c !== 200) || !probe.seen.stills.length) fail(locale, "no-2d", `the still answered ${probe.seen.stills.join(",") || "nothing"}, not 200`);
     notes.push(`${locale.padEnd(11)} no-2d: still ${s.display}, data-fallback ${s.fallback}, ${probe.seen.stills.join(",")}`);
     await probe.context.close();
