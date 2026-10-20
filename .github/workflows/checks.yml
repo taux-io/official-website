@@ -208,6 +208,11 @@ jobs:
       - name: browser launch unit tests
         run: npm run test:browser
 
+      # static/js/sharks-sim.js (the home hero's whales): a pure function, tested
+      # with node:test, no browser. `npm run check` runs it too.
+      - name: sharks simulation unit tests
+        run: npm run test:sim
+
   audit:
     runs-on: ubuntu-24.04
     steps:

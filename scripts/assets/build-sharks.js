@@ -3,7 +3,7 @@
 //   npm run build:sharks            (then: npm run build:css)
 //   node scripts/assets/build-sharks.js --scan     list moments that meet SELECTION
 //
-// static/js/home-sharks.js draws ASCII sharks with canvas 2D, but only on a
+// static/js/home-sharks.js draws ASCII whales (identifiers still say sharks) with canvas 2D, but only on a
 // desktop (a hover pointer, laptop width, no reduced-motion, a working 2D
 // context). Everywhere else the hero shows one of these pictures: the SAME
 // simulation (static/js/sharks-sim.js), drawn once at a fixed moment. The
@@ -12,8 +12,10 @@
 // the canvas could not start (.home-sharks-still, src/input.css).
 //
 // Nothing here is a second copy of the look except `paint`, which mirrors the
-// script's draw() with no text boxes (a still has none to fade around; the
-// moment was picked so the text side is empty instead). Colours and the glyph
+// script's draw(). The landscape still has no text boxes to fade around (its
+// moment was picked so the text side is empty instead); the portrait still passes
+// the union of the hero's measured line boxes to the simulation as `rects`, so
+// the cells under any text line are faded the way the live canvas fades them. Colours and the glyph
 // face are read from the authored CSS, sizes and moments from
 // scripts/lib/sharks-source.js, which the staleness gate hashes too.
 //
@@ -27,7 +29,7 @@
 // on both pictures' url() in src/input.css: /static/brand is cached for a week
 // and that is how a visitor with an old picture fetches the new one.
 //
-// Reproducible: the simulation is a pure function of (seed, t, cols, rows) and
+// Reproducible: the simulation is a pure function of (seed, t, cols, rows, rects) and
 // the WebP encoder is deterministic at fixed settings. What is not pinned is the
 // glyph face, which is the machine's monospace; the picture is committed, CI
 // never redraws it, and the ledger hashes inputs, not pixels. A local Chromium

@@ -43,10 +43,10 @@ test("the frame does not depend on which frames were asked for before it", () =>
   assert.deepEqual(Sim.frame(SEED, 60, COLS, ROWS, []), cold);
 });
 
-test("there are always 3 or 4 sharks, from t=0 on", () => {
+test("there are always exactly 3 sharks, from t=0 on", () => {
   for (const t of times) {
     const n = Sim.frame(SEED, t, COLS, ROWS, []).sharks.length;
-    assert.ok(n >= 3 && n <= 4, `t=${t}: ${n} sharks`);
+    assert.equal(n, 3, `t=${t}: ${n} sharks`);
   }
 });
 
