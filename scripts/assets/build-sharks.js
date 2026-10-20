@@ -1,12 +1,12 @@
-// Builds the still of the home hero's water background.
+// Builds the still of the home hero's sharks background.
 //
-//   node scripts/assets/build-water.js      (or: npm run build:water)
+//   node scripts/assets/build-sharks.js      (or: npm run build:sharks)
 //
-// static/js/home-water.js draws slow low-poly water with a WebGL fragment shader,
+// static/js/home-sharks.js draws slow low-poly water with a WebGL fragment shader,
 // but only on a desktop (a hover pointer, laptop width, no reduced-motion, and
 // a working WebGL). Everywhere else the hero shows this picture instead: the
 // SAME shader, drawn once at a fixed moment. The two are complementary — the
-// stylesheet hides this one exactly when the script runs (see .home-water-still).
+// stylesheet hides this one exactly when the script runs (see .home-sharks-still).
 //
 // The picture is the water as the live canvas draws it: three tones mixed from
 // --water-rgb and the paper (--surface-rgb) by the shader itself, opaque. The
@@ -14,14 +14,14 @@
 // over the canvas.
 //
 // Nothing here is a second copy of the look. The GLSL source and
-// WATER_MAX_DEPTH are read out of home-water.js, and the colours out of
+// WATER_MAX_DEPTH are read out of home-sharks.js, and the colours out of
 // --water-rgb and --surface-rgb in the authored CSS, so the still cannot drift
 // from the canvas.
 // RERUN IT after changing any of: --water-rgb, --surface-rgb, WATER_MAX_DEPTH, the
-// fragment shader, or the constants in scripts/lib/water-source.js (STILL).
-// `npm run check:hero-water` goes red until you do. One line:
-// `PLAYWRIGHT_CHANNEL=chrome npm run build:water`, then `npm run build:css`, and
-// commit static/brand/hero-water.webp, ledgers/hero-water-still.txt, src/input.css
+// fragment shader, or the constants in scripts/lib/sharks-source.js (STILL).
+// `npm run check:hero-sharks` goes red until you do. One line:
+// `PLAYWRIGHT_CHANNEL=chrome npm run build:sharks`, then `npm run build:css`, and
+// commit static/brand/hero-sharks.webp, ledgers/hero-sharks-still.txt, src/input.css
 // and static/css/styles.min.css. This script rewrites the `?v=` on the picture's
 // url() in src/input.css: /static/brand is cached for a week, and that is how a
 // visitor with the old picture fetches the new one.
@@ -33,28 +33,28 @@
 // machines; on one machine two runs are byte-identical.
 //
 // A local Chromium whose version does not match Playwright's:
-//   PLAYWRIGHT_CHANNEL=chrome npm run build:water
+//   PLAYWRIGHT_CHANNEL=chrome npm run build:sharks
 
 const fs = require("fs");
 const path = require("path");
 const { launch, GPU_ARGS } = require("../browser");
 const sharp = require("sharp");
 const stylesheet = require("../stylesheet");
-const waterSource = require("../lib/water-source");
+const sharksSource = require("../lib/sharks-source");
 
-const { ROOT, STILL, STILL_IMAGE: OUT, STILL_LEDGER, INPUT_CSS } = waterSource;
+const { ROOT, STILL, STILL_IMAGE: OUT, STILL_LEDGER, INPUT_CSS } = sharksSource;
 
 // 800x450 is wider than any hero is tall: the stylesheet shows it with
 // `background-size: cover`, so a phone sees a centred crop of it.
 // STILL.T is shader time in the shader's own units (the script's
-// `clock * WATER_SPEED`). All the constants live in scripts/lib/water-source.js
+// `clock * WATER_SPEED`). All the constants live in scripts/lib/sharks-source.js
 // because the staleness gate hashes them too.
 const { WIDTH, HEIGHT, T: STILL_T, QUALITY, ALPHA_QUALITY, EFFORT } = STILL;
-const { STILL_MAX_BYTES: MAX_BYTES } = waterSource;
+const { STILL_MAX_BYTES: MAX_BYTES } = sharksSource;
 
 async function main() {
   const sheet = stylesheet.read();
-  const inputs = waterSource.stillInputs(sheet);
+  const inputs = sharksSource.stillInputs(sheet);
   const { frag, water: rgb, paper, depth: max } = inputs;
 
   const browser = await launch({ args: GPU_ARGS });
@@ -104,16 +104,16 @@ async function main() {
   const png = Buffer.from(dataUrl.split(",")[1], "base64");
   const webp = await sharp(png).webp({ quality: QUALITY, alphaQuality: ALPHA_QUALITY, effort: EFFORT }).toBuffer();
   if (webp.length > MAX_BYTES) {
-    throw new Error(`build-water: ${webp.length} bytes is over the ${MAX_BYTES} budget; lower QUALITY or the size`);
+    throw new Error(`build-sharks: ${webp.length} bytes is over the ${MAX_BYTES} budget; lower QUALITY or the size`);
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, webp);
-  fs.writeFileSync(STILL_LEDGER, waterSource.ledgerText(inputs, webp));
+  fs.writeFileSync(STILL_LEDGER, sharksSource.ledgerText(inputs, webp));
   // The picture's url() carries a ?v= of its own hash (see imageVersion).
-  const v = waterSource.imageVersion(webp);
+  const v = sharksSource.imageVersion(webp);
   const css = fs.readFileSync(INPUT_CSS, "utf8");
-  const next = css.replace(/url\("\/static\/brand\/hero-water\.webp(?:\?v=[0-9a-f]+)?"\)/, `url("/static/brand/hero-water.webp?v=${v}")`);
-  if (!next.includes(`hero-water.webp?v=${v}`)) throw new Error('src/input.css has no url("/static/brand/hero-water.webp") to version');
+  const next = css.replace(/url\("\/static\/brand\/hero-sharks\.webp(?:\?v=[0-9a-f]+)?"\)/, `url("/static/brand/hero-sharks.webp?v=${v}")`);
+  if (!next.includes(`hero-sharks.webp?v=${v}`)) throw new Error('src/input.css has no url("/static/brand/hero-sharks.webp") to version');
   fs.writeFileSync(INPUT_CSS, next);
   console.log(`  ${path.relative(ROOT, OUT)}  ${WIDTH}x${HEIGHT}  ${(webp.length / 1024).toFixed(1)} KB  ?v=${v}`);
   console.log(`  ${path.relative(ROOT, STILL_LEDGER)} and the ?v= in src/input.css updated; now run npm run build:css and commit them with the picture`);

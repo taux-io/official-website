@@ -394,7 +394,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 
 **最多兩塊墨版。** 一塊主墨版（Charcoal）、一塊副墨版（Cobalt）。**紙不算墨版。**
 
-**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 115 198 182`（`#73C6B6`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-water.js` 讀它、由著色器畫在 canvas 上（同一支著色器在固定時間畫一次的靜態圖給手機、減少動態與無 WebGL 用）。最深的那一面是「水面色占 `WATER_MAX_DEPTH`（0.7）、紙色占其餘」，即 `156 214 202`，上面**沒有壓暗用的遮罩**（canvas 與靜態圖的底緣淡出到紙色的漸層不算）；hero 內的文字全是墨色，壓在它上面 7.65:1。規則 25 把它關在 `--water-rgb` 的宣告那一行。
+**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 115 198 182`（`#73C6B6`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-sharks.js` 讀它、由著色器畫在 canvas 上（同一支著色器在固定時間畫一次的靜態圖給手機、減少動態與無 WebGL 用）。最深的那一面是「水面色占 `WATER_MAX_DEPTH`（0.7）、紙色占其餘」，即 `156 214 202`，上面**沒有壓暗用的遮罩**（canvas 與靜態圖的底緣淡出到紙色的漸層不算）；hero 內的文字全是墨色，壓在它上面 7.65:1。規則 25 把它關在 `--water-rgb` 的宣告那一行。
 
 **深淺不是新的顏色，是同一塊版的密度階。** 參考站的原話：darker coverage may appear near-black and sparse halftones may appear pale — these are density changes, not extra inks。所以本站的三階墨色從「三個獨立的灰」改寫成「主墨版的三個覆蓋率」，而分隔線是第四個覆蓋率。
 
@@ -877,7 +877,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 11 | easing scale | ✅ | issue 156 |
 | 12 | press follows hover | ✅ | issue 156 |
 | 13 | zero mono | ✅ | #171 |
-| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-water>`，決策 #182） | ✅ | #166 |
+| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-sharks>`，決策 #182） | ✅ | #166 |
 | 15 | section cover screens | ✅ | #182 |
 | 16 | sentence case display | ✅ | #193 |
 | 17 | single stylesheet | ✅ | #189 |
@@ -918,7 +918,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **仍然沒有涵蓋，具名寫在這裡而不是留成暗示**：`oklch()`、`lab()`、`color()` 與具名色（`white`、`red`）。**今天各實測 0 個**，所以沒有為不存在的情況長分支——但一個宣稱「沒有字面色」的 summary 會把這條規則原本的錯誤再犯一次，因此 summary 只列它真的讀得到的四個家族。
 
-⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-water>`（決策 #182 取代 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
+⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-sharks>`（決策 #182 取代 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
 
 ### 八條新規則要檢查什麼
 
@@ -1028,9 +1028,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **副墨版 / accent plate** | Cobalt `#2148B8`，承載互動，沒有第二個用途 |
 | **挖空 / knockout** | 從墨版裡挖掉，露出紙。所以 `on-primary` ＝ `canvas` |
 | **髮絲線 / hairline** | 主墨版 12%，1px。唯一的分隔與邊框權重 |
-| **水面背景 / water background** | 首頁 hero 後方的慢速淺青綠低多邊形水面（不規則三角小面、高光、斜向光帶），沒有遮罩壓暗；桌機是動的，手機、減少動態與無 WebGL 時是同一支著色器在固定時間畫的靜態圖 |
-| **`.home-water`** | 水面背景的 canvas（`<canvas data-home-water>`），著色器畫在上面，是 hero 內容的兄弟。只有桌機條件（hover、≥ 961px、未設減少動態、WebGL 可用）成立時才啟動 |
-| **`.home-water-still`** | 水面背景的靜態圖層（`static/brand/hero-water.webp`，由 `npm run build:water` 產生，與 `ledgers/hero-water-still.txt` 對帳），也是 hero 內容的兄弟。桌機著色器在跑時 `display: none`（所以不下載）；WebGL 失敗時腳本加 `[data-fallback]` 讓它回來 |
+| **鯊魚背景 / sharks background** | 首頁 hero 後方的背景（目前仍是慢速淺青綠低多邊形水面，之後換成 ASCII 鯊魚字格；現在是不規則三角小面、高光、斜向光帶），沒有遮罩壓暗；桌機是動的，手機、減少動態與無 WebGL 時是同一支著色器在固定時間畫的靜態圖 |
+| **`.home-sharks`** | 鯊魚背景的 canvas（`<canvas data-home-sharks>`），著色器畫在上面，是 hero 內容的兄弟。只有桌機條件（hover、≥ 961px、未設減少動態、WebGL 可用）成立時才啟動 |
+| **`.home-sharks-still`** | 鯊魚背景的靜態圖層（`static/brand/hero-sharks.webp`，由 `npm run build:sharks` 產生，與 `ledgers/hero-sharks-still.txt` 對帳），也是 hero 內容的兄弟。桌機著色器在跑時 `display: none`（所以不下載）；WebGL 失敗時腳本加 `[data-fallback]` 讓它回來 |
 | **eyebrow** | 標題上方的小型全大寫標籤。**也是級距規則的分母** |
 | **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |
