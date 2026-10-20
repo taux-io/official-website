@@ -1,7 +1,7 @@
 /* Home hero background (DESIGN.md decision 182): slow low-poly water, drawn with
    a WebGL fragment shader. Desktop only (a hover pointer, at least `laptop`
    wide, no prefers-reduced-motion); everywhere else this script does nothing and
-   the stylesheet shows the still (static/brand/hero-water.webp). If WebGL fails
+   the stylesheet shows the still (static/brand/hero-sharks.webp). If WebGL fails
    here it sets [data-fallback] on the still so the still takes over. It does
    not follow the pointer. The colours come from the stylesheet's --water-rgb
    and --surface-rgb, never from this file: the shader mixes the water with
@@ -11,7 +11,7 @@
 
   // THE DEEPEST THE WATER EVER GETS: the share of --water-rgb in the darkest
   // facet, the rest being paper, 0..1. This is the contrast knob (no darkening veil sits
-  // on top; the fade to paper at the bottom edge does not count): `npm run check:hero-water` fails if a change here, or to
+  // on top; the fade to paper at the bottom edge does not count): `npm run check:hero-sharks` fails if a change here, or to
   // --water-rgb, takes any hero text under AA or leaves it less than 0.1 to spare.
   const WATER_MAX_DEPTH = 0.7;
 
@@ -22,9 +22,9 @@
   const FRAME_MS = 1000 / 30;   // at most 30 fps
   const SCALE = 0.5;            // internal resolution: half the CSS size
 
-  const cv = document.querySelector('[data-home-water]');
+  const cv = document.querySelector('[data-home-sharks]');
   if (!cv) return;
-  const still = document.querySelector('[data-home-water-still]');
+  const still = document.querySelector('[data-home-sharks-still]');
   const desktop = matchMedia('(min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference)'); // 961px = tailwind `laptop`
   let gl, uR, uT;
   const init = () => {

@@ -1,9 +1,9 @@
-// Does the home hero's water background actually run, and only where it should?
+// Does the home hero's sharks background actually run, and only where it should?
 //
 //   npm run serve        (another terminal)
-//   npm run water
+//   npm run sharks
 //
-// WHY THIS EXISTS. `check:hero-water` computes the worst contrast the water can
+// WHY THIS EXISTS. `check:hero-sharks` computes the worst contrast the water can
 // make from the numbers in the source; it never opens a page. `contrast` cannot
 // see a <canvas> at all. So a shader that compiles to nothing, a media query
 // that starts the shader on a phone, or a loop that never stops when the hero
@@ -17,7 +17,7 @@
 //                 hidden and not downloaded.
 //   scroll        the shader's frame loop stops when the hero is out of view and
 //                 resumes when it is back.
-//   phone         390x844: no one asked for a WebGL context on .home-water, the
+//   phone         390x844: no one asked for a WebGL context on .home-sharks, the
 //                 loop never ran, the still is visible and answered 200.
 //   reduced       desktop + prefers-reduced-motion: the same as the phone.
 //   no-webgl      desktop in a browser with WebGL switched off: the still takes
@@ -62,22 +62,22 @@ const failures = [];
 const notes = [];
 const fail = (locale, cond, msg) => failures.push(`[${locale}] [${cond}] ${msg}`);
 
-// Before any page script: count frames requested FROM home-water.js (the page has
-// other animation of its own), note every WebGL context asked of the water's
+// Before any page script: count frames requested FROM home-sharks.js (the page has
+// other animation of its own), note every WebGL context asked of the sharks'
 // canvas, and keep CSP violations the page itself reports.
 function instrument() {
-  window.__water = { frames: 0, glOnWater: 0, csp: [] };
+  window.__sharks = { frames: 0, glOnSharks: 0, csp: [] };
   const raf = window.requestAnimationFrame.bind(window);
   window.requestAnimationFrame = (f) => {
-    if (new Error().stack.includes("home-water")) window.__water.frames++;
+    if (new Error().stack.includes("home-sharks")) window.__sharks.frames++;
     return raf(f);
   };
   const get = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
-    if (/webgl/.test(String(type)) && this.classList.contains("home-water")) window.__water.glOnWater++;
+    if (/webgl/.test(String(type)) && this.classList.contains("home-sharks")) window.__sharks.glOnSharks++;
     return get.call(this, type, ...rest);
   };
-  document.addEventListener("securitypolicyviolation", (e) => window.__water.csp.push(`${e.violatedDirective} ${e.blockedURI}`));
+  document.addEventListener("securitypolicyviolation", (e) => window.__sharks.csp.push(`${e.violatedDirective} ${e.blockedURI}`));
 }
 
 async function open(browser, locale, cond, contextOptions) {
@@ -85,7 +85,7 @@ async function open(browser, locale, cond, contextOptions) {
   const page = await context.newPage();
   await page.addInitScript(instrument);
   const seen = { stills: [], console: [], errors: [] };
-  page.on("response", (r) => { if (/hero-water/.test(r.url())) seen.stills.push(r.status()); });
+  page.on("response", (r) => { if (/hero-sharks/.test(r.url())) seen.stills.push(r.status()); });
   page.on("console", (m) => { if (/Content Security Policy|violates the following/i.test(m.text())) seen.console.push(m.text()); });
   page.on("pageerror", (e) => seen.errors.push(e.message));
   const res = await page.goto(`${BASE_URL}/${locale}`, { waitUntil: "load" });
@@ -94,7 +94,7 @@ async function open(browser, locale, cond, contextOptions) {
   return { context, page, seen };
 }
 
-const frames = (page) => page.evaluate(() => window.__water.frames);
+const frames = (page) => page.evaluate(() => window.__sharks.frames);
 async function framesOver(page, ms) {
   const a = await frames(page);
   await page.waitForTimeout(ms);
@@ -103,25 +103,25 @@ async function framesOver(page, ms) {
 
 const stillState = (page) =>
   page.evaluate(() => {
-    const s = document.querySelector("[data-home-water-still]");
+    const s = document.querySelector("[data-home-sharks-still]");
     const cs = getComputedStyle(s);
     return { display: cs.display, h: s.getBoundingClientRect().height, image: cs.backgroundImage, fallback: s.hasAttribute("data-fallback") };
   });
 
 async function inkedShare(page) {
-  const box = page.locator("[data-home-water]");
+  const box = page.locator("[data-home-sharks]");
   // Through the CSSOM: the page's CSP (style-src 'self') refuses an injected <style>.
-  await page.evaluate(() => document.querySelectorAll(".home-water-still").forEach((e) => e.style.setProperty("display", "none", "important")));
+  await page.evaluate(() => document.querySelectorAll(".home-sharks-still").forEach((e) => e.style.setProperty("display", "none", "important")));
   const clip = await box.boundingBox();
   const region = { x: clip.x, y: clip.y, width: clip.width, height: Math.min(clip.height * 0.5, DESKTOP.height - clip.y) };
   const read = async () => {
     const { data, info } = await sharp(await page.screenshot({ clip: region })).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     return { data, info };
   };
-  const withWater = await read();
+  const withSharks = await read();
   await box.evaluate((el) => { el.style.visibility = "hidden"; });
   const paper = await read();
-  const { data, info } = withWater;
+  const { data, info } = withSharks;
   let inked = 0;
   for (let i = 0; i < data.length; i += 3) {
     if (Math.abs(data[i] - paper.data[i]) > PIXEL_DELTA || Math.abs(data[i + 1] - paper.data[i + 1]) > PIXEL_DELTA || Math.abs(data[i + 2] - paper.data[i + 2]) > PIXEL_DELTA) inked++;
@@ -146,7 +146,7 @@ async function desktopGroups(browser, locale) {
   if (running < MIN_FRAMES_RUNNING) fail(locale, cond, `the frame loop made ${running} frames in 700ms (needs ${MIN_FRAMES_RUNNING}+): the shader is not running`);
   const share = await inkedShare(page);
   if (!(share >= MIN_INKED_SHARE)) fail(locale, cond, `the canvas is blank: ${(share * 100).toFixed(2)}% of its top half differs from paper (needs ${MIN_INKED_SHARE * 100}%+)`);
-  const csp = [...seen.console, ...(await page.evaluate(() => window.__water.csp))];
+  const csp = [...seen.console, ...(await page.evaluate(() => window.__sharks.csp))];
   if (csp.length) fail(locale, cond, `CSP violation: ${csp.join(" | ")}`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
 
@@ -165,14 +165,14 @@ async function desktopGroups(browser, locale) {
 
 async function stillOnly(browser, locale, cond, contextOptions, expectGlAsked) {
   const { context, page, seen } = await open(browser, locale, cond, contextOptions);
-  const asked = await page.evaluate(() => window.__water.glOnWater);
+  const asked = await page.evaluate(() => window.__sharks.glOnSharks);
   const ran = await framesOver(page, 700);
   const total = await frames(page);
-  if (!expectGlAsked && asked) fail(locale, cond, `${asked} WebGL context request(s) on .home-water: the shader started where it must not`);
+  if (!expectGlAsked && asked) fail(locale, cond, `${asked} WebGL context request(s) on .home-sharks: the shader started where it must not`);
   if (!expectGlAsked && (total || ran > MAX_FRAMES_STOPPED)) fail(locale, cond, `the frame loop ran (${total} frames): the shader started where it must not`);
   const s = await stillState(page);
   if (s.display === "none" || s.h <= 0) fail(locale, cond, `the still is not visible (display ${s.display}, height ${s.h})`);
-  if (!/hero-water/.test(s.image)) fail(locale, cond, `the still has no image (${s.image})`);
+  if (!/hero-sharks/.test(s.image)) fail(locale, cond, `the still has no image (${s.image})`);
   if (!seen.stills.length) fail(locale, cond, "the still image was never requested");
   else if (seen.stills.some((c) => c !== 200)) fail(locale, cond, `the still answered ${seen.stills.join(",")}, not 200`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
@@ -209,5 +209,5 @@ async function stillOnly(browser, locale, cond, contextOptions, expectGlAsked) {
     console.error(`\n${failures.length} failure(s):\n` + failures.map((f) => "  " + f).join("\n"));
     process.exit(1);
   }
-  console.log(`\nwater: ${LOCALES.length} locales x 5 conditions, 0 failures`);
+  console.log(`\nsharks: ${LOCALES.length} locales x 5 conditions, 0 failures`);
 })().catch((e) => { console.error(e); process.exit(1); });

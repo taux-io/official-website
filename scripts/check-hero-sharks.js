@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// check:hero-water — the home hero's water background may never make its text
+// check:hero-sharks — the home hero's sharks background may never make its text
 // fail WCAG AA. Needs no browser.
 //
 // WHY THIS EXISTS. The hero's background is a WebGL <canvas>, a SIBLING of the
@@ -18,7 +18,7 @@
 // The check is that deepest facet, which the shader reaches somewhere on screen.
 //
 // WHERE EVERY NUMBER COMES FROM, none of it written here:
-//   · WATER_MAX_DEPTH  parsed from static/js/home-water.js
+//   · WATER_MAX_DEPTH  parsed from static/js/home-sharks.js
 //   · --water-rgb, --surface-rgb, the ink tokens, the hero's class colours
 //     read from AUTHORED src/input.css through scripts/stylesheet
 //     rather than the built static/css/styles.min.css: this gate then runs in
@@ -42,7 +42,7 @@ const fs = require("fs");
 const path = require("path");
 const { contrastRatio } = require("./design/lib");
 const { read } = require("./stylesheet");
-const waterSource = require("./lib/water-source");
+const sharksSource = require("./lib/sharks-source");
 
 const ROOT = path.join(__dirname, "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -69,11 +69,11 @@ const TEXT_COLOUR = {
 };
 
 const fail = (msg) => {
-  console.error(`check:hero-water FAIL: ${msg}`);
+  console.error(`check:hero-sharks FAIL: ${msg}`);
   process.exit(1);
 };
 
-// The shared readers (scripts/lib/water-source.js) throw; this gate reports a
+// The shared readers (scripts/lib/sharks-source.js) throw; this gate reports a
 // throw as its own failure.
 const orFail = (fn) => (...args) => {
   try {
@@ -82,7 +82,7 @@ const orFail = (fn) => (...args) => {
     return fail(e.message);
   }
 };
-const channels = orFail(waterSource.channels);
+const channels = orFail(sharksSource.channels);
 
 const mix = (fg, bg, a) => fg.map((f, i) => f * a + bg[i] * (1 - a));
 
@@ -91,7 +91,7 @@ function worstBackground({ paper, water, depth }) {
   return mix(water, paper, depth);
 }
 
-const readDepth = orFail(waterSource.readMaxDepth);
+const readDepth = orFail(sharksSource.readMaxDepth);
 
 function readSheet(sheet) {
   const token = (name) => {
@@ -119,7 +119,7 @@ function heroSource(rel) {
   };
   const full = expand(fs.readFileSync(path.join(TEMPLATES, rel), "utf8"), 0);
   const start = full.search(/<section\b[^>]*\bid="about-us"/);
-  if (start < 0) fail(`${rel}: no <section id="about-us"> (the hero); update scripts/check-hero-water.js if it was renamed`);
+  if (start < 0) fail(`${rel}: no <section id="about-us"> (the hero); update scripts/check-hero-sharks.js if it was renamed`);
   const end = full.indexOf("</section>", start);
   if (end < 0) fail(`${rel}: the hero section is never closed`);
   // SVG illustrations (_art.html) are shapes, not text: `contrast` does not
@@ -150,11 +150,11 @@ function heroTextColours(sheet, rels) {
         if (/^text-/.test(bare) && !TEXT_NON_COLOUR.test(bare)) {
           const base = bare.replace(/\/\d+$/, "");
           if (bare !== base) fail(`${rel}: hero uses ${cls}, an opacity-modified text colour; mix it in this check or use a token`);
-          if (!TEXT_COLOUR[base]) fail(`${rel}: hero uses ${cls}, a text colour check:hero-water does not know; add it to TEXT_COLOUR in scripts/check-hero-water.js so its contrast is measured`);
+          if (!TEXT_COLOUR[base]) fail(`${rel}: hero uses ${cls}, a text colour check:hero-sharks does not know; add it to TEXT_COLOUR in scripts/check-hero-sharks.js so its contrast is measured`);
           if (BANNED.has(base)) {
             const at = html.slice(0, m.index).split("\n").length;
             const tag = html.slice(html.lastIndexOf("<", m.index), m.index + m[0].length).slice(0, 80);
-            fail(`${rel}: the hero uses ${cls} (expanded line ${at}: ${tag}...); hero small print is ink, not grey, because the water can sit behind it`);
+            fail(`${rel}: the hero uses ${cls} (expanded line ${at}: ${tag}...); hero small print is ink, not grey, because the sharks can sit behind it`);
           }
           add(`${TEXT_COLOUR[base]}|${bare}`, { label: bare, tokenName: TEXT_COLOUR[base], large: false }, rel);
           continue;
@@ -163,7 +163,7 @@ function heroTextColours(sheet, rels) {
         const decls = sheet.declarations.filter((d) => d.selector === `.${cls}`);
         const own = decls.find((d) => d.prop === "color");
         const backed = decls.some((d) => /^background(-color)?$/.test(d.prop) && d.value.trim() !== "transparent");
-        if (backed) continue; // paints its own opaque ground (.btn); the water is not behind its text
+        if (backed) continue; // paints its own opaque ground (.btn); the sharks are not behind its text
         if (own) {
           const vm = /^(?:var\(--([a-z0-9-]+)\)|rgb\(\s*var\(--([a-z0-9-]+-rgb)\)\s*\))$/.exec(own.raw || own.value);
           const alias = vm && (vm[2] || (vm[1] && `${vm[1]}-rgb`));
@@ -193,29 +193,29 @@ function evaluate(water = {}) {
 }
 
 // THE STILL MUST BE DRAWN FROM THE SHADER THAT SHIPS. Phones, reduced-motion and
-// no-WebGL visitors see static/brand/hero-water.webp, a frame of the same
+// no-WebGL visitors see static/brand/hero-sharks.webp, a frame of the same
 // shader. Nobody notices the picture going stale: it still loads, it is merely
 // last season's water. The ledger holds a hash of what the picture was drawn
-// from (scripts/lib/water-source.js stillInputs); this recomputes it. No browser:
-// only the build-water script draws.
-const REBUILD = "run `PLAYWRIGHT_CHANNEL=chrome npm run build:water`, then commit static/brand/hero-water.webp, ledgers/hero-water-still.txt, src/input.css and static/css/styles.min.css";
+// from (scripts/lib/sharks-source.js stillInputs); this recomputes it. No browser:
+// only the build-sharks script draws.
+const REBUILD = "run `PLAYWRIGHT_CHANNEL=chrome npm run build:sharks`, then commit static/brand/hero-sharks.webp, ledgers/hero-sharks-still.txt, src/input.css and static/css/styles.min.css";
 
 function checkStill() {
-  const inputs = orFail(waterSource.stillInputs)(read());
-  const ledger = waterSource.readLedger();
-  if (!ledger || !ledger.inputs || !ledger.image) fail(`ledgers/hero-water-still.txt is missing or unreadable; ${REBUILD}`);
-  if (waterSource.stillDigest(inputs) !== ledger.inputs) {
+  const inputs = orFail(sharksSource.stillInputs)(read());
+  const ledger = sharksSource.readLedger();
+  if (!ledger || !ledger.inputs || !ledger.image) fail(`ledgers/hero-sharks-still.txt is missing or unreadable; ${REBUILD}`);
+  if (sharksSource.stillDigest(inputs) !== ledger.inputs) {
     fail(`the hero's still is out of date: the shader, --water-rgb, --surface-rgb, WATER_MAX_DEPTH or the builder's constants changed since it was drawn; ${REBUILD}`);
   }
-  if (!fs.existsSync(waterSource.STILL_IMAGE)) fail(`static/brand/hero-water.webp is missing; ${REBUILD}`);
-  const bytes = fs.readFileSync(waterSource.STILL_IMAGE);
-  if (waterSource.sha(bytes) !== ledger.image) {
-    fail(`static/brand/hero-water.webp is not the picture the ledger recorded (it was replaced or edited by hand); ${REBUILD}`);
+  if (!fs.existsSync(sharksSource.STILL_IMAGE)) fail(`static/brand/hero-sharks.webp is missing; ${REBUILD}`);
+  const bytes = fs.readFileSync(sharksSource.STILL_IMAGE);
+  if (sharksSource.sha(bytes) !== ledger.image) {
+    fail(`static/brand/hero-sharks.webp is not the picture the ledger recorded (it was replaced or edited by hand); ${REBUILD}`);
   }
-  const v = waterSource.imageVersion(bytes);
-  const css = fs.readFileSync(waterSource.INPUT_CSS, "utf8");
-  if (!css.includes(`url("/static/brand/hero-water.webp?v=${v}")`)) {
-    fail(`src/input.css does not ask for hero-water.webp?v=${v}; /static/brand is cached for a week, so a returning visitor keeps the old picture. ${REBUILD}`);
+  const v = sharksSource.imageVersion(bytes);
+  const css = fs.readFileSync(sharksSource.INPUT_CSS, "utf8");
+  if (!css.includes(`url("/static/brand/hero-sharks.webp?v=${v}")`)) {
+    fail(`src/input.css does not ask for hero-sharks.webp?v=${v}; /static/brand is cached for a week, so a returning visitor keeps the old picture. ${REBUILD}`);
   }
   console.log(`still: drawn from the shipped shader (inputs ${ledger.inputs.slice(0, 10)}), ${(bytes.length / 1024).toFixed(1)} KB, ?v=${v}`);
 }
@@ -223,7 +223,7 @@ function checkStill() {
 function main() {
   const r = evaluate();
   const rgb = (c) => c.map((n) => Math.round(n)).join(" ");
-  console.log(`hero water: WATER_MAX_DEPTH ${r.depth}, --water-rgb ${rgb(r.water)}, paper ${rgb(r.paper)}`);
+  console.log(`hero sharks: WATER_MAX_DEPTH ${r.depth}, --water-rgb ${rgb(r.water)}, paper ${rgb(r.paper)}`);
   console.log(`worst background ${rgb(r.bg)} (the deepest facet: paper ${((1 - r.depth) * 100).toFixed(0)}% + water ${(r.depth * 100).toFixed(0)}%); ${HOME_TEMPLATES.length} home templates read`);
   let bad = 0;
   let thin = 0;
@@ -236,7 +236,7 @@ function main() {
   if (bad) fail(`${bad} hero text colour(s) fall below AA on the deepest water; lower WATER_MAX_DEPTH or the --water-rgb saturation`);
   if (thin) fail(`${thin} hero text colour(s) pass with less than ${MARGIN} to spare; keep the headroom so a token nudge does not turn the hero red`);
   checkStill();
-  console.log("check:hero-water ok");
+  console.log("check:hero-sharks ok");
 }
 
 module.exports = { evaluate, worstBackground };

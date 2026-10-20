@@ -5,7 +5,7 @@
 //
 // It starts its own server (scripts/serve.js) on a free port the OS hands out,
 // so a preview on 8099 is neither used nor disturbed, waits until it answers,
-// then runs contrast, contract, water, geometry and cards in that order. A
+// then runs contrast, contract, sharks, geometry and cards in that order. A
 // failing step does not stop the rest; the summary lists every step and the
 // command exits non-zero if any failed. A server that never comes up, or dies
 // at any point, is a failure: it is checked before and after every step, and a
@@ -47,7 +47,7 @@ function scriptStep(name, file) {
 const STEPS = [
   scriptStep("contrast", "scripts/visual/contrast.js"),
   scriptStep("contract", "scripts/visual/contract.js"),
-  scriptStep("water", "scripts/visual/water.js"),
+  scriptStep("sharks", "scripts/visual/sharks.js"),
   scriptStep("geometry", "scripts/visual/geometry.js"),
   scriptStep("cards", "scripts/visual/cards.js"),
 ];
