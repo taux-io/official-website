@@ -1,42 +1,49 @@
 #!/usr/bin/env node
 // check:hero-sharks — the home hero's sharks background may never make its text
-// fail WCAG AA. Needs no browser.
+// fail WCAG AA, and its palette may not grow. Needs no browser.
 //
-// WHY THIS EXISTS. The hero's background is a WebGL <canvas>, a SIBLING of the
-// hero's content (src/input.css, ".HOME HERO BACKGROUND"). `npm run contrast`
-// measures text against the background of its ancestors, and a sibling is not
-// an ancestor: the audit would stay green with the water as dark as you like.
-// So the worst case is computed here, from the numbers that make it.
+// WHY THIS EXISTS. The hero's background is a <canvas>, a SIBLING of the hero's
+// content (src/input.css, ".HOME HERO BACKGROUND"). `npm run contrast` measures
+// text against the background of its ancestors, and a sibling is not an
+// ancestor: the audit would stay green with the sharks as dark as you like. So
+// the worst case is computed here, from the numbers that make it.
 //
-// THE WORST BACKGROUND. There is no darkening veil (the fade to
-// paper at the bottom edge is not one): the water is drawn straight over the
-// paper. The shader mixes three tones from --water-rgb and the paper (--surface-rgb)
-// and its deepest facet is WATER_MAX_DEPTH of the way from paper to water, so
-//     worst = paper * (1 - D) + water * D
-// Every other facet, the glints and the light band are between that and white,
-// and the canvas mask only fades the bottom toward paper, so none is darker.
-// The check is that deepest facet, which the shader reaches somewhere on screen.
+// THE WORST BACKGROUND. Nothing darkens the canvas (the fade to paper at the
+// bottom edge is not a veil). Behind any hero text the simulation (static/js/
+// sharks-sim.js) caps every cell at TEXT_FADE_MAX of ink, tile and glyph
+// together (home-sharks.js tops a glyph up only to that cap and never tints
+// there), and the grid line (the ladder's first step) lies under it. So
+//     coverage = 1 - (1 - TEXT_FADE_MAX) * (1 - GRID)
+//     worst    = paper * (1 - coverage) + ink * coverage
+// and every hero text colour is held against it. What this CANNOT see is a
+// shark cell that leaks outside a text box; that is the simulation's own test
+// (scripts/sharks-sim.test.mjs) and `npm run sharks`.
 //
-// WHERE EVERY NUMBER COMES FROM, none of it written here:
-//   · WATER_MAX_DEPTH  parsed from static/js/home-sharks.js
-//   · --water-rgb, --surface-rgb, the ink tokens, the hero's class colours
-//     read from AUTHORED src/input.css through scripts/stylesheet
-//     rather than the built static/css/styles.min.css: this gate then runs in
-//     `npm run check` before or without a Tailwind build, and the authored file
-//     is what a designer edits. (The built file would also carry every utility
-//     whether or not the hero uses it.)
-//   · the hero's text colours   scanned from the five locales' home templates
-//     (templates/index.html and templates/<locale>/index.html), including the
-//     partials they include. A text-* colour class the scan cannot map FAILS the
-//     check instead of being skipped, so a hero that gains a new colour cannot
-//     slip past: someone has to teach this file about it.
-//   · `text-ink-soft` is refused outright in the hero, wherever it appears, even
-//     if the numbers would let it through: the hero's small print is ink.
+// THE RULES THIS GATE HOLDS:
+//   (a) every hero text colour reaches AA on that worst background, with MARGIN
+//       to spare (large text 3:1, the rest 4.5:1);
+//   (b) the tints. The stylesheet declares exactly four --shark-N-rgb; a colour
+//       literal in either script must be one of them; the simulation picks from
+//       exactly four and the script reads exactly four;
+//   (c) `text-ink-soft` anywhere in the hero fails whatever the numbers say;
+//   (d) a hero text colour this file does not recognise ERRORS, it is never skipped;
+//   (e) static/js/home-sharks.js + static/js/sharks-sim.js together are at most
+//       14336 bytes. Raise nothing quietly: that number is the spec's.
+//
+// WHERE EVERY NUMBER COMES FROM, none of it written here: TEXT_FADE_MAX and the
+// ladder from the simulation (required), the tokens from AUTHORED src/input.css
+// through scripts/stylesheet (so this runs in `npm run check` before or without
+// a Tailwind build), and the hero's text colours from the five locales' home
+// templates (templates/index.html and templates/<locale>/index.html) including
+// the partials they include. A text-* colour class the scan cannot map FAILS
+// the check instead of being skipped.
 //
 // Contrast is scripts/design/lib.js `contrastRatio`, the WCAG formula the other
 // gates use. Large text (>= 24px, or >= 18.66px and bold; scripts/visual/
 // contrast.js) needs 3:1, everything else 4.5:1. MARGIN is the headroom the
 // shipped values must keep so a rounding change in a token does not flip it.
+// The still (static/brand/hero-sharks.webp) is the OLD water picture until
+// ticket #401 and has no gate here: NOTES.md says so.
 
 const fs = require("fs");
 const path = require("path");
@@ -86,12 +93,11 @@ const channels = orFail(sharksSource.channels);
 
 const mix = (fg, bg, a) => fg.map((f, i) => f * a + bg[i] * (1 - a));
 
-// The deepest facet: WATER_MAX_DEPTH of the way from paper to the water colour.
-function worstBackground({ paper, water, depth }) {
-  return mix(water, paper, depth);
+// Ink at TEXT_FADE_MAX with the grid line's ink under it, over paper.
+const inkCoverage = (fade, grid) => 1 - (1 - fade) * (1 - grid);
+function worstBackground({ paper, ink, fade, grid }) {
+  return mix(ink, paper, inkCoverage(fade, grid));
 }
-
-const readDepth = orFail(sharksSource.readMaxDepth);
 
 function readSheet(sheet) {
   const token = (name) => {
@@ -101,7 +107,7 @@ function readSheet(sheet) {
   };
   return {
     paper: channels(token("surface-rgb"), "--surface-rgb"),
-    water: channels(token("water-rgb"), "--water-rgb"),
+    ink: channels(token("ink-rgb"), "--ink-rgb"),
     token: (n) => channels(token(n), `--${n}`),
   };
 }
@@ -176,12 +182,11 @@ function heroTextColours(sheet, rels) {
   return [...found.values()];
 }
 
-function evaluate(water = {}) {
+function evaluate() {
   const sheet = read();
   const s = readSheet(sheet);
-  const depth = water.depth ?? readDepth();
-  const waterRgb = water.water ?? s.water;
-  const bg = worstBackground({ paper: s.paper, water: waterRgb, depth });
+  const { fade, grid } = orFail(sharksSource.simConstants)();
+  const bg = worstBackground({ paper: s.paper, ink: s.ink, fade, grid });
   const colours = heroTextColours(sheet, HOME_TEMPLATES);
   const rows = colours.map((c) => {
     const rgb = s.token(c.tokenName);
@@ -189,42 +194,40 @@ function evaluate(water = {}) {
     const need = c.large ? AA_LARGE : AA;
     return { ...c, ratio, need, ok: ratio >= need, roomy: ratio >= need + MARGIN };
   });
-  return { rows, bg, depth, water: waterRgb, paper: s.paper };
+  return { rows, bg, fade, grid, paper: s.paper };
 }
 
-// THE STILL MUST BE DRAWN FROM THE SHADER THAT SHIPS. Phones, reduced-motion and
-// no-WebGL visitors see static/brand/hero-sharks.webp, a frame of the same
-// shader. Nobody notices the picture going stale: it still loads, it is merely
-// last season's water. The ledger holds a hash of what the picture was drawn
-// from (scripts/lib/sharks-source.js stillInputs); this recomputes it. No browser:
-// only the build-sharks script draws.
-const REBUILD = "run `PLAYWRIGHT_CHANNEL=chrome npm run build:sharks`, then commit static/brand/hero-sharks.webp, ledgers/hero-sharks-still.txt, src/input.css and static/css/styles.min.css";
+// (b) the tints: stylesheet, scripts and simulation agree, and there are four.
+function checkTints() {
+  const css = orFail(sharksSource.readTints)(read());
+  const known = Object.values(css);
+  const { literals, simPicks, scriptReads } = orFail(sharksSource.scriptTints)();
+  for (const l of literals) {
+    if (!known.some((k) => k.join() === l.rgb.join())) {
+      fail(`${l.where} writes the colour ${l.text}, which is none of the four --shark-N-rgb in src/input.css; the scripts read their colours from the stylesheet (getComputedStyle) and hold none of their own`);
+    }
+  }
+  if (simPicks !== 4) fail(`static/js/sharks-sim.js picks among ${simPicks} tints; the sharks have exactly four (--shark-1-rgb .. --shark-4-rgb)`);
+  if (scriptReads.join() !== "1,2,3,4") fail(`static/js/home-sharks.js reads tints [${scriptReads}]; it must read exactly --shark-1-rgb .. --shark-4-rgb`);
+  return css;
+}
 
-function checkStill() {
-  const inputs = orFail(sharksSource.stillInputs)(read());
-  const ledger = sharksSource.readLedger();
-  if (!ledger || !ledger.inputs || !ledger.image) fail(`ledgers/hero-sharks-still.txt is missing or unreadable; ${REBUILD}`);
-  if (sharksSource.stillDigest(inputs) !== ledger.inputs) {
-    fail(`the hero's still is out of date: the shader, --water-rgb, --surface-rgb, WATER_MAX_DEPTH or the builder's constants changed since it was drawn; ${REBUILD}`);
-  }
-  if (!fs.existsSync(sharksSource.STILL_IMAGE)) fail(`static/brand/hero-sharks.webp is missing; ${REBUILD}`);
-  const bytes = fs.readFileSync(sharksSource.STILL_IMAGE);
-  if (sharksSource.sha(bytes) !== ledger.image) {
-    fail(`static/brand/hero-sharks.webp is not the picture the ledger recorded (it was replaced or edited by hand); ${REBUILD}`);
-  }
-  const v = sharksSource.imageVersion(bytes);
-  const css = fs.readFileSync(sharksSource.INPUT_CSS, "utf8");
-  if (!css.includes(`url("/static/brand/hero-sharks.webp?v=${v}")`)) {
-    fail(`src/input.css does not ask for hero-sharks.webp?v=${v}; /static/brand is cached for a week, so a returning visitor keeps the old picture. ${REBUILD}`);
-  }
-  console.log(`still: drawn from the shipped shader (inputs ${ledger.inputs.slice(0, 10)}), ${(bytes.length / 1024).toFixed(1)} KB, ?v=${v}`);
+// (e) the two scripts together.
+function checkSize() {
+  const z = sharksSource.sizes();
+  const total = z.script + z.sim;
+  if (total > z.limit) fail(`home-sharks.js (${z.script}) + sharks-sim.js (${z.sim}) = ${total} bytes, over the ${z.limit} limit (spec #396); shrink the script, do not raise the limit`);
+  return { ...z, total };
 }
 
 function main() {
   const r = evaluate();
   const rgb = (c) => c.map((n) => Math.round(n)).join(" ");
-  console.log(`hero sharks: WATER_MAX_DEPTH ${r.depth}, --water-rgb ${rgb(r.water)}, paper ${rgb(r.paper)}`);
-  console.log(`worst background ${rgb(r.bg)} (the deepest facet: paper ${((1 - r.depth) * 100).toFixed(0)}% + water ${(r.depth * 100).toFixed(0)}%); ${HOME_TEMPLATES.length} home templates read`);
+  const tints = checkTints();
+  const z = checkSize();
+  console.log(`hero sharks: TEXT_FADE_MAX ${r.fade}, grid line ${r.grid}, ${Object.keys(tints).length} tints (${Object.values(tints).map(rgb).join(" | ")}), paper ${rgb(r.paper)}`);
+  console.log(`worst background ${rgb(r.bg)} (ink ${(100 * inkCoverage(r.fade, r.grid)).toFixed(1)}% over paper); ${HOME_TEMPLATES.length} home templates read`);
+  console.log(`scripts ${z.script} + ${z.sim} = ${z.total} of ${z.limit} bytes`);
   let bad = 0;
   let thin = 0;
   for (const row of r.rows.sort((a, b) => a.ratio - b.ratio)) {
@@ -233,9 +236,8 @@ function main() {
     if (!row.ok) bad++;
     else if (!row.roomy) thin++;
   }
-  if (bad) fail(`${bad} hero text colour(s) fall below AA on the deepest water; lower WATER_MAX_DEPTH or the --water-rgb saturation`);
+  if (bad) fail(`${bad} hero text colour(s) fall below AA on the worst background; lower TEXT_FADE_MAX or change the text colour`);
   if (thin) fail(`${thin} hero text colour(s) pass with less than ${MARGIN} to spare; keep the headroom so a token nudge does not turn the hero red`);
-  checkStill();
   console.log("check:hero-sharks ok");
 }
 

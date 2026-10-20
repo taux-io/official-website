@@ -5,7 +5,7 @@ const { lineOf } = require("../lib");
 // drawing the tau curve. The rule is existence, not usage: a canvas with no
 // script behind it is still a canvas the next change will find a use for.
 //
-// ONE EXEMPTION, decided by the owner (DESIGN.md decision 181, replaced by 182): the home
+// ONE EXEMPTION, decided by the owner (DESIGN.md decision 181, replaced by 182, then 183): the home
 // hero's sharks background, `<canvas data-home-sharks>`, and only in a home page
 // (templates/index.html and templates/<locale>/index.html). It is named by
 // attribute AND by file so a second canvas anywhere else is still a finding —

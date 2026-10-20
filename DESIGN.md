@@ -394,7 +394,7 @@ v5.1 加入第二份參考：`.agents/skills/better-{accessibility,layout,writin
 
 **最多兩塊墨版。** 一塊主墨版（Charcoal）、一塊副墨版（Cobalt）。**紙不算墨版。**
 
-**一個破例：水面（決策 #182）。** 首頁 hero 背景的青綠 `--water-rgb: 115 198 182`（`#73C6B6`）是第三個色票，擁有者核准。它不是第三塊墨版——樣式表不得用它畫任何東西，只有 `static/js/home-sharks.js` 讀它、由著色器畫在 canvas 上（同一支著色器在固定時間畫一次的靜態圖給手機、減少動態與無 WebGL 用）。最深的那一面是「水面色占 `WATER_MAX_DEPTH`（0.7）、紙色占其餘」，即 `156 214 202`，上面**沒有壓暗用的遮罩**（canvas 與靜態圖的底緣淡出到紙色的漸層不算）；hero 內的文字全是墨色，壓在它上面 7.65:1。規則 25 把它關在 `--water-rgb` 的宣告那一行。
+**一個破例：鯊魚色調（決策 #183，取代 #182 的水面青綠）。** 首頁 hero 背景的四個帶色色調 `--shark-1-rgb: 172 90 55`（琥珀）、`--shark-2-rgb: 116 100 41`（橄欖）、`--shark-3-rgb: 122 111 217`（靛藍）、`--shark-4-rgb: 175 91 224`（紫）是第三個色票的例外，擁有者核准（父 spec #396，完整決策文字由 #401 補）。它們不是墨版——樣式表不得用它們畫任何東西，只有 `static/js/home-sharks.js` 用 `getComputedStyle` 讀它們、在 canvas 上只給約一成的字元上色；格子底色一律是墨色的覆蓋率階。字格所在的文字方框內，模擬把字格淡到墨色 12% 以下，所以 hero 內的墨色文字壓在「紙色加最多 12% 墨色再加格線」上，由 `check:hero-sharks` 計算並要求 AA 加 0.1 餘裕。規則 25 把四個色調關在 `--shark-N-rgb` 的宣告那四行。（#182 的水面青綠 `--water-rgb` 已拿掉，原決策文字保留在下方歷史表。）
 
 **深淺不是新的顏色，是同一塊版的密度階。** 參考站的原話：darker coverage may appear near-black and sparse halftones may appear pale — these are density changes, not extra inks。所以本站的三階墨色從「三個獨立的灰」改寫成「主墨版的三個覆蓋率」，而分隔線是第四個覆蓋率。
 
@@ -877,7 +877,7 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | 11 | easing scale | ✅ | issue 156 |
 | 12 | press follows hover | ✅ | issue 156 |
 | 13 | zero mono | ✅ | #171 |
-| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-sharks>`，決策 #182） | ✅ | #166 |
+| 14 | zero canvas（唯一例外：首頁 hero 的 `<canvas data-home-sharks>`，決策 #183（取代 #182）） | ✅ | #166 |
 | 15 | section cover screens | ✅ | #182 |
 | 16 | sentence case display | ✅ | #193 |
 | 17 | single stylesheet | ✅ | #189 |
@@ -918,13 +918,13 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 
 ⚠️ **仍然沒有涵蓋，具名寫在這裡而不是留成暗示**：`oklch()`、`lab()`、`color()` 與具名色（`white`、`red`）。**今天各實測 0 個**，所以沒有為不存在的情況長分支——但一個宣稱「沒有字面色」的 summary 會把這條規則原本的錯誤再犯一次，因此 summary 只列它真的讀得到的四個家族。
 
-⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-sharks>`（決策 #182 取代 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
+⚠️ **`zero canvas`（第 14 條）管的是 HTML 的 `<canvas>` 元素，不是本檔的「表面／canvas」。** 它只有一個豁免：首頁 hero 背景的 `<canvas data-home-sharks>`（決策 #183 取代 #182 與 #181，擁有者裁示，只認這個屬性加首頁檔名）。先前的例外（prompt injection 頁的 Chart.js 圖表）已改成建置時產生的 SVG（`templates/_jailbreak-chart.html`）。**兩個 canvas 同形不同義**，而 v5 把表面的值從 `#ffffff` 換成 `#FAFAF7` 之後，這個混淆的代價會變高——改的人會去找 `zero canvas` 然後改錯檔案。
 
 ### 八條新規則要檢查什麼
 
 （v5.1 加了兩條，寫在這一節的最後；標題的「八」是 v5 的數字，留著是為了讓「新」有時間座標。）
 
-**25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**v6.2 起的例外只有一個**：Spot `#F26B3A` 可以出現，但只在 `templates/_art.html` 的 `text-spot`——樣式表畫出它、或它出現在其他模板，都算違規（決策 #165）。另一個例外：水面 `#73C6B6`（`--water-rgb: 115 198 182`）是第三個色票，只准出現在 `--water-rgb` 的宣告，任何樣式宣告畫出它都算違規（決策 #182）。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
+**25 `two plates`** — 樣式表算出來的每一個顏色，都必須是（a）表面 `#FAFAF7`、（b）Charcoal `#30343A` 的某個覆蓋率，或（c）Cobalt `#2148B8` 的某個覆蓋率。**v6.2 起的例外只有一個**：Spot `#F26B3A` 可以出現，但只在 `templates/_art.html` 的 `text-spot`——樣式表畫出它、或它出現在其他模板，都算違規（決策 #165）。另一個例外：四個鯊魚色調（琥珀 `172 90 55`、橄欖 `116 100 41`、靛藍 `122 111 217`、紫 `175 91 224`）只准出現在 `--shark-1-rgb` … `--shark-4-rgb` 的宣告，任何樣式宣告畫出它們都算違規（決策 #183，取代 #182 的水面色票）。**三者以外的顏色一律紅。** ⚠️ 未決：`bg-ink/5` 這類 alpha 語法算不算合法的密度階（見「程式碼與機器輸出」）。
 
 **26 `accent carries interaction`** ✅ — Cobalt 只能出現在能點的東西上，**或在能點的東西裡面**。判準是位置不是名單：`<a>`、`<button>`、`<label>`、`<summary>`、`CONTROL_TAGS`、`.btn`、`.tag`，以及它們的後代——`<button>` 裡的 `<span class="text-primary">` 是那顆按鈕的記號的一部分，不是第二次用副墨版。跟規則 23 同一個形狀。
 
@@ -1028,9 +1028,9 @@ H1 兩行：**領銜句**（拉丁、**句首大寫**、`.display-lead`）與**�
 | **副墨版 / accent plate** | Cobalt `#2148B8`，承載互動，沒有第二個用途 |
 | **挖空 / knockout** | 從墨版裡挖掉，露出紙。所以 `on-primary` ＝ `canvas` |
 | **髮絲線 / hairline** | 主墨版 12%，1px。唯一的分隔與邊框權重 |
-| **鯊魚背景 / sharks background** | 首頁 hero 後方的背景（目前仍是慢速淺青綠低多邊形水面，之後換成 ASCII 鯊魚字格；現在是不規則三角小面、高光、斜向光帶），沒有遮罩壓暗；桌機是動的，手機、減少動態與無 WebGL 時是同一支著色器在固定時間畫的靜態圖 |
-| **`.home-sharks`** | 鯊魚背景的 canvas（`<canvas data-home-sharks>`），著色器畫在上面，是 hero 內容的兄弟。只有桌機條件（hover、≥ 961px、未設減少動態、WebGL 可用）成立時才啟動 |
-| **`.home-sharks-still`** | 鯊魚背景的靜態圖層（`static/brand/hero-sharks.webp`，由 `npm run build:sharks` 產生，與 `ledgers/hero-sharks-still.txt` 對帳），也是 hero 內容的兄弟。桌機著色器在跑時 `display: none`（所以不下載）；WebGL 失敗時腳本加 `[data-fallback]` 讓它回來 |
+| **鯊魚背景 / sharks background** | 首頁 hero 後方的背景：桌機是 canvas 2D 畫的 ASCII 鯊魚字格（決策 #183，完整文字由 #401 補）；手機、減少動態與 context 失敗時暫時仍是舊的水面靜態圖（#401 換成鯊魚靜態圖）；沒有遮罩壓暗 |
+| **`.home-sharks`** | 鯊魚背景的 canvas（`<canvas data-home-sharks>`），由 `home-sharks.js` 用 canvas 2D 畫在上面，是 hero 內容的兄弟。只有桌機條件（hover、≥ 961px、未設減少動態、2D context 可用）成立時才啟動 |
+| **`.home-sharks-still`** | 鯊魚背景的靜態圖層（`static/brand/hero-sharks.webp`，目前仍是舊的水面圖，#401 重做），也是 hero 內容的兄弟。桌機鯊魚在跑時 `display: none`（所以不下載）；2D context 失敗時腳本加 `[data-fallback]` 讓它回來 |
 | **eyebrow** | 標題上方的小型全大寫標籤。**也是級距規則的分母** |
 | **領銜句 / display-lead** | H1 的拉丁首行，**句首大寫** |
 | **副標 / display-sub** | H1 的中文次行 |

@@ -93,19 +93,20 @@
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
 
-  /* WATER — the hero background's one colour (DESIGN.md decision 182): the
-     teal of the low-poly water that static/js/home-sharks.js draws behind the home
-     hero on a desktop. It is read by that script and by nothing else; no
-     declaration, no class and no text may use it. The script mixes it with
-     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.7)
-     of the way from paper to this colour, 0.3 * 250 250 247 + 0.7 * 115 198 182
-     = 156 214 202, a soft aqua; the middle tone is 0.3 of that depth,
-     about 222 239 233; the glints are white. Nothing is darker than the deepest
-     facet, so the smallest hero text (ink, 7.65:1 there) is judged against it
-     (`npm run check:hero-sharks` measures it from these numbers). `two plates`
-     (rule 25) knows it as a plate and refuses it anywhere but this
-     declaration. */
-  --water-rgb: 115 198 182;
+  /* SHARK TINTS — the hero background's four colours (DESIGN.md decision 183,
+     which replaces the water of 182): amber, olive, indigo, purple. They tint
+     about one glyph in ten of the ASCII sharks that static/js/home-sharks.js
+     draws behind the home hero on a desktop. The script reads them with
+     getComputedStyle and nothing else does; no declaration, no class and no
+     text may use them (`two plates`, rule 25, refuses it), and a cell's
+     background is never tinted, only ink coverage. Glyphs sit on paper-light
+     tiles, so these are not text colours and no text sits on them: the hero's
+     text boxes are faded to 12% ink by the simulation
+     (`npm run check:hero-sharks` measures the worst case from those numbers). */
+  --shark-1-rgb: 172 90 55;
+  --shark-2-rgb: 116 100 41;
+  --shark-3-rgb: 122 111 217;
+  --shark-4-rgb: 175 91 224;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -579,17 +580,22 @@
     margin-top: 2rem;
   }
 
-  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Low-poly water drawn by
-     static/js/home-sharks.js on a desktop; the only <canvas> the site ships. The
-     canvas is a SIBLING of the hero's content, never a background of an
-     ancestor: `contrast` skips the text of any element whose ancestor has a
-     background-image, and that would turn the audit green without measuring.
-     Nothing sits over it: how pale the water is comes from the script's
-     WATER_MAX_DEPTH and --water-rgb, which check:hero-sharks holds against the
-     hero's text. It takes no pointer events. The mask fades the canvas out
-     toward the bottom of the band so it does not run into the services
-     section. */
+  /* HOME HERO BACKGROUND (DESIGN.md decisions 182 and 183). ASCII sharks drawn
+     by static/js/home-sharks.js on a desktop, with canvas 2D; the only <canvas>
+     the site ships. The canvas is a SIBLING of the hero's content, never a
+     background of an ancestor: `contrast` skips the text of any element whose
+     ancestor has a background-image, and that would turn the audit green
+     without measuring. Nothing sits over it: the simulation fades its cells to
+     12% ink inside the hero's text boxes, and check:hero-sharks holds the
+     text against that. It takes no pointer events. The mask fades the canvas
+     out toward the bottom of the band so it does not run into the services
+     section. The glyph face is read from `font-family` here by the script. The
+     site has no monospace token (the vocabulary has none, rule `zero mono`), so
+     the stack names the platform's fixed-width faces by hand and ends in the
+     site's sans; the script centres every glyph in its cell, so the face need
+     not be fixed-width. Nothing reads it but the canvas. */
   .home-sharks {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, var(--cjk), sans-serif;
     position: absolute;
     inset: 0;
     width: 100%;
@@ -599,12 +605,12 @@
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
-  /* THE STILL: the same shader drawn once (scripts/assets/build-sharks.js, run
-     with `npm run build:sharks`), for every visitor the canvas is not for. It is a
-     sibling like the canvas, under the same fade. The script
+  /* THE STILL, for every visitor the canvas is not for. TEMPORARILY it is still
+     the old water picture (NOTES.md, ticket #401 replaces it with a frame of
+     the sharks). It is a sibling like the canvas, under the same fade. The script
      runs on a hover pointer, laptop width and no reduced-motion, so exactly
      there the still is hidden, and `display: none` also means the browser never
-     fetches it. If WebGL turns out to be unavailable the script sets
+     fetches it. If the 2D context cannot be made the script sets
      [data-fallback] and the still comes back. The three conditions below are the
      script's `desktop` query; change them together (961px = tailwind `laptop`). */
   .home-sharks-still {
