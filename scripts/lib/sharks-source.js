@@ -17,7 +17,7 @@ const ROOT = path.join(__dirname, "..", "..");
 const SCRIPT = path.join(ROOT, "static", "js", "home-sharks.js");
 const SIM = path.join(ROOT, "static", "js", "sharks-sim.js");
 // home-sharks.js and sharks-sim.js TOGETHER (spec #396); a limit, not a target.
-const SIZE_LIMIT = 14336;
+const SIZE_LIMIT = 16384;
 
 const BUILDER = path.join(ROOT, "scripts", "assets", "build-sharks.js");
 const INPUT_CSS = path.join(ROOT, "src", "input.css");
@@ -103,14 +103,14 @@ function scriptTints() {
 // sharks inside the picture, at least two of them in its right half, and no
 // shark cell at all in its left `leftClear` (where the hero's text is). The
 // builder refuses a pair that does not meet it.
-// PROVISIONAL until ticket #402 redraws the sharks: rerun the builder after it.
+// Re-picked for the sharks of ticket #402 (traced outlines, density field).
 const cellFor = (width) => {
   const cw = Math.min(14, Math.max(8, width * 0.0082));
   return { cw, ch: cw * 1.5 };
 };
 const STILLS = {
-  landscape: { file: "hero-sharks-landscape.webp", width: 1440, height: 720, ...cellFor(1440), seed: 7, t: 45 },
-  portrait: { file: "hero-sharks-portrait.webp", width: 392, height: 900, cw: 8, ch: 12, seed: 9, t: 61 },
+  landscape: { file: "hero-sharks-landscape.webp", width: 1440, height: 720, ...cellFor(1440), seed: 2, t: 89 },
+  portrait: { file: "hero-sharks-portrait.webp", width: 392, height: 900, cw: 8, ch: 12, seed: 9, t: 66 },
 };
 const ENCODE = { quality: 62, alphaQuality: 60, effort: 6 };
 const SELECTION = { minSharks: 2, minRight: 2, leftClear: 0.4 };

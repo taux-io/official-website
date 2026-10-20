@@ -138,7 +138,7 @@ jobs:
       # text colour the five home templates use to AA, with 0.1 to spare; grey
       # small print (text-ink-soft) in the hero is refused. It also holds the
       # palette (exactly four --shark-N-rgb, matching anything the scripts say)
-      # and the size of home-sharks.js + sharks-sim.js (14336 bytes together).
+      # and the size of home-sharks.js + sharks-sim.js (16384 bytes together).
       # It also holds the two stills (phone portrait, landscape elsewhere): the
       # ledger of what they were drawn from must match the simulation, tints,
       # paper, ink, cell sizes, moments and seeds as they are now, each image

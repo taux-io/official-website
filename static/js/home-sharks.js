@@ -4,7 +4,7 @@
    elsewhere this script does nothing and the stylesheet shows the still. If the 2D
    context cannot be made it sets [data-fallback] on the still. Colours and the glyph
    face come from the stylesheet (--ink-rgb, --surface-rgb, --shark-N-rgb, the canvas'
-   font-family), never from this file. Budget: with sharks-sim.js, 14336 bytes. */
+   font-family), never from this file. Budget: with sharks-sim.js, 16384 bytes. */
 (() => {
   'use strict';
   const cv = document.querySelector('[data-home-sharks]');

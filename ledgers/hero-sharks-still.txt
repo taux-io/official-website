@@ -11,9 +11,9 @@
 # paper      250 250 247
 # ink        48 52 58
 # tints      172 90 55 | 116 100 41 | 122 111 217 | 175 91 224
-# landscape  {"file":"hero-sharks-landscape.webp","width":1440,"height":720,"cw":11.808000000000002,"ch":17.712000000000003,"seed":7,"t":45}  23.0 KB
-# portrait   {"file":"hero-sharks-portrait.webp","width":392,"height":900,"cw":8,"ch":12,"seed":9,"t":61}  12.7 KB
+# landscape  {"file":"hero-sharks-landscape.webp","width":1440,"height":720,"cw":11.808000000000002,"ch":17.712000000000003,"seed":2,"t":89}  25.7 KB
+# portrait   {"file":"hero-sharks-portrait.webp","width":392,"height":900,"cw":8,"ch":12,"seed":9,"t":66}  12.7 KB
 
-inputs e0dccedd772f06ad0a607cf29e89efbebc774d42bf14155ec9a88179bee66361
-landscape ce70ef82fa3a22b981f57d3dd66106785a4ade750df3c0f9b47d175105627d4e
-portrait 8251080a88ac831abc34db25edb25ce0dbf4e9a2e494d0cf1beabc987735c686
+inputs 5e1774b9d6780dcad80395b5f5899d1b218d7682ba18ef409e9bf69fedcf208e
+landscape 557161896e209e4ce63e568784e24a77713460f31a9f83aee36d046e3ec3b604
+portrait ec952115b1133dca761cce36ff2e42dfee8e657ac355cce3ca5510916a1cfe35
