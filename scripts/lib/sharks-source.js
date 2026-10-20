@@ -125,14 +125,29 @@ const cellFor = (width) => {
 // the same per-line boxes and the same 12% as the desktop. `view` is the part of
 // the picture every phone shows (the narrowest width checked, the shortest
 // hero), where SELECTION counts whales.
+// The portrait still is lossless: flat colours make it 6 KB anyway, and a lossy
+// encode put up to +4/255 of noise on the 12% fade (43 became 47 against the
+// gate's 46) that the exact picture does not have (32).
 const STILLS = {
   landscape: { file: "hero-sharks-landscape.webp", width: 1440, height: 720, ...cellFor(1440), seed: 17, t: 217 },
-  portrait: { file: "hero-sharks-portrait.webp", width: 600, height: 900, cw: 8, ch: 12, seed: 24, t: 80, fade: true, view: { cols: 40, rows: 45 } },
+  portrait: { file: "hero-sharks-portrait.webp", width: 600, height: 900, cw: 8, ch: 12, seed: 19, t: 81, lossless: true, fade: true, view: { cols: 40, rows: 45 } },
 };
 // The phone widths the portrait still's fade is drawn for and then held to by
 // `npm run sharks`: a narrow phone, the 375 the issue names, and a wide one.
 const PHONE_WIDTHS = [320, 375, 430];
 const LOCALES = ["zh-Hant-TW", "en-US", "zh-Hans-CN", "ja-JP", "ko-KR"];
+// The hero's type is the visitor's system font ("SF Pro", system-ui, no webfont;
+// DESIGN.md decision 4), so its lines are not the same width on every machine:
+// the h1 lead "AI that earns" is 228 px in macOS's SF Pro and 294 px in the
+// DejaVu Sans a Linux CI runner falls back to, and at 320 px that wraps to a
+// third line and moves everything below it (PR #404's `audit`, ticket #403 gaps 7
+// and 8). A still drawn from one machine's lines is therefore not safe on
+// another. The fade zone is drawn from the union of the lines as measured AND
+// the lines with every glyph this much wider (em of letter-spacing, widenText).
+// Chosen so the widened lines cover DejaVu Sans's, the widest face a runner or a
+// phone is likely to use. The gate does NOT widen again: it measures the
+// machine's own lines, which on a runner are already the wide ones.
+const WIDE_LETTER_SPACING = 0.15;
 const ENCODE = { quality: 62, alphaQuality: 60, effort: 6 };
 // leftClear applies to a still with no fade (the landscape one); the portrait
 // one fades under its text instead and needs no empty side.
@@ -187,6 +202,7 @@ function stillInputs(sheet) {
     selection: SELECTION,
     encode: ENCODE,
     phones: PHONE_WIDTHS,
+    wide: WIDE_LETTER_SPACING,
   };
 }
 const stillDigest = (inputs) => sha(JSON.stringify(inputs));
@@ -247,10 +263,19 @@ function lineBoxes() {
   return { hero: { w: o.width, h: o.height }, lines: out };
 }
 
+// Runs IN THE PAGE (pass it to page.evaluate with WIDE_LETTER_SPACING): every
+// element of the hero gets `em` of letter-spacing, through the CSSOM because the
+// page's CSP refuses an injected <style>. lineBoxes() afterwards measures the
+// lines a wider face would make. Self-contained, like lineBoxes.
+function widenText(em) {
+  const hero = document.querySelector("[data-home-sharks]").parentElement;
+  hero.querySelectorAll("*").forEach((e) => e.style.setProperty("letter-spacing", `${em}em`, "important"));
+}
+
 const sizes = () => ({ script: fs.statSync(SCRIPT).size, sim: fs.statSync(SIM).size, limit: SIZE_LIMIT });
 
 module.exports = {
-  ROOT, SCRIPT, SIM, SIZE_LIMIT, INPUT_CSS, STILL_LEDGER, STILLS, PHONE_WIDTHS, LOCALES, ENCODE, SELECTION, STILL_MAX_BYTES, REGEN, lineBoxes,
+  ROOT, SCRIPT, SIM, SIZE_LIMIT, INPUT_CSS, STILL_LEDGER, STILLS, PHONE_WIDTHS, LOCALES, WIDE_LETTER_SPACING, ENCODE, SELECTION, STILL_MAX_BYTES, REGEN, lineBoxes, widenText,
   channels, simConstants, readTints, scriptTints, sizes,
   stillPath, stillInputs, stillDigest, imageVersion, ledgerText, readLedger, sha, normalized,
 };

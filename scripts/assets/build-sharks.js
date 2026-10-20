@@ -68,18 +68,24 @@ function judge(s, seed, t, rects) {
 
 // Every line of the hero's text on a phone, at every width in PHONE_WIDTHS and
 // every locale, as the simulation's text boxes (in cells, the hero's corner at
-// 0,0); lines that coincide are kept once. `baseUrl` serves the built site
+// 0,0); lines that coincide are kept once. Each is measured twice: as this
+// machine sets it, and with every glyph WIDE_LETTER_SPACING wider, because the
+// type is the visitor's system font and a Linux runner's DejaVu Sans is a third
+// wider than macOS's SF Pro (the h1 lead: 294 px against 228), which wraps lines
+// elsewhere (PR #404). `baseUrl` serves the built site
 // (npm run build:site, npm run build:css).
 async function phoneZone(browser, baseUrl, s) {
   const seen = new Map();
   for (const locale of LOCALES) {
-    for (const width of PHONE_WIDTHS) {
+    for (const [width, wide] of PHONE_WIDTHS.flatMap((w) => [[w, false], [w, true]])) {
       const context = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
       const page = await context.newPage();
       const res = await page.goto(`${baseUrl}/${locale}`, { waitUntil: "load" });
       if (!res || res.status() !== 200) throw new Error(`build-sharks: GET /${locale} answered ${res && res.status()}; is the site built (npm run build:site, npm run build:css)?`);
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(300);
+      if (wide) await page.evaluate(src.widenText, src.WIDE_LETTER_SPACING);
+      if (wide) await page.waitForTimeout(100);
       const { lines } = await page.evaluate(src.lineBoxes);
       if (lines.length < 5) throw new Error(`build-sharks: only ${lines.length} text lines found on /${locale} at ${width}px`);
       for (const l of lines) {
@@ -190,7 +196,7 @@ async function main() {
         ink: inputs.ink.join(" "), paper: inputs.paper.join(" "), tints, font: decl.value,
       });
       const png = Buffer.from(data.split(",")[1], "base64");
-      const webp = await sharp(png).webp({ quality: ENCODE.quality, alphaQuality: ENCODE.alphaQuality, effort: ENCODE.effort }).toBuffer();
+      const webp = await sharp(png).webp(s.lossless ? { lossless: true, effort: ENCODE.effort } : { quality: ENCODE.quality, alphaQuality: ENCODE.alphaQuality, effort: ENCODE.effort }).toBuffer();
       if (webp.length > STILL_MAX_BYTES) {
         throw new Error(`build-sharks: the ${name} still is ${webp.length} bytes, over the ${STILL_MAX_BYTES} budget; lower ENCODE.quality in scripts/lib/sharks-source.js`);
       }

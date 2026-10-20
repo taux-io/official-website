@@ -623,7 +623,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-sharks-landscape.webp?v=5c3c67dfbe");
+    background-image: url("/static/brand/hero-sharks-landscape.webp?v=f49dcd1e83");
     background-size: cover;
     background-position: right center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
@@ -632,7 +632,7 @@
 
   @media (max-width: 599px) {
     .home-sharks-still {
-      background-image: url("/static/brand/hero-sharks-portrait.webp?v=e563442bf9");
+      background-image: url("/static/brand/hero-sharks-portrait.webp?v=d99861ab1d");
       /* 1 image px = 1 CSS px, from the top left: the picture's cells are 8x12
          CSS px on every phone, and the faded cells sit under the text's lines
          because build-sharks.js drew them from those very positions (ticket
