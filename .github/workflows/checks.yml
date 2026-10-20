@@ -199,6 +199,11 @@ jobs:
       - name: worker unit tests
         run: npm run test:worker
 
+      # scripts/browser.js: the local-Chrome fallback when the headless shell is
+      # absent. Launcher injected; needs no browser.
+      - name: browser launch unit tests
+        run: npm run test:browser
+
   audit:
     runs-on: ubuntu-24.04
     steps:

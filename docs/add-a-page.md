@@ -27,5 +27,5 @@
 
 - **`check:dates` 用 UTC 的今天。** 台灣時間 00:00–08:00 之間，寫台灣當天的日期會被判成「未來」。等到 08:00 之後，或寫前一天。
 - **`check:locale-drift` 只警告、永遠 exit 0。** 單一 locale 的頁面會被標成「只改了部分 locale」，是預期的雜訊。
-- **本機 Chromium 版本對不上。** `contrast`、`contract`、`geometry`、`build:og` 報 `Executable doesn't exist at …/chromium_headless_shell-…`：加 `PLAYWRIGHT_CHANNEL=chrome`（理由與細節見 `NOTES.md`、`scripts/browser.js`）。
+- **本機 Chromium 版本對不上。** 不用設任何變數：`scripts/browser.js` 找不到 Playwright 的 headless shell（`Executable doesn't exist at …/chromium_headless_shell-…`）時，會自動改用本機 Google Chrome，並印一行 `browser: … using local Google Chrome`。本機也沒有 Chrome 才會報錯，訊息會說要裝什麼。想指定別的瀏覽器才設 `PLAYWRIGHT_CHANNEL=msedge`（有設就照設的用，不自動換）。理由與細節見 `NOTES.md`、`scripts/browser.js`。
 - **新增 `check:*` 腳本時**，`package.json` 的 `check` 串和 `.github/workflows/checks.yml` 的 `build` job 兩處一起加，順序一致。`NOTES.md` 警告過：文件裡不放閘門的總數。
