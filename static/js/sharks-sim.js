@@ -5,27 +5,27 @@
   else root.SharksSim = make();
 })(this, function () {
   "use strict";
-  var LEN = 36, FAT = 2, SPEED = 6.5, ASPECT = 1.5, SEG = 8, STEP = 0.1, R = LEN / 2;
+  var LEN = 36,  SPEED = 6.5, ASPECT = 1.5, SEG = 8, STEP = 0.1, R = LEN / 2;
   var MAX_CELLS = 900, DUST_N = 140, TINT_SHARE = 0.1;
   var TEXT_FADE_MAX = 0.12, TEXT_MARGIN = 0.4; // margin in cells, each side of a rect
   var LADDER = [0.05, 0.12, 0.2, 0.26, 0.34, 0.44, 0.54, 0.66];
   var DENSE = "@8%#SXt;:"; // dark to light; the rest is sparse
   var INK = { "@": 1, 8: 0.9, "%": 0.8, "#": 0.7, S: 0.6, X: 0.5, t: 0.4, ";": 0.32, ":": 0.25, ",": 0.12, "'": 0.09, "-": 0.08, ".": 0.06 };
-  // Hand-drawn outlines: head at column 0, digit = darkness 1-9, space = empty.
-  var SHAPES = [
-    [ // top-down hammerhead: T head, swept fins, forked tail
-      "44", "66", "88          3", "99     3   56", "99    56  678", "99  8999999999998887", "9999999999999999999887766",
-      "99  8999999999998887", "99    56  678", "99     3   56", "88          3", "66", "44"
-    ],
-    [ // side view
-      "               4", "              66", "      3      88", "    677778899999888", "  67899999999999999877644",
-      " 78999999999999999987766 5", "  67889999999999876655  66", "    5566777889988  3 55", "         34    66  3"
-    ],
-    [ // long swimmer, drawn straight; bent at draw time
-      "     3", "    56   4", "  7899999999998877665", "7899999999999999988776655443", "  7899999999998877665", "    56   4", "     3"
-    ]
-  ];
-  var BEND = [0, 0, 5];
+  // Outlines, seen from above, as half-widths along the body (u: 0 nose .. 1 tail), all
+  // in cells of width. Per type: body B, nose shape [length, power], hammer H (0 = none),
+  // pectoral fin [start, length, reach], tail fork spread, spine bend.
+  var SHAPES = [[3.2, 0.7, 0.14, 7, 0.2, 0.32, 4.6, 5, 2.5], [3.6, 1, 0.24, 0, 0.2, 0.34, 5.6, 5.5, 0], [4.6, 0.65, 0.24, 0, 0.2, 0.28, 3.4, 4, -3.5]];
+  function clamp(d) { return d < 0 ? 0 : d > 1 ? 1 : d; }
+
+  function density(P, u, v) { // body density at u along, a across (|v|): soft edge, dark spine
+    var a = Math.abs(v), n = P[2], t = (u - P[4]) / P[5], x = (u - 0.045) / 0.045, w, e, s;
+    w = u < n ? P[0] * Math.pow(u / n, P[1]) : P[0] + (0.7 - P[0]) * Math.pow((u - n) / (0.82 - n), 1.5);
+    if (P[3] && u < 0.09) w = Math.max(w, P[3] * Math.pow(1 - Math.pow(x * x, 2), 0.25));
+    if (t > 0 && t < 1) w = Math.max(w, 0.8 * P[0] + P[6] * (t < 0.75 ? t / 0.75 : (1 - t) / 0.25));
+    e = u < 0.84 ? w - a : -9;
+    if (u > 0.8) { s = (u - 0.8) / 0.2; e = Math.max(e, 2 - s * (v > 0 ? 0.9 : 1.6) - Math.abs(a - s * P[7])); }
+    return clamp(0.5 + 0.9 * e) * (0.55 + 0.45 * clamp(e / 4));
+  }
 
   function H() { // integer args -> [0,1)
     var h = 0x9e3779b9 | 0, i;
@@ -96,14 +96,12 @@
   }
 
   function sparse(d) { return d < 0.07 ? "." : d < 0.085 ? "-" : d < 0.1 ? "'" : ","; }
-  function clamp(d) { return d < 0 ? 0 : d > 1 ? 1 : d; }
-
   function frame(seed, t, cols, rows, rects) {
     var W = cols, Hh = rows * ASPECT, sharks = [], dens = new Float32Array(cols * rows), k, i, c, r;
     rects = rects || []; t = Math.max(0, t);
     for (k = 0; k < 3; k++) {
-      var L = lifeAt(seed, k, t, W, Hh), tau = t - L.start, p = at(L, tau), sh = SHAPES[L.type];
-      var ct = Math.cos(p.th), st = Math.sin(p.th), hc = sh.length / 2;
+      var L = lifeAt(seed, k, t, W, Hh), tau = t - L.start, p = at(L, tau), P = SHAPES[L.type];
+      var ct = Math.cos(p.th), st = Math.sin(p.th);
       sharks.push({ id: k + "." + L.n, x: p.x, y: p.y, heading: p.th * 180 / Math.PI, turn: p.om * 180 / Math.PI, speed: L.v, len: LEN, type: L.type, age: tau });
       for (r = Math.max(0, Math.floor((p.y - R) / ASPECT)); r <= Math.min(rows - 1, Math.ceil((p.y + R) / ASPECT)); r++) {
         for (c = Math.max(0, Math.floor(p.x - R)); c <= Math.min(cols - 1, Math.ceil(p.x + R)); c++) {
@@ -111,9 +109,9 @@
           var col = LEN / 2 - (dx * ct + dy * st);
           if (col < 0 || col >= LEN) continue;
           var fu = col / LEN, v = -dx * st + dy * ct;
-          v -= 1.3 * (0.2 + 0.8 * fu) * Math.sin(6.2832 * (tau + L.ph) - 4.5 * fu) + BEND[L.type] * (Math.pow(2 * fu - 1, 2) - 0.33);
-          var row = Math.floor(v / FAT + hc), ch = row >= 0 && row < sh.length ? sh[row].charAt(Math.floor(fu * 28)) : " ";
-          if (ch > "0" && ch <= "9" && ch / 9 > dens[r * cols + c]) dens[r * cols + c] = ch / 9;
+          v -= 1.3 * (0.2 + 0.8 * fu) * Math.sin(6.2832 * (tau + L.ph) - 4.5 * fu) + P[8] * (Math.pow(2 * fu - 1, 2) - 0.33);
+          var q = density(P, fu, v);
+          if (q > dens[r * cols + c]) dens[r * cols + c] = q;
         }
       }
     }

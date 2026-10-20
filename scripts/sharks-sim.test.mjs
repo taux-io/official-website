@@ -124,6 +124,50 @@ test("per-line text boxes fade only their own line: three rows away a shark is s
   assert.ok(near > 0 && far > 0, `near ${near} far ${far}`);
 });
 
+// A shark's own frame: u runs 0 (nose) .. 1 (tail tip) along its heading, side across it.
+function inShark(f, s) {
+  const h = (s.heading * Math.PI) / 180, ct = Math.cos(h), st = Math.sin(h), out = [];
+  for (const c of f.cells) {
+    if (c.tile < 0.2) continue;
+    const dx = c.x + 0.5 - s.x, dy = (c.y + 0.5) * 1.5 - s.y;
+    const along = dx * ct + dy * st, side = -dx * st + dy * ct;
+    if (Math.abs(along) <= s.len / 2 + 1 && Math.abs(side) < s.len / 2) out.push({ u: (s.len / 2 - along) / s.len, side });
+  }
+  return out;
+}
+const span = (cells, a, b) => {
+  const v = cells.filter((c) => c.u >= a && c.u < b).map((c) => c.side);
+  return v.length ? Math.max(...v) - Math.min(...v) : 0;
+};
+
+test("every shark reads as a shark: a head, pectoral fins wider than the body behind them, a forked tail", () => {
+  const seen = new Set();
+  for (let t = 0; t < 400 && seen.size < 3; t += 0.37) {
+    const f = Sim.frame(SEED, t, 300, 200, []);
+    for (const s of f.sharks) {
+      if (seen.has(s.type) || s.x < 30 || s.x > 270 || s.y < 30 || s.y > 270) continue;
+      const cells = inShark(f, s);
+      const nose = span(cells, 0.01, 0.1), fins = span(cells, 0.3, 0.45), body = span(cells, 0.55, 0.7);
+      assert.ok(fins >= body * 1.3, `type ${s.type}: fins ${fins} vs body ${body}`);
+      if (s.type === 0) assert.ok(nose >= body * 1.7, `hammer head ${nose} vs body ${body}`);
+      else assert.ok(nose <= body * 0.9, `type ${s.type}: snout ${nose} vs body ${body}`);
+      const tail = cells.filter((c) => c.u >= 0.9 && c.u < 0.97).map((c) => c.side).sort((a, b) => a - b);
+      let gap = 0;
+      for (let i = 1; i < tail.length; i++) gap = Math.max(gap, tail[i] - tail[i - 1]);
+      assert.ok(tail.length >= 3 && gap >= 1.5, `type ${s.type}: tail is not forked (gap ${gap})`);
+      seen.add(s.type);
+    }
+  }
+  assert.equal(seen.size, 3);
+});
+
+test("shark edges are soft: a body is not a stair of full-dark cells (partial tiles border it)", () => {
+  const f = Sim.frame(SEED, 40, 300, 200, []);
+  const soft = f.cells.filter((c) => c.tile > 0 && c.tile <= 0.2).length;
+  const hard = f.cells.filter((c) => c.tile >= 0.44).length;
+  assert.ok(soft >= hard * 0.15, `soft ${soft} hard ${hard}`);
+});
+
 test("turns are arcs: a shark keeps one turn direction for at least 6 s at a time", () => {
   let flips = 0, runs = 0;
   for (let t0 = 0; t0 < 120; t0 += 0.5) {
