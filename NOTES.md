@@ -114,7 +114,7 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 **`npm run audit` 會自己起 server，一次跑完 `geometry`、`contrast`、`contract`、`sharks`、`cards` 五個瀏覽器檢查。** 單獨跑其中一個時，要先 `npm run serve`，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port：`PORT=<n> npm run serve`，再以 `BASE_URL` 指過去。
 
-對正式站跑 `BASE_URL=https://taux.io npm run sharks` 會 exit 1：五個語系的 `[desktop]` 各有一個 CSP violation（`Executing inline script`），因為 Cloudflare 在邊緣注入了一段 inline script（內容開頭 `window.__CF$cv$`），被站上的 `script-src` 擋下。這是假警報，不是回歸：本機與 CI 不經過 Cloudflare，所以沒有這段；同一次跑的 phone-fade 15 項照常全過。要驗正式站的手機直圖，看 phone-fade 那 15 行，別看 exit code。
+對正式站跑 `BASE_URL=https://taux.io npm run sharks` 可以，exit 0。Cloudflare 的 JavaScript Detections 會在邊緣注入一段 inline script（內容開頭 `window.__CF$cv$params`），被站上的 `script-src` 擋下，這個 zone 關不掉（`contract.js` 的 `PLATFORM_INJECTION` 註解有全文）；`sharks.js` 和 `contract.js` 一樣**按數量**原諒：頁面 HTML 帶幾個注入，就原諒幾個 desktop CSP 違規。頁面上再多一個 inline script，或沒有注入的頁面出現 inline script，照樣紅。
 
 `.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-sharks` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker` / `test:browser` / `test:sim`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `sharks` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
 

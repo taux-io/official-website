@@ -120,16 +120,28 @@ function instrument(refuse2d) {
   document.addEventListener("securitypolicyviolation", (e) => window.__sharks.csp.push(`${e.violatedDirective} ${e.blockedURI}`));
 }
 
+// Against production, Cloudflare's JavaScript Detections adds an inline bootstrap
+// (`window.__CF$cv$params`) to every HTML response; `script-src` blocks it, which
+// is the right outcome, and it cannot be turned off on this zone (the long
+// comment on PLATFORM_INJECTION in contract.js has the whole story). Its
+// violation is forgiven by COUNT: the served HTML says how many injected
+// elements it carries, and that many violations are dropped. A blocked
+// inline script has no URL, so the message cannot tell it from one a template
+// adds tomorrow; a second inline script, or one on a page with no injection,
+// still fails. Same element pattern as contract.js.
+const PLATFORM_INJECTION = /<script\b[^>]*>(?:(?!<\/script>)[\s\S])*?__CF\$cv\$params[\s\S]*?<\/script>/g;
+
 async function open(browser, locale, cond, contextOptions, refuse2d = false) {
   const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   await page.addInitScript(instrument, refuse2d);
-  const seen = { stills: [], stillUrls: [], console: [], errors: [] };
+  const seen = { stills: [], stillUrls: [], console: [], errors: [], injected: 0 };
   page.on("response", (r) => { if (/hero-sharks/.test(r.url())) { seen.stills.push(r.status()); seen.stillUrls.push(r.url()); } });
   page.on("console", (m) => { if (/Content Security Policy|violates the following/i.test(m.text())) seen.console.push(m.text()); });
   page.on("pageerror", (e) => seen.errors.push(e.message));
   const res = await page.goto(`${BASE_URL}/${locale}`, { waitUntil: "load" });
   if (!res || res.status() !== 200) fail(locale, cond, `GET /${locale} answered ${res && res.status()}`);
+  seen.injected = (res ? await res.text() : "").match(PLATFORM_INJECTION)?.length ?? 0;
   await page.waitForTimeout(700);
   return { context, page, seen };
 }
@@ -222,7 +234,9 @@ async function desktopGroups(browser, locale) {
   const under = await maxAlphaUnderText(page);
   if (under.lines < 5) fail(locale, "text lines", `only ${under.lines} text lines were measured; the hero's text boxes were not found`);
   if (under.alpha > TEXT_CAP) fail(locale, "text lines", `the canvas holds alpha ${under.alpha} (limit ${TEXT_CAP}) under hero text "${under.at}": a shark leaks into a line of text`);
-  const csp = [...seen.console, ...(await page.evaluate(() => window.__sharks.csp))];
+  // One violation is reported twice (the console message and the page's own
+  // `securitypolicyviolation` event), so each list forgives the injected count.
+  const csp = [...seen.console.slice(seen.injected), ...(await page.evaluate((n) => window.__sharks.csp.slice(n), seen.injected))];
   if (csp.length) fail(locale, cond, `CSP violation: ${csp.join(" | ")}`);
   if (seen.errors.length) fail(locale, cond, `page error: ${seen.errors.join(" | ")}`);
 
