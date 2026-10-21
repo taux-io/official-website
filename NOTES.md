@@ -494,7 +494,7 @@ BASE_URL=https://taux.io npm run contract
 - **OG 分享卡**：每條路由一張，標題與 description 取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。輸出經 sharp **無損**重壓（zlib 9），100 張從 6.0 MB 降到 2.5 MB；刻意不用調色盤量化，因為 `cards` 量的是墨跡，量化會移動它。`build:og` 每次重寫全部 100 張，而 Chromium 的反鋸齒在不同次執行間會有微小差異——**只 commit 標題或 description 真的變了的那幾張**，其餘 `git checkout` 回去。
 - **簡體版起稿**：`node scripts/hans.js`（或模組的 `toHans()`）。詞彙表 `scripts/hans-terms.js` 是唯一的決定點。⚠️ 2026-09 修掉一個替換順序的 bug：逐條替換會讓後面的規則改寫前面的輸出（资料夹 → 文件夹 → 文档夹），`/zh-Hans-CN/claude-skills-guide` 等 6 頁因此出現「文档夹」「文档名」；現在是一次比對全部詞條。那 55 行只改了「档 → 件」這一個字，其餘人工修訂保留
 - **favicon.ico**：`build-icons.js` 寫進 `public/`（根目錄發佈），其餘圖示寫進 `static/`。
-- **首頁 hero 座頭鯨背景的靈感來源**：[stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)（用 ASCII 字格畫鯊魚的概念）。該 repo 沒有授權，所以只參考概念，沒有用到它的程式碼；`static/js/sharks-sim.js` 與 `home-sharks.js` 是自己寫的。
+- **首頁 hero 座頭鯨背景的靈感來源**：[stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)（用 ASCII 字格畫鯊魚的概念）。該 repo 沒有授權，所以沒有用到它的程式碼，`static/js/sharks-sim.js` 與 `home-sharks.js` 是自己寫的；但**不只是概念**：格寬（視窗寬的 0.82%、寬高比 2:3）、字元由濃到淡的順序（`@8%#SXt;:`）、速度（6.5 格/s）、約 10% 的格帶色、灰塵數量（約 140）、同框三隻，這些參數是**量它的兩支示範影片得來的**。量測與方法在 `docs/hero-reference-measurements.md`（另有 `docs/hero-reference-depth-notes.md`）。
 
 ---
 
