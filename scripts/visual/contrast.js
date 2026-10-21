@@ -199,7 +199,6 @@ const MODES = [
 async function audit(mode) {
   const { findings, stats } = await walk({
     viewports: [{ name: VIEWPORT.name, width: VIEWPORT.width, height: VIEWPORT.height }],
-    scroll: true,
     forcedColors: mode.forcedColors,
     probes: [
       {
