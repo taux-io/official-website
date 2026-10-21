@@ -238,7 +238,7 @@ jobs:
           # has to be driven one scroll position per round trip. Batching it
           # into the page made it fast and made it incapable of failing.
           - part: geometry
-            run: npm run geometry
+            run: echo "INTENTIONAL FAILURE (test of audit aggregator)" && exit 1
           # The rest are short and share a runner. They run in this order and
           # the first failure stops the part, as the separate steps did.
           - part: contract-sharks-cards-links
