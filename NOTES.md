@@ -51,7 +51,7 @@ TauX（拓思科技）為中小企業提供 AI 顧問與技術導入，服務分
 | `static/` | css、js、og 分享卡、brand、圖示——發佈在 `/static/` 底下 | 是 |
 | `public/` | `favicon.ico`、`robots.txt`、`llms.txt`、`site.webmanifest`——**只**發佈在根目錄。產生器拒絕它覆蓋建置產物 | 是 |
 | `brand-src/` | 不發佈的原始素材（`build-logo.js` 的裁切來源） | 否 |
-| `ledgers/` | 閘門的記憶：`published-paths.txt`、`ko-spacing.txt`、`ko-quotes.txt` | 否 |
+| `ledgers/` | 閘門的記憶：`published-paths.txt`、`ko-spacing.txt`、`ko-quotes.txt`、`hero-sharks-still.txt`（鯊魚靜態圖由什麼畫的） | 否 |
 | `scripts/lib/` | 閘門共用的 helper：`fs.js` 的 `walk()`、`html.js` 的 `jsonLdBlocks()` | 否 |
 | `scripts/design/` | `check:design` 的 `lib.js` 與 `rules/`（每條規則一個檔） | 否 |
 
@@ -77,7 +77,7 @@ npm run serve          # wrangler dev（套用 _headers）
 npm run build:css      # src/input.css -> static/css/styles.min.css
 npm run watch:css
 npm run check:css      # 已提交的 CSS 是否與目前的模板一致
-npm run build:assets   # 圖示 + 結構化資料 logo + OG 分享卡
+npm run build:assets   # 圖示 + 結構化資料 logo + OG 分享卡（不含鯨的靜態圖：那兩張另跑 build:sharks，因為 check:hero-sharks 的帳本會在模擬改動時要求重產）
 npm run build:og       # 只重生 100 張 OG 分享卡（會重寫全部；只 commit 文字有變的那幾張）
 npm run contrast       # WCAG 稽核（CI 閘門）
 npm run contract       # 路由對外宣告的契約（CI 閘門）
@@ -89,9 +89,9 @@ npm run check:md       # 100 份 Markdown 雙生檔（CI 閘門）
 npm run check:dates    # 日期已宣告且自洽（CI 閘門）
 npm run check:jsonld   # 結構化資料有效且無重複鍵（CI 閘門）
 npm run check:design   # 模板是否牴觸 DESIGN.md（CI 閘門；四條結構規則讀 dist/，要先 build:site）
-npm run check:hero-water # 首頁 hero 水面背景下的最壞對比（hero 內每種文字色 ≥ AA 且留 0.1 餘裕，不得有 text-ink-soft），以及靜態圖有沒有過期（對 ledgers/hero-water-still.txt；CI 閘門；不需瀏覽器）
-npm run water             # 首頁水面在瀏覽器裡真的跑：桌機畫出非空白、手機與 reduced-motion 不啟動著色器、捲出畫面停止、WebGL 關閉時靜態圖接手（CI audit；要 Chromium 與 serve）
-PLAYWRIGHT_CHANNEL=chrome npm run build:water # 重產水面靜態圖並寫 ledgers/hero-water-still.txt 與 src/input.css 裡圖的 ?v=，之後跑 npm run build:css，一起 commit
+npm run check:hero-sharks # 首頁 hero 鯊魚背景：文字方框內最壞對比（墨色 12% 加格線，hero 內每種文字色 ≥ AA 且留 0.1 餘裕）、四個 --shark-N-rgb 與腳本一致且不得多於四個、home-sharks.js + sharks-sim.js ≤ 16384 位元組、不得有 text-ink-soft、兩張靜態圖沒過期（帳本）且 ?v= 正確、各 ≤ 80 KB（CI 閘門；不需瀏覽器）
+npm run build:sharks      # 重產兩張鯊魚靜態圖並更新帳本與 src/input.css 的 ?v=；之後要跑 npm run build:css（一行：npm run build:sharks && npm run build:css）
+npm run sharks             # 首頁鯊魚背景在瀏覽器裡真的跑：桌機 canvas 2D 畫出非空白、手機與 reduced-motion 不啟動、捲出畫面停止、2D context 失敗時靜態圖接手（CI audit；要 Chromium 與 serve）
 npm run check:routes   # 已發布路徑與 ledger 相符（CI 閘門）
 npm run routes:record  # 新增路由後把它寫進 ledgers/published-paths.txt
 npm run check:entity   # 建置產物的實體宣告與 @id 圖（CI 閘門）
@@ -102,7 +102,8 @@ npm run ko:record      # 把今天的韓文決定寫進兩份 ledger
 npm run check:i18n     # 英文模板有沒有中文標點（CI 閘門）
 npm run test:worker    # src/worker.js 的語言協商與「不自組回應」（CI 閘門）
 npm run test:browser   # scripts/browser.js 找不到 headless shell 時改用本機 Chrome（CI 閘門）
-npm run audit          # 自己起 server，一次跑完 contrast / contract / water / geometry / cards 五個瀏覽器檢查
+npm run test:sim       # 鯨模擬（static/js/sharks-sim.js）的 node:test 單元測試，不需瀏覽器（CI 閘門，build job）
+npm run audit          # 自己起 server，一次跑完 contrast / contract / sharks / geometry / cards 五個瀏覽器檢查
 npm run check:locale-drift  # 這次改動是不是只動了某條路由的部分 locale（CI 只警告，不擋）
 npm run dates          # 宣告的日期 vs git 認為的（僅報告）
 npm run screenshot <label>   # 截圖到 .visual/<label>/
@@ -111,9 +112,9 @@ npm run blank <label>        # 截圖的空白行比例與最長連續空白（�
 npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給人看，不是閘門）
 ```
 
-**`npm run audit` 會自己起 server，一次跑完 `geometry`、`contrast`、`contract`、`water`、`cards` 五個瀏覽器檢查。** 單獨跑其中一個時，要先 `npm run serve`，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port：`PORT=<n> npm run serve`，再以 `BASE_URL` 指過去。
+**`npm run audit` 會自己起 server，一次跑完 `geometry`、`contrast`、`contract`、`sharks`、`cards` 五個瀏覽器檢查。** 單獨跑其中一個時，要先 `npm run serve`，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port：`PORT=<n> npm run serve`，再以 `BASE_URL` 指過去。
 
-`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-water` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker` / `test:browser`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `water` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
+`.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-sharks` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker` / `test:browser` / `test:sim`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `sharks` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
 
 **runner 釘在 `ubuntu-24.04`，不用 `ubuntu-latest`**（兩個 workflow 都是）。`ubuntu-latest` 自 2026-10-19 起改指 Ubuntu 26，而 `playwright install --with-deps` 是依發行版解析系統套件的——它還不認得的新版會讓 audit（必要檢查）在每個 PR 上同時失敗。要換版本時，先在一個 PR 上把 `runs-on` 改成新 image 跑綠，再合併。actions 用 `checkout@v7`、`setup-node@v7`、`cache@v6`（Node 24 runtime）。
 
@@ -140,8 +141,8 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 - **check:jsonld** —— 結構化資料有效，且沒有重複鍵（`JSON.parse` 看不到重複鍵，它會靜靜取最後一個）。取區塊用 `scripts/lib/html.js` 的 `jsonLdBlocks()`，check:entity 與 i18n-extract 也用它：`<script>` 多一個屬性也認得，而頁面上 `ld+json` 標籤的數目與讀到的區塊數不符時直接丟錯——先前兩道閘門只認逐字的 `<script type="application/ld+json">`，多一個屬性就整段跳過還報綠
 - **check:design** —— 模板不牴觸 `DESIGN.md`。讀作者寫下的意圖，不解析 CSS 產物。**但四條結構規則（section cover screens、tags nest、anchor integrity、heading structure）讀建置後的頁面**（`scripts/design/rendered.js`）：原始碼分析看不穿 macro、`import`、`extends`，評估模板大改時實測過三種全綠的破壞。所以 **`check:design` 要在 `build:site` 之後跑**，`dist/` 比模板或 site.toml 舊時它直接拒絕。回報先用文字比對指回原始模板，找不到唯一位置才指向 `dist/` 的行號。規則 36 `tags nest` 另外保留讀原始碼的那一趟（`compose()` 展開 `{% include %}`，找不到的 partial 或超過 16 層會丟錯），因為它能指出交錯的兩個標籤各在哪個檔；原始碼乾淨而建置產物交錯時，另外以 dist 行號回報。規則 37 `no parameterised markup` 禁止 macro 把參數放進 `class`／`href`——那是讀屬性的規則看不到的地方。
   結構：`scripts/check-design.js` 只留 `RULES` 陣列與 `main()`；每條規則一個檔在 `scripts/design/rules/`，共用的解析與工具在 `scripts/design/lib.js`（`parseElements` 以 HTML 字串為 key 快取），讀建置產物的共用部分在 `scripts/design/rendered.js`。新增規則：在 `rules/` 加檔、在 `RULES` 加一筆；規則拿到 `(files, { rendered })`，要讀組合後的頁面就呼叫 `rendered()`
-- **check:hero-water** —— 首頁 hero 的水面背景（`<canvas>` 與靜態圖，沒有壓暗用的遮罩）是文字的**兄弟**不是祖先，`contrast` 稽核走祖先所以看不到它；水面調多深它都是綠的。這支腳本從來源讀值（`static/js/home-water.js` 的 `WATER_MAX_DEPTH`、`src/input.css` 的 `--water-rgb`、紙色與墨色 token），算出最深那一面的背景（紙色 ×（1 − D）+ 水面色 × D），再對五個語系首頁模板的 hero（含 include 的 partial）內每一種文字色驗證 WCAG AA（大字 3:1），並要求留 0.1 餘裕。hero 新增它不認得的 `text-*` 顏色 class 會直接報錯而不是略過。**hero 內禁止 `text-ink-soft`**：水面上它只有約 3.3:1，所以 hero 的小字是墨色，不是灰色（DESIGN.md 決策 182）。同一支腳本也檢查**靜態圖有沒有過期**：`npm run build:water` 把著色器原始碼、`--water-rgb`、紙色、`WATER_MAX_DEPTH`、固定時間與建置常數的雜湊、圖檔自己的雜湊寫進 `ledgers/hero-water-still.txt`，這裡重算，不符就失敗並印出重產指令；它也核對 `src/input.css` 裡圖的 url 帶著圖檔雜湊的 `?v=`（`/static/brand/*` 快取 7 天，樣式表裡的 url 沒有 `js_version` 可用，所以靠這個換掉回訪者的舊圖）。不需瀏覽器、不需 build（重產才要）。改水面色、深度上限或著色器後，先跑它確認它變紅，再重產、`npm run build:css`、一起 commit。
-- **water**（`npm run water`）—— `check:hero-water` 不開頁面，`contrast` 看不到 canvas，所以另有一支在瀏覽器裡問頁面的檢查，對五個語系首頁：桌機條件（1440×900、hover、無 reduced-motion）WebGL 必須可用（不可用就明確失敗、說明原因，不略過），canvas 畫出非空白（截圖與同區域把 canvas 藏起來的截圖逐像素比，不是看元素存在），無 CSP 違規，靜態圖不可見也沒下載；手機寬度與 reduced-motion 下沒有人對 `.home-water` 要 WebGL context、`home-water.js` 的 rAF 為 0、靜態圖可見且回 200；hero 捲出畫面 rAF 停止、捲回恢復；WebGL 關閉時靜態圖出現。**CI 沒有 GPU**，所以桌機那組用 `--use-angle=swiftshader --enable-unsafe-swiftshader` 啟動；CI 若紅，訊息含 `WebGL is not available` 是 runner 的 Chromium 做不出軟體 context（環境問題，先查旗標與 Chromium 版本），其他訊息會標出 `[語系] [條件]`。
+- **check:hero-sharks** —— 首頁 hero 的鯊魚背景（`<canvas>` 與靜態圖，沒有壓暗用的遮罩）是文字的**兄弟**不是祖先，`contrast` 稽核走祖先所以看不到它。這支腳本從模擬與樣式表讀值（`static/js/sharks-sim.js` 的 `TEXT_FADE_MAX` 與 `LADDER[0]`、`src/input.css` 的紙色與墨色 token），算出文字方框內最壞的背景（模擬把方框內每個字格連字元淡到墨色 12% 以下，格線在它下面：覆蓋率 1 −（1 − 0.12）（1 − 0.05）），對五個語系首頁模板的 hero（含 include 的 partial）內每一種文字色驗證 WCAG AA（大字 3:1）並留 0.1 餘裕。hero 新增它不認得的 `text-*` 顏色會直接報錯而不是略過；**hero 內禁止 `text-ink-soft`**，不管算出來是多少。它也守色票：樣式表只能有 `--shark-1-rgb` … `--shark-4-rgb` 四個；兩支腳本裡的顏色字面值必須是這四個之一（腳本本來一個也不寫，用 `getComputedStyle` 讀）；模擬從四個挑、腳本讀四個；`home-sharks.js` + `sharks-sim.js` 合計 ≤ 16384 位元組（超過就縮腳本，不要調高上限）。不需瀏覽器、不需 build。**靜態圖有過期閘門**：手機（< 600px，直圖 `hero-sharks-portrait.webp`）、平板、桌機要求減少動態與 context 失敗時（橫圖 `hero-sharks-landscape.webp`）顯示的兩張 WebP，是同一支模擬在固定時間點畫的（`npm run build:sharks`）。`ledgers/hero-sharks-still.txt` 記「模擬原始碼（去掉註解與空白）、建置腳本、四個色調、紙色、墨色、字格尺寸、固定時間、亂數種子、編碼設定」的雜湊與兩張圖各自的雜湊；閘門重算，不符就失敗並印出重產指令 `npm run build:sharks && npm run build:css`（要 commit 兩張圖、帳本、`src/input.css`、`static/css/styles.min.css`）。只改註解不會誤報；不雜湊像素；80 KB 上限只由重產指令與閘門檢查，不進雜湊；樣式表 `url()` 的 `?v=` 是圖檔自己的內容雜湊，閘門核對它。固定時間與種子由 `node scripts/assets/build-sharks.js --scan` 掃模擬挑出（鯊魚多在右半、至少 2 隻、左邊 40% 沒有鯊魚字格），重產時不符準則就拒絕。
+- **sharks**（`npm run sharks`）—— `check:hero-sharks` 不開頁面，`contrast` 看不到 canvas，所以另有一支在瀏覽器裡問頁面的檢查，對五個語系首頁：桌機條件（1440×900、hover、無 reduced-motion）canvas（2D）畫出非空白、頁面每次向 `SharksSim.frame` 要的畫面都是固定 3 隻（座頭鯨）（截圖與同區域把 canvas 藏起來的截圖逐像素比，不是看元素存在），無 CSP 違規，靜態圖不可見也沒下載；手機寬度與 reduced-motion 下沒有人對 `.home-sharks` 要 2D context、`home-sharks.js` 的 rAF 為 0、靜態圖可見且回 200，手機下載的是直圖、平板／減少動態／後備下載的是橫圖（而且只下載那一張）；hero 捲出畫面 rAF 停止、捲回恢復；30 fps 上限（一秒內向 `SharksSim.frame` 要的畫面 ≤ 33 張，因為 rAF 本身以螢幕更新率跑、頁面自己跳過，所以數的是模擬被呼叫的次數）；列印時（`emulateMedia print`）canvas 與靜態圖的 display 都是 none；2D context 取不到時（測試用 init script 讓 `getContext("2d")` 回 null）靜態圖出現。canvas 2D 不需要 GPU，也不需要 SwiftShader 旗標。CI 若紅，訊息會標出 `[語系] [條件]`。
 - **check:entity** —— 讀**建置產物**的實體宣告，八條規則：每個 `@id` 引用都有節點、全站只有一個 Organization 身分、title 與 description 用**該 locale 的書寫系統**（決策 #56 之前是「含中文」，那在五個 locale 之後不成立）、圖裡的 taux.io URL 指向本頁的 locale、`inLanguage` 說實話（決策 #61）、**FAQPage 的每一題與答案逐字出現在頁面上**（Google 要求 FAQ 標記的內容可見；稽核時 5 條路由 × 5 locale 標了看不到的 FAQ，現在頁面上有 `#faq` 章節）、**麵包屑從本 locale 首頁走到本頁的 canonical，且每一項都是已宣告的頁面；本頁自己宣告的節點（`@id`、`url`、`mainEntityOfPage`）指向本頁 canonical**（加這條之前 75 個麵包屑有 38 個起點是會 302 的 `https://taux.io`）、**JSON-LD 裡沒有 HTML 實體**（autoescape 會把模板裡的 `{{ … }}` 網址變成 `https:&#x2f;&#x2f;…`，而那仍是合法 JSON）。它讀 `dist/` 而不是 `templates/`，因為 `@id` 圖只有在 include 組合完成後才成形
 - **check:ko** —— 韓文的**兩類**排印決定沒有改變：`ledgers/ko-spacing.txt` 記 777 處詞間空白（跨行內標籤的邊界），`ledgers/ko-quotes.txt` 記 319 處引號連同它用的是哪一對。**它是 ledger 不是規則**，兩類都是：助詞黏著、實詞分開，而同一個音節是哪一種要看語意（`</strong>가` 是助詞，`</strong>가능한` 是實詞）；引號同理，直接引述用 `""`、術語與強調用 `''`、法規與條目名用 `「」`、獨立發布的文件名用 `『』`，而分辨「這句是話還是術語」沒有任何字元規則做得到。所以它記住人做過的每一個決定，只在改變或出現新頁時說話。⚠️ **它不知道那些決定對不對，只知道有人做過**。⚠️ **它原本叫 `check:ko-spacing`**，issue #240 把引號加進來之後那個名字就只對一半——這份文件開頭數的那幾次錯，全部都是描述停在它描述的東西之前。名字裡拿掉 `spacing` 是為了下一類進來時不必再改一次
 - **check:i18n** —— **建置後的**英文頁（20 份 HTML 與 20 份 Markdown 雙生檔，清單取自路由表——英文首頁是 `dist/en-US.html`，不在 `dist/en-US/` 裡）沒有中文標點（`scripts/i18n-extract.js gate`）。⚠️ **只判標點，不判漢字**：登記名稱 `拓思科技股份有限公司` 是專有名詞，要留著；漢字在英文頁上是判斷題，而**會對判斷題報紅的閘門遲早會被關掉**——同一支腳本的 `check` 模式刻意不回非零就是這個理由。
@@ -491,6 +492,7 @@ BASE_URL=https://taux.io npm run contract
 - **OG 分享卡**：每條路由一張，標題與 description 取自 `site.toml`，檔名由 canonical URL 推導——與 generator 算 `og_image` 用同一條規則，兩邊不可能分歧。輸出經 sharp **無損**重壓（zlib 9），100 張從 6.0 MB 降到 2.5 MB；刻意不用調色盤量化，因為 `cards` 量的是墨跡，量化會移動它。`build:og` 每次重寫全部 100 張，而 Chromium 的反鋸齒在不同次執行間會有微小差異——**只 commit 標題或 description 真的變了的那幾張**，其餘 `git checkout` 回去。
 - **簡體版起稿**：`node scripts/hans.js`（或模組的 `toHans()`）。詞彙表 `scripts/hans-terms.js` 是唯一的決定點。⚠️ 2026-09 修掉一個替換順序的 bug：逐條替換會讓後面的規則改寫前面的輸出（资料夹 → 文件夹 → 文档夹），`/zh-Hans-CN/claude-skills-guide` 等 6 頁因此出現「文档夹」「文档名」；現在是一次比對全部詞條。那 55 行只改了「档 → 件」這一個字，其餘人工修訂保留
 - **favicon.ico**：`build-icons.js` 寫進 `public/`（根目錄發佈），其餘圖示寫進 `static/`。
+- **首頁 hero 座頭鯨背景的靈感來源**：[stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)（用 ASCII 字格畫鯊魚的概念）。該 repo 沒有授權，所以只參考概念，沒有用到它的程式碼；`static/js/sharks-sim.js` 與 `home-sharks.js` 是自己寫的。
 
 ---
 

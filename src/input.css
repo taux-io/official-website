@@ -93,19 +93,20 @@
      control — and `two plates` (rule 25) holds it to templates/_art.html. */
   --spot-rgb: 242 107 58;
 
-  /* WATER — the hero background's one colour (DESIGN.md decision 182): the
-     teal of the low-poly water that static/js/home-water.js draws behind the home
-     hero on a desktop. It is read by that script and by nothing else; no
-     declaration, no class and no text may use it. The script mixes it with
-     --surface-rgb into three tones: the deepest facet is WATER_MAX_DEPTH (0.7)
-     of the way from paper to this colour, 0.3 * 250 250 247 + 0.7 * 115 198 182
-     = 156 214 202, a soft aqua; the middle tone is 0.3 of that depth,
-     about 222 239 233; the glints are white. Nothing is darker than the deepest
-     facet, so the smallest hero text (ink, 7.65:1 there) is judged against it
-     (`npm run check:hero-water` measures it from these numbers). `two plates`
-     (rule 25) knows it as a plate and refuses it anywhere but this
-     declaration. */
-  --water-rgb: 115 198 182;
+  /* SHARK TINTS — the hero background's four colours (DESIGN.md decision 183,
+     which replaces the teal plate of 182): amber, olive, indigo, purple. They tint
+     about one glyph in ten of the ASCII sharks that static/js/home-sharks.js
+     draws behind the home hero on a desktop. The script reads them with
+     getComputedStyle and nothing else does; no declaration, no class and no
+     text may use them (`two plates`, rule 25, refuses it), and a cell's
+     background is never tinted, only ink coverage. Glyphs sit on paper-light
+     tiles, so these are not text colours and no text sits on them: the hero's
+     text boxes are faded to 12% ink by the simulation
+     (`npm run check:hero-sharks` measures the worst case from those numbers). */
+  --shark-1-rgb: 172 90 55;
+  --shark-2-rgb: 116 100 41;
+  --shark-3-rgb: 122 111 217;
+  --shark-4-rgb: 175 91 224;
   --primary-focus-rgb: var(--primary-rgb);
 
   /* ONE HAIRLINE WEIGHT, AND IT IS A DENSITY STEP RATHER THAN ITS OWN GREY.
@@ -579,17 +580,22 @@
     margin-top: 2rem;
   }
 
-  /* HOME HERO BACKGROUND (DESIGN.md decision 182). Low-poly water drawn by
-     static/js/home-water.js on a desktop; the only <canvas> the site ships. The
-     canvas is a SIBLING of the hero's content, never a background of an
-     ancestor: `contrast` skips the text of any element whose ancestor has a
-     background-image, and that would turn the audit green without measuring.
-     Nothing sits over it: how pale the water is comes from the script's
-     WATER_MAX_DEPTH and --water-rgb, which check:hero-water holds against the
-     hero's text. It takes no pointer events. The mask fades the canvas out
-     toward the bottom of the band so it does not run into the services
-     section. */
-  .home-water {
+  /* HOME HERO BACKGROUND (DESIGN.md decisions 182 and 183). ASCII sharks drawn
+     by static/js/home-sharks.js on a desktop, with canvas 2D; the only <canvas>
+     the site ships. The canvas is a SIBLING of the hero's content, never a
+     background of an ancestor: `contrast` skips the text of any element whose
+     ancestor has a background-image, and that would turn the audit green
+     without measuring. Nothing sits over it: the simulation fades its cells to
+     12% ink inside the hero's text boxes, and check:hero-sharks holds the
+     text against that. It takes no pointer events. The mask fades the canvas
+     out toward the bottom of the band so it does not run into the services
+     section. The glyph face is read from `font-family` here by the script. The
+     site has no monospace token (the vocabulary has none, rule `zero mono`), so
+     the stack names the platform's fixed-width faces by hand and ends in the
+     site's sans; the script centres every glyph in its cell, so the face need
+     not be fixed-width. Nothing reads it but the canvas. */
+  .home-sharks {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, var(--cjk), sans-serif;
     position: absolute;
     inset: 0;
     width: 100%;
@@ -599,27 +605,46 @@
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
-  /* THE STILL: the same shader drawn once (scripts/assets/build-water.js, run
-     with `npm run build:water`), for every visitor the canvas is not for. It is a
-     sibling like the canvas, under the same fade. The script
-     runs on a hover pointer, laptop width and no reduced-motion, so exactly
-     there the still is hidden, and `display: none` also means the browser never
-     fetches it. If WebGL turns out to be unavailable the script sets
-     [data-fallback] and the still comes back. The three conditions below are the
-     script's `desktop` query; change them together (961px = tailwind `laptop`). */
-  .home-water-still {
+  /* THE STILLS, for every visitor the canvas is not for (DESIGN.md decision
+     183): two frames of the same simulation, drawn once at a fixed moment by
+     `npm run build:sharks` (scripts/assets/build-sharks.js). The landscape one
+     serves tablets, a desktop that asked for reduced motion and the fallback
+     when the canvas cannot start; below `mobile` (600px) the portrait one,
+     drawn on 8x12px cells so its glyphs stay crisp on a phone instead of a
+     shrunken wide picture. The ?v= on each url() is that image's own hash
+     (/static/brand is cached for a week; check:hero-sharks holds it). It is a
+     sibling like the canvas, under the same fade. The script runs on a hover
+     pointer, laptop width and no reduced-motion, so exactly there the still is
+     hidden, and `display: none` also means the browser never fetches it. If the
+     2D context cannot be made the script sets [data-fallback] and the still
+     comes back. The three conditions below are the script's `desktop` query;
+     change them together (961px = tailwind `laptop`). */
+  .home-sharks-still {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("/static/brand/hero-water.webp?v=d5f1c0ebec");
+    background-image: url("/static/brand/hero-sharks-landscape.webp?v=f49dcd1e83");
     background-size: cover;
-    background-position: center;
+    background-position: right center;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   }
 
+  @media (max-width: 599px) {
+    .home-sharks-still {
+      background-image: url("/static/brand/hero-sharks-portrait.webp?v=d99861ab1d");
+      /* 1 image px = 1 CSS px, from the top left: the picture's cells are 8x12
+         CSS px on every phone, and the faded cells sit under the text's lines
+         because build-sharks.js drew them from those very positions (ticket
+         #403). Not `cover`: scaling by the hero's height would slide them. */
+      background-size: 600px 900px;
+      background-position: left top;
+      background-repeat: no-repeat;
+    }
+  }
+
   @media (min-width: 961px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .home-water-still:not([data-fallback]) {
+    .home-sharks-still:not([data-fallback]) {
       display: none;
     }
   }
@@ -2424,8 +2449,8 @@
    
    NOT GATED, for the same reason as the block above. */
 @media print {
-  .home-water,
-  .home-water-still {
+  .home-sharks,
+  .home-sharks-still {
     display: none;
   }
 

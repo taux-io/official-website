@@ -1,0 +1,19 @@
+# Which simulation the home hero's two stills (static/brand/hero-sharks-*.webp) were drawn from.
+#
+# Regenerate with `npm run build:sharks && npm run build:css`, then commit both images, this file,
+# src/input.css and static/css/styles.min.css. `npm run check:hero-sharks` (no
+# browser) hashes the simulation source (comments stripped), the builder, the four
+# tints, paper, ink, the cell sizes, the moments, the seeds and the encoder again
+# and fails if they differ from this file. Each image's own hash is here too, so a
+# picture swapped by hand is as stale as a simulation changed without a rebuild.
+# Pixels are not hashed (fonts and GPUs differ); the byte limit is the builder's.
+#
+# paper      250 250 247
+# ink        48 52 58
+# tints      172 90 55 | 116 100 41 | 122 111 217 | 175 91 224
+# landscape  {"file":"hero-sharks-landscape.webp","width":1440,"height":720,"cw":11.808000000000002,"ch":17.712000000000003,"seed":17,"t":217}  19.4 KB
+# portrait   {"file":"hero-sharks-portrait.webp","width":600,"height":900,"cw":8,"ch":12,"seed":19,"t":81,"lossless":true,"fade":true,"view":{"cols":40,"rows":45}}  5.8 KB
+
+inputs 879d257877e89a9a96d2415884ad5ee05163b066c1a3992999c43d59d512b984
+landscape f49dcd1e83d9b7b6def3140fcea2168429fa0374b32a7146aa78f5b4e2e787ba
+portrait d99861ab1df40b9a36f02824d4ca5a95a571a3f07e23bbba41df25784546f508

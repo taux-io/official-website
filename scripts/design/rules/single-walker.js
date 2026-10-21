@@ -18,11 +18,13 @@ const { ROOT, lineOf } = require("../lib");
 //   diff.js walks nothing. It uses Chromium as a PNG decoder to compare two
 //   screenshot sets.
 //
-//   water.js walks no routes' layout either: it opens the five home pages under
-//   five conditions (desktop, scroll, phone, reduced motion, no WebGL) and needs its
-//   own launch flags per condition — SwiftShader on, then every GL path off —
-//   which a shared walker's one browser cannot offer.
-const WALKER_EXEMPT = new Set(["walk.js", "contract.js", "diff.js", "water.js"]);
+//   sharks.js walks no routes' layout either: it opens the five home pages under
+//   its own conditions (desktop, scroll, print, phone, tablet, reduced motion, a
+//   refused 2D context). It drives canvas 2D, so it needs no GPU and no launch
+//   flags; it is exempt because it opens a context per condition (viewport,
+//   media, init script) and reads canvas pixels, which a shared walker's one
+//   browser and one settled-page definition do not offer.
+const WALKER_EXEMPT = new Set(["walk.js", "contract.js", "diff.js", "sharks.js"]);
 
 function ruleSingleWalker() {
   const dir = path.join(ROOT, "scripts", "visual");

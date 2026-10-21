@@ -118,6 +118,6 @@ test("a step that throws is a failure and the server is still stopped", async ()
 test("the real step list is the CI audit job's, in order, without the network check", () => {
   assert.deepEqual(
     STEPS.map((s) => s.name),
-    ["contrast", "contract", "water", "geometry", "cards"]
+    ["contrast", "contract", "sharks", "geometry", "cards"]
   );
 });

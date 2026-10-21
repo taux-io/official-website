@@ -131,18 +131,22 @@ jobs:
       - name: templates agree with DESIGN.md
         run: npm run check:design
 
-      # The home hero's water background is a <canvas>, a SIBLING of the hero's
-      # text, so `contrast` (which walks ancestors) cannot see it: the water
-      # could be as deep as you like with that audit still green. This computes
-      # the deepest background the water can make from the numbers that make it
-      # (WATER_MAX_DEPTH, --water-rgb, the paper) and holds every text colour
-      # the five home templates use to AA, with 0.1 to spare; grey small print
-      # (text-ink-soft) in the hero is refused. It also fails when the still
-      # shown on phones (static/brand/hero-water.webp) was drawn from an older
-      # shader or palette than the one in the tree (ledgers/hero-water-still.txt);
-      # the message names the rebuild command. No browser, no build.
-      - name: hero water keeps its text legible
-        run: npm run check:hero-water
+      # The home hero's sharks background is a <canvas>, a SIBLING of the hero's
+      # text, so `contrast` (which walks ancestors) cannot see it. This computes
+      # the worst background the sharks can make behind text (the simulation's
+      # TEXT_FADE_MAX of ink plus the grid line over the paper) and holds every
+      # text colour the five home templates use to AA, with 0.1 to spare; grey
+      # small print (text-ink-soft) in the hero is refused. It also holds the
+      # palette (exactly four --shark-N-rgb, matching anything the scripts say)
+      # and the size of home-sharks.js + sharks-sim.js (16384 bytes together).
+      # It also holds the two stills (phone portrait, landscape elsewhere): the
+      # ledger of what they were drawn from must match the simulation, tints,
+      # paper, ink, cell sizes, moments and seeds as they are now, each image
+      # must be under 80 KB and its url() in src/input.css must carry its own
+      # content-hash ?v=. A red here says to run
+      # `npm run build:sharks && npm run build:css`. No browser, no build.
+      - name: hero sharks keep their text legible
+        run: npm run check:hero-sharks
 
       # main.rs promises that retiring a path without a redirect will be
       # caught. Nothing enforced that: every gate reads the current site.toml
@@ -203,6 +207,11 @@ jobs:
       # absent. Launcher injected; needs no browser.
       - name: browser launch unit tests
         run: npm run test:browser
+
+      # static/js/sharks-sim.js (the home hero's whales): a pure function, tested
+      # with node:test, no browser. `npm run check` runs it too.
+      - name: sharks simulation unit tests
+        run: npm run test:sim
 
   audit:
     runs-on: ubuntu-24.04
@@ -272,16 +281,14 @@ jobs:
       - name: route contract
         run: npm run contract
 
-      # The home hero's water background, driven in a real browser: check:hero-water
-      # never opens a page and contrast cannot see a <canvas>, so a shader that
+      # The home hero's sharks background, driven in a real browser: check:hero-sharks
+      # never opens a page and contrast cannot see a <canvas>, so a script that
       # draws nothing, one that starts on a phone, or a loop that never stops
-      # when the hero scrolls away would leave both green. The runner has no
-      # GPU; the desktop conditions start Chromium with SwiftShader and assert
-      # WebGL exists first. If this fails with "WebGL is not available", the
-      # runner's Chromium could not make a software context (environment, not
-      # the water); any other message names the locale and the condition.
-      - name: hero water runs where it should
-        run: npm run water
+      # when the hero scrolls away would leave both green. It is canvas 2D, so
+      # the runner needs no GPU and no special Chromium flags; the message
+      # names the locale and the condition.
+      - name: hero sharks run where it should
+        run: npm run sharks
 
       # Where things land, which neither of the two above can see. contrast
       # reads colour and contract reads what a route declares; a glyph coming

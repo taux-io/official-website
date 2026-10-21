@@ -50,17 +50,19 @@ function ruleTwoPlates(files) {
     });
   }
 
-  // THE WATER PLATE IS NEVER PAINTED (decision 182). --water-rgb exists so
-  // static/js/home-water.js can read it; the hero's water is drawn by that
-  // script's shader, so no stylesheet declaration has any business using it.
-  // The `--` token declaration is the only place it may appear.
+  // THE SHARK TINTS ARE NEVER PAINTED (decision 183). --shark-1-rgb ..
+  // --shark-4-rgb exist so static/js/home-sharks.js can read them; the glyphs
+  // are drawn by that script on a canvas, so no stylesheet declaration has any
+  // business using one. The four `--shark-N-rgb` declarations are the only
+  // place they may appear; the same three channels under any other token name
+  // are a finding too.
   for (const { d, value } of colourBearing(sheet.declarations)) {
-    if (d.prop.startsWith("--")) continue;
-    if (!plates.stepsIn(value, sheet).some((st) => st.plate === "water")) continue;
+    if (/^--shark-[1-4]-rgb$/.test(d.prop)) continue;
+    if (!plates.stepsIn(value, sheet).some((st) => /^shark[1-4]$/.test(st.plate))) continue;
     found.push({
       file: d.file,
       line: d.line,
-      detail: `${d.selector} paints the water plate — it is read by static/js/home-water.js and painted by nothing else (decision 182)`,
+      detail: `${d.selector} paints a shark tint — it is read by static/js/home-sharks.js and painted by nothing else (decision 183)`,
     });
   }
 
