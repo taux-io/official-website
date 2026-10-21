@@ -213,8 +213,41 @@ jobs:
       - name: sharks simulation unit tests
         run: npm run test:sim
 
-  audit:
+  # The browser audits, split across parallel jobs. They ran one after another in
+  # a single job (~19 minutes: contrast 565 s, geometry 324 s, sharks 102 s,
+  # contract 86 s, the rest setup); the parts do not depend on each other, so
+  # each gets its own runner and the run takes as long as the slowest part.
+  # Every part repeats the same setup (about a minute) — that is the price.
+  audit-parts:
     runs-on: ubuntu-24.04
+    strategy:
+      # One part failing must not hide what the others found: a red run should
+      # name everything that is wrong, not the first thing.
+      fail-fast: false
+      matrix:
+        include:
+          # Two passes of the same script, so two runners: the site's own
+          # palette, then Windows high contrast (forced-colors), where it
+          # catches CSS that paints text and its ground the same system colour.
+          # `--mode` is contrast.js's own switch; with none it runs both.
+          - part: contrast-normal
+            run: npm run contrast -- --mode normal
+          - part: contrast-forced
+            run: npm run contrast -- --mode forced
+          # Slower than its neighbours (~3-5 minutes) because the canvas walk
+          # has to be driven one scroll position per round trip. Batching it
+          # into the page made it fast and made it incapable of failing.
+          - part: geometry
+            run: npm run geometry
+          # The rest are short and share a runner. They run in this order and
+          # the first failure stops the part, as the separate steps did.
+          - part: contract-sharks-cards-links
+            run: |
+              npm run contract
+              npm run sharks
+              npm run cards
+              npm run check:entity:links
+    name: audit-parts (${{ matrix.part }})
     steps:
       - uses: actions/checkout@v7
 
@@ -234,7 +267,8 @@ jobs:
       # The browser download is cached, keyed on the lockfile (which pins the
       # Playwright version, and so the Chromium build). It was fetched fresh on
       # every run of both workflows. The system libraries are not files a cache
-      # can restore, so a hit still installs those.
+      # can restore, so a hit still installs those. The parts save the same key
+      # at once; the losers log "unable to reserve cache", which is harmless.
       - name: cache chromium
         id: chromium-cache
         uses: actions/cache@v6
@@ -267,69 +301,59 @@ jobs:
           done
           curl -sf -o /dev/null http://127.0.0.1:8099/ || { echo "host emulator never came up"; exit 1; }
 
-      # Exits non-zero on any element below its WCAG AA threshold. Anything
-      # under 1.5:1 is reported separately as effectively invisible. Two passes:
-      # the site's own palette, then Windows high contrast (forced-colors), where
-      # it catches CSS that paints text and its ground the same system colour.
-      - name: contrast audit
-        run: npm run contrast
-
-      # What each route declares to the machines that read it: status, document
-      # language, canonical URL, share card, structured data, every referenced
-      # asset, policy violations and script errors. Most of the defects found
-      # during the redesign lived here rather than in anything a person looks at.
-      - name: route contract
-        run: npm run contract
-
-      # The home hero's sharks background, driven in a real browser: check:hero-sharks
-      # never opens a page and contrast cannot see a <canvas>, so a script that
-      # draws nothing, one that starts on a phone, or a loop that never stops
-      # when the hero scrolls away would leave both green. It is canvas 2D, so
-      # the runner needs no GPU and no special Chromium flags; the message
-      # names the locale and the condition.
-      - name: hero sharks run where it should
-        run: npm run sharks
-
-      # Where things land, which neither of the two above can see. contrast
-      # reads colour and contract reads what a route declares; a glyph coming
-      # from the wrong face, a box whose lines disagree, or content clipped off
-      # the right edge is invisible to both.
+      # What each part checks, and why it is a gate:
       #
-      # Three of its four checks are enforced. The fourth — horizontal overflow
-      # — is the only one that found anything, and what it found predates the
-      # change that added this file; it is switched on by issue 151, and the run
+      # contrast — exits non-zero on any element below its WCAG AA threshold.
+      # Anything under 1.5:1 is reported separately as effectively invisible.
+      #
+      # contract — what each route declares to the machines that read it: status,
+      # document language, canonical URL, share card, structured data, every
+      # referenced asset, policy violations and script errors. Most of the
+      # defects found during the redesign lived here rather than in anything a
+      # person looks at.
+      #
+      # sharks — the home hero's background, driven in a real browser:
+      # check:hero-sharks never opens a page and contrast cannot see a <canvas>,
+      # so a script that draws nothing, one that starts on a phone, or a loop
+      # that never stops when the hero scrolls away would leave both green. It
+      # is canvas 2D, so the runner needs no GPU and no special Chromium flags;
+      # the message names the locale and the condition.
+      #
+      # geometry — where things land, which contrast and contract cannot see: a
+      # glyph from the wrong face, a box whose lines disagree, or content
+      # clipped off the right edge. Three of its four checks are enforced; the
+      # fourth, horizontal overflow, is switched on by issue 151, and the run
       # prints its findings either way rather than staying quiet about them.
       #
-      # Slower than its neighbours (~3 minutes) because the canvas walk has to
-      # be driven one scroll position per round trip. Batching it into the page
-      # made it fast and made it incapable of failing.
-      - name: geometry holds
-        run: npm run geometry
+      # cards — the share cards are the only thing this site ships with a fixed
+      # frame, and the reference set's proportional rules (5-9% outer margin, a
+      # dominant subject at 45-80%) are unmeasurable on a page because the
+      # denominator is whatever viewport is looking. On a 1200x630 card it is a
+      # constant, so the same rules become a gate. It reads the committed PNGs
+      # and needs no server.
+      #
+      # check:entity:links — sameAs asserts "these are the same entity", so a
+      # dead profile URL is an identity claim about nothing. It is the only
+      # entity rule that leaves the machine; the offline checks stay offline.
+      # It catches a hard 404 and nothing subtler: a profile behind a login wall
+      # answers 200, so deciding that a social account is genuinely the
+      # company's remains a person's job.
+      - name: ${{ matrix.part }}
+        run: ${{ matrix.run }}
 
-      # The share cards are the only thing this site ships with a fixed frame,
-      # and the reference set's proportional rules — 5-9% outer margin, a
-      # dominant subject at 45-80% — are unmeasurable on a page for the reason
-      # DESIGN.md gives: the denominator is whatever viewport is looking. On a
-      # 1200x630 card the denominator is a constant, so the same rules become a
-      # gate.
-      #
-      # It reads the committed PNGs rather than build-og.js. The margin is
-      # computable from the source, but the ink box is not: nothing in the
-      # recipe says how much of the card a balanced three-line title covers.
-      # Reading the source would check the half that was never in doubt.
-      #
-      # It needs no server, so it does not care that this job runs one — it is
-      # here because the assets it reads are large and the fast job stays fast.
-      - name: card geometry
-        run: npm run cards
-
-      # sameAs asserts "these are the same entity", so a dead profile URL is an
-      # identity claim about nothing. Lives in this job rather than the one
-      # above because it is the only entity rule that leaves the machine, and
-      # the offline checks stay offline and fast.
-      #
-      # It catches a hard 404 and nothing subtler. A profile that no longer
-      # exists behind a login wall answers 200, so deciding that a social
-      # account is genuinely the company's remains a person's job.
-      - name: sameAs targets exist
-        run: npm run check:entity:links
+  # The required status check is named `audit`, and it must keep that name: the
+  # parts above are called `audit-parts (...)`, so branch protection would
+  # otherwise wait for a check that no longer exists. This job is that check.
+  # `always()` matters: without it a failed part makes this job SKIPPED, and a
+  # skipped required check counts as passing.
+  audit:
+    needs: audit-parts
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: every part passed
+        env:
+          RESULT: ${{ needs.audit-parts.result }}
+        run: |
+          echo "audit-parts: $RESULT"
+          [ "$RESULT" = "success" ]
