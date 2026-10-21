@@ -114,6 +114,8 @@ npm run md:audit             # Markdown 雙生檔與 HTML 的逐段對讀（給�
 
 **`npm run audit` 會自己起 server，一次跑完 `geometry`、`contrast`、`contract`、`sharks`、`cards` 五個瀏覽器檢查。** 單獨跑其中一個時，要先 `npm run serve`，它們對 `http://127.0.0.1:8099`（或 `BASE_URL`）發請求。同時開多個 worktree 時，每個用自己的 port：`PORT=<n> npm run serve`，再以 `BASE_URL` 指過去。
 
+對正式站跑 `BASE_URL=https://taux.io npm run sharks` 會 exit 1：五個語系的 `[desktop]` 各有一個 CSP violation（`Executing inline script`），因為 Cloudflare 在邊緣注入了一段 inline script（內容開頭 `window.__CF$cv$`），被站上的 `script-src` 擋下。這是假警報，不是回歸：本機與 CI 不經過 Cloudflare，所以沒有這段；同一次跑的 phone-fade 15 項照常全過。要驗正式站的手機直圖，看 phone-fade 那 15 行，別看 exit code。
+
 `.github/workflows/checks.yml` 在 PR 與推送 main 時跑兩個 job。**`build`**：`cargo fmt` / `cargo clippy` / `cargo test` / `build:site` / `check:css` / `check:classes` / `check:llms` / `check:md` / `check:dates` / `check:jsonld` / `check:design` / `check:hero-sharks` / `check:routes` / `check:entity` / `check:ko` / `check:i18n` / `test:worker` / `test:browser` / `test:sim`。**`audit`**：安裝 chromium、建置、用 `npm run serve` 供應，然後 `contrast` / `contract` / `sharks` / `geometry` / `cards` / `check:entity:links`。Chromium 以 `package-lock.json` 為 key 快取（`zone.yml` 也是），命中時只裝系統相依。
 
 **runner 釘在 `ubuntu-24.04`，不用 `ubuntu-latest`**（兩個 workflow 都是）。`ubuntu-latest` 自 2026-10-19 起改指 Ubuntu 26，而 `playwright install --with-deps` 是依發行版解析系統套件的——它還不認得的新版會讓 audit（必要檢查）在每個 PR 上同時失敗。要換版本時，先在一個 PR 上把 `runs-on` 改成新 image 跑綠，再合併。actions 用 `checkout@v7`、`setup-node@v7`、`cache@v6`（Node 24 runtime）。
