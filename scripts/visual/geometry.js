@@ -2,6 +2,7 @@
 //
 //   node scripts/visual/geometry.js
 //   GEOMETRY_WIDTHS=375,1500 node scripts/visual/geometry.js
+//   GEOMETRY_SHARD=1/2 node scripts/visual/geometry.js   (and 2/2: the other half of the routes)
 //
 // contrast reads colour, contract reads what a route declares, check:design
 // reads what the author wrote. None of them looks at where anything actually
@@ -50,7 +51,7 @@
 // Reads the same route table and starts the browser the same way as its
 // neighbours, so adding a page to site.toml brings it under all of them.
 
-const { walk } = require("./walk");
+const { walk, DEFAULT_PATHS } = require("./walk");
 const { LOCALES, measureFor } = require("../routes");
 
 // /404 is a [[document]] rather than a [[page]], so it is not in ROUTES and
@@ -85,6 +86,28 @@ const WIDTHS = process.env.GEOMETRY_WIDTHS
 
 
 
+// WHICH ROUTES THIS RUN WALKS. All of them unless GEOMETRY_SHARD=K/N says
+// otherwise, in which case route i belongs to shard (i mod N) + 1. CI runs the
+// two halves as separate jobs: the walk is one page, one route after another,
+// and this audit was the slowest part of the run. Every probe still runs on every
+// route it names, so a shard changes which routes a job sees and never what a
+// check means; `measure`'s "widest viewport" is a property of WIDTHS, not paths.
+// Interleaved rather than split at the middle, so a run of similar pages (the
+// five locales of one article) does not land in the same shard.
+const SHARD = (() => {
+  const raw = process.env.GEOMETRY_SHARD;
+  if (!raw) return null;
+  const m = /^(\d+)\/(\d+)$/.exec(raw.trim());
+  const index = m && Number(m[1]);
+  const total = m && Number(m[2]);
+  if (!m || total < 1 || index < 1 || index > total) {
+    throw new Error(`GEOMETRY_SHARD must look like 1/2 (K/N, 1 <= K <= N); got "${raw}"`);
+  }
+  return { index, total };
+})();
+const PATHS = SHARD
+  ? DEFAULT_PATHS.filter((_, i) => i % SHARD.total === SHARD.index - 1)
+  : DEFAULT_PATHS;
 
 // A CHECK IS SWITCHED ON BY THE TICKET THAT MAKES IT SATISFIABLE — the same
 // arrangement check-design.js uses, for the same reason: landing a check
@@ -439,6 +462,7 @@ async function main() {
   const viewports = WIDTHS.map((width) => ({ name: `${width}px`, width, height: 900 }));
 
   const { findings, stats } = await walk({
+    paths: PATHS,
     viewports,
     probes: [
       { name: "overflow", inPage: measureOverflowInPage },
@@ -509,7 +533,8 @@ async function main() {
   const limits = LOCALES.map((l) => `${l.tag} ${measureFor(l.tag)}ch`).join(", ");
   console.log(`${stats.paths} routes checked for a reading measure (${limits}; widest viewport only)`);
   const heights = PHONE_VIEWPORTS.map((v) => v.name).join(", ");
-  console.log(`${LOCALES.length} home pages checked for a call to action on the first screen (${heights})`);
+  const homes = LOCALES.filter((l) => PATHS.includes(`/${l.tag}`)).length;
+  console.log(`${homes} home pages checked for a call to action on the first screen (${heights})`);
   console.log(`${stats.paths} routes checked for a first paragraph on the first screen (${heights})`);
 
   // Sampling is stated rather than implied. A run that quietly narrowed its own
@@ -518,6 +543,10 @@ async function main() {
     WIDTHS.length !== DEFAULT_WIDTHS.length || WIDTHS.some((w, i) => w !== DEFAULT_WIDTHS[i]);
   if (narrowed) {
     console.log(`  NARROWED by GEOMETRY_WIDTHS — the default set is ${DEFAULT_WIDTHS.join(", ")}`);
+  }
+
+  if (SHARD) {
+    console.log(`  SHARD ${SHARD.index}/${SHARD.total} — ${PATHS.length} of ${DEFAULT_PATHS.length} routes; the other shards cover the rest`);
   }
 
   const enforced = failures.filter((f) => CHECKS[f.kind].enabled);

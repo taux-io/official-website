@@ -234,11 +234,18 @@ jobs:
             run: npm run contrast -- --mode normal
           - part: contrast-forced
             run: npm run contrast -- --mode forced
-          # Slower than its neighbours (~3-5 minutes) because the canvas walk
-          # has to be driven one scroll position per round trip. Batching it
-          # into the page made it fast and made it incapable of failing.
-          - part: geometry
-            run: npm run geometry
+          # The slowest audit (~330 s on a runner), so it is two jobs. It walks one
+          # page, one route after another, and `first-paragraph` reloads every
+          # route three times (~230 s of the ~330); GEOMETRY_SHARD=K/N gives each
+          # job the routes whose position is K-1 mod N. Every check still runs on
+          # every route it names, so the two halves together are the whole audit.
+          # A third route added to site.toml lands in one of them without anyone
+          # editing this file; a job that forgot to run would be a missing check,
+          # which is why the aggregator below needs every part, not just some.
+          - part: geometry-1
+            run: GEOMETRY_SHARD=1/2 npm run geometry
+          - part: geometry-2
+            run: GEOMETRY_SHARD=2/2 npm run geometry
           # The rest are short and share a runner. They run in this order and
           # the first failure stops the part, as the separate steps did.
           - part: contract-sharks-cards-links
