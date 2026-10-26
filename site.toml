@@ -1211,8 +1211,8 @@ date_modified = "2026-09-26"
 date_published = "2026-02-17"
 
   [page.locale.zh-Hant-TW]
-  title       = "什麼是 Prompt Injection 提示詞注入？AI 資安威脅解析 | TauX"
-  description = "提示詞注入的攻擊原理、與越獄（Jailbreak）的差異，以及縱深防禦的實務做法。保護你的 LLM 應用不被惡意指令操控。"
+  title       = "Prompt Injection 是什麼？直接、間接注入與 3 層防禦 | TauX"
+  description = "Prompt Injection（提示詞注入）是誘使 LLM 忽略原本規則的攻擊。看懂直接與間接注入、和越獄的差異，以及輸入、模型、監督三層防禦。"
   crumb       = "Prompt Injection 說明"
 
   [page.locale.zh-Hans-CN]
