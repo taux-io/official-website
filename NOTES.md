@@ -408,7 +408,7 @@ production 建置是**唯一一個在真正的部署環境裡驗證建置**的�
 ### 幾個必須知道的細節
 
 - **輸出是扁平的 `.html`，不是目錄。** `geo-guide.html` 在 `/geo-guide` 直接供應；若寫成 `geo-guide/index.html`，主機會把 `/geo-guide` **308 重導**到 `/geo-guide/`——每條已索引的 URL 多一跳，而 canonical 指向主機不直接服務的形式。
-- **CSS／JS 快取一年、immutable；分享卡、brand、圖示七天。** 前者安全是因為 `?v=` 是內容雜湊（見「建置與檢查」）。`script-src` 只有 `'self'` 與 Cloudflare 的 beacon 來源——prompt injection 頁的圖表改成建置時產生的 SVG 之後，`cdn.jsdelivr.net` 已經拿掉，站上沒有任何第三方腳本。**`style-src` 只有 `'self'`**：`'unsafe-inline'` 是為了投影片頁的 `<style>` 區塊與 65 個 `style=""` 留著的，兩者搬進 `src/input.css` 之後拿掉（DESIGN.md 決策 #153）。`dist/` 裡 0 個 `<style>`、0 個 `style=`；JS 用 `element.style.x = …` 走 CSSOM，不受 CSP 管。新寫一個 inline 樣式會被瀏覽器擋下，`contract` 的 CSP 違規斷言會紅。
+- **CSS／JS 快取一年、immutable；分享卡、brand、圖示七天。** 前者安全是因為 `?v=` 是內容雜湊（見「建置與檢查」）。`script-src` 只有 `'self'`、Cloudflare 的 beacon 來源與 `www.googletagmanager.com`（GA4，決策 #184）——prompt injection 頁的圖表改成建置時產生的 SVG 之後，`cdn.jsdelivr.net` 已經拿掉，除了這兩個來源，站上沒有任何第三方腳本。**`style-src` 只有 `'self'`**：`'unsafe-inline'` 是為了投影片頁的 `<style>` 區塊與 65 個 `style=""` 留著的，兩者搬進 `src/input.css` 之後拿掉（DESIGN.md 決策 #153）。`dist/` 裡 0 個 `<style>`、0 個 `style=`；JS 用 `element.style.x = …` 走 CSSOM，不受 CSP 管。新寫一個 inline 樣式會被瀏覽器擋下，`contract` 的 CSP 違規斷言會紅。
 - **`_headers` 的規則必須互不重疊。** Cloudflare **合併**所有符合的規則，不是最具體的勝出。`/static/*` 與 `/static/fonts/*` 同時命中會產生 `max-age=3600, max-age=31536000` —— 瀏覽器取第一個，字體實際只快取一小時。這已經發生過一次。
 - **`404.html` 不是路由。** 它在 `site.toml` 裡宣告為 `[[document]]`，主機用它回應任何未匹配路徑並附上 404 狀態。**靜態主機最常見的錯誤是用 200 送出 404 頁面**，Google 視為 soft 404 並可能連帶降權周邊路徑。契約測試會斷言這一點。
 - **靜態站沒有 500。** 沒有應用程式可以失敗，該頁已移除。

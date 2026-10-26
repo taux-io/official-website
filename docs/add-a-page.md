@@ -13,7 +13,7 @@
    - 做完的樣子：`npm run build:site` 之後，`dist/<locale>/<slug>.html` 與 `.md` 都在。
 2. **`site.toml` 檔尾加 `[[redirect]]`：** `from = "/<slug>"`、`to = "/<locale>/<slug>"`。做完的樣子：`npm run contract` 斷言 `/<slug>` 轉到 `/<locale>/<slug>`。
 3. **模板放 `templates/<slug>.html`。** 骨架抄同類頁（長文指南照 `agent-dev-workflow.html`）。站內連結一律 `/{{ locale }}/…`。
-   - CSP（`_headers`）是 `script-src 'self'`、`style-src 'self'`：樣式放 `src/input.css`，跑 `npm run build:css`，把 `static/css/styles.min.css` 一起 commit；腳本放 `static/js/`，模板用 `?v={{ js_version["<檔名>"] }}` 引入（前例：`what-is-mcp.html` 引入 `mcp-primitives.js` 的那一行）。inline `<script>`、`<style>`、`style=` 會被擋。
+   - CSP（`_headers`）是 `script-src 'self'`、`style-src 'self'`：樣式放 `src/input.css`，跑 `npm run build:css`，把 `static/css/styles.min.css` 一起 commit；腳本放 `static/js/`，模板用 `?v={{ js_version["<檔名>"] }}` 引入（前例：`what-is-mcp.html` 引入 `mcp-primitives.js` 的那一行）。inline `<script>`、`<style>`、`style=` 會被擋。例外：`script-src` 另放行 `https://www.googletagmanager.com`（GA4，決策 #184）。
    - 預覽用 `npm run serve`：它套用 `_headers`，CSP 違規在本機就看得到；不套用標頭的靜態伺服器看不到。
    - 做完的樣子：`npm run check:css`、`check:classes`、`check:design` 綠，`npm run serve` 上頁面的 console 沒有 CSP 違規。
 4. **`npm run routes:record`**，把 `ledgers/published-paths.txt` 一起 commit。做完的樣子：`npm run check:routes` 綠。
