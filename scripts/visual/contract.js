@@ -25,9 +25,11 @@ const EXPECTED_HEADERS = {
   "referrer-policy": "strict-origin-when-cross-origin",
   "permissions-policy": "geolocation=(), microphone=(), camera=()",
   "content-security-policy":
-    "default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; " +
-    "style-src 'self'; font-src 'self'; img-src 'self' data:; " +
-    "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com; " +
+    "style-src 'self'; font-src 'self'; " +
+    "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; " +
+    "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; " +
+    "frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
 // Two things this site relies on are configured at the Cloudflare zone rather
