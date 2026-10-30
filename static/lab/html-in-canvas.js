@@ -44,7 +44,6 @@
       var s = size();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.scale(s.dpr, s.dpr);
       // Tilt = skew toward the pointer, around the card centre.
       ctx.translate(s.w / 2, s.h / 2 + 12);
       ctx.transform(1, tiltY * 0.04, tiltX * 0.04, 1, 0, 0);
