@@ -1,0 +1,13 @@
+:root { color-scheme: light dark; --bg: #f6f3ec; --ink: #1c1b19; --card: #fffdf8; --line: #cfc8b8; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151412; --ink: #ece8df; --card: #201e1b; --line: #3a362f; }
+}
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.7 system-ui, sans-serif; }
+main { max-width: 40rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: inherit; }
+.note { font-size: 0.875rem; opacity: 0.75; }
+#stage { margin: 2rem 0; }
+#card { box-sizing: border-box; width: 100%; padding: 1.5rem; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+#card h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+#card p { margin: 0.5rem 0; }
+#stage canvas { display: block; width: 100%; }
