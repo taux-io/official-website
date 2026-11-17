@@ -136,3 +136,4 @@ Allow: /
 
 # ===========================================================================
 Sitemap: https://taux.io/sitemap.xml
+Sitemap: https://taux.io/ptcc/sitemap.xml
