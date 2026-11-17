@@ -94,6 +94,10 @@ TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成
 -   [Google Workspace AI 導入效益與 ROI 怎麼判讀](https://taux.io/zh-Hant-TW/google-workspace-with-ai): 拆解 Workspace AI 導入的效益宣稱，說明哪些數字站得住腳、該用什麼基準判讀。 ([Markdown](https://taux.io/zh-Hant-TW/google-workspace-with-ai.md))
 -   [AI Agent 開發流程實戰](https://taux.io/zh-Hant-TW/agent-dev-workflow): 把 mattpocock/skills 的 25 支 skill 串成一條可重複的開發流程。主幹七步（grill、spec、tickets、implement、code-review）、四個完整劇本、31 個已知坑與 14 天練習計畫。依該 pack 1.2.3 版撰寫，為獨立編寫的中文教學而非官方文件翻譯。 ([Markdown](https://taux.io/zh-Hant-TW/agent-dev-workflow.md))
 
+## 公共資料工具
+
+-   [屏東縣議會問政影音](https://taux.io/ptcc/): 屏東縣議會第 18～20 屆會議影片的查詢與播放索引，可依選區、議員、備詢單位查詢並直接播放。每位議員各有一頁（`https://taux.io/ptcc/councilor/<議員名字>/`），列出他的質詢影片與現場、書面質詢場次；全部網址見 [sitemap](https://taux.io/ptcc/sitemap.xml)。影片來源與版權屬屏東縣議會。這個工具沒有 Markdown 版本，上面的 `.md` 規則不適用。
+
 ---
 
 ## 常見問題 (FAQ)
