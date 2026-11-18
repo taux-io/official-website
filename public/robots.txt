@@ -141,3 +141,4 @@ Sitemap: https://taux.io/chaozhou/sitemap.xml
 Sitemap: https://taux.io/xinyuan/sitemap.xml
 Sitemap: https://taux.io/wandan/sitemap.xml
 Sitemap: https://taux.io/fangliao/sitemap.xml
+Sitemap: https://taux.io/kanding/sitemap.xml
