@@ -139,3 +139,4 @@ Sitemap: https://taux.io/sitemap.xml
 Sitemap: https://taux.io/ptcc/sitemap.xml
 Sitemap: https://taux.io/chaozhou/sitemap.xml
 Sitemap: https://taux.io/xinyuan/sitemap.xml
+Sitemap: https://taux.io/wandan/sitemap.xml
