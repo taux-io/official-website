@@ -98,6 +98,7 @@ TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成
 
 -   [屏東縣議會問政影音](https://taux.io/ptcc/): 屏東縣議會第 18～20 屆會議影片的查詢與播放索引，可依選區、議員、備詢單位查詢並直接播放。每位議員各有一頁（`https://taux.io/ptcc/councilor/<議員名字>/`），列出他的質詢影片與現場、書面質詢場次；全部網址見 [sitemap](https://taux.io/ptcc/sitemap.xml)。影片來源與版權屬屏東縣議會。這個工具沒有 Markdown 版本，上面的 `.md` 規則不適用。
 -   [潮州鎮 2026 選舉公報](https://taux.io/chaozhou/): 2026 年 11 月 28 日投票的屏東縣潮州鎮選舉公報整理，涵蓋縣長、縣議員第三選舉區、潮州鎮長、鎮民代表三個選舉區與 21 里里長，共 93 位候選人。每位候選人一頁（`https://taux.io/chaozhou/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/chaozhou/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/chaozhou/index.md)，個別候選人頁沒有 `.md` 版本。
+-   [新園鄉 2026 選舉公報](https://taux.io/xinyuan/): 2026 年 11 月 28 日投票的屏東縣新園鄉選舉公報整理，涵蓋縣長、縣議員第四選舉區、新園鄉長、鄉民代表四個選舉區與 15 村村長，共 61 位候選人。每位候選人一頁（`https://taux.io/xinyuan/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長與議員另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/xinyuan/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/xinyuan/index.md)，個別候選人頁沒有 `.md` 版本。
 
 ---
 
