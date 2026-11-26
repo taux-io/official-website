@@ -103,6 +103,7 @@ TauX（法定名稱：拓思科技股份有限公司）協助企業把 AI 變成
 -   [枋寮鄉 2026 選舉公報](https://taux.io/fangliao/): 2026 年 11 月 28 日投票的屏東縣枋寮鄉選舉公報整理，涵蓋縣長、縣議員第三選舉區、枋寮鄉長、鄉民代表三個選舉區與 15 村村長，共 66 位候選人。每位候選人一頁（`https://taux.io/fangliao/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長與議員另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/fangliao/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/fangliao/index.md)，個別候選人頁沒有 `.md` 版本。
 -   [崁頂鄉 2026 選舉公報](https://taux.io/kanding/): 2026 年 11 月 28 日投票的屏東縣崁頂鄉選舉公報整理，涵蓋縣長、縣議員第五選舉區、崁頂鄉長、鄉民代表四個選舉區與 8 村村長，共 44 位候選人。每位候選人一頁（`https://taux.io/kanding/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長與議員另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/kanding/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/kanding/index.md)，個別候選人頁沒有 `.md` 版本。
 -   [南州鄉 2026 選舉公報](https://taux.io/nanzhou/): 2026 年 11 月 28 日投票的屏東縣南州鄉選舉公報整理，涵蓋縣長、縣議員第五選舉區、南州鄉長、鄉民代表三個選舉區與 10 村村長，共 42 位候選人。每位候選人一頁（`https://taux.io/nanzhou/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長與議員另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/nanzhou/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/nanzhou/index.md)，個別候選人頁沒有 `.md` 版本。
+-   [佳冬鄉 2026 選舉公報](https://taux.io/jiadong/): 2026 年 11 月 28 日投票的屏東縣佳冬鄉選舉公報整理，涵蓋縣長、縣議員第五選舉區、佳冬鄉長、鄉民代表四個選舉區與 12 村村長，共 41 位候選人。每位候選人一頁（`https://taux.io/jiadong/<選舉>/<號次>`），列出學歷、經歷、政見與公報出處，縣長與議員另附中選會公告的財產申報；全部網址見 [sitemap](https://taux.io/jiadong/sitemap.xml)。資料來源為中央選舉委員會選舉公報（屏東縣），內容以屏東縣選舉委員會公告為準。整份公報的 Markdown 版本在 [index.md](https://taux.io/jiadong/index.md)，個別候選人頁沒有 `.md` 版本。
 
 ---
 
